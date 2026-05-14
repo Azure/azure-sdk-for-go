@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-09-01-preview/LogAnalytics_GetLogAnalyticsLocations.json
+// Generated from example definition: 2025-06-01/LogAnalytics_GetLogAnalyticsLocations.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.LogAnalyticsClientGetLogAnalyticsLocationsResponse{
-	// 	ContinentsResponse: &armcdn.ContinentsResponse{
+	// 	ContinentsResponse: armcdn.ContinentsResponse{
 	// 		Continents: []*armcdn.ContinentsResponseContinentsItem{
 	// 			{
 	// 				ID: to.Ptr("africa"),
@@ -77,7 +77,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/LogAnalytics_GetLogAnalyticsMetrics.json
+// Generated from example definition: 2025-06-01/LogAnalytics_GetLogAnalyticsMetrics.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.LogAnalyticsClientGetLogAnalyticsMetricsResponse{
-	// 	MetricsResponse: &armcdn.MetricsResponse{
+	// 	MetricsResponse: armcdn.MetricsResponse{
 	// 		DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T12:30:27.554+08:00"); return t}()),
 	// 		DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T13:00:27.554+08:00"); return t}()),
 	// 		Granularity: to.Ptr(armcdn.MetricsGranularityPT5M),
@@ -152,7 +152,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/LogAnalytics_GetLogAnalyticsRankings.json
+// Generated from example definition: 2025-06-01/LogAnalytics_GetLogAnalyticsRankings.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.LogAnalyticsClientGetLogAnalyticsRankingsResponse{
-	// 	RankingsResponse: &armcdn.RankingsResponse{
+	// 	RankingsResponse: armcdn.RankingsResponse{
 	// 		DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T14:49:27.554+08:00"); return t}()),
 	// 		DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T17:49:27.554+08:00"); return t}()),
 	// 		Tables: []*armcdn.RankingsResponseTablesItem{
@@ -239,7 +239,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/LogAnalytics_GetLogAnalyticsResources.json
+// Generated from example definition: 2025-06-01/LogAnalytics_GetLogAnalyticsResources.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.LogAnalyticsClientGetLogAnalyticsResourcesResponse{
-	// 	ResourcesResponse: &armcdn.ResourcesResponse{
+	// 	ResourcesResponse: armcdn.ResourcesResponse{
 	// 		CustomDomains: []*armcdn.ResourcesResponseCustomDomainsItem{
 	// 			{
 	// 				Name: to.Ptr("customdomain1.azurecdn.net"),
@@ -300,7 +300,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/LogAnalytics_GetWafLogAnalyticsMetrics.json
+// Generated from example definition: 2025-06-01/LogAnalytics_GetWafLogAnalyticsMetrics.json
 func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -325,7 +325,7 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{
-	// 	WafMetricsResponse: &armcdn.WafMetricsResponse{
+	// 	WafMetricsResponse: armcdn.WafMetricsResponse{
 	// 		DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T14:30:27.554+08:00"); return t}()),
 	// 		DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T17:00:27.554+08:00"); return t}()),
 	// 		Granularity: to.Ptr(armcdn.WafMetricsGranularityPT5M),
@@ -439,7 +439,7 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/LogAnalytics_GetWafLogAnalyticsRankings.json
+// Generated from example definition: 2025-06-01/LogAnalytics_GetWafLogAnalyticsRankings.json
 func ExampleLogAnalyticsClient_GetWafLogAnalyticsRankings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -462,7 +462,7 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsRankings() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{
-	// 	WafRankingsResponse: &armcdn.WafRankingsResponse{
+	// 	WafRankingsResponse: armcdn.WafRankingsResponse{
 	// 		Data: []*armcdn.WafRankingsResponseDataItem{
 	// 			{
 	// 				GroupValues: []*string{

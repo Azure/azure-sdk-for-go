@@ -222,35 +222,6 @@ type CustomDomainsClientListByEndpointResponse struct {
 	CustomDomainListResult
 }
 
-// DeploymentVersionsClientApproveResponse contains the response from method DeploymentVersionsClient.BeginApprove.
-type DeploymentVersionsClientApproveResponse struct {
-	// placeholder for future response values
-}
-
-// DeploymentVersionsClientCompareResponse contains the response from method DeploymentVersionsClient.Compare.
-type DeploymentVersionsClientCompareResponse struct {
-	// compare deployment versions response
-	CompareDeploymentVersionsResponse
-}
-
-// DeploymentVersionsClientGetResponse contains the response from method DeploymentVersionsClient.Get.
-type DeploymentVersionsClientGetResponse struct {
-	// Deployment version object
-	DeploymentVersion
-}
-
-// DeploymentVersionsClientListByProfileResponse contains the response from method DeploymentVersionsClient.NewListByProfilePager.
-type DeploymentVersionsClientListByProfileResponse struct {
-	// The response of a DeploymentVersion list operation.
-	DeploymentVersionListResult
-}
-
-// DeploymentVersionsClientUpdateResponse contains the response from method DeploymentVersionsClient.Update.
-type DeploymentVersionsClientUpdateResponse struct {
-	// Deployment version object
-	DeploymentVersion
-}
-
 // EdgeNodesClientListResponse contains the response from method EdgeNodesClient.NewListPager.
 type EdgeNodesClientListResponse struct {
 	// Result of the request to list CDN edgenodes. It contains a list of ip address group and a URL link to get the next set
@@ -324,67 +295,6 @@ type EndpointsClientUpdateResponse struct {
 type EndpointsClientValidateCustomDomainResponse struct {
 	// Output of custom domain validation.
 	ValidateCustomDomainOutput
-}
-
-// KeyGroupsClientCreateUpdateResponse contains the response from method KeyGroupsClient.BeginCreateUpdate.
-type KeyGroupsClientCreateUpdateResponse struct {
-	// placeholder for future response values
-}
-
-// KeyGroupsClientDeleteResponse contains the response from method KeyGroupsClient.BeginDelete.
-type KeyGroupsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// KeyGroupsClientGetResponse contains the response from method KeyGroupsClient.Get.
-type KeyGroupsClientGetResponse struct {
-	// Contains a list of references of UrlSigningKey type secret objects.
-	KeyGroup
-}
-
-// KeyGroupsClientListByProfileResponse contains the response from method KeyGroupsClient.NewListByProfilePager.
-type KeyGroupsClientListByProfileResponse struct {
-	// The response of a KeyGroup list operation.
-	KeyGroupListResult
-}
-
-// KeyGroupsClientUpdateResponse contains the response from method KeyGroupsClient.BeginUpdate.
-type KeyGroupsClientUpdateResponse struct {
-	// placeholder for future response values
-}
-
-// KnowledgeSourcesClientCreateOrUpdateResponse contains the response from method KnowledgeSourcesClient.BeginCreateOrUpdate.
-type KnowledgeSourcesClientCreateOrUpdateResponse struct {
-	// Defines a knowledge source resource for a web agent.
-	KnowledgeSource
-}
-
-// KnowledgeSourcesClientDeleteResponse contains the response from method KnowledgeSourcesClient.BeginDelete.
-type KnowledgeSourcesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// KnowledgeSourcesClientGetResponse contains the response from method KnowledgeSourcesClient.Get.
-type KnowledgeSourcesClientGetResponse struct {
-	// Defines a knowledge source resource for a web agent.
-	KnowledgeSource
-}
-
-// KnowledgeSourcesClientListByWebAgentResponse contains the response from method KnowledgeSourcesClient.NewListByWebAgentPager.
-type KnowledgeSourcesClientListByWebAgentResponse struct {
-	// Defines a list of knowledge sources. It contains a list of KnowledgeSource objects and a URL link to get the next set of
-	// results.
-	KnowledgeSourceList
-}
-
-// KnowledgeSourcesClientPurgeResponse contains the response from method KnowledgeSourcesClient.BeginPurge.
-type KnowledgeSourcesClientPurgeResponse struct {
-	// placeholder for future response values
-}
-
-// KnowledgeSourcesClientUpdateResponse contains the response from method KnowledgeSourcesClient.BeginUpdate.
-type KnowledgeSourcesClientUpdateResponse struct {
-	// placeholder for future response values
 }
 
 // LogAnalyticsClientGetLogAnalyticsLocationsResponse contains the response from method LogAnalyticsClient.GetLogAnalyticsLocations.
@@ -548,34 +458,6 @@ type PoliciesClientListResponse struct {
 type PoliciesClientUpdateResponse struct {
 	// Defines web application firewall policy for Azure CDN.
 	WafPolicy
-}
-
-// ProfileAgentsClientCreateOrUpdateResponse contains the response from method ProfileAgentsClient.BeginCreateOrUpdate.
-type ProfileAgentsClientCreateOrUpdateResponse struct {
-	// An agent link (web agent association) within a CDN profile.
-	ProfileAgent
-}
-
-// ProfileAgentsClientDeleteResponse contains the response from method ProfileAgentsClient.BeginDelete.
-type ProfileAgentsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ProfileAgentsClientGetResponse contains the response from method ProfileAgentsClient.Get.
-type ProfileAgentsClientGetResponse struct {
-	// An agent link (web agent association) within a CDN profile.
-	ProfileAgent
-}
-
-// ProfileAgentsClientListByProfileResponse contains the response from method ProfileAgentsClient.NewListByProfilePager.
-type ProfileAgentsClientListByProfileResponse struct {
-	// The response of a ProfileAgent list operation.
-	ProfileAgentListResult
-}
-
-// ProfileAgentsClientUpdateResponse contains the response from method ProfileAgentsClient.BeginUpdate.
-type ProfileAgentsClientUpdateResponse struct {
-	// placeholder for future response values
 }
 
 // ProfilesClientCanMigrateResponse contains the response from method ProfilesClient.BeginCanMigrate.
@@ -811,38 +693,4 @@ type SecurityPoliciesClientListByProfileResponse struct {
 type SecurityPoliciesClientPatchResponse struct {
 	// SecurityPolicy association for AzureFrontDoor profile
 	SecurityPolicy
-}
-
-// WebAgentsClientCreateOrUpdateResponse contains the response from method WebAgentsClient.BeginCreateOrUpdate.
-type WebAgentsClientCreateOrUpdateResponse struct {
-	// Defines a web agent resource for Azure CDN.
-	WebAgent
-}
-
-// WebAgentsClientDeleteResponse contains the response from method WebAgentsClient.BeginDelete.
-type WebAgentsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// WebAgentsClientGetResponse contains the response from method WebAgentsClient.Get.
-type WebAgentsClientGetResponse struct {
-	// Defines a web agent resource for Azure CDN.
-	WebAgent
-}
-
-// WebAgentsClientListByResourceGroupResponse contains the response from method WebAgentsClient.NewListByResourceGroupPager.
-type WebAgentsClientListByResourceGroupResponse struct {
-	// Defines a list of web agents. It contains a list of WebAgent objects and a URL link to get the next set of results.
-	WebAgentList
-}
-
-// WebAgentsClientListBySubscriptionResponse contains the response from method WebAgentsClient.NewListBySubscriptionPager.
-type WebAgentsClientListBySubscriptionResponse struct {
-	// Defines a list of web agents. It contains a list of WebAgent objects and a URL link to get the next set of results.
-	WebAgentList
-}
-
-// WebAgentsClientUpdateResponse contains the response from method WebAgentsClient.BeginUpdate.
-type WebAgentsClientUpdateResponse struct {
-	// placeholder for future response values
 }

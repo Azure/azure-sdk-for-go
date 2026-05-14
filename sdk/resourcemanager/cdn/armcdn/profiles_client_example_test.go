@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/Profiles_CanMigrate.json
+// Generated from example definition: 2025-06-01/Profiles_CanMigrate.json
 func ExampleProfilesClient_BeginCanMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,13 +33,13 @@ func ExampleProfilesClient_BeginCanMigrate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.ProfilesClientCanMigrateResponse{
-	// 	CanMigrateResult: &armcdn.CanMigrateResult{
+	// 	CanMigrateResult: armcdn.CanMigrateResult{
 	// 		Type: to.Ptr("Microsoft.Cdn/canmigrate"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/yaoshitest/providers/Microsoft.Cdn/operationresults/operationid/profileresults/DummyProfile/canmigrateresults/DummyProfile"),
 	// 		Properties: &armcdn.CanMigrateProperties{
@@ -50,7 +50,7 @@ func ExampleProfilesClient_BeginCanMigrate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/CdnProfiles_CanMigrate.json
+// Generated from example definition: 2025-06-01/CdnProfiles_CanMigrate.json
 func ExampleProfilesClient_BeginCdnCanMigrateToAfd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,13 +67,13 @@ func ExampleProfilesClient_BeginCdnCanMigrateToAfd() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.ProfilesClientCdnCanMigrateToAfdResponse{
-	// 	CanMigrateResult: &armcdn.CanMigrateResult{
+	// 	CanMigrateResult: armcdn.CanMigrateResult{
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/canmigrate"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resourceGroupName/providers/Microsoft.Cdn/operationresults/operationid/profileresults/profile1/canmigrateresults/profile1"),
 	// 		Properties: &armcdn.CanMigrateProperties{
@@ -84,7 +84,7 @@ func ExampleProfilesClient_BeginCdnCanMigrateToAfd() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/CdnProfiles_Migrate.json
+// Generated from example definition: 2025-06-01/CdnProfiles_Migrate.json
 func ExampleProfilesClient_BeginCdnMigrateToAfd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,13 +105,13 @@ func ExampleProfilesClient_BeginCdnMigrateToAfd() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.ProfilesClientCdnMigrateToAfdResponse{
-	// 	MigrateResult: &armcdn.MigrateResult{
+	// 	MigrateResult: armcdn.MigrateResult{
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/migrate"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/RG/providers/Microsoft.Cdn/operationresults/operationid/profileresults/profile1/migrateresults/profile1"),
 	// 		Properties: &armcdn.MigrateResultProperties{
@@ -123,7 +123,7 @@ func ExampleProfilesClient_BeginCdnMigrateToAfd() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_Create.json
+// Generated from example definition: 2025-06-01/Profiles_Create.json
 func ExampleProfilesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,13 +145,13 @@ func ExampleProfilesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.ProfilesClientCreateResponse{
-	// 	Profile: &armcdn.Profile{
+	// 	Profile: armcdn.Profile{
 	// 		Name: to.Ptr("profile1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
@@ -172,7 +172,7 @@ func ExampleProfilesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_Delete.json
+// Generated from example definition: 2025-06-01/Profiles_Delete.json
 func ExampleProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleProfilesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -198,7 +198,7 @@ func ExampleProfilesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_GenerateSsoUri.json
+// Generated from example definition: 2025-06-01/Profiles_GenerateSsoUri.json
 func ExampleProfilesClient_GenerateSsoURI() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,13 +217,13 @@ func ExampleProfilesClient_GenerateSsoURI() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.ProfilesClientGenerateSsoURIResponse{
-	// 	SsoURI: &armcdn.SsoURI{
+	// 	SsoURI: armcdn.SsoURI{
 	// 		SsoURIValue: to.Ptr("https://someuri.com"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_Get.json
+// Generated from example definition: 2025-06-01/Profiles_Get.json
 func ExampleProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +242,7 @@ func ExampleProfilesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.ProfilesClientGetResponse{
-	// 	Profile: &armcdn.Profile{
+	// 	Profile: armcdn.Profile{
 	// 		Name: to.Ptr("profile1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
@@ -268,7 +268,7 @@ func ExampleProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_List.json
+// Generated from example definition: 2025-06-01/Profiles_List.json
 func ExampleProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleProfilesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_ListByResourceGroup.json
+// Generated from example definition: 2025-06-01/Profiles_ListByResourceGroup.json
 func ExampleProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,7 +422,7 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_ListResourceUsage.json
+// Generated from example definition: 2025-06-01/Profiles_ListResourceUsage.json
 func ExampleProfilesClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -459,7 +459,7 @@ func ExampleProfilesClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_ListSupportedOptimizationTypes.json
+// Generated from example definition: 2025-06-01/Profiles_ListSupportedOptimizationTypes.json
 func ExampleProfilesClient_ListSupportedOptimizationTypes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +478,7 @@ func ExampleProfilesClient_ListSupportedOptimizationTypes() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.ProfilesClientListSupportedOptimizationTypesResponse{
-	// 	SupportedOptimizationTypesListResult: &armcdn.SupportedOptimizationTypesListResult{
+	// 	SupportedOptimizationTypesListResult: armcdn.SupportedOptimizationTypesListResult{
 	// 		SupportedOptimizationTypes: []*armcdn.OptimizationType{
 	// 			to.Ptr(armcdn.OptimizationTypeGeneralWebDelivery),
 	// 			to.Ptr(armcdn.OptimizationTypeDynamicSiteAcceleration),
@@ -487,7 +487,7 @@ func ExampleProfilesClient_ListSupportedOptimizationTypes() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_Migrate.json
+// Generated from example definition: 2025-06-01/Profiles_Migrate.json
 func ExampleProfilesClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,13 +512,13 @@ func ExampleProfilesClient_BeginMigrate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.ProfilesClientMigrateResponse{
-	// 	MigrateResult: &armcdn.MigrateResult{
+	// 	MigrateResult: armcdn.MigrateResult{
 	// 		Type: to.Ptr("Microsoft.Cdn/migrate"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/operationresults/operationid/profileresults/profile1/migrateresults/profile1"),
 	// 		Properties: &armcdn.MigrateResultProperties{
@@ -530,7 +530,7 @@ func ExampleProfilesClient_BeginMigrate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_MigrationAbort.json
+// Generated from example definition: 2025-06-01/Profiles_MigrationAbort.json
 func ExampleProfilesClient_BeginMigrationAbort() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -547,11 +547,11 @@ func ExampleProfilesClient_BeginMigrationAbort() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_MigrationCommit.json
+// Generated from example definition: 2025-06-01/Profiles_MigrationCommit.json
 func ExampleProfilesClient_BeginMigrationCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -568,7 +568,7 @@ func ExampleProfilesClient_BeginMigrationCommit() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -577,7 +577,7 @@ func ExampleProfilesClient_BeginMigrationCommit() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Profiles_Update.json
+// Generated from example definition: 2025-06-01/Profiles_Update.json
 func ExampleProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -598,13 +598,13 @@ func ExampleProfilesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.ProfilesClientUpdateResponse{
-	// 	Profile: &armcdn.Profile{
+	// 	Profile: armcdn.Profile{
 	// 		Name: to.Ptr("profile1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),

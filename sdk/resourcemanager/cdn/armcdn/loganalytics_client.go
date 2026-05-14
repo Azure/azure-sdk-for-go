@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -18,8 +19,12 @@ import (
 	"time"
 )
 
+const defaultLogAnalyticsClientVersion string = "2025-06-01"
+
 // LogAnalyticsClient contains the methods for the LogAnalytics group.
 // Don't use this type directly, use NewLogAnalyticsClient() instead.
+//
+// Generated from API version 2025-06-01
 type LogAnalyticsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +48,6 @@ func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredent
 
 // GetLogAnalyticsLocations - Get all available location names for AFD log analytics report.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -92,8 +95,8 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +112,6 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleResponse(resp *h
 
 // GetLogAnalyticsMetrics - Get log report for AFD profile
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -158,7 +159,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
 	if options != nil && options.Continents != nil {
 		for _, qv := range options.Continents {
 			reqQP.Add("continents", qv)
@@ -172,8 +173,8 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 	for _, qv := range customDomains {
 		reqQP.Add("customDomains", qv)
 	}
-	reqQP.Set("dateTimeBegin", dateTimeBegin.Format(time.RFC3339Nano))
-	reqQP.Set("dateTimeEnd", dateTimeEnd.Format(time.RFC3339Nano))
+	reqQP.Set("dateTimeBegin", datetime.RFC3339(dateTimeBegin).String())
+	reqQP.Set("dateTimeEnd", datetime.RFC3339(dateTimeEnd).String())
 	reqQP.Set("granularity", string(granularity))
 	if options != nil && options.GroupBy != nil {
 		for _, qv := range options.GroupBy {
@@ -186,7 +187,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 	for _, qv := range protocols {
 		reqQP.Add("protocols", qv)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -202,8 +203,6 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleResponse(resp *htt
 
 // GetLogAnalyticsRankings - Get log analytics ranking report for AFD profile
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -251,14 +250,14 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
+	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
 	if options != nil && options.CustomDomains != nil {
 		for _, qv := range options.CustomDomains {
 			reqQP.Add("customDomains", qv)
 		}
 	}
-	reqQP.Set("dateTimeBegin", dateTimeBegin.Format(time.RFC3339Nano))
-	reqQP.Set("dateTimeEnd", dateTimeEnd.Format(time.RFC3339Nano))
+	reqQP.Set("dateTimeBegin", datetime.RFC3339(dateTimeBegin).String())
+	reqQP.Set("dateTimeEnd", datetime.RFC3339(dateTimeEnd).String())
 	reqQP.Set("maxRanking", strconv.FormatInt(int64(maxRanking), 10))
 	for _, qv := range metrics {
 		reqQP.Add("metrics", string(qv))
@@ -266,7 +265,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 	for _, qv := range rankings {
 		reqQP.Add("rankings", string(qv))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -282,8 +281,6 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleResponse(resp *ht
 
 // GetLogAnalyticsResources - Get all endpoints and custom domains available for AFD log report
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -331,8 +328,8 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -348,8 +345,6 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleResponse(resp *h
 
 // GetWafLogAnalyticsMetrics - Get Waf related log analytics report for AFD profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -402,9 +397,9 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 			reqQP.Add("actions", string(qv))
 		}
 	}
-	reqQP.Set("api-version", "2025-09-01-preview")
-	reqQP.Set("dateTimeBegin", dateTimeBegin.Format(time.RFC3339Nano))
-	reqQP.Set("dateTimeEnd", dateTimeEnd.Format(time.RFC3339Nano))
+	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("dateTimeBegin", datetime.RFC3339(dateTimeBegin).String())
+	reqQP.Set("dateTimeEnd", datetime.RFC3339(dateTimeEnd).String())
 	reqQP.Set("granularity", string(granularity))
 	if options != nil && options.GroupBy != nil {
 		for _, qv := range options.GroupBy {
@@ -419,7 +414,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 			reqQP.Add("ruleTypes", string(qv))
 		}
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -435,8 +430,6 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleResponse(resp *
 
 // GetWafLogAnalyticsRankings - Get WAF log analytics charts for AFD profile
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -489,9 +482,9 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 			reqQP.Add("actions", string(qv))
 		}
 	}
-	reqQP.Set("api-version", "2025-09-01-preview")
-	reqQP.Set("dateTimeBegin", dateTimeBegin.Format(time.RFC3339Nano))
-	reqQP.Set("dateTimeEnd", dateTimeEnd.Format(time.RFC3339Nano))
+	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("dateTimeBegin", datetime.RFC3339(dateTimeBegin).String())
+	reqQP.Set("dateTimeEnd", datetime.RFC3339(dateTimeEnd).String())
 	reqQP.Set("maxRanking", strconv.FormatInt(int64(maxRanking), 10))
 	for _, qv := range metrics {
 		reqQP.Add("metrics", string(qv))
@@ -504,7 +497,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 			reqQP.Add("ruleTypes", string(qv))
 		}
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

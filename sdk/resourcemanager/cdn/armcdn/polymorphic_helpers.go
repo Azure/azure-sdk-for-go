@@ -6,33 +6,6 @@ package armcdn
 
 import "encoding/json"
 
-func unmarshalAFDDomainMtlsParametersClassification(rawMsg json.RawMessage) (AFDDomainMtlsParametersClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b AFDDomainMtlsParametersClassification
-	switch m["scenario"] {
-	case string(MtlsScenarioTypeClientCertificateRequiredAndValidated):
-		b = &ClientCertificateRequiredAndValidatedAdvancedSettings{}
-	case string(MtlsScenarioTypeClientCertificateRequiredAndOriginValidates):
-		b = &ClientCertificateRequiredAndOriginValidatesAdvancedSettings{}
-	case string(MtlsScenarioTypeClientCertificateValidatedIfPresented):
-		b = &ClientCertificateValidatedIfPresentedAdvancedSettings{}
-	case string(MtlsScenarioTypeCompleteMtlsPassthroughToOrigin):
-		b = &CompleteMtlsPassthroughToOriginAdvancedSettings{}
-	default:
-		b = &AFDDomainMtlsParameters{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
 func unmarshalCustomDomainHTTPSParametersClassification(rawMsg json.RawMessage) (CustomDomainHTTPSParametersClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -43,10 +16,10 @@ func unmarshalCustomDomainHTTPSParametersClassification(rawMsg json.RawMessage) 
 	}
 	var b CustomDomainHTTPSParametersClassification
 	switch m["certificateSource"] {
-	case string(CertificateSourceCdn):
-		b = &ManagedHTTPSParameters{}
 	case string(CertificateSourceAzureKeyVault):
 		b = &UserManagedHTTPSParameters{}
+	case string(CertificateSourceCdn):
+		b = &ManagedHTTPSParameters{}
 	default:
 		b = &CustomDomainHTTPSParameters{}
 	}
@@ -66,28 +39,24 @@ func unmarshalDeliveryRuleActionClassification(rawMsg json.RawMessage) (Delivery
 	}
 	var b DeliveryRuleActionClassification
 	switch m["name"] {
-	case string(DeliveryRuleActionNameAfdURLSigning):
-		b = &AfdURLSigningAction{}
-	case string(DeliveryRuleActionNameURLRedirect):
-		b = &URLRedirectAction{}
-	case string(DeliveryRuleActionNameURLSigning):
-		b = &URLSigningAction{}
-	case string(DeliveryRuleActionNameOriginGroupOverride):
-		b = &OriginGroupOverrideAction{}
-	case string(DeliveryRuleActionNameEdgeAction):
-		b = &EdgeAction{}
-	case string(DeliveryRuleActionNameURLRewrite):
-		b = &URLRewriteAction{}
-	case string(DeliveryRuleActionNameModifyRequestHeader):
-		b = &DeliveryRuleRequestHeaderAction{}
-	case string(DeliveryRuleActionNameModifyResponseHeader):
-		b = &DeliveryRuleResponseHeaderAction{}
 	case string(DeliveryRuleActionNameCacheExpiration):
 		b = &DeliveryRuleCacheExpirationAction{}
 	case string(DeliveryRuleActionNameCacheKeyQueryString):
 		b = &DeliveryRuleCacheKeyQueryStringAction{}
+	case string(DeliveryRuleActionNameModifyRequestHeader):
+		b = &DeliveryRuleRequestHeaderAction{}
+	case string(DeliveryRuleActionNameModifyResponseHeader):
+		b = &DeliveryRuleResponseHeaderAction{}
+	case string(DeliveryRuleActionNameOriginGroupOverride):
+		b = &OriginGroupOverrideAction{}
 	case string(DeliveryRuleActionNameRouteConfigurationOverride):
 		b = &DeliveryRuleRouteConfigurationOverrideAction{}
+	case string(DeliveryRuleActionNameURLRedirect):
+		b = &URLRedirectAction{}
+	case string(DeliveryRuleActionNameURLRewrite):
+		b = &URLRewriteAction{}
+	case string(DeliveryRuleActionNameURLSigning):
+		b = &URLSigningAction{}
 	default:
 		b = &DeliveryRuleAction{}
 	}
@@ -126,44 +95,44 @@ func unmarshalDeliveryRuleConditionClassification(rawMsg json.RawMessage) (Deliv
 	}
 	var b DeliveryRuleConditionClassification
 	switch m["name"] {
-	case string(MatchVariableRemoteAddress):
-		b = &DeliveryRuleRemoteAddressCondition{}
-	case string(MatchVariableRequestMethod):
-		b = &DeliveryRuleRequestMethodCondition{}
-	case string(MatchVariableQueryString):
-		b = &DeliveryRuleQueryStringCondition{}
+	case string(MatchVariableClientPort):
+		b = &DeliveryRuleClientPortCondition{}
+	case string(MatchVariableCookies):
+		b = &DeliveryRuleCookiesCondition{}
+	case string(MatchVariableHTTPVersion):
+		b = &DeliveryRuleHTTPVersionCondition{}
+	case string(MatchVariableHostName):
+		b = &DeliveryRuleHostNameCondition{}
+	case string(MatchVariableIsDevice):
+		b = &DeliveryRuleIsDeviceCondition{}
 	case string(MatchVariablePostArgs):
 		b = &DeliveryRulePostArgsCondition{}
-	case string(MatchVariableRequestURI):
-		b = &DeliveryRuleRequestURICondition{}
-	case string(MatchVariableRequestHeader):
-		b = &DeliveryRuleRequestHeaderCondition{}
+	case string(MatchVariableQueryString):
+		b = &DeliveryRuleQueryStringCondition{}
+	case string(MatchVariableRemoteAddress):
+		b = &DeliveryRuleRemoteAddressCondition{}
 	case string(MatchVariableRequestBody):
 		b = &DeliveryRuleRequestBodyCondition{}
+	case string(MatchVariableRequestHeader):
+		b = &DeliveryRuleRequestHeaderCondition{}
+	case string(MatchVariableRequestMethod):
+		b = &DeliveryRuleRequestMethodCondition{}
 	case string(MatchVariableRequestScheme):
 		b = &DeliveryRuleRequestSchemeCondition{}
-	case string(MatchVariableURLPath):
-		b = &DeliveryRuleURLPathCondition{}
+	case string(MatchVariableRequestURI):
+		b = &DeliveryRuleRequestURICondition{}
+	case string(MatchVariableSSLProtocol):
+		b = &DeliveryRuleSSLProtocolCondition{}
+	case string(MatchVariableServerPort):
+		b = &DeliveryRuleServerPortCondition{}
+	case string(MatchVariableSocketAddr):
+		b = &DeliveryRuleSocketAddrCondition{}
 	case string(MatchVariableURLFileExtension):
 		b = &DeliveryRuleURLFileExtensionCondition{}
 	case string(MatchVariableURLFileName):
 		b = &DeliveryRuleURLFileNameCondition{}
-	case string(MatchVariableHTTPVersion):
-		b = &DeliveryRuleHTTPVersionCondition{}
-	case string(MatchVariableCookies):
-		b = &DeliveryRuleCookiesCondition{}
-	case string(MatchVariableIsDevice):
-		b = &DeliveryRuleIsDeviceCondition{}
-	case string(MatchVariableSocketAddr):
-		b = &DeliveryRuleSocketAddrCondition{}
-	case string(MatchVariableClientPort):
-		b = &DeliveryRuleClientPortCondition{}
-	case string(MatchVariableServerPort):
-		b = &DeliveryRuleServerPortCondition{}
-	case string(MatchVariableHostName):
-		b = &DeliveryRuleHostNameCondition{}
-	case string(MatchVariableSSLProtocol):
-		b = &DeliveryRuleSSLProtocolCondition{}
+	case string(MatchVariableURLPath):
+		b = &DeliveryRuleURLPathCondition{}
 	default:
 		b = &DeliveryRuleCondition{}
 	}
@@ -192,56 +161,6 @@ func unmarshalDeliveryRuleConditionClassificationArray(rawMsg json.RawMessage) (
 	return fArray, nil
 }
 
-func unmarshalDeploymentVersionChangeClassification(rawMsg json.RawMessage) (DeploymentVersionChangeClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b DeploymentVersionChangeClassification
-	switch m["resourceType"] {
-	case string(PreviewSupportedResourceTypeMicrosoftCdnProfilesAfdEndpointsRoute):
-		b = &DeploymentVersionRouteChange{}
-	case string(PreviewSupportedResourceTypeMicrosoftCdnProfilesOriginGroups):
-		b = &DeploymentVersionAFDOriginGroupChange{}
-	case string(PreviewSupportedResourceTypeMicrosoftCdnProfilesOriginGroupsOrigins):
-		b = &DeploymentVersionAFDOriginChange{}
-	case string(PreviewSupportedResourceTypeMicrosoftCdnProfilesRuleSets):
-		b = &DeploymentVersionRuleSetChange{}
-	case string(PreviewSupportedResourceTypeMicrosoftCdnProfilesRuleSetsRules):
-		b = &DeploymentVersionRuleChange{}
-	case string(PreviewSupportedResourceTypeMicrosoftCdnProfilesSecurityPolicies):
-		b = &DeploymentVersionSecurityPolicyChange{}
-	default:
-		b = &DeploymentVersionChange{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
-func unmarshalDeploymentVersionChangeClassificationArray(rawMsg json.RawMessage) ([]DeploymentVersionChangeClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]DeploymentVersionChangeClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalDeploymentVersionChangeClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
 func unmarshalSecretParametersClassification(rawMsg json.RawMessage) (SecretParametersClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -252,16 +171,14 @@ func unmarshalSecretParametersClassification(rawMsg json.RawMessage) (SecretPara
 	}
 	var b SecretParametersClassification
 	switch m["type"] {
-	case string(SecretTypeURLSigningKey):
-		b = &URLSigningKeyParameters{}
-	case string(SecretTypeManagedCertificate):
-		b = &ManagedCertificateParameters{}
-	case string(SecretTypeCustomerCertificate):
-		b = &CustomerCertificateParameters{}
 	case string(SecretTypeAzureFirstPartyManagedCertificate):
 		b = &AzureFirstPartyManagedCertificateParameters{}
-	case string(SecretTypeMtlsCertificateChain):
-		b = &AfdSecretMtlsCertificateChain{}
+	case string(SecretTypeCustomerCertificate):
+		b = &CustomerCertificateParameters{}
+	case string(SecretTypeManagedCertificate):
+		b = &ManagedCertificateParameters{}
+	case string(SecretTypeURLSigningKey):
+		b = &URLSigningKeyParameters{}
 	default:
 		b = &SecretParameters{}
 	}
@@ -281,8 +198,6 @@ func unmarshalSecurityPolicyPropertiesParametersClassification(rawMsg json.RawMe
 	}
 	var b SecurityPolicyPropertiesParametersClassification
 	switch m["type"] {
-	case string(SecurityPolicyTypeWebApplicationFirewallEmbedded):
-		b = &SecurityPolicyWebApplicationFirewallParametersWithEmbeddedWafPolicy{}
 	case string(SecurityPolicyTypeWebApplicationFirewall):
 		b = &SecurityPolicyWebApplicationFirewallParameters{}
 	default:

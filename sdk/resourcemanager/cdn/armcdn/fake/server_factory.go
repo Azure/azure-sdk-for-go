@@ -33,20 +33,11 @@ type ServerFactory struct {
 	// CustomDomainsServer contains the fakes for client CustomDomainsClient
 	CustomDomainsServer CustomDomainsServer
 
-	// DeploymentVersionsServer contains the fakes for client DeploymentVersionsClient
-	DeploymentVersionsServer DeploymentVersionsServer
-
 	// EdgeNodesServer contains the fakes for client EdgeNodesClient
 	EdgeNodesServer EdgeNodesServer
 
 	// EndpointsServer contains the fakes for client EndpointsClient
 	EndpointsServer EndpointsServer
-
-	// KeyGroupsServer contains the fakes for client KeyGroupsClient
-	KeyGroupsServer KeyGroupsServer
-
-	// KnowledgeSourcesServer contains the fakes for client KnowledgeSourcesClient
-	KnowledgeSourcesServer KnowledgeSourcesServer
 
 	// LogAnalyticsServer contains the fakes for client LogAnalyticsClient
 	LogAnalyticsServer LogAnalyticsServer
@@ -69,9 +60,6 @@ type ServerFactory struct {
 	// PoliciesServer contains the fakes for client PoliciesClient
 	PoliciesServer PoliciesServer
 
-	// ProfileAgentsServer contains the fakes for client ProfileAgentsClient
-	ProfileAgentsServer ProfileAgentsServer
-
 	// ProfilesServer contains the fakes for client ProfilesClient
 	ProfilesServer ProfilesServer
 
@@ -92,9 +80,6 @@ type ServerFactory struct {
 
 	// SecurityPoliciesServer contains the fakes for client SecurityPoliciesClient
 	SecurityPoliciesServer SecurityPoliciesServer
-
-	// WebAgentsServer contains the fakes for client WebAgentsClient
-	WebAgentsServer WebAgentsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -109,35 +94,30 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armcdn.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                        *ServerFactory
-	trMu                       sync.Mutex
-	trAFDCustomDomainsServer   *AFDCustomDomainsServerTransport
-	trAFDEndpointsServer       *AFDEndpointsServerTransport
-	trAFDOriginGroupsServer    *AFDOriginGroupsServerTransport
-	trAFDOriginsServer         *AFDOriginsServerTransport
-	trAFDProfilesServer        *AFDProfilesServerTransport
-	trCustomDomainsServer      *CustomDomainsServerTransport
-	trDeploymentVersionsServer *DeploymentVersionsServerTransport
-	trEdgeNodesServer          *EdgeNodesServerTransport
-	trEndpointsServer          *EndpointsServerTransport
-	trKeyGroupsServer          *KeyGroupsServerTransport
-	trKnowledgeSourcesServer   *KnowledgeSourcesServerTransport
-	trLogAnalyticsServer       *LogAnalyticsServerTransport
-	trManagedRuleSetsServer    *ManagedRuleSetsServerTransport
-	trManagementServer         *ManagementServerTransport
-	trOperationsServer         *OperationsServerTransport
-	trOriginGroupsServer       *OriginGroupsServerTransport
-	trOriginsServer            *OriginsServerTransport
-	trPoliciesServer           *PoliciesServerTransport
-	trProfileAgentsServer      *ProfileAgentsServerTransport
-	trProfilesServer           *ProfilesServerTransport
-	trResourceUsageServer      *ResourceUsageServerTransport
-	trRoutesServer             *RoutesServerTransport
-	trRuleSetsServer           *RuleSetsServerTransport
-	trRulesServer              *RulesServerTransport
-	trSecretsServer            *SecretsServerTransport
-	trSecurityPoliciesServer   *SecurityPoliciesServerTransport
-	trWebAgentsServer          *WebAgentsServerTransport
+	srv                      *ServerFactory
+	trMu                     sync.Mutex
+	trAFDCustomDomainsServer *AFDCustomDomainsServerTransport
+	trAFDEndpointsServer     *AFDEndpointsServerTransport
+	trAFDOriginGroupsServer  *AFDOriginGroupsServerTransport
+	trAFDOriginsServer       *AFDOriginsServerTransport
+	trAFDProfilesServer      *AFDProfilesServerTransport
+	trCustomDomainsServer    *CustomDomainsServerTransport
+	trEdgeNodesServer        *EdgeNodesServerTransport
+	trEndpointsServer        *EndpointsServerTransport
+	trLogAnalyticsServer     *LogAnalyticsServerTransport
+	trManagedRuleSetsServer  *ManagedRuleSetsServerTransport
+	trManagementServer       *ManagementServerTransport
+	trOperationsServer       *OperationsServerTransport
+	trOriginGroupsServer     *OriginGroupsServerTransport
+	trOriginsServer          *OriginsServerTransport
+	trPoliciesServer         *PoliciesServerTransport
+	trProfilesServer         *ProfilesServerTransport
+	trResourceUsageServer    *ResourceUsageServerTransport
+	trRoutesServer           *RoutesServerTransport
+	trRuleSetsServer         *RuleSetsServerTransport
+	trRulesServer            *RulesServerTransport
+	trSecretsServer          *SecretsServerTransport
+	trSecurityPoliciesServer *SecurityPoliciesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -177,25 +157,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCustomDomainsServerTransport(&s.srv.CustomDomainsServer)
 		})
 		resp, err = s.trCustomDomainsServer.Do(req)
-	case "DeploymentVersionsClient":
-		initServer(&s.trMu, &s.trDeploymentVersionsServer, func() *DeploymentVersionsServerTransport {
-			return NewDeploymentVersionsServerTransport(&s.srv.DeploymentVersionsServer)
-		})
-		resp, err = s.trDeploymentVersionsServer.Do(req)
 	case "EdgeNodesClient":
 		initServer(&s.trMu, &s.trEdgeNodesServer, func() *EdgeNodesServerTransport { return NewEdgeNodesServerTransport(&s.srv.EdgeNodesServer) })
 		resp, err = s.trEdgeNodesServer.Do(req)
 	case "EndpointsClient":
 		initServer(&s.trMu, &s.trEndpointsServer, func() *EndpointsServerTransport { return NewEndpointsServerTransport(&s.srv.EndpointsServer) })
 		resp, err = s.trEndpointsServer.Do(req)
-	case "KeyGroupsClient":
-		initServer(&s.trMu, &s.trKeyGroupsServer, func() *KeyGroupsServerTransport { return NewKeyGroupsServerTransport(&s.srv.KeyGroupsServer) })
-		resp, err = s.trKeyGroupsServer.Do(req)
-	case "KnowledgeSourcesClient":
-		initServer(&s.trMu, &s.trKnowledgeSourcesServer, func() *KnowledgeSourcesServerTransport {
-			return NewKnowledgeSourcesServerTransport(&s.srv.KnowledgeSourcesServer)
-		})
-		resp, err = s.trKnowledgeSourcesServer.Do(req)
 	case "LogAnalyticsClient":
 		initServer(&s.trMu, &s.trLogAnalyticsServer, func() *LogAnalyticsServerTransport { return NewLogAnalyticsServerTransport(&s.srv.LogAnalyticsServer) })
 		resp, err = s.trLogAnalyticsServer.Do(req)
@@ -219,11 +186,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "PoliciesClient":
 		initServer(&s.trMu, &s.trPoliciesServer, func() *PoliciesServerTransport { return NewPoliciesServerTransport(&s.srv.PoliciesServer) })
 		resp, err = s.trPoliciesServer.Do(req)
-	case "ProfileAgentsClient":
-		initServer(&s.trMu, &s.trProfileAgentsServer, func() *ProfileAgentsServerTransport {
-			return NewProfileAgentsServerTransport(&s.srv.ProfileAgentsServer)
-		})
-		resp, err = s.trProfileAgentsServer.Do(req)
 	case "ProfilesClient":
 		initServer(&s.trMu, &s.trProfilesServer, func() *ProfilesServerTransport { return NewProfilesServerTransport(&s.srv.ProfilesServer) })
 		resp, err = s.trProfilesServer.Do(req)
@@ -249,9 +211,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSecurityPoliciesServerTransport(&s.srv.SecurityPoliciesServer)
 		})
 		resp, err = s.trSecurityPoliciesServer.Do(req)
-	case "WebAgentsClient":
-		initServer(&s.trMu, &s.trWebAgentsServer, func() *WebAgentsServerTransport { return NewWebAgentsServerTransport(&s.srv.WebAgentsServer) })
-		resp, err = s.trWebAgentsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

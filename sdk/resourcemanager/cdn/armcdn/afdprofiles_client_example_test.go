@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/AFDProfiles_CheckEndpointNameAvailability.json
+// Generated from example definition: 2025-06-01/AFDProfiles_CheckEndpointNameAvailability.json
 func ExampleAFDProfilesClient_CheckEndpointNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleAFDProfilesClient_CheckEndpointNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDProfilesClientCheckEndpointNameAvailabilityResponse{
-	// 	CheckEndpointNameAvailabilityOutput: &armcdn.CheckEndpointNameAvailabilityOutput{
+	// 	CheckEndpointNameAvailabilityOutput: armcdn.CheckEndpointNameAvailabilityOutput{
 	// 		AvailableHostname: to.Ptr(""),
 	// 		Message: to.Ptr("Name not available"),
 	// 		NameAvailable: to.Ptr(false),
@@ -44,7 +44,7 @@ func ExampleAFDProfilesClient_CheckEndpointNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDProfiles_CheckHostNameAvailability.json
+// Generated from example definition: 2025-06-01/AFDProfiles_CheckHostNameAvailability.json
 func ExampleAFDProfilesClient_CheckHostNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleAFDProfilesClient_CheckHostNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDProfilesClientCheckHostNameAvailabilityResponse{
-	// 	CheckNameAvailabilityOutput: &armcdn.CheckNameAvailabilityOutput{
+	// 	CheckNameAvailabilityOutput: armcdn.CheckNameAvailabilityOutput{
 	// 		Message: to.Ptr("The hostname 'www.someDomain.net' is already owned by another profile."),
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr("Conflict"),
@@ -73,7 +73,7 @@ func ExampleAFDProfilesClient_CheckHostNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDProfiles_ListResourceUsage.json
+// Generated from example definition: 2025-06-01/AFDProfiles_ListResourceUsage.json
 func ExampleAFDProfilesClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleAFDProfilesClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDProfiles_Upgrade.json
+// Generated from example definition: 2025-06-01/AFDProfiles_Upgrade.json
 func ExampleAFDProfilesClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,13 +140,13 @@ func ExampleAFDProfilesClient_BeginUpgrade() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDProfilesClientUpgradeResponse{
-	// 	Profile: &armcdn.Profile{
+	// 	Profile: armcdn.Profile{
 	// 		Name: to.Ptr("profile1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
@@ -169,7 +169,7 @@ func ExampleAFDProfilesClient_BeginUpgrade() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDProfiles_ValidateSecret.json
+// Generated from example definition: 2025-06-01/AFDProfiles_ValidateSecret.json
 func ExampleAFDProfilesClient_ValidateSecret() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleAFDProfilesClient_ValidateSecret() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDProfilesClientValidateSecretResponse{
-	// 	ValidateSecretOutput: &armcdn.ValidateSecretOutput{
+	// 	ValidateSecretOutput: armcdn.ValidateSecretOutput{
 	// 		Status: to.Ptr(armcdn.StatusValid),
 	// 	},
 	// }

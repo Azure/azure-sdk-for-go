@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAFDEndpointsClientVersion string = "2025-06-01"
+
 // AFDEndpointsClient contains the methods for the AFDEndpoints group.
 // Don't use this type directly, use NewAFDEndpointsClient() instead.
+//
+// Generated from API version 2025-06-01
 type AFDEndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +46,6 @@ func NewAFDEndpointsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreate - Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -72,8 +74,6 @@ func (client *AFDEndpointsClient) BeginCreate(ctx context.Context, resourceGroup
 // Create - Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *AFDEndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, options *AFDEndpointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDEndpointsClient.BeginCreate"
@@ -119,8 +119,8 @@ func (client *AFDEndpointsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, endpoint); err != nil {
@@ -132,8 +132,6 @@ func (client *AFDEndpointsClient) createCreateRequest(ctx context.Context, resou
 // BeginDelete - Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -160,8 +158,6 @@ func (client *AFDEndpointsClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *AFDEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDEndpointsClient.BeginDelete"
@@ -207,16 +203,14 @@ func (client *AFDEndpointsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -268,8 +262,8 @@ func (client *AFDEndpointsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -284,8 +278,6 @@ func (client *AFDEndpointsClient) getHandleResponse(resp *http.Response) (AFDEnd
 }
 
 // NewListByProfilePager - Lists existing AzureFrontDoor endpoints.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -334,8 +326,8 @@ func (client *AFDEndpointsClient) listByProfileCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -350,8 +342,6 @@ func (client *AFDEndpointsClient) listByProfileHandleResponse(resp *http.Respons
 }
 
 // NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -405,8 +395,8 @@ func (client *AFDEndpointsClient) listResourceUsageCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -422,8 +412,6 @@ func (client *AFDEndpointsClient) listResourceUsageHandleResponse(resp *http.Res
 
 // BeginPurgeContent - Removes a content from AzureFrontDoor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -453,8 +441,6 @@ func (client *AFDEndpointsClient) BeginPurgeContent(ctx context.Context, resourc
 
 // PurgeContent - Removes a content from AzureFrontDoor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *AFDEndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDEndpointsClient.BeginPurgeContent"
@@ -500,8 +486,8 @@ func (client *AFDEndpointsClient) purgeContentCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, contents); err != nil {
 		return nil, err
@@ -514,8 +500,6 @@ func (client *AFDEndpointsClient) purgeContentCreateRequest(ctx context.Context,
 // operation. To update origin groups, use the Update Origin group operation. To update domains, use the Update Custom Domain
 // operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -545,8 +529,6 @@ func (client *AFDEndpointsClient) BeginUpdate(ctx context.Context, resourceGroup
 // operation. To update origin groups, use the Update Origin group operation. To update domains, use the Update Custom Domain
 // operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *AFDEndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDEndpointsClient.BeginUpdate"
@@ -592,8 +574,8 @@ func (client *AFDEndpointsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, endpointUpdateProperties); err != nil {
@@ -605,8 +587,6 @@ func (client *AFDEndpointsClient) updateCreateRequest(ctx context.Context, resou
 // ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in
 // DNS.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -660,8 +640,8 @@ func (client *AFDEndpointsClient) validateCustomDomainCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customDomainProperties); err != nil {

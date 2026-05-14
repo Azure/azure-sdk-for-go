@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultOriginGroupsClientVersion string = "2025-06-01"
+
 // OriginGroupsClient contains the methods for the OriginGroups group.
 // Don't use this type directly, use NewOriginGroupsClient() instead.
+//
+// Generated from API version 2025-06-01
 type OriginGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewOriginGroupsClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreate - Creates a new origin group within the specified endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -70,8 +72,6 @@ func (client *OriginGroupsClient) BeginCreate(ctx context.Context, resourceGroup
 
 // Create - Creates a new origin group within the specified endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *OriginGroupsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroup OriginGroup, options *OriginGroupsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OriginGroupsClient.BeginCreate"
@@ -121,8 +121,8 @@ func (client *OriginGroupsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOriginGroupsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, originGroup); err != nil {
@@ -133,8 +133,6 @@ func (client *OriginGroupsClient) createCreateRequest(ctx context.Context, resou
 
 // BeginDelete - Deletes an existing origin group within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -161,8 +159,6 @@ func (client *OriginGroupsClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Deletes an existing origin group within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *OriginGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, options *OriginGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OriginGroupsClient.BeginDelete"
@@ -212,15 +208,13 @@ func (client *OriginGroupsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOriginGroupsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing origin group within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -277,8 +271,8 @@ func (client *OriginGroupsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOriginGroupsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -293,8 +287,6 @@ func (client *OriginGroupsClient) getHandleResponse(resp *http.Response) (Origin
 }
 
 // NewListByEndpointPager - Lists all of the existing origin groups within an endpoint.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -348,8 +340,8 @@ func (client *OriginGroupsClient) listByEndpointCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOriginGroupsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -365,8 +357,6 @@ func (client *OriginGroupsClient) listByEndpointHandleResponse(resp *http.Respon
 
 // BeginUpdate - Updates an existing origin group within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -394,8 +384,6 @@ func (client *OriginGroupsClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Updates an existing origin group within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *OriginGroupsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originGroupName string, originGroupUpdateProperties OriginGroupUpdateParameters, options *OriginGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OriginGroupsClient.BeginUpdate"
@@ -445,8 +433,8 @@ func (client *OriginGroupsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOriginGroupsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, originGroupUpdateProperties); err != nil {

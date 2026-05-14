@@ -222,34 +222,6 @@ type CustomDomainsClientListByEndpointOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentVersionsClientBeginApproveOptions contains the optional parameters for the DeploymentVersionsClient.BeginApprove
-// method.
-type DeploymentVersionsClientBeginApproveOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DeploymentVersionsClientCompareOptions contains the optional parameters for the DeploymentVersionsClient.Compare method.
-type DeploymentVersionsClientCompareOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentVersionsClientGetOptions contains the optional parameters for the DeploymentVersionsClient.Get method.
-type DeploymentVersionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentVersionsClientListByProfileOptions contains the optional parameters for the DeploymentVersionsClient.NewListByProfilePager
-// method.
-type DeploymentVersionsClientListByProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentVersionsClientUpdateOptions contains the optional parameters for the DeploymentVersionsClient.Update method.
-type DeploymentVersionsClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // EdgeNodesClientListOptions contains the optional parameters for the EdgeNodesClient.NewListPager method.
 type EdgeNodesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -316,70 +288,6 @@ type EndpointsClientListResourceUsageOptions struct {
 // EndpointsClientValidateCustomDomainOptions contains the optional parameters for the EndpointsClient.ValidateCustomDomain
 // method.
 type EndpointsClientValidateCustomDomainOptions struct {
-	// placeholder for future optional parameters
-}
-
-// KeyGroupsClientBeginCreateUpdateOptions contains the optional parameters for the KeyGroupsClient.BeginCreateUpdate method.
-type KeyGroupsClientBeginCreateUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// KeyGroupsClientBeginDeleteOptions contains the optional parameters for the KeyGroupsClient.BeginDelete method.
-type KeyGroupsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// KeyGroupsClientBeginUpdateOptions contains the optional parameters for the KeyGroupsClient.BeginUpdate method.
-type KeyGroupsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// KeyGroupsClientGetOptions contains the optional parameters for the KeyGroupsClient.Get method.
-type KeyGroupsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// KeyGroupsClientListByProfileOptions contains the optional parameters for the KeyGroupsClient.NewListByProfilePager method.
-type KeyGroupsClientListByProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// KnowledgeSourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the KnowledgeSourcesClient.BeginCreateOrUpdate
-// method.
-type KnowledgeSourcesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// KnowledgeSourcesClientBeginDeleteOptions contains the optional parameters for the KnowledgeSourcesClient.BeginDelete method.
-type KnowledgeSourcesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// KnowledgeSourcesClientBeginPurgeOptions contains the optional parameters for the KnowledgeSourcesClient.BeginPurge method.
-type KnowledgeSourcesClientBeginPurgeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// KnowledgeSourcesClientBeginUpdateOptions contains the optional parameters for the KnowledgeSourcesClient.BeginUpdate method.
-type KnowledgeSourcesClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// KnowledgeSourcesClientGetOptions contains the optional parameters for the KnowledgeSourcesClient.Get method.
-type KnowledgeSourcesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// KnowledgeSourcesClientListByWebAgentOptions contains the optional parameters for the KnowledgeSourcesClient.NewListByWebAgentPager
-// method.
-type KnowledgeSourcesClientListByWebAgentOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -538,36 +446,6 @@ type PoliciesClientGetOptions struct {
 
 // PoliciesClientListOptions contains the optional parameters for the PoliciesClient.NewListPager method.
 type PoliciesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ProfileAgentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProfileAgentsClient.BeginCreateOrUpdate
-// method.
-type ProfileAgentsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ProfileAgentsClientBeginDeleteOptions contains the optional parameters for the ProfileAgentsClient.BeginDelete method.
-type ProfileAgentsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ProfileAgentsClientBeginUpdateOptions contains the optional parameters for the ProfileAgentsClient.BeginUpdate method.
-type ProfileAgentsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ProfileAgentsClientGetOptions contains the optional parameters for the ProfileAgentsClient.Get method.
-type ProfileAgentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ProfileAgentsClientListByProfileOptions contains the optional parameters for the ProfileAgentsClient.NewListByProfilePager
-// method.
-type ProfileAgentsClientListByProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -797,41 +675,5 @@ type SecurityPoliciesClientGetOptions struct {
 // SecurityPoliciesClientListByProfileOptions contains the optional parameters for the SecurityPoliciesClient.NewListByProfilePager
 // method.
 type SecurityPoliciesClientListByProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAgentsClientBeginCreateOrUpdateOptions contains the optional parameters for the WebAgentsClient.BeginCreateOrUpdate
-// method.
-type WebAgentsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// WebAgentsClientBeginDeleteOptions contains the optional parameters for the WebAgentsClient.BeginDelete method.
-type WebAgentsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// WebAgentsClientBeginUpdateOptions contains the optional parameters for the WebAgentsClient.BeginUpdate method.
-type WebAgentsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// WebAgentsClientGetOptions contains the optional parameters for the WebAgentsClient.Get method.
-type WebAgentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAgentsClientListByResourceGroupOptions contains the optional parameters for the WebAgentsClient.NewListByResourceGroupPager
-// method.
-type WebAgentsClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebAgentsClientListBySubscriptionOptions contains the optional parameters for the WebAgentsClient.NewListBySubscriptionPager
-// method.
-type WebAgentsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }

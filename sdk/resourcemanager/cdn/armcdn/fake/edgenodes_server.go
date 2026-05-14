@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
 	"net/http"
+	"slices"
 )
 
 // EdgeNodesServer is a fake server for instances of the armcdn.EdgeNodesClient type.
@@ -51,9 +52,7 @@ func (e *EdgeNodesServerTransport) Do(req *http.Request) (*http.Response, error)
 }
 
 func (e *EdgeNodesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -69,10 +68,7 @@ func (e *EdgeNodesServerTransport) dispatchToMethodFake(req *http.Request, metho
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -100,7 +96,7 @@ func (e *EdgeNodesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		e.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

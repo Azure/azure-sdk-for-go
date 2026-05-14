@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/Origins_Create.json
+// Generated from example definition: 2025-06-01/Origins_Create.json
 func ExampleOriginsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,13 +42,13 @@ func ExampleOriginsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.OriginsClientCreateResponse{
-	// 	Origin: &armcdn.Origin{
+	// 	Origin: armcdn.Origin{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origins"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
@@ -71,7 +71,7 @@ func ExampleOriginsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Origins_Delete.json
+// Generated from example definition: 2025-06-01/Origins_Delete.json
 func ExampleOriginsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleOriginsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -97,7 +97,7 @@ func ExampleOriginsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Origins_Get.json
+// Generated from example definition: 2025-06-01/Origins_Get.json
 func ExampleOriginsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleOriginsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.OriginsClientGetResponse{
-	// 	Origin: &armcdn.Origin{
+	// 	Origin: armcdn.Origin{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origins"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),
@@ -136,7 +136,7 @@ func ExampleOriginsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Origins_ListByEndpoint.json
+// Generated from example definition: 2025-06-01/Origins_ListByEndpoint.json
 func ExampleOriginsClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleOriginsClient_NewListByEndpointPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Origins_Update.json
+// Generated from example definition: 2025-06-01/Origins_Update.json
 func ExampleOriginsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,13 +211,13 @@ func ExampleOriginsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.OriginsClientUpdateResponse{
-	// 	Origin: &armcdn.Origin{
+	// 	Origin: armcdn.Origin{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/origins"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net"),

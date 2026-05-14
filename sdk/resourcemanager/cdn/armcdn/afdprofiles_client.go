@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAFDProfilesClientVersion string = "2025-06-01"
+
 // AFDProfilesClient contains the methods for the AFDProfiles group.
 // Don't use this type directly, use NewAFDProfilesClient() instead.
+//
+// Generated from API version 2025-06-01
 type AFDProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +46,6 @@ func NewAFDProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 // CheckEndpointNameAvailability - Check the availability of an afdx endpoint name, and return the globally unique endpoint
 // host name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -92,8 +94,8 @@ func (client *AFDProfilesClient) checkEndpointNameAvailabilityCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkEndpointNameAvailabilityInput); err != nil {
@@ -114,8 +116,6 @@ func (client *AFDProfilesClient) checkEndpointNameAvailabilityHandleResponse(res
 // CheckHostNameAvailability - Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint
 // in DNS.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -164,8 +164,8 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkHostNameAvailabilityInput); err != nil {
@@ -184,8 +184,6 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityHandleResponse(resp *h
 }
 
 // NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -234,8 +232,8 @@ func (client *AFDProfilesClient) listResourceUsageCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -251,8 +249,6 @@ func (client *AFDProfilesClient) listResourceUsageHandleResponse(resp *http.Resp
 
 // BeginUpgrade - Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -278,8 +274,6 @@ func (client *AFDProfilesClient) BeginUpgrade(ctx context.Context, resourceGroup
 
 // Upgrade - Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *AFDProfilesClient) upgrade(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters ProfileUpgradeParameters, options *AFDProfilesClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDProfilesClient.BeginUpgrade"
@@ -321,8 +315,8 @@ func (client *AFDProfilesClient) upgradeCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, profileUpgradeParameters); err != nil {
@@ -333,8 +327,6 @@ func (client *AFDProfilesClient) upgradeCreateRequest(ctx context.Context, resou
 
 // ValidateSecret - Validate a Secret in the profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -383,8 +375,8 @@ func (client *AFDProfilesClient) validateSecretCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, validateSecretInput); err != nil {

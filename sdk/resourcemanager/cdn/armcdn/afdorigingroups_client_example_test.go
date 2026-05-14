@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/AFDOriginGroups_Create.json
+// Generated from example definition: 2025-06-01/AFDOriginGroups_Create.json
 func ExampleAFDOriginGroupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,13 +51,13 @@ func ExampleAFDOriginGroupsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDOriginGroupsClientCreateResponse{
-	// 	AFDOriginGroup: &armcdn.AFDOriginGroup{
+	// 	AFDOriginGroup: armcdn.AFDOriginGroup{
 	// 		Name: to.Ptr("origingroup1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),
@@ -88,7 +88,7 @@ func ExampleAFDOriginGroupsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDOriginGroups_Delete.json
+// Generated from example definition: 2025-06-01/AFDOriginGroups_Delete.json
 func ExampleAFDOriginGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleAFDOriginGroupsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -114,7 +114,7 @@ func ExampleAFDOriginGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDOriginGroups_Get.json
+// Generated from example definition: 2025-06-01/AFDOriginGroups_Get.json
 func ExampleAFDOriginGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleAFDOriginGroupsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDOriginGroupsClientGetResponse{
-	// 	AFDOriginGroup: &armcdn.AFDOriginGroup{
+	// 	AFDOriginGroup: armcdn.AFDOriginGroup{
 	// 		Name: to.Ptr("origingroup1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),
@@ -164,7 +164,7 @@ func ExampleAFDOriginGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDOriginGroups_ListByProfile.json
+// Generated from example definition: 2025-06-01/AFDOriginGroups_ListByProfile.json
 func ExampleAFDOriginGroupsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleAFDOriginGroupsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDOriginGroups_ListResourceUsage.json
+// Generated from example definition: 2025-06-01/AFDOriginGroups_ListResourceUsage.json
 func ExampleAFDOriginGroupsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +264,7 @@ func ExampleAFDOriginGroupsClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDOriginGroups_Update.json
+// Generated from example definition: 2025-06-01/AFDOriginGroups_Update.json
 func ExampleAFDOriginGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,13 +303,13 @@ func ExampleAFDOriginGroupsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDOriginGroupsClientUpdateResponse{
-	// 	AFDOriginGroup: &armcdn.AFDOriginGroup{
+	// 	AFDOriginGroup: armcdn.AFDOriginGroup{
 	// 		Name: to.Ptr("origingroup1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1"),

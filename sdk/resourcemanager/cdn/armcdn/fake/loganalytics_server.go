@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 	"time"
 )
@@ -71,9 +72,7 @@ func (l *LogAnalyticsServerTransport) Do(req *http.Request) (*http.Response, err
 }
 
 func (l *LogAnalyticsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -99,10 +98,7 @@ func (l *LogAnalyticsServerTransport) dispatchToMethodFake(req *http.Request, me
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -136,7 +132,7 @@ func (l *LogAnalyticsServerTransport) dispatchGetLogAnalyticsLocations(req *http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ContinentsResponse, req)
@@ -165,108 +161,36 @@ func (l *LogAnalyticsServerTransport) dispatchGetLogAnalyticsMetrics(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	metricsEscaped := qp["metrics"]
-	metricsUnescaped := make([]string, len(metricsEscaped))
-	for i, v := range metricsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		metricsUnescaped[i] = u
+	metricsParam := make([]armcdn.LogMetric, len(qp["metrics"]))
+	for i := 0; i < len(qp["metrics"]); i++ {
+		metricsParam[i] = armcdn.LogMetric(qp["metrics"][i])
 	}
-	metricsParam := make([]armcdn.LogMetric, len(metricsUnescaped))
-	for i := 0; i < len(metricsUnescaped); i++ {
-		metricsParam[i] = armcdn.LogMetric(metricsUnescaped[i])
-	}
-	dateTimeBeginUnescaped, err := url.QueryUnescape(qp.Get("dateTimeBegin"))
+	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeBegin"))
 	if err != nil {
 		return nil, err
 	}
-	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, dateTimeBeginUnescaped)
+	dateTimeEndParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeEnd"))
 	if err != nil {
 		return nil, err
 	}
-	dateTimeEndUnescaped, err := url.QueryUnescape(qp.Get("dateTimeEnd"))
-	if err != nil {
-		return nil, err
-	}
-	dateTimeEndParam, err := time.Parse(time.RFC3339Nano, dateTimeEndUnescaped)
-	if err != nil {
-		return nil, err
-	}
-	granularityParam, err := parseWithCast(qp.Get("granularity"), func(v string) (armcdn.LogMetricsGranularity, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armcdn.LogMetricsGranularity(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	groupByEscaped := qp["groupBy"]
-	groupByUnescaped := make([]string, len(groupByEscaped))
-	for i, v := range groupByEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		groupByUnescaped[i] = u
-	}
-	groupByParam := make([]armcdn.LogMetricsGroupBy, len(groupByUnescaped))
-	for i := 0; i < len(groupByUnescaped); i++ {
-		groupByParam[i] = armcdn.LogMetricsGroupBy(groupByUnescaped[i])
-	}
-	continentsEscaped := qp["continents"]
-	continentsParam := make([]string, len(continentsEscaped))
-	for i, v := range continentsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		continentsParam[i] = u
-	}
-	countryOrRegionsEscaped := qp["countryOrRegions"]
-	countryOrRegionsParam := make([]string, len(countryOrRegionsEscaped))
-	for i, v := range countryOrRegionsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		countryOrRegionsParam[i] = u
-	}
-	customDomainsEscaped := qp["customDomains"]
-	customDomainsParam := make([]string, len(customDomainsEscaped))
-	for i, v := range customDomainsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		customDomainsParam[i] = u
-	}
-	protocolsEscaped := qp["protocols"]
-	protocolsParam := make([]string, len(protocolsEscaped))
-	for i, v := range protocolsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		protocolsParam[i] = u
+	groupByParam := make([]armcdn.LogMetricsGroupBy, len(qp["groupBy"]))
+	for i := 0; i < len(qp["groupBy"]); i++ {
+		groupByParam[i] = armcdn.LogMetricsGroupBy(qp["groupBy"][i])
 	}
 	var options *armcdn.LogAnalyticsClientGetLogAnalyticsMetricsOptions
-	if len(groupByParam) > 0 || len(continentsParam) > 0 || len(countryOrRegionsParam) > 0 {
+	if len(groupByParam) > 0 || len(qp["continents"]) > 0 || len(qp["countryOrRegions"]) > 0 {
 		options = &armcdn.LogAnalyticsClientGetLogAnalyticsMetricsOptions{
 			GroupBy:          groupByParam,
-			Continents:       continentsParam,
-			CountryOrRegions: countryOrRegionsParam,
+			Continents:       qp["continents"],
+			CountryOrRegions: qp["countryOrRegions"],
 		}
 	}
-	respr, errRespr := l.srv.GetLogAnalyticsMetrics(req.Context(), resourceGroupNameParam, profileNameParam, metricsParam, dateTimeBeginParam, dateTimeEndParam, granularityParam, customDomainsParam, protocolsParam, options)
+	respr, errRespr := l.srv.GetLogAnalyticsMetrics(req.Context(), resourceGroupNameParam, profileNameParam, metricsParam, dateTimeBeginParam, dateTimeEndParam, armcdn.LogMetricsGranularity(qp.Get("granularity")), qp["customDomains"], qp["protocols"], options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MetricsResponse, req)
@@ -295,37 +219,15 @@ func (l *LogAnalyticsServerTransport) dispatchGetLogAnalyticsRankings(req *http.
 	if err != nil {
 		return nil, err
 	}
-	rankingsEscaped := qp["rankings"]
-	rankingsUnescaped := make([]string, len(rankingsEscaped))
-	for i, v := range rankingsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		rankingsUnescaped[i] = u
+	rankingsParam := make([]armcdn.LogRanking, len(qp["rankings"]))
+	for i := 0; i < len(qp["rankings"]); i++ {
+		rankingsParam[i] = armcdn.LogRanking(qp["rankings"][i])
 	}
-	rankingsParam := make([]armcdn.LogRanking, len(rankingsUnescaped))
-	for i := 0; i < len(rankingsUnescaped); i++ {
-		rankingsParam[i] = armcdn.LogRanking(rankingsUnescaped[i])
+	metricsParam := make([]armcdn.LogRankingMetric, len(qp["metrics"]))
+	for i := 0; i < len(qp["metrics"]); i++ {
+		metricsParam[i] = armcdn.LogRankingMetric(qp["metrics"][i])
 	}
-	metricsEscaped := qp["metrics"]
-	metricsUnescaped := make([]string, len(metricsEscaped))
-	for i, v := range metricsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		metricsUnescaped[i] = u
-	}
-	metricsParam := make([]armcdn.LogRankingMetric, len(metricsUnescaped))
-	for i := 0; i < len(metricsUnescaped); i++ {
-		metricsParam[i] = armcdn.LogRankingMetric(metricsUnescaped[i])
-	}
-	maxRankingUnescaped, err := url.QueryUnescape(qp.Get("maxRanking"))
-	if err != nil {
-		return nil, err
-	}
-	maxRankingParam, err := parseWithCast(maxRankingUnescaped, func(v string) (int32, error) {
+	maxRankingParam, err := parseWithCast(qp.Get("maxRanking"), func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
@@ -335,35 +237,18 @@ func (l *LogAnalyticsServerTransport) dispatchGetLogAnalyticsRankings(req *http.
 	if err != nil {
 		return nil, err
 	}
-	dateTimeBeginUnescaped, err := url.QueryUnescape(qp.Get("dateTimeBegin"))
+	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeBegin"))
 	if err != nil {
 		return nil, err
 	}
-	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, dateTimeBeginUnescaped)
+	dateTimeEndParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeEnd"))
 	if err != nil {
 		return nil, err
-	}
-	dateTimeEndUnescaped, err := url.QueryUnescape(qp.Get("dateTimeEnd"))
-	if err != nil {
-		return nil, err
-	}
-	dateTimeEndParam, err := time.Parse(time.RFC3339Nano, dateTimeEndUnescaped)
-	if err != nil {
-		return nil, err
-	}
-	customDomainsEscaped := qp["customDomains"]
-	customDomainsParam := make([]string, len(customDomainsEscaped))
-	for i, v := range customDomainsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		customDomainsParam[i] = u
 	}
 	var options *armcdn.LogAnalyticsClientGetLogAnalyticsRankingsOptions
-	if len(customDomainsParam) > 0 {
+	if len(qp["customDomains"]) > 0 {
 		options = &armcdn.LogAnalyticsClientGetLogAnalyticsRankingsOptions{
-			CustomDomains: customDomainsParam,
+			CustomDomains: qp["customDomains"],
 		}
 	}
 	respr, errRespr := l.srv.GetLogAnalyticsRankings(req.Context(), resourceGroupNameParam, profileNameParam, rankingsParam, metricsParam, maxRankingParam, dateTimeBeginParam, dateTimeEndParam, options)
@@ -371,7 +256,7 @@ func (l *LogAnalyticsServerTransport) dispatchGetLogAnalyticsRankings(req *http.
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RankingsResponse, req)
@@ -404,7 +289,7 @@ func (l *LogAnalyticsServerTransport) dispatchGetLogAnalyticsResources(req *http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourcesResponse, req)
@@ -433,83 +318,29 @@ func (l *LogAnalyticsServerTransport) dispatchGetWafLogAnalyticsMetrics(req *htt
 	if err != nil {
 		return nil, err
 	}
-	metricsEscaped := qp["metrics"]
-	metricsUnescaped := make([]string, len(metricsEscaped))
-	for i, v := range metricsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		metricsUnescaped[i] = u
+	metricsParam := make([]armcdn.WafMetric, len(qp["metrics"]))
+	for i := 0; i < len(qp["metrics"]); i++ {
+		metricsParam[i] = armcdn.WafMetric(qp["metrics"][i])
 	}
-	metricsParam := make([]armcdn.WafMetric, len(metricsUnescaped))
-	for i := 0; i < len(metricsUnescaped); i++ {
-		metricsParam[i] = armcdn.WafMetric(metricsUnescaped[i])
-	}
-	dateTimeBeginUnescaped, err := url.QueryUnescape(qp.Get("dateTimeBegin"))
+	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeBegin"))
 	if err != nil {
 		return nil, err
 	}
-	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, dateTimeBeginUnescaped)
+	dateTimeEndParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeEnd"))
 	if err != nil {
 		return nil, err
 	}
-	dateTimeEndUnescaped, err := url.QueryUnescape(qp.Get("dateTimeEnd"))
-	if err != nil {
-		return nil, err
+	actionsParam := make([]armcdn.WafAction, len(qp["actions"]))
+	for i := 0; i < len(qp["actions"]); i++ {
+		actionsParam[i] = armcdn.WafAction(qp["actions"][i])
 	}
-	dateTimeEndParam, err := time.Parse(time.RFC3339Nano, dateTimeEndUnescaped)
-	if err != nil {
-		return nil, err
+	groupByParam := make([]armcdn.WafRankingGroupBy, len(qp["groupBy"]))
+	for i := 0; i < len(qp["groupBy"]); i++ {
+		groupByParam[i] = armcdn.WafRankingGroupBy(qp["groupBy"][i])
 	}
-	granularityParam, err := parseWithCast(qp.Get("granularity"), func(v string) (armcdn.WafGranularity, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armcdn.WafGranularity(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	actionsEscaped := qp["actions"]
-	actionsUnescaped := make([]string, len(actionsEscaped))
-	for i, v := range actionsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		actionsUnescaped[i] = u
-	}
-	actionsParam := make([]armcdn.WafAction, len(actionsUnescaped))
-	for i := 0; i < len(actionsUnescaped); i++ {
-		actionsParam[i] = armcdn.WafAction(actionsUnescaped[i])
-	}
-	groupByEscaped := qp["groupBy"]
-	groupByUnescaped := make([]string, len(groupByEscaped))
-	for i, v := range groupByEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		groupByUnescaped[i] = u
-	}
-	groupByParam := make([]armcdn.WafRankingGroupBy, len(groupByUnescaped))
-	for i := 0; i < len(groupByUnescaped); i++ {
-		groupByParam[i] = armcdn.WafRankingGroupBy(groupByUnescaped[i])
-	}
-	ruleTypesEscaped := qp["ruleTypes"]
-	ruleTypesUnescaped := make([]string, len(ruleTypesEscaped))
-	for i, v := range ruleTypesEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		ruleTypesUnescaped[i] = u
-	}
-	ruleTypesParam := make([]armcdn.WafRuleType, len(ruleTypesUnescaped))
-	for i := 0; i < len(ruleTypesUnescaped); i++ {
-		ruleTypesParam[i] = armcdn.WafRuleType(ruleTypesUnescaped[i])
+	ruleTypesParam := make([]armcdn.WafRuleType, len(qp["ruleTypes"]))
+	for i := 0; i < len(qp["ruleTypes"]); i++ {
+		ruleTypesParam[i] = armcdn.WafRuleType(qp["ruleTypes"][i])
 	}
 	var options *armcdn.LogAnalyticsClientGetWafLogAnalyticsMetricsOptions
 	if len(actionsParam) > 0 || len(groupByParam) > 0 || len(ruleTypesParam) > 0 {
@@ -519,12 +350,12 @@ func (l *LogAnalyticsServerTransport) dispatchGetWafLogAnalyticsMetrics(req *htt
 			RuleTypes: ruleTypesParam,
 		}
 	}
-	respr, errRespr := l.srv.GetWafLogAnalyticsMetrics(req.Context(), resourceGroupNameParam, profileNameParam, metricsParam, dateTimeBeginParam, dateTimeEndParam, granularityParam, options)
+	respr, errRespr := l.srv.GetWafLogAnalyticsMetrics(req.Context(), resourceGroupNameParam, profileNameParam, metricsParam, dateTimeBeginParam, dateTimeEndParam, armcdn.WafGranularity(qp.Get("granularity")), options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WafMetricsResponse, req)
@@ -553,40 +384,19 @@ func (l *LogAnalyticsServerTransport) dispatchGetWafLogAnalyticsRankings(req *ht
 	if err != nil {
 		return nil, err
 	}
-	metricsEscaped := qp["metrics"]
-	metricsUnescaped := make([]string, len(metricsEscaped))
-	for i, v := range metricsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		metricsUnescaped[i] = u
+	metricsParam := make([]armcdn.WafMetric, len(qp["metrics"]))
+	for i := 0; i < len(qp["metrics"]); i++ {
+		metricsParam[i] = armcdn.WafMetric(qp["metrics"][i])
 	}
-	metricsParam := make([]armcdn.WafMetric, len(metricsUnescaped))
-	for i := 0; i < len(metricsUnescaped); i++ {
-		metricsParam[i] = armcdn.WafMetric(metricsUnescaped[i])
-	}
-	dateTimeBeginUnescaped, err := url.QueryUnescape(qp.Get("dateTimeBegin"))
+	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeBegin"))
 	if err != nil {
 		return nil, err
 	}
-	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, dateTimeBeginUnescaped)
+	dateTimeEndParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeEnd"))
 	if err != nil {
 		return nil, err
 	}
-	dateTimeEndUnescaped, err := url.QueryUnescape(qp.Get("dateTimeEnd"))
-	if err != nil {
-		return nil, err
-	}
-	dateTimeEndParam, err := time.Parse(time.RFC3339Nano, dateTimeEndUnescaped)
-	if err != nil {
-		return nil, err
-	}
-	maxRankingUnescaped, err := url.QueryUnescape(qp.Get("maxRanking"))
-	if err != nil {
-		return nil, err
-	}
-	maxRankingParam, err := parseWithCast(maxRankingUnescaped, func(v string) (int32, error) {
+	maxRankingParam, err := parseWithCast(qp.Get("maxRanking"), func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
@@ -596,44 +406,17 @@ func (l *LogAnalyticsServerTransport) dispatchGetWafLogAnalyticsRankings(req *ht
 	if err != nil {
 		return nil, err
 	}
-	rankingsEscaped := qp["rankings"]
-	rankingsUnescaped := make([]string, len(rankingsEscaped))
-	for i, v := range rankingsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		rankingsUnescaped[i] = u
+	rankingsParam := make([]armcdn.WafRankingType, len(qp["rankings"]))
+	for i := 0; i < len(qp["rankings"]); i++ {
+		rankingsParam[i] = armcdn.WafRankingType(qp["rankings"][i])
 	}
-	rankingsParam := make([]armcdn.WafRankingType, len(rankingsUnescaped))
-	for i := 0; i < len(rankingsUnescaped); i++ {
-		rankingsParam[i] = armcdn.WafRankingType(rankingsUnescaped[i])
+	actionsParam := make([]armcdn.WafAction, len(qp["actions"]))
+	for i := 0; i < len(qp["actions"]); i++ {
+		actionsParam[i] = armcdn.WafAction(qp["actions"][i])
 	}
-	actionsEscaped := qp["actions"]
-	actionsUnescaped := make([]string, len(actionsEscaped))
-	for i, v := range actionsEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		actionsUnescaped[i] = u
-	}
-	actionsParam := make([]armcdn.WafAction, len(actionsUnescaped))
-	for i := 0; i < len(actionsUnescaped); i++ {
-		actionsParam[i] = armcdn.WafAction(actionsUnescaped[i])
-	}
-	ruleTypesEscaped := qp["ruleTypes"]
-	ruleTypesUnescaped := make([]string, len(ruleTypesEscaped))
-	for i, v := range ruleTypesEscaped {
-		u, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return nil, unescapeErr
-		}
-		ruleTypesUnescaped[i] = u
-	}
-	ruleTypesParam := make([]armcdn.WafRuleType, len(ruleTypesUnescaped))
-	for i := 0; i < len(ruleTypesUnescaped); i++ {
-		ruleTypesParam[i] = armcdn.WafRuleType(ruleTypesUnescaped[i])
+	ruleTypesParam := make([]armcdn.WafRuleType, len(qp["ruleTypes"]))
+	for i := 0; i < len(qp["ruleTypes"]); i++ {
+		ruleTypesParam[i] = armcdn.WafRuleType(qp["ruleTypes"][i])
 	}
 	var options *armcdn.LogAnalyticsClientGetWafLogAnalyticsRankingsOptions
 	if len(actionsParam) > 0 || len(ruleTypesParam) > 0 {
@@ -647,7 +430,7 @@ func (l *LogAnalyticsServerTransport) dispatchGetWafLogAnalyticsRankings(req *ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WafRankingsResponse, req)

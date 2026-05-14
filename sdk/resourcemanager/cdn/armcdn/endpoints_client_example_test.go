@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_Create.json
+// Generated from example definition: 2025-06-01/Endpoints_Create.json
 func ExampleEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,13 +152,13 @@ func ExampleEndpointsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.EndpointsClientCreateResponse{
-	// 	Endpoint: &armcdn.Endpoint{
+	// 	Endpoint: armcdn.Endpoint{
 	// 		Name: to.Ptr("endpoint4899"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
@@ -295,7 +295,7 @@ func ExampleEndpointsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_Delete.json
+// Generated from example definition: 2025-06-01/Endpoints_Delete.json
 func ExampleEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleEndpointsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -321,7 +321,7 @@ func ExampleEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_Get.json
+// Generated from example definition: 2025-06-01/Endpoints_Get.json
 func ExampleEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleEndpointsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.EndpointsClientGetResponse{
-	// 	Endpoint: &armcdn.Endpoint{
+	// 	Endpoint: armcdn.Endpoint{
 	// 		Name: to.Ptr("endpoint1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
@@ -410,7 +410,7 @@ func ExampleEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_ListByProfile.json
+// Generated from example definition: 2025-06-01/Endpoints_ListByProfile.json
 func ExampleEndpointsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,7 +512,7 @@ func ExampleEndpointsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_ListResourceUsage.json
+// Generated from example definition: 2025-06-01/Endpoints_ListResourceUsage.json
 func ExampleEndpointsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,7 +555,7 @@ func ExampleEndpointsClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_LoadContent.json
+// Generated from example definition: 2025-06-01/Endpoints_LoadContent.json
 func ExampleEndpointsClient_BeginLoadContent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -576,7 +576,7 @@ func ExampleEndpointsClient_BeginLoadContent() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -585,7 +585,7 @@ func ExampleEndpointsClient_BeginLoadContent() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_PurgeContent.json
+// Generated from example definition: 2025-06-01/Endpoints_PurgeContent.json
 func ExampleEndpointsClient_BeginPurgeContent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -606,7 +606,7 @@ func ExampleEndpointsClient_BeginPurgeContent() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -615,7 +615,7 @@ func ExampleEndpointsClient_BeginPurgeContent() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_Start.json
+// Generated from example definition: 2025-06-01/Endpoints_Start.json
 func ExampleEndpointsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -632,13 +632,13 @@ func ExampleEndpointsClient_BeginStart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.EndpointsClientStartResponse{
-	// 	Endpoint: &armcdn.Endpoint{
+	// 	Endpoint: armcdn.Endpoint{
 	// 		Name: to.Ptr("endpoint4899"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
@@ -676,7 +676,7 @@ func ExampleEndpointsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_Stop.json
+// Generated from example definition: 2025-06-01/Endpoints_Stop.json
 func ExampleEndpointsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -693,13 +693,13 @@ func ExampleEndpointsClient_BeginStop() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.EndpointsClientStopResponse{
-	// 	Endpoint: &armcdn.Endpoint{
+	// 	Endpoint: armcdn.Endpoint{
 	// 		Name: to.Ptr("endpoint4899"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
@@ -737,7 +737,7 @@ func ExampleEndpointsClient_BeginStop() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_Update.json
+// Generated from example definition: 2025-06-01/Endpoints_Update.json
 func ExampleEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -758,13 +758,13 @@ func ExampleEndpointsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.EndpointsClientUpdateResponse{
-	// 	Endpoint: &armcdn.Endpoint{
+	// 	Endpoint: armcdn.Endpoint{
 	// 		Name: to.Ptr("endpoint1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1"),
@@ -824,7 +824,7 @@ func ExampleEndpointsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Endpoints_ValidateCustomDomain.json
+// Generated from example definition: 2025-06-01/Endpoints_ValidateCustomDomain.json
 func ExampleEndpointsClient_ValidateCustomDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -845,7 +845,7 @@ func ExampleEndpointsClient_ValidateCustomDomain() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.EndpointsClientValidateCustomDomainResponse{
-	// 	ValidateCustomDomainOutput: &armcdn.ValidateCustomDomainOutput{
+	// 	ValidateCustomDomainOutput: armcdn.ValidateCustomDomainOutput{
 	// 		CustomDomainValidated: to.Ptr(true),
 	// 	},
 	// }

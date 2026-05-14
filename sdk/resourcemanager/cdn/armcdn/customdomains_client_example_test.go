@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/CustomDomains_Create.json
+// Generated from example definition: 2025-06-01/CustomDomains_Create.json
 func ExampleCustomDomainsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,13 +33,13 @@ func ExampleCustomDomainsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.CustomDomainsClientCreateResponse{
-	// 	CustomDomain: &armcdn.CustomDomain{
+	// 	CustomDomain: armcdn.CustomDomain{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/customdomains"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/customdomains/www-someDomain-net"),
@@ -54,7 +54,7 @@ func ExampleCustomDomainsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/CustomDomains_Delete.json
+// Generated from example definition: 2025-06-01/CustomDomains_Delete.json
 func ExampleCustomDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleCustomDomainsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -80,7 +80,7 @@ func ExampleCustomDomainsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/CustomDomains_DisableCustomHttps.json
+// Generated from example definition: 2025-06-01/CustomDomains_DisableCustomHttps.json
 func ExampleCustomDomainsClient_BeginDisableCustomHTTPS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,13 +97,13 @@ func ExampleCustomDomainsClient_BeginDisableCustomHTTPS() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.CustomDomainsClientDisableCustomHTTPSResponse{
-	// 	CustomDomain: &armcdn.CustomDomain{
+	// 	CustomDomain: armcdn.CustomDomain{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/customdomains"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/customdomains/www-someDomain-net"),
@@ -118,7 +118,7 @@ func ExampleCustomDomainsClient_BeginDisableCustomHTTPS() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/CustomDomains_EnableCustomHttpsUsingBYOC.json
+// Generated from example definition: 2025-06-01/CustomDomains_EnableCustomHttpsUsingBYOC.json
 func ExampleCustomDomainsClient_BeginEnableCustomHTTPS_customDomainsEnableCustomHttpsUsingYourOwnCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,13 +135,13 @@ func ExampleCustomDomainsClient_BeginEnableCustomHTTPS_customDomainsEnableCustom
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.CustomDomainsClientEnableCustomHTTPSResponse{
-	// 	CustomDomain: &armcdn.CustomDomain{
+	// 	CustomDomain: armcdn.CustomDomain{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/customdomains"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/customdomains/www-someDomain-net"),
@@ -157,7 +157,7 @@ func ExampleCustomDomainsClient_BeginEnableCustomHTTPS_customDomainsEnableCustom
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.json
+// Generated from example definition: 2025-06-01/CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.json
 func ExampleCustomDomainsClient_BeginEnableCustomHTTPS_customDomainsEnableCustomHttpsUsingCdnManagedCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,13 +174,13 @@ func ExampleCustomDomainsClient_BeginEnableCustomHTTPS_customDomainsEnableCustom
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.CustomDomainsClientEnableCustomHTTPSResponse{
-	// 	CustomDomain: &armcdn.CustomDomain{
+	// 	CustomDomain: armcdn.CustomDomain{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/customdomains"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/customdomains/www-someDomain-net"),
@@ -196,7 +196,7 @@ func ExampleCustomDomainsClient_BeginEnableCustomHTTPS_customDomainsEnableCustom
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/CustomDomains_Get.json
+// Generated from example definition: 2025-06-01/CustomDomains_Get.json
 func ExampleCustomDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleCustomDomainsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.CustomDomainsClientGetResponse{
-	// 	CustomDomain: &armcdn.CustomDomain{
+	// 	CustomDomain: armcdn.CustomDomain{
 	// 		Name: to.Ptr("www-someDomain-net"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/endpoints/customdomains"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/customdomains/www-someDomain-net"),
@@ -230,7 +230,7 @@ func ExampleCustomDomainsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/CustomDomains_ListByEndpoint.json
+// Generated from example definition: 2025-06-01/CustomDomains_ListByEndpoint.json
 func ExampleCustomDomainsClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

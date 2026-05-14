@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/SecurityPolicies_Create.json
+// Generated from example definition: 2025-06-01/SecurityPolicies_Create.json
 func ExampleSecurityPoliciesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,13 +53,13 @@ func ExampleSecurityPoliciesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.SecurityPoliciesClientCreateResponse{
-	// 	SecurityPolicy: &armcdn.SecurityPolicy{
+	// 	SecurityPolicy: armcdn.SecurityPolicy{
 	// 		Name: to.Ptr("securityPolicy1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/securitypolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),
@@ -92,7 +92,7 @@ func ExampleSecurityPoliciesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/SecurityPolicies_Delete.json
+// Generated from example definition: 2025-06-01/SecurityPolicies_Delete.json
 func ExampleSecurityPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleSecurityPoliciesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -118,7 +118,7 @@ func ExampleSecurityPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/SecurityPolicies_Get.json
+// Generated from example definition: 2025-06-01/SecurityPolicies_Get.json
 func ExampleSecurityPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleSecurityPoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.SecurityPoliciesClientGetResponse{
-	// 	SecurityPolicy: &armcdn.SecurityPolicy{
+	// 	SecurityPolicy: armcdn.SecurityPolicy{
 	// 		Name: to.Ptr("securityPolicy1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/securitypolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),
@@ -170,7 +170,7 @@ func ExampleSecurityPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/SecurityPolicies_ListByProfile.json
+// Generated from example definition: 2025-06-01/SecurityPolicies_ListByProfile.json
 func ExampleSecurityPoliciesClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleSecurityPoliciesClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/SecurityPolicies_Patch.json
+// Generated from example definition: 2025-06-01/SecurityPolicies_Patch.json
 func ExampleSecurityPoliciesClient_BeginPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,13 +272,13 @@ func ExampleSecurityPoliciesClient_BeginPatch() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.SecurityPoliciesClientPatchResponse{
-	// 	SecurityPolicy: &armcdn.SecurityPolicy{
+	// 	SecurityPolicy: armcdn.SecurityPolicy{
 	// 		Name: to.Ptr("securityPolicy1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/securitypolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/securitypolicies/securityPolicy1"),

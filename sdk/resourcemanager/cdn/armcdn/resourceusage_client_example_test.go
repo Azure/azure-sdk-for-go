@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/ResourceUsage_List.json
+// Generated from example definition: 2025-06-01/ResourceUsage_List.json
 func ExampleResourceUsageClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

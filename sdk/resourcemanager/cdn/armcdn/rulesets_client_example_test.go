@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/RuleSets_Create.json
+// Generated from example definition: 2025-06-01/RuleSets_Create.json
 func ExampleRuleSetsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleRuleSetsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.RuleSetsClientCreateResponse{
-	// 	RuleSet: &armcdn.RuleSet{
+	// 	RuleSet: armcdn.RuleSet{
 	// 		Name: to.Ptr("ruleSet1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/rulesets"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1"),
@@ -42,7 +42,7 @@ func ExampleRuleSetsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/RuleSets_Delete.json
+// Generated from example definition: 2025-06-01/RuleSets_Delete.json
 func ExampleRuleSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleRuleSetsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -68,7 +68,7 @@ func ExampleRuleSetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/RuleSets_Get.json
+// Generated from example definition: 2025-06-01/RuleSets_Get.json
 func ExampleRuleSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleRuleSetsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.RuleSetsClientGetResponse{
-	// 	RuleSet: &armcdn.RuleSet{
+	// 	RuleSet: armcdn.RuleSet{
 	// 		Name: to.Ptr("ruleSet1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/rulesets"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1"),
@@ -99,7 +99,7 @@ func ExampleRuleSetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/RuleSets_ListByProfile.json
+// Generated from example definition: 2025-06-01/RuleSets_ListByProfile.json
 func ExampleRuleSetsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleRuleSetsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/RuleSets_ListResourceUsage.json
+// Generated from example definition: 2025-06-01/RuleSets_ListResourceUsage.json
 func ExampleRuleSetsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

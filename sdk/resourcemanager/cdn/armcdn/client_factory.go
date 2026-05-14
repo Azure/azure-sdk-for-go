@@ -80,14 +80,6 @@ func (c *ClientFactory) NewCustomDomainsClient() *CustomDomainsClient {
 	}
 }
 
-// NewDeploymentVersionsClient creates a new instance of DeploymentVersionsClient.
-func (c *ClientFactory) NewDeploymentVersionsClient() *DeploymentVersionsClient {
-	return &DeploymentVersionsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewEdgeNodesClient creates a new instance of EdgeNodesClient.
 func (c *ClientFactory) NewEdgeNodesClient() *EdgeNodesClient {
 	return &EdgeNodesClient{
@@ -98,22 +90,6 @@ func (c *ClientFactory) NewEdgeNodesClient() *EdgeNodesClient {
 // NewEndpointsClient creates a new instance of EndpointsClient.
 func (c *ClientFactory) NewEndpointsClient() *EndpointsClient {
 	return &EndpointsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewKeyGroupsClient creates a new instance of KeyGroupsClient.
-func (c *ClientFactory) NewKeyGroupsClient() *KeyGroupsClient {
-	return &KeyGroupsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewKnowledgeSourcesClient creates a new instance of KnowledgeSourcesClient.
-func (c *ClientFactory) NewKnowledgeSourcesClient() *KnowledgeSourcesClient {
-	return &KnowledgeSourcesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -174,14 +150,6 @@ func (c *ClientFactory) NewPoliciesClient() *PoliciesClient {
 	}
 }
 
-// NewProfileAgentsClient creates a new instance of ProfileAgentsClient.
-func (c *ClientFactory) NewProfileAgentsClient() *ProfileAgentsClient {
-	return &ProfileAgentsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewProfilesClient creates a new instance of ProfilesClient.
 func (c *ClientFactory) NewProfilesClient() *ProfilesClient {
 	return &ProfilesClient{
@@ -233,14 +201,6 @@ func (c *ClientFactory) NewSecretsClient() *SecretsClient {
 // NewSecurityPoliciesClient creates a new instance of SecurityPoliciesClient.
 func (c *ClientFactory) NewSecurityPoliciesClient() *SecurityPoliciesClient {
 	return &SecurityPoliciesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewWebAgentsClient creates a new instance of WebAgentsClient.
-func (c *ClientFactory) NewWebAgentsClient() *WebAgentsClient {
-	return &WebAgentsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

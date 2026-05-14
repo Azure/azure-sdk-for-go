@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/AFDCustomDomains_Create.json
+// Generated from example definition: 2025-06-01/AFDCustomDomains_Create.json
 func ExampleAFDCustomDomainsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,20 +29,6 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 				ID: to.Ptr(""),
 			},
 			HostName: to.Ptr("www.someDomain.net"),
-			MtlsSettings: &armcdn.ClientCertificateRequiredAndValidatedAdvancedSettings{
-				AllowedFqdns: []*string{
-					to.Ptr("foo.contoso.com"),
-				},
-				Scenario: to.Ptr(armcdn.MtlsScenarioTypeClientCertificateRequiredAndValidated),
-				Secrets: []*armcdn.ResourceReference{
-					{
-						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/name1"),
-					},
-					{
-						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/name2"),
-					},
-				},
-			},
 			TLSSettings: &armcdn.AFDDomainHTTPSParameters{
 				CertificateType:    to.Ptr(armcdn.AfdCertificateTypeManagedCertificate),
 				CipherSuiteSetType: to.Ptr(armcdn.AfdCipherSuiteSetTypeCustomized),
@@ -64,13 +50,13 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDCustomDomainsClientCreateResponse{
-	// 	AFDDomain: &armcdn.AFDDomain{
+	// 	AFDDomain: armcdn.AFDDomain{
 	// 		Name: to.Ptr("domain1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/customdomains"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
@@ -81,20 +67,6 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			DomainValidationState: to.Ptr(armcdn.DomainValidationStateSubmitting),
 	// 			HostName: to.Ptr("www.contoso.com"),
-	// 			MtlsSettings: &armcdn.ClientCertificateRequiredAndValidatedAdvancedSettings{
-	// 				AllowedFqdns: []*string{
-	// 					to.Ptr("foo.contoso.com"),
-	// 				},
-	// 				Scenario: to.Ptr(armcdn.MtlsScenarioTypeClientCertificateRequiredAndValidated),
-	// 				Secrets: []*armcdn.ResourceReference{
-	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/name1"),
-	// 					},
-	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/name2"),
-	// 					},
-	// 				},
-	// 			},
 	// 			PreValidatedCustomDomainResourceID: &armcdn.ResourceReference{
 	// 				ID: to.Ptr(""),
 	// 			},
@@ -126,7 +98,7 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDCustomDomains_Delete.json
+// Generated from example definition: 2025-06-01/AFDCustomDomains_Delete.json
 func ExampleAFDCustomDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +115,7 @@ func ExampleAFDCustomDomainsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -152,7 +124,7 @@ func ExampleAFDCustomDomainsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDCustomDomains_Get.json
+// Generated from example definition: 2025-06-01/AFDCustomDomains_Get.json
 func ExampleAFDCustomDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +143,7 @@ func ExampleAFDCustomDomainsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDCustomDomainsClientGetResponse{
-	// 	AFDDomain: &armcdn.AFDDomain{
+	// 	AFDDomain: armcdn.AFDDomain{
 	// 		Name: to.Ptr("domain1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/customdomains"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
@@ -182,9 +154,6 @@ func ExampleAFDCustomDomainsClient_Get() {
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			DomainValidationState: to.Ptr(armcdn.DomainValidationStatePending),
 	// 			HostName: to.Ptr("www.contoso.com"),
-	// 			MtlsSettings: &armcdn.CompleteMtlsPassthroughToOriginAdvancedSettings{
-	// 				Scenario: to.Ptr(armcdn.MtlsScenarioTypeCompleteMtlsPassthroughToOrigin),
-	// 			},
 	// 			PreValidatedCustomDomainResourceID: &armcdn.ResourceReference{
 	// 				ID: to.Ptr(""),
 	// 			},
@@ -216,7 +185,7 @@ func ExampleAFDCustomDomainsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDCustomDomains_ListByProfile.json
+// Generated from example definition: 2025-06-01/AFDCustomDomains_ListByProfile.json
 func ExampleAFDCustomDomainsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,9 +221,6 @@ func ExampleAFDCustomDomainsClient_NewListByProfilePager() {
 		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 		// 					DomainValidationState: to.Ptr(armcdn.DomainValidationStatePending),
 		// 					HostName: to.Ptr("www.contoso.com"),
-		// 					MtlsSettings: &armcdn.ClientCertificateRequiredAndOriginValidatesAdvancedSettings{
-		// 						Scenario: to.Ptr(armcdn.MtlsScenarioTypeClientCertificateRequiredAndOriginValidates),
-		// 					},
 		// 					PreValidatedCustomDomainResourceID: &armcdn.ResourceReference{
 		// 						ID: to.Ptr(""),
 		// 					},
@@ -289,7 +255,7 @@ func ExampleAFDCustomDomainsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDCustomDomains_RefreshValidationToken.json
+// Generated from example definition: 2025-06-01/AFDCustomDomains_RefreshValidationToken.json
 func ExampleAFDCustomDomainsClient_BeginRefreshValidationToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,7 +272,7 @@ func ExampleAFDCustomDomainsClient_BeginRefreshValidationToken() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -315,7 +281,7 @@ func ExampleAFDCustomDomainsClient_BeginRefreshValidationToken() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDCustomDomains_Update.json
+// Generated from example definition: 2025-06-01/AFDCustomDomains_Update.json
 func ExampleAFDCustomDomainsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,17 +296,6 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 		Properties: &armcdn.AFDDomainUpdatePropertiesParameters{
 			AzureDNSZone: &armcdn.ResourceReference{
 				ID: to.Ptr(""),
-			},
-			MtlsSettings: &armcdn.ClientCertificateRequiredAndValidatedAdvancedSettings{
-				AllowedFqdns: []*string{
-					to.Ptr("foo.contoso.com"),
-				},
-				Scenario: to.Ptr(armcdn.MtlsScenarioTypeClientCertificateRequiredAndValidated),
-				Secrets: []*armcdn.ResourceReference{
-					{
-						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/mysecert"),
-					},
-				},
 			},
 			TLSSettings: &armcdn.AFDDomainHTTPSParameters{
 				CertificateType:    to.Ptr(armcdn.AfdCertificateTypeManagedCertificate),
@@ -363,13 +318,13 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDCustomDomainsClientUpdateResponse{
-	// 	AFDDomain: &armcdn.AFDDomain{
+	// 	AFDDomain: armcdn.AFDDomain{
 	// 		Name: to.Ptr("domain1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/customdomains"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/domain1"),
@@ -380,17 +335,6 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			DomainValidationState: to.Ptr(armcdn.DomainValidationStateApproved),
 	// 			HostName: to.Ptr("www.contoso.com"),
-	// 			MtlsSettings: &armcdn.ClientCertificateRequiredAndValidatedAdvancedSettings{
-	// 				AllowedFqdns: []*string{
-	// 					to.Ptr("foo.contoso.com"),
-	// 				},
-	// 				Scenario: to.Ptr(armcdn.MtlsScenarioTypeClientCertificateRequiredAndValidated),
-	// 				Secrets: []*armcdn.ResourceReference{
-	// 					{
-	// 						ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/mysecert"),
-	// 					},
-	// 				},
-	// 			},
 	// 			PreValidatedCustomDomainResourceID: &armcdn.ResourceReference{
 	// 				ID: to.Ptr(""),
 	// 			},

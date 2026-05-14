@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/AFDOrigins_Create.json
+// Generated from example definition: 2025-06-01/AFDOrigins_Create.json
 func ExampleAFDOriginsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,12 +30,6 @@ func ExampleAFDOriginsClient_BeginCreate() {
 			HTTPPort:         to.Ptr[int32](80),
 			HTTPSPort:        to.Ptr[int32](443),
 			OriginHostHeader: to.Ptr("host1.foo.com"),
-			OriginCapacityResource: &armcdn.OriginCapacityResourceProperties{
-				Enabled:                    to.Ptr(armcdn.EnabledStateEnabled),
-				OriginIngressRateThreshold: to.Ptr[int64](10),
-				OriginRequestRateThreshold: to.Ptr[int64](1000),
-				Region:                     to.Ptr("EastUs"),
-			},
 		},
 	}, nil)
 	if err != nil {
@@ -43,13 +37,13 @@ func ExampleAFDOriginsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDOriginsClientCreateResponse{
-	// 	AFDOrigin: &armcdn.AFDOrigin{
+	// 	AFDOrigin: armcdn.AFDOrigin{
 	// 		Name: to.Ptr("origin1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups/origins"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
@@ -62,19 +56,13 @@ func ExampleAFDOriginsClient_BeginCreate() {
 	// 			HTTPSPort: to.Ptr[int32](443),
 	// 			OriginGroupName: to.Ptr("origingroup1"),
 	// 			OriginHostHeader: to.Ptr("host1.foo.com"),
-	// 			OriginCapacityResource: &armcdn.OriginCapacityResourceProperties{
-	// 				Enabled: to.Ptr(armcdn.EnabledStateEnabled),
-	// 				OriginIngressRateThreshold: to.Ptr[int64](10),
-	// 				OriginRequestRateThreshold: to.Ptr[int64](1000),
-	// 				Region: to.Ptr("EastUs"),
-	// 			},
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDOrigins_Delete.json
+// Generated from example definition: 2025-06-01/AFDOrigins_Delete.json
 func ExampleAFDOriginsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +79,7 @@ func ExampleAFDOriginsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -100,7 +88,7 @@ func ExampleAFDOriginsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDOrigins_Get.json
+// Generated from example definition: 2025-06-01/AFDOrigins_Get.json
 func ExampleAFDOriginsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +107,7 @@ func ExampleAFDOriginsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDOriginsClientGetResponse{
-	// 	AFDOrigin: &armcdn.AFDOrigin{
+	// 	AFDOrigin: armcdn.AFDOrigin{
 	// 		Name: to.Ptr("origin1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups/origins"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
@@ -138,7 +126,7 @@ func ExampleAFDOriginsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDOrigins_ListByOriginGroup.json
+// Generated from example definition: 2025-06-01/AFDOrigins_ListByOriginGroup.json
 func ExampleAFDOriginsClient_NewListByOriginGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +173,7 @@ func ExampleAFDOriginsClient_NewListByOriginGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/AFDOrigins_Update.json
+// Generated from example definition: 2025-06-01/AFDOrigins_Update.json
 func ExampleAFDOriginsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,12 +190,6 @@ func ExampleAFDOriginsClient_BeginUpdate() {
 			HostName:     to.Ptr("host1.blob.core.windows.net"),
 			HTTPPort:     to.Ptr[int32](80),
 			HTTPSPort:    to.Ptr[int32](443),
-			OriginCapacityResource: &armcdn.OriginCapacityResourceProperties{
-				Enabled:                    to.Ptr(armcdn.EnabledStateEnabled),
-				OriginIngressRateThreshold: to.Ptr[int64](10),
-				OriginRequestRateThreshold: to.Ptr[int64](1000),
-				Region:                     to.Ptr("EastUs"),
-			},
 		},
 	}, nil)
 	if err != nil {
@@ -215,13 +197,13 @@ func ExampleAFDOriginsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.AFDOriginsClientUpdateResponse{
-	// 	AFDOrigin: &armcdn.AFDOrigin{
+	// 	AFDOrigin: armcdn.AFDOrigin{
 	// 		Name: to.Ptr("origin1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/origingroups/origins"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/origingroups/origingroup1/origins/origin1"),
@@ -234,12 +216,6 @@ func ExampleAFDOriginsClient_BeginUpdate() {
 	// 			HTTPSPort: to.Ptr[int32](443),
 	// 			OriginGroupName: to.Ptr("origingroup1"),
 	// 			OriginHostHeader: to.Ptr("host1.foo.com"),
-	// 			OriginCapacityResource: &armcdn.OriginCapacityResourceProperties{
-	// 				Enabled: to.Ptr(armcdn.EnabledStateEnabled),
-	// 				OriginIngressRateThreshold: to.Ptr[int64](10),
-	// 				OriginRequestRateThreshold: to.Ptr[int64](1000),
-	// 				Region: to.Ptr("EastUs"),
-	// 			},
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 	// 		},
 	// 	},

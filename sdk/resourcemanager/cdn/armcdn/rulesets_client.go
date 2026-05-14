@@ -17,8 +17,12 @@ import (
 	"strings"
 )
 
+const defaultRuleSetsClientVersion string = "2025-06-01"
+
 // RuleSetsClient contains the methods for the RuleSets group.
 // Don't use this type directly, use NewRuleSetsClient() instead.
+//
+// Generated from API version 2025-06-01
 type RuleSetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +46,6 @@ func NewRuleSetsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Create - Creates a new rule set within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -95,8 +97,8 @@ func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRuleSetsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -121,8 +123,6 @@ func (client *RuleSetsClient) createHandleResponse(resp *http.Response) (RuleSet
 // BeginDelete - Deletes an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -149,8 +149,6 @@ func (client *RuleSetsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Deletes an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *RuleSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RuleSetsClient.BeginDelete"
@@ -196,16 +194,14 @@ func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRuleSetsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription, resource
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -257,8 +253,8 @@ func (client *RuleSetsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRuleSetsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -273,8 +269,6 @@ func (client *RuleSetsClient) getHandleResponse(resp *http.Response) (RuleSetsCl
 }
 
 // NewListByProfilePager - Lists existing AzureFrontDoor rule sets within a profile.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -323,8 +317,8 @@ func (client *RuleSetsClient) listByProfileCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRuleSetsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -339,8 +333,6 @@ func (client *RuleSetsClient) listByProfileHandleResponse(resp *http.Response) (
 }
 
 // NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -394,8 +386,8 @@ func (client *RuleSetsClient) listResourceUsageCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRuleSetsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

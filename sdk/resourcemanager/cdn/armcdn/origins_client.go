@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultOriginsClientVersion string = "2025-06-01"
+
 // OriginsClient contains the methods for the Origins group.
 // Don't use this type directly, use NewOriginsClient() instead.
+//
+// Generated from API version 2025-06-01
 type OriginsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewOriginsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginCreate - Creates a new origin within the specified endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -69,8 +71,6 @@ func (client *OriginsClient) BeginCreate(ctx context.Context, resourceGroupName 
 
 // Create - Creates a new origin within the specified endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *OriginsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, origin Origin, options *OriginsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OriginsClient.BeginCreate"
@@ -120,8 +120,8 @@ func (client *OriginsClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOriginsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, origin); err != nil {
@@ -132,8 +132,6 @@ func (client *OriginsClient) createCreateRequest(ctx context.Context, resourceGr
 
 // BeginDelete - Deletes an existing origin within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -159,8 +157,6 @@ func (client *OriginsClient) BeginDelete(ctx context.Context, resourceGroupName 
 
 // Delete - Deletes an existing origin within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *OriginsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, options *OriginsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OriginsClient.BeginDelete"
@@ -210,15 +206,13 @@ func (client *OriginsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOriginsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing origin within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -275,8 +269,8 @@ func (client *OriginsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOriginsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -291,8 +285,6 @@ func (client *OriginsClient) getHandleResponse(resp *http.Response) (OriginsClie
 }
 
 // NewListByEndpointPager - Lists all of the existing origins within an endpoint.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -346,8 +338,8 @@ func (client *OriginsClient) listByEndpointCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOriginsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -363,8 +355,6 @@ func (client *OriginsClient) listByEndpointHandleResponse(resp *http.Response) (
 
 // BeginUpdate - Updates an existing origin within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -391,8 +381,6 @@ func (client *OriginsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 
 // Update - Updates an existing origin within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *OriginsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties OriginUpdateParameters, options *OriginsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OriginsClient.BeginUpdate"
@@ -442,8 +430,8 @@ func (client *OriginsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultOriginsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, originUpdateProperties); err != nil {

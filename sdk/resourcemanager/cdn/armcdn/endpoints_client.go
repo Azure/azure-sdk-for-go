@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultEndpointsClientVersion string = "2025-06-01"
+
 // EndpointsClient contains the methods for the Endpoints group.
 // Don't use this type directly, use NewEndpointsClient() instead.
+//
+// Generated from API version 2025-06-01
 type EndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +46,6 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreate - Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group
 // and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -70,8 +72,6 @@ func (client *EndpointsClient) BeginCreate(ctx context.Context, resourceGroupNam
 // Create - Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and
 // profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *EndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint, options *EndpointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginCreate"
@@ -117,8 +117,8 @@ func (client *EndpointsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, endpoint); err != nil {
@@ -130,8 +130,6 @@ func (client *EndpointsClient) createCreateRequest(ctx context.Context, resource
 // BeginDelete - Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -157,8 +155,6 @@ func (client *EndpointsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group
 // and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *EndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginDelete"
@@ -204,16 +200,14 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and
 // profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -265,8 +259,8 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -281,8 +275,6 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 }
 
 // NewListByProfilePager - Lists existing CDN endpoints.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -331,8 +323,8 @@ func (client *EndpointsClient) listByProfileCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -347,8 +339,6 @@ func (client *EndpointsClient) listByProfileHandleResponse(resp *http.Response) 
 }
 
 // NewListResourceUsagePager - Checks the quota and usage of geo filters and custom domains under the given endpoint.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -402,8 +392,8 @@ func (client *EndpointsClient) listResourceUsageCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -419,8 +409,6 @@ func (client *EndpointsClient) listResourceUsageHandleResponse(resp *http.Respon
 
 // BeginLoadContent - Pre-loads a content to CDN. Available for Verizon Profiles.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -448,8 +436,6 @@ func (client *EndpointsClient) BeginLoadContent(ctx context.Context, resourceGro
 
 // LoadContent - Pre-loads a content to CDN. Available for Verizon Profiles.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *EndpointsClient) loadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginLoadContent"
@@ -495,8 +481,8 @@ func (client *EndpointsClient) loadContentCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, contentFilePaths); err != nil {
 		return nil, err
@@ -506,8 +492,6 @@ func (client *EndpointsClient) loadContentCreateRequest(ctx context.Context, res
 
 // BeginPurgeContent - Removes a content from CDN.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -535,8 +519,6 @@ func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGr
 
 // PurgeContent - Removes a content from CDN.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginPurgeContent"
@@ -582,8 +564,8 @@ func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, contentFilePaths); err != nil {
 		return nil, err
@@ -593,8 +575,6 @@ func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, re
 
 // BeginStart - Starts an existing CDN endpoint that is on a stopped state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -619,8 +599,6 @@ func (client *EndpointsClient) BeginStart(ctx context.Context, resourceGroupName
 
 // Start - Starts an existing CDN endpoint that is on a stopped state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *EndpointsClient) start(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginStart"
@@ -666,16 +644,14 @@ func (client *EndpointsClient) startCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Stops an existing running CDN endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -700,8 +676,6 @@ func (client *EndpointsClient) BeginStop(ctx context.Context, resourceGroupName 
 
 // Stop - Stops an existing running CDN endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *EndpointsClient) stop(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginStop"
@@ -747,8 +721,8 @@ func (client *EndpointsClient) stopCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -758,8 +732,6 @@ func (client *EndpointsClient) stopCreateRequest(ctx context.Context, resourceGr
 // To update origin groups, use the Update Origin group operation. To update custom domains, use the Update Custom Domain
 // operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -787,8 +759,6 @@ func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // and profile. Only tags can be updated after creating an endpoint. To update origins, use the Update Origin operation. To
 // update origin groups, use the Update Origin group operation. To update custom domains, use the Update Custom Domain operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *EndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginUpdate"
@@ -834,8 +804,8 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, endpointUpdateProperties); err != nil {
@@ -846,8 +816,6 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 
 // ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -901,8 +869,8 @@ func (client *EndpointsClient) validateCustomDomainCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEndpointsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customDomainProperties); err != nil {

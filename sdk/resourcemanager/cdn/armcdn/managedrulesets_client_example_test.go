@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/WafListManagedRuleSets.json
+// Generated from example definition: 2025-06-01/WafListManagedRuleSets.json
 func ExampleManagedRuleSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

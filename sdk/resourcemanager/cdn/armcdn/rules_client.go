@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultRulesClientVersion string = "2025-06-01"
+
 // RulesClient contains the methods for the Rules group.
 // Don't use this type directly, use NewRulesClient() instead.
+//
+// Generated from API version 2025-06-01
 type RulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // BeginCreate - Creates a new delivery rule within the specified rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -70,8 +72,6 @@ func (client *RulesClient) BeginCreate(ctx context.Context, resourceGroupName st
 
 // Create - Creates a new delivery rule within the specified rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *RulesClient) create(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, rule Rule, options *RulesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RulesClient.BeginCreate"
@@ -121,8 +121,8 @@ func (client *RulesClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, rule); err != nil {
@@ -133,8 +133,6 @@ func (client *RulesClient) createCreateRequest(ctx context.Context, resourceGrou
 
 // BeginDelete - Deletes an existing delivery rule within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -161,8 +159,6 @@ func (client *RulesClient) BeginDelete(ctx context.Context, resourceGroupName st
 
 // Delete - Deletes an existing delivery rule within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *RulesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, options *RulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RulesClient.BeginDelete"
@@ -212,15 +208,13 @@ func (client *RulesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing delivery rule within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -277,8 +271,8 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -293,8 +287,6 @@ func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGe
 }
 
 // NewListByRuleSetPager - Lists all of the existing delivery rules within a rule set.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -347,8 +339,8 @@ func (client *RulesClient) listByRuleSetCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -364,8 +356,6 @@ func (client *RulesClient) listByRuleSetHandleResponse(resp *http.Response) (Rul
 
 // BeginUpdate - Updates an existing delivery rule within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -392,8 +382,6 @@ func (client *RulesClient) BeginUpdate(ctx context.Context, resourceGroupName st
 
 // Update - Updates an existing delivery rule within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *RulesClient) update(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, ruleUpdateProperties RuleUpdateParameters, options *RulesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RulesClient.BeginUpdate"
@@ -443,8 +431,8 @@ func (client *RulesClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRulesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, ruleUpdateProperties); err != nil {

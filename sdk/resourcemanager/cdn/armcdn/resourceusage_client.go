@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultResourceUsageClientVersion string = "2025-06-01"
+
 // ResourceUsageClient contains the methods for the ResourceUsage group.
 // Don't use this type directly, use NewResourceUsageClient() instead.
+//
+// Generated from API version 2025-06-01
 type ResourceUsageClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +44,6 @@ func NewResourceUsageClient(subscriptionID string, credential azcore.TokenCreden
 }
 
 // NewListPager - Check the quota and actual usage of the CDN profiles under the given subscription.
-//
-// Generated from API version 2025-09-01-preview
 //   - options - ResourceUsageClientListOptions contains the optional parameters for the ResourceUsageClient.NewListPager method.
 func (client *ResourceUsageClient) NewListPager(options *ResourceUsageClientListOptions) *runtime.Pager[ResourceUsageClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourceUsageClientListResponse]{
@@ -78,8 +80,8 @@ func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, _ *Res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultResourceUsageClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

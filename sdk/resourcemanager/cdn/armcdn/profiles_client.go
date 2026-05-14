@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultProfilesClientVersion string = "2025-06-01"
+
 // ProfilesClient contains the methods for the Profiles group.
 // Don't use this type directly, use NewProfilesClient() instead.
+//
+// Generated from API version 2025-06-01
 type ProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCanMigrate - Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - canMigrateParameters - Properties needed to check if cdn profile or classic frontdoor can be migrated.
 //   - options - ProfilesClientBeginCanMigrateOptions contains the optional parameters for the ProfilesClient.BeginCanMigrate
@@ -66,8 +68,6 @@ func (client *ProfilesClient) BeginCanMigrate(ctx context.Context, resourceGroup
 
 // CanMigrate - Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *ProfilesClient) canMigrate(ctx context.Context, resourceGroupName string, canMigrateParameters CanMigrateParameters, options *ProfilesClientBeginCanMigrateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginCanMigrate"
@@ -105,8 +105,8 @@ func (client *ProfilesClient) canMigrateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, canMigrateParameters); err != nil {
@@ -117,8 +117,6 @@ func (client *ProfilesClient) canMigrateCreateRequest(ctx context.Context, resou
 
 // BeginCdnCanMigrateToAfd - Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -143,8 +141,6 @@ func (client *ProfilesClient) BeginCdnCanMigrateToAfd(ctx context.Context, resou
 
 // CdnCanMigrateToAfd - Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *ProfilesClient) cdnCanMigrateToAfd(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginCdnCanMigrateToAfdOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginCdnCanMigrateToAfd"
@@ -186,8 +182,8 @@ func (client *ProfilesClient) cdnCanMigrateToAfdCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -195,8 +191,6 @@ func (client *ProfilesClient) cdnCanMigrateToAfdCreateRequest(ctx context.Contex
 // BeginCdnMigrateToAfd - Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile
 // for migration and will be followed by Commit to finalize the migration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -223,8 +217,6 @@ func (client *ProfilesClient) BeginCdnMigrateToAfd(ctx context.Context, resource
 // CdnMigrateToAfd - Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. This step prepares the profile
 // for migration and will be followed by Commit to finalize the migration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *ProfilesClient) cdnMigrateToAfd(ctx context.Context, resourceGroupName string, profileName string, migrationParameters MigrationToAfdParameters, options *ProfilesClientBeginCdnMigrateToAfdOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginCdnMigrateToAfd"
@@ -266,8 +258,8 @@ func (client *ProfilesClient) cdnMigrateToAfdCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, migrationParameters); err != nil {
@@ -279,8 +271,6 @@ func (client *ProfilesClient) cdnMigrateToAfdCreateRequest(ctx context.Context, 
 // BeginCreate - Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under
 // the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -306,8 +296,6 @@ func (client *ProfilesClient) BeginCreate(ctx context.Context, resourceGroupName
 // Create - Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
 // specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *ProfilesClient) create(ctx context.Context, resourceGroupName string, profileName string, profile Profile, options *ProfilesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginCreate"
@@ -349,8 +337,8 @@ func (client *ProfilesClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, profile); err != nil {
@@ -363,8 +351,6 @@ func (client *ProfilesClient) createCreateRequest(ctx context.Context, resourceG
 // parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and
 // custom domains.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -389,8 +375,6 @@ func (client *ProfilesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified parameters.
 // Deleting a profile will result in the deletion of all of the sub-resources including endpoints, origins and custom domains.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *ProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginDelete"
@@ -432,8 +416,8 @@ func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -442,8 +426,6 @@ func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceG
 // profile; rules engine, advanced HTTP reports, and real-time stats and alerts in a premium profile. The SSO URI changes
 // approximately every 10 minutes.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -490,8 +472,8 @@ func (client *ProfilesClient) generateSsoURICreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -508,8 +490,6 @@ func (client *ProfilesClient) generateSsoURIHandleResponse(resp *http.Response) 
 // Get - Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name under
 // the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -556,8 +536,8 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -572,8 +552,6 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 }
 
 // NewListPager - Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure subscription.
-//
-// Generated from API version 2025-09-01-preview
 //   - options - ProfilesClientListOptions contains the optional parameters for the ProfilesClient.NewListPager method.
 func (client *ProfilesClient) NewListPager(options *ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProfilesClientListResponse]{
@@ -610,8 +588,8 @@ func (client *ProfilesClient) listCreateRequest(ctx context.Context, _ *Profiles
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -627,8 +605,6 @@ func (client *ProfilesClient) listHandleResponse(resp *http.Response) (ProfilesC
 
 // NewListByResourceGroupPager - Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within
 // a resource group.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProfilesClientListByResourceGroupOptions contains the optional parameters for the ProfilesClient.NewListByResourceGroupPager
 //     method.
@@ -671,8 +647,8 @@ func (client *ProfilesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -688,8 +664,6 @@ func (client *ProfilesClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given Azure Front Door Standard or
 // Azure Front Door Premium or CDN profile.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -738,8 +712,8 @@ func (client *ProfilesClient) listResourceUsageCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -756,8 +730,6 @@ func (client *ProfilesClient) listResourceUsageHandleResponse(resp *http.Respons
 // ListSupportedOptimizationTypes - Gets the supported optimization types for the current profile. A user can create an endpoint
 // with an optimization type from the listed values.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -805,8 +777,8 @@ func (client *ProfilesClient) listSupportedOptimizationTypesCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -823,8 +795,6 @@ func (client *ProfilesClient) listSupportedOptimizationTypesHandleResponse(resp 
 // BeginMigrate - Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after
 // this.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - migrationParameters - Properties needed to migrate the profile.
 //   - options - ProfilesClientBeginMigrateOptions contains the optional parameters for the ProfilesClient.BeginMigrate method.
@@ -847,8 +817,6 @@ func (client *ProfilesClient) BeginMigrate(ctx context.Context, resourceGroupNam
 
 // Migrate - Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *ProfilesClient) migrate(ctx context.Context, resourceGroupName string, migrationParameters MigrationParameters, options *ProfilesClientBeginMigrateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginMigrate"
@@ -886,8 +854,8 @@ func (client *ProfilesClient) migrateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, migrationParameters); err != nil {
@@ -898,8 +866,6 @@ func (client *ProfilesClient) migrateCreateRequest(ctx context.Context, resource
 
 // BeginMigrationAbort - Abort the migration to Azure Frontdoor Premium/Standard.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -924,8 +890,6 @@ func (client *ProfilesClient) BeginMigrationAbort(ctx context.Context, resourceG
 
 // MigrationAbort - Abort the migration to Azure Frontdoor Premium/Standard.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *ProfilesClient) migrationAbort(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationAbortOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginMigrationAbort"
@@ -967,15 +931,13 @@ func (client *ProfilesClient) migrationAbortCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginMigrationCommit - Commit the migrated Azure Frontdoor(Standard/Premium) profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -1001,8 +963,6 @@ func (client *ProfilesClient) BeginMigrationCommit(ctx context.Context, resource
 
 // MigrationCommit - Commit the migrated Azure Frontdoor(Standard/Premium) profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *ProfilesClient) migrationCommit(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationCommitOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginMigrationCommit"
@@ -1044,16 +1004,14 @@ func (client *ProfilesClient) migrationCommitCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdate - Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
 // profile name under the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -1079,8 +1037,6 @@ func (client *ProfilesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile
 // name under the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *ProfilesClient) update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters, options *ProfilesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginUpdate"
@@ -1122,8 +1078,8 @@ func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultProfilesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, profileUpdateParameters); err != nil {

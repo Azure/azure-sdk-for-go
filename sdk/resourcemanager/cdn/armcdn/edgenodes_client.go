@@ -11,10 +11,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
+
+const defaultEdgeNodesClientVersion string = "2025-06-01"
 
 // EdgeNodesClient contains the methods for the EdgeNodes group.
 // Don't use this type directly, use NewEdgeNodesClient() instead.
+//
+// Generated from API version 2025-06-01
 type EdgeNodesClient struct {
 	internal *arm.Client
 }
@@ -34,8 +39,6 @@ func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOp
 }
 
 // NewListPager - Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
-//
-// Generated from API version 2025-09-01-preview
 //   - options - EdgeNodesClientListOptions contains the optional parameters for the EdgeNodesClient.NewListPager method.
 func (client *EdgeNodesClient) NewListPager(options *EdgeNodesClientListOptions) *runtime.Pager[EdgeNodesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EdgeNodesClientListResponse]{
@@ -68,8 +71,8 @@ func (client *EdgeNodesClient) listCreateRequest(ctx context.Context, _ *EdgeNod
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultEdgeNodesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

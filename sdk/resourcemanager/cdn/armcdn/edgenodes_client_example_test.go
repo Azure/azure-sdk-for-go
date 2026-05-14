@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/EdgeNodes_List.json
+// Generated from example definition: 2025-06-01/EdgeNodes_List.json
 func ExampleEdgeNodesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

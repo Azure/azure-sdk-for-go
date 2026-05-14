@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/Routes_Create.json
+// Generated from example definition: 2025-06-01/Routes_Create.json
 func ExampleRoutesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,6 @@ func ExampleRoutesClient_BeginCreate() {
 			},
 			EnabledState:        to.Ptr(armcdn.EnabledStateEnabled),
 			ForwardingProtocol:  to.Ptr(armcdn.ForwardingProtocolMatchRequest),
-			GrpcState:           to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 			HTTPSRedirect:       to.Ptr(armcdn.HTTPSRedirectEnabled),
 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 			OriginGroup: &armcdn.ResourceReference{
@@ -68,13 +67,13 @@ func ExampleRoutesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.RoutesClientCreateResponse{
-	// 	Route: &armcdn.Route{
+	// 	Route: armcdn.Route{
 	// 		Name: to.Ptr("route1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
@@ -98,7 +97,6 @@ func ExampleRoutesClient_BeginCreate() {
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
 	// 			ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
-	// 			GrpcState: to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 	// 			HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
 	// 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 	// 			OriginGroup: &armcdn.ResourceReference{
@@ -122,7 +120,7 @@ func ExampleRoutesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Routes_Delete.json
+// Generated from example definition: 2025-06-01/Routes_Delete.json
 func ExampleRoutesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +137,7 @@ func ExampleRoutesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -148,7 +146,7 @@ func ExampleRoutesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Routes_Get.json
+// Generated from example definition: 2025-06-01/Routes_Get.json
 func ExampleRoutesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +165,7 @@ func ExampleRoutesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.RoutesClientGetResponse{
-	// 	Route: &armcdn.Route{
+	// 	Route: armcdn.Route{
 	// 		Name: to.Ptr("route1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
@@ -190,7 +188,6 @@ func ExampleRoutesClient_Get() {
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
 	// 			ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
-	// 			GrpcState: to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 	// 			HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
 	// 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 	// 			OriginGroup: &armcdn.ResourceReference{
@@ -214,7 +211,7 @@ func ExampleRoutesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Routes_ListByEndpoint.json
+// Generated from example definition: 2025-06-01/Routes_ListByEndpoint.json
 func ExampleRoutesClient_NewListByEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +259,6 @@ func ExampleRoutesClient_NewListByEndpointPager() {
 		// 					DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 		// 					EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
 		// 					ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
-		// 					GrpcState: to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 		// 					HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
 		// 					LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 		// 					OriginGroup: &armcdn.ResourceReference{
@@ -289,7 +285,7 @@ func ExampleRoutesClient_NewListByEndpointPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Routes_Update.json
+// Generated from example definition: 2025-06-01/Routes_Update.json
 func ExampleRoutesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +315,6 @@ func ExampleRoutesClient_BeginUpdate() {
 			},
 			EnabledState:        to.Ptr(armcdn.EnabledStateEnabled),
 			ForwardingProtocol:  to.Ptr(armcdn.ForwardingProtocolMatchRequest),
-			GrpcState:           to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 			HTTPSRedirect:       to.Ptr(armcdn.HTTPSRedirectEnabled),
 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 			OriginGroup: &armcdn.ResourceReference{
@@ -344,13 +339,13 @@ func ExampleRoutesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.RoutesClientUpdateResponse{
-	// 	Route: &armcdn.Route{
+	// 	Route: armcdn.Route{
 	// 		Name: to.Ptr("route1"),
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/afdendpoints/routes"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afdendpoints/endpoint1/routes/route1"),
@@ -373,7 +368,6 @@ func ExampleRoutesClient_BeginUpdate() {
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
 	// 			ForwardingProtocol: to.Ptr(armcdn.ForwardingProtocolMatchRequest),
-	// 			GrpcState: to.Ptr(armcdn.AFDRouteGrpcStateEnabled),
 	// 			HTTPSRedirect: to.Ptr(armcdn.HTTPSRedirectEnabled),
 	// 			LinkToDefaultDomain: to.Ptr(armcdn.LinkToDefaultDomainEnabled),
 	// 			OriginGroup: &armcdn.ResourceReference{

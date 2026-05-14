@@ -4,16 +4,6 @@
 
 package armcdn
 
-// AFDDomainMtlsParametersClassification provides polymorphic access to related types.
-// Call the interface's GetAFDDomainMtlsParameters() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *AFDDomainMtlsParameters, *ClientCertificateRequiredAndOriginValidatesAdvancedSettings, *ClientCertificateRequiredAndValidatedAdvancedSettings,
-// - *ClientCertificateValidatedIfPresentedAdvancedSettings, *CompleteMtlsPassthroughToOriginAdvancedSettings
-type AFDDomainMtlsParametersClassification interface {
-	// GetAFDDomainMtlsParameters returns the AFDDomainMtlsParameters content of the underlying type.
-	GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters
-}
-
 // CertificateSourceParametersBaseClassification provides polymorphic access to related types.
 // Call the interface's GetCertificateSourceParametersBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -35,9 +25,9 @@ type CustomDomainHTTPSParametersClassification interface {
 // DeliveryRuleActionClassification provides polymorphic access to related types.
 // Call the interface's GetDeliveryRuleAction() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AfdURLSigningAction, *DeliveryRuleAction, *DeliveryRuleCacheExpirationAction, *DeliveryRuleCacheKeyQueryStringAction,
-// - *DeliveryRuleRequestHeaderAction, *DeliveryRuleResponseHeaderAction, *DeliveryRuleRouteConfigurationOverrideAction, *EdgeAction,
-// - *OriginGroupOverrideAction, *URLRedirectAction, *URLRewriteAction, *URLSigningAction
+// - *DeliveryRuleAction, *DeliveryRuleCacheExpirationAction, *DeliveryRuleCacheKeyQueryStringAction, *DeliveryRuleRequestHeaderAction,
+// - *DeliveryRuleResponseHeaderAction, *DeliveryRuleRouteConfigurationOverrideAction, *OriginGroupOverrideAction, *URLRedirectAction,
+// - *URLRewriteAction, *URLSigningAction
 type DeliveryRuleActionClassification interface {
 	// GetDeliveryRuleAction returns the DeliveryRuleAction content of the underlying type.
 	GetDeliveryRuleAction() *DeliveryRuleAction
@@ -46,9 +36,9 @@ type DeliveryRuleActionClassification interface {
 // DeliveryRuleActionParametersClassification provides polymorphic access to related types.
 // Call the interface's GetDeliveryRuleActionParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *CacheExpirationActionParameters, *CacheKeyQueryStringActionParameters, *DeliveryRuleActionParameters, *DeliveryRuleEdgeActionParameters,
-// - *HeaderActionParameters, *OriginGroupOverrideActionParameters, *RouteConfigurationOverrideActionParameters, *URLRedirectActionParameters,
-// - *URLRewriteActionParameters, *URLSigningActionParameters
+// - *CacheExpirationActionParameters, *CacheKeyQueryStringActionParameters, *DeliveryRuleActionParameters, *HeaderActionParameters,
+// - *OriginGroupOverrideActionParameters, *RouteConfigurationOverrideActionParameters, *URLRedirectActionParameters, *URLRewriteActionParameters,
+// - *URLSigningActionParameters
 type DeliveryRuleActionParametersClassification interface {
 	// GetDeliveryRuleActionParameters returns the DeliveryRuleActionParameters content of the underlying type.
 	GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters
@@ -81,21 +71,11 @@ type DeliveryRuleConditionParametersClassification interface {
 	GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters
 }
 
-// DeploymentVersionChangeClassification provides polymorphic access to related types.
-// Call the interface's GetDeploymentVersionChange() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *DeploymentVersionAFDOriginChange, *DeploymentVersionAFDOriginGroupChange, *DeploymentVersionChange, *DeploymentVersionRouteChange,
-// - *DeploymentVersionRuleChange, *DeploymentVersionRuleSetChange, *DeploymentVersionSecurityPolicyChange
-type DeploymentVersionChangeClassification interface {
-	// GetDeploymentVersionChange returns the DeploymentVersionChange content of the underlying type.
-	GetDeploymentVersionChange() *DeploymentVersionChange
-}
-
 // SecretParametersClassification provides polymorphic access to related types.
 // Call the interface's GetSecretParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AfdSecretMtlsCertificateChain, *AzureFirstPartyManagedCertificateParameters, *CustomerCertificateParameters, *ManagedCertificateParameters,
-// - *SecretParameters, *URLSigningKeyParameters
+// - *AzureFirstPartyManagedCertificateParameters, *CustomerCertificateParameters, *ManagedCertificateParameters, *SecretParameters,
+// - *URLSigningKeyParameters
 type SecretParametersClassification interface {
 	// GetSecretParameters returns the SecretParameters content of the underlying type.
 	GetSecretParameters() *SecretParameters
@@ -104,7 +84,7 @@ type SecretParametersClassification interface {
 // SecurityPolicyPropertiesParametersClassification provides polymorphic access to related types.
 // Call the interface's GetSecurityPolicyPropertiesParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *SecurityPolicyPropertiesParameters, *SecurityPolicyWebApplicationFirewallParameters, *SecurityPolicyWebApplicationFirewallParametersWithEmbeddedWafPolicy
+// - *SecurityPolicyPropertiesParameters, *SecurityPolicyWebApplicationFirewallParameters
 type SecurityPolicyPropertiesParametersClassification interface {
 	// GetSecurityPolicyPropertiesParameters returns the SecurityPolicyPropertiesParameters content of the underlying type.
 	GetSecurityPolicyPropertiesParameters() *SecurityPolicyPropertiesParameters

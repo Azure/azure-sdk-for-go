@@ -62,16 +62,6 @@ type AFDDomainListResult struct {
 	NextLink *string
 }
 
-// AFDDomainMtlsParameters - Contains the properties to configure mutual TLS for a custom domain with FQDN. Mutual TLS cannot
-// be configured for custom domains with wildcard host names.
-type AFDDomainMtlsParameters struct {
-	// REQUIRED; Supported scenarios for establishing mTLS connection.
-	Scenario *MtlsScenarioType
-}
-
-// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type AFDDomainMtlsParameters.
-func (a *AFDDomainMtlsParameters) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters { return a }
-
 // AFDDomainProperties - The JSON object that contains the properties of the domain to create.
 type AFDDomainProperties struct {
 	// REQUIRED; The host name of the domain. Must be a domain name.
@@ -82,10 +72,6 @@ type AFDDomainProperties struct {
 
 	// Key-Value pair representing migration properties for domains.
 	ExtendedProperties map[string]*string
-
-	// The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and which server
-	// certificate(s) to use.
-	MtlsSettings AFDDomainMtlsParametersClassification
 
 	// Resource reference to the Azure resource where custom domain ownership was prevalidated
 	PreValidatedCustomDomainResourceID *ResourceReference
@@ -121,10 +107,6 @@ type AFDDomainUpdateParameters struct {
 type AFDDomainUpdatePropertiesParameters struct {
 	// Resource reference to the Azure DNS zone
 	AzureDNSZone *ResourceReference
-
-	// The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and which server
-	// certificate(s) to use.
-	MtlsSettings AFDDomainMtlsParametersClassification
 
 	// Resource reference to the Azure resource where custom domain ownership was prevalidated
 	PreValidatedCustomDomainResourceID *ResourceReference
@@ -179,9 +161,6 @@ type AFDEndpointProperties struct {
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
 	EnabledState *EnabledState
 
-	// Set to Disabled by default. If set to Enabled, only custom domains with mTLS enabled can be added to child Route resources.
-	EnforceMtls *EnforceMtlsEnabledState
-
 	// READ-ONLY
 	DeploymentStatus *DeploymentStatus
 
@@ -199,9 +178,6 @@ type AFDEndpointProperties struct {
 type AFDEndpointPropertiesUpdateParameters struct {
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
 	EnabledState *EnabledState
-
-	// Set to Disabled by default. If set to Enabled, only custom domains with mTLS enabled can be added to child Route resources.
-	EnforceMtls *EnforceMtlsEnabledState
 
 	// READ-ONLY; The name of the profile which holds the endpoint.
 	ProfileName *string
@@ -351,9 +327,6 @@ type AFDOriginProperties struct {
 	// all origins in an endpoint.
 	HostName *string
 
-	// Origin capacity settings for an origin
-	OriginCapacityResource *OriginCapacityResourceProperties
-
 	// The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this
 	// value. Azure Front Door origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match
 	// the origin hostname by default. This overrides the host header defined at Endpoint
@@ -407,9 +380,6 @@ type AFDOriginUpdatePropertiesParameters struct {
 	// all origins in an endpoint.
 	HostName *string
 
-	// Origin capacity settings for an origin
-	OriginCapacityResource *OriginCapacityResourceProperties
-
 	// The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this
 	// value. Azure Front Door origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match
 	// the origin hostname by default. This overrides the host header defined at Endpoint
@@ -459,71 +429,6 @@ type AfdRouteCacheConfiguration struct {
 	// Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching, ignore
 	// specific query strings, cache every request with a unique URL, or cache specific query strings.
 	QueryStringCachingBehavior *AfdQueryStringCachingBehavior
-}
-
-// AfdSecretMtlsCertificateChain - Server-side certificate used for mTLS validation
-type AfdSecretMtlsCertificateChain struct {
-	// REQUIRED; Resource reference to the Azure Key Vault secret. Expected to be in format of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}
-	SecretSource *ResourceReference
-
-	// REQUIRED; Version of the secret to be used
-	SecretVersion *string
-
-	// CONSTANT; The type of the secret resource.
-	// Field has constant value SecretTypeMtlsCertificateChain, any specified value is ignored.
-	Type *SecretType
-
-	// READ-ONLY; Soonest expiration date among certificates in customer's certificate chain in ISO 8601 compliant format yyyy-MM-ddTHH:mm:ss.fffffffK
-	// in UTC
-	ExpirationDate *time.Time
-}
-
-// GetSecretParameters implements the SecretParametersClassification interface for type AfdSecretMtlsCertificateChain.
-func (a *AfdSecretMtlsCertificateChain) GetSecretParameters() *SecretParameters {
-	return &SecretParameters{
-		Type: a.Type,
-	}
-}
-
-// AfdURLSigningAction - Defines the url signing action for the delivery rule.
-type AfdURLSigningAction struct {
-	// CONSTANT; The name of the action for the delivery rule.
-	// Field has constant value DeliveryRuleActionNameAfdURLSigning, any specified value is ignored.
-	Name *DeliveryRuleActionName
-
-	// REQUIRED; Defines the parameters for the action.
-	Parameters *AfdURLSigningActionParameters
-}
-
-// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type AfdURLSigningAction.
-func (a *AfdURLSigningAction) GetDeliveryRuleAction() *DeliveryRuleAction {
-	return &DeliveryRuleAction{
-		Name: a.Name,
-	}
-}
-
-// AfdURLSigningActionParameters - Defines the parameters for the Url Signing action.
-type AfdURLSigningActionParameters struct {
-	// REQUIRED; Resource reference to the Azure Key Vault secret. Expected to be in format of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/keyGroups/{keyGroupName}
-	KeyGroupReference *ResourceReference
-
-	// REQUIRED
-	TypeName *TypeName
-
-	// Algorithm to use for URL signing
-	Algorithm *Algorithm
-
-	// Defines which query string parameters in the url to be considered for expires, key id etc.
-	ParameterNameOverride []*URLSigningParamIdentifier
-}
-
-// AgentPath - Defines a path configuration for a web agent.
-type AgentPath struct {
-	// REQUIRED; The actual path value.
-	Path *string
-
-	// REQUIRED; The type of the path.
-	Type *AgentPathType
 }
 
 // AzureFirstPartyManagedCertificateParameters - Azure FirstParty Managed Certificate provided by other first party resource
@@ -743,70 +648,6 @@ type CidrIPAddress struct {
 	PrefixLength *int32
 }
 
-// ClientCertificateRequiredAndOriginValidatesAdvancedSettings - Advanced settings for MtlsScenarioType enum value: ClientCertificateRequiredAndOriginValidates.
-type ClientCertificateRequiredAndOriginValidatesAdvancedSettings struct {
-	// CONSTANT; Supported scenarios for establishing mTLS connection.
-	// Field has constant value MtlsScenarioTypeClientCertificateRequiredAndOriginValidates, any specified value is ignored.
-	Scenario *MtlsScenarioType
-}
-
-// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateRequiredAndOriginValidatesAdvancedSettings.
-func (c *ClientCertificateRequiredAndOriginValidatesAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
-	return &AFDDomainMtlsParameters{
-		Scenario: c.Scenario,
-	}
-}
-
-// ClientCertificateRequiredAndValidatedAdvancedSettings - Advanced settings for MtlsScenarioType enum value: ClientCertificateRequiredAndValidated.
-type ClientCertificateRequiredAndValidatedAdvancedSettings struct {
-	// CONSTANT; Supported scenarios for establishing mTLS connection.
-	// Field has constant value MtlsScenarioTypeClientCertificateRequiredAndValidated, any specified value is ignored.
-	Scenario *MtlsScenarioType
-
-	// REQUIRED; List of one or two of Resource References (ie. subs/rg/profile/secret) to Secrets of type MtlsCertificateChain
-	// to use in mutual TLS handshake as the trusted issuer certificate chain.
-	Secrets []*ResourceReference
-
-	// List of FQDNs that will be accepted for mutual TLS validation.
-	AllowedFqdns []*string
-
-	// Set to Enabled by default. If set to Disabled, revocation status of client certificate chain will be checked before establishing
-	// mutual TLS connection.
-	CertificateRevocationCheck *CertificateRevocationCheckEnabledState
-}
-
-// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateRequiredAndValidatedAdvancedSettings.
-func (c *ClientCertificateRequiredAndValidatedAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
-	return &AFDDomainMtlsParameters{
-		Scenario: c.Scenario,
-	}
-}
-
-// ClientCertificateValidatedIfPresentedAdvancedSettings - Advanced settings for MtlsScenarioType enum value: ClientCertificateValidatedIfPresented.
-type ClientCertificateValidatedIfPresentedAdvancedSettings struct {
-	// CONSTANT; Supported scenarios for establishing mTLS connection.
-	// Field has constant value MtlsScenarioTypeClientCertificateValidatedIfPresented, any specified value is ignored.
-	Scenario *MtlsScenarioType
-
-	// REQUIRED; List of one or two of Resource References (ie. subs/rg/profile/secret) to Secrets of type MtlsCertificateChain
-	// to use in mutual TLS handshake as the trusted issuer certificate chain.
-	Secrets []*ResourceReference
-
-	// List of FQDNs that will be accepted for mutual TLS validation.
-	AllowedFqdns []*string
-
-	// Set to Enabled by default. If set to Disabled, revocation status of client certificate chain will be checked before establishing
-	// mutual TLS connection.
-	CertificateRevocationCheck *CertificateRevocationCheckEnabledState
-}
-
-// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type ClientCertificateValidatedIfPresentedAdvancedSettings.
-func (c *ClientCertificateValidatedIfPresentedAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
-	return &AFDDomainMtlsParameters{
-		Scenario: c.Scenario,
-	}
-}
-
 // ClientPortMatchConditionParameters - Defines the parameters for ClientPort match conditions
 type ClientPortMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
@@ -830,32 +671,6 @@ type ClientPortMatchConditionParameters struct {
 func (c *ClientPortMatchConditionParameters) GetDeliveryRuleConditionParameters() *DeliveryRuleConditionParameters {
 	return &DeliveryRuleConditionParameters{
 		TypeName: c.TypeName,
-	}
-}
-
-// CompareDeploymentVersionsParameter - compare deployment versions request parameter
-type CompareDeploymentVersionsParameter struct {
-	// REQUIRED; the deployment version name to be compared to
-	CompareTo *string
-}
-
-// CompareDeploymentVersionsResponse - compare deployment versions response
-type CompareDeploymentVersionsResponse struct {
-	// REQUIRED; The difference between two deployment versions
-	Value []DeploymentVersionChangeClassification
-}
-
-// CompleteMtlsPassthroughToOriginAdvancedSettings - Advanced settings for MtlsScenarioType enum value: CompleteMtlsPassthroughToOrigin.
-type CompleteMtlsPassthroughToOriginAdvancedSettings struct {
-	// CONSTANT; Supported scenarios for establishing mTLS connection.
-	// Field has constant value MtlsScenarioTypeCompleteMtlsPassthroughToOrigin, any specified value is ignored.
-	Scenario *MtlsScenarioType
-}
-
-// GetAFDDomainMtlsParameters implements the AFDDomainMtlsParametersClassification interface for type CompleteMtlsPassthroughToOriginAdvancedSettings.
-func (c *CompleteMtlsPassthroughToOriginAdvancedSettings) GetAFDDomainMtlsParameters() *AFDDomainMtlsParameters {
-	return &AFDDomainMtlsParameters{
-		Scenario: c.Scenario,
 	}
 }
 
@@ -1030,46 +845,10 @@ type CustomRule struct {
 	EnabledState *CustomRuleEnabledState
 }
 
-// CustomRuleAfd - Defines contents of a web application rule
-type CustomRuleAfd struct {
-	// REQUIRED; Describes what action to be applied when rule matches.
-	Action *ActionType
-
-	// REQUIRED; List of match conditions.
-	MatchConditions []*MatchConditionAfd
-
-	// REQUIRED; Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.
-	Priority *int32
-
-	// REQUIRED; Describes type of rule.
-	RuleType *RuleType
-
-	// Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
-	EnabledState *CustomRuleEnabledState
-
-	// Describes the list of variables to group the rate limit requests
-	GroupBy []*GroupByVariable
-
-	// Describes the name of the rule.
-	Name *string
-
-	// Time window for resetting the rate limit count. Default is 1 minute.
-	RateLimitDurationInMinutes *int32
-
-	// Number of allowed requests per client within the time window.
-	RateLimitThreshold *int32
-}
-
 // CustomRuleList - Defines contents of custom rules
 type CustomRuleList struct {
 	// List of rules
 	Rules []*CustomRule
-}
-
-// CustomRuleListAfd - Defines contents of custom rules
-type CustomRuleListAfd struct {
-	// List of rules
-	Rules []*CustomRuleAfd
 }
 
 // CustomerCertificateParameters - Customer Certificate used for https
@@ -1330,26 +1109,6 @@ type DeliveryRuleCookiesCondition struct {
 func (d *DeliveryRuleCookiesCondition) GetDeliveryRuleCondition() *DeliveryRuleCondition {
 	return &DeliveryRuleCondition{
 		Name: d.Name,
-	}
-}
-
-// DeliveryRuleEdgeActionParameters - Defines the parameters for the edge action.
-type DeliveryRuleEdgeActionParameters struct {
-	// REQUIRED; defines the edge action that will be invoked.
-	EdgeActionReference *ResourceReference
-
-	// REQUIRED; Defines at which point in the request processing pipeline the edge action will be invoked.
-	InvocationPoint *InvocationPoint
-
-	// CONSTANT; Field has constant value DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters, any specified value
-	// is ignored.
-	TypeName *DeliveryRuleActionParametersType
-}
-
-// GetDeliveryRuleActionParameters implements the DeliveryRuleActionParametersClassification interface for type DeliveryRuleEdgeActionParameters.
-func (d *DeliveryRuleEdgeActionParameters) GetDeliveryRuleActionParameters() *DeliveryRuleActionParameters {
-	return &DeliveryRuleActionParameters{
-		TypeName: d.TypeName,
 	}
 }
 
@@ -1694,225 +1453,6 @@ func (d *DeliveryRuleURLPathCondition) GetDeliveryRuleCondition() *DeliveryRuleC
 	}
 }
 
-// DeploymentStages - The preview and production deployment status of the deployment version under the profile
-type DeploymentStages struct {
-	// READ-ONLY; Deployment status of preview stage.
-	Preview *DeploymentRolloutStatus
-
-	// READ-ONLY; Deployment status of production stage.
-	Production *DeploymentRolloutStatus
-}
-
-// DeploymentVersion - Deployment version object
-type DeploymentVersion struct {
-	// The JSON object that contains the properties of the deployment version.
-	Properties *DeploymentVersionProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// DeploymentVersionAFDOriginChange - Deployment change of the origin group under the profile
-type DeploymentVersionAFDOriginChange struct {
-	// REQUIRED; Resource type supported by preview.
-	ResourceType *PreviewSupportedResourceType
-
-	// The JSON object that contains the properties of the origin.
-	CurrentProperties *AFDOriginProperties
-
-	// The JSON object that contains the properties of the origin.
-	PreviousProperties *AFDOriginProperties
-	ResourceID         *string
-	ResourceName       *string
-}
-
-// GetDeploymentVersionChange implements the DeploymentVersionChangeClassification interface for type DeploymentVersionAFDOriginChange.
-func (d *DeploymentVersionAFDOriginChange) GetDeploymentVersionChange() *DeploymentVersionChange {
-	return &DeploymentVersionChange{
-		ResourceID:   d.ResourceID,
-		ResourceName: d.ResourceName,
-		ResourceType: d.ResourceType,
-	}
-}
-
-// DeploymentVersionAFDOriginGroupChange - Deployment change of the origin group under the profile
-type DeploymentVersionAFDOriginGroupChange struct {
-	// REQUIRED; Resource type supported by preview.
-	ResourceType *PreviewSupportedResourceType
-
-	// The JSON object that contains the properties of the origin group.
-	CurrentProperties *AFDOriginGroupProperties
-
-	// The JSON object that contains the properties of the origin group.
-	PreviousProperties *AFDOriginGroupProperties
-	ResourceID         *string
-	ResourceName       *string
-}
-
-// GetDeploymentVersionChange implements the DeploymentVersionChangeClassification interface for type DeploymentVersionAFDOriginGroupChange.
-func (d *DeploymentVersionAFDOriginGroupChange) GetDeploymentVersionChange() *DeploymentVersionChange {
-	return &DeploymentVersionChange{
-		ResourceID:   d.ResourceID,
-		ResourceName: d.ResourceName,
-		ResourceType: d.ResourceType,
-	}
-}
-
-// DeploymentVersionChange - Deployment change under the profile
-type DeploymentVersionChange struct {
-	// REQUIRED; Resource type supported by preview.
-	ResourceType *PreviewSupportedResourceType
-	ResourceID   *string
-	ResourceName *string
-}
-
-// GetDeploymentVersionChange implements the DeploymentVersionChangeClassification interface for type DeploymentVersionChange.
-func (d *DeploymentVersionChange) GetDeploymentVersionChange() *DeploymentVersionChange { return d }
-
-// DeploymentVersionListResult - The response of a DeploymentVersion list operation.
-type DeploymentVersionListResult struct {
-	// REQUIRED; The DeploymentVersion items on this page
-	Value []*DeploymentVersion
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// DeploymentVersionProperties - The JSON object that contains the properties of the deployment version.
-type DeploymentVersionProperties struct {
-	Description *string
-
-	// READ-ONLY
-	ApprovalStatus *ApprovalStatus
-
-	// READ-ONLY; The timestamp of deployment version approval (UTC)
-	ApprovedAt *time.Time
-
-	// READ-ONLY; The timestamp of deployment version creation (UTC)
-	CreatedAt *time.Time
-
-	// READ-ONLY
-	DeploymentStatus *DeploymentStatus
-
-	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState
-
-	// READ-ONLY; The preview and production deployment status of the deployment version under the profile
-	Stages *DeploymentStages
-}
-
-// DeploymentVersionRouteChange - Deployment change of the route under the profile
-type DeploymentVersionRouteChange struct {
-	// REQUIRED; Resource type supported by preview.
-	ResourceType *PreviewSupportedResourceType
-
-	// The JSON object that contains the properties of the Routes to create.
-	CurrentProperties *RouteProperties
-
-	// The JSON object that contains the properties of the Routes to create.
-	PreviousProperties *RouteProperties
-	ResourceID         *string
-	ResourceName       *string
-}
-
-// GetDeploymentVersionChange implements the DeploymentVersionChangeClassification interface for type DeploymentVersionRouteChange.
-func (d *DeploymentVersionRouteChange) GetDeploymentVersionChange() *DeploymentVersionChange {
-	return &DeploymentVersionChange{
-		ResourceID:   d.ResourceID,
-		ResourceName: d.ResourceName,
-		ResourceType: d.ResourceType,
-	}
-}
-
-// DeploymentVersionRuleChange - Deployment change of the rule under the profile
-type DeploymentVersionRuleChange struct {
-	// REQUIRED; Resource type supported by preview.
-	ResourceType *PreviewSupportedResourceType
-
-	// The JSON object that contains the properties of the Rules to create.
-	CurrentProperties *RuleProperties
-
-	// The JSON object that contains the properties of the Rules to create.
-	PreviousProperties *RuleProperties
-	ResourceID         *string
-	ResourceName       *string
-}
-
-// GetDeploymentVersionChange implements the DeploymentVersionChangeClassification interface for type DeploymentVersionRuleChange.
-func (d *DeploymentVersionRuleChange) GetDeploymentVersionChange() *DeploymentVersionChange {
-	return &DeploymentVersionChange{
-		ResourceID:   d.ResourceID,
-		ResourceName: d.ResourceName,
-		ResourceType: d.ResourceType,
-	}
-}
-
-// DeploymentVersionRuleSetChange - Deployment change of the rule set under the profile
-type DeploymentVersionRuleSetChange struct {
-	// REQUIRED; Resource type supported by preview.
-	ResourceType *PreviewSupportedResourceType
-
-	// The JSON object that contains the properties of the Rule Set to create.
-	CurrentProperties *RuleSetProperties
-
-	// The JSON object that contains the properties of the Rule Set to create.
-	PreviousProperties *RuleSetProperties
-	ResourceID         *string
-	ResourceName       *string
-}
-
-// GetDeploymentVersionChange implements the DeploymentVersionChangeClassification interface for type DeploymentVersionRuleSetChange.
-func (d *DeploymentVersionRuleSetChange) GetDeploymentVersionChange() *DeploymentVersionChange {
-	return &DeploymentVersionChange{
-		ResourceID:   d.ResourceID,
-		ResourceName: d.ResourceName,
-		ResourceType: d.ResourceType,
-	}
-}
-
-// DeploymentVersionSecurityPolicyChange - Deployment change of the security policy under the profile
-type DeploymentVersionSecurityPolicyChange struct {
-	// REQUIRED; Resource type supported by preview.
-	ResourceType *PreviewSupportedResourceType
-
-	// Contains properties required to create a security policy
-	CurrentProperties *SecurityPolicyPropertiesWithEmbeddedWafPolicy
-
-	// Contains properties required to create a security policy
-	PreviousProperties *SecurityPolicyPropertiesWithEmbeddedWafPolicy
-	ResourceID         *string
-	ResourceName       *string
-}
-
-// GetDeploymentVersionChange implements the DeploymentVersionChangeClassification interface for type DeploymentVersionSecurityPolicyChange.
-func (d *DeploymentVersionSecurityPolicyChange) GetDeploymentVersionChange() *DeploymentVersionChange {
-	return &DeploymentVersionChange{
-		ResourceID:   d.ResourceID,
-		ResourceName: d.ResourceName,
-		ResourceType: d.ResourceType,
-	}
-}
-
-// DeploymentVersionUpdate - Contains deployment version for creation or update.
-type DeploymentVersionUpdate struct {
-	// Contains the properties of the deployment version.
-	Properties *DeploymentVersionUpdateProperties
-}
-
-// DeploymentVersionUpdateProperties - Contains the properties of the deployment version.
-type DeploymentVersionUpdateProperties struct {
-	Description *string
-}
-
 // DimensionProperties - Type of operation: get, read, delete, etc.
 type DimensionProperties struct {
 	// Display name of dimension.
@@ -1932,23 +1472,6 @@ type DomainValidationProperties struct {
 
 	// READ-ONLY; Challenge used for DNS TXT record or file based validation
 	ValidationToken *string
-}
-
-// EdgeAction - Defines the edge action for the delivery rule.
-type EdgeAction struct {
-	// CONSTANT; The name of the action for the delivery rule.
-	// Field has constant value DeliveryRuleActionNameEdgeAction, any specified value is ignored.
-	Name *DeliveryRuleActionName
-
-	// REQUIRED; Defines the parameters for the action.
-	Parameters *DeliveryRuleEdgeActionParameters
-}
-
-// GetDeliveryRuleAction implements the DeliveryRuleActionClassification interface for type EdgeAction.
-func (e *EdgeAction) GetDeliveryRuleAction() *DeliveryRuleAction {
-	return &DeliveryRuleAction{
-		Name: e.Name,
-	}
 }
 
 // EdgeNode - Edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users.
@@ -2174,12 +1697,6 @@ type EndpointUpdateParameters struct {
 	Tags map[string]*string
 }
 
-// FrontendEndpointLink - Defines the Resource ID for a Frontend Endpoint.
-type FrontendEndpointLink struct {
-	// READ-ONLY; Resource ID.
-	ID *string
-}
-
 // GeoFilter - Rules defining user's geo access within a CDN endpoint.
 type GeoFilter struct {
 	// REQUIRED; Action of the geo filter, i.e. allow or block access.
@@ -2190,12 +1707,6 @@ type GeoFilter struct {
 
 	// REQUIRED; Relative path applicable to geo filter. (e.g. '/mypictures', '/mypicture/kitty.jpg', and etc.)
 	RelativePath *string
-}
-
-// GroupByVariable - Describes the variables available to group the rate limit requests
-type GroupByVariable struct {
-	// REQUIRED; Describes the supported variable for group by
-	VariableName *VariableName
 }
 
 // HTTPErrorRangeParameters - The JSON object that represents the range for http status codes
@@ -2335,51 +1846,6 @@ func (i *IsDeviceMatchConditionParameters) GetDeliveryRuleConditionParameters() 
 	}
 }
 
-// KeyGroup - Contains a list of references of UrlSigningKey type secret objects.
-type KeyGroup struct {
-	// The JSON object that contains the properties of the key group to create.
-	Properties *KeyGroupProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// KeyGroupListResult - The response of a KeyGroup list operation.
-type KeyGroupListResult struct {
-	// REQUIRED; The KeyGroup items on this page
-	Value []*KeyGroup
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// KeyGroupProperties - The JSON object that contains the properties of the key group to create.
-type KeyGroupProperties struct {
-	// Names of UrlSigningKey type secret objects
-	KeyReferences []*ResourceReference
-
-	// READ-ONLY
-	DeploymentStatus *DeploymentStatus
-
-	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState
-}
-
-// KeyGroupUpdatePropertiesParameters - The JSON object containing properties of key group to create or update.
-type KeyGroupUpdatePropertiesParameters struct {
-	// Names of UrlSigningKey type secret objects
-	KeyReferences []*ResourceReference
-}
-
 // KeyVaultCertificateSourceParameters - Describes the parameters for using a user's KeyVault certificate for securing custom
 // domain.
 type KeyVaultCertificateSourceParameters struct {
@@ -2435,73 +1901,6 @@ type KeyVaultSigningKeyParameters struct {
 
 	// REQUIRED; The name of the user's Key Vault containing the secret
 	VaultName *string
-}
-
-// KnowledgeSource - Defines a knowledge source resource for a web agent.
-type KnowledgeSource struct {
-	// Properties of the knowledge source.
-	Properties *KnowledgeSourceProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// KnowledgeSourceList - Defines a list of knowledge sources. It contains a list of KnowledgeSource objects and a URL link
-// to get the next set of results.
-type KnowledgeSourceList struct {
-	// REQUIRED; The KnowledgeSource items on this page
-	Value []*KnowledgeSource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// KnowledgeSourceProperties - Defines properties of a knowledge source.
-type KnowledgeSourceProperties struct {
-	// REQUIRED; Format or origin of the knowledge source.
-	SourceType *KnowledgeSourceType
-
-	// REQUIRED; Endpoint or location of the knowledge source.
-	URL *string
-
-	// Description of the knowledge source.
-	Description *string
-
-	// Specifies the units of time for scheduling update intervals for the knowledge source.
-	UpdateFrequency *KnowledgeSourceUpdateFrequency
-
-	// READ-ONLY; The last time the knowledge source was updated.
-	LastRefreshedTime *time.Time
-
-	// READ-ONLY; Provisioning status of the knowledge source.
-	ProvisioningState *KnowledgeSourceProvisioningState
-}
-
-// KnowledgeSourcePropertiesUpdateParameters - Defines properties of a knowledge source that can be updated.
-type KnowledgeSourcePropertiesUpdateParameters struct {
-	// Description of the knowledge source.
-	Description *string
-
-	// Endpoint or location of the knowledge source.
-	URL *string
-
-	// Specifies the units of time for scheduling update intervals for the knowledge source.
-	UpdateFrequency *KnowledgeSourceUpdateFrequency
-}
-
-// KnowledgeSourceUpdateParameters - Properties required to update a knowledge source.
-type KnowledgeSourceUpdateParameters struct {
-	// Properties of the knowledge source to be updated.
-	Properties *KnowledgeSourcePropertiesUpdateParameters
 }
 
 // LinkedEndpoint - Defines the ARM Resource ID for the linked endpoints
@@ -2597,19 +1996,6 @@ type ManagedRuleDefinition struct {
 	RuleID *string
 }
 
-// ManagedRuleExclusion - Exclude variables from managed rule evaluation.
-type ManagedRuleExclusion struct {
-	// REQUIRED; The variable type to be excluded.
-	MatchVariable *ManagedRuleExclusionMatchVariable
-
-	// REQUIRED; Selector value for which elements in the collection this exclusion applies to.
-	Selector *string
-
-	// REQUIRED; Comparison operator to apply to the selector when specifying which elements in the collection this exclusion
-	// applies to.
-	SelectorMatchOperator *ManagedRuleExclusionSelectorMatchOperator
-}
-
 // ManagedRuleGroupDefinition - Describes a managed rule group.
 type ManagedRuleGroupDefinition struct {
 	// READ-ONLY; Description of the managed rule group.
@@ -2631,18 +2017,6 @@ type ManagedRuleGroupOverride struct {
 	Rules []*ManagedRuleOverride
 }
 
-// ManagedRuleGroupOverrideAfd - Defines a managed rule group override setting.
-type ManagedRuleGroupOverrideAfd struct {
-	// REQUIRED; Describes the managed rule group to override.
-	RuleGroupName *string
-
-	// Describes the exclusions that are applied to all rules in the group.
-	Exclusions []*ManagedRuleExclusion
-
-	// List of rules that will be disabled. If none specified, all rules in the group will be disabled.
-	Rules []*ManagedRuleOverrideAfd
-}
-
 // ManagedRuleOverride - Defines a managed rule group override setting.
 type ManagedRuleOverride struct {
 	// REQUIRED; Identifier for the managed rule.
@@ -2653,21 +2027,6 @@ type ManagedRuleOverride struct {
 
 	// Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified.
 	EnabledState *ManagedRuleEnabledState
-}
-
-// ManagedRuleOverrideAfd - Defines a managed rule group override setting.
-type ManagedRuleOverrideAfd struct {
-	// REQUIRED; Identifier for the managed rule.
-	RuleID *string
-
-	// Describes the override action to be applied when rule matches.
-	Action *ActionType
-
-	// Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified.
-	EnabledState *ManagedRuleEnabledState
-
-	// Describes the exclusions that are applied to this specific rule.
-	Exclusions []*ManagedRuleExclusion
 }
 
 // ManagedRuleSet - Defines a managed rule set.
@@ -2683,24 +2042,6 @@ type ManagedRuleSet struct {
 
 	// Defines the rule overrides to apply to the rule set.
 	RuleGroupOverrides []*ManagedRuleGroupOverride
-}
-
-// ManagedRuleSetAfd - Defines a managed rule set.
-type ManagedRuleSetAfd struct {
-	// REQUIRED; Defines the rule set type to use.
-	RuleSetType *string
-
-	// REQUIRED; Defines the version of the rule set to use.
-	RuleSetVersion *string
-
-	// Describes the exclusions that are applied to all rules in the set.
-	Exclusions []*ManagedRuleExclusion
-
-	// Defines the rule group overrides to apply to the rule set.
-	RuleGroupOverrides []*ManagedRuleGroupOverrideAfd
-
-	// Defines the rule set action.
-	RuleSetAction *ManagedRuleSetActionType
 }
 
 // ManagedRuleSetDefinition - Describes a managed rule set definition.
@@ -2754,12 +2095,6 @@ type ManagedRuleSetList struct {
 	ManagedRuleSets []*ManagedRuleSet
 }
 
-// ManagedRuleSetListAfd - Defines the list of managed rule sets for the policy.
-type ManagedRuleSetListAfd struct {
-	// List of rule sets.
-	ManagedRuleSets []*ManagedRuleSetAfd
-}
-
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; The type of managed identity assigned to this resource.
@@ -2791,27 +2126,6 @@ type MatchCondition struct {
 	NegateCondition *bool
 
 	// Selector can used to match a specific key for QueryString, Cookies, RequestHeader or PostArgs.
-	Selector *string
-
-	// List of transforms.
-	Transforms []*TransformType
-}
-
-// MatchConditionAfd - Define a match condition.
-type MatchConditionAfd struct {
-	// REQUIRED; List of possible match values.
-	MatchValue []*string
-
-	// REQUIRED; Request variable to compare with.
-	MatchVariable *MatchVariable
-
-	// REQUIRED; Comparison type to use for matching with the variable value.
-	Operator *Operator
-
-	// Describes if the result of this condition should be negated.
-	NegateCondition *bool
-
-	// Match against a specific key from the QueryString, PostArgs, RequestHeader or Cookies variables. Default is null.
 	Selector *string
 
 	// List of transforms.
@@ -3033,21 +2347,6 @@ type OriginAuthenticationProperties struct {
 
 	// The user assigned managed identity to use for the origin authentication if type is UserAssignedIdentity.
 	UserAssignedIdentity *ResourceReference
-}
-
-// OriginCapacityResourceProperties - Origin capacity settings for an origin
-type OriginCapacityResourceProperties struct {
-	// Whether to enable origin capacity for a specific origin
-	Enabled *EnabledState
-
-	// The ingress rate limit threshold for an origin per minute in bytes
-	OriginIngressRateThreshold *int64
-
-	// The request rate limit threshold for an origin per minute
-	OriginRequestRateThreshold *int64
-
-	// The nearest origin capacity pop region for an origin
-	Region *string
 }
 
 // OriginGroup - Origin group comprising of origins is used for load balancing to origins when the content cannot be served
@@ -3289,47 +2588,6 @@ type PolicySettings struct {
 	Mode *PolicyMode
 }
 
-// PolicySettingsAfd - Defines top-level WebApplicationFirewallPolicy configuration settings.
-type PolicySettingsAfd struct {
-	// Defines the Captcha cookie validity lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor. Value
-	// must be an integer between 5 and 1440 with the default value being 30.
-	CaptchaExpirationInMinutes *int32
-
-	// If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
-	CustomBlockResponseBody *string
-
-	// If the action type is block, customer can override the response status code.
-	CustomBlockResponseStatusCode *int32
-
-	// Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.
-	EnabledState *PolicyEnabledState
-
-	// Defines the JavaScript challenge cookie validity lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor.
-	// Value must be an integer between 5 and 1440 with the default value being 30.
-	JavascriptChallengeExpirationInMinutes *int32
-
-	// Defines rules that scrub sensitive fields in the Web Application Firewall logs.
-	LogScrubbing *PolicySettingsLogScrubbing
-
-	// Describes if it is in detection mode or prevention mode at policy level.
-	Mode *PolicyMode
-
-	// If action type is redirect, this field represents redirect URL for the client.
-	RedirectURL *string
-
-	// Describes if policy managed rules will inspect the request body content.
-	RequestBodyCheck *PolicyRequestBodyCheck
-}
-
-// PolicySettingsLogScrubbing - Defines rules that scrub sensitive fields in the Web Application Firewall logs.
-type PolicySettingsLogScrubbing struct {
-	// List of log scrubbing rules applied to the Web Application Firewall logs.
-	ScrubbingRules []*WebApplicationFirewallScrubbingRules
-
-	// State of the log scrubbing config. Default value is Enabled.
-	State *WebApplicationFirewallScrubbingState
-}
-
 // PostArgsMatchConditionParameters - Defines the parameters for PostArgs match conditions
 type PostArgsMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
@@ -3391,57 +2649,6 @@ type Profile struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// ProfileAgent - An agent link (web agent association) within a CDN profile.
-type ProfileAgent struct {
-	// The properties of a profile agent association.
-	Properties *ProfileAgentProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ProfileAgentListResult - The response of a ProfileAgent list operation.
-type ProfileAgentListResult struct {
-	// REQUIRED; The ProfileAgent items on this page
-	Value []*ProfileAgent
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// ProfileAgentProperties - The properties of a profile agent association.
-type ProfileAgentProperties struct {
-	// REQUIRED; List of custom domains associated with this agent link.
-	CustomDomains []*ResourceReference
-
-	// REQUIRED; Reference to the web agent resource.
-	WebAgent *ResourceReference
-
-	// READ-ONLY; Provisioning status of the profile agent association.
-	ProvisioningState *ProfileAgentProvisioningState
-}
-
-// ProfileAgentUpdateParameters - Properties required to update a profile agent association.
-type ProfileAgentUpdateParameters struct {
-	// The properties for updating a profile agent association.
-	Properties *ProfileAgentUpdateProperties
-}
-
-// ProfileAgentUpdateProperties - The properties for updating a profile agent association.
-type ProfileAgentUpdateProperties struct {
-	// List of custom domains associated with this agent link.
-	CustomDomains []*ResourceReference
 }
 
 // ProfileChangeSKUWafMapping - Parameters required for profile upgrade.
@@ -3911,9 +3118,6 @@ type RouteProperties struct {
 	// Protocol this rule will use when forwarding traffic to backends.
 	ForwardingProtocol *ForwardingProtocol
 
-	// Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or 'Disabled'
-	GrpcState *AFDRouteGrpcState
-
 	// Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this is a easy way to set up this rule and it
 	// will be the first rule that gets executed.
 	HTTPSRedirect *HTTPSRedirect
@@ -3966,9 +3170,6 @@ type RouteUpdatePropertiesParameters struct {
 	// Protocol this rule will use when forwarding traffic to backends.
 	ForwardingProtocol *ForwardingProtocol
 
-	// Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or 'Disabled'
-	GrpcState *AFDRouteGrpcState
-
 	// Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this is a easy way to set up this rule and it
 	// will be the first rule that gets executed.
 	HTTPSRedirect *HTTPSRedirect
@@ -3993,12 +3194,6 @@ type RouteUpdatePropertiesParameters struct {
 
 	// READ-ONLY; The name of the endpoint which holds the route.
 	EndpointName *string
-}
-
-// RoutingRuleLink - Defines the Resource ID for a Routing Rule.
-type RoutingRuleLink struct {
-	// READ-ONLY; Resource ID.
-	ID *string
 }
 
 // Rule - Friendly Rules name mapping to the any Rules or secret related information.
@@ -4238,12 +3433,6 @@ type SecurityPolicy struct {
 	Type *string
 }
 
-// SecurityPolicyLink - Defines the Resource ID for a Security Policy.
-type SecurityPolicyLink struct {
-	// READ-ONLY; Resource ID.
-	ID *string
-}
-
 // SecurityPolicyListResult - The response of a SecurityPolicy list operation.
 type SecurityPolicyListResult struct {
 	// REQUIRED; The SecurityPolicy items on this page
@@ -4278,21 +3467,6 @@ type SecurityPolicyPropertiesParameters struct {
 // SecurityPolicyPropertiesParameters.
 func (s *SecurityPolicyPropertiesParameters) GetSecurityPolicyPropertiesParameters() *SecurityPolicyPropertiesParameters {
 	return s
-}
-
-// SecurityPolicyPropertiesWithEmbeddedWafPolicy - Contains properties required to create a security policy
-type SecurityPolicyPropertiesWithEmbeddedWafPolicy struct {
-	// object which contains security policy parameters
-	Parameters *SecurityPolicyWebApplicationFirewallParametersWithEmbeddedWafPolicy
-
-	// READ-ONLY
-	DeploymentStatus *DeploymentStatus
-
-	// READ-ONLY; The name of the profile which holds the security policy.
-	ProfileName *string
-
-	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState
 }
 
 // SecurityPolicyUpdateParameters - The JSON object containing security policy update parameters.
@@ -4332,27 +3506,6 @@ type SecurityPolicyWebApplicationFirewallParameters struct {
 // GetSecurityPolicyPropertiesParameters implements the SecurityPolicyPropertiesParametersClassification interface for type
 // SecurityPolicyWebApplicationFirewallParameters.
 func (s *SecurityPolicyWebApplicationFirewallParameters) GetSecurityPolicyPropertiesParameters() *SecurityPolicyPropertiesParameters {
-	return &SecurityPolicyPropertiesParameters{
-		Type: s.Type,
-	}
-}
-
-// SecurityPolicyWebApplicationFirewallParametersWithEmbeddedWafPolicy - Contains security policy waf parameters
-type SecurityPolicyWebApplicationFirewallParametersWithEmbeddedWafPolicy struct {
-	// CONSTANT; The type of the Security policy to create.
-	// Field has constant value SecurityPolicyTypeWebApplicationFirewallEmbedded, any specified value is ignored.
-	Type *SecurityPolicyType
-
-	// Waf associations
-	Associations []*SecurityPolicyWebApplicationFirewallAssociation
-
-	// Properties of the web application firewall policy.
-	WafPolicy *WebApplicationFirewallPolicy
-}
-
-// GetSecurityPolicyPropertiesParameters implements the SecurityPolicyPropertiesParametersClassification interface for type
-// SecurityPolicyWebApplicationFirewallParametersWithEmbeddedWafPolicy.
-func (s *SecurityPolicyWebApplicationFirewallParametersWithEmbeddedWafPolicy) GetSecurityPolicyPropertiesParameters() *SecurityPolicyPropertiesParameters {
 	return &SecurityPolicyPropertiesParameters{
 		Type: s.Type,
 	}
@@ -4939,103 +4092,6 @@ type WafRankingsResponseDataItem struct {
 	Metrics     []*ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems
 }
 
-// WebAgent - Defines a web agent resource for Azure CDN.
-type WebAgent struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Properties of the web agent.
-	Properties *WebAgentProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// WebAgentList - Defines a list of web agents. It contains a list of WebAgent objects and a URL link to get the next set
-// of results.
-type WebAgentList struct {
-	// REQUIRED; The WebAgent items on this page
-	Value []*WebAgent
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// WebAgentProperties - Defines properties of a web agent.
-type WebAgentProperties struct {
-	// Optional textual description of the agent.
-	Description *string
-
-	// List of paths associated with the web agent.
-	Paths []*AgentPath
-
-	// System prompt for the web agent.
-	SystemPrompt *string
-
-	// READ-ONLY; References to agent links in CDN profiles.
-	ProfileAgentLinks []*ResourceReference
-
-	// READ-ONLY; Provisioning status of the web agent.
-	ProvisioningState *WebAgentProvisioningState
-}
-
-// WebAgentPropertiesUpdateParameters - Defines properties of a web agent that can be updated.
-type WebAgentPropertiesUpdateParameters struct {
-	// Optional textual description of the agent.
-	Description *string
-
-	// List of paths associated with the web agent.
-	Paths []*AgentPath
-
-	// System prompt for the web agent.
-	SystemPrompt *string
-}
-
-// WebAgentUpdateParameters - Properties required to update a web agent.
-type WebAgentUpdateParameters struct {
-	// Properties of the web agent to be updated.
-	Properties *WebAgentPropertiesUpdateParameters
-
-	// Web agent tags
-	Tags map[string]*string
-}
-
-// WebApplicationFirewallPolicy - Defines web application firewall policy.
-type WebApplicationFirewallPolicy struct {
-	// Gets a unique read-only string that changes whenever the resource is updated.
-	Etag *string
-
-	// Properties of the web application firewall policy.
-	Properties *WebApplicationFirewallPolicyProperties
-
-	// The pricing tier of web application firewall policy. Defaults to Classic_AzureFrontDoor if not specified.
-	SKU *SKU
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // WebApplicationFirewallPolicyList - Defines a list of WebApplicationFirewallPolicies for Azure CDN. It contains a list of
 // WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
 type WebApplicationFirewallPolicyList struct {
@@ -5050,47 +4106,4 @@ type WebApplicationFirewallPolicyList struct {
 type WebApplicationFirewallPolicyPatchParameters struct {
 	// CdnWebApplicationFirewallPolicy tags
 	Tags map[string]*string
-}
-
-// WebApplicationFirewallPolicyProperties - Defines web application firewall policy properties.
-type WebApplicationFirewallPolicyProperties struct {
-	// Describes custom rules inside the policy.
-	CustomRules *CustomRuleListAfd
-
-	// Describes managed rules inside the policy.
-	ManagedRules *ManagedRuleSetListAfd
-
-	// Describes settings for the policy.
-	PolicySettings *PolicySettingsAfd
-
-	// READ-ONLY; Describes Frontend Endpoints associated with this Web Application Firewall policy.
-	FrontendEndpointLinks []*FrontendEndpointLink
-
-	// READ-ONLY; Provisioning state of the policy.
-	ProvisioningState *string
-
-	// READ-ONLY
-	ResourceState *PolicyResourceState
-
-	// READ-ONLY; Describes Routing Rules associated with this Web Application Firewall policy.
-	RoutingRuleLinks []*RoutingRuleLink
-
-	// READ-ONLY; Describes Security Policy associated with this Web Application Firewall policy.
-	SecurityPolicyLinks []*SecurityPolicyLink
-}
-
-// WebApplicationFirewallScrubbingRules - Defines the contents of the log scrubbing rules.
-type WebApplicationFirewallScrubbingRules struct {
-	// REQUIRED; The variable to be scrubbed from the logs.
-	MatchVariable *ScrubbingRuleEntryMatchVariable
-
-	// REQUIRED; When matchVariable is a collection, operate on the selector to specify which elements in the collection this
-	// rule applies to.
-	SelectorMatchOperator *ScrubbingRuleEntryMatchOperator
-
-	// When matchVariable is a collection, operator used to specify which elements in the collection this rule applies to.
-	Selector *string
-
-	// Defines the state of a log scrubbing rule. Default value is enabled.
-	State *ScrubbingRuleEntryState
 }

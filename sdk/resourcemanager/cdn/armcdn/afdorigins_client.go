@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultAFDOriginsClientVersion string = "2025-06-01"
+
 // AFDOriginsClient contains the methods for the AFDOrigins group.
 // Don't use this type directly, use NewAFDOriginsClient() instead.
+//
+// Generated from API version 2025-06-01
 type AFDOriginsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewAFDOriginsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreate - Creates a new origin within the specified origin group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -70,8 +72,6 @@ func (client *AFDOriginsClient) BeginCreate(ctx context.Context, resourceGroupNa
 
 // Create - Creates a new origin within the specified origin group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *AFDOriginsClient) create(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, origin AFDOrigin, options *AFDOriginsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDOriginsClient.BeginCreate"
@@ -121,8 +121,8 @@ func (client *AFDOriginsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDOriginsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, origin); err != nil {
@@ -133,8 +133,6 @@ func (client *AFDOriginsClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Deletes an existing origin within an origin group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -161,8 +159,6 @@ func (client *AFDOriginsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes an existing origin within an origin group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *AFDOriginsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, options *AFDOriginsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDOriginsClient.BeginDelete"
@@ -212,15 +208,13 @@ func (client *AFDOriginsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDOriginsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing origin within an origin group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -277,8 +271,8 @@ func (client *AFDOriginsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDOriginsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -293,8 +287,6 @@ func (client *AFDOriginsClient) getHandleResponse(resp *http.Response) (AFDOrigi
 }
 
 // NewListByOriginGroupPager - Lists all of the existing origins within an origin group.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -348,8 +340,8 @@ func (client *AFDOriginsClient) listByOriginGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDOriginsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -365,8 +357,6 @@ func (client *AFDOriginsClient) listByOriginGroupHandleResponse(resp *http.Respo
 
 // BeginUpdate - Updates an existing origin within an origin group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
@@ -393,8 +383,6 @@ func (client *AFDOriginsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Updates an existing origin within an origin group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01-preview
 func (client *AFDOriginsClient) update(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originName string, originUpdateProperties AFDOriginUpdateParameters, options *AFDOriginsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AFDOriginsClient.BeginUpdate"
@@ -444,8 +432,8 @@ func (client *AFDOriginsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultAFDOriginsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, originUpdateProperties); err != nil {

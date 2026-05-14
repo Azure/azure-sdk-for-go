@@ -20,43 +20,21 @@ func PossibleAFDEndpointProtocolsValues() []AFDEndpointProtocols {
 	}
 }
 
-// AFDRouteGrpcState - Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or 'Disabled'
-type AFDRouteGrpcState string
-
-const (
-	AFDRouteGrpcStateDisabled AFDRouteGrpcState = "Disabled"
-	AFDRouteGrpcStateEnabled  AFDRouteGrpcState = "Enabled"
-)
-
-// PossibleAFDRouteGrpcStateValues returns the possible values for the AFDRouteGrpcState const type.
-func PossibleAFDRouteGrpcStateValues() []AFDRouteGrpcState {
-	return []AFDRouteGrpcState{
-		AFDRouteGrpcStateDisabled,
-		AFDRouteGrpcStateEnabled,
-	}
-}
-
 // ActionType - Defines the action to take on rule match.
 type ActionType string
 
 const (
-	ActionTypeAllow          ActionType = "Allow"
-	ActionTypeAnomalyScoring ActionType = "AnomalyScoring"
-	ActionTypeBlock          ActionType = "Block"
-	ActionTypeCAPTCHA        ActionType = "CAPTCHA"
-	ActionTypeJSChallenge    ActionType = "JSChallenge"
-	ActionTypeLog            ActionType = "Log"
-	ActionTypeRedirect       ActionType = "Redirect"
+	ActionTypeAllow    ActionType = "Allow"
+	ActionTypeBlock    ActionType = "Block"
+	ActionTypeLog      ActionType = "Log"
+	ActionTypeRedirect ActionType = "Redirect"
 )
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeAllow,
-		ActionTypeAnomalyScoring,
 		ActionTypeBlock,
-		ActionTypeCAPTCHA,
-		ActionTypeJSChallenge,
 		ActionTypeLog,
 		ActionTypeRedirect,
 	}
@@ -199,22 +177,6 @@ func PossibleAfdQueryStringCachingBehaviorValues() []AfdQueryStringCachingBehavi
 	}
 }
 
-// AgentPathType - The type of the path.
-type AgentPathType string
-
-const (
-	AgentPathTypeChat      AgentPathType = "Chat"
-	AgentPathTypeMcpServer AgentPathType = "McpServer"
-)
-
-// PossibleAgentPathTypeValues returns the possible values for the AgentPathType const type.
-func PossibleAgentPathTypeValues() []AgentPathType {
-	return []AgentPathType{
-		AgentPathTypeChat,
-		AgentPathTypeMcpServer,
-	}
-}
-
 // Algorithm - Algorithm to use for URL signing
 type Algorithm string
 
@@ -226,21 +188,6 @@ const (
 func PossibleAlgorithmValues() []Algorithm {
 	return []Algorithm{
 		AlgorithmSHA256,
-	}
-}
-
-type ApprovalStatus string
-
-const (
-	ApprovalStatusApproved    ApprovalStatus = "Approved"
-	ApprovalStatusNotApproved ApprovalStatus = "NotApproved"
-)
-
-// PossibleApprovalStatusValues returns the possible values for the ApprovalStatus const type.
-func PossibleApprovalStatusValues() []ApprovalStatus {
-	return []ApprovalStatus{
-		ApprovalStatusApproved,
-		ApprovalStatusNotApproved,
 	}
 }
 
@@ -309,23 +256,6 @@ func PossibleCanMigrateDefaultSKUValues() []CanMigrateDefaultSKU {
 	return []CanMigrateDefaultSKU{
 		CanMigrateDefaultSKUPremiumAzureFrontDoor,
 		CanMigrateDefaultSKUStandardAzureFrontDoor,
-	}
-}
-
-// CertificateRevocationCheckEnabledState - Set to Enabled by default. If set to Disabled, revocation status of client certificate
-// chain will be checked before establishing mutual TLS connection.
-type CertificateRevocationCheckEnabledState string
-
-const (
-	CertificateRevocationCheckEnabledStateDisabled CertificateRevocationCheckEnabledState = "Disabled"
-	CertificateRevocationCheckEnabledStateEnabled  CertificateRevocationCheckEnabledState = "Enabled"
-)
-
-// PossibleCertificateRevocationCheckEnabledStateValues returns the possible values for the CertificateRevocationCheckEnabledState const type.
-func PossibleCertificateRevocationCheckEnabledStateValues() []CertificateRevocationCheckEnabledState {
-	return []CertificateRevocationCheckEnabledState{
-		CertificateRevocationCheckEnabledStateDisabled,
-		CertificateRevocationCheckEnabledStateEnabled,
 	}
 }
 
@@ -571,10 +501,8 @@ func PossibleDeleteRuleValues() []DeleteRule {
 type DeliveryRuleActionName string
 
 const (
-	DeliveryRuleActionNameAfdURLSigning              DeliveryRuleActionName = "AfdUrlSigning"
 	DeliveryRuleActionNameCacheExpiration            DeliveryRuleActionName = "CacheExpiration"
 	DeliveryRuleActionNameCacheKeyQueryString        DeliveryRuleActionName = "CacheKeyQueryString"
-	DeliveryRuleActionNameEdgeAction                 DeliveryRuleActionName = "EdgeAction"
 	DeliveryRuleActionNameModifyRequestHeader        DeliveryRuleActionName = "ModifyRequestHeader"
 	DeliveryRuleActionNameModifyResponseHeader       DeliveryRuleActionName = "ModifyResponseHeader"
 	DeliveryRuleActionNameOriginGroupOverride        DeliveryRuleActionName = "OriginGroupOverride"
@@ -587,10 +515,8 @@ const (
 // PossibleDeliveryRuleActionNameValues returns the possible values for the DeliveryRuleActionName const type.
 func PossibleDeliveryRuleActionNameValues() []DeliveryRuleActionName {
 	return []DeliveryRuleActionName{
-		DeliveryRuleActionNameAfdURLSigning,
 		DeliveryRuleActionNameCacheExpiration,
 		DeliveryRuleActionNameCacheKeyQueryString,
-		DeliveryRuleActionNameEdgeAction,
 		DeliveryRuleActionNameModifyRequestHeader,
 		DeliveryRuleActionNameModifyResponseHeader,
 		DeliveryRuleActionNameOriginGroupOverride,
@@ -606,7 +532,6 @@ type DeliveryRuleActionParametersType string
 const (
 	DeliveryRuleActionParametersTypeDeliveryRuleCacheExpirationActionParameters             DeliveryRuleActionParametersType = "DeliveryRuleCacheExpirationActionParameters"
 	DeliveryRuleActionParametersTypeDeliveryRuleCacheKeyQueryStringBehaviorActionParameters DeliveryRuleActionParametersType = "DeliveryRuleCacheKeyQueryStringBehaviorActionParameters"
-	DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters                        DeliveryRuleActionParametersType = "DeliveryRuleEdgeActionParameters"
 	DeliveryRuleActionParametersTypeDeliveryRuleHeaderActionParameters                      DeliveryRuleActionParametersType = "DeliveryRuleHeaderActionParameters"
 	DeliveryRuleActionParametersTypeDeliveryRuleOriginGroupOverrideActionParameters         DeliveryRuleActionParametersType = "DeliveryRuleOriginGroupOverrideActionParameters"
 	DeliveryRuleActionParametersTypeDeliveryRuleRouteConfigurationOverrideActionParameters  DeliveryRuleActionParametersType = "DeliveryRuleRouteConfigurationOverrideActionParameters"
@@ -620,7 +545,6 @@ func PossibleDeliveryRuleActionParametersTypeValues() []DeliveryRuleActionParame
 	return []DeliveryRuleActionParametersType{
 		DeliveryRuleActionParametersTypeDeliveryRuleCacheExpirationActionParameters,
 		DeliveryRuleActionParametersTypeDeliveryRuleCacheKeyQueryStringBehaviorActionParameters,
-		DeliveryRuleActionParametersTypeDeliveryRuleEdgeActionParameters,
 		DeliveryRuleActionParametersTypeDeliveryRuleHeaderActionParameters,
 		DeliveryRuleActionParametersTypeDeliveryRuleOriginGroupOverrideActionParameters,
 		DeliveryRuleActionParametersTypeDeliveryRuleRouteConfigurationOverrideActionParameters,
@@ -676,26 +600,6 @@ func PossibleDeliveryRuleConditionParametersTypeValues() []DeliveryRuleCondition
 		DeliveryRuleConditionParametersTypeDeliveryRuleURLFileExtensionMatchConditionParameters,
 		DeliveryRuleConditionParametersTypeDeliveryRuleURLFilenameConditionParameters,
 		DeliveryRuleConditionParametersTypeDeliveryRuleURLPathMatchConditionParameters,
-	}
-}
-
-// DeploymentRolloutStatus - Deployment status of preview stage.
-type DeploymentRolloutStatus string
-
-const (
-	DeploymentRolloutStatusFailed     DeploymentRolloutStatus = "Failed"
-	DeploymentRolloutStatusInProgress DeploymentRolloutStatus = "InProgress"
-	DeploymentRolloutStatusNotStarted DeploymentRolloutStatus = "NotStarted"
-	DeploymentRolloutStatusSucceeded  DeploymentRolloutStatus = "Succeeded"
-)
-
-// PossibleDeploymentRolloutStatusValues returns the possible values for the DeploymentRolloutStatus const type.
-func PossibleDeploymentRolloutStatusValues() []DeploymentRolloutStatus {
-	return []DeploymentRolloutStatus{
-		DeploymentRolloutStatusFailed,
-		DeploymentRolloutStatusInProgress,
-		DeploymentRolloutStatusNotStarted,
-		DeploymentRolloutStatusSucceeded,
 	}
 }
 
@@ -826,23 +730,6 @@ func PossibleEndpointResourceStateValues() []EndpointResourceState {
 		EndpointResourceStateStarting,
 		EndpointResourceStateStopped,
 		EndpointResourceStateStopping,
-	}
-}
-
-// EnforceMtlsEnabledState - Set to Disabled by default. If set to Enabled, only custom domains with mTLS enabled can be added
-// to child Route resources.
-type EnforceMtlsEnabledState string
-
-const (
-	EnforceMtlsEnabledStateDisabled EnforceMtlsEnabledState = "Disabled"
-	EnforceMtlsEnabledStateEnabled  EnforceMtlsEnabledState = "Enabled"
-)
-
-// PossibleEnforceMtlsEnabledStateValues returns the possible values for the EnforceMtlsEnabledState const type.
-func PossibleEnforceMtlsEnabledStateValues() []EnforceMtlsEnabledState {
-	return []EnforceMtlsEnabledState{
-		EnforceMtlsEnabledStateDisabled,
-		EnforceMtlsEnabledStateEnabled,
 	}
 }
 
@@ -979,22 +866,6 @@ func PossibleHostNameOperatorValues() []HostNameOperator {
 	}
 }
 
-// InvocationPoint - Defines at which point in the request processing pipeline the edge action will be invoked.
-type InvocationPoint string
-
-const (
-	InvocationPointClientRequest InvocationPoint = "ClientRequest"
-	InvocationPointOriginRequest InvocationPoint = "OriginRequest"
-)
-
-// PossibleInvocationPointValues returns the possible values for the InvocationPoint const type.
-func PossibleInvocationPointValues() []InvocationPoint {
-	return []InvocationPoint{
-		InvocationPointClientRequest,
-		InvocationPointOriginRequest,
-	}
-}
-
 type IsDeviceMatchValue string
 
 const (
@@ -1034,66 +905,6 @@ const (
 func PossibleKeyVaultSigningKeyParametersTypeValues() []KeyVaultSigningKeyParametersType {
 	return []KeyVaultSigningKeyParametersType{
 		KeyVaultSigningKeyParametersTypeKeyVaultSigningKeyParameters,
-	}
-}
-
-// KnowledgeSourceProvisioningState - Provisioning status of the knowledge source.
-type KnowledgeSourceProvisioningState string
-
-const (
-	KnowledgeSourceProvisioningStateCreating  KnowledgeSourceProvisioningState = "Creating"
-	KnowledgeSourceProvisioningStateDeleting  KnowledgeSourceProvisioningState = "Deleting"
-	KnowledgeSourceProvisioningStateFailed    KnowledgeSourceProvisioningState = "Failed"
-	KnowledgeSourceProvisioningStateSucceeded KnowledgeSourceProvisioningState = "Succeeded"
-	KnowledgeSourceProvisioningStateUpdating  KnowledgeSourceProvisioningState = "Updating"
-)
-
-// PossibleKnowledgeSourceProvisioningStateValues returns the possible values for the KnowledgeSourceProvisioningState const type.
-func PossibleKnowledgeSourceProvisioningStateValues() []KnowledgeSourceProvisioningState {
-	return []KnowledgeSourceProvisioningState{
-		KnowledgeSourceProvisioningStateCreating,
-		KnowledgeSourceProvisioningStateDeleting,
-		KnowledgeSourceProvisioningStateFailed,
-		KnowledgeSourceProvisioningStateSucceeded,
-		KnowledgeSourceProvisioningStateUpdating,
-	}
-}
-
-// KnowledgeSourceType - Format or origin of the knowledge source.
-type KnowledgeSourceType string
-
-const (
-	KnowledgeSourceTypeRssFeeds        KnowledgeSourceType = "RssFeeds"
-	KnowledgeSourceTypeSchemaOrgMarkup KnowledgeSourceType = "SchemaOrgMarkup"
-	KnowledgeSourceTypeSitemap         KnowledgeSourceType = "Sitemap"
-)
-
-// PossibleKnowledgeSourceTypeValues returns the possible values for the KnowledgeSourceType const type.
-func PossibleKnowledgeSourceTypeValues() []KnowledgeSourceType {
-	return []KnowledgeSourceType{
-		KnowledgeSourceTypeRssFeeds,
-		KnowledgeSourceTypeSchemaOrgMarkup,
-		KnowledgeSourceTypeSitemap,
-	}
-}
-
-// KnowledgeSourceUpdateFrequency - Specifies the units of time for scheduling update intervals for the knowledge source.
-type KnowledgeSourceUpdateFrequency string
-
-const (
-	KnowledgeSourceUpdateFrequencyDaily         KnowledgeSourceUpdateFrequency = "Daily"
-	KnowledgeSourceUpdateFrequencyEverySixHours KnowledgeSourceUpdateFrequency = "EverySixHours"
-	KnowledgeSourceUpdateFrequencyMonthly       KnowledgeSourceUpdateFrequency = "Monthly"
-	KnowledgeSourceUpdateFrequencyWeekly        KnowledgeSourceUpdateFrequency = "Weekly"
-)
-
-// PossibleKnowledgeSourceUpdateFrequencyValues returns the possible values for the KnowledgeSourceUpdateFrequency const type.
-func PossibleKnowledgeSourceUpdateFrequencyValues() []KnowledgeSourceUpdateFrequency {
-	return []KnowledgeSourceUpdateFrequency{
-		KnowledgeSourceUpdateFrequencyDaily,
-		KnowledgeSourceUpdateFrequencyEverySixHours,
-		KnowledgeSourceUpdateFrequencyMonthly,
-		KnowledgeSourceUpdateFrequencyWeekly,
 	}
 }
 
@@ -1231,69 +1042,6 @@ func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
 	return []ManagedRuleEnabledState{
 		ManagedRuleEnabledStateDisabled,
 		ManagedRuleEnabledStateEnabled,
-	}
-}
-
-// ManagedRuleExclusionMatchVariable - The variable type to be excluded.
-type ManagedRuleExclusionMatchVariable string
-
-const (
-	ManagedRuleExclusionMatchVariableQueryStringArgNames     ManagedRuleExclusionMatchVariable = "QueryStringArgNames"
-	ManagedRuleExclusionMatchVariableRequestBodyJSONArgNames ManagedRuleExclusionMatchVariable = "RequestBodyJsonArgNames"
-	ManagedRuleExclusionMatchVariableRequestBodyPostArgNames ManagedRuleExclusionMatchVariable = "RequestBodyPostArgNames"
-	ManagedRuleExclusionMatchVariableRequestCookieNames      ManagedRuleExclusionMatchVariable = "RequestCookieNames"
-	ManagedRuleExclusionMatchVariableRequestHeaderNames      ManagedRuleExclusionMatchVariable = "RequestHeaderNames"
-)
-
-// PossibleManagedRuleExclusionMatchVariableValues returns the possible values for the ManagedRuleExclusionMatchVariable const type.
-func PossibleManagedRuleExclusionMatchVariableValues() []ManagedRuleExclusionMatchVariable {
-	return []ManagedRuleExclusionMatchVariable{
-		ManagedRuleExclusionMatchVariableQueryStringArgNames,
-		ManagedRuleExclusionMatchVariableRequestBodyJSONArgNames,
-		ManagedRuleExclusionMatchVariableRequestBodyPostArgNames,
-		ManagedRuleExclusionMatchVariableRequestCookieNames,
-		ManagedRuleExclusionMatchVariableRequestHeaderNames,
-	}
-}
-
-// ManagedRuleExclusionSelectorMatchOperator - Comparison operator to apply to the selector when specifying which elements
-// in the collection this exclusion applies to.
-type ManagedRuleExclusionSelectorMatchOperator string
-
-const (
-	ManagedRuleExclusionSelectorMatchOperatorContains   ManagedRuleExclusionSelectorMatchOperator = "Contains"
-	ManagedRuleExclusionSelectorMatchOperatorEndsWith   ManagedRuleExclusionSelectorMatchOperator = "EndsWith"
-	ManagedRuleExclusionSelectorMatchOperatorEquals     ManagedRuleExclusionSelectorMatchOperator = "Equals"
-	ManagedRuleExclusionSelectorMatchOperatorEqualsAny  ManagedRuleExclusionSelectorMatchOperator = "EqualsAny"
-	ManagedRuleExclusionSelectorMatchOperatorStartsWith ManagedRuleExclusionSelectorMatchOperator = "StartsWith"
-)
-
-// PossibleManagedRuleExclusionSelectorMatchOperatorValues returns the possible values for the ManagedRuleExclusionSelectorMatchOperator const type.
-func PossibleManagedRuleExclusionSelectorMatchOperatorValues() []ManagedRuleExclusionSelectorMatchOperator {
-	return []ManagedRuleExclusionSelectorMatchOperator{
-		ManagedRuleExclusionSelectorMatchOperatorContains,
-		ManagedRuleExclusionSelectorMatchOperatorEndsWith,
-		ManagedRuleExclusionSelectorMatchOperatorEquals,
-		ManagedRuleExclusionSelectorMatchOperatorEqualsAny,
-		ManagedRuleExclusionSelectorMatchOperatorStartsWith,
-	}
-}
-
-// ManagedRuleSetActionType - Defines the action to take when a managed rule set score threshold is met.
-type ManagedRuleSetActionType string
-
-const (
-	ManagedRuleSetActionTypeBlock    ManagedRuleSetActionType = "Block"
-	ManagedRuleSetActionTypeLog      ManagedRuleSetActionType = "Log"
-	ManagedRuleSetActionTypeRedirect ManagedRuleSetActionType = "Redirect"
-)
-
-// PossibleManagedRuleSetActionTypeValues returns the possible values for the ManagedRuleSetActionType const type.
-func PossibleManagedRuleSetActionTypeValues() []ManagedRuleSetActionType {
-	return []ManagedRuleSetActionType{
-		ManagedRuleSetActionTypeBlock,
-		ManagedRuleSetActionTypeLog,
-		ManagedRuleSetActionTypeRedirect,
 	}
 }
 
@@ -1439,26 +1187,6 @@ func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
 		MinimumTLSVersionNone,
 		MinimumTLSVersionTLS10,
 		MinimumTLSVersionTLS12,
-	}
-}
-
-// MtlsScenarioType - Supported scenarios for establishing mTLS connection.
-type MtlsScenarioType string
-
-const (
-	MtlsScenarioTypeClientCertificateRequiredAndOriginValidates MtlsScenarioType = "ClientCertificateRequiredAndOriginValidates"
-	MtlsScenarioTypeClientCertificateRequiredAndValidated       MtlsScenarioType = "ClientCertificateRequiredAndValidated"
-	MtlsScenarioTypeClientCertificateValidatedIfPresented       MtlsScenarioType = "ClientCertificateValidatedIfPresented"
-	MtlsScenarioTypeCompleteMtlsPassthroughToOrigin             MtlsScenarioType = "CompleteMtlsPassthroughToOrigin"
-)
-
-// PossibleMtlsScenarioTypeValues returns the possible values for the MtlsScenarioType const type.
-func PossibleMtlsScenarioTypeValues() []MtlsScenarioType {
-	return []MtlsScenarioType{
-		MtlsScenarioTypeClientCertificateRequiredAndOriginValidates,
-		MtlsScenarioTypeClientCertificateRequiredAndValidated,
-		MtlsScenarioTypeClientCertificateValidatedIfPresented,
-		MtlsScenarioTypeCompleteMtlsPassthroughToOrigin,
 	}
 }
 
@@ -1667,22 +1395,6 @@ func PossiblePolicyModeValues() []PolicyMode {
 	}
 }
 
-// PolicyRequestBodyCheck - Describes if policy managed rules will inspect the request body content.
-type PolicyRequestBodyCheck string
-
-const (
-	PolicyRequestBodyCheckDisabled PolicyRequestBodyCheck = "Disabled"
-	PolicyRequestBodyCheckEnabled  PolicyRequestBodyCheck = "Enabled"
-)
-
-// PossiblePolicyRequestBodyCheckValues returns the possible values for the PolicyRequestBodyCheck const type.
-func PossiblePolicyRequestBodyCheckValues() []PolicyRequestBodyCheck {
-	return []PolicyRequestBodyCheck{
-		PolicyRequestBodyCheckDisabled,
-		PolicyRequestBodyCheckEnabled,
-	}
-}
-
 // PolicyResourceState - Resource status of the policy.
 type PolicyResourceState string
 
@@ -1762,30 +1474,6 @@ func PossiblePostArgsOperatorValues() []PostArgsOperator {
 	}
 }
 
-// PreviewSupportedResourceType - Resource type supported by preview.
-type PreviewSupportedResourceType string
-
-const (
-	PreviewSupportedResourceTypeMicrosoftCdnProfilesAfdEndpointsRoute   PreviewSupportedResourceType = "Microsoft.Cdn/profiles/afdEndpoints/routes"
-	PreviewSupportedResourceTypeMicrosoftCdnProfilesOriginGroups        PreviewSupportedResourceType = "Microsoft.Cdn/profiles/originGroups"
-	PreviewSupportedResourceTypeMicrosoftCdnProfilesOriginGroupsOrigins PreviewSupportedResourceType = "Microsoft.Cdn/profiles/originGroups/origins"
-	PreviewSupportedResourceTypeMicrosoftCdnProfilesRuleSets            PreviewSupportedResourceType = "Microsoft.Cdn/profiles/ruleSets"
-	PreviewSupportedResourceTypeMicrosoftCdnProfilesRuleSetsRules       PreviewSupportedResourceType = "Microsoft.Cdn/profiles/ruleSets/rules"
-	PreviewSupportedResourceTypeMicrosoftCdnProfilesSecurityPolicies    PreviewSupportedResourceType = "Microsoft.Cdn/profiles/securityPolicies"
-)
-
-// PossiblePreviewSupportedResourceTypeValues returns the possible values for the PreviewSupportedResourceType const type.
-func PossiblePreviewSupportedResourceTypeValues() []PreviewSupportedResourceType {
-	return []PreviewSupportedResourceType{
-		PreviewSupportedResourceTypeMicrosoftCdnProfilesAfdEndpointsRoute,
-		PreviewSupportedResourceTypeMicrosoftCdnProfilesOriginGroups,
-		PreviewSupportedResourceTypeMicrosoftCdnProfilesOriginGroupsOrigins,
-		PreviewSupportedResourceTypeMicrosoftCdnProfilesRuleSets,
-		PreviewSupportedResourceTypeMicrosoftCdnProfilesRuleSetsRules,
-		PreviewSupportedResourceTypeMicrosoftCdnProfilesSecurityPolicies,
-	}
-}
-
 // PrivateEndpointStatus - The approval status for the connection to the Private Link
 type PrivateEndpointStatus string
 
@@ -1812,7 +1500,6 @@ func PossiblePrivateEndpointStatusValues() []PrivateEndpointStatus {
 type ProbeProtocol string
 
 const (
-	ProbeProtocolGrpc   ProbeProtocol = "Grpc"
 	ProbeProtocolHTTP   ProbeProtocol = "Http"
 	ProbeProtocolHTTPS  ProbeProtocol = "Https"
 	ProbeProtocolNotSet ProbeProtocol = "NotSet"
@@ -1821,32 +1508,9 @@ const (
 // PossibleProbeProtocolValues returns the possible values for the ProbeProtocol const type.
 func PossibleProbeProtocolValues() []ProbeProtocol {
 	return []ProbeProtocol{
-		ProbeProtocolGrpc,
 		ProbeProtocolHTTP,
 		ProbeProtocolHTTPS,
 		ProbeProtocolNotSet,
-	}
-}
-
-// ProfileAgentProvisioningState - Provisioning status of the profile agent association.
-type ProfileAgentProvisioningState string
-
-const (
-	ProfileAgentProvisioningStateCreating  ProfileAgentProvisioningState = "Creating"
-	ProfileAgentProvisioningStateDeleting  ProfileAgentProvisioningState = "Deleting"
-	ProfileAgentProvisioningStateFailed    ProfileAgentProvisioningState = "Failed"
-	ProfileAgentProvisioningStateSucceeded ProfileAgentProvisioningState = "Succeeded"
-	ProfileAgentProvisioningStateUpdating  ProfileAgentProvisioningState = "Updating"
-)
-
-// PossibleProfileAgentProvisioningStateValues returns the possible values for the ProfileAgentProvisioningState const type.
-func PossibleProfileAgentProvisioningStateValues() []ProfileAgentProvisioningState {
-	return []ProfileAgentProvisioningState{
-		ProfileAgentProvisioningStateCreating,
-		ProfileAgentProvisioningStateDeleting,
-		ProfileAgentProvisioningStateFailed,
-		ProfileAgentProvisioningStateSucceeded,
-		ProfileAgentProvisioningStateUpdating,
 	}
 }
 
@@ -2333,27 +1997,10 @@ func PossibleRuleQueryStringCachingBehaviorValues() []RuleQueryStringCachingBeha
 	}
 }
 
-// RuleType - Describes type of rule.
-type RuleType string
-
-const (
-	RuleTypeMatchRule     RuleType = "MatchRule"
-	RuleTypeRateLimitRule RuleType = "RateLimitRule"
-)
-
-// PossibleRuleTypeValues returns the possible values for the RuleType const type.
-func PossibleRuleTypeValues() []RuleType {
-	return []RuleType{
-		RuleTypeMatchRule,
-		RuleTypeRateLimitRule,
-	}
-}
-
 // SKUName - Name of the pricing tier.
 type SKUName string
 
 const (
-	SKUNameClassicAzureFrontDoor            SKUName = "Classic_AzureFrontDoor"
 	SKUNameCustomVerizon                    SKUName = "Custom_Verizon"
 	SKUNamePremiumAzureFrontDoor            SKUName = "Premium_AzureFrontDoor"
 	SKUNamePremiumVerizon                   SKUName = "Premium_Verizon"
@@ -2372,7 +2019,6 @@ const (
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
-		SKUNameClassicAzureFrontDoor,
 		SKUNameCustomVerizon,
 		SKUNamePremiumAzureFrontDoor,
 		SKUNamePremiumVerizon,
@@ -2426,14 +2072,12 @@ func PossibleSSLProtocolOperatorValues() []SSLProtocolOperator {
 type ScrubbingRuleEntryMatchOperator string
 
 const (
-	ScrubbingRuleEntryMatchOperatorEquals    ScrubbingRuleEntryMatchOperator = "Equals"
 	ScrubbingRuleEntryMatchOperatorEqualsAny ScrubbingRuleEntryMatchOperator = "EqualsAny"
 )
 
 // PossibleScrubbingRuleEntryMatchOperatorValues returns the possible values for the ScrubbingRuleEntryMatchOperator const type.
 func PossibleScrubbingRuleEntryMatchOperatorValues() []ScrubbingRuleEntryMatchOperator {
 	return []ScrubbingRuleEntryMatchOperator{
-		ScrubbingRuleEntryMatchOperatorEquals,
 		ScrubbingRuleEntryMatchOperatorEqualsAny,
 	}
 }
@@ -2442,23 +2086,15 @@ func PossibleScrubbingRuleEntryMatchOperatorValues() []ScrubbingRuleEntryMatchOp
 type ScrubbingRuleEntryMatchVariable string
 
 const (
-	ScrubbingRuleEntryMatchVariableQueryStringArgNames     ScrubbingRuleEntryMatchVariable = "QueryStringArgNames"
-	ScrubbingRuleEntryMatchVariableRequestBodyJSONArgNames ScrubbingRuleEntryMatchVariable = "RequestBodyJsonArgNames"
-	ScrubbingRuleEntryMatchVariableRequestBodyPostArgNames ScrubbingRuleEntryMatchVariable = "RequestBodyPostArgNames"
-	ScrubbingRuleEntryMatchVariableRequestCookieNames      ScrubbingRuleEntryMatchVariable = "RequestCookieNames"
-	ScrubbingRuleEntryMatchVariableRequestHeaderNames      ScrubbingRuleEntryMatchVariable = "RequestHeaderNames"
-	ScrubbingRuleEntryMatchVariableRequestIPAddress        ScrubbingRuleEntryMatchVariable = "RequestIPAddress"
-	ScrubbingRuleEntryMatchVariableRequestURI              ScrubbingRuleEntryMatchVariable = "RequestUri"
+	ScrubbingRuleEntryMatchVariableQueryStringArgNames ScrubbingRuleEntryMatchVariable = "QueryStringArgNames"
+	ScrubbingRuleEntryMatchVariableRequestIPAddress    ScrubbingRuleEntryMatchVariable = "RequestIPAddress"
+	ScrubbingRuleEntryMatchVariableRequestURI          ScrubbingRuleEntryMatchVariable = "RequestUri"
 )
 
 // PossibleScrubbingRuleEntryMatchVariableValues returns the possible values for the ScrubbingRuleEntryMatchVariable const type.
 func PossibleScrubbingRuleEntryMatchVariableValues() []ScrubbingRuleEntryMatchVariable {
 	return []ScrubbingRuleEntryMatchVariable{
 		ScrubbingRuleEntryMatchVariableQueryStringArgNames,
-		ScrubbingRuleEntryMatchVariableRequestBodyJSONArgNames,
-		ScrubbingRuleEntryMatchVariableRequestBodyPostArgNames,
-		ScrubbingRuleEntryMatchVariableRequestCookieNames,
-		ScrubbingRuleEntryMatchVariableRequestHeaderNames,
 		ScrubbingRuleEntryMatchVariableRequestIPAddress,
 		ScrubbingRuleEntryMatchVariableRequestURI,
 	}
@@ -2487,7 +2123,6 @@ const (
 	SecretTypeAzureFirstPartyManagedCertificate SecretType = "AzureFirstPartyManagedCertificate"
 	SecretTypeCustomerCertificate               SecretType = "CustomerCertificate"
 	SecretTypeManagedCertificate                SecretType = "ManagedCertificate"
-	SecretTypeMtlsCertificateChain              SecretType = "MtlsCertificateChain"
 	SecretTypeURLSigningKey                     SecretType = "UrlSigningKey"
 )
 
@@ -2497,7 +2132,6 @@ func PossibleSecretTypeValues() []SecretType {
 		SecretTypeAzureFirstPartyManagedCertificate,
 		SecretTypeCustomerCertificate,
 		SecretTypeManagedCertificate,
-		SecretTypeMtlsCertificateChain,
 		SecretTypeURLSigningKey,
 	}
 }
@@ -2506,15 +2140,13 @@ func PossibleSecretTypeValues() []SecretType {
 type SecurityPolicyType string
 
 const (
-	SecurityPolicyTypeWebApplicationFirewall         SecurityPolicyType = "WebApplicationFirewall"
-	SecurityPolicyTypeWebApplicationFirewallEmbedded SecurityPolicyType = "WebApplicationFirewallEmbedded"
+	SecurityPolicyTypeWebApplicationFirewall SecurityPolicyType = "WebApplicationFirewall"
 )
 
 // PossibleSecurityPolicyTypeValues returns the possible values for the SecurityPolicyType const type.
 func PossibleSecurityPolicyTypeValues() []SecurityPolicyType {
 	return []SecurityPolicyType{
 		SecurityPolicyTypeWebApplicationFirewall,
-		SecurityPolicyTypeWebApplicationFirewallEmbedded,
 	}
 }
 
@@ -2657,19 +2289,6 @@ func PossibleTransformTypeValues() []TransformType {
 	}
 }
 
-type TypeName string
-
-const (
-	TypeNameDeliveryRuleAfdURLSigningActionParameters TypeName = "DeliveryRuleAfdUrlSigningActionParameters"
-)
-
-// PossibleTypeNameValues returns the possible values for the TypeName const type.
-func PossibleTypeNameValues() []TypeName {
-	return []TypeName{
-		TypeNameDeliveryRuleAfdURLSigningActionParameters,
-	}
-}
-
 // URLFileExtensionOperator - Describes operator to be matched
 type URLFileExtensionOperator string
 
@@ -2793,24 +2412,6 @@ const (
 func PossibleUsageUnitValues() []UsageUnit {
 	return []UsageUnit{
 		UsageUnitCount,
-	}
-}
-
-// VariableName - Describes the supported variable for group by
-type VariableName string
-
-const (
-	VariableNameGeoLocation VariableName = "GeoLocation"
-	VariableNameNone        VariableName = "None"
-	VariableNameSocketAddr  VariableName = "SocketAddr"
-)
-
-// PossibleVariableNameValues returns the possible values for the VariableName const type.
-func PossibleVariableNameValues() []VariableName {
-	return []VariableName{
-		VariableNameGeoLocation,
-		VariableNameNone,
-		VariableNameSocketAddr,
 	}
 }
 
@@ -2979,43 +2580,5 @@ func PossibleWafRuleTypeValues() []WafRuleType {
 		WafRuleTypeBot,
 		WafRuleTypeCustom,
 		WafRuleTypeManaged,
-	}
-}
-
-// WebAgentProvisioningState - Provisioning status of the web agent.
-type WebAgentProvisioningState string
-
-const (
-	WebAgentProvisioningStateCreating  WebAgentProvisioningState = "Creating"
-	WebAgentProvisioningStateDeleting  WebAgentProvisioningState = "Deleting"
-	WebAgentProvisioningStateFailed    WebAgentProvisioningState = "Failed"
-	WebAgentProvisioningStateSucceeded WebAgentProvisioningState = "Succeeded"
-	WebAgentProvisioningStateUpdating  WebAgentProvisioningState = "Updating"
-)
-
-// PossibleWebAgentProvisioningStateValues returns the possible values for the WebAgentProvisioningState const type.
-func PossibleWebAgentProvisioningStateValues() []WebAgentProvisioningState {
-	return []WebAgentProvisioningState{
-		WebAgentProvisioningStateCreating,
-		WebAgentProvisioningStateDeleting,
-		WebAgentProvisioningStateFailed,
-		WebAgentProvisioningStateSucceeded,
-		WebAgentProvisioningStateUpdating,
-	}
-}
-
-// WebApplicationFirewallScrubbingState - State of the log scrubbing config. Default value is Enabled.
-type WebApplicationFirewallScrubbingState string
-
-const (
-	WebApplicationFirewallScrubbingStateDisabled WebApplicationFirewallScrubbingState = "Disabled"
-	WebApplicationFirewallScrubbingStateEnabled  WebApplicationFirewallScrubbingState = "Enabled"
-)
-
-// PossibleWebApplicationFirewallScrubbingStateValues returns the possible values for the WebApplicationFirewallScrubbingState const type.
-func PossibleWebApplicationFirewallScrubbingStateValues() []WebApplicationFirewallScrubbingState {
-	return []WebApplicationFirewallScrubbingState{
-		WebApplicationFirewallScrubbingStateDisabled,
-		WebApplicationFirewallScrubbingStateEnabled,
 	}
 }

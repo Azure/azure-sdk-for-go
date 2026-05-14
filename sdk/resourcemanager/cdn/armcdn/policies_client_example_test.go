@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/WafPolicyCreateOrUpdate.json
+// Generated from example definition: 2025-06-01/WafPolicyCreateOrUpdate.json
 func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,13 +134,13 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.PoliciesClientCreateOrUpdateResponse{
-	// 	WafPolicy: &armcdn.WafPolicy{
+	// 	WafPolicy: armcdn.WafPolicy{
 	// 		Name: to.Ptr("MicrosoftCdnWafPolicy"),
 	// 		Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
@@ -271,7 +271,7 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/WafPolicyDelete.json
+// Generated from example definition: 2025-06-01/WafPolicyDelete.json
 func ExamplePoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,7 +293,7 @@ func ExamplePoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/WafPolicyGet.json
+// Generated from example definition: 2025-06-01/WafPolicyGet.json
 func ExamplePoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExamplePoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.PoliciesClientGetResponse{
-	// 	WafPolicy: &armcdn.WafPolicy{
+	// 	WafPolicy: armcdn.WafPolicy{
 	// 		Name: to.Ptr("MicrosoftCdnWafPolicy"),
 	// 		Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
@@ -443,7 +443,7 @@ func ExamplePoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/WafListPolicies.json
+// Generated from example definition: 2025-06-01/WafListPolicies.json
 func ExamplePoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -725,7 +725,7 @@ func ExamplePoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/WafPatchPolicy.json
+// Generated from example definition: 2025-06-01/WafPatchPolicy.json
 func ExamplePoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -746,13 +746,13 @@ func ExamplePoliciesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.PoliciesClientUpdateResponse{
-	// 	WafPolicy: &armcdn.WafPolicy{
+	// 	WafPolicy: armcdn.WafPolicy{
 	// 		Name: to.Ptr("MicrosoftCdnWafPolicy"),
 	// 		Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),

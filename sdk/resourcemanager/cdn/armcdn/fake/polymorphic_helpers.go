@@ -19,10 +19,10 @@ func unmarshalCustomDomainHTTPSParametersClassification(rawMsg json.RawMessage) 
 	}
 	var b armcdn.CustomDomainHTTPSParametersClassification
 	switch m["certificateSource"] {
-	case string(armcdn.CertificateSourceCdn):
-		b = &armcdn.ManagedHTTPSParameters{}
 	case string(armcdn.CertificateSourceAzureKeyVault):
 		b = &armcdn.UserManagedHTTPSParameters{}
+	case string(armcdn.CertificateSourceCdn):
+		b = &armcdn.ManagedHTTPSParameters{}
 	default:
 		b = &armcdn.CustomDomainHTTPSParameters{}
 	}

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultManagedRuleSetsClientVersion string = "2025-06-01"
+
 // ManagedRuleSetsClient contains the methods for the ManagedRuleSets group.
 // Don't use this type directly, use NewManagedRuleSetsClient() instead.
+//
+// Generated from API version 2025-06-01
 type ManagedRuleSetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +44,6 @@ func NewManagedRuleSetsClient(subscriptionID string, credential azcore.TokenCred
 }
 
 // NewListPager - Lists all available managed rule sets.
-//
-// Generated from API version 2025-09-01-preview
 //   - options - ManagedRuleSetsClientListOptions contains the optional parameters for the ManagedRuleSetsClient.NewListPager
 //     method.
 func (client *ManagedRuleSetsClient) NewListPager(options *ManagedRuleSetsClientListOptions) *runtime.Pager[ManagedRuleSetsClientListResponse] {
@@ -79,8 +81,8 @@ func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, _ *M
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultManagedRuleSetsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

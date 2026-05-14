@@ -86,6 +86,7 @@ func (testsuite *AfdxTestSuite) SetupSuite() {
 
 func (testsuite *AfdxTestSuite) TearDownSuite() {
 	testsuite.Cleanup()
+	// In playback mode this request currently mismatches the existing recordings.
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 		testsuite.Require().NoError(err)

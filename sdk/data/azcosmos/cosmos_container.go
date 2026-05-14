@@ -790,6 +790,56 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 	return response, err
 }
 
+// GetChangeFeed retrieves a single page of the change feed using the provided options.
+// ctx - The context for the request.
+// options - Options for the operation
+//
+// Routes via overlap-match against the current PK-range cache (split-aware). When
+// the customer's FeedRange straddles a split, it's expanded into one queue entry
+// per child so no events are missed at the boundary. 410/Gone responses with a
+// PK-range substatus trigger a cache refresh and bounded retry. The continuation
+// token is a multi-range composite; subsequent calls drain remaining ranges.
+//
+// Returns ErrFeedRangeUnresolved (wrapped) when the customer's FeedRange/token
+// doesn't overlap any current physical range even after a forced refresh — a
+// signal to re-derive FeedRanges from GetFeedRanges.
+//
+// Returns an error wrapping *azcore.ResponseError on persistent 410/Gone or any
+// non-retryable HTTP error.
+func (c *ContainerClient) GetChangeFeed(
+	ctx context.Context,
+	options *ChangeFeedOptions,
+) (ChangeFeedResponse, error) {
+	if options == nil {
+		options = &ChangeFeedOptions{}
+	}
+
+	var err error
+	spanName, err := c.getSpanForItems(operationTypeRead)
+	if err != nil {
+		return ChangeFeedResponse{}, err
+	}
+	ctx, endSpan := startSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
+	defer func() { endSpan(err) }()
+
+	// Cross-container token guard. We only need the container's current
+	// ResourceID when a continuation token carries one to validate. Building
+	// the initial queue takes care of that lazily so the no-token path stays
+	// at one extra request (pk-ranges fetch).
+	token, partitionKeyRanges, err := c.buildChangeFeedInitialQueue(ctx, options)
+	if err != nil {
+		return ChangeFeedResponse{}, err
+	}
+
+	// Capture into err so the deferred endSpan closure observes drain
+	// failures (410 budget exhaustion, send errors, refresh failures,
+	// serialization errors, ErrFeedRangeUnresolved) instead of recording
+	// success on every drain that actually failed.
+	var resp ChangeFeedResponse
+	resp, err = c.getChangeFeedForQueue(ctx, options, token, partitionKeyRanges)
+	return resp, err
+}
+
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
 	containerResponse, err := c.Read(ctx, nil)
 	if err != nil {

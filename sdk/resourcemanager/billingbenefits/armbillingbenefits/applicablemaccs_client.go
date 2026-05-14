@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultApplicableMaccsClientVersion string = "2025-12-01-preview"
+
 // ApplicableMaccsClient contains the methods for the ApplicableMaccs group.
 // Don't use this type directly, use NewApplicableMaccsClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type ApplicableMaccsClient struct {
 	internal *arm.Client
 }
@@ -37,8 +41,6 @@ func NewApplicableMaccsClient(credential azcore.TokenCredential, options *arm.Cl
 }
 
 // NewListPager - List maccs that are applicable for a given billing account.
-//
-// Generated from API version 2025-12-01-preview
 //   - billingAccountID - The billing account Id at which the benefits are listed. Accepted format is: {rootId:orgId}.
 //   - options - ApplicableMaccsClientListOptions contains the optional parameters for the ApplicableMaccsClient.NewListPager
 //     method.
@@ -77,8 +79,8 @@ func (client *ApplicableMaccsClient) listCreateRequest(ctx context.Context, bill
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultApplicableMaccsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

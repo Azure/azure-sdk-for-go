@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultContributorsClientVersion string = "2025-12-01-preview"
+
 // ContributorsClient contains the methods for the Contributors group.
 // Don't use this type directly, use NewContributorsClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type ContributorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewContributorsClient(subscriptionID string, credential azcore.TokenCredent
 
 // GetFromPrimary - Get a contributor for primary service admin
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - maccName - Name of primary MACC.
 //   - contributorName - Unique name of contributor in the format {contributorCloudSubId}_{resourceGroupName}_{nameInContributorTenant}.
@@ -94,8 +96,8 @@ func (client *ContributorsClient) getFromPrimaryCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContributorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +112,6 @@ func (client *ContributorsClient) getFromPrimaryHandleResponse(resp *http.Respon
 }
 
 // NewListFromApplicableMaccPager - List contributors under applicable MACCs for a given billing account.
-//
-// Generated from API version 2025-12-01-preview
 //   - billingAccountID - The billing account Id at which the benefits are listed. Accepted format is: {rootId:orgId}.
 //   - systemID - System ID of the primary MACC.
 //   - options - ContributorsClientListFromApplicableMaccOptions contains the optional parameters for the ContributorsClient.NewListFromApplicableMaccPager
@@ -155,8 +155,8 @@ func (client *ContributorsClient) listFromApplicableMaccCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContributorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -171,8 +171,6 @@ func (client *ContributorsClient) listFromApplicableMaccHandleResponse(resp *htt
 }
 
 // NewListFromPrimaryPager - List contributors under a MACC for primary service admin
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - maccName - Name of primary MACC.
 //   - options - ContributorsClientListFromPrimaryOptions contains the optional parameters for the ContributorsClient.NewListFromPrimaryPager
@@ -220,8 +218,8 @@ func (client *ContributorsClient) listFromPrimaryCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultContributorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

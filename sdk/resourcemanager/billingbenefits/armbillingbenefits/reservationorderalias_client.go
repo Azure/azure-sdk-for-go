@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultReservationOrderAliasClientVersion string = "2025-12-01-preview"
+
 // ReservationOrderAliasClient contains the methods for the ReservationOrderAlias group.
 // Don't use this type directly, use NewReservationOrderAliasClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type ReservationOrderAliasClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewReservationOrderAliasClient(credential azcore.TokenCredential, options *
 
 // BeginCreate - Create a reservation order alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - reservationOrderAliasName - Name of the reservation order alias
 //   - body - Request body for creating a reservation order alias
 //   - options - ReservationOrderAliasClientBeginCreateOptions contains the optional parameters for the ReservationOrderAliasClient.BeginCreate
@@ -63,8 +65,6 @@ func (client *ReservationOrderAliasClient) BeginCreate(ctx context.Context, rese
 
 // Create - Create a reservation order alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *ReservationOrderAliasClient) create(ctx context.Context, reservationOrderAliasName string, body ReservationOrderAliasRequest, options *ReservationOrderAliasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReservationOrderAliasClient.BeginCreate"
@@ -98,8 +98,8 @@ func (client *ReservationOrderAliasClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultReservationOrderAliasClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -110,8 +110,6 @@ func (client *ReservationOrderAliasClient) createCreateRequest(ctx context.Conte
 
 // Get - Get a reservation order alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - reservationOrderAliasName - Name of the reservation order alias
 //   - options - ReservationOrderAliasClientGetOptions contains the optional parameters for the ReservationOrderAliasClient.Get
 //     method.
@@ -149,8 +147,8 @@ func (client *ReservationOrderAliasClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultReservationOrderAliasClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

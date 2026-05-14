@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-04-30)
+## 3.0.0-beta.1 (2026-05-14)
 ### Breaking Changes
 
 - Type of `PurchaseRequest.SKU` has been changed from `*SKU` to `*ResourceSKU`

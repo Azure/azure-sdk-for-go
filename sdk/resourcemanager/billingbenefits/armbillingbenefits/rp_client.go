@@ -11,10 +11,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
+
+const defaultRPClientVersion string = "2025-12-01-preview"
 
 // RPClient contains the methods for the RP group.
 // Don't use this type directly, use NewRPClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type RPClient struct {
 	internal *arm.Client
 }
@@ -35,8 +40,6 @@ func NewRPClient(credential azcore.TokenCredential, options *arm.ClientOptions) 
 
 // Validate - Validate savings plan purchase.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - body - The request body
 //   - options - RPClientValidateOptions contains the optional parameters for the RPClient.Validate method.
 func (client *RPClient) Validate(ctx context.Context, body BenefitValidateRequest, options *RPClientValidateOptions) (RPClientValidateResponse, error) {
@@ -69,8 +72,8 @@ func (client *RPClient) validateCreateRequest(ctx context.Context, body BenefitV
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultRPClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

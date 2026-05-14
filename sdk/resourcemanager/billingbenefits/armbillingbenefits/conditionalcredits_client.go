@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultConditionalCreditsClientVersion string = "2025-12-01-preview"
+
 // ConditionalCreditsClient contains the methods for the ConditionalCredits group.
 // Don't use this type directly, use NewConditionalCreditsClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type ConditionalCreditsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewConditionalCreditsClient(subscriptionID string, credential azcore.TokenC
 
 // BeginCancel - Cancel conditional credit. Stops applying the benefit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - conditionalCreditName - Name of the conditional credit
 //   - options - ConditionalCreditsClientBeginCancelOptions contains the optional parameters for the ConditionalCreditsClient.BeginCancel
@@ -67,8 +69,6 @@ func (client *ConditionalCreditsClient) BeginCancel(ctx context.Context, resourc
 
 // Cancel - Cancel conditional credit. Stops applying the benefit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *ConditionalCreditsClient) cancel(ctx context.Context, resourceGroupName string, conditionalCreditName string, options *ConditionalCreditsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConditionalCreditsClient.BeginCancel"
@@ -110,16 +110,14 @@ func (client *ConditionalCreditsClient) cancelCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginCreateOrUpdate - Create or update a conditional credit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - conditionalCreditName - Name of the conditional credit
 //   - body - Request body for creating a conditional credit
@@ -144,8 +142,6 @@ func (client *ConditionalCreditsClient) BeginCreateOrUpdate(ctx context.Context,
 
 // CreateOrUpdate - Create or update a conditional credit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *ConditionalCreditsClient) createOrUpdate(ctx context.Context, resourceGroupName string, conditionalCreditName string, body ConditionalCredit, options *ConditionalCreditsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConditionalCreditsClient.BeginCreateOrUpdate"
@@ -187,8 +183,8 @@ func (client *ConditionalCreditsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -199,8 +195,6 @@ func (client *ConditionalCreditsClient) createOrUpdateCreateRequest(ctx context.
 
 // BeginDelete - Delete a conditional credit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - conditionalCreditName - Name of the conditional credit
 //   - options - ConditionalCreditsClientBeginDeleteOptions contains the optional parameters for the ConditionalCreditsClient.BeginDelete
@@ -225,8 +219,6 @@ func (client *ConditionalCreditsClient) BeginDelete(ctx context.Context, resourc
 
 // Delete - Delete a conditional credit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *ConditionalCreditsClient) deleteOperation(ctx context.Context, resourceGroupName string, conditionalCreditName string, options *ConditionalCreditsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConditionalCreditsClient.BeginDelete"
@@ -268,15 +260,13 @@ func (client *ConditionalCreditsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a conditional credit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - conditionalCreditName - Name of the conditional credit
 //   - options - ConditionalCreditsClientGetOptions contains the optional parameters for the ConditionalCreditsClient.Get method.
@@ -322,8 +312,8 @@ func (client *ConditionalCreditsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -338,8 +328,6 @@ func (client *ConditionalCreditsClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListByResourceGroupPager - List conditional credits by resource group.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ConditionalCreditsClientListByResourceGroupOptions contains the optional parameters for the ConditionalCreditsClient.NewListByResourceGroupPager
 //     method.
@@ -382,8 +370,8 @@ func (client *ConditionalCreditsClient) listByResourceGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -398,8 +386,6 @@ func (client *ConditionalCreditsClient) listByResourceGroupHandleResponse(resp *
 }
 
 // NewListBySubscriptionPager - List conditional credits by subscription.
-//
-// Generated from API version 2025-12-01-preview
 //   - options - ConditionalCreditsClientListBySubscriptionOptions contains the optional parameters for the ConditionalCreditsClient.NewListBySubscriptionPager
 //     method.
 func (client *ConditionalCreditsClient) NewListBySubscriptionPager(options *ConditionalCreditsClientListBySubscriptionOptions) *runtime.Pager[ConditionalCreditsClientListBySubscriptionResponse] {
@@ -437,8 +423,8 @@ func (client *ConditionalCreditsClient) listBySubscriptionCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -454,8 +440,6 @@ func (client *ConditionalCreditsClient) listBySubscriptionHandleResponse(resp *h
 
 // NewScopeListPager - List conditional credits that are applicable for a given scope. Currently supported scopes: billing
 // accounts
-//
-// Generated from API version 2025-12-01-preview
 //   - scope - The scope at which the benefits are listed.
 //   - options - ConditionalCreditsClientScopeListOptions contains the optional parameters for the ConditionalCreditsClient.NewScopeListPager
 //     method.
@@ -494,8 +478,8 @@ func (client *ConditionalCreditsClient) scopeListCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -511,8 +495,6 @@ func (client *ConditionalCreditsClient) scopeListHandleResponse(resp *http.Respo
 
 // BeginUpdate - Update a conditional credit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - conditionalCreditName - Name of the conditional credit
 //   - body - Request body for updating a conditional credit
@@ -537,8 +519,6 @@ func (client *ConditionalCreditsClient) BeginUpdate(ctx context.Context, resourc
 
 // Update - Update a conditional credit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *ConditionalCreditsClient) update(ctx context.Context, resourceGroupName string, conditionalCreditName string, body ConditionalCreditPatchRequest, options *ConditionalCreditsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConditionalCreditsClient.BeginUpdate"
@@ -580,8 +560,8 @@ func (client *ConditionalCreditsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

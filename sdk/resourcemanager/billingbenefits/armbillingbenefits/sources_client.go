@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSourcesClientVersion string = "2025-12-01-preview"
+
 // SourcesClient contains the methods for the Sources group.
 // Don't use this type directly, use NewSourcesClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type SourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewSourcesClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // Create - Create a credit source.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - creditName - Name of the credit
 //   - sourceName - Name of the credit source
@@ -94,8 +96,8 @@ func (client *SourcesClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSourcesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -115,8 +117,6 @@ func (client *SourcesClient) createHandleResponse(resp *http.Response) (SourcesC
 
 // Delete - Delete a credit source.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - creditName - Name of the credit
 //   - sourceName - Name of the credit source
@@ -166,15 +166,13 @@ func (client *SourcesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSourcesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a credit source.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - creditName - Name of the credit
 //   - sourceName - Name of the credit source
@@ -225,8 +223,8 @@ func (client *SourcesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSourcesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -241,8 +239,6 @@ func (client *SourcesClient) getHandleResponse(resp *http.Response) (SourcesClie
 }
 
 // NewListByCreditPager - List credit sources for a credit under a resource group from primary service admin.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - creditName - Name of the credit
 //   - options - SourcesClientListByCreditOptions contains the optional parameters for the SourcesClient.NewListByCreditPager
@@ -290,8 +286,8 @@ func (client *SourcesClient) listByCreditCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSourcesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -307,8 +303,6 @@ func (client *SourcesClient) listByCreditHandleResponse(resp *http.Response) (So
 
 // Update - Update a credit source.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - creditName - Name of the credit
 //   - sourceName - Name of the credit source
@@ -360,8 +354,8 @@ func (client *SourcesClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSourcesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultDiscountClientVersion string = "2025-12-01-preview"
+
 // DiscountClient contains the methods for the Discount group.
 // Don't use this type directly, use NewDiscountClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type DiscountClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewDiscountClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Get - Get discount at resource group level
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - discountName - Name of the discount
 //   - options - DiscountClientGetOptions contains the optional parameters for the DiscountClient.Get method.
@@ -88,8 +90,8 @@ func (client *DiscountClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDiscountClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -105,8 +107,6 @@ func (client *DiscountClient) getHandleResponse(resp *http.Response) (DiscountCl
 
 // BeginUpdate - Update discounts
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - discountName - Name of the discount
 //   - body - Request body for updating discounts
@@ -131,8 +131,6 @@ func (client *DiscountClient) BeginUpdate(ctx context.Context, resourceGroupName
 
 // Update - Update discounts
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *DiscountClient) update(ctx context.Context, resourceGroupName string, discountName string, body DiscountPatchRequest, options *DiscountClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiscountClient.BeginUpdate"
@@ -174,8 +172,8 @@ func (client *DiscountClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDiscountClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

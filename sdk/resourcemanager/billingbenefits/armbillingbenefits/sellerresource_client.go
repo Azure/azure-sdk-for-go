@@ -11,10 +11,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
+
+const defaultSellerResourceClientVersion string = "2025-12-01-preview"
 
 // SellerResourceClient contains the methods for the SellerResource group.
 // Don't use this type directly, use NewSellerResourceClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type SellerResourceClient struct {
 	internal *arm.Client
 }
@@ -35,8 +40,6 @@ func NewSellerResourceClient(credential azcore.TokenCredential, options *arm.Cli
 
 // List - List maccs by billing account
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - body - The request body
 //   - options - SellerResourceClientListOptions contains the optional parameters for the SellerResourceClient.List method.
 func (client *SellerResourceClient) List(ctx context.Context, body SellerResourceListRequest, options *SellerResourceClientListOptions) (SellerResourceClientListResponse, error) {
@@ -69,8 +72,8 @@ func (client *SellerResourceClient) listCreateRequest(ctx context.Context, body 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSellerResourceClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

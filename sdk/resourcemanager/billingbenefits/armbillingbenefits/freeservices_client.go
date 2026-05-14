@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultFreeServicesClientVersion string = "2025-12-01-preview"
+
 // FreeServicesClient contains the methods for the FreeServices group.
 // Don't use this type directly, use NewFreeServicesClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type FreeServicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewFreeServicesClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreate - This operation creates or updates free services in Azure
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - freeServiceName - Name of the free service
 //   - body - Free services create request
@@ -67,8 +69,6 @@ func (client *FreeServicesClient) BeginCreate(ctx context.Context, resourceGroup
 
 // Create - This operation creates or updates free services in Azure
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *FreeServicesClient) create(ctx context.Context, resourceGroupName string, freeServiceName string, body FreeServices, options *FreeServicesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FreeServicesClient.BeginCreate"
@@ -110,8 +110,8 @@ func (client *FreeServicesClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultFreeServicesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -123,8 +123,6 @@ func (client *FreeServicesClient) createCreateRequest(ctx context.Context, resou
 // BeginDelete - This operation deletes free services from the subscription. Only free services that are in an expired or
 // cancelled states can be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - freeServiceName - Name of the free service
 //   - options - FreeServicesClientBeginDeleteOptions contains the optional parameters for the FreeServicesClient.BeginDelete
@@ -149,8 +147,6 @@ func (client *FreeServicesClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - This operation deletes free services from the subscription. Only free services that are in an expired or cancelled
 // states can be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *FreeServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, freeServiceName string, options *FreeServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FreeServicesClient.BeginDelete"
@@ -192,15 +188,13 @@ func (client *FreeServicesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultFreeServicesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - This operation retrieves properties for free services.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - freeServiceName - Name of the free service
 //   - options - FreeServicesClientGetOptions contains the optional parameters for the FreeServicesClient.Get method.
@@ -246,8 +240,8 @@ func (client *FreeServicesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultFreeServicesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -262,8 +256,6 @@ func (client *FreeServicesClient) getHandleResponse(resp *http.Response) (FreeSe
 }
 
 // NewListByResourceGroupPager - This operation lists the free services that are available under the specified resource group.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - FreeServicesClientListByResourceGroupOptions contains the optional parameters for the FreeServicesClient.NewListByResourceGroupPager
 //     method.
@@ -306,8 +298,8 @@ func (client *FreeServicesClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultFreeServicesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -322,8 +314,6 @@ func (client *FreeServicesClient) listByResourceGroupHandleResponse(resp *http.R
 }
 
 // NewListBySubscriptionPager - This operation lists free services that are available under the specified subscription.
-//
-// Generated from API version 2025-12-01-preview
 //   - options - FreeServicesClientListBySubscriptionOptions contains the optional parameters for the FreeServicesClient.NewListBySubscriptionPager
 //     method.
 func (client *FreeServicesClient) NewListBySubscriptionPager(options *FreeServicesClientListBySubscriptionOptions) *runtime.Pager[FreeServicesClientListBySubscriptionResponse] {
@@ -361,8 +351,8 @@ func (client *FreeServicesClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultFreeServicesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -378,8 +368,6 @@ func (client *FreeServicesClient) listBySubscriptionHandleResponse(resp *http.Re
 
 // BeginUpdate - This operation updates free services in Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - freeServiceName - Name of the free service
 //   - body - Free services patch request
@@ -405,8 +393,6 @@ func (client *FreeServicesClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - This operation updates free services in Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *FreeServicesClient) update(ctx context.Context, resourceGroupName string, freeServiceName string, body FreeServicesPatchRequest, options *FreeServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FreeServicesClient.BeginUpdate"
@@ -448,8 +434,8 @@ func (client *FreeServicesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultFreeServicesClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

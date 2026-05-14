@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultConditionalCreditContributorsClientVersion string = "2025-12-01-preview"
+
 // ConditionalCreditContributorsClient contains the methods for the ConditionalCreditContributors group.
 // Don't use this type directly, use NewConditionalCreditContributorsClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type ConditionalCreditContributorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewConditionalCreditContributorsClient(subscriptionID string, credential az
 
 // GetFromPrimary - Get a conditional credit contributor for primary service admin
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - conditionalCreditName - Name of the conditional credit
 //   - contributorName - Unique name of contributor in the format {contributorCloudSubId}_{resourceGroupName}_{nameInContributorTenant}.
@@ -94,8 +96,8 @@ func (client *ConditionalCreditContributorsClient) getFromPrimaryCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditContributorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -111,8 +113,6 @@ func (client *ConditionalCreditContributorsClient) getFromPrimaryHandleResponse(
 
 // NewListFromApplicableConditionalCreditPager - List contributors under applicable conditional credits for a given billing
 // account.
-//
-// Generated from API version 2025-12-01-preview
 //   - billingAccountID - The billing account Id at which the benefits are listed. Accepted format is: {rootId:orgId}.
 //   - systemID - System ID of the primary MACC.
 //   - options - ConditionalCreditContributorsClientListFromApplicableConditionalCreditOptions contains the optional parameters
@@ -156,8 +156,8 @@ func (client *ConditionalCreditContributorsClient) listFromApplicableConditional
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditContributorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -172,8 +172,6 @@ func (client *ConditionalCreditContributorsClient) listFromApplicableConditional
 }
 
 // NewListFromPrimaryPager - List contributors under a primary conditional credit for primary service admin
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - conditionalCreditName - Name of the conditional credit
 //   - options - ConditionalCreditContributorsClientListFromPrimaryOptions contains the optional parameters for the ConditionalCreditContributorsClient.NewListFromPrimaryPager
@@ -221,8 +219,8 @@ func (client *ConditionalCreditContributorsClient) listFromPrimaryCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultConditionalCreditContributorsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

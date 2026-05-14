@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultMaccsClientVersion string = "2025-12-01-preview"
+
 // MaccsClient contains the methods for the Maccs group.
 // Don't use this type directly, use NewMaccsClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type MaccsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +46,6 @@ func NewMaccsClient(subscriptionID string, credential azcore.TokenCredential, op
 // BeginCancel - Represents an operation to cancel MACC contract. This operation does not indicate deletion of the MACC, but
 // rather stops applying the benefit to the account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - maccName - Name of primary MACC.
 //   - options - MaccsClientBeginCancelOptions contains the optional parameters for the MaccsClient.BeginCancel method.
@@ -68,8 +70,6 @@ func (client *MaccsClient) BeginCancel(ctx context.Context, resourceGroupName st
 // Cancel - Represents an operation to cancel MACC contract. This operation does not indicate deletion of the MACC, but rather
 // stops applying the benefit to the account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *MaccsClient) cancel(ctx context.Context, resourceGroupName string, maccName string, options *MaccsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MaccsClient.BeginCancel"
@@ -111,8 +111,8 @@ func (client *MaccsClient) cancelCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMaccsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -120,8 +120,6 @@ func (client *MaccsClient) cancelCreateRequest(ctx context.Context, resourceGrou
 // BeginChargeShortfall - Operation to charge shortfall to a customer's account, ensuring they are charged for the outstanding
 // amount of MACC credit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - maccName - Name of primary MACC.
 //   - body - Request body for charging shortfall.
@@ -148,8 +146,6 @@ func (client *MaccsClient) BeginChargeShortfall(ctx context.Context, resourceGro
 // ChargeShortfall - Operation to charge shortfall to a customer's account, ensuring they are charged for the outstanding
 // amount of MACC credit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *MaccsClient) chargeShortfall(ctx context.Context, resourceGroupName string, maccName string, body ChargeShortfallRequest, options *MaccsClientBeginChargeShortfallOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MaccsClient.BeginChargeShortfall"
@@ -191,8 +187,8 @@ func (client *MaccsClient) chargeShortfallCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMaccsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -203,8 +199,6 @@ func (client *MaccsClient) chargeShortfallCreateRequest(ctx context.Context, res
 
 // BeginCreate - Create MACC.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - maccName - Name of primary MACC.
 //   - body - Request body for creating MACC.
@@ -228,8 +222,6 @@ func (client *MaccsClient) BeginCreate(ctx context.Context, resourceGroupName st
 
 // Create - Create MACC.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *MaccsClient) create(ctx context.Context, resourceGroupName string, maccName string, body Macc, options *MaccsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MaccsClient.BeginCreate"
@@ -271,8 +263,8 @@ func (client *MaccsClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMaccsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -283,8 +275,6 @@ func (client *MaccsClient) createCreateRequest(ctx context.Context, resourceGrou
 
 // BeginDelete - Delete MACC.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - maccName - Name of primary MACC.
 //   - options - MaccsClientBeginDeleteOptions contains the optional parameters for the MaccsClient.BeginDelete method.
@@ -308,8 +298,6 @@ func (client *MaccsClient) BeginDelete(ctx context.Context, resourceGroupName st
 
 // Delete - Delete MACC.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *MaccsClient) deleteOperation(ctx context.Context, resourceGroupName string, maccName string, options *MaccsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MaccsClient.BeginDelete"
@@ -351,15 +339,13 @@ func (client *MaccsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMaccsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a MACC.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - maccName - Name of primary MACC.
 //   - options - MaccsClientGetOptions contains the optional parameters for the MaccsClient.Get method.
@@ -405,8 +391,8 @@ func (client *MaccsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMaccsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -421,8 +407,6 @@ func (client *MaccsClient) getHandleResponse(resp *http.Response) (MaccsClientGe
 }
 
 // NewListByResourceGroupPager - List MACCs under a resource group for primary service admin.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MaccsClientListByResourceGroupOptions contains the optional parameters for the MaccsClient.NewListByResourceGroupPager
 //     method.
@@ -465,8 +449,8 @@ func (client *MaccsClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMaccsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -481,8 +465,6 @@ func (client *MaccsClient) listByResourceGroupHandleResponse(resp *http.Response
 }
 
 // NewListBySubscriptionPager - List MACCs under a subscription from primary service tenant.
-//
-// Generated from API version 2025-12-01-preview
 //   - options - MaccsClientListBySubscriptionOptions contains the optional parameters for the MaccsClient.NewListBySubscriptionPager
 //     method.
 func (client *MaccsClient) NewListBySubscriptionPager(options *MaccsClientListBySubscriptionOptions) *runtime.Pager[MaccsClientListBySubscriptionResponse] {
@@ -520,8 +502,8 @@ func (client *MaccsClient) listBySubscriptionCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMaccsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -537,8 +519,6 @@ func (client *MaccsClient) listBySubscriptionHandleResponse(resp *http.Response)
 
 // BeginUpdate - Update MACC.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - maccName - Name of primary MACC.
 //   - body - Request body for updating MACC.
@@ -563,8 +543,6 @@ func (client *MaccsClient) BeginUpdate(ctx context.Context, resourceGroupName st
 
 // Update - Update MACC.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *MaccsClient) update(ctx context.Context, resourceGroupName string, maccName string, body MaccPatchRequest, options *MaccsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MaccsClient.BeginUpdate"
@@ -606,8 +584,8 @@ func (client *MaccsClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMaccsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -619,8 +597,6 @@ func (client *MaccsClient) updateCreateRequest(ctx context.Context, resourceGrou
 // BeginWriteOff - Operation to waive a customer's pending MACC balance (Shortfall) from their account, ensuring they are
 // not charged for the outstanding amount.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - maccName - Name of primary MACC.
 //   - options - MaccsClientBeginWriteOffOptions contains the optional parameters for the MaccsClient.BeginWriteOff method.
@@ -645,8 +621,6 @@ func (client *MaccsClient) BeginWriteOff(ctx context.Context, resourceGroupName 
 // WriteOff - Operation to waive a customer's pending MACC balance (Shortfall) from their account, ensuring they are not charged
 // for the outstanding amount.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *MaccsClient) writeOff(ctx context.Context, resourceGroupName string, maccName string, options *MaccsClientBeginWriteOffOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MaccsClient.BeginWriteOff"
@@ -688,8 +662,8 @@ func (client *MaccsClient) writeOffCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultMaccsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

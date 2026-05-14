@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultSavingsPlanOrderClientVersion string = "2025-12-01-preview"
+
 // SavingsPlanOrderClient contains the methods for the SavingsPlanOrder group.
 // Don't use this type directly, use NewSavingsPlanOrderClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type SavingsPlanOrderClient struct {
 	internal *arm.Client
 }
@@ -38,8 +42,6 @@ func NewSavingsPlanOrderClient(credential azcore.TokenCredential, options *arm.C
 
 // Elevate - Elevate as owner on savings plan order based on billing permissions.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - savingsPlanOrderID - Order ID of the savings plan
 //   - options - SavingsPlanOrderClientElevateOptions contains the optional parameters for the SavingsPlanOrderClient.Elevate
 //     method.
@@ -77,8 +79,8 @@ func (client *SavingsPlanOrderClient) elevateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSavingsPlanOrderClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -94,8 +96,6 @@ func (client *SavingsPlanOrderClient) elevateHandleResponse(resp *http.Response)
 
 // Get - Get a savings plan order.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - savingsPlanOrderID - Order ID of the savings plan
 //   - options - SavingsPlanOrderClientGetOptions contains the optional parameters for the SavingsPlanOrderClient.Get method.
 func (client *SavingsPlanOrderClient) Get(ctx context.Context, savingsPlanOrderID string, options *SavingsPlanOrderClientGetOptions) (SavingsPlanOrderClientGetResponse, error) {
@@ -135,8 +135,8 @@ func (client *SavingsPlanOrderClient) getCreateRequest(ctx context.Context, savi
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSavingsPlanOrderClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -151,8 +151,6 @@ func (client *SavingsPlanOrderClient) getHandleResponse(resp *http.Response) (Sa
 }
 
 // NewListPager - List all Savings plan orders.
-//
-// Generated from API version 2025-12-01-preview
 //   - options - SavingsPlanOrderClientListOptions contains the optional parameters for the SavingsPlanOrderClient.NewListPager
 //     method.
 func (client *SavingsPlanOrderClient) NewListPager(options *SavingsPlanOrderClientListOptions) *runtime.Pager[SavingsPlanOrderClientListResponse] {
@@ -186,8 +184,8 @@ func (client *SavingsPlanOrderClient) listCreateRequest(ctx context.Context, _ *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultSavingsPlanOrderClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

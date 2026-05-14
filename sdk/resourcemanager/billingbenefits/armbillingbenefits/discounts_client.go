@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultDiscountsClientVersion string = "2025-12-01-preview"
+
 // DiscountsClient contains the methods for the Discounts group.
 // Don't use this type directly, use NewDiscountsClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type DiscountsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewDiscountsClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCancel - Cancel discount. Stops applying the benefit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - discountName - Name of the discount
 //   - options - DiscountsClientBeginCancelOptions contains the optional parameters for the DiscountsClient.BeginCancel method.
@@ -66,8 +68,6 @@ func (client *DiscountsClient) BeginCancel(ctx context.Context, resourceGroupNam
 
 // Cancel - Cancel discount. Stops applying the benefit.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *DiscountsClient) cancel(ctx context.Context, resourceGroupName string, discountName string, options *DiscountsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiscountsClient.BeginCancel"
@@ -109,16 +109,14 @@ func (client *DiscountsClient) cancelCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDiscountsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginCreate - Create discount.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - discountName - Name of the discount
 //   - body - Request body for creating a discount.
@@ -142,8 +140,6 @@ func (client *DiscountsClient) BeginCreate(ctx context.Context, resourceGroupNam
 
 // Create - Create discount.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *DiscountsClient) create(ctx context.Context, resourceGroupName string, discountName string, body Discount, options *DiscountsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiscountsClient.BeginCreate"
@@ -185,8 +181,8 @@ func (client *DiscountsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDiscountsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -197,8 +193,6 @@ func (client *DiscountsClient) createCreateRequest(ctx context.Context, resource
 
 // BeginDelete - Delete discount. Clears the metadata from the user's view.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - discountName - Name of the discount
 //   - options - DiscountsClientBeginDeleteOptions contains the optional parameters for the DiscountsClient.BeginDelete method.
@@ -222,8 +216,6 @@ func (client *DiscountsClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Delete discount. Clears the metadata from the user's view.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *DiscountsClient) deleteOperation(ctx context.Context, resourceGroupName string, discountName string, options *DiscountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiscountsClient.BeginDelete"
@@ -265,14 +257,12 @@ func (client *DiscountsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDiscountsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // NewResourceGroupListPager - List discounts at resource group level
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DiscountsClientResourceGroupListOptions contains the optional parameters for the DiscountsClient.NewResourceGroupListPager
 //     method.
@@ -315,8 +305,8 @@ func (client *DiscountsClient) resourceGroupListCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDiscountsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -331,8 +321,6 @@ func (client *DiscountsClient) resourceGroupListHandleResponse(resp *http.Respon
 }
 
 // NewScopeListPager - List discounts that are applicable for a given scope. Currently supported scopes: billing accounts
-//
-// Generated from API version 2025-12-01-preview
 //   - scope - The scope at which the benefits are listed.
 //   - options - DiscountsClientScopeListOptions contains the optional parameters for the DiscountsClient.NewScopeListPager method.
 func (client *DiscountsClient) NewScopeListPager(scope string, options *DiscountsClientScopeListOptions) *runtime.Pager[DiscountsClientScopeListResponse] {
@@ -370,8 +358,8 @@ func (client *DiscountsClient) scopeListCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDiscountsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -386,8 +374,6 @@ func (client *DiscountsClient) scopeListHandleResponse(resp *http.Response) (Dis
 }
 
 // NewSubscriptionListPager - List discounts at subscription level
-//
-// Generated from API version 2025-12-01-preview
 //   - options - DiscountsClientSubscriptionListOptions contains the optional parameters for the DiscountsClient.NewSubscriptionListPager
 //     method.
 func (client *DiscountsClient) NewSubscriptionListPager(options *DiscountsClientSubscriptionListOptions) *runtime.Pager[DiscountsClientSubscriptionListResponse] {
@@ -425,8 +411,8 @@ func (client *DiscountsClient) subscriptionListCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultDiscountsClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

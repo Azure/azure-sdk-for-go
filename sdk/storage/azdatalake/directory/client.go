@@ -253,7 +253,28 @@ func (d *Client) NewSubdirectoryClient(subdirectoryName string) (*Client, error)
 // Create creates a new directory.
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	lac, mac, httpHeaders, createOpts, cpkOpts := options.format()
-	resp, err := d.generatedDirClientWithDFS().Create(ctx, createOpts, httpHeaders, lac, mac, nil, cpkOpts)
+	if lac != nil {
+		createOpts.LeaseID = lac.LeaseID
+	}
+	if mac != nil {
+		createOpts.IfMatch = mac.IfMatch
+		createOpts.IfNoneMatch = mac.IfNoneMatch
+		createOpts.IfModifiedSince = mac.IfModifiedSince
+		createOpts.IfUnmodifiedSince = mac.IfUnmodifiedSince
+	}
+	if httpHeaders != nil {
+		createOpts.CacheControl = httpHeaders.CacheControl
+		createOpts.ContentDisposition = httpHeaders.ContentDisposition
+		createOpts.ContentEncoding = httpHeaders.ContentEncoding
+		createOpts.ContentLanguage = httpHeaders.ContentLanguage
+		createOpts.ContentType = httpHeaders.ContentType
+	}
+	if cpkOpts != nil {
+		createOpts.EncryptionAlgorithm = cpkOpts.EncryptionAlgorithm
+		createOpts.EncryptionKey = cpkOpts.EncryptionKey
+		createOpts.EncryptionKeySHA256 = cpkOpts.EncryptionKeySHA256
+	}
+	resp, err := d.generatedDirClientWithDFS().Create(ctx, createOpts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
@@ -261,8 +282,17 @@ func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 // Delete deletes directory and any path under it.
 func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	lac, mac, deleteOpts := path.FormatDeleteOptions(options, true)
+	if lac != nil {
+		deleteOpts.LeaseID = lac.LeaseID
+	}
+	if mac != nil {
+		deleteOpts.IfMatch = mac.IfMatch
+		deleteOpts.IfNoneMatch = mac.IfNoneMatch
+		deleteOpts.IfModifiedSince = mac.IfModifiedSince
+		deleteOpts.IfUnmodifiedSince = mac.IfUnmodifiedSince
+	}
 	for {
-		resp, err := d.generatedDirClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
+		resp, err := d.generatedDirClientWithDFS().Delete(ctx, deleteOpts)
 		if resp.Continuation == nil || err != nil {
 			err = exported.ConvertToDFSError(err)
 			return resp, err
@@ -339,7 +369,27 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		return RenameResponse{}, exported.ConvertToDFSError(err)
 	}
 	newDirClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(exported.ModuleName), d.sharedKey(), d.identityCredential(), d.getClientOptions()))
-	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
+	if lac != nil {
+		createOpts.LeaseID = lac.LeaseID
+	}
+	if mac != nil {
+		createOpts.IfMatch = mac.IfMatch
+		createOpts.IfNoneMatch = mac.IfNoneMatch
+		createOpts.IfModifiedSince = mac.IfModifiedSince
+		createOpts.IfUnmodifiedSince = mac.IfUnmodifiedSince
+	}
+	if smac != nil {
+		createOpts.SourceIfMatch = smac.SourceIfMatch
+		createOpts.SourceIfNoneMatch = smac.SourceIfNoneMatch
+		createOpts.SourceIfModifiedSince = smac.SourceIfModifiedSince
+		createOpts.SourceIfUnmodifiedSince = smac.SourceIfUnmodifiedSince
+	}
+	if cpkOpts != nil {
+		createOpts.EncryptionAlgorithm = cpkOpts.EncryptionAlgorithm
+		createOpts.EncryptionKey = cpkOpts.EncryptionKey
+		createOpts.EncryptionKeySHA256 = cpkOpts.EncryptionKeySHA256
+	}
+	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts)
 	return path.FormatRenameResponse(&resp), exported.ConvertToDFSError(err)
 }
 
@@ -349,7 +399,16 @@ func (d *Client) SetAccessControl(ctx context.Context, options *SetAccessControl
 	if err != nil {
 		return SetAccessControlResponse{}, err
 	}
-	resp, err := d.generatedDirClientWithDFS().SetAccessControl(ctx, opts, lac, mac)
+	if lac != nil {
+		opts.LeaseID = lac.LeaseID
+	}
+	if mac != nil {
+		opts.IfMatch = mac.IfMatch
+		opts.IfNoneMatch = mac.IfNoneMatch
+		opts.IfModifiedSince = mac.IfModifiedSince
+		opts.IfUnmodifiedSince = mac.IfUnmodifiedSince
+	}
+	resp, err := d.generatedDirClientWithDFS().SetAccessControl(ctx, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
@@ -360,29 +419,11 @@ func (d *Client) setAccessControlPager(mode generated.PathSetAccessControlRecurs
 			return page.Continuation != nil && len(*page.Continuation) > 0
 		},
 		Fetcher: func(ctx context.Context, page *generated.PathClientSetAccessControlRecursiveResponse) (generated.PathClientSetAccessControlRecursiveResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = d.generatedDirClientWithDFS().SetAccessControlRecursiveCreateRequest(ctx, mode, listOptions)
-				err = exported.ConvertToDFSError(err)
-			} else {
+			if page != nil {
 				listOptions.Continuation = page.Continuation
-				req, err = d.generatedDirClientWithDFS().SetAccessControlRecursiveCreateRequest(ctx, mode, listOptions)
-				err = exported.ConvertToDFSError(err)
 			}
-			if err != nil {
-				return generated.PathClientSetAccessControlRecursiveResponse{}, err
-			}
-			resp, err := d.generatedDirClientWithDFS().InternalClient().Pipeline().Do(req)
-			err = exported.ConvertToDFSError(err)
-			if err != nil {
-				return generated.PathClientSetAccessControlRecursiveResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return generated.PathClientSetAccessControlRecursiveResponse{}, runtime.NewResponseError(resp)
-			}
-			newResp, err := d.generatedDirClientWithDFS().SetAccessControlRecursiveHandleResponse(resp)
-			return newResp, exported.ConvertToDFSError(err)
+			resp, err := d.generatedDirClientWithDFS().SetAccessControlRecursive(ctx, mode, listOptions)
+			return resp, exported.ConvertToDFSError(err)
 		},
 	})
 
@@ -448,7 +489,16 @@ func (d *Client) RemoveAccessControlRecursive(ctx context.Context, acl string, o
 // GetAccessControl gets the owner, owning group, and permissions for a directory.
 func (d *Client) GetAccessControl(ctx context.Context, options *GetAccessControlOptions) (GetAccessControlResponse, error) {
 	opts, lac, mac := path.FormatGetAccessControlOptions(options)
-	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	if lac != nil {
+		opts.LeaseID = lac.LeaseID
+	}
+	if mac != nil {
+		opts.IfMatch = mac.IfMatch
+		opts.IfNoneMatch = mac.IfNoneMatch
+		opts.IfModifiedSince = mac.IfModifiedSince
+		opts.IfUnmodifiedSince = mac.IfUnmodifiedSince
+	}
+	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }

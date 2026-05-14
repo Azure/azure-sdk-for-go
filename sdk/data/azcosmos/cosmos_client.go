@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -33,11 +34,41 @@ type Client struct {
 	internal    *azcore.Client
 	gem         *globalEndpointManager
 	endpointUrl *url.URL
+	caches      *sharedCacheSet
+	closeOnce   sync.Once
+}
+
+// getContainerCache returns the container properties cache for this client.
+func (c *Client) getContainerCache() *containerPropertiesCache {
+	if c.caches == nil {
+		return nil
+	}
+	return c.caches.containerCache
+}
+
+// getPKRangeCache returns the partition key range cache for this client.
+func (c *Client) getPKRangeCache() *partitionKeyRangeCache {
+	if c.caches == nil {
+		return nil
+	}
+	return c.caches.pkRangeCache
 }
 
 // Endpoint used to create the client.
 func (c *Client) Endpoint() string {
 	return c.endpoint
+}
+
+// Close releases the shared cache reference for this client. The underlying
+// caches are removed from the global registry once all clients to the same
+// account endpoint have been closed. After Close, the client should not be used.
+// Close is idempotent; calling it multiple times is safe.
+func (c *Client) Close() {
+	c.closeOnce.Do(func() {
+		if c.endpoint != "" {
+			releaseCaches(c.endpoint)
+		}
+	})
 }
 
 // NewClientWithKey creates a new instance of Cosmos client with shared key authentication. It uses the default pipeline configuration.
@@ -64,7 +95,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint)}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -110,7 +141,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint)}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.

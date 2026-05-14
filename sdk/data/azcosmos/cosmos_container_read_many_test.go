@@ -5,8 +5,10 @@ package azcosmos
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"sync/atomic"
 	"testing"
 
@@ -165,6 +167,31 @@ func TestGroupItemsByPhysicalRange_DefaultVersion(t *testing.T) {
 	require.Len(t, groups["0"], 1)
 }
 
+func TestFindPhysicalRangeForEPK_FFSentinel(t *testing.T) {
+	// "FF" is the sentinel max boundary for the last partition.
+	// EPK values like "FFF697..." are longer strings that lexicographically
+	// exceed "FF" but must still match the last partition range.
+	ranges := []partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: "3C3C3C3C"},
+		{ID: "1", MinInclusive: "3C3C3C3C", MaxExclusive: "FF"},
+	}
+
+	// EPK that starts with "FF..." — lexicographically > "FF" but should match range 1
+	rangeID, ok := findPhysicalRangeForEPK("FFF697AF545B8770396E3626B83A20AE", ranges)
+	require.True(t, ok)
+	require.Equal(t, "1", rangeID)
+
+	// EPK at very start
+	rangeID, ok = findPhysicalRangeForEPK("0000000000000000", ranges)
+	require.True(t, ok)
+	require.Equal(t, "0", rangeID)
+
+	// EPK at boundary
+	rangeID, ok = findPhysicalRangeForEPK("3C3C3C3C", ranges)
+	require.True(t, ok)
+	require.Equal(t, "1", rangeID)
+}
+
 func TestBuildQueryChunksForRanges_SingleRange(t *testing.T) {
 	pkDef := PartitionKeyDefinition{Paths: []string{"/pk"}}
 	orderedIDs := []string{"0"}
@@ -296,4 +323,418 @@ func TestExecuteQueryChunks_CancelledContext(t *testing.T) {
 	resp, err := collectChunkResults(results)
 	require.ErrorIs(t, err, context.Canceled)
 	require.Empty(t, resp.Items)
+}
+
+func TestComputeEPKRange_FullKeyHash(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/pk"},
+		Kind:    PartitionKeyKindHash,
+		Version: 2,
+	}
+	pk := NewPartitionKeyString("test")
+	r, err := computeEPKRange(&pk, pkDef)
+	require.NoError(t, err)
+	require.False(t, r.isRange(), "full key should be a point, not a range")
+	require.Equal(t, r.Min, r.Max)
+}
+
+func TestComputeEPKRange_FullKeyMultiHash(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/tenantId", "/userId"},
+		Kind:    PartitionKeyKindMultiHash,
+		Version: 2,
+	}
+	pk := NewPartitionKeyString("tenant1").AppendString("user1")
+	r, err := computeEPKRange(&pk, pkDef)
+	require.NoError(t, err)
+	require.False(t, r.isRange(), "full multi-hash key should be a point")
+}
+
+func TestComputeEPKRange_PrefixKeyMultiHash(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/tenantId", "/userId"},
+		Kind:    PartitionKeyKindMultiHash,
+		Version: 2,
+	}
+	pk := NewPartitionKeyString("tenant1")
+	r, err := computeEPKRange(&pk, pkDef)
+	require.NoError(t, err)
+	require.True(t, r.isRange(), "prefix key should produce a range")
+	require.Equal(t, r.Min+"FF", r.Max)
+}
+
+func TestComputeEPKRange_TooManyComponents(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/pk"},
+		Kind:    PartitionKeyKindHash,
+		Version: 2,
+	}
+	pk := NewPartitionKeyString("a").AppendString("b") // 2 components for 1 path
+	_, err := computeEPKRange(&pk, pkDef)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "more partition key components")
+}
+
+func TestComputeEPKRange_NonMultiHashPartialKey(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/a", "/b"},
+		Kind:    PartitionKeyKindHash,
+		Version: 2,
+	}
+	pk := NewPartitionKeyString("only-one")
+	_, err := computeEPKRange(&pk, pkDef)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "non-MultiHash")
+}
+
+func TestComputeEPKRange_UndefinedPK(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/pk"},
+		Kind:    PartitionKeyKindHash,
+		Version: 2,
+	}
+	pk := NewPartitionKey()
+	r, err := computeEPKRange(&pk, pkDef)
+	require.NoError(t, err)
+	require.False(t, r.isRange(), "undefined PK should be a point, not a range")
+	require.NotEmpty(t, r.Min)
+	require.Equal(t, r.Min, r.Max)
+}
+
+func TestComputeEPKRange_UndefinedPK_MultiHash(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/tenantId", "/userId"},
+		Kind:    PartitionKeyKindMultiHash,
+		Version: 2,
+	}
+	pk := NewPartitionKey()
+	r, err := computeEPKRange(&pk, pkDef)
+	require.NoError(t, err)
+	require.False(t, r.isRange(), "undefined PK should be a point even for MultiHash")
+	require.NotEmpty(t, r.Min)
+	require.Equal(t, r.Min, r.Max)
+}
+
+func TestFindPhysicalRangeForEPK_MixedLengthBoundaries(t *testing.T) {
+	// Simulate HPK boundaries where one is 32-char partial and the next is 64-char zero-padded
+	partial := "06AB34CFE4E482236BCACBBF50E234AB"
+	fullZero := partial + "00000000000000000000000000000000"
+
+	ranges := []partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: partial},
+		{ID: "1", MinInclusive: fullZero, MaxExclusive: "FF"},
+	}
+
+	// An EPK exactly at the boundary should go to range 1 (length-aware: partial == fullZero)
+	id, ok := findPhysicalRangeForEPK(fullZero, ranges)
+	require.True(t, ok)
+	require.Equal(t, "1", id)
+
+	// An EPK just below the boundary should go to range 0
+	id, ok = findPhysicalRangeForEPK("06AB34CFE4E482236BCACBBF50E234AA", ranges)
+	require.True(t, ok)
+	require.Equal(t, "0", id)
+}
+
+func TestGroupItemsByPhysicalRange_MultiHashPrefixFanout(t *testing.T) {
+	pkDef := PartitionKeyDefinition{
+		Paths:   []string{"/tenantId", "/userId"},
+		Kind:    PartitionKeyKindMultiHash,
+		Version: 2,
+	}
+
+	// Compute the EPK range for "tenant1" prefix
+	prefixPK := NewPartitionKeyString("tenant1")
+	prefixRange, err := computeEPKRange(&prefixPK, pkDef)
+	require.NoError(t, err)
+	require.True(t, prefixRange.isRange())
+
+	// The prefix EPK is a 32-char hash. The range is [epk, epk+"FF").
+	// Create a split point INSIDE that range by appending a mid-range suffix
+	// to the prefix EPK. E.g., if EPK is "AABB...", split at "AABB...80..."
+	splitPoint := prefixRange.Min + "80000000000000000000000000000000"
+
+	ranges := []partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: splitPoint},
+		{ID: "1", MinInclusive: splitPoint, MaxExclusive: "FF"},
+	}
+
+	items := []ItemIdentity{
+		{ID: "1", PartitionKey: prefixPK},
+	}
+
+	orderedIDs, groups, err := groupItemsByPhysicalRange(items, pkDef, ranges)
+	require.NoError(t, err)
+
+	// The prefix key should fan out to both partitions
+	require.Len(t, orderedIDs, 2, "prefix key should fan out to 2 partitions")
+	require.Contains(t, groups, "0")
+	require.Contains(t, groups, "1")
+	require.Len(t, groups["0"], 1)
+	require.Len(t, groups["1"], 1)
+}
+
+func TestRefreshPKRangeCache_InvalidatesContainerCache(t *testing.T) {
+	cache := newContainerPropertiesCache()
+
+	// Pre-populate the container cache with a stale entry
+	staleProps := &ContainerProperties{
+		ID:         "containerId",
+		ResourceID: "staleRID",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths:   []string{"/pk"},
+			Version: 2,
+		},
+	}
+	containerLink := "dbs/databaseId/colls/containerId"
+	cache.set(containerLink, staleProps)
+
+	// Verify stale RID is in the cache
+	require.NotNil(t, cache.getPropertiesByRID("staleRID"))
+
+	// Set up a mock server that serves container properties for the re-fetch after invalidation
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	containerPropsResponse := []byte(`{
+		"id": "containerId",
+		"_rid": "newRID",
+		"_self": "dbs/db1/colls/containerId/",
+		"partitionKey": {"paths": ["/pk"], "kind": "Hash", "version": 2}
+	}`)
+
+	pkRangeResponse := []byte(`{
+		"_rid": "newRID",
+		"PartitionKeyRanges": [{
+			"_rid": "newRID",
+			"id": "0",
+			"minInclusive": "",
+			"maxExclusive": "FF"
+		}],
+		"_count": 1
+	}`)
+
+	// First request: container props re-fetch (after invalidation)
+	// Second request: PK range fetch
+	srv.AppendResponse(mock.WithBody(containerPropsResponse), mock.WithStatusCode(200))
+	srv.AppendResponse(mock.WithBody(pkRangeResponse), mock.WithStatusCode(200))
+
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			pkRangeCache:   newPartitionKeyRangeCache(),
+			containerCache: cache,
+		},
+	}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	// Call refreshPKRangeCache — should invalidate container cache, re-fetch props, then refresh PK ranges
+	err := container.refreshPKRangeCache(context.TODO())
+	require.NoError(t, err)
+
+	// The stale RID entry should have been invalidated and replaced with the new one
+	require.Nil(t, cache.getPropertiesByRID("staleRID"), "stale RID should be invalidated from container cache")
+	require.NotNil(t, cache.getPropertiesByRID("newRID"), "new RID should be in container cache after refresh")
+}
+
+// returnGoneOnQueryPolicy is a pipeline policy that returns a 410/Gone response
+// with a configurable substatus on query requests. After maxGone 410s have been
+// returned, subsequent queries pass through to the server normally.
+type returnGoneOnQueryPolicy struct {
+	maxGone   int32        // how many queries to fail with 410
+	substatus string       // substatus header value (e.g. "1002")
+	count     atomic.Int32 // queries seen so far
+}
+
+func (p *returnGoneOnQueryPolicy) Do(req *policy.Request) (*http.Response, error) {
+	isQuery := req.Raw().Header.Get(cosmosHeaderQuery) == "True"
+	if !isQuery {
+		return req.Next()
+	}
+	n := p.count.Add(1)
+	if n <= p.maxGone {
+		// Return a synthetic 410 response with substatus header
+		headers := http.Header{}
+		headers.Set(cosmosHeaderSubstatus, p.substatus)
+		return &http.Response{
+			StatusCode: http.StatusGone,
+			Status:     "410 Gone",
+			Header:     headers,
+			Body:       io.NopCloser(strings.NewReader(`{"message":"Gone"}`)),
+			Request:    req.Raw(),
+		}, nil
+	}
+	return req.Next()
+}
+
+// createReadManyTestClient builds a *Client with pre-populated container and PK range
+// caches, wired to the given mock server with the specified per-call policies.
+func createReadManyTestClient(t *testing.T, srv *mock.Server, policies []policy.Policy) *Client {
+	t.Helper()
+	defaultEndpoint, err := url.Parse(srv.URL())
+	require.NoError(t, err)
+
+	internalClient, err := azcore.NewClient("azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{PerCall: policies},
+		&policy.ClientOptions{Transport: srv})
+	require.NoError(t, err)
+
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	containerCache := newContainerPropertiesCache()
+	pkRangeCache := newPartitionKeyRangeCache()
+
+	client := &Client{
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			containerCache: containerCache,
+			pkRangeCache:   pkRangeCache,
+		},
+	}
+
+	// Pre-populate container cache
+	containerLink := "dbs/databaseId/colls/containerId"
+	containerCache.set(containerLink, &ContainerProperties{
+		ID:         "containerId",
+		ResourceID: "testRID",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths:   []string{"/pk"},
+			Kind:    PartitionKeyKindHash,
+			Version: 2,
+		},
+	})
+
+	// Pre-populate PK range cache with one range covering the full key space
+	pkRangeCache.entries["testRID"] = &pkRangeCacheEntry{
+		routingMap: newCollectionRoutingMap([]partitionKeyRange{
+			{ID: "0", MinInclusive: "", MaxExclusive: "FF", ResourceID: "testRID"},
+		}, "etag1"),
+	}
+
+	return client
+}
+
+func TestReadMany_410_retrySucceeds(t *testing.T) {
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	gonePolicy := &returnGoneOnQueryPolicy{maxGone: 1, substatus: subStatusPartitionKeyRangeGone}
+	client := createReadManyTestClient(t, srv, []policy.Policy{gonePolicy})
+
+	// After the 410, refreshPKRangeCache will:
+	// 1. Invalidate container cache → re-fetch container props
+	// 2. Force refresh PK range cache → fetch PK ranges (incremental loop needs 304 to stop)
+	// Then the retry will execute the query again (passes through policy since maxGone=1)
+	containerPropsResp := []byte(`{
+		"id": "containerId",
+		"_rid": "testRID",
+		"_self": "dbs/db1/colls/containerId/",
+		"partitionKey": {"paths": ["/pk"], "kind": "Hash", "version": 2}
+	}`)
+	pkRangeResp := []byte(`{
+		"_rid": "testRID",
+		"PartitionKeyRanges": [{"_rid": "testRID", "id": "0", "minInclusive": "", "maxExclusive": "FF"}],
+		"_count": 1
+	}`)
+	queryResp := []byte(`{"Documents":[{"id":"item1","pk":"pkA"}]}`)
+
+	// Sequence: container props (re-fetch) → PK ranges (refresh) → 304 (end incremental loop) → query (retry succeeds)
+	srv.AppendResponse(mock.WithBody(containerPropsResp), mock.WithStatusCode(200))
+	srv.AppendResponse(mock.WithBody(pkRangeResp), mock.WithStatusCode(200),
+		mock.WithHeader(cosmosHeaderEtag, "etag2"))
+	srv.AppendResponse(mock.WithStatusCode(304)) // End incremental refresh loop
+	srv.AppendResponse(mock.WithBody(queryResp), mock.WithStatusCode(200),
+		mock.WithHeader(cosmosHeaderRequestCharge, "1.0"))
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	items := []ItemIdentity{{ID: "item1", PartitionKey: NewPartitionKeyString("pkA")}}
+	resp, err := container.ReadManyItems(context.Background(), items, nil)
+	require.NoError(t, err)
+	require.Len(t, resp.Items, 1)
+	require.Equal(t, int32(2), gonePolicy.count.Load(), "expected 2 query attempts: 1 failed + 1 retry")
+}
+
+func TestReadMany_410_exhaustedRetries(t *testing.T) {
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	// Return 410 on ALL query attempts (maxPKRangeGoneRetries+1 = 4)
+	gonePolicy := &returnGoneOnQueryPolicy{maxGone: 100, substatus: subStatusPartitionKeyRangeGone}
+	client := createReadManyTestClient(t, srv, []policy.Policy{gonePolicy})
+
+	containerPropsResp := []byte(`{
+		"id": "containerId",
+		"_rid": "testRID",
+		"_self": "dbs/db1/colls/containerId/",
+		"partitionKey": {"paths": ["/pk"], "kind": "Hash", "version": 2}
+	}`)
+	pkRangeResp := []byte(`{
+		"_rid": "testRID",
+		"PartitionKeyRanges": [{"_rid": "testRID", "id": "0", "minInclusive": "", "maxExclusive": "FF"}],
+		"_count": 1
+	}`)
+
+	// Each retry needs container props + PK range re-fetch (with ETag) + 304 (end incremental loop).
+	// The PK range response must include an ETag header so changeFeedETag stays non-empty,
+	// ensuring subsequent retries use the incremental refresh path consistently.
+	// maxPKRangeGoneRetries=3, so we get 3 retries (attempts 0-2 trigger refresh), attempt 3 fails.
+	for i := 0; i < maxPKRangeGoneRetries; i++ {
+		srv.AppendResponse(mock.WithBody(containerPropsResp), mock.WithStatusCode(200))
+		srv.AppendResponse(mock.WithBody(pkRangeResp), mock.WithStatusCode(200),
+			mock.WithHeader(cosmosHeaderEtag, "etag-refresh"))
+		srv.AppendResponse(mock.WithStatusCode(304)) // End incremental refresh loop
+	}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	items := []ItemIdentity{{ID: "item1", PartitionKey: NewPartitionKeyString("pkA")}}
+	_, err := container.ReadManyItems(context.Background(), items, nil)
+	require.Error(t, err)
+
+	// On the last attempt (attempt == maxPKRangeGoneRetries), the 410 error is
+	// returned directly since there are no retries remaining.
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusGone, respErr.StatusCode)
+
+	// Verify all 4 attempts were made (initial + 3 retries)
+	require.Equal(t, int32(maxPKRangeGoneRetries+1), gonePolicy.count.Load(),
+		"expected initial attempt + maxPKRangeGoneRetries retry attempts")
+}
+
+func TestReadMany_410_nonGoneSubstatus_notRetried(t *testing.T) {
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	// Return 410 with substatus "0" (NameCacheIsStale) — not a PKRange gone condition
+	gonePolicy := &returnGoneOnQueryPolicy{maxGone: 1, substatus: "0"}
+	client := createReadManyTestClient(t, srv, []policy.Policy{gonePolicy})
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	items := []ItemIdentity{{ID: "item1", PartitionKey: NewPartitionKeyString("pkA")}}
+	_, err := container.ReadManyItems(context.Background(), items, nil)
+	require.Error(t, err)
+
+	// Should have made only 1 query attempt (no retry for non-gone substatus)
+	require.Equal(t, int32(1), gonePolicy.count.Load(), "should not retry for non-PKRangeGone substatus")
+
+	// Verify it's a 410 error
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusGone, respErr.StatusCode)
 }

@@ -3,6 +3,8 @@
 
 package azcosmos
 
+import "net/http"
+
 // Headers
 const (
 	cosmosHeaderRequestCharge                      string = "x-ms-request-charge"
@@ -98,8 +100,26 @@ const (
 )
 
 // Substatus Codes
+// NOTE: Some substatus values are reused across different HTTP status codes.
+// Always check the HTTP status code first before interpreting the substatus.
+// - 1002: ReadSessionNotAvailable (404) / PartitionKeyRangeGone (410)
+// - 1008: DatabaseAccountNotFound (403) / CompletingPartitionMigration (410)
 const (
-	subStatusWriteForbidden          string = "3"
-	subStatusDatabaseAccountNotFound string = "1008"
-	subStatusReadSessionNotAvailable string = "1002"
+	subStatusWriteForbidden               string = "3"
+	subStatusDatabaseAccountNotFound      string = "1008"
+	subStatusReadSessionNotAvailable      string = "1002"
+	subStatusPartitionKeyRangeGone        string = "1002"
+	subStatusCompletingSplit              string = "1007"
+	subStatusCompletingPartitionMigration string = "1008"
 )
+
+// isPartitionKeyRangeGoneError checks if an error response indicates a
+// partition key range gone condition (HTTP 410 with split-related substatus).
+func isPartitionKeyRangeGoneError(statusCode int, subStatus string) bool {
+	if statusCode != http.StatusGone {
+		return false
+	}
+	return subStatus == subStatusPartitionKeyRangeGone ||
+		subStatus == subStatusCompletingSplit ||
+		subStatus == subStatusCompletingPartitionMigration
+}

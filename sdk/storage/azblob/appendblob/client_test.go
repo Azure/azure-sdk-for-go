@@ -16,6 +16,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 	"testing"
@@ -4036,6 +4037,6 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockMultipleWithStructuredMe
 	downloadedData, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 
-	expectedData := append(block1, block2...)
+	expectedData := slices.Concat(block1, block2)
 	_require.Equal(expectedData, downloadedData)
 }

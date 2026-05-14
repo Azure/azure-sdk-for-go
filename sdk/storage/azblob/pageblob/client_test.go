@@ -13,6 +13,7 @@ import (
 	"io"
 	"math/rand"
 	"os"
+	"slices"
 	"testing"
 	"time"
 
@@ -5171,7 +5172,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesMultipleWithStructuredMess
 	downloadedData, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 
-	expectedData := append(page1, page2...)
+	expectedData := slices.Concat(page1, page2)
 	_require.Equal(expectedData, downloadedData)
 }
 

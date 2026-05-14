@@ -60,6 +60,20 @@ func (t *compositeContinuationToken) advance(newETag azcore.ETag) {
 	t.Continuation = append(t.Continuation[1:], head)
 }
 
+// dropHeadContinuation clears the head queue entry's ContinuationToken
+// (its If-None-Match ETag) without rotating the queue. Used in the
+// degraded routing-resolution fallback path: when we cannot identify the
+// physical PK range for the head, replaying the prior ETag against an
+// unknown range would be incorrect, so we drop it and read fresh.
+//
+// No-op if the queue is empty.
+func (t *compositeContinuationToken) dropHeadContinuation() {
+	if t == nil || len(t.Continuation) == 0 {
+		return
+	}
+	t.Continuation[0].ContinuationToken = nil
+}
+
 // replaceHeadWithChildren replaces the head queue entry with the provided
 // child entries, preserving the order of the children at the front of the
 // queue. Used when a 410/Gone refresh reveals a split (parent → N children)

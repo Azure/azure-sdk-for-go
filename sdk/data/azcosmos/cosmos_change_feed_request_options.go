@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -103,7 +104,11 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 // caller-options-level Continuation token is NOT consulted here — the
 // queue-head ETag drives If-None-Match because the queue may have been
 // split-expanded since the token was issued.
-func (options *ChangeFeedOptions) buildRequestHeaders(head changeFeedRange, resolvedPKRangeID string) map[string]string {
+//
+// Returns an error when PartitionKey serialization fails — sending a
+// change-feed read with a missing PK header would yield an opaque
+// server-side error, so we surface the cause to the caller instead.
+func (options *ChangeFeedOptions) buildRequestHeaders(head changeFeedRange, resolvedPKRangeID string) (map[string]string, error) {
 	headers := make(map[string]string, 6)
 	headers[cosmosHeaderChangeFeed] = cosmosHeaderValuesChangeFeed
 
@@ -116,9 +121,10 @@ func (options *ChangeFeedOptions) buildRequestHeaders(head changeFeedRange, reso
 		}
 		if options.PartitionKey != nil {
 			pkJSON, err := options.PartitionKey.toJsonString()
-			if err == nil {
-				headers[cosmosHeaderPartitionKey] = string(pkJSON)
+			if err != nil {
+				return nil, fmt.Errorf("ChangeFeedOptions: serializing PartitionKey: %w", err)
 			}
+			headers[cosmosHeaderPartitionKey] = string(pkJSON)
 		}
 	}
 
@@ -130,5 +136,5 @@ func (options *ChangeFeedOptions) buildRequestHeaders(head changeFeedRange, reso
 		headers[headerXmsDocumentDbPartitionKeyRangeId] = resolvedPKRangeID
 	}
 
-	return headers
+	return headers, nil
 }

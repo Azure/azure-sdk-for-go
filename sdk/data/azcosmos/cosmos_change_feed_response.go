@@ -35,13 +35,19 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 		Response: newResponse(resp),
 	}
 
+	// Always close the body, including the 304 short-circuit below. The
+	// drain loop emits one response per queue head, so a quiet container
+	// can yield N intermediate 304s per GetChangeFeed call — leaking those
+	// bodies (which still have an http.Response.Body even when empty) until
+	// GC would compound across calls.
+	defer func() { _ = resp.Body.Close() }()
+
 	if resp.StatusCode == http.StatusNotModified {
 		response.Documents = []json.RawMessage{}
 		response.Count = 0
 		return response, nil
 	}
 
-	defer func() { _ = resp.Body.Close() }()
 	body, err := azruntime.Payload(resp)
 	if err != nil {
 		return response, wrapResponseError(err, response.Response)

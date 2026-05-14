@@ -11,8 +11,10 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
@@ -850,28 +852,33 @@ func (c *ContainerClient) GetChangeFeed(
 	// ResourceID when a continuation token carries one to validate. Building
 	// the initial queue takes care of that lazily so the no-token path stays
 	// at one extra request (pk-ranges fetch).
-	token, _, partitionKeyRanges, err := c.buildChangeFeedInitialQueue(ctx, options)
+	token, partitionKeyRanges, err := c.buildChangeFeedInitialQueue(ctx, options)
 	if err != nil {
 		return ChangeFeedResponse{}, err
 	}
 
-	return c.getChangeFeedForQueue(ctx, options, token, partitionKeyRanges)
+	// Capture into err so the deferred endSpan closure observes drain
+	// failures (410 budget exhaustion, send errors, refresh failures,
+	// serialization errors, ErrFeedRangeUnresolved) instead of recording
+	// success on every drain that actually failed.
+	var resp ChangeFeedResponse
+	resp, err = c.getChangeFeedForQueue(ctx, options, token, partitionKeyRanges)
+	return resp, err
 }
 
 // buildChangeFeedInitialQueue assembles the queue this call's drain loop will
 // operate on, validating any provided continuation token against the current
 // container and resolving any provided FeedRange against the current PK
-// range cache. Returns the fetched PK-range snapshot alongside the queue so
+// range cache. Returns the fetched PK-range snapshot alongside the token so
 // the drain loop can reuse it without re-fetching on every iteration; the
 // 410-retry path re-fetches on its own.
 //
-// Returns (token, queue, snapshot, nil) on success. Returns
-// ErrFeedRangeUnresolved (wrapped) when no overlap exists even after the
-// cache is fresh.
+// Returns (token, snapshot, nil) on success. Returns ErrFeedRangeUnresolved
+// (wrapped) when no overlap exists even after the cache is fresh.
 func (c *ContainerClient) buildChangeFeedInitialQueue(
 	ctx context.Context,
 	options *ChangeFeedOptions,
-) (*compositeContinuationToken, []changeFeedRange, []partitionKeyRange, error) {
+) (*compositeContinuationToken, []partitionKeyRange, error) {
 	// Path A: continuation token drives the queue.
 	if options.Continuation != nil && *options.Continuation != "" {
 		var compositeToken compositeContinuationToken
@@ -883,10 +890,10 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 			if compositeToken.ResourceID != "" {
 				currentRID, ridErr := c.getContainerRID(ctx)
 				if ridErr != nil {
-					return nil, nil, nil, ridErr
+					return nil, nil, ridErr
 				}
 				if currentRID != "" && compositeToken.ResourceID != currentRID {
-					return nil, nil, nil, fmt.Errorf(
+					return nil, nil, fmt.Errorf(
 						"continuation token ResourceID %q does not match the current container's ResourceID %q; the token was issued for a different container",
 						compositeToken.ResourceID, currentRID,
 					)
@@ -900,9 +907,9 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 			// loop doesn't issue an extra request per iteration.
 			pkrResp, err := c.getPartitionKeyRanges(ctx, nil)
 			if err != nil {
-				return nil, nil, nil, err
+				return nil, nil, err
 			}
-			return &token, queue, pkrResp.PartitionKeyRanges, nil
+			return &token, pkrResp.PartitionKeyRanges, nil
 		}
 		// Not a composite token — fall through to FeedRange path; the legacy
 		// ETag-only continuation is handled by buildRequestHeaders via the
@@ -911,19 +918,19 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 
 	// Path B: FeedRange drives the queue.
 	if options.FeedRange == nil {
-		return nil, nil, nil, fmt.Errorf("GetChangeFeed requires a FeedRange to be set in the options, or a continuation token that contains a composite continuation token")
+		return nil, nil, fmt.Errorf("GetChangeFeed requires a FeedRange to be set in the options, or a continuation token that contains a composite continuation token")
 	}
 
 	children, pkrs, err := c.resolveFeedRangeToChildren(ctx, *options.FeedRange)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, err
 	}
 	entries := buildChildQueueEntries(children, nil)
 	token := compositeContinuationToken{
 		Version:      cosmosCompositeContinuationTokenVersion,
 		Continuation: entries,
 	}
-	return &token, entries, pkrs, nil
+	return &token, pkrs, nil
 }
 
 // resolveFeedRangeToChildren returns the routing-map ranges that overlap the
@@ -933,11 +940,14 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 // Also returns the PK-range snapshot it fetched, so the drain loop can reuse
 // it for the rest of this GetChangeFeed call.
 //
-// Back-compat fallback: when the PK-range cache is unavailable AND the
-// direct fetch returns no ranges (e.g., test mocks), returns a single
-// passthrough entry representing the customer's FeedRange so the drain
-// loop can issue without overlap-resolution. This preserves pre-F1
-// behavior for callers without the cache infrastructure wired up.
+// Degraded fallback: when the PK-range cache is unavailable AND the direct
+// fetch returns no ranges (e.g., test scaffolding), routing information is
+// effectively missing. Rather than failing loudly, we drop any continuation
+// context the caller may have provided, log a warning so the misroute is
+// observable, and return a passthrough entry representing the customer's
+// FeedRange (placed both in the children list and in the snapshot). The
+// drain loop then issues the request fresh — without a PK-range-id header
+// and without an If-None-Match ETag — and the server resolves routing.
 func (c *ContainerClient) resolveFeedRangeToChildren(
 	ctx context.Context,
 	feedRange FeedRange,
@@ -972,18 +982,26 @@ func (c *ContainerClient) resolveFeedRangeToChildren(
 	}
 
 	// No cache wired up. If we got any PK ranges in the direct fetch but none
-	// overlap, that's also a clear "unresolved" — same loud-fail semantics as
-	// the cache path. But if we got NO PK ranges at all (degraded/test path),
-	// fall back to a passthrough entry so the legacy issue-without-overlap-
-	// match flow can run.
+	// overlap, that's a real customer mistake — same loud-fail semantics as
+	// the cache path.
 	if len(pkrResp.PartitionKeyRanges) > 0 {
 		return nil, nil, &feedRangeUnresolvedError{feedRange: feedRange}
 	}
 
-	return []partitionKeyRange{{
+	// Degraded fallback (cache absent AND direct fetch returned no ranges).
+	// Log a warning, then issue the read fresh: passthrough range with no
+	// continuation token. The passthrough is also placed in the snapshot so
+	// the drain loop's overlap check is satisfied without re-entering this
+	// branch.
+	log.Writef(azlog.EventResponse,
+		"azcosmos: GetChangeFeed: routing information unavailable for FeedRange [%s, %s); reading fresh without continuation token or PK-range header",
+		feedRange.MinInclusive, feedRange.MaxExclusive,
+	)
+	passthrough := partitionKeyRange{
 		MinInclusive: feedRange.MinInclusive,
 		MaxExclusive: feedRange.MaxExclusive,
-	}}, pkrResp.PartitionKeyRanges, nil
+	}
+	return []partitionKeyRange{passthrough}, []partitionKeyRange{passthrough}, nil
 }
 
 // overlappingPartitionKeyRanges returns the subset of partitionKeyRanges whose
@@ -1069,21 +1087,49 @@ func (c *ContainerClient) getChangeFeedForQueue(
 		headFeedRange := FeedRange{MinInclusive: head.MinInclusive, MaxExclusive: head.MaxExclusive}
 		overlaps := overlappingPartitionKeyRanges(headFeedRange, partitionKeyRanges)
 		if len(overlaps) == 0 {
-			// No overlap on the cached map. With a cache wired up, force a
-			// refresh and retry once; if still no overlap, the head is
-			// unresolvable. Without a cache, fall back to legacy behavior:
-			// issue the request without an overlap-resolved PK-range ID.
+			// No overlap on the cached map. Force a refresh and re-fetch; if
+			// still no overlap, the head is unresolvable. The cache-nil branch
+			// is reachable only from test scaffolding (production always wires
+			// up caches via acquireCaches) but we still attempt a direct fetch
+			// fallback so handcrafted tests behave the same.
 			if c.database.client.getPKRangeCache() != nil {
 				if refreshErr := c.refreshPKRangeCache(ctx); refreshErr != nil {
 					return ChangeFeedResponse{}, refreshErr
 				}
-				pkrResp, err := c.getPartitionKeyRanges(ctx, nil)
-				if err != nil {
-					return ChangeFeedResponse{}, err
-				}
-				partitionKeyRanges = pkrResp.PartitionKeyRanges
-				overlaps = overlappingPartitionKeyRanges(headFeedRange, partitionKeyRanges)
-				if len(overlaps) == 0 {
+			}
+			pkrResp, err := c.getPartitionKeyRanges(ctx, nil)
+			if err != nil {
+				return ChangeFeedResponse{}, err
+			}
+			partitionKeyRanges = pkrResp.PartitionKeyRanges
+			overlaps = overlappingPartitionKeyRanges(headFeedRange, partitionKeyRanges)
+			if len(overlaps) == 0 {
+				// Degraded fallback: cache absent AND the direct fetch
+				// returned nothing — routing information is unavailable for
+				// this head. Drop the head's continuation token (an ETag
+				// from a prior call could correspond to a now-defunct
+				// physical range), log a warning so the misroute is
+				// observable, and synthesize a passthrough so the request
+				// is issued fresh — without a PK-range-id header and
+				// without an If-None-Match ETag.
+				if c.database.client.getPKRangeCache() == nil && len(partitionKeyRanges) == 0 {
+					log.Writef(azlog.EventResponse,
+						"azcosmos: GetChangeFeed: routing information unavailable for head [%s, %s); dropping continuation token and reading fresh",
+						head.MinInclusive, head.MaxExclusive,
+					)
+					token.dropHeadContinuation()
+					head = token.head()
+					if head == nil {
+						break
+					}
+					headFeedRange = FeedRange{MinInclusive: head.MinInclusive, MaxExclusive: head.MaxExclusive}
+					passthrough := partitionKeyRange{
+						MinInclusive: head.MinInclusive,
+						MaxExclusive: head.MaxExclusive,
+					}
+					partitionKeyRanges = []partitionKeyRange{passthrough}
+					overlaps = []partitionKeyRange{passthrough}
+				} else {
 					return ChangeFeedResponse{}, &feedRangeUnresolvedError{feedRange: headFeedRange}
 				}
 			}
@@ -1093,20 +1139,21 @@ func (c *ContainerClient) getChangeFeedForQueue(
 		if len(overlaps) > 1 {
 			// Split-expansion. Replace the head with N children inheriting
 			// the head's ETag, and bump the rotation budget so newly-inserted
-			// children get visited in this call.
+			// children get visited in this call. Reset the 410 budget too —
+			// each newly-inserted child is a fresh physical head and deserves
+			// its own retry allowance.
 			children := buildChildQueueEntries(overlaps, head.ContinuationToken)
 			token.replaceHeadWithChildren(children)
 			originalQueueLen += len(children) - 1
+			pkRangeGoneAttempts = 0
 			continue
-		} else if len(overlaps) == 1 {
-			resolvedPKRangeID = overlaps[0].ID
 		}
-		// len(overlaps) == 0 here means: no PK-range cache AND no exact-match
-		// from the direct fetch. Issue without the PK-range header so the
-		// server can resolve via EPK headers alone (legacy back-compat path).
+		resolvedPKRangeID = overlaps[0].ID
 
-		head = token.head()
-		headers := options.buildRequestHeaders(*head, resolvedPKRangeID)
+		headers, headerErr := options.buildRequestHeaders(*head, resolvedPKRangeID)
+		if headerErr != nil {
+			return ChangeFeedResponse{}, headerErr
+		}
 
 		addHeaders := func(r *policy.Request) {
 			for k, v := range headers {
@@ -1168,6 +1215,9 @@ func (c *ContainerClient) getChangeFeedForQueue(
 		feedRangeForResp := &FeedRange{MinInclusive: head.MinInclusive, MaxExclusive: head.MaxExclusive}
 		token.advance(newETag)
 		rotations++
+		// Head advanced to a new physical range; reset the 410 budget so the
+		// next head gets its own allowance instead of inheriting prior 410s.
+		pkRangeGoneAttempts = 0
 
 		response.FeedRange = feedRangeForResp
 

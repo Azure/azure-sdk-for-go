@@ -82,10 +82,6 @@ func findOverlappingPartitionKeyRangeIDs(feedRange FeedRange, partitionKeyRanges
 
 	feedMin := feedRange.MinInclusive
 	feedMax := normalizeMaxBoundary(feedRange.MaxExclusive)
-	if feedMax == "" {
-		// Both bounds open. Treat as "all ranges" which always overlaps any non-empty routing map.
-		feedMax = "FF"
-	}
 
 	// Sanity: feedMin must be < feedMax. An equal/inverted range can never overlap any
 	// well-formed routing map and would silently match nothing — surface as Unresolved.

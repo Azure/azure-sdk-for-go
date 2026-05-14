@@ -11,7 +11,7 @@
 
 ### Bugs Fixed
 
-* Fixed `GetChangeFeed` to survive partition splits. The change feed now resolves customer-supplied `FeedRange`s by overlap-match against the current routing map (instead of exact-equality), retries on `410/Gone` with a PK-range substatus by refreshing the cache, expands a single `FeedRange` that straddles a split into one continuation queue entry per child (each inheriting the parent's ETag), and persists a multi-range composite continuation token so subsequent calls drain every child range. Also added a cross-container `ResourceID` guard that rejects continuation tokens issued for a different container. See [PR 26768](https://github.com/Azure/azure-sdk-for-go/pull/26768).
+* Fixed `GetChangeFeed` to survive partition splits: customer-supplied `FeedRange`s are now overlap-matched against the routing map, `410/Gone` triggers a cache refresh and bounded retry, split parents expand into per-child queue entries (inheriting the parent's ETag), and the continuation token persists multi-range state across calls. Continuation tokens are guarded against cross-container reuse. See [PR 26768](https://github.com/Azure/azure-sdk-for-go/pull/26768).
 * Fixed V2 partition key routing: the top 2 bits of the first EPK byte are now masked to stay within the partition key range space [0x00, 0x3F]. Previously, items whose V2 hash started with a byte >= 0x40 could fail routing in ReadMany because the EPK lexicographically exceeded the "FF" range sentinel. See [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)
 * Fixed error handling for partition key range calls which would previously cause panics on any error. See [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)
 

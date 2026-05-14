@@ -799,32 +799,11 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 // ctx - The context for the request.
 // options - Options for the operation
 //
-// Resolution & retry behavior (overlap-match + 410 retry + multi-range queue):
-//
-//  1. If options.Continuation contains a multi-range composite continuation token, the
-//     queued sub-ranges drive routing — options.FeedRange is ignored in favor of the
-//     queue. The token's ResourceID is validated against the container's current
-//     ResourceID; a mismatch surfaces a loud error rather than misrouting against the
-//     wrong routing map.
-//
-//  2. If options.FeedRange is set (no token, or fresh start), the range is overlap-
-//     matched against the current PK-range cache. A multi-overlap result (i.e., the
-//     customer's range straddles a split) is expanded into one queue entry per child,
-//     each inheriting the parent's ETag so no events are skipped at the boundary.
-//
-//  3. On 410/Gone with a PK-range substatus, the PK-range cache is refreshed and the
-//     current queue head is re-resolved against the new routing map. Bounded at
-//     maxPKRangeGoneRetries attempts; the final 410 is surfaced to the caller.
-//
-//  4. On 200 OK with documents, the head rotates to the tail with its new ETag and
-//     the page is returned immediately so the caller can make progress.
-//
-//  5. On 304 Not Modified, the head rotates to the tail with any newly-issued ETag
-//     and the next queue entry is tried. Drain bookkeeping ensures that if a queued
-//     sub-range splits mid-drain (i.e., one head replacement adds N children), the
-//     rotation budget grows so newly-inserted children get queried in this call.
-//     If the whole queue drains with no documents, an empty page is returned with
-//     the rotated token so the caller can poll again later.
+// Routes via overlap-match against the current PK-range cache (split-aware). When
+// the customer's FeedRange straddles a split, it's expanded into one queue entry
+// per child so no events are missed at the boundary. 410/Gone responses with a
+// PK-range substatus trigger a cache refresh and bounded retry. The continuation
+// token is a multi-range composite; subsequent calls drain remaining ranges.
 //
 // Returns ErrFeedRangeUnresolved (wrapped) when the customer's FeedRange/token
 // doesn't overlap any current physical range even after a forced refresh — a

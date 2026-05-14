@@ -52,47 +52,9 @@ func NewFeedRange(minInclusive, maxExclusive string) FeedRange {
 	}
 }
 
-// findOverlappingPartitionKeyRangeIDs returns the IDs of every PK range that
-// overlaps the given FeedRange. Used by GetChangeFeed to expand a parent feed
-// range into one entry per child after a split (or fold a child into a parent
-// after a merge). The returned slice preserves the routing-map order.
-//
-// Empty feed-range boundaries follow Cosmos convention: "" on MinInclusive
-// means "open at the bottom" (lowest possible key), "" on MaxExclusive means
-// "open at the top" (highest possible key — normalized to "FF").
-//
-// Returns ErrFeedRangeUnresolved (wrapped) when the input doesn't overlap
-// any range — typically a malformed range or a wrong-container token.
-func findOverlappingPartitionKeyRangeIDs(feedRange FeedRange, partitionKeyRanges []partitionKeyRange) ([]string, error) {
-	if len(partitionKeyRanges) == 0 {
-		return nil, &feedRangeUnresolvedError{feedRange: feedRange}
-	}
-
-	feedMin := feedRange.MinInclusive
-	feedMax := normalizeMaxBoundary(feedRange.MaxExclusive)
-
-	// Sanity: feedMin must be < feedMax. An equal/inverted range can never overlap any
-	// well-formed routing map and would silently match nothing — surface as Unresolved.
-	if epk.CompareEPK(feedMin, feedMax) >= 0 {
-		return nil, &feedRangeUnresolvedError{feedRange: feedRange}
-	}
-
-	ids := make([]string, 0, 2)
-	for _, pkr := range partitionKeyRanges {
-		if rangesOverlap(feedMin, feedMax, pkr.MinInclusive, normalizeMaxBoundary(pkr.MaxExclusive)) {
-			ids = append(ids, pkr.ID)
-		}
-	}
-	if len(ids) == 0 {
-		return nil, &feedRangeUnresolvedError{feedRange: feedRange}
-	}
-	return ids, nil
-}
-
 // overlappingPartitionKeyRanges returns the subset of partitionKeyRanges whose
-// boundaries overlap the given feedRange, preserving input order. Single-pass
-// equivalent of findOverlappingPartitionKeyRangeIDs that returns the ranges
-// themselves rather than IDs. Returns nil on no overlap (no error).
+// boundaries overlap the given feedRange, preserving input order. Returns nil
+// on no overlap (no error).
 //
 // Note: O(n) linear scan. For routing-map-backed lookups, prefer
 // collectionRoutingMap.getOverlappingRanges (binary search). This helper exists

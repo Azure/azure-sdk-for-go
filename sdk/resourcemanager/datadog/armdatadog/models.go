@@ -23,11 +23,34 @@ type APIKey struct {
 
 // APIKeyListResponse - Response of a list operation.
 type APIKeyListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string
-
-	// Results of a list operation.
+	// REQUIRED; The DatadogApiKey items on this page
 	Value []*APIKey
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ActivateSaaSParameterRequest - SaaS resource details for Activate and Validate SaaS Resource
+type ActivateSaaSParameterRequest struct {
+	// REQUIRED; SaaS resource id of marketplace saas subscription to be activated.
+	SaaSResourceID *string
+
+	// Datadog organization properties to link the Saas resource to.
+	DatadogOrganizationProperties *OrganizationProperties
+
+	// User information of the person activating the SaaS resource.
+	UserInfo *UserInfo
+}
+
+// AgentRules - Set of rules for managing agents for the Monitor resource.
+type AgentRules struct {
+	// Flag specifying if agent monitoring should be enabled for the Monitor resource.
+	EnableAgentMonitoring *bool
+
+	// List of filtering tags to be used for capturing metrics. If empty, all resources will be captured. If only Exclude action
+	// is specified, the rules will apply to the list of all available resources. If
+	// Include actions are specified, the rules will only include resources with the associated tags.
+	FilteringTags []*FilteringTag
 }
 
 // AgreementProperties - Terms properties.
@@ -76,11 +99,32 @@ type AgreementResource struct {
 
 // AgreementResourceListResponse - Response of a list operation.
 type AgreementResourceListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string
-
-	// Results of a list operation.
+	// REQUIRED; The DatadogAgreementResource items on this page
 	Value []*AgreementResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ApplicationKey - Represents a Datadog Application key and its associated properties.
+type ApplicationKey struct {
+	// The name of the Application key.
+	Name *string
+
+	// READ-ONLY; The value of the Application key.
+	Key *string
+
+	// The user that created the Application key.
+	CreatedBy *string
+}
+
+// BillingInfoResponse - Marketplace Subscription and Organization details to which resource gets billed into.
+type BillingInfoResponse struct {
+	// Marketplace Subscription details
+	MarketplaceSaasInfo *MarketplaceSaaSInfo
+
+	// Partner Billing Entity details: Organization Info
+	PartnerBillingEntity *PartnerBillingEntity
 }
 
 // CreateResourceSupportedProperties - Datadog resource can be created or not properties.
@@ -99,8 +143,13 @@ type CreateResourceSupportedResponse struct {
 	Properties *CreateResourceSupportedProperties
 }
 
+// CreateResourceSupportedResponseList - Paged collection of CreateResourceSupportedResponse items
 type CreateResourceSupportedResponseList struct {
+	// REQUIRED; The CreateResourceSupportedResponse items on this page
 	Value []*CreateResourceSupportedResponse
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
@@ -130,11 +179,11 @@ type Host struct {
 
 // HostListResponse - Response of a list operation.
 type HostListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string
-
-	// Results of a list operation.
+	// REQUIRED; The DatadogHost items on this page
 	Value []*Host
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 type HostMetadata struct {
@@ -166,19 +215,31 @@ type InstallMethod struct {
 	ToolVersion *string
 }
 
+// LatestLinkedSaaSResponse - Response of get latest linked SaaS resource operation
+type LatestLinkedSaaSResponse struct {
+	// Flag indicating if the SaaS resource is hidden
+	IsHiddenSaaS *bool
+
+	// SaaS resource id
+	SaaSResourceID *string
+}
+
 // LinkedResource - The definition of a linked resource.
 type LinkedResource struct {
 	// The ARM id of the linked resource.
 	ID *string
+
+	// The location of the linked resource.
+	Location *string
 }
 
 // LinkedResourceListResponse - Response of a list operation.
 type LinkedResourceListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string
-
-	// Results of a list operation.
+	// REQUIRED; The LinkedResource items on this page
 	Value []*LinkedResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // LogRules - Set of rules for sending logs for the Monitor resource.
@@ -204,6 +265,36 @@ type LogsAgent struct {
 	Transport *string
 }
 
+// MarketplaceOfferDetails - Details about the marketplace offer associated with the monitor resource.
+type MarketplaceOfferDetails struct {
+	// The offer ID (e.g., "ddliftrv3_decoupled").
+	OfferID *string
+
+	// The publisher ID (e.g., "datadog1591740804488").
+	PublisherID *string
+}
+
+// MarketplaceSaaSInfo - Marketplace SAAS Info of the resource.
+type MarketplaceSaaSInfo struct {
+	// The Azure Subscription ID to which the Marketplace Subscription belongs and gets billed into.
+	BilledAzureSubscriptionID *string
+
+	// Marketplace Subscription Details: SAAS Name
+	MarketplaceName *string
+
+	// Marketplace Subscription Details: SaaS Subscription Status
+	MarketplaceStatus *string
+
+	// Marketplace Subscription Id. This is a GUID-formatted string.
+	MarketplaceSubscriptionID *string
+
+	// Offer Id of the Marketplace offer
+	OfferID *string
+
+	// Flag specifying if the Marketplace status is subscribed or not.
+	Subscribed *bool
+}
+
 // MetricRules - Set of rules for sending metrics for the Monitor resource.
 type MetricRules struct {
 	// List of filtering tags to be used for capturing metrics. If empty, all resources will be captured. If only Exclude action
@@ -218,8 +309,18 @@ type MonitorProperties struct {
 	// is required as well.
 	DatadogOrganizationProperties *OrganizationProperties
 
+	// Details about the marketplace offer associated with the resource. Required for API version 2025-11 and later. For earlier
+	// API versions, defaults to the legacy offer.
+	MarketplaceOfferDetails *MarketplaceOfferDetails
+
 	// Flag specifying if the resource monitoring is enabled or disabled.
 	MonitoringStatus *MonitoringStatus
+
+	// SaaS details
+	SaaSData *SaaSData
+
+	// SRE Agent configuration to connect to MCP server of Datadog for given organization.
+	SreAgentConfiguration []*SreAgentConfiguration
 
 	// Includes name, email and optionally, phone number. User Information can't be null.
 	UserInfo *UserInfo
@@ -238,8 +339,9 @@ type MonitorProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// MonitorResource - Concrete tracked resource types can be created by aliasing this type using a specific property type.
 type MonitorResource struct {
-	// REQUIRED
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 	Identity *IdentityProperties
 
@@ -247,29 +349,29 @@ type MonitorResource struct {
 	Properties *MonitorProperties
 	SKU        *ResourceSKU
 
-	// Dictionary of
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; ARM id of the monitor resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Name of the monitor resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the monitor resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // MonitorResourceListResponse - Response of a list operation.
 type MonitorResourceListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string
-
-	// Results of a list operation.
+	// REQUIRED; The DatadogMonitorResource items on this page
 	Value []*MonitorResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // MonitorResourceUpdateParameters - The parameters for a PATCH request to a monitor resource.
@@ -290,6 +392,10 @@ type MonitorUpdateProperties struct {
 
 	// Flag specifying if the resource monitoring is enabled or disabled.
 	MonitoringStatus *MonitoringStatus
+
+	// The new resource collection value of the monitor resource. This collects configuration information for all resources in
+	// a subscription.
+	ResourceCollection *bool
 }
 
 // MonitoredResource - The properties of a resource currently being monitored by the Datadog monitor resource.
@@ -312,11 +418,11 @@ type MonitoredResource struct {
 
 // MonitoredResourceListResponse - Response of a list operation.
 type MonitoredResourceListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string
-
-	// Results of a list operation.
+	// REQUIRED; The MonitoredResource items on this page
 	Value []*MonitoredResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // MonitoredSubscription - The list of subscriptions and it's monitoring status by current Datadog monitor.
@@ -339,18 +445,26 @@ type MonitoredSubscriptionProperties struct {
 	// The request to update subscriptions needed to be monitored by the Datadog monitor resource.
 	Properties *SubscriptionList
 
-	// READ-ONLY; The id of the monitored subscription resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Name of the monitored subscription resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the monitored subscription resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
+// MonitoredSubscriptionPropertiesList - Paged collection of MonitoredSubscriptionProperties items
 type MonitoredSubscriptionPropertiesList struct {
+	// REQUIRED; The MonitoredSubscriptionProperties items on this page
 	Value []*MonitoredSubscriptionProperties
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // MonitoringTagRules - Capture logs and metrics of Azure resources based on ARM tags.
@@ -358,32 +472,38 @@ type MonitoringTagRules struct {
 	// Definition of the properties for a TagRules resource.
 	Properties *MonitoringTagRulesProperties
 
-	// READ-ONLY; The id of the rule set.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Name of the rule set.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the rule set.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // MonitoringTagRulesListResponse - Response of a list operation.
 type MonitoringTagRulesListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string
-
-	// Results of a list operation.
+	// REQUIRED; The MonitoringTagRules items on this page
 	Value []*MonitoringTagRules
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // MonitoringTagRulesProperties - Definition of the properties for a TagRules resource.
 type MonitoringTagRulesProperties struct {
+	// Set of rules for managing agents for the Monitor resource.
+	AgentRules *AgentRules
+
 	// Configuration to enable/disable auto-muting flag
 	Automuting *bool
+
+	// Configuration to enable/disable custom metrics. If enabled, custom metrics from app insights will be sent.
+	CustomMetrics *bool
 
 	// Set of rules for sending logs for the Monitor resource.
 	LogRules *LogRules
@@ -410,13 +530,13 @@ type OperationDisplay struct {
 	Resource *string
 }
 
-// OperationListResult - Result of GET request to list the Microsoft.Datadog operations.
+// OperationListResult - Represents a paginated list of operation results.
 type OperationListResult struct {
-	// URL to get the next set of operation list results if there are any.
-	NextLink *string
-
-	// List of operations supported by the Microsoft.Datadog provider.
+	// REQUIRED; The list of operations.
 	Value []*OperationResult
+
+	// The URL to get the next set of results, if any.
+	NextLink *string
 }
 
 // OperationResult - A Microsoft.Datadog REST API operation.
@@ -462,11 +582,61 @@ type OrganizationProperties struct {
 
 	// The redirect URI for linking.
 	RedirectURI *string
+
+	// The configuration which describes the state of resource collection. This collects configuration information for all resources
+	// in a subscription.
+	ResourceCollection *bool
+}
+
+// PartnerBillingEntity - Partner Billing details associated with the resource.
+type PartnerBillingEntity struct {
+	// The Datadog Organization Id.
+	ID *string
+
+	// The Datadog Organization Name.
+	Name *string
+
+	// Link to the datadog organization page
+	PartnerEntityURI *string
 }
 
 type ResourceSKU struct {
-	// REQUIRED; Name of the SKU in {PlanId} format. For Terraform, the only allowed value is 'linking'.
+	// REQUIRED; Name of the SKU in {PlanId} format. For Terraform, the only allowed value is 'Linked'.
 	Name *string
+}
+
+// ResubscribeProperties - Resubscribe Properties
+type ResubscribeProperties struct {
+	// Newly selected Azure Subscription Id in which the new Marketplace subscription will be created for Resubscribe
+	AzureSubscriptionID *string
+
+	// Newly selected Azure resource group in which the new Marketplace subscription will be created for Resubscribe
+	ResourceGroup *string
+	SKU           *ResourceSKU
+}
+
+// SaaSData - SaaS details
+type SaaSData struct {
+	// SaaS resource id
+	SaaSResourceID *string
+}
+
+// SaaSResourceDetailsResponse - Marketplace SaaS resource details.
+type SaaSResourceDetailsResponse struct {
+	// Id of the Marketplace SaaS Resource
+	SaaSID *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 type SetPasswordLink struct {
@@ -487,29 +657,54 @@ type SingleSignOnProperties struct {
 	SingleSignOnURL *string
 }
 
+// SingleSignOnResource - Concrete proxy resource types can be created by aliasing this type using a specific property type.
 type SingleSignOnResource struct {
 	Properties *SingleSignOnProperties
 
-	// READ-ONLY; ARM id of the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Name of the configuration.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // SingleSignOnResourceListResponse - Response of a list operation.
 type SingleSignOnResourceListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string
-
-	// Results of a list operation.
+	// REQUIRED; The DatadogSingleSignOnResource items on this page
 	Value []*SingleSignOnResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SreAgentConfiguration - SRE Agent configuration to connect to MCP server of Datadog for a given organization.
+type SreAgentConfiguration struct {
+	// REQUIRED; The ARM resource ID of the MCP connector integrated with SRE Agent resource.
+	McpConnectorResourceID *string
+}
+
+// SreAgentConfigurationListResponse - Response of a list operation.
+type SreAgentConfigurationListResponse struct {
+	// REQUIRED; The SreAgentConfiguration items on this page
+	Value []*SreAgentConfiguration
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SreAgentConnectorRequest - Request for adding/removing Datadog MCP connectors on SRE Agent resource.
+type SreAgentConnectorRequest struct {
+	// REQUIRED; Add/Remove action.
+	Action *ConnectorAction
+
+	// REQUIRED; The list of ARM resource ID of the MCP connector integrated with SRE Agent resource.
+	McpConnectorResourceIDList []*SreAgentConfiguration
 }
 
 // SubscriptionList - The request to update subscriptions needed to be monitored by the Datadog monitor resource.

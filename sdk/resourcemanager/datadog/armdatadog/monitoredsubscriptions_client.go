@@ -27,7 +27,7 @@ type MonitoredSubscriptionsClient struct {
 // NewMonitoredSubscriptionsClient creates a new instance of MonitoredSubscriptionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMonitoredSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitoredSubscriptionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewMonitoredSubscriptionsClient(subscriptionID string, credential azcore.To
 // BeginCreateorUpdate - Add the subscriptions that should be monitored by the Datadog monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - The configuration name. Only 'default' value is supported.
@@ -56,7 +56,8 @@ func (client *MonitoredSubscriptionsClient) BeginCreateorUpdate(ctx context.Cont
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitoredSubscriptionsClientCreateorUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -69,7 +70,7 @@ func (client *MonitoredSubscriptionsClient) BeginCreateorUpdate(ctx context.Cont
 // CreateorUpdate - Add the subscriptions that should be monitored by the Datadog monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 func (client *MonitoredSubscriptionsClient) createorUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginCreateorUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitoredSubscriptionsClient.BeginCreateorUpdate"
@@ -115,7 +116,7 @@ func (client *MonitoredSubscriptionsClient) createorUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -130,10 +131,10 @@ func (client *MonitoredSubscriptionsClient) createorUpdateCreateRequest(ctx cont
 // BeginDelete - Updates the subscriptions that are being monitored by the Datadog monitor resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
-//   - configurationName - Configuration name
+//   - configurationName - The configuration name. Only 'default' value is supported.
 //   - options - MonitoredSubscriptionsClientBeginDeleteOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginDelete
 //     method.
 func (client *MonitoredSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[MonitoredSubscriptionsClientDeleteResponse], error) {
@@ -143,7 +144,8 @@ func (client *MonitoredSubscriptionsClient) BeginDelete(ctx context.Context, res
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitoredSubscriptionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -156,7 +158,7 @@ func (client *MonitoredSubscriptionsClient) BeginDelete(ctx context.Context, res
 // Delete - Updates the subscriptions that are being monitored by the Datadog monitor resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 func (client *MonitoredSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitoredSubscriptionsClient.BeginDelete"
@@ -179,7 +181,7 @@ func (client *MonitoredSubscriptionsClient) deleteOperation(ctx context.Context,
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MonitoredSubscriptionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *MonitoredSubscriptionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, _ *MonitoredSubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -202,7 +204,7 @@ func (client *MonitoredSubscriptionsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +213,7 @@ func (client *MonitoredSubscriptionsClient) deleteCreateRequest(ctx context.Cont
 // Get - List the subscriptions currently being monitored by the Datadog monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - The configuration name. Only 'default' value is supported.
@@ -240,7 +242,7 @@ func (client *MonitoredSubscriptionsClient) Get(ctx context.Context, resourceGro
 }
 
 // getCreateRequest creates the Get request.
-func (client *MonitoredSubscriptionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientGetOptions) (*policy.Request, error) {
+func (client *MonitoredSubscriptionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, _ *MonitoredSubscriptionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -263,7 +265,7 @@ func (client *MonitoredSubscriptionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +282,7 @@ func (client *MonitoredSubscriptionsClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - List the subscriptions currently being monitored by the Datadog monitor resource.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitoredSubscriptionsClientListOptions contains the optional parameters for the MonitoredSubscriptionsClient.NewListPager
@@ -288,20 +290,19 @@ func (client *MonitoredSubscriptionsClient) getHandleResponse(resp *http.Respons
 func (client *MonitoredSubscriptionsClient) NewListPager(resourceGroupName string, monitorName string, options *MonitoredSubscriptionsClientListOptions) *runtime.Pager[MonitoredSubscriptionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MonitoredSubscriptionsClientListResponse]{
 		More: func(page MonitoredSubscriptionsClientListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MonitoredSubscriptionsClientListResponse) (MonitoredSubscriptionsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MonitoredSubscriptionsClient.NewListPager")
-			req, err := client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
+			}, nil)
 			if err != nil {
 				return MonitoredSubscriptionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MonitoredSubscriptionsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MonitoredSubscriptionsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -310,7 +311,7 @@ func (client *MonitoredSubscriptionsClient) NewListPager(resourceGroupName strin
 }
 
 // listCreateRequest creates the List request.
-func (client *MonitoredSubscriptionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitoredSubscriptionsClientListOptions) (*policy.Request, error) {
+func (client *MonitoredSubscriptionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitoredSubscriptionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -329,7 +330,7 @@ func (client *MonitoredSubscriptionsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -347,7 +348,7 @@ func (client *MonitoredSubscriptionsClient) listHandleResponse(resp *http.Respon
 // BeginUpdate - Updates the subscriptions that are being monitored by the Datadog monitor resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - The configuration name. Only 'default' value is supported.
@@ -360,7 +361,8 @@ func (client *MonitoredSubscriptionsClient) BeginUpdate(ctx context.Context, res
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitoredSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -373,7 +375,7 @@ func (client *MonitoredSubscriptionsClient) BeginUpdate(ctx context.Context, res
 // Update - Updates the subscriptions that are being monitored by the Datadog monitor resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2025-12-26-preview
 func (client *MonitoredSubscriptionsClient) update(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitoredSubscriptionsClient.BeginUpdate"
@@ -419,7 +421,7 @@ func (client *MonitoredSubscriptionsClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2025-12-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

@@ -5,10 +5,23 @@
 
 package armdatadog
 
+// ConnectorAction - Add or Remove connectors for SRE agents.
+type ConnectorAction string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog"
-	moduleVersion = "v1.3.0"
+	// ConnectorActionAdd - Add connector actions
+	ConnectorActionAdd ConnectorAction = "Add"
+	// ConnectorActionRemove - Remove connector action
+	ConnectorActionRemove ConnectorAction = "Remove"
 )
+
+// PossibleConnectorActionValues returns the possible values for the ConnectorAction const type.
+func PossibleConnectorActionValues() []ConnectorAction {
+	return []ConnectorAction{
+		ConnectorActionAdd,
+		ConnectorActionRemove,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string

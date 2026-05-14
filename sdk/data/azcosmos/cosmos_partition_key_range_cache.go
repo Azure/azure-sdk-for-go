@@ -146,21 +146,21 @@ func fetchAllChangeFeedPages(
 		if err := ctx.Err(); err != nil {
 			return changeFeedResult{}, err
 		}
-		ranges, newETag, err := fetchPartitionKeyRanges(ctx, containerLink, currentETag, client)
+		result, err := fetchPartitionKeyRanges(ctx, containerLink, currentETag, client)
 		if err != nil {
 			return changeFeedResult{}, err
 		}
 
-		if len(ranges) == 0 {
+		if result.notModified {
 			// 304 Not Modified — change feed fully drained
-			if newETag != "" {
-				currentETag = newETag
+			if result.etag != "" {
+				currentETag = result.etag
 			}
 			return changeFeedResult{ranges: allRanges, finalETag: currentETag, completed: true}, nil
 		}
-		allRanges = append(allRanges, ranges...)
-		if newETag != "" {
-			currentETag = newETag
+		allRanges = append(allRanges, result.ranges...)
+		if result.etag != "" {
+			currentETag = result.etag
 		}
 	}
 	// Loop cap reached without 304
@@ -236,6 +236,13 @@ func (c *partitionKeyRangeCache) refreshEntry(
 	return newMap, nil
 }
 
+// fetchPartitionKeyRangesResult holds the result of a single change-feed fetch.
+type fetchPartitionKeyRangesResult struct {
+	ranges      []partitionKeyRange
+	etag        string
+	notModified bool // true only when the service returns 304 Not Modified
+}
+
 // fetchPartitionKeyRanges fetches partition key ranges from the service using
 // the change-feed mechanism. It always sets A-IM: Incremental feed and
 // x-ms-max-item-count: -1 headers, matching the behavior of the .NET and
@@ -246,7 +253,7 @@ func fetchPartitionKeyRanges(
 	containerLink string,
 	changeFeedETag string,
 	client *Client,
-) ([]partitionKeyRange, string, error) {
+) (fetchPartitionKeyRangesResult, error) {
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypePartitionKeyRange,
 		resourceAddress: containerLink,
@@ -254,7 +261,7 @@ func fetchPartitionKeyRanges(
 
 	path, err := generatePathForNameBased(resourceTypePartitionKeyRange, operationContext.resourceAddress, true)
 	if err != nil {
-		return nil, "", err
+		return fetchPartitionKeyRangesResult{}, err
 	}
 
 	o := &partitionKeyRangeOptions{}
@@ -272,7 +279,7 @@ func fetchPartitionKeyRanges(
 			}
 		})
 	if err != nil {
-		return nil, "", err
+		return fetchPartitionKeyRangesResult{}, err
 	}
 
 	newETag := azResponse.Header.Get(cosmosHeaderEtag)
@@ -280,19 +287,19 @@ func fetchPartitionKeyRanges(
 	// 304 Not Modified means no changes
 	if azResponse.StatusCode == http.StatusNotModified {
 		_ = azResponse.Body.Close()
-		return nil, newETag, nil
+		return fetchPartitionKeyRangesResult{etag: newETag, notModified: true}, nil
 	}
 
 	body, err := azruntime.Payload(azResponse)
 	if err != nil {
-		return nil, "", err
+		return fetchPartitionKeyRangesResult{}, err
 	}
 	_ = azResponse.Body.Close()
 
 	var response partitionKeyRangeResponse
 	if err := json.Unmarshal(body, &response); err != nil {
-		return nil, "", err
+		return fetchPartitionKeyRangesResult{}, err
 	}
 
-	return response.PartitionKeyRanges, newETag, nil
+	return fetchPartitionKeyRangesResult{ranges: response.PartitionKeyRanges, etag: newETag}, nil
 }

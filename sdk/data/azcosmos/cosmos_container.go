@@ -1118,10 +1118,9 @@ func (c *ContainerClient) getChangeFeedForQueue(
 						head.MinInclusive, head.MaxExclusive,
 					)
 					token.dropHeadContinuation()
-					head = token.head()
-					if head == nil {
-						break
-					}
+					// head is a pointer into token.Continuation[0]; the
+					// in-place mutation by dropHeadContinuation is already
+					// visible through it. No reload needed.
 					headFeedRange = FeedRange{MinInclusive: head.MinInclusive, MaxExclusive: head.MaxExclusive}
 					passthrough := partitionKeyRange{
 						MinInclusive: head.MinInclusive,

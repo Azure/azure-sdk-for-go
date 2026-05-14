@@ -32,6 +32,22 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewActionVersionsClient creates a new instance of ActionVersionsClient.
+func (c *ClientFactory) NewActionVersionsClient() *ActionVersionsClient {
+	return &ActionVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewActionsClient creates a new instance of ActionsClient.
+func (c *ClientFactory) NewActionsClient() *ActionsClient {
+	return &ActionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCapabilitiesClient creates a new instance of CapabilitiesClient.
 func (c *ClientFactory) NewCapabilitiesClient() *CapabilitiesClient {
 	return &CapabilitiesClient{
@@ -43,6 +59,14 @@ func (c *ClientFactory) NewCapabilitiesClient() *CapabilitiesClient {
 // NewCapabilityTypesClient creates a new instance of CapabilityTypesClient.
 func (c *ClientFactory) NewCapabilityTypesClient() *CapabilityTypesClient {
 	return &CapabilityTypesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewDiscoveredResourcesClient creates a new instance of DiscoveredResourcesClient.
+func (c *ClientFactory) NewDiscoveredResourcesClient() *DiscoveredResourcesClient {
+	return &DiscoveredResourcesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -71,6 +95,38 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewPrivateAccessesClient creates a new instance of PrivateAccessesClient.
+func (c *ClientFactory) NewPrivateAccessesClient() *PrivateAccessesClient {
+	return &PrivateAccessesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewScenarioConfigurationsClient creates a new instance of ScenarioConfigurationsClient.
+func (c *ClientFactory) NewScenarioConfigurationsClient() *ScenarioConfigurationsClient {
+	return &ScenarioConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewScenarioRunsClient creates a new instance of ScenarioRunsClient.
+func (c *ClientFactory) NewScenarioRunsClient() *ScenarioRunsClient {
+	return &ScenarioRunsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewScenariosClient creates a new instance of ScenariosClient.
+func (c *ClientFactory) NewScenariosClient() *ScenariosClient {
+	return &ScenariosClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewTargetTypesClient creates a new instance of TargetTypesClient.
 func (c *ClientFactory) NewTargetTypesClient() *TargetTypesClient {
 	return &TargetTypesClient{
@@ -82,6 +138,14 @@ func (c *ClientFactory) NewTargetTypesClient() *TargetTypesClient {
 // NewTargetsClient creates a new instance of TargetsClient.
 func (c *ClientFactory) NewTargetsClient() *TargetsClient {
 	return &TargetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewWorkspacesClient creates a new instance of WorkspacesClient.
+func (c *ClientFactory) NewWorkspacesClient() *WorkspacesClient {
+	return &WorkspacesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

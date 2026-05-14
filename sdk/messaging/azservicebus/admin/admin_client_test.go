@@ -253,13 +253,13 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 	}()
 
 	createdProps.MaxDeliveryCount = to.Ptr(int32(101))
-	createdProps.QueueProperties.AuthorizationRules = createAuthorizationRulesForTest(t)
+	createdProps.AuthorizationRules = createAuthorizationRulesForTest(t)
 
 	updatedProps, err := adminClient.UpdateQueue(context.Background(), queueName, createdProps.QueueProperties, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, 101, *updatedProps.MaxDeliveryCount)
-	require.EqualValues(t, createdProps.QueueProperties.AuthorizationRules, updatedProps.AuthorizationRules)
+	require.EqualValues(t, createdProps.AuthorizationRules, updatedProps.AuthorizationRules)
 
 	// try changing a value that's not allowed
 	updatedProps.RequiresSession = to.Ptr(true)
@@ -1237,7 +1237,7 @@ func (em *fakeEM) Get(ctx context.Context, entityPath string, respObj any) (*htt
 		return nil, err
 	}
 
-	defer reader.Close()
+	defer func() { _ = reader.Close() }()
 
 	bytes, err := io.ReadAll(reader)
 
@@ -1594,7 +1594,7 @@ func TestAdminClient_GetDefaultRule(t *testing.T) {
 	})
 
 	// switch to a filter that _rejects_ every message instead
-	getResp.RuleProperties.Filter = &FalseFilter{}
+	getResp.Filter = &FalseFilter{}
 
 	updateRuleResp, err := adminClient.UpdateRule(context.Background(), topicName, "sub", getResp.RuleProperties)
 	require.NoError(t, err)

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/TieringCost/FetchTieringCostForPolicy.json
+// Generated from example definition: 2026-01-31-preview/TieringCost/FetchTieringCostForPolicy.json
 func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForPoli
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -50,7 +50,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForPoli
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/TieringCost/FetchTieringCostForProtectedItem.json
+// Generated from example definition: 2026-01-31-preview/TieringCost/FetchTieringCostForProtectedItem.json
 func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForProtectedItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForProt
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -89,7 +89,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForProt
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/TieringCost/FetchTieringCostForRehydrate.json
+// Generated from example definition: 2026-01-31-preview/TieringCost/FetchTieringCostForRehydrate.json
 func ExampleFetchTieringCostClient_BeginPost_getTheRehydrationCostForRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheRehydrationCostForRecoveryPoi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -128,7 +128,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheRehydrationCostForRecoveryPoi
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/TieringCost/FetchTieringCostForVault.json
+// Generated from example definition: 2026-01-31-preview/TieringCost/FetchTieringCostForVault.json
 func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForVaul
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

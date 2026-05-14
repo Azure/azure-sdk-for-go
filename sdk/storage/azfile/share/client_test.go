@@ -6,6 +6,10 @@ package share_test
 import (
 	"context"
 	"fmt"
+	"strconv"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -16,9 +20,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"strconv"
-	"testing"
-	"time"
 )
 
 func Test(t *testing.T) {
@@ -1441,7 +1442,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotDefault() {
 	_, err = fClient.StartCopyFromURL(context.Background(), sourceURL, nil)
 	_require.NoError(err)
 
-	time.Sleep(2 * time.Second)
+	recording.Sleep(2 * time.Second)
 
 	// After restore
 	_, err = fClient.GetProperties(context.Background(), nil)
@@ -1644,7 +1645,7 @@ func (s *ShareRecordedTestsSuite) TestShareRestoreSuccess() {
 	_require.NoError(err)
 
 	// wait for share deletion
-	time.Sleep(60 * time.Second)
+	recording.Sleep(60 * time.Second)
 
 	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
 		Include: service.ListSharesInclude{Deleted: true},
@@ -1722,7 +1723,7 @@ func (s *ShareRecordedTestsSuite) TestShareRestoreWithSnapshotsAgain() {
 	_require.NoError(err)
 
 	// wait for share deletion
-	time.Sleep(60 * time.Second)
+	recording.Sleep(60 * time.Second)
 
 	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
 		Include: service.ListSharesInclude{Deleted: true},
@@ -1905,7 +1906,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSASUsingAccessPolicy() {
 	_require.NoError(err)
 	_require.Len(gResp.SignedIdentifiers, 1)
 
-	time.Sleep(30 * time.Second)
+	recording.Sleep(30 * time.Second)
 
 	sasQueryParams, err := sas.SignatureValues{
 		Protocol:   sas.ProtocolHTTPS,

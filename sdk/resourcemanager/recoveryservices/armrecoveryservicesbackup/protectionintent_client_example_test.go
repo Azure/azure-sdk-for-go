@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
 func ExampleProtectionIntentClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleProtectionIntentClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.ProtectionIntentClientCreateOrUpdateResponse{
-	// 	ProtectionIntentResource: &armrecoveryservicesbackup.ProtectionIntentResource{
+	// 	ProtectionIntentResource: armrecoveryservicesbackup.ProtectionIntentResource{
 	// 		Name: to.Ptr("vm;iaasvmcontainerv2;chamsrgtest;chamscandel"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupProtectionIntent"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.RecoveryServices/vaults/myVault/backupFabrics/Azure/backupProtectionIntent/vm;iaasvmcontainerv2;chamsrgtest;chamscandel"),
@@ -51,7 +51,7 @@ func ExampleProtectionIntentClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureWorkload/BackupProtectionIntent_Delete.json
+// Generated from example definition: 2026-01-31-preview/AzureWorkload/BackupProtectionIntent_Delete.json
 func ExampleProtectionIntentClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleProtectionIntentClient_Delete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureWorkload/BackupProtectionIntent_Get.json
+// Generated from example definition: 2026-01-31-preview/AzureWorkload/BackupProtectionIntent_Get.json
 func ExampleProtectionIntentClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleProtectionIntentClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.ProtectionIntentClientGetResponse{
-	// 	ProtectionIntentResource: &armrecoveryservicesbackup.ProtectionIntentResource{
+	// 	ProtectionIntentResource: armrecoveryservicesbackup.ProtectionIntentResource{
 	// 		Name: to.Ptr("249D9B07-D2EF-4202-AA64-65F35418564E"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupProtectionIntent"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.RecoveryServices/vaults/myVault/backupFabrics/Azure/backupProtectionIntent/249D9B07-D2EF-4202-AA64-65F35418564E"),
@@ -101,7 +101,7 @@ func ExampleProtectionIntentClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/ProtectionIntent_Validate.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/ProtectionIntent_Validate.json
 func ExampleProtectionIntentClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleProtectionIntentClient_Validate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.ProtectionIntentClientValidateResponse{
-	// 	PreValidateEnableBackupResponse: &armrecoveryservicesbackup.PreValidateEnableBackupResponse{
+	// 	PreValidateEnableBackupResponse: armrecoveryservicesbackup.PreValidateEnableBackupResponse{
 	// 		ContainerName: to.Ptr("iaasvmcontainer;iaasvmcontainerv2;arunaupgrade;upgrade1"),
 	// 		ErrorCode: to.Ptr("VirtualMachineAlreadyProtected"),
 	// 		ErrorMessage: to.Ptr("Virtual machine with same name and same resource group is already protected. Please select `Disable' choice above for backup and go to backup item corresponding to this VM in the vault"),

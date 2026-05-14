@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/BackupDataMove/PrepareDataMoveOperationResult_Get.json
+// Generated from example definition: 2026-01-31-preview/BackupDataMove/PrepareDataMoveOperationResult_Get.json
 func ExampleBMSPrepareDataMoveOperationResultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

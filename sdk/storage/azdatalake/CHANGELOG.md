@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.6.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0-beta.1 (2026-05-05)
+
+### Features Added
+* Added support for service version 2026-06-06.
+* Added `GetSystemProperties` API to file and directory clients for retrieving system-defined properties using the `getStatus` action.
+* Added `GetTags` and `SetTags` API to file and directory clients.
 
 ## 1.5.0-beta.1 (2026-04-23)
 

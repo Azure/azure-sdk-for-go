@@ -42,7 +42,7 @@ func NewProtectionIntentClient(subscriptionID string, credential azcore.TokenCre
 // CreateOrUpdate - Create Intent for Enabling backup of an item. This is a synchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionIntentClientCreateOrUpdateOptions contains the optional parameters for the ProtectionIntentClient.CreateOrUpdate
 //     method.
@@ -96,7 +96,7 @@ func (client *ProtectionIntentClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -118,7 +118,7 @@ func (client *ProtectionIntentClient) createOrUpdateHandleResponse(resp *http.Re
 // Delete - Used to remove intent from an item
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionIntentClientDeleteOptions contains the optional parameters for the ProtectionIntentClient.Delete method.
 func (client *ProtectionIntentClient) Delete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string, options *ProtectionIntentClientDeleteOptions) (ProtectionIntentClientDeleteResponse, error) {
@@ -170,7 +170,7 @@ func (client *ProtectionIntentClient) deleteCreateRequest(ctx context.Context, v
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -180,7 +180,7 @@ func (client *ProtectionIntentClient) deleteCreateRequest(ctx context.Context, v
 // call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionIntentClientGetOptions contains the optional parameters for the ProtectionIntentClient.Get method.
 func (client *ProtectionIntentClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string, options *ProtectionIntentClientGetOptions) (ProtectionIntentClientGetResponse, error) {
@@ -233,7 +233,7 @@ func (client *ProtectionIntentClient) getCreateRequest(ctx context.Context, vaul
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,7 +259,7 @@ func (client *ProtectionIntentClient) getHandleResponse(resp *http.Response) (Pr
 // 3. Any VM related configuration passed in properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - azureRegion - Azure region to hit Api
 //   - parameters - Enable backup validation request on Virtual Machine
 //   - options - ProtectionIntentClientValidateOptions contains the optional parameters for the ProtectionIntentClient.Validate
@@ -302,7 +302,7 @@ func (client *ProtectionIntentClient) validateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

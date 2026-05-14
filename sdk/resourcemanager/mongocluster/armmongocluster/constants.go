@@ -218,6 +218,24 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
+// NetworkBypassMode - The network bypass mode for the Mongo cluster.
+type NetworkBypassMode string
+
+const (
+	// NetworkBypassModeAzureCosmosDB - Allows Azure Cosmos DB service to bypass network restrictions.
+	NetworkBypassModeAzureCosmosDB NetworkBypassMode = "AzureCosmosDB"
+	// NetworkBypassModeNone - No network bypass is enabled.
+	NetworkBypassModeNone NetworkBypassMode = "None"
+)
+
+// PossibleNetworkBypassModeValues returns the possible values for the NetworkBypassMode const type.
+func PossibleNetworkBypassModeValues() []NetworkBypassMode {
+	return []NetworkBypassMode{
+		NetworkBypassModeAzureCosmosDB,
+		NetworkBypassModeNone,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string

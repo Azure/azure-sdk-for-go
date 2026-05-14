@@ -206,7 +206,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountProperties() {
 	_require.NoError(err)
 	_require.NotNil(setPropsResp.RequestID)
 
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	getPropsResp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -433,7 +433,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientRestoreShare() {
 	_require.NoError(err)
 
 	// wait for share deletion
-	time.Sleep(60 * time.Second)
+	recording.Sleep(60 * time.Second)
 
 	sharesCnt := 0
 	shareVersion := ""
@@ -570,7 +570,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteRestoreShare() {
 	_require.NoError(err)
 
 	// wait for share deletion
-	time.Sleep(60 * time.Second)
+	recording.Sleep(60 * time.Second)
 
 	sharesCnt := 0
 	shareVersion := ""

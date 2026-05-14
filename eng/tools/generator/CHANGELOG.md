@@ -1,5 +1,17 @@
 # Release History
 
+## 0.4.11 (2026-05-13)
+
+### Bugs Fixed
+
+- Fixed preview API version detection to recognize const-based API version declarations in newly generated code.
+
+## 0.4.10 (2026-05-12)
+
+### Bugs Fixed
+
+- Re-added cleanup of previously generated SDK files in the TypeSpec update flow for first-time migrations from Swagger to TypeSpec. The TypeSpec emitter's own cleanup does not remove Swagger-generated files because their generated-code header differs from the one written by the emitter.
+
 ## 0.4.9 (2026-04-24)
 
 ### Bugs Fixed

@@ -44,7 +44,7 @@ func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential,
 // GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RestoresClientBeginTriggerOptions contains the optional parameters for the RestoresClient.BeginTrigger method.
 func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*runtime.Poller[RestoresClientTriggerResponse], error) {
@@ -69,7 +69,7 @@ func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string
 // GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 func (client *RestoresClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RestoresClient.BeginTrigger"
@@ -127,7 +127,7 @@ func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}

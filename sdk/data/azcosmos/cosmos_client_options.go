@@ -21,7 +21,7 @@ type ClientOptions struct {
 	// Can be overridden per-request via the operation options.
 	PriorityLevel *PriorityLevel
 	// ThroughputBucket defines the default throughput bucket for all requests made by this client.
-	// This feature is currently in preview.
+	// This feature is currently in preview. For more information, see https://aka.ms/CosmosDB/ThroughputBuckets
 	// The valid range is 1 to 5 (inclusive).
 	// Can be overridden per-request via the operation options.
 	ThroughputBucket *int32

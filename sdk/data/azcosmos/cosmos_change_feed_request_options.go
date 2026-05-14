@@ -34,6 +34,7 @@ type ChangeFeedOptions struct {
 	// Valid values are PriorityLevelHigh and PriorityLevelLow.
 	PriorityLevel *PriorityLevel
 	// ThroughputBucket overrides the client-level default throughput bucket for this operation.
+	// For more information, see https://aka.ms/CosmosDB/ThroughputBuckets
 	// The valid range is 1 to 5 (inclusive).
 	ThroughputBucket *int32
 }

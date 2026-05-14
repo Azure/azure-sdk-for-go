@@ -12,8 +12,8 @@ import (
 	"hash/crc64"
 	"io"
 	"math/rand"
-	"slices"
 	"os"
+	"slices"
 	"testing"
 	"time"
 

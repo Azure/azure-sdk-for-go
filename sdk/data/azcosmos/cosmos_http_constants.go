@@ -97,6 +97,7 @@ const (
 	cosmosHeaderValuesPreferMinimal string = "return=minimal"
 	cosmosHeaderValuesQuery         string = "application/query+json"
 	cosmosHeaderValuesChangeFeed    string = "Incremental feed"
+	cosmosHeaderValuesMaxItemAll    string = "-1"
 )
 
 // Substatus Codes

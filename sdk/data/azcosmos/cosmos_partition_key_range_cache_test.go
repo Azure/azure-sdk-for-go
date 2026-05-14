@@ -445,10 +445,10 @@ func Test_partitionKeyRangeCache_fullRefresh_multiPage(t *testing.T) {
 	require.Equal(t, "etag-page2", rm.changeFeedETag)
 }
 
-func Test_partitionKeyRangeCache_fullRefresh_splitDuringFetch(t *testing.T) {
+func Test_partitionKeyRangeCache_fullRefresh_filtersParentsInSamePage(t *testing.T) {
 	// Scenario: During a full change-feed refresh, the service returns parent and
-	// children ranges in the same page (split completing mid-fetch).
-	// The parent-filtering in newCollectionRoutingMap should filter the parent.
+	// children ranges in the same page. The parent-filtering in
+	// newCollectionRoutingMap should filter the parent.
 	srv, close := mock.NewTLSServer()
 	defer close()
 
@@ -554,21 +554,22 @@ func Test_partitionKeyRangeCache_fullRefresh_setsChangeFeedHeaders(t *testing.T)
 	// First request: should have A-IM and max-item-count, but NO If-None-Match
 	firstReq := capture.requests[0]
 	require.Equal(t, cosmosHeaderValuesChangeFeed, firstReq.Header.Get(cosmosHeaderChangeFeed))
-	require.Equal(t, "-1", firstReq.Header.Get(cosmosHeaderMaxItemCount))
+	require.Equal(t, cosmosHeaderValuesMaxItemAll, firstReq.Header.Get(cosmosHeaderMaxItemCount))
 	require.Empty(t, firstReq.Header.Get(headerIfNoneMatch), "full refresh should not set If-None-Match")
 
 	// Second request: should have A-IM, max-item-count, AND If-None-Match with the ETag from page 1
 	secondReq := capture.requests[1]
 	require.Equal(t, cosmosHeaderValuesChangeFeed, secondReq.Header.Get(cosmosHeaderChangeFeed))
-	require.Equal(t, "-1", secondReq.Header.Get(cosmosHeaderMaxItemCount))
+	require.Equal(t, cosmosHeaderValuesMaxItemAll, secondReq.Header.Get(cosmosHeaderMaxItemCount))
 	require.Equal(t, "etag1", secondReq.Header.Get(headerIfNoneMatch))
 }
 
 func Test_partitionKeyRangeCache_incrementalRefresh_cascadingSplitAcrossPages(t *testing.T) {
-	// Scenario: Cascading split where A→B+C on page 1, then B→D+E on page 2.
-	// With per-page tryCombine this would fail (page 1 introduces B which is immediately
-	// split on page 2, making the intermediate state incomplete). The accumulate-all-then-combine
-	// approach handles this correctly because tryCombine sees the full picture.
+	// Scenario: Page 1 returns only ONE child of a split (range "1"), making the
+	// intermediate state incomplete — range "1" covers only half the keyspace that
+	// parent "0" covered, so per-page tryCombine would see a gap and fail.
+	// Page 2 delivers the sibling ("2"). The accumulate-all-then-combine approach
+	// handles this because tryCombine sees both children together.
 	srv, close := mock.NewTLSServer()
 	defer close()
 
@@ -590,28 +591,26 @@ func Test_partitionKeyRangeCache_incrementalRefresh_cascadingSplitAcrossPages(t 
 		mock.WithHeader(cosmosHeaderEtag, "etag1"),
 	)
 
-	// Incremental refresh page 1: range "0" splits into "1" and "2"
+	// Incremental refresh page 1: only first child of split "0" → "1" + "2"
 	srv.AppendResponse(
 		mock.WithBody([]byte(`{
 			"_rid": "testRID",
 			"PartitionKeyRanges": [
-				{"_rid": "r1", "id": "1", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": ["0"]},
-				{"_rid": "r2", "id": "2", "minInclusive": "05C1E18D2D7F08", "maxExclusive": "FF", "parents": ["0"]}
+				{"_rid": "r1", "id": "1", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": ["0"]}
 			],
-			"_count": 2
+			"_count": 1
 		}`)),
 		mock.WithHeader(cosmosHeaderEtag, "etag2"),
 		mock.WithStatusCode(200),
 	)
-	// Incremental refresh page 2: range "1" further splits into "3" and "4"
+	// Incremental refresh page 2: second child of the same split
 	srv.AppendResponse(
 		mock.WithBody([]byte(`{
 			"_rid": "testRID",
 			"PartitionKeyRanges": [
-				{"_rid": "r3", "id": "3", "minInclusive": "", "maxExclusive": "02E0F4A6965F84", "parents": ["1"]},
-				{"_rid": "r4", "id": "4", "minInclusive": "02E0F4A6965F84", "maxExclusive": "05C1E18D2D7F08", "parents": ["1"]}
+				{"_rid": "r2", "id": "2", "minInclusive": "05C1E18D2D7F08", "maxExclusive": "FF", "parents": ["0"]}
 			],
-			"_count": 2
+			"_count": 1
 		}`)),
 		mock.WithHeader(cosmosHeaderEtag, "etag3"),
 		mock.WithStatusCode(200),
@@ -630,29 +629,20 @@ func Test_partitionKeyRangeCache_incrementalRefresh_cascadingSplitAcrossPages(t 
 	require.Equal(t, 1, len(rm.orderedRanges))
 	require.Equal(t, "0", rm.orderedRanges[0].ID)
 
-	// Invalidate to trigger incremental refresh on next access
-	client.caches.pkRangeCache.entries["testRID"].mu.Lock()
-	entry := client.caches.pkRangeCache.entries["testRID"]
-	entry.mu.Unlock()
-
 	// Trigger incremental refresh via forceRefresh
 	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 
-	// Final state should have 3 ranges: "3", "4", "2" (parents "0" and "1" filtered)
-	require.Equal(t, 3, len(rm.orderedRanges))
-	require.Equal(t, "3", rm.orderedRanges[0].ID)
+	// Final state should have 2 ranges: "1" and "2" (parent "0" filtered)
+	require.Equal(t, 2, len(rm.orderedRanges))
+	require.Equal(t, "1", rm.orderedRanges[0].ID)
 	require.Equal(t, "", rm.orderedRanges[0].MinInclusive)
-	require.Equal(t, "02E0F4A6965F84", rm.orderedRanges[0].MaxExclusive)
-	require.Equal(t, "4", rm.orderedRanges[1].ID)
-	require.Equal(t, "02E0F4A6965F84", rm.orderedRanges[1].MinInclusive)
-	require.Equal(t, "05C1E18D2D7F08", rm.orderedRanges[1].MaxExclusive)
-	require.Equal(t, "2", rm.orderedRanges[2].ID)
-	require.Equal(t, "05C1E18D2D7F08", rm.orderedRanges[2].MinInclusive)
-	require.Equal(t, "FF", rm.orderedRanges[2].MaxExclusive)
+	require.Equal(t, "05C1E18D2D7F08", rm.orderedRanges[0].MaxExclusive)
+	require.Equal(t, "2", rm.orderedRanges[1].ID)
+	require.Equal(t, "05C1E18D2D7F08", rm.orderedRanges[1].MinInclusive)
+	require.Equal(t, "FF", rm.orderedRanges[1].MaxExclusive)
 	require.Equal(t, "etag3", rm.changeFeedETag)
 
-	// Verify parents are marked as gone
+	// Verify parent is marked as gone
 	require.True(t, rm.isGone("0"))
-	require.True(t, rm.isGone("1"))
 }

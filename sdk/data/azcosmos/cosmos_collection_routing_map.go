@@ -184,9 +184,9 @@ func isCompleteSetOfRanges(ranges []partitionKeyRange) bool {
 	return true
 }
 
-// describeRangeGap returns a human-readable description of why the ranges are
-// not a complete covering. Returns "" if the ranges are complete.
-func describeRangeGap(ranges []partitionKeyRange) string {
+// describeRangeDiscontinuity returns a human-readable description of why the
+// ranges are not a complete covering. Returns "" if the ranges are complete.
+func describeRangeDiscontinuity(ranges []partitionKeyRange) string {
 	if len(ranges) == 0 {
 		return "no ranges returned"
 	}
@@ -196,8 +196,13 @@ func describeRangeGap(ranges []partitionKeyRange) string {
 	}
 
 	for i := 1; i < len(ranges); i++ {
-		if epk.CompareEPK(ranges[i].MinInclusive, ranges[i-1].MaxExclusive) != 0 {
+		cmp := epk.CompareEPK(ranges[i].MinInclusive, ranges[i-1].MaxExclusive)
+		switch {
+		case cmp > 0:
 			return fmt.Sprintf("gap between range id=%s (max=%s) and range id=%s (min=%s)",
+				ranges[i-1].ID, ranges[i-1].MaxExclusive, ranges[i].ID, ranges[i].MinInclusive)
+		case cmp < 0:
+			return fmt.Sprintf("overlap between range id=%s (max=%s) and range id=%s (min=%s)",
 				ranges[i-1].ID, ranges[i-1].MaxExclusive, ranges[i].ID, ranges[i].MinInclusive)
 		}
 	}

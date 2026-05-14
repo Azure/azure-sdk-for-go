@@ -1258,6 +1258,212 @@ func TestCreateItemPriorityAndThroughputBucketHeaders(t *testing.T) {
 	}
 }
 
+func TestUpsertItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelLow
+	requestBucket := int32(3)
+	_, err := container.UpsertItem(context.TODO(), NewPartitionKeyString("1"), jsonString, &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to upsert item: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "Low" {
+		t.Errorf("Expected priority level header to be Low, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "3" {
+		t.Errorf("Expected throughput bucket header to be 3, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestReplaceItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelHigh
+	requestBucket := int32(2)
+	_, err := container.ReplaceItem(context.TODO(), NewPartitionKeyString("1"), "doc1", jsonString, &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to replace item: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "High" {
+		t.Errorf("Expected priority level header to be High, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "2" {
+		t.Errorf("Expected throughput bucket header to be 2, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestReadItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelLow
+	requestBucket := int32(4)
+	_, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to read item: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "Low" {
+		t.Errorf("Expected priority level header to be Low, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "4" {
+		t.Errorf("Expected throughput bucket header to be 4, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestDeleteItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(204))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelHigh
+	requestBucket := int32(1)
+	_, err := container.DeleteItem(context.TODO(), NewPartitionKeyString("1"), "doc1", &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to delete item: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "High" {
+		t.Errorf("Expected priority level header to be High, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "1" {
+		t.Errorf("Expected throughput bucket header to be 1, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestPatchItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar","hello":"world"}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	patchOpt := PatchOperations{}
+	patchOpt.AppendSet("/hello", "world")
+
+	requestPriority := PriorityLevelLow
+	requestBucket := int32(5)
+	_, err := container.PatchItem(context.TODO(), NewPartitionKeyString("1"), "doc1", patchOpt, &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to patch item: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "Low" {
+		t.Errorf("Expected priority level header to be Low, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "5" {
+		t.Errorf("Expected throughput bucket header to be 5, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
 func TestQueryItemsPriorityAndThroughputBucketHeaders(t *testing.T) {
 	jsonStringpage1 := []byte(`{"Documents":[{"id":"doc1"}]}`)
 	srv, close := mock.NewTLSServer()

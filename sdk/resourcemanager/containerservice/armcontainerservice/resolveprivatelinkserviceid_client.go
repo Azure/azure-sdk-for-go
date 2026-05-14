@@ -16,8 +16,12 @@ import (
 	"strings"
 )
 
+const defaultResolvePrivateLinkServiceIDClientVersion string = "2026-03-02-preview"
+
 // ResolvePrivateLinkServiceIDClient contains the methods for the ResolvePrivateLinkServiceID group.
 // Don't use this type directly, use NewResolvePrivateLinkServiceIDClient() instead.
+//
+// Generated from API version 2026-03-02-preview
 type ResolvePrivateLinkServiceIDClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +45,6 @@ func NewResolvePrivateLinkServiceIDClient(subscriptionID string, credential azco
 
 // POST - Gets the private link service ID for the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - parameters - Parameters required in order to resolve a private link service ID.
@@ -90,8 +92,8 @@ func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", defaultResolvePrivateLinkServiceIDClientVersion)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

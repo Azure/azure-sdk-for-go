@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v10"
 	"log"
 )
 
-// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsCreate.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsCreate.json
 func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.ManagedClusterSnapshotsClientCreateOrUpdateResponse{
-	// 	ManagedClusterSnapshot: &armcontainerservice.ManagedClusterSnapshot{
+	// 	ManagedClusterSnapshot: armcontainerservice.ManagedClusterSnapshot{
 	// 		Name: to.Ptr("snapshot1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusterSnapshots"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
@@ -80,7 +80,7 @@ func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsDelete.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsDelete.json
 func ExampleManagedClusterSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleManagedClusterSnapshotsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsGet.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsGet.json
 func ExampleManagedClusterSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleManagedClusterSnapshotsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.ManagedClusterSnapshotsClientGetResponse{
-	// 	ManagedClusterSnapshot: &armcontainerservice.ManagedClusterSnapshot{
+	// 	ManagedClusterSnapshot: armcontainerservice.ManagedClusterSnapshot{
 	// 		Name: to.Ptr("snapshot1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusterSnapshots"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
@@ -159,7 +159,7 @@ func ExampleManagedClusterSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsList.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsList.json
 func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsListByResourceGroup.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsListByResourceGroup.json
 func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-02-preview/ManagedClusterSnapshotsUpdateTags.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsUpdateTags.json
 func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +315,7 @@ func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.ManagedClusterSnapshotsClientUpdateTagsResponse{
-	// 	ManagedClusterSnapshot: &armcontainerservice.ManagedClusterSnapshot{
+	// 	ManagedClusterSnapshot: armcontainerservice.ManagedClusterSnapshot{
 	// 		Name: to.Ptr("snapshot1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusterSnapshots"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),

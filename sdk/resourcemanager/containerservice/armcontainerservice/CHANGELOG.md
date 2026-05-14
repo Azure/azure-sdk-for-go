@@ -1,5 +1,24 @@
 # Release History
 
+## 10.0.0-beta.1 (2026-05-13)
+### Breaking Changes
+
+- Field `Version` of struct `ManagedClusterStorageProfileDiskCSIDriver` has been removed
+
+### Features Added
+
+- New value `OSSKUAzureContainerLinux` added to enum type `OSSKU`
+- New enum type `AgentPoolNetworkInterfaceType` with values `AgentPoolNetworkInterfaceTypeDynamic`, `AgentPoolNetworkInterfaceTypeStandard`
+- New enum type `NodeDisruptionPolicy` with values `NodeDisruptionPolicyAllow`, `NodeDisruptionPolicyAllowDuringMaintenanceWindow`, `NodeDisruptionPolicyBlock`
+- New struct `AgentPoolNetworkInterface`
+- New struct `HardEvictionThreshold`
+- New struct `KubeReserved`
+- New struct `NodeDisruptionProfile`
+- New field `NodePublicIPPrefixIDs`, `SecondaryNetworkInterfaces` in struct `AgentPoolNetworkProfile`
+- New field `HardEvictionThreshold`, `KubeReserved` in struct `KubeletConfig`
+- New field `EnableFIPS`, `NodeDisruptionProfile` in struct `ManagedClusterProperties`
+
+
 ## 9.2.0-beta.1 (2026-04-21)
 ### Features Added
 

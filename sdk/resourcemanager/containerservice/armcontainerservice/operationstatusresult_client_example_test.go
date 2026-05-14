@@ -7,11 +7,11 @@ package armcontainerservice_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v10"
 	"log"
 )
 
-// Generated from example definition: 2026-02-02-preview/OperationStatusResultGet.json
+// Generated from example definition: 2026-03-02-preview/OperationStatusResultGet.json
 func ExampleOperationStatusResultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleOperationStatusResultClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.OperationStatusResultClientGetResponse{
-	// 	OperationStatusResult: &armcontainerservice.OperationStatusResult{
+	// 	OperationStatusResult: armcontainerservice.OperationStatusResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/operations/00000000-0000-0000-0000-000000000001"),
 	// 		PercentComplete: to.Ptr[float64](40),
@@ -40,7 +40,7 @@ func ExampleOperationStatusResultClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/OperationStatusResultGetByAgentPool.json
+// Generated from example definition: 2026-03-02-preview/OperationStatusResultGetByAgentPool.json
 func ExampleOperationStatusResultClient_GetByAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleOperationStatusResultClient_GetByAgentPool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.OperationStatusResultClientGetByAgentPoolResponse{
-	// 	OperationStatusResult: &armcontainerservice.OperationStatusResult{
+	// 	OperationStatusResult: armcontainerservice.OperationStatusResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/operations/00000000-0000-0000-0000-000000000001"),
 	// 		PercentComplete: to.Ptr[float64](40),
@@ -69,7 +69,7 @@ func ExampleOperationStatusResultClient_GetByAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/OperationStatusResultList.json
+// Generated from example definition: 2026-03-02-preview/OperationStatusResultList.json
 func ExampleOperationStatusResultClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

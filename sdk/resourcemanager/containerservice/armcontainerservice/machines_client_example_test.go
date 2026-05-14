@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v10"
 	"log"
 )
 
-// Generated from example definition: 2026-02-02-preview/MachineCreate_Update.json
+// Generated from example definition: 2026-03-02-preview/MachineCreate_Update.json
 func ExampleMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,13 +56,13 @@ func ExampleMachinesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.MachinesClientCreateOrUpdateResponse{
-	// 	Machine: &armcontainerservice.Machine{
+	// 	Machine: armcontainerservice.Machine{
 	// 		Name: to.Ptr("machine1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools/machines"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/machines/machine1"),
@@ -108,7 +108,7 @@ func ExampleMachinesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/MachineGet.json
+// Generated from example definition: 2026-03-02-preview/MachineGet.json
 func ExampleMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleMachinesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.MachinesClientGetResponse{
-	// 	Machine: &armcontainerservice.Machine{
+	// 	Machine: armcontainerservice.Machine{
 	// 		Name: to.Ptr("aks-nodepool1-25481572-vmss000000"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools/machines"),
 	// 		ID: to.Ptr("/subscriptions/26fe00f8-9173-4872-9134-bb1d2e00343a/resourceGroups/dummyRG/providers/Microsoft.ContainerService/managedClusters/round/agentPools/nodepool1/machines/aks-nodepool1-25481572-vmss000000"),
@@ -172,7 +172,7 @@ func ExampleMachinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/MachineList.json
+// Generated from example definition: 2026-03-02-preview/MachineList.json
 func ExampleMachinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -17,8 +17,12 @@ import (
 	"strings"
 )
 
+const defaultVMSKUsClientVersion string = "2026-03-02-preview"
+
 // VMSKUsClient contains the methods for the VMSKUs group.
 // Don't use this type directly, use NewVMSKUsClient() instead.
+//
+// Generated from API version 2026-03-02-preview
 type VMSKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +48,6 @@ func NewVMSKUsClient(subscriptionID string, credential azcore.TokenCredential, o
 //
 // Gets the list of VM SKUs accepted by AKS when creating node pools in a specified location. AKS will perform a best effort
 // approach to provision the requested VM SKUs, but availability is not guaranteed.
-//
-// Generated from API version 2026-02-02-preview
 //   - location - The name of the Azure region.
 //   - options - VMSKUsClientListOptions contains the optional parameters for the VMSKUsClient.NewListPager method.
 func (client *VMSKUsClient) NewListPager(location string, options *VMSKUsClientListOptions) *runtime.Pager[VMSKUsClientListResponse] {
@@ -87,11 +89,11 @@ func (client *VMSKUsClient) listCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-02-preview")
+	reqQP.Set("api-version", defaultVMSKUsClientVersion)
 	if options != nil && options.IncludeExtendedLocations != nil {
 		reqQP.Set("includeExtendedLocations", strconv.FormatBool(*options.IncludeExtendedLocations))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

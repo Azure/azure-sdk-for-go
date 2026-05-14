@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v10"
 	"log"
 )
 
-// Generated from example definition: 2026-02-02-preview/IdentityBindings_Create_Or_Update.json
+// Generated from example definition: 2026-03-02-preview/IdentityBindings_Create_Or_Update.json
 func ExampleIdentityBindingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,13 +35,13 @@ func ExampleIdentityBindingsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.IdentityBindingsClientCreateOrUpdateResponse{
-	// 	IdentityBinding: &armcontainerservice.IdentityBinding{
+	// 	IdentityBinding: armcontainerservice.IdentityBinding{
 	// 		Name: to.Ptr("identitybinding1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/identityBindings"),
 	// 		ETag: to.Ptr("string"),
@@ -62,7 +62,7 @@ func ExampleIdentityBindingsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/IdentityBindings_Delete.json
+// Generated from example definition: 2026-03-02-preview/IdentityBindings_Delete.json
 func ExampleIdentityBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,11 +79,11 @@ func ExampleIdentityBindingsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-02-02-preview/IdentityBindings_Get.json
+// Generated from example definition: 2026-03-02-preview/IdentityBindings_Get.json
 func ExampleIdentityBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleIdentityBindingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.IdentityBindingsClientGetResponse{
-	// 	IdentityBinding: &armcontainerservice.IdentityBinding{
+	// 	IdentityBinding: armcontainerservice.IdentityBinding{
 	// 		Name: to.Ptr("identitybinding1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/identityBindings"),
 	// 		ETag: to.Ptr("string"),
@@ -123,7 +123,7 @@ func ExampleIdentityBindingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/IdentityBindings_List.json
+// Generated from example definition: 2026-03-02-preview/IdentityBindings_List.json
 func ExampleIdentityBindingsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

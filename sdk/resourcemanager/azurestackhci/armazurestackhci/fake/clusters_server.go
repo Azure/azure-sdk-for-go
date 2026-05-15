@@ -16,14 +16,11 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // ClustersServer is a fake server for instances of the armazurestackhci.ClustersClient type.
 type ClustersServer struct {
-	// BeginChangeRing is the fake for method ClustersClient.BeginChangeRing
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginChangeRing func(ctx context.Context, resourceGroupName string, clusterName string, changeRingRequest armazurestackhci.ChangeRingRequest, options *armazurestackhci.ClustersClientBeginChangeRingOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientChangeRingResponse], errResp azfake.ErrorResponder)
-
 	// BeginConfigureRemoteSupport is the fake for method ClustersClient.BeginConfigureRemoteSupport
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginConfigureRemoteSupport func(ctx context.Context, resourceGroupName string, clusterName string, remoteSupportRequest armazurestackhci.RemoteSupportRequest, options *armazurestackhci.ClustersClientBeginConfigureRemoteSupportOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientConfigureRemoteSupportResponse], errResp azfake.ErrorResponder)
@@ -79,7 +76,6 @@ type ClustersServer struct {
 func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 	return &ClustersServerTransport{
 		srv:                                 srv,
-		beginChangeRing:                     newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientChangeRingResponse]](),
 		beginConfigureRemoteSupport:         newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientConfigureRemoteSupportResponse]](),
 		beginCreateIdentity:                 newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientCreateIdentityResponse]](),
 		beginDelete:                         newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientDeleteResponse]](),
@@ -96,7 +92,6 @@ func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 // Don't use this type directly, use NewClustersServerTransport instead.
 type ClustersServerTransport struct {
 	srv                                 *ClustersServer
-	beginChangeRing                     *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientChangeRingResponse]]
 	beginConfigureRemoteSupport         *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientConfigureRemoteSupportResponse]]
 	beginCreateIdentity                 *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientCreateIdentityResponse]]
 	beginDelete                         *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientDeleteResponse]]
@@ -120,9 +115,7 @@ func (c *ClustersServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -131,8 +124,6 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ClustersClient.BeginChangeRing":
-				res.resp, res.err = c.dispatchBeginChangeRing(req)
 			case "ClustersClient.BeginConfigureRemoteSupport":
 				res.resp, res.err = c.dispatchBeginConfigureRemoteSupport(req)
 			case "ClustersClient.Create":
@@ -162,10 +153,7 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -174,54 +162,6 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *ClustersServerTransport) dispatchBeginChangeRing(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginChangeRing == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginChangeRing not implemented")}
-	}
-	beginChangeRing := c.beginChangeRing.get(req)
-	if beginChangeRing == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changeRing`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armazurestackhci.ChangeRingRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginChangeRing(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginChangeRing = &respr
-		c.beginChangeRing.add(req, beginChangeRing)
-	}
-
-	resp, err := server.PollerResponderNext(beginChangeRing, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginChangeRing.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginChangeRing) {
-		c.beginChangeRing.remove(req)
-	}
-
-	return resp, nil
 }
 
 func (c *ClustersServerTransport) dispatchBeginConfigureRemoteSupport(req *http.Request) (*http.Response, error) {
@@ -261,7 +201,7 @@ func (c *ClustersServerTransport) dispatchBeginConfigureRemoteSupport(req *http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginConfigureRemoteSupport.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -299,7 +239,7 @@ func (c *ClustersServerTransport) dispatchCreate(req *http.Request) (*http.Respo
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cluster, req)
@@ -342,7 +282,7 @@ func (c *ClustersServerTransport) dispatchBeginCreateIdentity(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginCreateIdentity.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -386,7 +326,7 @@ func (c *ClustersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -434,7 +374,7 @@ func (c *ClustersServerTransport) dispatchBeginExtendSoftwareAssuranceBenefit(re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginExtendSoftwareAssuranceBenefit.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -468,7 +408,7 @@ func (c *ClustersServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cluster, req)
@@ -505,7 +445,7 @@ func (c *ClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -538,7 +478,7 @@ func (c *ClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -585,7 +525,7 @@ func (c *ClustersServerTransport) dispatchBeginTriggerLogCollection(req *http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginTriggerLogCollection.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -623,7 +563,7 @@ func (c *ClustersServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cluster, req)
@@ -670,7 +610,7 @@ func (c *ClustersServerTransport) dispatchBeginUpdateSecretsLocations(req *http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginUpdateSecretsLocations.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -718,7 +658,7 @@ func (c *ClustersServerTransport) dispatchBeginUploadCertificate(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginUploadCertificate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}

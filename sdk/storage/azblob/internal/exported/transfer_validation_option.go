@@ -58,7 +58,7 @@ func (TransferValidationTypeMD5) notPubliclyImplementable() {}
 // TransferValidationTypeComputeStructuredMessageCRC64 is a TransferValidationType that computes
 // per-segment CRC64 checksums using the structured message binary format.
 // The body is wrapped in a streaming SMEncoder that produces SM-encoded output on Read().
-// segmentSize specifies the maximum segment size in bytes (use 0 for default 4MB).
+// segmentSize specifies the maximum segment size in bytes. Values <= 0 use the default (4 MB).
 func TransferValidationTypeComputeStructuredMessageCRC64(segmentSize int) TransferValidationType {
 	return &transferValidationTypeSMCRC64{segmentSize: segmentSize}
 }

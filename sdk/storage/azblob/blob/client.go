@@ -390,7 +390,9 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 				return err
 			}
 			if computeReadLength {
-				if dr.ContentRange != nil {
+				if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
+					// For structured message responses, ContentLength reflects the encoded size.
+					// Use ContentRange to get the original data length.
 					atomic.AddInt64(&dataDownloaded, parseContentRangeLength(*dr.ContentRange))
 				} else {
 					atomic.AddInt64(&dataDownloaded, *dr.ContentLength)

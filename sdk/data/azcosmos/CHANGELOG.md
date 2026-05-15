@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.6 (Unreleased)
+## 1.5.0-beta.6 (2026-05-15)
 
 ### Features Added
 
@@ -18,8 +18,6 @@
 * Fixed V2 partition key routing: the top 2 bits of the first EPK byte are now masked to stay within the partition key range space [0x00, 0x3F]. Previously, items whose V2 hash started with a byte >= 0x40 could fail routing in ReadMany because the EPK lexicographically exceeded the "FF" range sentinel. See [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)
 * Fixed error handling for partition key range calls which would previously cause panics on any error. See [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)
 * Fixed partition key range cache to use change-feed pagination when fetching ranges, preventing incomplete range sets on containers with many partitions. The incremental refresh path now accumulates all pages before merging, correctly handling cascading splits across multiple change-feed pages. See [PR 26777](https://github.com/Azure/azure-sdk-for-go/pull/26777)
-
-### Other Changes
 
 ## 1.5.0-beta.5 (2026-03-09)
 

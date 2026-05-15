@@ -4,13 +4,8 @@
 package generated_blob
 
 import (
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
-
-// used to convert times from UTC to GMT before sending across the wire
-var gmt = time.FixedZone("GMT", 0)
 
 func (client *BlobClient) Endpoint() string {
 	return client.url

@@ -4,7 +4,7 @@
 package azcosmos
 
 import (
-	"encoding/json"
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -39,55 +39,46 @@ type ChangeFeedOptions struct {
 	ThroughputBucket *int32
 }
 
-func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRange) *map[string]string {
-	headers := make(map[string]string)
-
+// buildRequestHeaders constructs the exact headers needed for a single
+// change-feed request against one queue head. Pure builder: callers MUST
+// supply the head and the already-resolved PK-range ID (overlap-matched
+// via the routing map, NOT exact-matched).
+//
+// This is the path used by the new queue-driven GetChangeFeed loop. The
+// caller-options-level Continuation token is NOT consulted here — the
+// queue-head ETag drives If-None-Match because the queue may have been
+// split-expanded since the token was issued.
+//
+// Returns an error when PartitionKey serialization fails — sending a
+// change-feed read with a missing PK header would yield an opaque
+// server-side error, so we surface the cause to the caller instead.
+func (options *ChangeFeedOptions) buildRequestHeaders(head changeFeedRange, resolvedPKRangeID string) (map[string]string, error) {
+	headers := make(map[string]string, 6)
 	headers[cosmosHeaderChangeFeed] = cosmosHeaderValuesChangeFeed
 
-	if options.MaxItemCount > 0 {
-		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), 10)
-	}
-
-	if options.StartFrom != nil {
-		formatted := options.StartFrom.UTC().Format(time.RFC1123)
-		headers[cosmosHeaderIfModifiedSince] = formatted
-	}
-
-	if options.Continuation != nil && *options.Continuation != "" {
-		var compositeToken compositeContinuationToken
-		if err := json.Unmarshal([]byte(*options.Continuation), &compositeToken); err == nil && len(compositeToken.Continuation) > 0 {
-			if compositeToken.Continuation[0].ContinuationToken != nil {
-				headers[headerIfNoneMatch] = string(*compositeToken.Continuation[0].ContinuationToken)
+	if options != nil {
+		if options.MaxItemCount > 0 {
+			headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), 10)
+		}
+		if options.StartFrom != nil {
+			headers[cosmosHeaderIfModifiedSince] = options.StartFrom.UTC().Format(time.RFC1123)
+		}
+		if options.PartitionKey != nil {
+			pkJSON, err := options.PartitionKey.toJsonString()
+			if err != nil {
+				return nil, fmt.Errorf("ChangeFeedOptions: serializing PartitionKey: %w", err)
 			}
-			if options.FeedRange == nil {
-				options.FeedRange = &FeedRange{
-					MinInclusive: compositeToken.Continuation[0].MinInclusive,
-					MaxExclusive: compositeToken.Continuation[0].MaxExclusive,
-				}
-			}
-		} else {
-			headers[headerIfNoneMatch] = *options.Continuation
+			headers[cosmosHeaderPartitionKey] = string(pkJSON)
 		}
 	}
 
-	if options.PartitionKey != nil {
-		partitionKeyJSON, err := options.PartitionKey.toJsonString()
-		if err == nil {
-			headers[cosmosHeaderPartitionKey] = string(partitionKeyJSON)
-		}
+	if head.ContinuationToken != nil && *head.ContinuationToken != "" {
+		headers[headerIfNoneMatch] = string(*head.ContinuationToken)
 	}
 
-	if options.FeedRange != nil && len(partitionKeyRanges) > 0 {
-		if id, err := findPartitionKeyRangeID(*options.FeedRange, partitionKeyRanges); err == nil {
-			headers[headerXmsDocumentDbPartitionKeyRangeId] = id
-		} else {
-			return nil
-		}
+	if resolvedPKRangeID != "" {
+		headers[headerXmsDocumentDbPartitionKeyRangeId] = resolvedPKRangeID
 	}
 
-	if len(headers) == 0 {
-		return nil
-	}
-
-	return &headers
+	return headers, nil
 }

@@ -35,13 +35,19 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 		Response: newResponse(resp),
 	}
 
+	// Always close the body, including the 304 short-circuit below. The
+	// drain loop emits one response per queue head, so a quiet container
+	// can yield N intermediate 304s per GetChangeFeed call — leaking those
+	// bodies (which still have an http.Response.Body even when empty) until
+	// GC would compound across calls.
+	defer func() { _ = resp.Body.Close() }()
+
 	if resp.StatusCode == http.StatusNotModified {
 		response.Documents = []json.RawMessage{}
 		response.Count = 0
 		return response, nil
 	}
 
-	defer func() { _ = resp.Body.Close() }()
 	body, err := azruntime.Payload(resp)
 	if err != nil {
 		return response, wrapResponseError(err, response.Response)
@@ -53,8 +59,19 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 	return response, nil
 }
 
-// PopulateCompositeContinuationToken generates and sets the composite continuation token if a feed range was used
+// PopulateCompositeContinuationToken generates and sets the composite continuation
+// token from response.FeedRange + response.ETag. Retained for back-compat.
+//
+// In the multi-range queue-driven GetChangeFeed path, response.ContinuationToken
+// is already populated with the multi-range composite token by the drain loop
+// itself. This method is therefore a no-op when ContinuationToken is non-empty
+// — overwriting it with a single-range token rebuilt from the per-head
+// FeedRange would lose the multi-range queue state and cause callers that
+// resume with the resulting token to skip subsequent ranges after a split.
 func (response *ChangeFeedResponse) PopulateCompositeContinuationToken() {
+	if response.ContinuationToken != "" {
+		return
+	}
 	if response.FeedRange != nil && response.ETag != "" {
 		compositeToken, err := response.GetCompositeContinuationToken()
 		if err == nil && compositeToken != "" {

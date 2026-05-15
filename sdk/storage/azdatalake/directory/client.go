@@ -505,8 +505,8 @@ func (d *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 
 // GetSystemProperties returns all system defined properties for a directory.
 func (d *Client) GetSystemProperties(ctx context.Context, options *GetSystemPropertiesOptions) (GetSystemPropertiesResponse, error) {
-	opts, lac, mac := path.FormatGetSystemPropertiesOptions(options)
-	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	opts := path.FormatGetSystemPropertiesOptions(options)
+	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }

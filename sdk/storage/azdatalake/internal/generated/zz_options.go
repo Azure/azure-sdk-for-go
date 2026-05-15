@@ -11,16 +11,16 @@ import (
 
 // FileSystemClientCreateOptions contains the optional parameters for the FileSystemClient.Create method.
 type FileSystemClientCreateOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// Optional. User-defined properties to be stored with the filesystem, in the format of a comma-separated list of name and
 	// value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII
 	// characters in the ISO-8859-1 character set. If the filesystem exists, any properties not included in the list will be removed.
 	// All properties are removed if the header is omitted. To merge new and existing properties, first get all existing properties
 	// and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
 	Properties *string
+
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
@@ -29,15 +29,15 @@ type FileSystemClientCreateOptions struct {
 
 // FileSystemClientDeleteOptions contains the optional parameters for the FileSystemClient.Delete method.
 type FileSystemClientDeleteOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	IfModifiedSince *time.Time
 
 	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
 	IfUnmodifiedSince *time.Time
+
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
@@ -48,7 +48,7 @@ type FileSystemClientDeleteOptions struct {
 type FileSystemClientGetPropertiesOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
-	ClientRequestID *string
+	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
@@ -58,10 +58,6 @@ type FileSystemClientGetPropertiesOptions struct {
 // FileSystemClientListBlobHierarchySegmentOptions contains the optional parameters for the FileSystemClient.ListBlobHierarchySegment
 // method.
 type FileSystemClientListBlobHierarchySegmentOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// When the request includes this parameter, the operation returns a BlobPrefix element in the response body that acts as
 	// a placeholder for all blobs whose names begin with the same substring up to the appearance of the delimiter character.
 	// The delimiter may be a single character or a string.
@@ -83,6 +79,10 @@ type FileSystemClientListBlobHierarchySegmentOptions struct {
 	// Filters results to filesystems within the specified prefix.
 	Prefix *string
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// Include this parameter to specify one or more datasets to include in the response.
 	Showonly *ListBlobsShowOnly
 
@@ -95,10 +95,6 @@ type FileSystemClientListBlobHierarchySegmentOptions struct {
 type FileSystemClientListPathsOptions struct {
 	// Optional. A relative path within the specified directory where the listing will start from.
 	BeginFrom *string
-
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
 
 	// Optional. When deleting a directory, the number of paths that are deleted with each invocation is limited. If the number
 	// of paths to be deleted exceeds this limit, a continuation token is returned in this response header. When a continuation
@@ -113,6 +109,10 @@ type FileSystemClientListPathsOptions struct {
 	// Optional. Filters results to paths within the specified directory. An error occurs if the directory does not exist.
 	Path *string
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32
@@ -126,10 +126,6 @@ type FileSystemClientListPathsOptions struct {
 
 // FileSystemClientSetPropertiesOptions contains the optional parameters for the FileSystemClient.SetProperties method.
 type FileSystemClientSetPropertiesOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	IfModifiedSince *time.Time
 
@@ -143,6 +139,10 @@ type FileSystemClientSetPropertiesOptions struct {
 	// and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
 	Properties *string
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32
@@ -150,10 +150,6 @@ type FileSystemClientSetPropertiesOptions struct {
 
 // PathClientAppendDataOptions contains the optional parameters for the PathClient.AppendData method.
 type PathClientAppendDataOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length of the request content in bytes
 	// for "Append Data".
 	ContentLength *int64
@@ -194,6 +190,10 @@ type PathClientAppendDataOptions struct {
 	// Proposed lease ID, in a GUID string format.
 	ProposedLeaseID *string
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// Required if the request body is a structured message. Specifies the message schema version and properties.
 	StructuredBodyType *string
 
@@ -221,10 +221,6 @@ type PathClientCreateOptions struct {
 
 	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
 	CacheControl *string
-
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
 
 	// Optional. Sets the blob's Content-Disposition header.
 	ContentDisposition *string
@@ -316,6 +312,10 @@ type PathClientCreateOptions struct {
 	// character set.
 	RenameSource *string
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// Required only for Create File and Create Directory. The value must be "file" or "directory".
 	Resource *PathResourceType
 
@@ -348,10 +348,6 @@ type PathClientCreateOptions struct {
 
 // PathClientDeleteOptions contains the optional parameters for the PathClient.Delete method.
 type PathClientDeleteOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// Optional. When deleting a directory, the number of paths that are deleted with each invocation is limited. If the number
 	// of paths to be deleted exceeds this limit, a continuation token is returned in this response header. When a continuation
 	// token is returned in the response, it must be specified in a subsequent invocation of the delete operation to continue
@@ -382,6 +378,10 @@ type PathClientDeleteOptions struct {
 	// Required
 	Recursive *bool
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32
@@ -391,10 +391,6 @@ type PathClientDeleteOptions struct {
 type PathClientFlushDataOptions struct {
 	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
 	CacheControl *string
-
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
 
 	// Azure Storage Events allow applications to receive notifications when files change. When Azure Storage Events are enabled,
 	// a file changed event is raised. This event has a property indicating whether this is the final change to distinguish the
@@ -472,6 +468,10 @@ type PathClientFlushDataOptions struct {
 	// Proposed lease ID, in a GUID string format.
 	ProposedLeaseID *string
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// Valid only for flush operations. If "true", uncommitted data is retained after the flush operation completes; otherwise,
 	// the uncommitted data is deleted after the flush operation. The default is false. Data at offsets less than the specified
 	// position are written to the file when flush succeeds, but this optional parameter allows data after the flush position
@@ -490,10 +490,6 @@ type PathClientGetPropertiesOptions struct {
 	// the properties are returned.
 	Action *PathGetPropertiesAction
 
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// Specify an ETag value to operate only on blobs with a matching value.
 	IfMatch *azcore.ETag
 
@@ -509,6 +505,10 @@ type PathClientGetPropertiesOptions struct {
 	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
 	LeaseID *string
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32
@@ -522,10 +522,6 @@ type PathClientGetPropertiesOptions struct {
 
 // PathClientLeaseOptions contains the optional parameters for the PathClient.Lease method.
 type PathClientLeaseOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// Specify an ETag value to operate only on blobs with a matching value.
 	IfMatch *azcore.ETag
 
@@ -552,6 +548,10 @@ type PathClientLeaseOptions struct {
 	// Proposed lease ID, in a GUID string format.
 	ProposedLeaseID *string
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32
@@ -559,10 +559,6 @@ type PathClientLeaseOptions struct {
 
 // PathClientReadOptions contains the optional parameters for the PathClient.Read method.
 type PathClientReadOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided
 	// if the x-ms-encryption-key header is provided.
 	EncryptionAlgorithm *EncryptionAlgorithmType
@@ -596,6 +592,10 @@ type PathClientReadOptions struct {
 	// for the range, as long as the range is less than or equal to 4MB in size.
 	RangeGetContentMD5 *bool
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32
@@ -607,10 +607,6 @@ type PathClientSetAccessControlOptions struct {
 	// Each access control entry (ACE) consists of a scope, a type, a user or group identifier, and permissions in the format
 	// "[scope:][type]:[id]:[permissions]".
 	ACL *string
-
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
 
 	// Optional. The owning group of the blob or directory.
 	Group *string
@@ -638,6 +634,10 @@ type PathClientSetAccessControlOptions struct {
 	// is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
 	Permissions *string
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32
@@ -650,10 +650,6 @@ type PathClientSetAccessControlRecursiveOptions struct {
 	// Each access control entry (ACE) consists of a scope, a type, a user or group identifier, and permissions in the format
 	// "[scope:][type]:[id]:[permissions]".
 	ACL *string
-
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
 
 	// Optional. When deleting a directory, the number of paths that are deleted with each invocation is limited. If the number
 	// of paths to be deleted exceeds this limit, a continuation token is returned in this response header. When a continuation
@@ -671,6 +667,10 @@ type PathClientSetAccessControlRecursiveOptions struct {
 	// greater than 2,000, the request will process up to 2,000 items.
 	MaxRecords *int32
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32
@@ -678,12 +678,12 @@ type PathClientSetAccessControlRecursiveOptions struct {
 
 // PathClientSetExpiryOptions contains the optional parameters for the PathClient.SetExpiry method.
 type PathClientSetExpiryOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// The time to set the blob to expiry.
 	ExpiresOn *string
+
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
@@ -694,7 +694,7 @@ type PathClientSetExpiryOptions struct {
 type PathClientUndeleteOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
-	ClientRequestID *string
+	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
@@ -713,10 +713,6 @@ type PathClientUpdateOptions struct {
 
 	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
 	CacheControl *string
-
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
 
 	// Azure Storage Events allow applications to receive notifications when files change. When Azure Storage Events are enabled,
 	// a file changed event is raised. This event has a property indicating whether this is the final change to distinguish the
@@ -804,6 +800,10 @@ type PathClientUpdateOptions struct {
 	// and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
 	Properties *string
 
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
 	// Valid only for flush operations. If "true", uncommitted data is retained after the flush operation completes; otherwise,
 	// the uncommitted data is deleted after the flush operation. The default is false. Data at offsets less than the specified
 	// position are written to the file when flush succeeds, but this optional parameter allows data after the flush position
@@ -824,10 +824,6 @@ type PathClientUpdateOptions struct {
 
 // ServiceClientListFileSystemsOptions contains the optional parameters for the ServiceClient.NewListFileSystemsPager method.
 type ServiceClientListFileSystemsOptions struct {
-	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-	// analytics logging is enabled.
-	ClientRequestID *string
-
 	// Optional. When deleting a directory, the number of paths that are deleted with each invocation is limited. If the number
 	// of paths to be deleted exceeds this limit, a continuation token is returned in this response header. When a continuation
 	// token is returned in the response, it must be specified in a subsequent invocation of the delete operation to continue
@@ -840,6 +836,10 @@ type ServiceClientListFileSystemsOptions struct {
 
 	// Filters results to filesystems within the specified prefix.
 	Prefix *string
+
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>

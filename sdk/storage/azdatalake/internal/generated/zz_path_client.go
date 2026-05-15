@@ -7,16 +7,15 @@ package generated
 import (
 	"context"
 	"encoding/base64"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"io"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 )
 
 const defaultPathClientVersion string = "2026-06-06"
@@ -76,8 +75,8 @@ func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.R
 	if options != nil && options.TransactionalContentHash != nil {
 		req.Raw().Header["Content-MD5"] = []string{base64.StdEncoding.EncodeToString(options.TransactionalContentHash)}
 	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.TransactionalContentCRC64 != nil {
 		req.Raw().Header["x-ms-content-crc64"] = []string{base64.StdEncoding.EncodeToString(options.TransactionalContentCRC64)}
@@ -238,8 +237,8 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 	if options != nil && options.CacheControl != nil {
 		req.Raw().Header["x-ms-cache-control"] = []string{*options.CacheControl}
 	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.ContentDisposition != nil {
 		req.Raw().Header["x-ms-content-disposition"] = []string{*options.ContentDisposition}
@@ -423,8 +422,8 @@ func (client *PathClient) deleteCreateRequest(ctx context.Context, options *Path
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
 	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
@@ -521,8 +520,8 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 	if options != nil && options.CacheControl != nil {
 		req.Raw().Header["x-ms-cache-control"] = []string{*options.CacheControl}
 	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.ContentDisposition != nil {
 		req.Raw().Header["x-ms-content-disposition"] = []string{*options.ContentDisposition}
@@ -672,8 +671,8 @@ func (client *PathClient) getPropertiesCreateRequest(ctx context.Context, option
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
 	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
@@ -858,8 +857,8 @@ func (client *PathClient) leaseCreateRequest(ctx context.Context, leaseAction Pa
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
 	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["x-ms-lease-action"] = []string{string(leaseAction)}
 	if options != nil && options.LeaseBreakPeriod != nil {
@@ -966,8 +965,8 @@ func (client *PathClient) readCreateRequest(ctx context.Context, options *PathCl
 	if options != nil && options.Range != nil {
 		req.Raw().Header["Range"] = []string{*options.Range}
 	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.EncryptionAlgorithm != nil {
 		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*options.EncryptionAlgorithm)}
@@ -1128,8 +1127,8 @@ func (client *PathClient) setAccessControlCreateRequest(ctx context.Context, opt
 	if options != nil && options.ACL != nil {
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
 	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.Group != nil {
 		req.Raw().Header["x-ms-group"] = []string{*options.Group}
@@ -1230,8 +1229,8 @@ func (client *PathClient) setAccessControlRecursiveCreateRequest(ctx context.Con
 	if options != nil && options.ACL != nil {
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
 	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
 	return req, nil
@@ -1302,8 +1301,8 @@ func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["x-ms-expiry-option"] = []string{string(expiryOptions)}
 	if options != nil && options.ExpiresOn != nil {
@@ -1378,8 +1377,8 @@ func (client *PathClient) undeleteCreateRequest(ctx context.Context, options *Pa
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.UndeleteSource != nil {
 		req.Raw().Header["x-ms-undelete-source"] = []string{*options.UndeleteSource}
@@ -1499,8 +1498,8 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 	if options != nil && options.CacheControl != nil {
 		req.Raw().Header["x-ms-cache-control"] = []string{*options.CacheControl}
 	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	if options != nil && options.ContentDisposition != nil {
 		req.Raw().Header["x-ms-content-disposition"] = []string{*options.ContentDisposition}

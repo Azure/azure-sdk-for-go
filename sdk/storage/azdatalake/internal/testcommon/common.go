@@ -87,7 +87,7 @@ func BeforeTest(t *testing.T, suite string, test string) {
 	// testframework.AddBodyRegexSanitizer("RequestId:00000000-0000-0000-0000-000000000000", `RequestId:\w{8}-\w{4}-\w{4}-\w{4}-\w{12}`, nil)
 	// testframework.AddBodyRegexSanitizer("Time:2022-08-11T00:21:56.4562741Z", `Time:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?Z`, nil)
 	require.NoError(t, recording.Start(t, RecordingDirectory, nil))
-	require.NoError(t, recording.SetDefaultMatcher(t, &recording.SetDefaultMatcherOptions{ExcludedHeaders: []string{"Accept"}}))
+	require.NoError(t, recording.SetDefaultMatcher(t, &recording.SetDefaultMatcherOptions{ExcludedHeaders: []string{"Accept", "Content-Type"}}))
 }
 
 func AfterTest(t *testing.T, suite string, test string) {

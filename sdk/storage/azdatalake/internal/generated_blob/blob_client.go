@@ -4,30 +4,27 @@
 package generated_blob
 
 import (
-	"context"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // used to convert times from UTC to GMT before sending across the wire
 var gmt = time.FixedZone("GMT", 0)
 
 func (client *BlobClient) Endpoint() string {
-	return client.endpoint
+	return client.url
 }
 
 func (client *BlobClient) InternalClient() *azcore.Client {
 	return client.internal
 }
 
-func (client *BlobClient) DeleteCreateRequest(ctx context.Context, options *BlobClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
-	return client.deleteCreateRequest(ctx, options, leaseAccessConditions, modifiedAccessConditions)
-}
-
-func (client *BlobClient) SetTierCreateRequest(ctx context.Context, tier AccessTier, options *BlobClientSetTierOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
-	return client.setTierCreateRequest(ctx, tier, options, leaseAccessConditions, modifiedAccessConditions)
+// BlobClient contains the methods for the Blob group.
+// Don't use this type directly, use a constructor function instead.
+type BlobClient struct {
+	internal *azcore.Client
+	url      string
 }
 
 // NewBlobClient creates a new instance of BlobClient with the specified values.
@@ -36,8 +33,7 @@ func (client *BlobClient) SetTierCreateRequest(ctx context.Context, tier AccessT
 func NewBlobClient(endpoint string, azClient *azcore.Client) *BlobClient {
 	client := &BlobClient{
 		internal: azClient,
-		endpoint: endpoint,
-		version:  ServiceVersion,
+		url:      endpoint,
 	}
 	return client
 }

@@ -10,6 +10,8 @@ require (
 	github.com/stretchr/testify v1.11.1
 )
 
+replace github.com/Azure/azure-sdk-for-go/sdk/storage/azblob => /home/grace/code/azure-sdk-for-go/sdk/storage/azblob
+
 require (
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.7.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

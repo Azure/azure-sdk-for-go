@@ -182,6 +182,11 @@ func (f *Client) generatedFileClientWithBlob() *generated_blob.BlobClient {
 	return dirClientWithBlob
 }
 
+func (f *Client) generatedFileClientWithPath() *generated.PathClient {
+	dirClientWithPath, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
+	return dirClientWithPath
+}
+
 func (f *Client) blobClient() *blockblob.Client {
 	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
 	return blobClient
@@ -331,13 +336,16 @@ func (f *Client) SetExpiry(ctx context.Context, expiryValues SetExpiryValues, o 
 	if reflect.ValueOf(expiryValues).IsZero() {
 		expiryValues.ExpiryType = SetExpiryTypeNeverExpire
 	}
-	opts := &generated_blob.BlobClientSetExpiryOptions{}
+	opts := &generated.PathClientSetExpiryOptions{}
 	if expiryValues.ExpiryType != SetExpiryTypeNeverExpire {
 		opts.ExpiresOn = &expiryValues.ExpiresOn
 	}
-	resp, err := f.generatedFileClientWithBlob().SetExpiry(ctx, expiryValues.ExpiryType, opts)
+	// SetExpiry is a blob-endpoint operation; route the request to the blob URL
+	// while reusing the underlying azcore.Client (pipeline) from the DFS path client.
+	blobEndpointPathClient := generated.NewPathClient(f.BlobURL(), f.generatedFileClientWithPath().InternalClient())
+	resp, err := blobEndpointPathClient.SetExpiry(ctx, generated.PathExpiryOptions(expiryValues.ExpiryType), opts)
 	err = exported.ConvertToDFSError(err)
-	return resp, err
+	return generated_blob.BlobClientSetExpiryResponse(resp), err
 }
 
 // SetAccessControl sets the owner, owning group, and permissions for a file.

@@ -4,126 +4,95 @@
 package generated_blob
 
 import (
-	"encoding/xml"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"net/url"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-type TransactionalContentSetter interface {
-	SetCRC64([]byte)
-	SetMD5([]byte)
+// KeyInfo - Key information
+type KeyInfo struct {
+	// REQUIRED; The date-time the key expires in ISO 8601 UTC time
+	Expiry *string `xml:"Expiry"`
+
+	// REQUIRED; The date-time the key is active in ISO 8601 UTC time
+	Start *string `xml:"Start"`
+
+	// The delegated user tenant id in Azure AD
+	DelegatedUserTenantID *string `xml:"DelegatedUserTid"`
 }
 
-func (a *AppendBlobClientAppendBlockOptions) SetCRC64(v []byte) {
-	a.TransactionalContentCRC64 = v
+// ListFileSystemsSegmentResponse - An enumeration of containers
+type ListFileSystemsSegmentResponse struct {
+	// REQUIRED
+	FileSystemItems []*FileSystemItem `xml:"Containers>Container"`
+
+	// REQUIRED
+	ServiceEndpoint *string `xml:"ServiceEndpoint,attr"`
+	Marker          *string `xml:"Marker"`
+	MaxResults      *int32  `xml:"MaxResults"`
+	NextMarker      *string `xml:"NextMarker"`
+	Prefix          *string `xml:"Prefix"`
 }
 
-func (a *AppendBlobClientAppendBlockOptions) SetMD5(v []byte) {
-	a.TransactionalContentMD5 = v
+// FileSystemItem - An Azure Storage container
+type FileSystemItem struct {
+	// REQUIRED
+	Name *string `xml:"Name"`
+
+	// REQUIRED; Properties of a container
+	Properties *FileSystemProperties `xml:"Properties"`
+	Deleted    *bool                 `xml:"Deleted"`
+
+	// Dictionary of
+	Metadata map[string]*string `xml:"Metadata"`
+	Version  *string            `xml:"Version"`
 }
 
-func (b *BlockBlobClientStageBlockOptions) SetCRC64(v []byte) {
-	b.TransactionalContentCRC64 = v
+// FileSystemProperties - Properties of a container
+type FileSystemProperties struct {
+	// REQUIRED
+	ETag *azcore.ETag `xml:"Etag"`
+
+	// REQUIRED
+	LastModified           *time.Time `xml:"Last-Modified"`
+	DefaultEncryptionScope *string    `xml:"DefaultEncryptionScope"`
+	DeletedTime            *time.Time `xml:"DeletedTime"`
+	HasImmutabilityPolicy  *bool      `xml:"HasImmutabilityPolicy"`
+	HasLegalHold           *bool      `xml:"HasLegalHold"`
+
+	// Indicates if version level worm is enabled on this container.
+	IsImmutableStorageWithVersioningEnabled *bool              `xml:"ImmutableStorageWithVersioningEnabled"`
+	LeaseDuration                           *LeaseDurationType `xml:"LeaseDuration"`
+	LeaseState                              *LeaseStateType    `xml:"LeaseState"`
+	LeaseStatus                             *LeaseStatusType   `xml:"LeaseStatus"`
+	PreventEncryptionScopeOverride          *bool              `xml:"DenyEncryptionScopeOverride"`
+	PublicAccess                            *PublicAccessType  `xml:"PublicAccess"`
+	RemainingRetentionDays                  *int32             `xml:"RemainingRetentionDays"`
 }
 
-func (b *BlockBlobClientStageBlockOptions) SetMD5(v []byte) {
-	b.TransactionalContentMD5 = v
-}
+// UserDelegationKey - A user delegation key
+type UserDelegationKey struct {
+	// REQUIRED; The date-time the key expires
+	SignedExpiry *time.Time `xml:"SignedExpiry"`
 
-func (p *PageBlobClientUploadPagesOptions) SetCRC64(v []byte) {
-	p.TransactionalContentCRC64 = v
-}
+	// REQUIRED; The Azure Active Directory object ID in GUID format.
+	SignedOID *string `xml:"SignedOid"`
 
-func (p *PageBlobClientUploadPagesOptions) SetMD5(v []byte) {
-	p.TransactionalContentMD5 = v
-}
+	// REQUIRED; Abbreviation of the Azure Storage service that accepts the key
+	SignedService *string `xml:"SignedService"`
 
-type SourceContentSetter interface {
-	SetSourceContentCRC64(v []byte)
-	SetSourceContentMD5(v []byte)
-}
+	// REQUIRED; The date-time the key is active
+	SignedStart *time.Time `xml:"SignedStart"`
 
-func (a *AppendBlobClientAppendBlockFromURLOptions) SetSourceContentCRC64(v []byte) {
-	a.SourceContentcrc64 = v
-}
+	// REQUIRED; The Azure Active Directory tenant ID in GUID format
+	SignedTID *string `xml:"SignedTid"`
 
-func (a *AppendBlobClientAppendBlockFromURLOptions) SetSourceContentMD5(v []byte) {
-	a.SourceContentMD5 = v
-}
+	// REQUIRED; The service version that created the key
+	SignedVersion *string `xml:"SignedVersion"`
 
-func (b *BlockBlobClientStageBlockFromURLOptions) SetSourceContentCRC64(v []byte) {
-	b.SourceContentcrc64 = v
-}
+	// REQUIRED; The key as a base64 string
+	Value *string `xml:"Value"`
 
-func (b *BlockBlobClientStageBlockFromURLOptions) SetSourceContentMD5(v []byte) {
-	b.SourceContentMD5 = v
-}
-
-func (p *PageBlobClientUploadPagesFromURLOptions) SetSourceContentCRC64(v []byte) {
-	p.SourceContentcrc64 = v
-}
-
-func (p *PageBlobClientUploadPagesFromURLOptions) SetSourceContentMD5(v []byte) {
-	p.SourceContentMD5 = v
-}
-
-// Custom UnmarshalXML functions for types that need special handling.
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type PathPrefix.
-func (p *PathPrefix) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias PathPrefix
-	aux := &struct {
-		*alias
-		PathName *PathName `xml:"Name"`
-	}{
-		alias: (*alias)(p),
-	}
-	if err := dec.DecodeElement(aux, &start); err != nil {
-		return err
-	}
-	if aux.PathName != nil {
-		if aux.PathName.Encoded != nil && *aux.PathName.Encoded {
-			name, err := url.QueryUnescape(*aux.PathName.Content)
-
-			if err != nil {
-				return err
-			}
-			p.Name = to.Ptr(string(name))
-		} else {
-			p.Name = aux.PathName.Content
-		}
-	}
-	return nil
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type PathItem.
-func (p *PathItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias PathItem
-	aux := &struct {
-		*alias
-		PathName   *PathName            `xml:"Name"`
-		Metadata   additionalProperties `xml:"Metadata"`
-		OrMetadata additionalProperties `xml:"OrMetadata"`
-	}{
-		alias: (*alias)(p),
-	}
-	if err := dec.DecodeElement(aux, &start); err != nil {
-		return err
-	}
-	p.Metadata = (map[string]*string)(aux.Metadata)
-	p.OrMetadata = (map[string]*string)(aux.OrMetadata)
-	if aux.PathName != nil {
-		if aux.PathName.Encoded != nil && *aux.PathName.Encoded {
-			name, err := url.QueryUnescape(*aux.PathName.Content)
-
-			// name, err := base64.StdEncoding.DecodeString(*aux.PathName.Content)
-			if err != nil {
-				return err
-			}
-			p.Name = to.Ptr(string(name))
-		} else {
-			p.Name = aux.PathName.Content
-		}
-	}
-	return nil
+	// The delegated user tenant id in Azure AD. Return if DelegatedUserTid is specified.
+	SignedDelegatedUserTenantID *string `xml:"SignedDelegatedUserTid"`
 }

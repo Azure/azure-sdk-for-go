@@ -10,6 +10,8 @@
 
 ### Breaking Changes
 
+* Removed `ChangeFeedResponse.PopulateCompositeContinuationToken()`. The method is no longer needed: `GetChangeFeed` now populates `ChangeFeedResponse.ContinuationToken` directly with the multi-range composite token. Callers who built single-range tokens manually can use `GetCompositeContinuationToken()` instead.
+
 ### Bugs Fixed
 
 * Fixed `GetChangeFeed` to survive partition splits: customer-supplied `FeedRange`s are now overlap-matched against the routing map, `410/Gone` triggers a cache refresh and bounded retry, split parents expand into per-child queue entries (inheriting the parent's ETag), and the continuation token persists multi-range state across calls. Continuation tokens are guarded against cross-container reuse. See [PR 26768](https://github.com/Azure/azure-sdk-for-go/pull/26768).

@@ -2,7 +2,7 @@
 
 ### 2.1.0 (2026-05-15)
 
-### Features Added
+#### Features Added
 * Includes all features from `2.1.0-beta.1`
 
 ### 2.1.0-beta.1 (2026-04-23)

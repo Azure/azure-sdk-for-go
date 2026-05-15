@@ -516,8 +516,10 @@ func TestRefreshPKRangeCache_InvalidatesContainerCache(t *testing.T) {
 
 	// First request: container props re-fetch (after invalidation)
 	// Second request: PK range fetch
+	// Third request: 304 Not Modified (terminates change-feed loop)
 	srv.AppendResponse(mock.WithBody(containerPropsResponse), mock.WithStatusCode(200))
 	srv.AppendResponse(mock.WithBody(pkRangeResponse), mock.WithStatusCode(200))
+	srv.AppendResponse(mock.WithStatusCode(304), mock.WithHeader(cosmosHeaderEtag, "etag1"))
 
 	defaultEndpoint, _ := url.Parse(srv.URL())
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})

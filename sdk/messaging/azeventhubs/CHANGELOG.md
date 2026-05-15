@@ -5,6 +5,7 @@
 ### Bugs Fixed
 
 - Fixed missing `consumers.Delete()` call when checkpoint initialization fails, which could block future consumer creation for the affected partition. (#24983)
+- Fixed swapped `OwnerID`/`PartitionID` format arguments in `BlobStore.ClaimOwnership` log message for ownership claims with no etags.
 
 ## 2.0.2 (2026-03-10)
 

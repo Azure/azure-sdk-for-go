@@ -383,8 +383,7 @@ func (c *ContainerClient) getChangeFeedForQueue(
 		// Capture the response body's _rid into the token's ResourceID on first
 		// successful response. This keeps the cross-container guard meaningful
 		// across resume — token-issued-by-this-container always carries the
-		// container's RID — and matches pre-F1 PopulateCompositeContinuationToken
-		// semantics that downstream tests rely on.
+		// container's RID.
 		if token.ResourceID == "" && response.ResourceID != "" {
 			token.ResourceID = response.ResourceID
 		}

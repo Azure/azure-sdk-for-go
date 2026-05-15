@@ -59,27 +59,6 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 	return response, nil
 }
 
-// PopulateCompositeContinuationToken generates and sets the composite continuation
-// token from response.FeedRange + response.ETag. Retained for back-compat.
-//
-// In the multi-range queue-driven GetChangeFeed path, response.ContinuationToken
-// is already populated with the multi-range composite token by the drain loop
-// itself. This method is therefore a no-op when ContinuationToken is non-empty
-// — overwriting it with a single-range token rebuilt from the per-head
-// FeedRange would lose the multi-range queue state and cause callers that
-// resume with the resulting token to skip subsequent ranges after a split.
-func (response *ChangeFeedResponse) PopulateCompositeContinuationToken() {
-	if response.ContinuationToken != "" {
-		return
-	}
-	if response.FeedRange != nil && response.ETag != "" {
-		compositeToken, err := response.GetCompositeContinuationToken()
-		if err == nil && compositeToken != "" {
-			response.ContinuationToken = compositeToken
-		}
-	}
-}
-
 // GetContinuation from ChangeFeedResponse
 func (c ChangeFeedResponse) GetContinuation() string {
 	return string(c.ETag)

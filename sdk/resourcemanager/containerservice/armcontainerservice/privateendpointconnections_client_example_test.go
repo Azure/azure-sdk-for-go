@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-02-preview/PrivateEndpointConnectionsDelete.json
+// Generated from example definition: 2026-03-01/PrivateEndpointConnectionsDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -38,7 +38,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/PrivateEndpointConnectionsGet.json
+// Generated from example definition: 2026-03-01/PrivateEndpointConnectionsGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armcontainerservice.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armcontainerservice.PrivateEndpointConnection{
 	// 		Name: to.Ptr("privateendpointconnection1"),
 	// 		Type: to.Ptr("Microsoft.Network/privateLinkServices/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedCluster/clustername1/privateEndpointConnections/privateendpointconnection1"),
@@ -74,7 +74,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/PrivateEndpointConnectionsList.json
+// Generated from example definition: 2026-03-01/PrivateEndpointConnectionsList.json
 func ExamplePrivateEndpointConnectionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.PrivateEndpointConnectionsClientListResponse{
-	// 	PrivateEndpointConnectionListResult: &armcontainerservice.PrivateEndpointConnectionListResult{
+	// 	PrivateEndpointConnectionListResult: armcontainerservice.PrivateEndpointConnectionListResult{
 	// 		Value: []*armcontainerservice.PrivateEndpointConnection{
 	// 			{
 	// 				Name: to.Ptr("privateendpointconnection1"),
@@ -114,7 +114,7 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/PrivateEndpointConnectionsUpdate.json
+// Generated from example definition: 2026-03-01/PrivateEndpointConnectionsUpdate.json
 func ExamplePrivateEndpointConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.PrivateEndpointConnectionsClientUpdateResponse{
-	// 	PrivateEndpointConnection: &armcontainerservice.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armcontainerservice.PrivateEndpointConnection{
 	// 		Name: to.Ptr("privateendpointconnection1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/privateEndpointConnections/privateendpointconnection1"),

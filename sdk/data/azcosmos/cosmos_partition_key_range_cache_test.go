@@ -310,6 +310,12 @@ func Test_partitionKeyRangeCache_incrementalRefresh_mergeFailure_fullRefresh(t *
 		mock.WithHeader(cosmosHeaderEtag, "etag2"),
 		mock.WithStatusCode(200),
 	)
+	// 304 terminates the incremental change-feed loop — tryCombine sees only the 1 child
+	// range, detects the gap, returns nil → falls through to full refresh
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag2"),
+	)
 	// Full change-feed refresh response: complete set of 3 ranges
 	srv.AppendResponse(
 		mock.WithBody([]byte(`{

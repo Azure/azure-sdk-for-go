@@ -209,7 +209,7 @@ func (c *partitionKeyRangeCache) refreshEntry(
 			}
 
 			merged := previousMap.tryCombine(result.ranges, result.finalETag)
-			if merged != nil && isCompleteSetOfRanges(merged.orderedRanges) {
+			if merged != nil {
 				entry.routingMap = merged
 				return merged, nil
 			}

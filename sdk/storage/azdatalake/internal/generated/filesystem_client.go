@@ -6,14 +6,10 @@ package generated
 import (
 	"context"
 	"net/http"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
-
-// used to convert times from UTC to GMT before sending across the wire
-var gmt = time.FixedZone("GMT", 0)
 
 func (client *FileSystemClient) Endpoint() string {
 	return client.url

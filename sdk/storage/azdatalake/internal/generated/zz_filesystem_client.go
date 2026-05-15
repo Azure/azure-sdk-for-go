@@ -17,8 +17,6 @@ import (
 	"time"
 )
 
-const defaultFileSystemClientVersion string = "2026-06-06"
-
 // FileSystemClient contains the methods for the FileSystem group.
 // Don't use this type directly, use a constructor function instead.
 //
@@ -69,7 +67,7 @@ func (client *FileSystemClient) createCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Properties != nil {
 		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultFileSystemClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -156,7 +154,7 @@ func (client *FileSystemClient) deleteCreateRequest(ctx context.Context, resourc
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultFileSystemClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -220,7 +218,7 @@ func (client *FileSystemClient) getPropertiesCreateRequest(ctx context.Context, 
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultFileSystemClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -318,7 +316,7 @@ func (client *FileSystemClient) listBlobHierarchySegmentCreateRequest(ctx contex
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultFileSystemClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -327,9 +325,6 @@ func (client *FileSystemClient) listBlobHierarchySegmentHandleResponse(resp *htt
 	result := FileSystemClientListPathHierarchySegmentResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -415,7 +410,7 @@ func (client *FileSystemClient) listPathsCreateRequest(ctx context.Context, recu
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultFileSystemClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -424,9 +419,6 @@ func (client *FileSystemClient) listPathsHandleResponse(resp *http.Response) (Fi
 	result := FileSystemClientListPathsResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("x-ms-continuation"); val != "" {
 		result.Continuation = &val
@@ -508,7 +500,7 @@ func (client *FileSystemClient) setPropertiesCreateRequest(ctx context.Context, 
 	if options != nil && options.Properties != nil {
 		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultFileSystemClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 

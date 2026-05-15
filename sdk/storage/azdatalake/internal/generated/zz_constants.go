@@ -4,6 +4,10 @@
 
 package generated
 
+const (
+	version20260606 string = "2026-06-06"
+)
+
 // AccountResourceType - The value must be "account" for all account operations.
 type AccountResourceType string
 

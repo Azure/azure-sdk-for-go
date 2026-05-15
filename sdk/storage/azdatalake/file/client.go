@@ -387,8 +387,8 @@ func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 
 // GetSystemProperties returns all system defined properties for a file.
 func (f *Client) GetSystemProperties(ctx context.Context, options *GetSystemPropertiesOptions) (GetSystemPropertiesResponse, error) {
-	opts, lac, mac := path.FormatGetSystemPropertiesOptions(options)
-	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	opts := path.FormatGetSystemPropertiesOptions(options)
+	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }

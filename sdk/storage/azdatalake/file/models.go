@@ -246,7 +246,6 @@ func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataO
 		flushDataOpts.CacheControl = o.HTTPHeaders.CacheControl
 		flushDataOpts.ContentDisposition = o.HTTPHeaders.ContentDisposition
 		flushDataOpts.ContentEncoding = o.HTTPHeaders.ContentEncoding
-		flushDataOpts.ContentLanguage = o.HTTPHeaders.ContentLanguage
 	}
 	if o.CPKInfo != nil {
 		flushDataOpts.EncryptionKey = o.CPKInfo.EncryptionKey

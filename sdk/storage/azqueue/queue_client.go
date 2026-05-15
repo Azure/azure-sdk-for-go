@@ -10,7 +10,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/generated"
@@ -174,12 +173,12 @@ func (q *QueueClient) DequeueMessage(ctx context.Context, o *DequeueMessageOptio
 // UpdateMessage updates a message from the queue with the given popReceipt.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/update-message.
 func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popReceipt string, content string, o *UpdateMessageOptions) (UpdateMessageResponse, error) {
-	defaultVT := to.Ptr(int32(0))
-	if o.VisibilityTimeout == nil {
-		o.VisibilityTimeout = defaultVT
+	visibilityTimeout := int32(0)
+	if o != nil && o.VisibilityTimeout != nil {
+		visibilityTimeout = *o.VisibilityTimeout
 	}
 	message := generated.QueueMessage{MessageText: &content}
-	return q.queueClient().UpdateMessage(ctx, messageID, popReceipt, *o.VisibilityTimeout, message, o.format())
+	return q.queueClient().UpdateMessage(ctx, messageID, popReceipt, visibilityTimeout, message, o.format())
 }
 
 // DeleteMessage deletes message from queue with the given popReceipt.

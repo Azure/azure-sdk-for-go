@@ -18,6 +18,8 @@ import (
 
 // ManagedCCFClient contains the methods for the ManagedCCF group.
 // Don't use this type directly, use NewManagedCCFClient() instead.
+//
+// Generated from API version 2025-06-10-preview
 type ManagedCCFClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedCCFClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginBackup - Backs up a Managed CCF Resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appName - Name of the Managed CCF
 //   - managedCCF - Managed CCF Backup Request Body
@@ -66,8 +66,6 @@ func (client *ManagedCCFClient) BeginBackup(ctx context.Context, resourceGroupNa
 
 // Backup - Backs up a Managed CCF Resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 func (client *ManagedCCFClient) backup(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFBackup, options *ManagedCCFClientBeginBackupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedCCFClient.BeginBackup"
@@ -109,8 +107,8 @@ func (client *ManagedCCFClient) backupCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-10-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, managedCCF); err != nil {
@@ -121,8 +119,6 @@ func (client *ManagedCCFClient) backupCreateRequest(ctx context.Context, resourc
 
 // BeginCreate - Creates a Managed CCF with the specified Managed CCF parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appName - Name of the Managed CCF
 //   - managedCCF - Managed CCF Create Request Body
@@ -146,8 +142,6 @@ func (client *ManagedCCFClient) BeginCreate(ctx context.Context, resourceGroupNa
 
 // Create - Creates a Managed CCF with the specified Managed CCF parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 func (client *ManagedCCFClient) create(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedCCFClient.BeginCreate"
@@ -189,8 +183,8 @@ func (client *ManagedCCFClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-10-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, managedCCF); err != nil {
@@ -201,8 +195,6 @@ func (client *ManagedCCFClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Deletes an existing Managed CCF.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appName - Name of the Managed CCF
 //   - options - ManagedCCFClientBeginDeleteOptions contains the optional parameters for the ManagedCCFClient.BeginDelete method.
@@ -225,8 +217,6 @@ func (client *ManagedCCFClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes an existing Managed CCF.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 func (client *ManagedCCFClient) deleteOperation(ctx context.Context, resourceGroupName string, appName string, options *ManagedCCFClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedCCFClient.BeginDelete"
@@ -268,15 +258,13 @@ func (client *ManagedCCFClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-10-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Retrieves the properties of a Managed CCF app.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appName - Name of the Managed CCF
 //   - options - ManagedCCFClientGetOptions contains the optional parameters for the ManagedCCFClient.Get method.
@@ -322,8 +310,8 @@ func (client *ManagedCCFClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-10-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -338,8 +326,6 @@ func (client *ManagedCCFClient) getHandleResponse(resp *http.Response) (ManagedC
 }
 
 // NewListByResourceGroupPager - Retrieves the properties of all Managed CCF apps.
-//
-// Generated from API version 2025-06-10-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ManagedCCFClientListByResourceGroupOptions contains the optional parameters for the ManagedCCFClient.NewListByResourceGroupPager
 //     method.
@@ -385,8 +371,8 @@ func (client *ManagedCCFClient) listByResourceGroupCreateRequest(ctx context.Con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-06-10-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -401,8 +387,6 @@ func (client *ManagedCCFClient) listByResourceGroupHandleResponse(resp *http.Res
 }
 
 // NewListBySubscriptionPager - Retrieves the properties of all Managed CCF.
-//
-// Generated from API version 2025-06-10-preview
 //   - options - ManagedCCFClientListBySubscriptionOptions contains the optional parameters for the ManagedCCFClient.NewListBySubscriptionPager
 //     method.
 func (client *ManagedCCFClient) NewListBySubscriptionPager(options *ManagedCCFClientListBySubscriptionOptions) *runtime.Pager[ManagedCCFClientListBySubscriptionResponse] {
@@ -443,8 +427,8 @@ func (client *ManagedCCFClient) listBySubscriptionCreateRequest(ctx context.Cont
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-06-10-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -460,8 +444,6 @@ func (client *ManagedCCFClient) listBySubscriptionHandleResponse(resp *http.Resp
 
 // BeginRestore - Restores a Managed CCF Resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appName - Name of the Managed CCF
 //   - managedCCF - Managed CCF Restore Request Body
@@ -485,8 +467,6 @@ func (client *ManagedCCFClient) BeginRestore(ctx context.Context, resourceGroupN
 
 // Restore - Restores a Managed CCF Resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 func (client *ManagedCCFClient) restore(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFRestore, options *ManagedCCFClientBeginRestoreOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedCCFClient.BeginRestore"
@@ -528,8 +508,8 @@ func (client *ManagedCCFClient) restoreCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-10-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, managedCCF); err != nil {
@@ -540,8 +520,6 @@ func (client *ManagedCCFClient) restoreCreateRequest(ctx context.Context, resour
 
 // BeginUpdate - Updates properties of Managed CCF
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appName - Name of the Managed CCF
 //   - managedCCF - Request body for Updating Managed CCF App
@@ -565,8 +543,6 @@ func (client *ManagedCCFClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Updates properties of Managed CCF
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 func (client *ManagedCCFClient) update(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedCCFClient.BeginUpdate"
@@ -608,8 +584,8 @@ func (client *ManagedCCFClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-10-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, managedCCF); err != nil {

@@ -32,13 +32,13 @@ func ExampleLedgerClient_BeginBackup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfidentialledger.LedgerClientBackupResponse{
-	// 	BackupResponse: &armconfidentialledger.BackupResponse{
+	// 	BackupResponse: armconfidentialledger.BackupResponse{
 	// 		Message: to.Ptr("Backup Created for Ledger: DummyLedgerName."),
 	// 	},
 	// }
@@ -89,13 +89,13 @@ func ExampleLedgerClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfidentialledger.LedgerClientCreateResponse{
-	// 	ConfidentialLedger: &armconfidentialledger.ConfidentialLedger{
+	// 	ConfidentialLedger: armconfidentialledger.ConfidentialLedger{
 	// 		Name: to.Ptr("DummyLedgerName"),
 	// 		Type: to.Ptr("Microsoft.ConfidentialLedger/ledgers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/providers/Microsoft.ConfidentialLedger/ledgers/DummyLedgerName"),
@@ -156,7 +156,7 @@ func ExampleLedgerClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -184,7 +184,7 @@ func ExampleLedgerClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfidentialledger.LedgerClientGetResponse{
-	// 	ConfidentialLedger: &armconfidentialledger.ConfidentialLedger{
+	// 	ConfidentialLedger: armconfidentialledger.ConfidentialLedger{
 	// 		Name: to.Ptr("DummyLedgerName"),
 	// 		Type: to.Ptr("Microsoft.ConfidentialLedger/ledgers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/providers/Microsoft.ConfidentialLedger/ledgers/DummyLedgerName"),
@@ -371,13 +371,13 @@ func ExampleLedgerClient_BeginRestore() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfidentialledger.LedgerClientRestoreResponse{
-	// 	RestoreResponse: &armconfidentialledger.RestoreResponse{
+	// 	RestoreResponse: armconfidentialledger.RestoreResponse{
 	// 		Message: to.Ptr("Restore Created for Ledger : DummyLedgerName."),
 	// 	},
 	// }
@@ -423,13 +423,13 @@ func ExampleLedgerClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfidentialledger.LedgerClientUpdateResponse{
-	// 	ConfidentialLedger: &armconfidentialledger.ConfidentialLedger{
+	// 	ConfidentialLedger: armconfidentialledger.ConfidentialLedger{
 	// 		Name: to.Ptr("DummyLedgerName"),
 	// 		Type: to.Ptr("Microsoft.ConfidentialLedger/ledgers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/providers/Microsoft.ConfidentialLedger/ledgers/DummyLedgerName"),

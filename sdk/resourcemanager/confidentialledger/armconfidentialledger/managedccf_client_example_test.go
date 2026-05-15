@@ -32,13 +32,13 @@ func ExampleManagedCCFClient_BeginBackup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfidentialledger.ManagedCCFClientBackupResponse{
-	// 	ManagedCCFBackupResponse: &armconfidentialledger.ManagedCCFBackupResponse{
+	// 	ManagedCCFBackupResponse: armconfidentialledger.ManagedCCFBackupResponse{
 	// 		Message: to.Ptr("Backup Created for ManagedCCF App : DummyMccfAppName."),
 	// 	},
 	// }
@@ -86,13 +86,13 @@ func ExampleManagedCCFClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfidentialledger.ManagedCCFClientCreateResponse{
-	// 	ManagedCCF: &armconfidentialledger.ManagedCCF{
+	// 	ManagedCCF: armconfidentialledger.ManagedCCF{
 	// 		Name: to.Ptr("DummyLedgerName"),
 	// 		Type: to.Ptr("Microsoft.ConfidentialLedger/ManagedCCFs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/providers/Microsoft.ConfidentialLedger/ledgers/DummyLedgerName"),
@@ -152,7 +152,7 @@ func ExampleManagedCCFClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -180,7 +180,7 @@ func ExampleManagedCCFClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfidentialledger.ManagedCCFClientGetResponse{
-	// 	ManagedCCF: &armconfidentialledger.ManagedCCF{
+	// 	ManagedCCF: armconfidentialledger.ManagedCCF{
 	// 		Name: to.Ptr("DummyMccfAppName"),
 	// 		Type: to.Ptr("Microsoft.ConfidentialLedger/ManagedCCFs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/providers/Microsoft.ConfidentialLedger/ManagedCCFs/DummyLedgerName"),
@@ -385,13 +385,13 @@ func ExampleManagedCCFClient_BeginRestore() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfidentialledger.ManagedCCFClientRestoreResponse{
-	// 	ManagedCCFRestoreResponse: &armconfidentialledger.ManagedCCFRestoreResponse{
+	// 	ManagedCCFRestoreResponse: armconfidentialledger.ManagedCCFRestoreResponse{
 	// 		Message: to.Ptr("Restore Created for ManagedCCF App : DummyMccfAppName."),
 	// 	},
 	// }
@@ -425,13 +425,13 @@ func ExampleManagedCCFClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfidentialledger.ManagedCCFClientUpdateResponse{
-	// 	ManagedCCF: &armconfidentialledger.ManagedCCF{
+	// 	ManagedCCF: armconfidentialledger.ManagedCCF{
 	// 		Name: to.Ptr("DummyLedgerName"),
 	// 		Type: to.Ptr("Microsoft.ConfidentialLedger/ManagedCCFs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/providers/Microsoft.ConfidentialLedger/ledgers/DummyLedgerName"),

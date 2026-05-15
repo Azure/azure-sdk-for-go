@@ -18,6 +18,8 @@ import (
 
 // Client - Microsoft Azure Confidential Compute Ledger Managed CCF Control Plane REST API.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2025-06-10-preview
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -39,33 +41,8 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	return client, nil
 }
 
-// NewLedgerClient creates a new instance of [LedgerClient].
-func (client *Client) NewLedgerClient() *LedgerClient {
-	return &LedgerClient{
-		internal:       client.internal,
-		subscriptionID: client.subscriptionID,
-	}
-}
-
-// NewManagedCCFClient creates a new instance of [ManagedCCFClient].
-func (client *Client) NewManagedCCFClient() *ManagedCCFClient {
-	return &ManagedCCFClient{
-		internal:       client.internal,
-		subscriptionID: client.subscriptionID,
-	}
-}
-
-// NewOperationsClient creates a new instance of [OperationsClient].
-func (client *Client) NewOperationsClient() *OperationsClient {
-	return &OperationsClient{
-		internal: client.internal,
-	}
-}
-
 // CheckNameAvailability - To check whether a resource name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-10-preview
 //   - nameAvailabilityRequest - The request body
 //   - options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
 func (client *Client) CheckNameAvailability(ctx context.Context, nameAvailabilityRequest CheckNameAvailabilityRequest, options *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error) {
@@ -102,8 +79,8 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, na
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-10-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250610Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityRequest); err != nil {

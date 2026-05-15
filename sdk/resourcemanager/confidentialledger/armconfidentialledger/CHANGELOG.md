@@ -1,11 +1,8 @@
 # Release History
 
-## 1.3.0-beta.4 (2026-03-19)
+## 1.3.0-beta.4 (2026-05-15)
 ### Features Added
 
-- New function `*Client.NewLedgerClient() *LedgerClient`
-- New function `*Client.NewManagedCCFClient() *ManagedCCFClient`
-- New function `*Client.NewOperationsClient() *OperationsClient`
 - New field `ScittConfiguration` in struct `LedgerProperties`
 
 

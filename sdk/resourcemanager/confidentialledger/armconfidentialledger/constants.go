@@ -4,6 +4,10 @@
 
 package armconfidentialledger
 
+const (
+	version20250610Preview string = "2025-06-10-preview"
+)
+
 // ApplicationType - Object representing the application type of the Confidential Ledger. Defaults to ConfidentialLedger.
 type ApplicationType string
 

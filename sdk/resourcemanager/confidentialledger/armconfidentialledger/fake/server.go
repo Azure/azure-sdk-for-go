@@ -14,21 +14,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger/armconfidentialledger"
 	"net/http"
 	"regexp"
-	"strings"
-	"sync"
+	"slices"
 )
 
 // Server is a fake server for instances of the armconfidentialledger.Client type.
 type Server struct {
-	// LedgerServer contains the fakes for client LedgerClient
-	LedgerServer LedgerServer
-
-	// ManagedCCFServer contains the fakes for client ManagedCCFClient
-	ManagedCCFServer ManagedCCFServer
-
-	// OperationsServer contains the fakes for client OperationsClient
-	OperationsServer OperationsServer
-
 	// CheckNameAvailability is the fake for method Client.CheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
 	CheckNameAvailability func(ctx context.Context, nameAvailabilityRequest armconfidentialledger.CheckNameAvailabilityRequest, options *armconfidentialledger.ClientCheckNameAvailabilityOptions) (resp azfake.Responder[armconfidentialledger.ClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
@@ -44,11 +34,7 @@ func NewServerTransport(srv *Server) *ServerTransport {
 // ServerTransport connects instances of armconfidentialledger.Client to instances of Server.
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
-	srv                *Server
-	trMu               sync.Mutex
-	trLedgerServer     *LedgerServerTransport
-	trManagedCCFServer *ManagedCCFServerTransport
-	trOperationsServer *OperationsServerTransport
+	srv *Server
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -59,43 +45,11 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	if client := method[:strings.Index(method, ".")]; client != "Client" {
-		return s.dispatchToClientFake(req, client)
-	}
 	return s.dispatchToMethodFake(req, method)
 }
 
-func (s *ServerTransport) dispatchToClientFake(req *http.Request, client string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
-
-	switch client {
-	case "LedgerClient":
-		initServer(&s.trMu, &s.trLedgerServer, func() *LedgerServerTransport {
-			return NewLedgerServerTransport(&s.srv.LedgerServer)
-		})
-		resp, err = s.trLedgerServer.Do(req)
-	case "ManagedCCFClient":
-		initServer(&s.trMu, &s.trManagedCCFServer, func() *ManagedCCFServerTransport {
-			return NewManagedCCFServerTransport(&s.srv.ManagedCCFServer)
-		})
-		resp, err = s.trManagedCCFServer.Do(req)
-	case "OperationsClient":
-		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport {
-			return NewOperationsServerTransport(&s.srv.OperationsServer)
-		})
-		resp, err = s.trOperationsServer.Do(req)
-	default:
-		err = fmt.Errorf("unhandled client %s", client)
-	}
-
-	return resp, err
-}
-
 func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -111,10 +65,7 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -144,7 +95,7 @@ func (s *ServerTransport) dispatchCheckNameAvailability(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)

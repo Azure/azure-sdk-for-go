@@ -15,8 +15,6 @@ import (
 	"time"
 )
 
-const defaultServiceClientVersion string = "2026-06-06"
-
 // ServiceClient contains the methods for the Service group.
 // Don't use this type directly, use a constructor function instead.
 //
@@ -84,7 +82,7 @@ func (client *ServiceClient) listFileSystemsCreateRequest(ctx context.Context, r
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultServiceClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -93,9 +91,6 @@ func (client *ServiceClient) listFileSystemsHandleResponse(resp *http.Response) 
 	result := ServiceClientListFileSystemsResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("x-ms-continuation"); val != "" {
 		result.Continuation = &val

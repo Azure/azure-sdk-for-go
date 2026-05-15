@@ -26,10 +26,6 @@ type GetUserDelegationCredentialOptions struct {
 	// placeholder for future options
 }
 
-func (o *GetUserDelegationCredentialOptions) format() *generated_blob.ServiceClientGetUserDelegationKeyOptions {
-	return nil
-}
-
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
 type GetPropertiesOptions struct {
 	// placeholder for future options

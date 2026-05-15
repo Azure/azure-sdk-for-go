@@ -18,8 +18,6 @@ import (
 	"time"
 )
 
-const defaultPathClientVersion string = "2026-06-06"
-
 // PathClient contains the methods for the Path group.
 // Don't use this type directly, use a constructor function instead.
 //
@@ -108,7 +106,7 @@ func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.R
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	req.Raw().Header["Content-Type"] = []string{"application/octet-stream"}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
@@ -312,7 +310,7 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 	if options != nil && options.Umask != nil {
 		req.Raw().Header["x-ms-umask"] = []string{*options.Umask}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -428,7 +426,7 @@ func (client *PathClient) deleteCreateRequest(ctx context.Context, options *Path
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -559,7 +557,7 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -677,7 +675,7 @@ func (client *PathClient) getPropertiesCreateRequest(ctx context.Context, option
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -873,7 +871,7 @@ func (client *PathClient) leaseCreateRequest(ctx context.Context, leaseAction Pa
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -983,7 +981,7 @@ func (client *PathClient) readCreateRequest(ctx context.Context, options *PathCl
 	if options != nil && options.RangeGetContentMD5 != nil {
 		req.Raw().Header["x-ms-range-get-content-md5"] = []string{strconv.FormatBool(*options.RangeGetContentMD5)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -1142,7 +1140,7 @@ func (client *PathClient) setAccessControlCreateRequest(ctx context.Context, opt
 	if options != nil && options.Permissions != nil {
 		req.Raw().Header["x-ms-permissions"] = []string{*options.Permissions}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -1232,7 +1230,7 @@ func (client *PathClient) setAccessControlRecursiveCreateRequest(ctx context.Con
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -1241,9 +1239,6 @@ func (client *PathClient) setAccessControlRecursiveHandleResponse(resp *http.Res
 	result := PathClientSetAccessControlRecursiveResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("x-ms-continuation"); val != "" {
 		result.Continuation = &val
@@ -1308,7 +1303,7 @@ func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 	if options != nil && options.ExpiresOn != nil {
 		req.Raw().Header["x-ms-expiry-time"] = []string{*options.ExpiresOn}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -1383,7 +1378,7 @@ func (client *PathClient) undeleteCreateRequest(ctx context.Context, options *Pa
 	if options != nil && options.UndeleteSource != nil {
 		req.Raw().Header["x-ms-undelete-source"] = []string{*options.UndeleteSource}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
 
@@ -1534,7 +1529,7 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultPathClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	req.Raw().Header["Content-Type"] = []string{"application/octet-stream"}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
@@ -1579,9 +1574,6 @@ func (client *PathClient) updateHandleResponse(resp *http.Response) (PathClientU
 	}
 	if val := resp.Header.Get("Content-Range"); val != "" {
 		result.ContentRange = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("x-ms-continuation"); val != "" {
 		result.Continuation = &val

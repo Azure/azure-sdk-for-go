@@ -1,0 +1,4 @@
+directory: "specification/storage/Microsoft.BlobStorage"
+entrypointFile: "datalake-go/client.tsp"
+commit: a74b7a51622419640703b50758343b6f3dc26673
+repo: Azure/azure-rest-api-specs

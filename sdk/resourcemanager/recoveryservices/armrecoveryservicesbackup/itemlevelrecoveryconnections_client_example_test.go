@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/Provision_Ilr.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/Provision_Ilr.json
 func ExampleItemLevelRecoveryConnectionsClient_Provision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleItemLevelRecoveryConnectionsClient_Provision() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/Revoke_Ilr.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/Revoke_Ilr.json
 func ExampleItemLevelRecoveryConnectionsClient_Revoke() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

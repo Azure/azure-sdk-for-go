@@ -44,7 +44,7 @@ func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCred
 // Gets the operation status for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - location - The name of the Azure region.
 //   - options - OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
 func (client *OperationStatusClient) Get(ctx context.Context, location string, operationID string, options *OperationStatusClientGetOptions) (OperationStatusClientGetResponse, error) {
@@ -89,7 +89,7 @@ func (client *OperationStatusClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

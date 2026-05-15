@@ -42,7 +42,7 @@ func NewDppResourceGuardProxyClient(subscriptionID string, credential azcore.Tok
 // CreateOrUpdate - Creates or Updates a ResourceGuardProxy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - resourceGuardProxyName - name of the resource guard proxy
@@ -95,7 +95,7 @@ func (client *DppResourceGuardProxyClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -117,7 +117,7 @@ func (client *DppResourceGuardProxyClient) createOrUpdateHandleResponse(resp *ht
 // Delete - Deletes the ResourceGuardProxy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - resourceGuardProxyName - name of the resource guard proxy
@@ -168,7 +168,7 @@ func (client *DppResourceGuardProxyClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -176,7 +176,7 @@ func (client *DppResourceGuardProxyClient) deleteCreateRequest(ctx context.Conte
 // Get - Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - resourceGuardProxyName - name of the resource guard proxy
@@ -228,7 +228,7 @@ func (client *DppResourceGuardProxyClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *DppResourceGuardProxyClient) getHandleResponse(resp *http.Response
 
 // NewListPager - Returns the list of ResourceGuardProxies associated with the vault
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - options - DppResourceGuardProxyClientListOptions contains the optional parameters for the DppResourceGuardProxyClient.NewListPager
@@ -293,7 +293,7 @@ func (client *DppResourceGuardProxyClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -311,7 +311,7 @@ func (client *DppResourceGuardProxyClient) listHandleResponse(resp *http.Respons
 // UnlockDelete - UnlockDelete call for ResourceGuardProxy, executed before one can delete it
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - resourceGuardProxyName - name of the resource guard proxy
@@ -364,7 +364,7 @@ func (client *DppResourceGuardProxyClient) unlockDeleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {

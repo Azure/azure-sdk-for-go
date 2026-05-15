@@ -32,9 +32,9 @@ type CachesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, options *armnetapp.CachesClientGetOptions) (resp azfake.Responder[armnetapp.CachesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByCapacityPoolsPager is the fake for method CachesClient.NewListByCapacityPoolsPager
+	// NewListPager is the fake for method CachesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByCapacityPoolsPager func(resourceGroupName string, accountName string, poolName string, options *armnetapp.CachesClientListByCapacityPoolsOptions) (resp azfake.PagerResponder[armnetapp.CachesClientListByCapacityPoolsResponse])
+	NewListPager func(resourceGroupName string, accountName string, poolName string, options *armnetapp.CachesClientListOptions) (resp azfake.PagerResponder[armnetapp.CachesClientListResponse])
 
 	// ListPeeringPassphrases is the fake for method CachesClient.ListPeeringPassphrases
 	// HTTP status codes to indicate success: http.StatusOK
@@ -58,26 +58,26 @@ type CachesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCachesServerTransport(srv *CachesServer) *CachesServerTransport {
 	return &CachesServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetapp.CachesClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armnetapp.CachesClientDeleteResponse]](),
-		newListByCapacityPoolsPager: newTracker[azfake.PagerResponder[armnetapp.CachesClientListByCapacityPoolsResponse]](),
-		beginPoolChange:             newTracker[azfake.PollerResponder[armnetapp.CachesClientPoolChangeResponse]](),
-		beginResetSmbPassword:       newTracker[azfake.PollerResponder[armnetapp.CachesClientResetSmbPasswordResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armnetapp.CachesClientUpdateResponse]](),
+		srv:                   srv,
+		beginCreateOrUpdate:   newTracker[azfake.PollerResponder[armnetapp.CachesClientCreateOrUpdateResponse]](),
+		beginDelete:           newTracker[azfake.PollerResponder[armnetapp.CachesClientDeleteResponse]](),
+		newListPager:          newTracker[azfake.PagerResponder[armnetapp.CachesClientListResponse]](),
+		beginPoolChange:       newTracker[azfake.PollerResponder[armnetapp.CachesClientPoolChangeResponse]](),
+		beginResetSmbPassword: newTracker[azfake.PollerResponder[armnetapp.CachesClientResetSmbPasswordResponse]](),
+		beginUpdate:           newTracker[azfake.PollerResponder[armnetapp.CachesClientUpdateResponse]](),
 	}
 }
 
 // CachesServerTransport connects instances of armnetapp.CachesClient to instances of CachesServer.
 // Don't use this type directly, use NewCachesServerTransport instead.
 type CachesServerTransport struct {
-	srv                         *CachesServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetapp.CachesClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armnetapp.CachesClientDeleteResponse]]
-	newListByCapacityPoolsPager *tracker[azfake.PagerResponder[armnetapp.CachesClientListByCapacityPoolsResponse]]
-	beginPoolChange             *tracker[azfake.PollerResponder[armnetapp.CachesClientPoolChangeResponse]]
-	beginResetSmbPassword       *tracker[azfake.PollerResponder[armnetapp.CachesClientResetSmbPasswordResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armnetapp.CachesClientUpdateResponse]]
+	srv                   *CachesServer
+	beginCreateOrUpdate   *tracker[azfake.PollerResponder[armnetapp.CachesClientCreateOrUpdateResponse]]
+	beginDelete           *tracker[azfake.PollerResponder[armnetapp.CachesClientDeleteResponse]]
+	newListPager          *tracker[azfake.PagerResponder[armnetapp.CachesClientListResponse]]
+	beginPoolChange       *tracker[azfake.PollerResponder[armnetapp.CachesClientPoolChangeResponse]]
+	beginResetSmbPassword *tracker[azfake.PollerResponder[armnetapp.CachesClientResetSmbPasswordResponse]]
+	beginUpdate           *tracker[azfake.PollerResponder[armnetapp.CachesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CachesServerTransport.
@@ -109,8 +109,8 @@ func (c *CachesServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = c.dispatchBeginDelete(req)
 			case "CachesClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
-			case "CachesClient.NewListByCapacityPoolsPager":
-				res.resp, res.err = c.dispatchNewListByCapacityPoolsPager(req)
+			case "CachesClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			case "CachesClient.ListPeeringPassphrases":
 				res.resp, res.err = c.dispatchListPeeringPassphrases(req)
 			case "CachesClient.BeginPoolChange":
@@ -287,12 +287,12 @@ func (c *CachesServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	return resp, nil
 }
 
-func (c *CachesServerTransport) dispatchNewListByCapacityPoolsPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByCapacityPoolsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByCapacityPoolsPager not implemented")}
+func (c *CachesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	newListByCapacityPoolsPager := c.newListByCapacityPoolsPager.get(req)
-	if newListByCapacityPoolsPager == nil {
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/caches`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -311,23 +311,23 @@ func (c *CachesServerTransport) dispatchNewListByCapacityPoolsPager(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		resp := c.srv.NewListByCapacityPoolsPager(resourceGroupNameParam, accountNameParam, poolNameParam, nil)
-		newListByCapacityPoolsPager = &resp
-		c.newListByCapacityPoolsPager.add(req, newListByCapacityPoolsPager)
-		server.PagerResponderInjectNextLinks(newListByCapacityPoolsPager, req, func(page *armnetapp.CachesClientListByCapacityPoolsResponse, createLink func() string) {
+		resp := c.srv.NewListPager(resourceGroupNameParam, accountNameParam, poolNameParam, nil)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.CachesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListByCapacityPoolsPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByCapacityPoolsPager.remove(req)
+		c.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListByCapacityPoolsPager) {
-		c.newListByCapacityPoolsPager.remove(req)
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
 	}
 	return resp, nil
 }

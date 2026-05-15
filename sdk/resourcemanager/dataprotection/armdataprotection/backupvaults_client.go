@@ -44,7 +44,7 @@ func NewBackupVaultsClient(subscriptionID string, credential azcore.TokenCredent
 // API to check for resource name availability
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of the Azure region.
 //   - parameters - Check name availability request
@@ -92,7 +92,7 @@ func (client *BackupVaultsClient) checkNameAvailabilityCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -114,7 +114,7 @@ func (client *BackupVaultsClient) checkNameAvailabilityHandleResponse(resp *http
 // BeginCreateOrUpdate - Creates or updates a BackupVault resource belonging to a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the BackupVaultResource
 //   - parameters - Request body for operation
@@ -140,7 +140,7 @@ func (client *BackupVaultsClient) BeginCreateOrUpdate(ctx context.Context, resou
 // CreateOrUpdate - Creates or updates a BackupVault resource belonging to a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 func (client *BackupVaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters BackupVaultResource, options *BackupVaultsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupVaultsClient.BeginCreateOrUpdate"
@@ -182,11 +182,14 @@ func (client *BackupVaultsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
+	}
+	if options != nil && options.XMSDeletedVaultID != nil {
+		req.Raw().Header["x-ms-deleted-vault-id"] = []string{*options.XMSDeletedVaultID}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -198,7 +201,7 @@ func (client *BackupVaultsClient) createOrUpdateCreateRequest(ctx context.Contex
 // BeginDelete - Deletes a BackupVault resource from the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the BackupVaultResource
 //   - options - BackupVaultsClientBeginDeleteOptions contains the optional parameters for the BackupVaultsClient.BeginDelete
@@ -223,7 +226,7 @@ func (client *BackupVaultsClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes a BackupVault resource from the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 func (client *BackupVaultsClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, options *BackupVaultsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupVaultsClient.BeginDelete"
@@ -265,7 +268,7 @@ func (client *BackupVaultsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -273,7 +276,7 @@ func (client *BackupVaultsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Returns a resource belonging to a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the BackupVaultResource
 //   - options - BackupVaultsClientGetOptions contains the optional parameters for the BackupVaultsClient.Get method.
@@ -319,7 +322,7 @@ func (client *BackupVaultsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -336,7 +339,7 @@ func (client *BackupVaultsClient) getHandleResponse(resp *http.Response) (Backup
 
 // NewGetInResourceGroupPager - Returns resource collection belonging to a resource group.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupVaultsClientGetInResourceGroupOptions contains the optional parameters for the BackupVaultsClient.NewGetInResourceGroupPager
 //     method.
@@ -379,7 +382,7 @@ func (client *BackupVaultsClient) getInResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -396,7 +399,7 @@ func (client *BackupVaultsClient) getInResourceGroupHandleResponse(resp *http.Re
 
 // NewGetInSubscriptionPager - Returns resource collection belonging to a subscription.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - options - BackupVaultsClientGetInSubscriptionOptions contains the optional parameters for the BackupVaultsClient.NewGetInSubscriptionPager
 //     method.
 func (client *BackupVaultsClient) NewGetInSubscriptionPager(options *BackupVaultsClientGetInSubscriptionOptions) *runtime.Pager[BackupVaultsClientGetInSubscriptionResponse] {
@@ -434,7 +437,7 @@ func (client *BackupVaultsClient) getInSubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -452,7 +455,7 @@ func (client *BackupVaultsClient) getInSubscriptionHandleResponse(resp *http.Res
 // BeginUpdate - Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the BackupVaultResource
 //   - parameters - Request body for operation
@@ -478,7 +481,7 @@ func (client *BackupVaultsClient) BeginUpdate(ctx context.Context, resourceGroup
 // Update - Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 func (client *BackupVaultsClient) update(ctx context.Context, resourceGroupName string, vaultName string, parameters PatchResourceRequestInput, options *BackupVaultsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupVaultsClient.BeginUpdate"
@@ -520,7 +523,7 @@ func (client *BackupVaultsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {

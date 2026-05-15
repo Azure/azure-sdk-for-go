@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+// Generated from example definition: 2026-01-31-preview/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleResourceGuardProxyClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+// Generated from example definition: 2026-01-31-preview/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleResourceGuardProxyClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.ResourceGuardProxyClientGetResponse{
-	// 	ResourceGuardProxyBaseResource: &armrecoveryservicesbackup.ResourceGuardProxyBaseResource{
+	// 	ResourceGuardProxyBaseResource: armrecoveryservicesbackup.ResourceGuardProxyBaseResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupResourceGuardProxies"),
 	// 		ID: to.Ptr("/backupmanagement/resources/sampleVault/backupResourceGuardProxies/swaggerExample"),
@@ -76,7 +76,7 @@ func ExampleResourceGuardProxyClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+// Generated from example definition: 2026-01-31-preview/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleResourceGuardProxyClient_Put() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.ResourceGuardProxyClientPutResponse{
-	// 	ResourceGuardProxyBaseResource: &armrecoveryservicesbackup.ResourceGuardProxyBaseResource{
+	// 	ResourceGuardProxyBaseResource: armrecoveryservicesbackup.ResourceGuardProxyBaseResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupResourceGuardProxies"),
 	// 		ID: to.Ptr("/backupmanagement/resources/sampleVault/backupResourceGuardProxies/swaggerExample"),
@@ -122,7 +122,7 @@ func ExampleResourceGuardProxyClient_Put() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+// Generated from example definition: 2026-01-31-preview/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_UnlockDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleResourceGuardProxyClient_UnlockDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.ResourceGuardProxyClientUnlockDeleteResponse{
-	// 	UnlockDeleteResponse: &armrecoveryservicesbackup.UnlockDeleteResponse{
+	// 	UnlockDeleteResponse: armrecoveryservicesbackup.UnlockDeleteResponse{
 	// 		UnlockDeleteExpiryTime: to.Ptr("2021-02-11T13:12:27.7870742Z"),
 	// 	},
 	// }

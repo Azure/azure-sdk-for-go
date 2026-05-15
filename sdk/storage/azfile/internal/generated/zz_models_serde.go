@@ -42,8 +42,12 @@ func (a *AccessPolicy) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) er
 	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
-	a.Expiry = (*time.Time)(aux.Expiry)
-	a.Start = (*time.Time)(aux.Start)
+	if aux.Expiry != nil && !(*time.Time)(aux.Expiry).IsZero() {
+		a.Expiry = (*time.Time)(aux.Expiry)
+	}
+	if aux.Start != nil && !(*time.Time)(aux.Start).IsZero() {
+		a.Start = (*time.Time)(aux.Start)
+	}
 	return nil
 }
 
@@ -84,11 +88,21 @@ func (f *FileProperty) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) er
 	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
-	f.ChangeTime = (*time.Time)(aux.ChangeTime)
-	f.CreationTime = (*time.Time)(aux.CreationTime)
-	f.LastAccessTime = (*time.Time)(aux.LastAccessTime)
-	f.LastModified = (*time.Time)(aux.LastModified)
-	f.LastWriteTime = (*time.Time)(aux.LastWriteTime)
+	if aux.ChangeTime != nil && !(*time.Time)(aux.ChangeTime).IsZero() {
+		f.ChangeTime = (*time.Time)(aux.ChangeTime)
+	}
+	if aux.CreationTime != nil && !(*time.Time)(aux.CreationTime).IsZero() {
+		f.CreationTime = (*time.Time)(aux.CreationTime)
+	}
+	if aux.LastAccessTime != nil && !(*time.Time)(aux.LastAccessTime).IsZero() {
+		f.LastAccessTime = (*time.Time)(aux.LastAccessTime)
+	}
+	if aux.LastModified != nil && !(*time.Time)(aux.LastModified).IsZero() {
+		f.LastModified = (*time.Time)(aux.LastModified)
+	}
+	if aux.LastWriteTime != nil && !(*time.Time)(aux.LastWriteTime).IsZero() {
+		f.LastWriteTime = (*time.Time)(aux.LastWriteTime)
+	}
 	return nil
 }
 
@@ -247,12 +261,24 @@ func (s *ShareProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement)
 	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
-	s.AccessTierChangeTime = (*time.Time)(aux.AccessTierChangeTime)
-	s.DeletedTime = (*time.Time)(aux.DeletedTime)
-	s.LastModified = (*time.Time)(aux.LastModified)
-	s.NextAllowedProvisionedBandwidthDowngradeTime = (*time.Time)(aux.NextAllowedProvisionedBandwidthDowngradeTime)
-	s.NextAllowedProvisionedIopsDowngradeTime = (*time.Time)(aux.NextAllowedProvisionedIopsDowngradeTime)
-	s.NextAllowedQuotaDowngradeTime = (*time.Time)(aux.NextAllowedQuotaDowngradeTime)
+	if aux.AccessTierChangeTime != nil && !(*time.Time)(aux.AccessTierChangeTime).IsZero() {
+		s.AccessTierChangeTime = (*time.Time)(aux.AccessTierChangeTime)
+	}
+	if aux.DeletedTime != nil && !(*time.Time)(aux.DeletedTime).IsZero() {
+		s.DeletedTime = (*time.Time)(aux.DeletedTime)
+	}
+	if aux.LastModified != nil && !(*time.Time)(aux.LastModified).IsZero() {
+		s.LastModified = (*time.Time)(aux.LastModified)
+	}
+	if aux.NextAllowedProvisionedBandwidthDowngradeTime != nil && !(*time.Time)(aux.NextAllowedProvisionedBandwidthDowngradeTime).IsZero() {
+		s.NextAllowedProvisionedBandwidthDowngradeTime = (*time.Time)(aux.NextAllowedProvisionedBandwidthDowngradeTime)
+	}
+	if aux.NextAllowedProvisionedIopsDowngradeTime != nil && !(*time.Time)(aux.NextAllowedProvisionedIopsDowngradeTime).IsZero() {
+		s.NextAllowedProvisionedIopsDowngradeTime = (*time.Time)(aux.NextAllowedProvisionedIopsDowngradeTime)
+	}
+	if aux.NextAllowedQuotaDowngradeTime != nil && !(*time.Time)(aux.NextAllowedQuotaDowngradeTime).IsZero() {
+		s.NextAllowedQuotaDowngradeTime = (*time.Time)(aux.NextAllowedQuotaDowngradeTime)
+	}
 	return nil
 }
 
@@ -342,8 +368,12 @@ func (u *UserDelegationKey) UnmarshalXML(dec *xml.Decoder, start xml.StartElemen
 	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
-	u.SignedExpiry = (*time.Time)(aux.SignedExpiry)
-	u.SignedStart = (*time.Time)(aux.SignedStart)
+	if aux.SignedExpiry != nil && !(*time.Time)(aux.SignedExpiry).IsZero() {
+		u.SignedExpiry = (*time.Time)(aux.SignedExpiry)
+	}
+	if aux.SignedStart != nil && !(*time.Time)(aux.SignedStart).IsZero() {
+		u.SignedStart = (*time.Time)(aux.SignedStart)
+	}
 	return nil
 }
 
@@ -358,7 +388,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

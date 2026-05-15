@@ -27,6 +27,9 @@ type LeaseAccessConditions = generated.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = generated.ModifiedAccessConditions
 
+// BlobModifiedAccessConditions contains a group of parameters for specifying blob access conditions.
+type BlobModifiedAccessConditions = blob.BlobModifiedAccessConditions
+
 // SourceModifiedAccessConditions contains a group of parameters for specifying access conditions of a source.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 

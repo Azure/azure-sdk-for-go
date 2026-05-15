@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-04-01/HeatMap-GET-With-Null-Values.json
+// Generated from example definition: 2024-04-01-preview/HeatMap-GET-With-Null-Values.json
 func ExampleHeatMapClient_Get_heatMapGetWithNullValues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -30,16 +30,16 @@ func ExampleHeatMapClient_Get_heatMapGetWithNullValues() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.HeatMapClientGetResponse{
-	// 	HeatMapModel: &armtrafficmanager.HeatMapModel{
+	// 	HeatMapModel: armtrafficmanager.HeatMapModel{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/heatMaps/default"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/heatMaps/default"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/heatMaps/default"),
 	// 		Properties: &armtrafficmanager.HeatMapProperties{
 	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-22T12:50:00Z"); return t}()),
 	// 			Endpoints: []*armtrafficmanager.HeatMapEndpoint{
 	// 				{
 	// 					EndpointID: to.Ptr[int32](0),
-	// 					ResourceID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/externalEndpoints/azuresdkfornetautoresttrafficmanager3880"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/externalEndpoints/azuresdkfornetautoresttrafficmanager3880"),
 	// 				},
 	// 				{
 	// 					EndpointID: to.Ptr[int32](1),
@@ -87,14 +87,14 @@ func ExampleHeatMapClient_Get_heatMapGetWithNullValues() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/HeatMap-GET-With-TopLeft-BotRight.json
+// Generated from example definition: 2024-04-01-preview/HeatMap-GET-With-TopLeft-BotRight.json
 func ExampleHeatMapClient_Get_heatMapGetWithTopLeftBotRight() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -114,16 +114,16 @@ func ExampleHeatMapClient_Get_heatMapGetWithTopLeftBotRight() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.HeatMapClientGetResponse{
-	// 	HeatMapModel: &armtrafficmanager.HeatMapModel{
+	// 	HeatMapModel: armtrafficmanager.HeatMapModel{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/heatMaps/latencyVolumeByLocation"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/heatMaps/latencyVolumeByLocation"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/heatMaps/latencyVolumeByLocation"),
 	// 		Properties: &armtrafficmanager.HeatMapProperties{
 	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-22T12:50:00Z"); return t}()),
 	// 			Endpoints: []*armtrafficmanager.HeatMapEndpoint{
 	// 				{
 	// 					EndpointID: to.Ptr[int32](1),
-	// 					ResourceID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/externalEndpoints/azuresdkfornetautoresttrafficmanager3880"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/externalEndpoints/azuresdkfornetautoresttrafficmanager3880"),
 	// 				},
 	// 				{
 	// 					EndpointID: to.Ptr[int32](2),
@@ -172,14 +172,14 @@ func ExampleHeatMapClient_Get_heatMapGetWithTopLeftBotRight() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/HeatMap-GET.json
+// Generated from example definition: 2024-04-01-preview/HeatMap-GET.json
 func ExampleHeatMapClient_Get_heatMapGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -191,16 +191,16 @@ func ExampleHeatMapClient_Get_heatMapGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.HeatMapClientGetResponse{
-	// 	HeatMapModel: &armtrafficmanager.HeatMapModel{
+	// 	HeatMapModel: armtrafficmanager.HeatMapModel{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/heatMaps/latencyVolumeByLocation"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/heatMaps/latencyVolumeByLocation"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/heatMaps/latencyVolumeByLocation"),
 	// 		Properties: &armtrafficmanager.HeatMapProperties{
 	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-22T12:50:00Z"); return t}()),
 	// 			Endpoints: []*armtrafficmanager.HeatMapEndpoint{
 	// 				{
 	// 					EndpointID: to.Ptr[int32](1),
-	// 					ResourceID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/externalEndpoints/azuresdkfornetautoresttrafficmanager3880"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/externalEndpoints/azuresdkfornetautoresttrafficmanager3880"),
 	// 				},
 	// 				{
 	// 					EndpointID: to.Ptr[int32](2),

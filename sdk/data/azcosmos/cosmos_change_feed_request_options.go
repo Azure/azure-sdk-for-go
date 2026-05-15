@@ -29,6 +29,14 @@ type ChangeFeedOptions struct {
 
 	// CompositeContinuation is used to continue reading the change feed from a specific point.
 	Continuation *string
+
+	// PriorityLevel overrides the client-level default priority for this operation.
+	// Valid values are PriorityLevelHigh and PriorityLevelLow.
+	PriorityLevel *PriorityLevel
+	// ThroughputBucket overrides the client-level default throughput bucket for this operation.
+	// For more information, see https://aka.ms/CosmosDB/ThroughputBuckets
+	// The valid range is 1 to 5 (inclusive).
+	ThroughputBucket *int32
 }
 
 func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRange) *map[string]string {

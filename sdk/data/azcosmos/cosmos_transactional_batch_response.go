@@ -36,7 +36,7 @@ func newTransactionalBatchResponse(resp *http.Response) (TransactionalBatchRespo
 	response.Success = resp.StatusCode != http.StatusMultiStatus
 
 	if err := runtime.UnmarshalAsJSON(resp, &response.OperationResults); err != nil {
-		return TransactionalBatchResponse{}, err
+		return response, wrapResponseError(err, response.Response)
 	}
 
 	return response, nil

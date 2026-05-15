@@ -3,6 +3,7 @@
 ## 1.8.0-beta.2 (Unreleased)
 
 ### Features Added
+* Added support for Structured Message CRC64 content validation on upload and download operations using `TransferValidationTypeComputeStructuredMessageCRC64`.
 
 ### Breaking Changes
 

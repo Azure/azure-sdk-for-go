@@ -5130,6 +5130,40 @@ func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesWithStructuredMessageCRC64
 	_require.Equal(content, downloadedData)
 }
 
+func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesDownloadRoundtripWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Page blob data must be 512-byte aligned
+	contentSize := int64(1024) // 1 KB (2 pages)
+	pbClient := createNewPageBlobWithSize(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient, contentSize)
+
+	_, content := testcommon.GetDataAndReader(testName, int(contentSize))
+
+	// Upload with SM CRC64
+	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(content)),
+		blob.HTTPRange{Offset: 0, Count: contentSize}, &pageblob.UploadPagesOptions{
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+	_require.NoError(err)
+
+	// Download with SM CRC64 validation
+	downloadResp, err := pbClient.BlobClient().DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
 func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesMultipleWithStructuredMessageCRC64() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

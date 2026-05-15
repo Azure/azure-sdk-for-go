@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
 func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHos
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientCreateOrUpdateResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		Properties: &armcompute.DedicatedHostGroupProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			SupportAutomaticPlacement: to.Ptr(true),
@@ -63,7 +63,7 @@ func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHos
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
 func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHostGroupWithUltraSsdSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHos
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientCreateOrUpdateResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		Properties: &armcompute.DedicatedHostGroupProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			SupportAutomaticPlacement: to.Ptr(true),
@@ -119,7 +119,7 @@ func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHos
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_Delete_MaximumSet_Gen.json
 func ExampleDedicatedHostGroupsClient_Delete_dedicatedHostGroupDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleDedicatedHostGroupsClient_Delete_dedicatedHostGroupDeleteMaximumSetG
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_Delete_MinimumSet_Gen.json
 func ExampleDedicatedHostGroupsClient_Delete_dedicatedHostGroupDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleDedicatedHostGroupsClient_Delete_dedicatedHostGroupDeleteMinimumSetG
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_Get.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_Get.json
 func ExampleDedicatedHostGroupsClient_Get_createADedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleDedicatedHostGroupsClient_Get_createADedicatedHostGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientGetResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup"),
 	// 		Properties: &armcompute.DedicatedHostGroupProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
@@ -260,7 +260,7 @@ func ExampleDedicatedHostGroupsClient_Get_createADedicatedHostGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_Get_UltraSSDEnabledDedicatedHostGroup.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_Get_UltraSSDEnabledDedicatedHostGroup.json
 func ExampleDedicatedHostGroupsClient_Get_createAnUltraSsdEnabledDedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +279,7 @@ func ExampleDedicatedHostGroupsClient_Get_createAnUltraSsdEnabledDedicatedHostGr
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientGetResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup"),
 	// 		Properties: &armcompute.DedicatedHostGroupProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
@@ -333,7 +333,7 @@ func ExampleDedicatedHostGroupsClient_Get_createAnUltraSsdEnabledDedicatedHostGr
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleDedicatedHostGroupsClient_NewListByResourceGroupPager_dedicatedHostGroupListByResourceGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -410,7 +410,7 @@ func ExampleDedicatedHostGroupsClient_NewListByResourceGroupPager_dedicatedHostG
 	}
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleDedicatedHostGroupsClient_NewListByResourceGroupPager_dedicatedHostGroupListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,7 +445,7 @@ func ExampleDedicatedHostGroupsClient_NewListByResourceGroupPager_dedicatedHostG
 	}
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_ListBySubscription_MaximumSet_Gen.json
 func ExampleDedicatedHostGroupsClient_NewListBySubscriptionPager_dedicatedHostGroupListBySubscriptionMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -522,7 +522,7 @@ func ExampleDedicatedHostGroupsClient_NewListBySubscriptionPager_dedicatedHostGr
 	}
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_ListBySubscription_MinimumSet_Gen.json
 func ExampleDedicatedHostGroupsClient_NewListBySubscriptionPager_dedicatedHostGroupListBySubscriptionMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -557,7 +557,7 @@ func ExampleDedicatedHostGroupsClient_NewListBySubscriptionPager_dedicatedHostGr
 	}
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_Update_MaximumSet_Gen.json
 func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -610,7 +610,7 @@ func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupUpdateMaximumSetG
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientUpdateResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 		},
@@ -658,7 +658,7 @@ func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupUpdateMaximumSetG
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHostGroup_Update_MinimumSet_Gen.json
 func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -677,7 +677,7 @@ func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupUpdateMinimumSetG
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientUpdateResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		Location: to.Ptr("westus"),
 	// 	},
 	// }

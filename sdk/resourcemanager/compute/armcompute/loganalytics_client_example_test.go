@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-11-01/logAnalyticExamples/LogAnalytics_RequestRateByInterval.json
+// Generated from example definition: 2026-03-01/logAnalyticExamples/LogAnalytics_RequestRateByInterval.json
 func ExampleLogAnalyticsClient_BeginExportRequestRateByInterval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExampleLogAnalyticsClient_BeginExportRequestRateByInterval() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse{
-	// 	LogAnalyticsOperationResult: &armcompute.LogAnalyticsOperationResult{
+	// 	LogAnalyticsOperationResult: armcompute.LogAnalyticsOperationResult{
 	// 		Properties: &armcompute.LogAnalyticsOutput{
 	// 			Output: to.Ptr("https://crptestar4227.blob.core.windows.net:443/sascontainer/RequestRateByInterval_20180121-0154_20180123-0154.csv"),
 	// 		},
@@ -50,7 +50,7 @@ func ExampleLogAnalyticsClient_BeginExportRequestRateByInterval() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/logAnalyticExamples/LogAnalytics_ThrottledRequests.json
+// Generated from example definition: 2026-03-01/logAnalyticExamples/LogAnalytics_ThrottledRequests.json
 func ExampleLogAnalyticsClient_BeginExportThrottledRequests() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,13 +75,13 @@ func ExampleLogAnalyticsClient_BeginExportThrottledRequests() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.LogAnalyticsClientExportThrottledRequestsResponse{
-	// 	LogAnalyticsOperationResult: &armcompute.LogAnalyticsOperationResult{
+	// 	LogAnalyticsOperationResult: armcompute.LogAnalyticsOperationResult{
 	// 		Properties: &armcompute.LogAnalyticsOutput{
 	// 			Output: to.Ptr("https://crptestar4227.blob.core.windows.net:443/sascontainer/ThrottledRequests_20180121-0154_20180123-0154.csv"),
 	// 		},

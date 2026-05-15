@@ -84,6 +84,9 @@ type ServerFactory struct {
 	// ImagesServer contains the fakes for client ImagesClient
 	ImagesServer ImagesServer
 
+	// InterconnectBlocksServer contains the fakes for client InterconnectBlocksClient
+	InterconnectBlocksServer InterconnectBlocksServer
+
 	// LogAnalyticsServer contains the fakes for client LogAnalyticsClient
 	LogAnalyticsServer LogAnalyticsServer
 
@@ -203,6 +206,7 @@ type ServerFactoryTransport struct {
 	trGalleryScriptsServer                            *GalleryScriptsServerTransport
 	trGallerySharingProfileServer                     *GallerySharingProfileServerTransport
 	trImagesServer                                    *ImagesServerTransport
+	trInterconnectBlocksServer                        *InterconnectBlocksServerTransport
 	trLogAnalyticsServer                              *LogAnalyticsServerTransport
 	trOperationsServer                                *OperationsServerTransport
 	trProximityPlacementGroupsServer                  *ProximityPlacementGroupsServerTransport
@@ -352,6 +356,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ImagesClient":
 		initServer(&s.trMu, &s.trImagesServer, func() *ImagesServerTransport { return NewImagesServerTransport(&s.srv.ImagesServer) })
 		resp, err = s.trImagesServer.Do(req)
+	case "InterconnectBlocksClient":
+		initServer(&s.trMu, &s.trInterconnectBlocksServer, func() *InterconnectBlocksServerTransport {
+			return NewInterconnectBlocksServerTransport(&s.srv.InterconnectBlocksServer)
+		})
+		resp, err = s.trInterconnectBlocksServer.Do(req)
 	case "LogAnalyticsClient":
 		initServer(&s.trMu, &s.trLogAnalyticsServer, func() *LogAnalyticsServerTransport { return NewLogAnalyticsServerTransport(&s.srv.LogAnalyticsServer) })
 		resp, err = s.trLogAnalyticsServer.Do(req)

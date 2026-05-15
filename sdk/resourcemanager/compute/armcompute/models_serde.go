@@ -7918,6 +7918,298 @@ func (i *InstanceViewStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type InterconnectBlock.
+func (i InterconnectBlock) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", i.ID)
+	populate(objectMap, "location", i.Location)
+	populate(objectMap, "name", i.Name)
+	populate(objectMap, "placement", i.Placement)
+	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "sku", i.SKU)
+	populate(objectMap, "systemData", i.SystemData)
+	populate(objectMap, "tags", i.Tags)
+	populate(objectMap, "type", i.Type)
+	populate(objectMap, "zones", i.Zones)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InterconnectBlock.
+func (i *InterconnectBlock) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &i.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &i.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &i.Name)
+			delete(rawMsg, key)
+		case "placement":
+			err = unpopulate(val, "Placement", &i.Placement)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &i.Properties)
+			delete(rawMsg, key)
+		case "sku":
+			err = unpopulate(val, "SKU", &i.SKU)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &i.SystemData)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &i.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &i.Type)
+			delete(rawMsg, key)
+		case "zones":
+			err = unpopulate(val, "Zones", &i.Zones)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InterconnectBlockInstanceView.
+func (i InterconnectBlockInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "currentCapacity", i.CurrentCapacity)
+	populate(objectMap, "statuses", i.Statuses)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InterconnectBlockInstanceView.
+func (i *InterconnectBlockInstanceView) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "currentCapacity":
+			err = unpopulate(val, "CurrentCapacity", &i.CurrentCapacity)
+			delete(rawMsg, key)
+		case "statuses":
+			err = unpopulate(val, "Statuses", &i.Statuses)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InterconnectBlockListResult.
+func (i InterconnectBlockListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", i.NextLink)
+	populate(objectMap, "value", i.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InterconnectBlockListResult.
+func (i *InterconnectBlockListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &i.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &i.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InterconnectBlockProfile.
+func (i InterconnectBlockProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "interconnectBlock", i.InterconnectBlock)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InterconnectBlockProfile.
+func (i *InterconnectBlockProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "interconnectBlock":
+			err = unpopulate(val, "InterconnectBlock", &i.InterconnectBlock)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InterconnectBlockProperties.
+func (i InterconnectBlockProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "instanceView", i.InstanceView)
+	populate(objectMap, "interconnectBlockId", i.InterconnectBlockID)
+	populate(objectMap, "interconnectGroup", i.InterconnectGroup)
+	populate(objectMap, "provisioningState", i.ProvisioningState)
+	populateTime[datetime.RFC3339](objectMap, "provisioningTime", i.ProvisioningTime)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", i.TimeCreated)
+	populate(objectMap, "virtualMachinesAssociated", i.VirtualMachinesAssociated)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InterconnectBlockProperties.
+func (i *InterconnectBlockProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "instanceView":
+			err = unpopulate(val, "InstanceView", &i.InstanceView)
+			delete(rawMsg, key)
+		case "interconnectBlockId":
+			err = unpopulate(val, "InterconnectBlockID", &i.InterconnectBlockID)
+			delete(rawMsg, key)
+		case "interconnectGroup":
+			err = unpopulate(val, "InterconnectGroup", &i.InterconnectGroup)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &i.ProvisioningState)
+			delete(rawMsg, key)
+		case "provisioningTime":
+			err = unpopulateTime[datetime.RFC3339](val, "ProvisioningTime", &i.ProvisioningTime)
+			delete(rawMsg, key)
+		case "timeCreated":
+			err = unpopulateTime[datetime.RFC3339](val, "TimeCreated", &i.TimeCreated)
+			delete(rawMsg, key)
+		case "virtualMachinesAssociated":
+			err = unpopulate(val, "VirtualMachinesAssociated", &i.VirtualMachinesAssociated)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InterconnectBlockUpdate.
+func (i InterconnectBlockUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "sku", i.SKU)
+	populate(objectMap, "tags", i.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InterconnectBlockUpdate.
+func (i *InterconnectBlockUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "sku":
+			err = unpopulate(val, "SKU", &i.SKU)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &i.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InterconnectGroupProfile.
+func (i InterconnectGroupProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "interconnectGroup", i.InterconnectGroup)
+	populate(objectMap, "subgroups", i.Subgroups)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InterconnectGroupProfile.
+func (i *InterconnectGroupProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "interconnectGroup":
+			err = unpopulate(val, "InterconnectGroup", &i.InterconnectGroup)
+			delete(rawMsg, key)
+		case "subgroups":
+			err = unpopulate(val, "Subgroups", &i.Subgroups)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InterconnectInstanceView.
+func (i InterconnectInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "interconnectSubgroupId", i.InterconnectSubgroupID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InterconnectInstanceView.
+func (i *InterconnectInstanceView) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "interconnectSubgroupId":
+			err = unpopulate(val, "InterconnectSubgroupID", &i.InterconnectSubgroupID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type KeyForDiskEncryptionSet.
 func (k KeyForDiskEncryptionSet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -8683,6 +8975,7 @@ func (n *NetworkInterfaceReferenceProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NetworkProfile.
 func (n NetworkProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "interconnectGroupProfile", n.InterconnectGroupProfile)
 	populate(objectMap, "networkApiVersion", n.NetworkAPIVersion)
 	populate(objectMap, "networkInterfaceConfigurations", n.NetworkInterfaceConfigurations)
 	populate(objectMap, "networkInterfaces", n.NetworkInterfaces)
@@ -8698,6 +8991,9 @@ func (n *NetworkProfile) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "interconnectGroupProfile":
+			err = unpopulate(val, "InterconnectGroupProfile", &n.InterconnectGroupProfile)
+			delete(rawMsg, key)
 		case "networkApiVersion":
 			err = unpopulate(val, "NetworkAPIVersion", &n.NetworkAPIVersion)
 			delete(rawMsg, key)
@@ -16314,6 +16610,7 @@ func (v VirtualMachineInstanceView) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "disks", v.Disks)
 	populate(objectMap, "extensions", v.Extensions)
 	populate(objectMap, "hyperVGeneration", v.HyperVGeneration)
+	populate(objectMap, "interconnectInstanceView", v.InterconnectInstanceView)
 	populate(objectMap, "isVMInStandbyPool", v.IsVMInStandbyPool)
 	populate(objectMap, "maintenanceRedeployStatus", v.MaintenanceRedeployStatus)
 	populate(objectMap, "osName", v.OSName)
@@ -16354,6 +16651,9 @@ func (v *VirtualMachineInstanceView) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "hyperVGeneration":
 			err = unpopulate(val, "HyperVGeneration", &v.HyperVGeneration)
+			delete(rawMsg, key)
+		case "interconnectInstanceView":
+			err = unpopulate(val, "InterconnectInstanceView", &v.InterconnectInstanceView)
 			delete(rawMsg, key)
 		case "isVMInStandbyPool":
 			err = unpopulate(val, "IsVMInStandbyPool", &v.IsVMInStandbyPool)
@@ -16692,6 +16992,7 @@ func (v VirtualMachineProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "host", v.Host)
 	populate(objectMap, "hostGroup", v.HostGroup)
 	populate(objectMap, "instanceView", v.InstanceView)
+	populate(objectMap, "interconnectBlockProfile", v.InterconnectBlockProfile)
 	populate(objectMap, "licenseType", v.LicenseType)
 	populate(objectMap, "networkProfile", v.NetworkProfile)
 	populate(objectMap, "osProfile", v.OSProfile)
@@ -16755,6 +17056,9 @@ func (v *VirtualMachineProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "instanceView":
 			err = unpopulate(val, "InstanceView", &v.InstanceView)
+			delete(rawMsg, key)
+		case "interconnectBlockProfile":
+			err = unpopulate(val, "InterconnectBlockProfile", &v.InterconnectBlockProfile)
 			delete(rawMsg, key)
 		case "licenseType":
 			err = unpopulate(val, "LicenseType", &v.LicenseType)
@@ -18191,6 +18495,7 @@ func (v *VirtualMachineScaleSetNetworkConfigurationProperties) UnmarshalJSON(dat
 func (v VirtualMachineScaleSetNetworkProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "healthProbe", v.HealthProbe)
+	populate(objectMap, "interconnectGroupProfile", v.InterconnectGroupProfile)
 	populate(objectMap, "networkApiVersion", v.NetworkAPIVersion)
 	populate(objectMap, "networkInterfaceConfigurations", v.NetworkInterfaceConfigurations)
 	return json.Marshal(objectMap)
@@ -18207,6 +18512,9 @@ func (v *VirtualMachineScaleSetNetworkProfile) UnmarshalJSON(data []byte) error 
 		switch key {
 		case "healthProbe":
 			err = unpopulate(val, "HealthProbe", &v.HealthProbe)
+			delete(rawMsg, key)
+		case "interconnectGroupProfile":
+			err = unpopulate(val, "InterconnectGroupProfile", &v.InterconnectGroupProfile)
 			delete(rawMsg, key)
 		case "networkApiVersion":
 			err = unpopulate(val, "NetworkAPIVersion", &v.NetworkAPIVersion)
@@ -18995,6 +19303,7 @@ func (v *VirtualMachineScaleSetUpdateNetworkConfigurationProperties) UnmarshalJS
 func (v VirtualMachineScaleSetUpdateNetworkProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "healthProbe", v.HealthProbe)
+	populate(objectMap, "interconnectGroupProfile", v.InterconnectGroupProfile)
 	populate(objectMap, "networkApiVersion", v.NetworkAPIVersion)
 	populate(objectMap, "networkInterfaceConfigurations", v.NetworkInterfaceConfigurations)
 	return json.Marshal(objectMap)
@@ -19011,6 +19320,9 @@ func (v *VirtualMachineScaleSetUpdateNetworkProfile) UnmarshalJSON(data []byte) 
 		switch key {
 		case "healthProbe":
 			err = unpopulate(val, "HealthProbe", &v.HealthProbe)
+			delete(rawMsg, key)
+		case "interconnectGroupProfile":
+			err = unpopulate(val, "InterconnectGroupProfile", &v.InterconnectGroupProfile)
 			delete(rawMsg, key)
 		case "networkApiVersion":
 			err = unpopulate(val, "NetworkAPIVersion", &v.NetworkAPIVersion)
@@ -19327,6 +19639,7 @@ func (v VirtualMachineScaleSetUpdateVMProfile) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "diagnosticsProfile", v.DiagnosticsProfile)
 	populate(objectMap, "extensionProfile", v.ExtensionProfile)
 	populate(objectMap, "hardwareProfile", v.HardwareProfile)
+	populate(objectMap, "interconnectBlockProfile", v.InterconnectBlockProfile)
 	populate(objectMap, "licenseType", v.LicenseType)
 	populate(objectMap, "networkProfile", v.NetworkProfile)
 	populate(objectMap, "osProfile", v.OSProfile)
@@ -19358,6 +19671,9 @@ func (v *VirtualMachineScaleSetUpdateVMProfile) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "hardwareProfile":
 			err = unpopulate(val, "HardwareProfile", &v.HardwareProfile)
+			delete(rawMsg, key)
+		case "interconnectBlockProfile":
+			err = unpopulate(val, "InterconnectBlockProfile", &v.InterconnectBlockProfile)
 			delete(rawMsg, key)
 		case "licenseType":
 			err = unpopulate(val, "LicenseType", &v.LicenseType)
@@ -19673,6 +19989,7 @@ func (v VirtualMachineScaleSetVMInstanceView) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "disks", v.Disks)
 	populate(objectMap, "extensions", v.Extensions)
 	populate(objectMap, "hyperVGeneration", v.HyperVGeneration)
+	populate(objectMap, "interconnectInstanceView", v.InterconnectInstanceView)
 	populate(objectMap, "maintenanceRedeployStatus", v.MaintenanceRedeployStatus)
 	populate(objectMap, "osName", v.OSName)
 	populate(objectMap, "osVersion", v.OSVersion)
@@ -19712,6 +20029,9 @@ func (v *VirtualMachineScaleSetVMInstanceView) UnmarshalJSON(data []byte) error 
 			delete(rawMsg, key)
 		case "hyperVGeneration":
 			err = unpopulate(val, "HyperVGeneration", &v.HyperVGeneration)
+			delete(rawMsg, key)
+		case "interconnectInstanceView":
+			err = unpopulate(val, "InterconnectInstanceView", &v.InterconnectInstanceView)
 			delete(rawMsg, key)
 		case "maintenanceRedeployStatus":
 			err = unpopulate(val, "MaintenanceRedeployStatus", &v.MaintenanceRedeployStatus)
@@ -19785,6 +20105,7 @@ func (v *VirtualMachineScaleSetVMListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachineScaleSetVMNetworkProfileConfiguration.
 func (v VirtualMachineScaleSetVMNetworkProfileConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "interconnectGroupProfile", v.InterconnectGroupProfile)
 	populate(objectMap, "networkInterfaceConfigurations", v.NetworkInterfaceConfigurations)
 	return json.Marshal(objectMap)
 }
@@ -19798,6 +20119,9 @@ func (v *VirtualMachineScaleSetVMNetworkProfileConfiguration) UnmarshalJSON(data
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "interconnectGroupProfile":
+			err = unpopulate(val, "InterconnectGroupProfile", &v.InterconnectGroupProfile)
+			delete(rawMsg, key)
 		case "networkInterfaceConfigurations":
 			err = unpopulate(val, "NetworkInterfaceConfigurations", &v.NetworkInterfaceConfigurations)
 			delete(rawMsg, key)
@@ -19819,6 +20143,7 @@ func (v VirtualMachineScaleSetVMProfile) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "evictionPolicy", v.EvictionPolicy)
 	populate(objectMap, "extensionProfile", v.ExtensionProfile)
 	populate(objectMap, "hardwareProfile", v.HardwareProfile)
+	populate(objectMap, "interconnectBlockProfile", v.InterconnectBlockProfile)
 	populate(objectMap, "licenseType", v.LicenseType)
 	populate(objectMap, "networkProfile", v.NetworkProfile)
 	populate(objectMap, "osProfile", v.OSProfile)
@@ -19862,6 +20187,9 @@ func (v *VirtualMachineScaleSetVMProfile) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "hardwareProfile":
 			err = unpopulate(val, "HardwareProfile", &v.HardwareProfile)
+			delete(rawMsg, key)
+		case "interconnectBlockProfile":
+			err = unpopulate(val, "InterconnectBlockProfile", &v.InterconnectBlockProfile)
 			delete(rawMsg, key)
 		case "licenseType":
 			err = unpopulate(val, "LicenseType", &v.LicenseType)
@@ -19912,6 +20240,7 @@ func (v VirtualMachineScaleSetVMProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "diagnosticsProfile", v.DiagnosticsProfile)
 	populate(objectMap, "hardwareProfile", v.HardwareProfile)
 	populate(objectMap, "instanceView", v.InstanceView)
+	populate(objectMap, "interconnectBlockProfile", v.InterconnectBlockProfile)
 	populate(objectMap, "latestModelApplied", v.LatestModelApplied)
 	populate(objectMap, "licenseType", v.LicenseType)
 	populate(objectMap, "modelDefinitionApplied", v.ModelDefinitionApplied)
@@ -19953,6 +20282,9 @@ func (v *VirtualMachineScaleSetVMProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "instanceView":
 			err = unpopulate(val, "InstanceView", &v.InstanceView)
+			delete(rawMsg, key)
+		case "interconnectBlockProfile":
+			err = unpopulate(val, "InterconnectBlockProfile", &v.InterconnectBlockProfile)
 			delete(rawMsg, key)
 		case "latestModelApplied":
 			err = unpopulate(val, "LatestModelApplied", &v.LatestModelApplied)

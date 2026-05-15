@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePointCollection_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_CreateOrUpdate.json
 func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestorePointCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestoreP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientCreateOrUpdateResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Name: to.Ptr("myRpc"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/myRpc"),
 	// 		Type: to.Ptr("Microsoft.Compute/restorePointCollections"),
@@ -63,7 +63,7 @@ func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestoreP
 	// }
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePointCollection_CreateOrUpdate_ForCrossRegionCopy.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_CreateOrUpdate_ForCrossRegionCopy.json
 func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestorePointCollectionForCrossRegionCopy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestoreP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientCreateOrUpdateResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Name: to.Ptr("myRpc"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/myRpc"),
 	// 		Type: to.Ptr("Microsoft.Compute/restorePointCollections"),
@@ -112,7 +112,7 @@ func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestoreP
 	// }
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePointCollection_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Delete_MaximumSet_Gen.json
 func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDele
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -138,7 +138,7 @@ func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDele
 	// }
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePointCollection_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Delete_MinimumSet_Gen.json
 func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDele
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -164,7 +164,7 @@ func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDele
 	// }
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePointCollection_Get.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Get.json
 func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionButNotTheRestorePointsContainedInTheRestorePointCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionButNotTh
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientGetResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Name: to.Ptr("myRpc"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/myRpc"),
 	// 		Type: to.Ptr("Microsoft.Compute/restorePointCollections"),
@@ -204,7 +204,7 @@ func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionButNotTh
 	// }
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePointCollection_Get_WithContainedRestorePoints.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Get_WithContainedRestorePoints.json
 func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionIncludingTheRestorePointsContainedInTheRestorePointCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionIncludin
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientGetResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Name: to.Ptr("rpcName"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName"),
 	// 		Type: to.Ptr("Microsoft.Compute/restorePointCollections"),
@@ -314,7 +314,7 @@ func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionIncludin
 	// }
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePointCollection_ListByResourceGroup.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_ListByResourceGroup.json
 func ExampleRestorePointCollectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,7 +380,7 @@ func ExampleRestorePointCollectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePointCollection_ListBySubscription.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_ListBySubscription.json
 func ExampleRestorePointCollectionsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,7 +446,7 @@ func ExampleRestorePointCollectionsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
 func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -475,7 +475,7 @@ func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMax
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientUpdateResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Location: to.Ptr("norwayeast"),
 	// 		Properties: &armcompute.RestorePointCollectionProperties{
 	// 			Source: &armcompute.RestorePointCollectionSourceProperties{
@@ -652,7 +652,7 @@ func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMax
 	// }
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
 func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -671,7 +671,7 @@ func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMin
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientUpdateResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Location: to.Ptr("norwayeast"),
 	// 	},
 	// }

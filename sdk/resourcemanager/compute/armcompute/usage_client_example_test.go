@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/computeRPCommonExamples/Usage_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/computeRPCommonExamples/Usage_List_MaximumSet_Gen.json
 func ExampleUsageClient_NewListPager_usageListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleUsageClient_NewListPager_usageListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/computeRPCommonExamples/Usage_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/computeRPCommonExamples/Usage_List_MinimumSet_Gen.json
 func ExampleUsageClient_NewListPager_usageListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

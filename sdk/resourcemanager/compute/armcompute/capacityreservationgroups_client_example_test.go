@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/BlockCapacityReservationGroup_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/BlockCapacityReservationGroup_CreateOrUpdate.json
 func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateABlockCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateABlockC
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientCreateOrUpdateResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 			"department": to.Ptr("finance"),
@@ -62,7 +62,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateABlockC
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
 func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateACapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateACapaci
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientCreateOrUpdateResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 			"department": to.Ptr("finance"),
@@ -130,7 +130,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateACapaci
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/TargetedCapacityReservationGroup_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/TargetedCapacityReservationGroup_CreateOrUpdate.json
 func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateATargetedCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateATarget
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientCreateOrUpdateResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 			"department": to.Ptr("finance"),
@@ -200,7 +200,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateATarget
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Delete_MaximumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDelet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Delete_MinimumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDelet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/BlockCapacityReservationGroup_Get.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/BlockCapacityReservationGroup_Get.json
 func ExampleCapacityReservationGroupsClient_Get_getABlockCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +264,7 @@ func ExampleCapacityReservationGroupsClient_Get_getABlockCapacityReservationGrou
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientGetResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/blockCapacityReservationGroup"),
 	// 		Properties: &armcompute.CapacityReservationGroupProperties{
 	// 			CapacityReservations: []*armcompute.SubResourceReadOnly{
@@ -336,7 +336,7 @@ func ExampleCapacityReservationGroupsClient_Get_getABlockCapacityReservationGrou
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_Get.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Get.json
 func ExampleCapacityReservationGroupsClient_Get_getACapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -356,7 +356,7 @@ func ExampleCapacityReservationGroupsClient_Get_getACapacityReservationGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientGetResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/myCapacityReservationGroup"),
 	// 		Properties: &armcompute.CapacityReservationGroupProperties{
 	// 			CapacityReservations: []*armcompute.SubResourceReadOnly{
@@ -445,7 +445,7 @@ func ExampleCapacityReservationGroupsClient_Get_getACapacityReservationGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/TargetedCapacityReservationGroup_Get.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/TargetedCapacityReservationGroup_Get.json
 func ExampleCapacityReservationGroupsClient_Get_getATargetedCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -465,7 +465,7 @@ func ExampleCapacityReservationGroupsClient_Get_getATargetedCapacityReservationG
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientGetResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/targetedCapacityReservationGroup"),
 	// 		Properties: &armcompute.CapacityReservationGroupProperties{
 	// 			CapacityReservations: []*armcompute.SubResourceReadOnly{
@@ -555,7 +555,7 @@ func ExampleCapacityReservationGroupsClient_Get_getATargetedCapacityReservationG
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_ListByResourceGroup.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_ListByResourceGroup.json
 func ExampleCapacityReservationGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,7 +676,7 @@ func ExampleCapacityReservationGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscription.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscription.json
 func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapacityReservationGroupsInSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -797,7 +797,7 @@ func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapac
 	}
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscriptionWithResourceIdsQuery.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscriptionWithResourceIdsQuery.json
 func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapacityReservationGroupsWithResourceIdsOnlyInSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -839,7 +839,7 @@ func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapac
 	}
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -865,7 +865,7 @@ func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientUpdateResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 		},
@@ -915,7 +915,7 @@ func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdat
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -934,7 +934,7 @@ func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientUpdateResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		Location: to.Ptr("westus"),
 	// 	},
 	// }

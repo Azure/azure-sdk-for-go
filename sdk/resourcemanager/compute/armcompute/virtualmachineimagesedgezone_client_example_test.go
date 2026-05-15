@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_Get_MaximumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_Get_virtualMachineImagesEdgeZoneGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_Get_virtualMachineImagesEdgeZoneG
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesEdgeZoneClientGetResponse{
-	// 	VirtualMachineImage: &armcompute.VirtualMachineImage{
+	// 	VirtualMachineImage: armcompute.VirtualMachineImage{
 	// 		Properties: &armcompute.VirtualMachineImageProperties{
 	// 			Plan: &armcompute.PurchasePlan{
 	// 				Publisher: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
@@ -74,7 +74,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_Get_virtualMachineImagesEdgeZoneG
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_Get_MinimumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_Get_virtualMachineImagesEdgeZoneGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_Get_virtualMachineImagesEdgeZoneG
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesEdgeZoneClientGetResponse{
-	// 	VirtualMachineImage: &armcompute.VirtualMachineImage{
+	// 	VirtualMachineImage: armcompute.VirtualMachineImage{
 	// 		Name: to.Ptr("aaaaaaaaa"),
 	// 		Location: to.Ptr("aaaaa"),
 	// 		ID: to.Ptr("aaaaaaaaaaa"),
@@ -101,7 +101,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_Get_virtualMachineImagesEdgeZoneG
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_List_MaximumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_List_virtualMachineImagesEdgeZoneListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_List_virtualMachineImagesEdgeZone
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesEdgeZoneClientListResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -140,7 +140,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_List_virtualMachineImagesEdgeZone
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_List_MinimumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_List_virtualMachineImagesEdgeZoneListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_List_virtualMachineImagesEdgeZone
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesEdgeZoneClientListResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -169,7 +169,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_List_virtualMachineImagesEdgeZone
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListOffers_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListOffers_MaximumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_ListOffers_virtualMachineImagesEdgeZoneListOffersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListOffers_virtualMachineImagesEd
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesEdgeZoneClientListOffersResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -205,7 +205,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListOffers_virtualMachineImagesEd
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListOffers_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListOffers_MinimumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_ListOffers_virtualMachineImagesEdgeZoneListOffersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListOffers_virtualMachineImagesEd
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesEdgeZoneClientListOffersResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -234,7 +234,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListOffers_virtualMachineImagesEd
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListPublishers_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListPublishers_MaximumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_ListPublishers_virtualMachineImagesEdgeZoneListPublishersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +253,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListPublishers_virtualMachineImag
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesEdgeZoneClientListPublishersResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -270,7 +270,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListPublishers_virtualMachineImag
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListPublishers_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListPublishers_MinimumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_ListPublishers_virtualMachineImagesEdgeZoneListPublishersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListPublishers_virtualMachineImag
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesEdgeZoneClientListPublishersResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -299,7 +299,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListPublishers_virtualMachineImag
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListSkus_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListSkus_MaximumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_ListSKUs_virtualMachineImagesEdgeZoneListSkusMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +318,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListSKUs_virtualMachineImagesEdge
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesEdgeZoneClientListSKUsResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -335,7 +335,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListSKUs_virtualMachineImagesEdge
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListSkus_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListSkus_MinimumSet_Gen.json
 func ExampleVirtualMachineImagesEdgeZoneClient_ListSKUs_virtualMachineImagesEdgeZoneListSkusMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,7 +354,7 @@ func ExampleVirtualMachineImagesEdgeZoneClient_ListSKUs_virtualMachineImagesEdge
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesEdgeZoneClientListSKUsResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),

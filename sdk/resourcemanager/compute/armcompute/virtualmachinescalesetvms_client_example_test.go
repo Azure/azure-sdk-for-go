@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_ApproveRollingUpgrade.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_ApproveRollingUpgrade.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginApproveRollingUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,11 +30,11 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginApproveRollingUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_AttachDetachDataDisks_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_AttachDetachDataDisks_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginAttachDetachDataDisks_virtualMachineScaleSetVMAttachDetachDataDisksMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,13 +82,13 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginAttachDetachDataDisks_virtualMa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse{
-	// 	StorageProfile: &armcompute.StorageProfile{
+	// 	StorageProfile: armcompute.StorageProfile{
 	// 		ImageReference: &armcompute.ImageReference{
 	// 			Publisher: to.Ptr("MicrosoftWindowsServer"),
 	// 			Offer: to.Ptr("WindowsServer"),
@@ -142,7 +142,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginAttachDetachDataDisks_virtualMa
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_AttachDetachDataDisks_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_AttachDetachDataDisks_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginAttachDetachDataDisks_virtualMachineScaleSetVMAttachDetachDataDisksMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,13 +170,13 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginAttachDetachDataDisks_virtualMa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse{
-	// 	StorageProfile: &armcompute.StorageProfile{
+	// 	StorageProfile: armcompute.StorageProfile{
 	// 		ImageReference: &armcompute.ImageReference{
 	// 			Publisher: to.Ptr("MicrosoftWindowsServer"),
 	// 			Offer: to.Ptr("WindowsServer"),
@@ -211,7 +211,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginAttachDetachDataDisks_virtualMa
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Deallocate_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Deallocate_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginDeallocate_virtualMachineScaleSetVMDeallocateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginDeallocate_virtualMachineScaleS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -237,7 +237,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginDeallocate_virtualMachineScaleS
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Deallocate_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Deallocate_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginDeallocate_virtualMachineScaleSetVMDeallocateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginDeallocate_virtualMachineScaleS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -263,7 +263,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginDeallocate_virtualMachineScaleS
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Delete_Force.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Delete_Force.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -290,7 +290,161 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithResilientVMDeletionStatus.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithInterconnectBlock.json
+func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithInterconnectBlock() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetVMsClient().Get(ctx, "myResourceGroup", "{vmss-name}", "0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetVMsClientGetResponse{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
+	// 		Name: to.Ptr("{vmss-vm-name}"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines"),
+	// 		Location: to.Ptr("westus"),
+	// 		InstanceID: to.Ptr("0"),
+	// 		SKU: &armcompute.SKU{
+	// 			Name: to.Ptr("Standard_ND128isr_GB300_v6"),
+	// 			Tier: to.Ptr("Standard"),
+	// 		},
+	// 		Properties: &armcompute.VirtualMachineScaleSetVMProperties{
+	// 			LatestModelApplied: to.Ptr(true),
+	// 			ModelDefinitionApplied: to.Ptr("VirtualMachineScaleSet"),
+	// 			NetworkProfileConfiguration: &armcompute.VirtualMachineScaleSetVMNetworkProfileConfiguration{
+	// 				InterconnectGroupProfile: &armcompute.InterconnectGroupProfile{
+	// 					InterconnectGroup: &armcompute.SubResource{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
+	// 					},
+	// 					Subgroups: []*armcompute.SubResource{
+	// 						{
+	// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup/subgroups/subgroup0"),
+	// 						},
+	// 					},
+	// 				},
+	// 				NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+	// 					{
+	// 						Name: to.Ptr("{vmss-name}-nic"),
+	// 						Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 							Primary: to.Ptr(true),
+	// 							DisableTCPStateTracking: to.Ptr(false),
+	// 							DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+	// 								DNSServers: []*string{
+	// 								},
+	// 							},
+	// 							EnableIPForwarding: to.Ptr(false),
+	// 							IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+	// 								{
+	// 									Name: to.Ptr("ipconfig1"),
+	// 									Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+	// 										Subnet: &armcompute.APIEntityReference{
+	// 											ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
+	// 										},
+	// 										PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			HardwareProfile: &armcompute.HardwareProfile{
+	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_ND128isr_GB300_v6")),
+	// 			},
+	// 			ResilientVMDeletionStatus: to.Ptr(armcompute.ResilientVMDeletionStatusDisabled),
+	// 			VMID: to.Ptr("bd73f1c6-1b3b-43b0-8b96-718bace3ba2e"),
+	// 			InterconnectBlockProfile: &armcompute.InterconnectBlockProfile{
+	// 				InterconnectBlock: &armcompute.APIEntityReference{
+	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/interconnectBlocks/myInterconnectBlock"),
+	// 				},
+	// 			},
+	// 			StorageProfile: &armcompute.StorageProfile{
+	// 				ImageReference: &armcompute.ImageReference{
+	// 					Publisher: to.Ptr("microsoft-dsvm"),
+	// 					Offer: to.Ptr("ubuntu-hpc"),
+	// 					SKU: to.Ptr("2404-gb"),
+	// 					Version: to.Ptr("latest"),
+	// 					ExactVersion: to.Ptr("24.04.2025110401"),
+	// 				},
+	// 				OSDisk: &armcompute.OSDisk{
+	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesLinux),
+	// 					Name: to.Ptr("{vmss-name}_{vmss-vm-name}_OsDisk_1_e195e35c5b854d3ab60960e773dd2997"),
+	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
+	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/{vmss-name}_{vmss-vm-name}_OsDisk_1_e195e35c5b854d3ab60960e773dd2997"),
+	// 					},
+	// 					DiskSizeGB: to.Ptr[int32](64),
+	// 				},
+	// 				DataDisks: []*armcompute.DataDisk{
+	// 				},
+	// 				DiskControllerType: to.Ptr(armcompute.DiskControllerTypesNVMe),
+	// 			},
+	// 			OSProfile: &armcompute.OSProfile{
+	// 				ComputerName: to.Ptr("{vmss-name}000000"),
+	// 				AdminUsername: to.Ptr("{your-username}"),
+	// 				LinuxConfiguration: &armcompute.LinuxConfiguration{
+	// 					DisablePasswordAuthentication: to.Ptr(false),
+	// 					SSH: &armcompute.SSHConfiguration{
+	// 						PublicKeys: []*armcompute.SSHPublicKey{
+	// 							{
+	// 								Path: to.Ptr("/home/{your-username}/.ssh/authorized_keys"),
+	// 								KeyData: to.Ptr("{ssh-rsa public key}"),
+	// 							},
+	// 						},
+	// 					},
+	// 					ProvisionVMAgent: to.Ptr(true),
+	// 					EnableVMAgentPlatformUpdates: to.Ptr(true),
+	// 				},
+	// 				Secrets: []*armcompute.VaultSecretGroup{
+	// 				},
+	// 				AllowExtensionOperations: to.Ptr(true),
+	// 				RequireGuestProvisionSignal: to.Ptr(true),
+	// 			},
+	// 			SecurityProfile: &armcompute.SecurityProfile{
+	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
+	// 			},
+	// 			NetworkProfile: &armcompute.NetworkProfile{
+	// 				InterconnectGroupProfile: &armcompute.InterconnectGroupProfile{
+	// 					InterconnectGroup: &armcompute.SubResource{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
+	// 					},
+	// 					Subgroups: []*armcompute.SubResource{
+	// 						{
+	// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup/subgroups/subgroup0"),
+	// 						},
+	// 					},
+	// 				},
+	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0/networkInterfaces/{vmss-name}-nic"),
+	// 					},
+	// 				},
+	// 			},
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T19:59:05.5350459+00:00"); return t}()),
+	// 		},
+	// 		Etag: to.Ptr("\"1\""),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithResilientVMDeletionStatus.json
 func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithResiliencyView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -309,7 +463,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithResiliencyVie
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientGetResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Name: to.Ptr("{vmss-vm-name}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/1"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines"),
@@ -473,7 +627,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithResiliencyVie
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithUserData.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithUserData.json
 func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithUserData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -492,7 +646,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithUserData() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientGetResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Name: to.Ptr("{vmss-vm-name}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines"),
@@ -622,7 +776,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithUserData() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVMSizeProperties.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVMSizeProperties.json
 func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithVMSizeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -641,7 +795,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithVMSizePropert
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientGetResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Name: to.Ptr("{vmss-vm-name}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -775,7 +929,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithVMSizePropert
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVirtualMachineResourceId.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVirtualMachineResourceId.json
 func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetFlexVMWithVirtualMachineResourceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -794,7 +948,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetFlexVMWithVirtualMa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientGetResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Name: to.Ptr("{vmss-flex-vm-name}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-flex-name}/virtualMachines/{vmss-flex-vm-name}"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines"),
@@ -808,7 +962,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetFlexVMWithVirtualMa
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
 func ExampleVirtualMachineScaleSetVMsClient_GetInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -827,7 +981,7 @@ func ExampleVirtualMachineScaleSetVMsClient_GetInstanceView() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientGetInstanceViewResponse{
-	// 	VirtualMachineScaleSetVMInstanceView: &armcompute.VirtualMachineScaleSetVMInstanceView{
+	// 	VirtualMachineScaleSetVMInstanceView: armcompute.VirtualMachineScaleSetVMInstanceView{
 	// 		PlatformUpdateDomain: to.Ptr[int32](0),
 	// 		PlatformFaultDomain: to.Ptr[int32](0),
 	// 		VMAgent: &armcompute.VirtualMachineAgentInstanceView{
@@ -873,7 +1027,7 @@ func ExampleVirtualMachineScaleSetVMsClient_GetInstanceView() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_NewListPager_virtualMachineScaleSetVMListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1440,7 +1594,7 @@ func ExampleVirtualMachineScaleSetVMsClient_NewListPager_virtualMachineScaleSetV
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_NewListPager_virtualMachineScaleSetVMListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1475,7 +1629,7 @@ func ExampleVirtualMachineScaleSetVMsClient_NewListPager_virtualMachineScaleSetV
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_WithResiliencyView.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_WithResiliencyView.json
 func ExampleVirtualMachineScaleSetVMsClient_NewListPager_listVmssVMSWithResilientVmdeletionStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1833,7 +1987,7 @@ func ExampleVirtualMachineScaleSetVMsClient_NewListPager_listVmssVMSWithResilien
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_WithVirtualMachineResourceId.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_WithVirtualMachineResourceId.json
 func ExampleVirtualMachineScaleSetVMsClient_NewListPager_listVmssVMSWithVirtualMachineResourceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1886,7 +2040,7 @@ func ExampleVirtualMachineScaleSetVMsClient_NewListPager_listVmssVMSWithVirtualM
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_PerformMaintenance_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_PerformMaintenance_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginPerformMaintenance_virtualMachineScaleSetVMPerformMaintenanceMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1903,7 +2057,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPerformMaintenance_virtualMachi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1912,7 +2066,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPerformMaintenance_virtualMachi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_PerformMaintenance_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_PerformMaintenance_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginPerformMaintenance_virtualMachineScaleSetVMPerformMaintenanceMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1929,7 +2083,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPerformMaintenance_virtualMachi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1938,7 +2092,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPerformMaintenance_virtualMachi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_PowerOff_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_PowerOff_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginPowerOff_virtualMachineScaleSetVMPowerOffMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1956,7 +2110,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPowerOff_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1965,7 +2119,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPowerOff_virtualMachineScaleSet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_PowerOff_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_PowerOff_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginPowerOff_virtualMachineScaleSetVMPowerOffMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1982,7 +2136,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPowerOff_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1991,7 +2145,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPowerOff_virtualMachineScaleSet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Redeploy_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Redeploy_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginRedeploy_virtualMachineScaleSetVMRedeployMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2008,7 +2162,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRedeploy_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2017,7 +2171,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRedeploy_virtualMachineScaleSet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Redeploy_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Redeploy_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginRedeploy_virtualMachineScaleSetVMRedeployMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2034,7 +2188,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRedeploy_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2043,7 +2197,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRedeploy_virtualMachineScaleSet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginReimage_virtualMachineScaleSetVMReimageMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2064,7 +2218,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimage_virtualMachineScaleSetV
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2073,7 +2227,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimage_virtualMachineScaleSetV
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginReimage_virtualMachineScaleSetVMReimageMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2090,7 +2244,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimage_virtualMachineScaleSetV
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2099,7 +2253,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimage_virtualMachineScaleSetV
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_ReimageAll_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_ReimageAll_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginReimageAll_virtualMachineScaleSetVMReimageAllMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2116,7 +2270,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimageAll_virtualMachineScaleS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2125,7 +2279,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimageAll_virtualMachineScaleS
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_ReimageAll_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_ReimageAll_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginReimageAll_virtualMachineScaleSetVMReimageAllMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2142,7 +2296,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimageAll_virtualMachineScaleS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2151,7 +2305,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimageAll_virtualMachineScaleS
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Restart_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Restart_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginRestart_virtualMachineScaleSetVMRestartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2168,7 +2322,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRestart_virtualMachineScaleSetV
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2177,7 +2331,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRestart_virtualMachineScaleSetV
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Restart_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Restart_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginRestart_virtualMachineScaleSetVMRestartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2194,7 +2348,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRestart_virtualMachineScaleSetV
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2203,7 +2357,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRestart_virtualMachineScaleSetV
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_RetrieveBootDiagnosticsData.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_RetrieveBootDiagnosticsData.json
 func ExampleVirtualMachineScaleSetVMsClient_RetrieveBootDiagnosticsData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2223,14 +2377,14 @@ func ExampleVirtualMachineScaleSetVMsClient_RetrieveBootDiagnosticsData() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse{
-	// 	RetrieveBootDiagnosticsDataResult: &armcompute.RetrieveBootDiagnosticsDataResult{
+	// 	RetrieveBootDiagnosticsDataResult: armcompute.RetrieveBootDiagnosticsDataResult{
 	// 		ConsoleScreenshotBlobURI: to.Ptr("https://storageuri/myvmScaleSetinstance.screenshot.bmp?{saskey}"),
 	// 		SerialConsoleLogBlobURI: to.Ptr("https://storageuri/myvmScaleSetinstance.serialconsole.log?{saskey}"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineScaleSetVMRunCommand.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineScaleSetVMRunCommand.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2252,13 +2406,13 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRunCommand() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse{
-	// 	RunCommandResult: &armcompute.RunCommandResult{
+	// 	RunCommandResult: armcompute.RunCommandResult{
 	// 		Value: []*armcompute.InstanceViewStatus{
 	// 			{
 	// 				Code: to.Ptr("ComponentStatus/StdOut/succeeded"),
@@ -2277,7 +2431,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRunCommand() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_SimulateEviction.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_SimulateEviction.json
 func ExampleVirtualMachineScaleSetVMsClient_SimulateEviction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2294,7 +2448,7 @@ func ExampleVirtualMachineScaleSetVMsClient_SimulateEviction() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Start_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Start_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginStart_virtualMachineScaleSetVMStartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2311,7 +2465,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginStart_virtualMachineScaleSetVMS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2320,7 +2474,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginStart_virtualMachineScaleSetVMS
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Start_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Start_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginStart_virtualMachineScaleSetVMStartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2337,7 +2491,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginStart_virtualMachineScaleSetVMS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2346,7 +2500,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginStart_virtualMachineScaleSetVMS
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate_virtualMachineScaleSetVMUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2827,13 +2981,13 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate_virtualMachineScaleSetVM
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientUpdateResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Name: to.Ptr("{vmss-vm-name}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -3367,7 +3521,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate_virtualMachineScaleSetVM
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate_virtualMachineScaleSetVMUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3386,13 +3540,13 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate_virtualMachineScaleSetVM
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientUpdateResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0"),
 	// 	},

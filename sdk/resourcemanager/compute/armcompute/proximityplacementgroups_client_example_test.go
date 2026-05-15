@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/proximityPlacementGroupExamples/ProximityPlacementGroup_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/proximityPlacementGroupExamples/ProximityPlacementGroup_CreateOrUpdate.json
 func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ProximityPlacementGroupsClientCreateOrUpdateResponse{
-	// 	ProximityPlacementGroup: &armcompute.ProximityPlacementGroup{
+	// 	ProximityPlacementGroup: armcompute.ProximityPlacementGroup{
 	// 		Name: to.Ptr("myProximityPlacementGroup"),
 	// 		Properties: &armcompute.ProximityPlacementGroupProperties{
 	// 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
@@ -66,7 +66,7 @@ func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
+// Generated from example definition: 2026-03-01/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
 func ExampleProximityPlacementGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleProximityPlacementGroupsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/proximityPlacementGroupExamples/ProximityPlacementGroup_Get.json
+// Generated from example definition: 2026-03-01/proximityPlacementGroupExamples/ProximityPlacementGroup_Get.json
 func ExampleProximityPlacementGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleProximityPlacementGroupsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ProximityPlacementGroupsClientGetResponse{
-	// 	ProximityPlacementGroup: &armcompute.ProximityPlacementGroup{
+	// 	ProximityPlacementGroup: armcompute.ProximityPlacementGroup{
 	// 		Name: to.Ptr("myProximityPlacementGroup"),
 	// 		Properties: &armcompute.ProximityPlacementGroupProperties{
 	// 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
@@ -143,7 +143,7 @@ func ExampleProximityPlacementGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/proximityPlacementGroupExamples/ProximityPlacementGroup_ListByResourceGroup.json
+// Generated from example definition: 2026-03-01/proximityPlacementGroupExamples/ProximityPlacementGroup_ListByResourceGroup.json
 func ExampleProximityPlacementGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleProximityPlacementGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/proximityPlacementGroupExamples/ProximityPlacementGroup_ListBySubscription.json
+// Generated from example definition: 2026-03-01/proximityPlacementGroupExamples/ProximityPlacementGroup_ListBySubscription.json
 func ExampleProximityPlacementGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleProximityPlacementGroupsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
+// Generated from example definition: 2026-03-01/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
 func ExampleProximityPlacementGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,7 +296,7 @@ func ExampleProximityPlacementGroupsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ProximityPlacementGroupsClientUpdateResponse{
-	// 	ProximityPlacementGroup: &armcompute.ProximityPlacementGroup{
+	// 	ProximityPlacementGroup: armcompute.ProximityPlacementGroup{
 	// 		Name: to.Ptr("myProximityPlacementGroup"),
 	// 		Properties: &armcompute.ProximityPlacementGroupProperties{
 	// 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
 func ExampleVirtualMachineRunCommandsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,13 +56,13 @@ func ExampleVirtualMachineRunCommandsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineRunCommandsClientCreateOrUpdateResponse{
-	// 	VirtualMachineRunCommand: &armcompute.VirtualMachineRunCommand{
+	// 	VirtualMachineRunCommand: armcompute.VirtualMachineRunCommand{
 	// 		Name: to.Ptr("myRunCommand"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/runCommands/myRunCommand"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines/runCommands"),
@@ -97,7 +97,7 @@ func ExampleVirtualMachineRunCommandsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_Delete.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand_Delete.json
 func ExampleVirtualMachineRunCommandsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleVirtualMachineRunCommandsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -123,7 +123,7 @@ func ExampleVirtualMachineRunCommandsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/RunCommand_Get.json
+// Generated from example definition: 2026-03-01/runCommandExamples/RunCommand_Get.json
 func ExampleVirtualMachineRunCommandsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleVirtualMachineRunCommandsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineRunCommandsClientGetResponse{
-	// 	RunCommandDocument: &armcompute.RunCommandDocument{
+	// 	RunCommandDocument: armcompute.RunCommandDocument{
 	// 		Script: []*string{
 	// 			to.Ptr("param("),
 	// 			to.Ptr("    [string]$arg1,"),
@@ -171,7 +171,7 @@ func ExampleVirtualMachineRunCommandsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_Get.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand_Get.json
 func ExampleVirtualMachineRunCommandsClient_GetByVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleVirtualMachineRunCommandsClient_GetByVirtualMachine() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineRunCommandsClientGetByVirtualMachineResponse{
-	// 	VirtualMachineRunCommand: &armcompute.VirtualMachineRunCommand{
+	// 	VirtualMachineRunCommand: armcompute.VirtualMachineRunCommand{
 	// 		Name: to.Ptr("myRunCommand"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/runCommands/myRunCommand"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines/runCommands"),
@@ -225,7 +225,7 @@ func ExampleVirtualMachineRunCommandsClient_GetByVirtualMachine() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/RunCommand_List.json
+// Generated from example definition: 2026-03-01/runCommandExamples/RunCommand_List.json
 func ExampleVirtualMachineRunCommandsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +326,7 @@ func ExampleVirtualMachineRunCommandsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_List.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand_List.json
 func ExampleVirtualMachineRunCommandsClient_NewListByVirtualMachinePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleVirtualMachineRunCommandsClient_NewListByVirtualMachinePager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_Update.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand_Update.json
 func ExampleVirtualMachineRunCommandsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -431,13 +431,13 @@ func ExampleVirtualMachineRunCommandsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineRunCommandsClientUpdateResponse{
-	// 	VirtualMachineRunCommand: &armcompute.VirtualMachineRunCommand{
+	// 	VirtualMachineRunCommand: armcompute.VirtualMachineRunCommand{
 	// 		Name: to.Ptr("myRunCommand"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/runCommands/myRunCommand"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines/runCommands"),

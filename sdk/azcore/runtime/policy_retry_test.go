@@ -1007,3 +1007,45 @@ func TestRetryPolicyWithLoggingChecker(t *testing.T) {
 	require.EqualValues(t, 2, body.rcount)
 	require.True(t, body.closed)
 }
+
+type closeErrorBody struct {
+	r      *strings.Reader
+	closed bool
+	cerr   error
+}
+
+func newCloseErrorBody(s string, cerr error) *closeErrorBody {
+	return &closeErrorBody{r: strings.NewReader(s), cerr: cerr}
+}
+
+func (b *closeErrorBody) Read(p []byte) (int, error)         { return b.r.Read(p) }
+func (b *closeErrorBody) Seek(o int64, w int) (int64, error) { return b.r.Seek(o, w) }
+func (b *closeErrorBody) Close() error {
+	b.closed = true
+	return b.cerr
+}
+func TestRetryPolicyJoinsRequestAndBodyCloseErrors(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+
+	errReq := errors.New("request failed")
+	errClose := errors.New("close failed")
+
+	req, err := NewRequest(context.Background(), http.MethodPost, srv.URL())
+	require.NoError(t, err)
+
+	body := newCloseErrorBody("hello", errClose)
+	require.NoError(t, req.SetBody(body, "text/plain"))
+
+	// downstream policy fails the request; retry policy should still close the body and join errors
+	pl := exported.NewPipeline(srv, NewRetryPolicy(nil), exported.PolicyFunc(func(*policy.Request) (*http.Response, error) {
+		return nil, errReq
+	}))
+
+	_, err = pl.Do(req)
+	require.Error(t, err)
+
+	require.True(t, errors.Is(err, errReq), "expected returned error to match request error")
+	require.True(t, errors.Is(err, errClose), "expected returned error to match close error")
+	require.True(t, body.closed, "expected request body to be closed")
+}

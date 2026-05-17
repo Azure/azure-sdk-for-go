@@ -1,5 +1,29 @@
 # Release History
 
+## 1.1.0-beta.1 (2026-04-13)
+### Features Added
+
+- New enum type `AcsChatRetentionPolicyKind` with values `AcsChatRetentionPolicyKindNone`, `AcsChatRetentionPolicyKindThreadCreationDate`
+- New enum type `AcsChatThreadDeletedReasonType` with values `AcsChatThreadDeletedReasonTypeDeletedByPolicy`, `AcsChatThreadDeletedReasonTypeDeletedByUser`
+- New struct `AcsChatRetentionPolicy`
+- New field `SequenceID` in struct `ACSChatAzureBotCommandReceivedInThreadEventData`
+- New field `SequenceID` in struct `ACSChatMessageDeletedEventData`
+- New field `SequenceID` in struct `ACSChatMessageDeletedInThreadEventData`
+- New field `SequenceID` in struct `ACSChatMessageEditedEventData`
+- New field `SequenceID` in struct `ACSChatMessageEditedInThreadEventData`
+- New field `SequenceID` in struct `ACSChatMessageReceivedEventData`
+- New field `SequenceID` in struct `ACSChatMessageReceivedInThreadEventData`
+- New field `RetentionPolicy` in struct `ACSChatThreadCreatedEventData`
+- New field `RetentionPolicy` in struct `ACSChatThreadCreatedWithUserEventData`
+- New field `Reason` in struct `ACSChatThreadDeletedEventData`
+- New field `RetentionPolicy` in struct `ACSChatThreadPropertiesUpdatedEventData`
+- New field `RetentionPolicy` in struct `ACSChatThreadPropertiesUpdatedPerUserEventData`
+- New field `SequenceID` in struct `ACSChatTypingIndicatorReceivedInThreadEventData`
+- New field `OnBehalfOf` in struct `ACSIncomingCallEventData`
+- New field `ToBSUID` in struct `ACSMessageDeliveryStatusUpdatedEventData`
+- New field `FromBSUID` in struct `ACSMessageReceivedEventData`
+
+
 ## 1.0.1-beta.1 (Unreleased)
 
 ### Features Added

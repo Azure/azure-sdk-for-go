@@ -347,6 +347,42 @@ func PossibleACSUserEngagementValues() []ACSUserEngagement {
 	}
 }
 
+// AcsChatRetentionPolicyKind - Chat Retention Policy kind
+type AcsChatRetentionPolicyKind string
+
+const (
+	// AcsChatRetentionPolicyKindNone - None
+	AcsChatRetentionPolicyKindNone AcsChatRetentionPolicyKind = "none"
+	// AcsChatRetentionPolicyKindThreadCreationDate - ThreadCreationDate
+	AcsChatRetentionPolicyKindThreadCreationDate AcsChatRetentionPolicyKind = "threadCreationDate"
+)
+
+// PossibleAcsChatRetentionPolicyKindValues returns the possible values for the AcsChatRetentionPolicyKind const type.
+func PossibleAcsChatRetentionPolicyKindValues() []AcsChatRetentionPolicyKind {
+	return []AcsChatRetentionPolicyKind{
+		AcsChatRetentionPolicyKindNone,
+		AcsChatRetentionPolicyKindThreadCreationDate,
+	}
+}
+
+// AcsChatThreadDeletedReasonType - Chat Thread Deletion Reason Type
+type AcsChatThreadDeletedReasonType string
+
+const (
+	// AcsChatThreadDeletedReasonTypeDeletedByPolicy - DeletedByPolicy
+	AcsChatThreadDeletedReasonTypeDeletedByPolicy AcsChatThreadDeletedReasonType = "deletedByPolicy"
+	// AcsChatThreadDeletedReasonTypeDeletedByUser - DeletedByUser
+	AcsChatThreadDeletedReasonTypeDeletedByUser AcsChatThreadDeletedReasonType = "deletedByUser"
+)
+
+// PossibleAcsChatThreadDeletedReasonTypeValues returns the possible values for the AcsChatThreadDeletedReasonType const type.
+func PossibleAcsChatThreadDeletedReasonTypeValues() []AcsChatThreadDeletedReasonType {
+	return []AcsChatThreadDeletedReasonType{
+		AcsChatThreadDeletedReasonTypeDeletedByPolicy,
+		AcsChatThreadDeletedReasonTypeDeletedByUser,
+	}
+}
+
 // AppAction - Type of action of the operation
 type AppAction string
 

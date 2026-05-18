@@ -28,7 +28,7 @@ type NetworkSecurityPerimeterConfigurationsClient struct {
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, cred
 // BeginCreateOrUpdate - Refreshes any information about the association.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - resourceAssociationName - The ResourceAssociation Name
@@ -71,7 +71,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginCreateOrUpdate(
 // CreateOrUpdate - Refreshes any information about the association.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-05-01-preview
 func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdate(ctx c
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, _ *NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations/{resourceAssociationName}/reconcile"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,8 +117,78 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdateCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
+}
+
+// GetResourceAssociationName - Return a NetworkSecurityPerimeterConfigurations resourceAssociationName
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - resourceAssociationName - The ResourceAssociation Name
+//   - options - NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameOptions contains the optional parameters
+//     for the NetworkSecurityPerimeterConfigurationsClient.GetResourceAssociationName method.
+func (client *NetworkSecurityPerimeterConfigurationsClient) GetResourceAssociationName(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, options *NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameOptions) (NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse, error) {
+	var err error
+	const operationName = "NetworkSecurityPerimeterConfigurationsClient.GetResourceAssociationName"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getResourceAssociationNameCreateRequest(ctx, resourceGroupName, namespaceName, resourceAssociationName, options)
+	if err != nil {
+		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
+	}
+	resp, err := client.getResourceAssociationNameHandleResponse(httpResp)
+	return resp, err
+}
+
+// getResourceAssociationNameCreateRequest creates the GetResourceAssociationName request.
+func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociationNameCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, _ *NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations/{resourceAssociationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if resourceAssociationName == "" {
+		return nil, errors.New("parameter resourceAssociationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceAssociationName}", url.PathEscape(resourceAssociationName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getResourceAssociationNameHandleResponse handles the GetResourceAssociationName response.
+func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociationNameHandleResponse(resp *http.Response) (NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse, error) {
+	result := NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
+		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
+	}
+	return result, nil
 }

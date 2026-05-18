@@ -28,7 +28,7 @@ type ConfigurationClient struct {
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +45,7 @@ func NewConfigurationClient(subscriptionID string, credential azcore.TokenCreden
 // on the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - clusterName - The name of the Event Hubs Cluster.
 //   - options - ConfigurationClientGetOptions contains the optional parameters for the ConfigurationClient.Get method.
@@ -72,7 +72,7 @@ func (client *ConfigurationClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ConfigurationClientGetOptions) (*policy.Request, error) {
+func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ConfigurationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/quotaConfiguration/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -91,7 +91,7 @@ func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *ConfigurationClient) getHandleResponse(resp *http.Response) (Confi
 // not specified in the request body unmodified.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - clusterName - The name of the Event Hubs Cluster.
 //   - parameters - Parameters for creating an Event Hubs Cluster resource.
@@ -138,7 +138,7 @@ func (client *ConfigurationClient) Patch(ctx context.Context, resourceGroupName 
 }
 
 // patchCreateRequest creates the Patch request.
-func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterQuotaConfigurationProperties, options *ConfigurationClientPatchOptions) (*policy.Request, error) {
+func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterQuotaConfigurationProperties, _ *ConfigurationClientPatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/quotaConfiguration/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -157,7 +157,7 @@ func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

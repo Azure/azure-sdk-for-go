@@ -335,6 +335,12 @@ type NetworkSecurityPerimeterConfigurationsClientCreateOrUpdateResponse struct {
 	// placeholder for future response values
 }
 
+// NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.GetResourceAssociationName.
+type NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse struct {
+	// Network Security Perimeter related configurations of a given namespace
+	NetworkSecurityPerimeterConfiguration
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// Result of the request to list Event Hub operations. It contains a list of operations and a URL link to get the next set

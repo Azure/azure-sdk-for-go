@@ -28,7 +28,7 @@ type ApplicationGroupClient struct {
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationGroupClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewApplicationGroupClient(subscriptionID string, credential azcore.TokenCre
 // CreateOrUpdateApplicationGroup - Creates or updates an ApplicationGroup for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - applicationGroupName - The Application Group name
@@ -74,7 +74,7 @@ func (client *ApplicationGroupClient) CreateOrUpdateApplicationGroup(ctx context
 }
 
 // createOrUpdateApplicationGroupCreateRequest creates the CreateOrUpdateApplicationGroup request.
-func (client *ApplicationGroupClient) createOrUpdateApplicationGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, parameters ApplicationGroup, options *ApplicationGroupClientCreateOrUpdateApplicationGroupOptions) (*policy.Request, error) {
+func (client *ApplicationGroupClient) createOrUpdateApplicationGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, parameters ApplicationGroup, _ *ApplicationGroupClientCreateOrUpdateApplicationGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +97,7 @@ func (client *ApplicationGroupClient) createOrUpdateApplicationGroupCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -118,7 +118,7 @@ func (client *ApplicationGroupClient) createOrUpdateApplicationGroupHandleRespon
 // Delete - Deletes an ApplicationGroup for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - applicationGroupName - The Application Group name
@@ -145,7 +145,7 @@ func (client *ApplicationGroupClient) Delete(ctx context.Context, resourceGroupN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ApplicationGroupClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, options *ApplicationGroupClientDeleteOptions) (*policy.Request, error) {
+func (client *ApplicationGroupClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, _ *ApplicationGroupClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -168,7 +168,7 @@ func (client *ApplicationGroupClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -177,7 +177,7 @@ func (client *ApplicationGroupClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets an ApplicationGroup for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - applicationGroupName - The Application Group name
@@ -205,7 +205,7 @@ func (client *ApplicationGroupClient) Get(ctx context.Context, resourceGroupName
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplicationGroupClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, options *ApplicationGroupClientGetOptions) (*policy.Request, error) {
+func (client *ApplicationGroupClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, _ *ApplicationGroupClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -228,7 +228,7 @@ func (client *ApplicationGroupClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *ApplicationGroupClient) getHandleResponse(resp *http.Response) (Ap
 
 // NewListByNamespacePager - Gets a list of application groups for a Namespace.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - options - ApplicationGroupClientListByNamespaceOptions contains the optional parameters for the ApplicationGroupClient.NewListByNamespacePager
@@ -274,7 +274,7 @@ func (client *ApplicationGroupClient) NewListByNamespacePager(resourceGroupName 
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
-func (client *ApplicationGroupClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *ApplicationGroupClientListByNamespaceOptions) (*policy.Request, error) {
+func (client *ApplicationGroupClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *ApplicationGroupClientListByNamespaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -293,7 +293,7 @@ func (client *ApplicationGroupClient) listByNamespaceCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

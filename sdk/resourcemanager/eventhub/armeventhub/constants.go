@@ -5,11 +5,6 @@
 
 package armeventhub
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
-	moduleVersion = "v1.4.0-beta.1"
-)
-
 type AccessRights string
 
 const (
@@ -266,6 +261,22 @@ func PossibleMetricIDValues() []MetricID {
 		MetricIDIncomingMessages,
 		MetricIDOutgoingBytes,
 		MetricIDOutgoingMessages,
+	}
+}
+
+// Mode - Setting to Enable or Disable Confidential Compute
+type Mode string
+
+const (
+	ModeDisabled Mode = "Disabled"
+	ModeEnabled  Mode = "Enabled"
+)
+
+// PossibleModeValues returns the possible values for the Mode const type.
+func PossibleModeValues() []Mode {
+	return []Mode{
+		ModeDisabled,
+		ModeEnabled,
 	}
 }
 
@@ -557,6 +568,7 @@ const (
 	TLSVersionOne0 TLSVersion = "1.0"
 	TLSVersionOne1 TLSVersion = "1.1"
 	TLSVersionOne2 TLSVersion = "1.2"
+	TLSVersionOne3 TLSVersion = "1.3"
 )
 
 // PossibleTLSVersionValues returns the possible values for the TLSVersion const type.
@@ -565,6 +577,7 @@ func PossibleTLSVersionValues() []TLSVersion {
 		TLSVersionOne0,
 		TLSVersionOne1,
 		TLSVersionOne2,
+		TLSVersionOne3,
 	}
 }
 

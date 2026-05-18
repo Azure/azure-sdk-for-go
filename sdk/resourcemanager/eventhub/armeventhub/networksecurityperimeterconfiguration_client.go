@@ -28,7 +28,7 @@ type NetworkSecurityPerimeterConfigurationClient struct {
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkSecurityPerimeterConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewNetworkSecurityPerimeterConfigurationClient(subscriptionID string, crede
 // List - Gets list of current NetworkSecurityPerimeterConfiguration for Namespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - options - NetworkSecurityPerimeterConfigurationClientListOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationClient.List
@@ -72,7 +72,7 @@ func (client *NetworkSecurityPerimeterConfigurationClient) List(ctx context.Cont
 }
 
 // listCreateRequest creates the List request.
-func (client *NetworkSecurityPerimeterConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NetworkSecurityPerimeterConfigurationClientListOptions) (*policy.Request, error) {
+func (client *NetworkSecurityPerimeterConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NetworkSecurityPerimeterConfigurationClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -91,7 +91,7 @@ func (client *NetworkSecurityPerimeterConfigurationClient) listCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

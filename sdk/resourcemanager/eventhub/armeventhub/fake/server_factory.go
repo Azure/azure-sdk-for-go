@@ -16,19 +16,44 @@ import (
 
 // ServerFactory is a fake server for instances of the armeventhub.ClientFactory type.
 type ServerFactory struct {
-	ApplicationGroupServer                       ApplicationGroupServer
-	ClustersServer                               ClustersServer
-	ConfigurationServer                          ConfigurationServer
-	ConsumerGroupsServer                         ConsumerGroupsServer
-	DisasterRecoveryConfigsServer                DisasterRecoveryConfigsServer
-	EventHubsServer                              EventHubsServer
-	NamespacesServer                             NamespacesServer
-	NetworkSecurityPerimeterConfigurationServer  NetworkSecurityPerimeterConfigurationServer
+	// ApplicationGroupServer contains the fakes for client ApplicationGroupClient
+	ApplicationGroupServer ApplicationGroupServer
+
+	// ClustersServer contains the fakes for client ClustersClient
+	ClustersServer ClustersServer
+
+	// ConfigurationServer contains the fakes for client ConfigurationClient
+	ConfigurationServer ConfigurationServer
+
+	// ConsumerGroupsServer contains the fakes for client ConsumerGroupsClient
+	ConsumerGroupsServer ConsumerGroupsServer
+
+	// DisasterRecoveryConfigsServer contains the fakes for client DisasterRecoveryConfigsClient
+	DisasterRecoveryConfigsServer DisasterRecoveryConfigsServer
+
+	// EventHubsServer contains the fakes for client EventHubsClient
+	EventHubsServer EventHubsServer
+
+	// NamespacesServer contains the fakes for client NamespacesClient
+	NamespacesServer NamespacesServer
+
+	// NetworkSecurityPerimeterConfigurationServer contains the fakes for client NetworkSecurityPerimeterConfigurationClient
+	NetworkSecurityPerimeterConfigurationServer NetworkSecurityPerimeterConfigurationServer
+
+	// NetworkSecurityPerimeterConfigurationsServer contains the fakes for client NetworkSecurityPerimeterConfigurationsClient
 	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
-	OperationsServer                             OperationsServer
-	PrivateEndpointConnectionsServer             PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer                   PrivateLinkResourcesServer
-	SchemaRegistryServer                         SchemaRegistryServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// SchemaRegistryServer contains the fakes for client SchemaRegistryClient
+	SchemaRegistryServer SchemaRegistryServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

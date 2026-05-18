@@ -7106,3 +7106,61 @@ func TestUploadExpectContinueOff(t *testing.T) {
 		require.Empty(t, v)
 	}
 }
+
+// throttlingBlockBlob is a fake transport that returns the response codes in `statuses`
+// in sequence; subsequent calls past the slice length reuse the final entry. Bodies are
+// drained so the Upload request's content stream is fully consumed.
+type throttlingBlockBlob struct {
+	statuses []int
+	idx      int
+}
+
+func (t *throttlingBlockBlob) Do(req *http.Request) (*http.Response, error) {
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	status := t.statuses[len(t.statuses)-1]
+	if t.idx < len(t.statuses) {
+		status = t.statuses[t.idx]
+	}
+	t.idx++
+	return &http.Response{
+		Request:    req,
+		StatusCode: status,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+// TestUploadExpectContinueApplyOnThrottle verifies the default behavior end-to-end through
+// an actual blockblob client: with no ExpectContinueBehavior configured, the first request
+// carries no Expect header; once the service returns a throttling status code (429), the
+// next request inside the throttle window carries Expect: 100-continue.
+func TestUploadExpectContinueApplyOnThrottle(t *testing.T) {
+	transport := &throttlingBlockBlob{statuses: []int{http.StatusTooManyRequests, http.StatusCreated}}
+	observer := &expectHeaderObserver{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		// ExpectContinueBehavior omitted -> defaults to ExpectContinueModeApplyOnThrottle.
+		ClientOptions: policy.ClientOptions{
+			Transport:        transport,
+			PerRetryPolicies: []policy.Policy{observer},
+			Retry:            policy.RetryOptions{MaxRetries: -1},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	buffer := bytes.Repeat([]byte{1}, 4*1024)
+
+	// 1st upload: transport returns 429. Policy records the throttle timestamp.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.Error(t, err)
+
+	// 2nd upload: we are inside the throttle window, so the header must be set.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+
+	require.Len(t, observer.seen, 2)
+	require.Empty(t, observer.seen[0], "first request must not carry Expect header (no prior throttle)")
+	require.Equal(t, "100-continue", observer.seen[1], "request after throttle must carry Expect: 100-continue")
+}

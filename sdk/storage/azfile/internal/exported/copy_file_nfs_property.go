@@ -39,20 +39,20 @@ type CopyFileNFSProperties struct {
 }
 
 // FormatCopyFileNFSProperties returns creation time, last write time.
-func FormatCopyFileNFSProperties(np *CopyFileNFSProperties) (opts *generated.CopyFileSMBInfo) {
-	opts = &generated.CopyFileSMBInfo{}
+// func FormatCopyFileNFSProperties(np *CopyFileNFSProperties) (opts *generated.CopyFileSMBInfo) {
+// 	opts = &generated.CopyFileSMBInfo{}
 
-	if np == nil {
-		return nil
-	}
+// 	if np == nil {
+// 		return nil
+// 	}
 
-	if np.CreationTime != nil {
-		opts.FileCreationTime = np.CreationTime.FormatCreationTime()
-	}
+// 	if np.CreationTime != nil {
+// 		opts.FileCreationTime = np.CreationTime.FormatCreationTime()
+// 	}
 
-	if np.LastWriteTime != nil {
-		opts.FileLastWriteTime = np.LastWriteTime.FormatLastWriteTime()
-	}
+// 	if np.LastWriteTime != nil {
+// 		opts.FileLastWriteTime = np.LastWriteTime.FormatLastWriteTime()
+// 	}
 
-	return
-}
+// 	return
+// }

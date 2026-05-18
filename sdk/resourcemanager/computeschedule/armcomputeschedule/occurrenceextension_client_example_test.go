@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-15-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
 func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewOccurrenceExtensionClient().NewListOccurrenceByVMsPager("sazvpabfud", nil)
+	pager := clientFactory.NewOccurrenceExtensionClient().NewListOccurrenceByVMsPager("rgdhjh", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -38,39 +38,39 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 		// 		Value: []*armcomputeschedule.OccurrenceExtensionResource{
 		// 			{
 		// 				Properties: &armcomputeschedule.OccurrenceExtensionProperties{
-		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T00:22:10.427Z"); return t}()),
-		// 					ProvisioningState: to.Ptr(armcomputeschedule.ResourceProvisioningState("Created")),
-		// 					ScheduledActionID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
 		// 					ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 		// 					NotificationSettings: []*armcomputeschedule.NotificationProperties{
 		// 						{
-		// 							Destination: to.Ptr("vndtiuhlftssijfoswtfh"),
+		// 							Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 		// 							Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
 		// 							Language: to.Ptr(armcomputeschedule.LanguageEnUs),
 		// 							Disabled: to.Ptr(true),
 		// 						},
 		// 					},
+		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.64Z"); return t}()),
+		// 					ProvisioningState: to.Ptr(armcomputeschedule.ResourceProvisioningStateSucceeded),
 		// 					ErrorDetails: &armcomputeschedule.Error{
-		// 						Code: to.Ptr("cysibinnxdggpgusnwglgwgax"),
-		// 						Message: to.Ptr("g"),
-		// 						Target: to.Ptr("thcruyd"),
+		// 						Code: to.Ptr("ewhmaevjwwzq"),
+		// 						Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+		// 						Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 		// 						Details: []*armcomputeschedule.Error{
 		// 						},
 		// 						Innererror: &armcomputeschedule.InnerError{
-		// 							Code: to.Ptr("grymlabennz"),
+		// 							Code: to.Ptr("mfwkrowlbvalcyreeq"),
 		// 						},
 		// 					},
+		// 					ScheduledActionID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
-		// 				Name: to.Ptr("dkmlhpipnlqh"),
-		// 				Type: to.Ptr("xgq"),
+		// 				Name: to.Ptr("myScheduledAction"),
+		// 				Type: to.Ptr("pbkwnfqervqhogxhemmgknol"),
 		// 				SystemData: &armcomputeschedule.SystemData{
-		// 					CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
+		// 					CreatedBy: to.Ptr("oadcwbhkptyfimpbaoyf"),
 		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("djuqozdplhpcdifwrsetsuu"),
 		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},

@@ -13,20 +13,20 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-04-15-preview/Occurrences_Cancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Occurrences_Cancel_MaximumSet_Gen.json
 func ExampleOccurrencesClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOccurrencesClient().Cancel(ctx, "rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", armcomputeschedule.CancelOccurrenceRequest{
+	res, err := clientFactory.NewOccurrencesClient().Cancel(ctx, "rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111", armcomputeschedule.CancelOccurrenceRequest{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 		},
 	}, nil)
 	if err != nil {
@@ -37,19 +37,19 @@ func ExampleOccurrencesClient_Cancel() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.OccurrencesClientCancelResponse{
 	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armcomputeschedule.ResourceOperationStatusSucceeded),
 	// 				Error: &armcomputeschedule.Error{
-	// 					Code: to.Ptr("baxjmkbhoatqcj"),
-	// 					Message: to.Ptr("chapcwfkqymeof"),
-	// 					Target: to.Ptr("mkirmorowetsigohjamvk"),
+	// 					Code: to.Ptr("ewhmaevjwwzq"),
+	// 					Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+	// 					Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 	// 					Details: []*armcomputeschedule.Error{
 	// 					},
 	// 					Innererror: &armcomputeschedule.InnerError{
-	// 						Code: to.Ptr("cgalioufsabcwatbxa"),
+	// 						Code: to.Ptr("mfwkrowlbvalcyreeq"),
 	// 					},
 	// 				},
 	// 			},
@@ -58,21 +58,21 @@ func ExampleOccurrencesClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/Occurrences_Delay_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Occurrences_Delay_MaximumSet_Gen.json
 func ExampleOccurrencesClient_BeginDelay() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOccurrencesClient().BeginDelay(ctx, "rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", armcomputeschedule.DelayRequest{
-		Delay: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-22T17:00:00.000-07:00"); return t }()),
+	poller, err := clientFactory.NewOccurrencesClient().BeginDelay(ctx, "rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111", armcomputeschedule.DelayRequest{
+		Delay: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:48.148Z"); return t }()),
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
 		},
 	}, nil)
 	if err != nil {
@@ -87,19 +87,19 @@ func ExampleOccurrencesClient_BeginDelay() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.OccurrencesClientDelayResponse{
 	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armcomputeschedule.ResourceOperationStatusSucceeded),
 	// 				Error: &armcomputeschedule.Error{
-	// 					Code: to.Ptr("baxjmkbhoatqcj"),
-	// 					Message: to.Ptr("chapcwfkqymeof"),
-	// 					Target: to.Ptr("mkirmorowetsigohjamvk"),
+	// 					Code: to.Ptr("ewhmaevjwwzq"),
+	// 					Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+	// 					Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 	// 					Details: []*armcomputeschedule.Error{
 	// 					},
 	// 					Innererror: &armcomputeschedule.InnerError{
-	// 						Code: to.Ptr("cgalioufsabcwatbxa"),
+	// 						Code: to.Ptr("mfwkrowlbvalcyreeq"),
 	// 					},
 	// 				},
 	// 			},
@@ -108,18 +108,18 @@ func ExampleOccurrencesClient_BeginDelay() {
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/Occurrences_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Occurrences_Get_MaximumSet_Gen.json
 func ExampleOccurrencesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOccurrencesClient().Get(ctx, "rgcomputeschedule", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45", nil)
+	res, err := clientFactory.NewOccurrencesClient().Get(ctx, "rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -129,21 +129,21 @@ func ExampleOccurrencesClient_Get() {
 	// res = armcomputeschedule.OccurrencesClientGetResponse{
 	// 	Occurrence: &armcomputeschedule.Occurrence{
 	// 		Properties: &armcomputeschedule.OccurrenceProperties{
-	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:59.243Z"); return t}()),
+	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:47.285Z"); return t}()),
 	// 			ResultSummary: &armcomputeschedule.OccurrenceResultSummary{
-	// 				Total: to.Ptr[int32](25),
+	// 				Total: to.Ptr[int32](3),
 	// 				Statuses: []*armcomputeschedule.ResourceResultSummary{
 	// 					{
-	// 						Code: to.Ptr("ubmwzgcwfopegjtkqyrkedgish"),
-	// 						Count: to.Ptr[int32](4),
+	// 						Code: to.Ptr("hsqffeqm"),
+	// 						Count: to.Ptr[int32](2),
 	// 						ErrorDetails: &armcomputeschedule.Error{
-	// 							Code: to.Ptr("baxjmkbhoatqcj"),
-	// 							Message: to.Ptr("chapcwfkqymeof"),
-	// 							Target: to.Ptr("mkirmorowetsigohjamvk"),
+	// 							Code: to.Ptr("ewhmaevjwwzq"),
+	// 							Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+	// 							Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 	// 							Details: []*armcomputeschedule.Error{
 	// 							},
 	// 							Innererror: &armcomputeschedule.InnerError{
-	// 								Code: to.Ptr("cgalioufsabcwatbxa"),
+	// 								Code: to.Ptr("mfwkrowlbvalcyreeq"),
 	// 							},
 	// 						},
 	// 					},
@@ -152,32 +152,32 @@ func ExampleOccurrencesClient_Get() {
 	// 			ProvisioningState: to.Ptr(armcomputeschedule.OccurrenceStateCreated),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction/occurrences/83C27AB3-A7B9-498B-B165-D9440661474F"),
-	// 		Name: to.Ptr("edirlrdovp"),
-	// 		Type: to.Ptr("hvnnadgtjavnsbilpaipgrtdjy"),
+	// 		Name: to.Ptr("myScheduledAction"),
+	// 		Type: to.Ptr("pbkwnfqervqhogxhemmgknol"),
 	// 		SystemData: &armcomputeschedule.SystemData{
-	// 			CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
+	// 			CreatedBy: to.Ptr("oadcwbhkptyfimpbaoyf"),
 	// 			CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("djuqozdplhpcdifwrsetsuu"),
 	// 			LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-15-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
 func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewOccurrencesClient().NewListByScheduledActionPager("rgcomputeschedule", "myScheduledAction", nil)
+	pager := clientFactory.NewOccurrencesClient().NewListByScheduledActionPager("rgcomputeschedule", "scheduled-action-01", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -193,21 +193,21 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 		// 		Value: []*armcomputeschedule.Occurrence{
 		// 			{
 		// 				Properties: &armcomputeschedule.OccurrenceProperties{
-		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:59.243Z"); return t}()),
+		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:47.285Z"); return t}()),
 		// 					ResultSummary: &armcomputeschedule.OccurrenceResultSummary{
-		// 						Total: to.Ptr[int32](25),
+		// 						Total: to.Ptr[int32](3),
 		// 						Statuses: []*armcomputeschedule.ResourceResultSummary{
 		// 							{
-		// 								Code: to.Ptr("ubmwzgcwfopegjtkqyrkedgish"),
-		// 								Count: to.Ptr[int32](4),
+		// 								Code: to.Ptr("hsqffeqm"),
+		// 								Count: to.Ptr[int32](2),
 		// 								ErrorDetails: &armcomputeschedule.Error{
-		// 									Code: to.Ptr("baxjmkbhoatqcj"),
-		// 									Message: to.Ptr("chapcwfkqymeof"),
-		// 									Target: to.Ptr("mkirmorowetsigohjamvk"),
+		// 									Code: to.Ptr("ewhmaevjwwzq"),
+		// 									Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+		// 									Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 		// 									Details: []*armcomputeschedule.Error{
 		// 									},
 		// 									Innererror: &armcomputeschedule.InnerError{
-		// 										Code: to.Ptr("cgalioufsabcwatbxa"),
+		// 										Code: to.Ptr("mfwkrowlbvalcyreeq"),
 		// 									},
 		// 								},
 		// 							},
@@ -216,15 +216,15 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 		// 					ProvisioningState: to.Ptr(armcomputeschedule.OccurrenceStateCreated),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction/occurrences/83C27AB3-A7B9-498B-B165-D9440661474F"),
-		// 				Name: to.Ptr("edirlrdovp"),
-		// 				Type: to.Ptr("hvnnadgtjavnsbilpaipgrtdjy"),
+		// 				Name: to.Ptr("myScheduledAction"),
+		// 				Type: to.Ptr("pbkwnfqervqhogxhemmgknol"),
 		// 				SystemData: &armcomputeschedule.SystemData{
-		// 					CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
+		// 					CreatedBy: to.Ptr("oadcwbhkptyfimpbaoyf"),
 		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("djuqozdplhpcdifwrsetsuu"),
 		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
@@ -234,18 +234,18 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 	}
 }
 
-// Generated from example definition: 2025-04-15-preview/Occurrences_ListResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Occurrences_ListResources_MaximumSet_Gen.json
 func ExampleOccurrencesClient_NewListResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewOccurrencesClient().NewListResourcesPager("rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", nil)
+	pager := clientFactory.NewOccurrencesClient().NewListResourcesPager("rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -260,33 +260,33 @@ func ExampleOccurrencesClient_NewListResourcesPager() {
 		// 	OccurrenceResourceListResponse: armcomputeschedule.OccurrenceResourceListResponse{
 		// 		Value: []*armcomputeschedule.OccurrenceResource{
 		// 			{
+		// 				Name: to.Ptr("nhldfnv"),
+		// 				ID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+		// 				Type: to.Ptr("iexymolrmgvriqrj"),
 		// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 		// 				NotificationSettings: []*armcomputeschedule.NotificationProperties{
 		// 					{
-		// 						Destination: to.Ptr("wbhryycyolvnypjxzlawwvb"),
+		// 						Destination: to.Ptr("zaaoabozbhyuhejwsrennfsxowp"),
 		// 						Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
 		// 						Language: to.Ptr(armcomputeschedule.LanguageEnUs),
 		// 						Disabled: to.Ptr(true),
 		// 					},
 		// 				},
-		// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:59.751Z"); return t}()),
+		// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:48.436Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armcomputeschedule.ResourceProvisioningStateSucceeded),
 		// 				ErrorDetails: &armcomputeschedule.Error{
-		// 					Code: to.Ptr("baxjmkbhoatqcj"),
-		// 					Message: to.Ptr("chapcwfkqymeof"),
-		// 					Target: to.Ptr("mkirmorowetsigohjamvk"),
+		// 					Code: to.Ptr("ewhmaevjwwzq"),
+		// 					Message: to.Ptr("sjdmnsfomnqhjzgjbdfxtcgfqo"),
+		// 					Target: to.Ptr("dtpqtljrtdukatlcsafxarelkkfv"),
 		// 					Details: []*armcomputeschedule.Error{
 		// 					},
 		// 					Innererror: &armcomputeschedule.InnerError{
-		// 						Code: to.Ptr("cgalioufsabcwatbxa"),
+		// 						Code: to.Ptr("mfwkrowlbvalcyreeq"),
 		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
-		// 				Name: to.Ptr("dkmlhpipnlqh"),
-		// 				Type: to.Ptr("xgq"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/as"),
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}

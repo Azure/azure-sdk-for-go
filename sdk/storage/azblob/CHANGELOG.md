@@ -9,6 +9,8 @@
 
 ### Bugs Fixed
 
+* Fixed WASM compilation by using heap-allocated buffers on JS targets.
+
 ### Other Changes
 
 ## 1.7.0 (2026-05-14)

@@ -25,9 +25,9 @@ type MicrosoftStorageSyncClient struct {
 }
 
 // NewMicrosoftStorageSyncClient creates a new instance of MicrosoftStorageSyncClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMicrosoftStorageSyncClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MicrosoftStorageSyncClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewMicrosoftStorageSyncClient(subscriptionID string, credential azcore.Toke
 // LocationOperationStatus - Get Operation status
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-09-01
+// Generated from API version 2022-09-01
 //   - locationName - The desired region to obtain information from.
 //   - operationID - operation Id
 //   - options - MicrosoftStorageSyncClientLocationOperationStatusOptions contains the optional parameters for the MicrosoftStorageSyncClient.LocationOperationStatus
@@ -71,7 +71,7 @@ func (client *MicrosoftStorageSyncClient) LocationOperationStatus(ctx context.Co
 }
 
 // locationOperationStatusCreateRequest creates the LocationOperationStatus request.
-func (client *MicrosoftStorageSyncClient) locationOperationStatusCreateRequest(ctx context.Context, locationName string, operationID string, options *MicrosoftStorageSyncClientLocationOperationStatusOptions) (*policy.Request, error) {
+func (client *MicrosoftStorageSyncClient) locationOperationStatusCreateRequest(ctx context.Context, locationName string, operationID string, _ *MicrosoftStorageSyncClientLocationOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageSync/locations/{locationName}/operations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,7 +90,7 @@ func (client *MicrosoftStorageSyncClient) locationOperationStatusCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

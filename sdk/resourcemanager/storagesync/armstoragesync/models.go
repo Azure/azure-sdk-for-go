@@ -60,7 +60,7 @@ type CloudEndpoint struct {
 	// Cloud Endpoint properties.
 	Properties *CloudEndpointProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -71,6 +71,16 @@ type CloudEndpoint struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// CloudEndpointAfsShareMetadataCertificatePublicKeys - Cloud endpoint AFS file share metadata signing certificate public
+// keys.
+type CloudEndpointAfsShareMetadataCertificatePublicKeys struct {
+	// READ-ONLY; The first public key.
+	FirstKey *string
+
+	// READ-ONLY; The second public key.
+	SecondKey *string
 }
 
 // CloudEndpointArray - Array of CloudEndpoint
@@ -138,7 +148,7 @@ type CloudEndpointCreateParameters struct {
 	// The parameters used to create the cloud endpoint.
 	Properties *CloudEndpointCreateParametersProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -256,6 +266,15 @@ type CloudTieringFilesNotTiering struct {
 	TotalFileCount *int64
 }
 
+// CloudTieringLowDiskMode - Information regarding the low disk mode state
+type CloudTieringLowDiskMode struct {
+	// READ-ONLY; Last updated timestamp
+	LastUpdatedTimestamp *time.Time
+
+	// READ-ONLY; Low disk mode state
+	State *CloudTieringLowDiskModeState
+}
+
 // CloudTieringSpaceSavings - Server endpoint cloud tiering status object.
 type CloudTieringSpaceSavings struct {
 	// READ-ONLY; Cached content size on the server
@@ -298,6 +317,33 @@ type Error struct {
 	Innererror *APIError
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
 // ErrorDetails - Error Details object.
 type ErrorDetails struct {
 	// Error code of the given entry.
@@ -323,6 +369,13 @@ type ErrorDetails struct {
 
 	// Target of the given entry.
 	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
 }
 
 // FilesNotTieringError - Files not tiering error object
@@ -371,6 +424,26 @@ type LocationOperationStatus struct {
 
 	// READ-ONLY; Operation status
 	Status *string
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // OperationDisplayInfo - The operation supported by storage sync.
@@ -449,6 +522,9 @@ type OperationResourceMetricSpecification struct {
 
 	// Fill gaps in the metric with zero.
 	FillGapWithZero *bool
+
+	// Lock Aggregation type for the metric.
+	LockAggregationType *string
 
 	// Name of the metric.
 	Name *string
@@ -565,18 +641,18 @@ type PreRestoreRequest struct {
 	Status *string
 }
 
-// PrivateEndpoint - The Private Endpoint resource.
+// PrivateEndpoint - The private endpoint resource.
 type PrivateEndpoint struct {
-	// READ-ONLY; The ARM identifier for Private Endpoint
+	// READ-ONLY; The ARM identifier for private endpoint.
 	ID *string
 }
 
-// PrivateEndpointConnection - The Private Endpoint Connection resource.
+// PrivateEndpointConnection - The private endpoint connection resource.
 type PrivateEndpointConnection struct {
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -589,30 +665,33 @@ type PrivateEndpointConnection struct {
 	Type *string
 }
 
-// PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
+// PrivateEndpointConnectionListResult - List of private endpoint connections associated with the specified resource.
 type PrivateEndpointConnectionListResult struct {
-	// Array of private endpoint connections
+	// Array of private endpoint connections.
 	Value []*PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
-	// The resource of private end point.
+	// The private endpoint resource.
 	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
 	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
-// PrivateLinkResource - A private link resource
+// PrivateLinkResource - A private link resource.
 type PrivateLinkResource struct {
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -625,7 +704,7 @@ type PrivateLinkResource struct {
 	Type *string
 }
 
-// PrivateLinkResourceListResult - A list of private link resources
+// PrivateLinkResourceListResult - A list of private link resources.
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
 	Value []*PrivateLinkResource
@@ -633,7 +712,7 @@ type PrivateLinkResourceListResult struct {
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
-	// The private link resource Private link DNS zone name.
+	// The private link resource private link DNS zone name.
 	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
@@ -659,7 +738,7 @@ type PrivateLinkServiceConnectionState struct {
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -686,7 +765,7 @@ type RegisteredServer struct {
 	// RegisteredServer properties.
 	Properties *RegisteredServerProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -710,7 +789,7 @@ type RegisteredServerCreateParameters struct {
 	// The parameters used to create the registered server.
 	Properties *RegisteredServerCreateParametersProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -728,6 +807,9 @@ type RegisteredServerCreateParametersProperties struct {
 	// Registered Server Agent Version
 	AgentVersion *string
 
+	// Server ServicePrincipal Id
+	ApplicationID *string
+
 	// Registered Server clusterId
 	ClusterID *string
 
@@ -736,6 +818,9 @@ type RegisteredServerCreateParametersProperties struct {
 
 	// Friendly Name
 	FriendlyName *string
+
+	// Apply server with newly discovered ApplicationId if available.
+	Identity *bool
 
 	// Registered Server last heart beat
 	LastHeartBeat *string
@@ -758,6 +843,9 @@ type RegisteredServerProperties struct {
 	// Registered Server Agent Version
 	AgentVersion *string
 
+	// Server Application Id
+	ApplicationID *string
+
 	// Registered Server clusterId
 	ClusterID *string
 
@@ -778,6 +866,9 @@ type RegisteredServerProperties struct {
 
 	// Registered Server lastWorkflowId
 	LastWorkflowID *string
+
+	// Latest Server Application Id discovered from the server. It is not yet applied.
+	LatestApplicationID *string
 
 	// Management Endpoint Uri
 	ManagementEndpointURI *string
@@ -815,19 +906,52 @@ type RegisteredServerProperties struct {
 	// Registered Server storageSyncServiceUid
 	StorageSyncServiceUID *string
 
+	// READ-ONLY; Server auth type.
+	ActiveAuthType *ServerAuthType
+
 	// READ-ONLY; Registered Server Agent Version Expiration Date
 	AgentVersionExpirationDate *time.Time
 
 	// READ-ONLY; Registered Server Agent Version Status
 	AgentVersionStatus *RegisteredServerAgentVersionStatus
 
+	// READ-ONLY; Apply server with newly discovered ApplicationId if available.
+	Identity *bool
+
 	// READ-ONLY; Server name
 	ServerName *string
 }
 
+// RegisteredServerUpdateParameters - The parameters used when updating a registered server.
+type RegisteredServerUpdateParameters struct {
+	// The parameters used to update the registered server.
+	Properties *RegisteredServerUpdateProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RegisteredServerUpdateProperties - RegisteredServer Update Properties object.
+type RegisteredServerUpdateProperties struct {
+	// Apply server with new ServicePrincipal Id
+	ApplicationID *string
+
+	// Apply server with newly discovered ApplicationId if available.
+	Identity *bool
+}
+
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -863,7 +987,7 @@ type ServerEndpoint struct {
 	// Server Endpoint properties.
 	Properties *ServerEndpointProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -923,6 +1047,9 @@ type ServerEndpointCloudTieringStatus struct {
 	// READ-ONLY; Last updated timestamp
 	LastUpdatedTimestamp *time.Time
 
+	// READ-ONLY; Information regarding the low disk mode state
+	LowDiskMode *CloudTieringLowDiskMode
+
 	// READ-ONLY; Information regarding how much local space cloud tiering is saving.
 	SpaceSavings *CloudTieringSpaceSavings
 
@@ -935,7 +1062,7 @@ type ServerEndpointCreateParameters struct {
 	// The parameters used to create the server endpoint.
 	Properties *ServerEndpointCreateParametersProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1019,6 +1146,9 @@ type ServerEndpointProperties struct {
 	// Offline data transfer share name
 	OfflineDataTransferShareName *string
 
+	// Server Endpoint provisioning status
+	ServerEndpointProvisioningStatus *ServerEndpointProvisioningStatus
+
 	// Server Local path.
 	ServerLocalPath *string
 
@@ -1057,6 +1187,45 @@ type ServerEndpointProperties struct {
 
 	// READ-ONLY; Server Endpoint sync status
 	SyncStatus *ServerEndpointSyncStatus
+}
+
+// ServerEndpointProvisioningStatus - Server endpoint provisioning status information
+type ServerEndpointProvisioningStatus struct {
+	// READ-ONLY; Server Endpoint provisioning status
+	ProvisioningStatus *ServerProvisioningStatus
+
+	// READ-ONLY; Provisioning Step status information for each step in the provisioning process
+	ProvisioningStepStatuses []*ServerEndpointProvisioningStepStatus
+
+	// READ-ONLY; Server Endpoint provisioning type
+	ProvisioningType *string
+}
+
+// ServerEndpointProvisioningStepStatus - Server endpoint provisioning step status object.
+type ServerEndpointProvisioningStepStatus struct {
+	// READ-ONLY; Additional information for the provisioning step
+	AdditionalInformation map[string]*string
+
+	// READ-ONLY; End time of the provisioning step
+	EndTime *time.Time
+
+	// READ-ONLY; Error code (HResult) for the provisioning step
+	ErrorCode *int32
+
+	// READ-ONLY; Estimated completion time of the provisioning step in minutes
+	MinutesLeft *int32
+
+	// READ-ONLY; Name of the provisioning step
+	Name *string
+
+	// READ-ONLY; Estimated progress percentage
+	ProgressPercentage *int32
+
+	// READ-ONLY; Start time of the provisioning step
+	StartTime *time.Time
+
+	// READ-ONLY; Status of the provisioning step
+	Status *string
 }
 
 // ServerEndpointRecallError - Server endpoint recall error object
@@ -1205,13 +1374,17 @@ type Service struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
+	// managed identities for the Storage Sync service to interact with other Azure services without maintaining any secrets or
+	// credentials in code.
+	Identity *ManagedServiceIdentity
+
 	// Storage Sync Service properties.
 	Properties *ServiceProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1232,25 +1405,39 @@ type ServiceArray struct {
 
 // ServiceCreateParameters - The parameters used when creating a storage sync service.
 type ServiceCreateParameters struct {
-	// REQUIRED; Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo
-	// Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource
-	// cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
+
+	// managed identities for the Storage Sync to interact with other Azure services without maintaining any secrets or credentials
+	// in code.
+	Identity *ManagedServiceIdentity
 
 	// The parameters used to create the storage sync service.
 	Properties *ServiceCreateParametersProperties
 
-	// Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this
-	// resource (across resource groups). A maximum of 15 tags can be provided for a
-	// resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than
-	// 256 characters.
+	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // ServiceCreateParametersProperties - StorageSyncService Properties object.
 type ServiceCreateParametersProperties struct {
 	// Incoming Traffic Policy
 	IncomingTrafficPolicy *IncomingTrafficPolicy
+
+	// Use Identity authorization when customer have finished setup RBAC permissions.
+	UseIdentity *bool
 }
 
 // ServiceProperties - Storage Sync Service Properties object.
@@ -1275,10 +1462,17 @@ type ServiceProperties struct {
 
 	// READ-ONLY; Storage Sync service Uid
 	StorageSyncServiceUID *string
+
+	// READ-ONLY; Use Identity authorization when customer have finished setup RBAC permissions.
+	UseIdentity *bool
 }
 
 // ServiceUpdateParameters - Parameters for updating an Storage sync service.
 type ServiceUpdateParameters struct {
+	// managed identities for the Container App to interact with other Azure services without maintaining any secrets or credentials
+	// in code.
+	Identity *ManagedServiceIdentity
+
 	// The properties of the server endpoint.
 	Properties *ServiceUpdateProperties
 
@@ -1290,6 +1484,9 @@ type ServiceUpdateParameters struct {
 type ServiceUpdateProperties struct {
 	// Incoming Traffic Policy
 	IncomingTrafficPolicy *IncomingTrafficPolicy
+
+	// Use Identity authorization when customer have finished setup RBAC permissions.
+	UseIdentity *bool
 }
 
 // SubscriptionState - Subscription State object.
@@ -1309,7 +1506,7 @@ type SyncGroup struct {
 	// SyncGroup properties.
 	Properties *SyncGroupProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1333,7 +1530,7 @@ type SyncGroupCreateParameters struct {
 	// The parameters used to create the sync group
 	Properties any
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1385,7 +1582,7 @@ type TrackedResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1416,12 +1613,21 @@ type TriggerRolloverRequest struct {
 	ServerCertificate *string
 }
 
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
+}
+
 // Workflow resource.
 type Workflow struct {
 	// Workflow properties.
 	Properties *WorkflowProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource

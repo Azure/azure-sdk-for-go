@@ -16,17 +16,38 @@ import (
 
 // ServerFactory is a fake server for instances of the armstoragesync.ClientFactory type.
 type ServerFactory struct {
-	CloudEndpointsServer             CloudEndpointsServer
-	MicrosoftStorageSyncServer       MicrosoftStorageSyncServer
-	OperationStatusServer            OperationStatusServer
-	OperationsServer                 OperationsServer
+	// CloudEndpointsServer contains the fakes for client CloudEndpointsClient
+	CloudEndpointsServer CloudEndpointsServer
+
+	// MicrosoftStorageSyncServer contains the fakes for client MicrosoftStorageSyncClient
+	MicrosoftStorageSyncServer MicrosoftStorageSyncServer
+
+	// OperationStatusServer contains the fakes for client OperationStatusClient
+	OperationStatusServer OperationStatusServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer       PrivateLinkResourcesServer
-	RegisteredServersServer          RegisteredServersServer
-	ServerEndpointsServer            ServerEndpointsServer
-	ServicesServer                   ServicesServer
-	SyncGroupsServer                 SyncGroupsServer
-	WorkflowsServer                  WorkflowsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// RegisteredServersServer contains the fakes for client RegisteredServersClient
+	RegisteredServersServer RegisteredServersServer
+
+	// ServerEndpointsServer contains the fakes for client ServerEndpointsClient
+	ServerEndpointsServer ServerEndpointsServer
+
+	// ServicesServer contains the fakes for client ServicesClient
+	ServicesServer ServicesServer
+
+	// SyncGroupsServer contains the fakes for client SyncGroupsClient
+	SyncGroupsServer SyncGroupsServer
+
+	// WorkflowsServer contains the fakes for client WorkflowsClient
+	WorkflowsServer WorkflowsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

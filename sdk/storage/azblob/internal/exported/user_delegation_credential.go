@@ -7,6 +7,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
@@ -28,13 +29,13 @@ type UserDelegationCredential struct {
 }
 
 // getAccountName returns the Storage account's Name
-func (f *UserDelegationCredential) getAccountName() string {
+func (f *UserDelegationCredential) GetAccountName() string {
 	return f.accountName
 }
 
 // GetAccountName is a helper method for accessing the user delegation key parameters outside this package.
 func GetAccountName(udc *UserDelegationCredential) string {
-	return udc.getAccountName()
+	return udc.GetAccountName()
 }
 
 // computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
@@ -51,11 +52,11 @@ func ComputeUDCHMACSHA256(udc *UserDelegationCredential, message string) (string
 }
 
 // getUDKParams returns UserDelegationKey
-func (f *UserDelegationCredential) getUDKParams() *UserDelegationKey {
+func (f *UserDelegationCredential) GetUDKParams() *UserDelegationKey {
 	return &f.userDelegationKey
 }
 
 // GetUDKParams is a helper method for accessing the user delegation key parameters outside this package.
 func GetUDKParams(udc *UserDelegationCredential) *UserDelegationKey {
-	return udc.getUDKParams()
+	return udc.GetUDKParams()
 }

@@ -5,15 +5,17 @@
 
 package shared
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 // Mmb is a plain heap-allocated buffer used on platforms without mmap support (e.g. WASM).
 type Mmb []byte
 
 // NewMMB allocates a plain byte slice. No mmap is used.
 func NewMMB(size int64) (Mmb, error) {
-	maxInt := int64(^uint(0) >> 1)
-	if size < 0 || size > maxInt {
+	if size < 0 || size > math.MaxInt {
 		return nil, fmt.Errorf("size %d out of range", size)
 	}
 

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
@@ -29,7 +28,7 @@ func Command() *cobra.Command {
 	var verbose bool
 
 	changelogCmd := &cobra.Command{
-		Use:   "sdkchange <package-path>",
+		Use:   "sdkchange <package-path> <outputjson-file-path>",
 		Short: "Get sdk changes for a existing package",
 		Long: `Get sdk changes for a existing package.
 
@@ -41,16 +40,15 @@ The package path should be an absolute path to a Go module (containing go.mod fi
 
 Examples:
   # get sdk change for an existing package
-  generator sdkchange /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
+  generator sdkchange /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute /path/to/outputJsonFile
 
   # get sdk change with verbose output
-  generator sdkchange /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --verbose
-
-  # get sdk change with JSON output
-  generator sdkchange /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --output json`,
-		Args: cobra.ExactArgs(1),
+  generator sdkchange /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute /path/to/outputJsonFile --verbose`,
+		Args: cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			packagePath := args[0]
+
+			outputJsonFile := args[1]
 
 			// Validate package path
 			if err := utils.ValidatePackagePath(packagePath); err != nil {
@@ -84,6 +82,7 @@ Examples:
 
 			if status != utils.PackageStatusExisting {
 				result.Success = true
+				result.HasBreakingChange = false
 			}
 
 			// Generate changelog
@@ -103,31 +102,14 @@ Examples:
 			result.Success = true
 
 			// Output result
-			switch outputFormat {
-			case "json":
-				jsonResult, err := json.MarshalIndent(result, "", "  ")
-				if err != nil {
-					return fmt.Errorf("failed to marshal result: %v", err)
-				}
-				fmt.Println(string(jsonResult))
-				path := filepath.Join(packagePath, utils.SDKChangeJsonFile)
-				if err = os.WriteFile(path, []byte(string(jsonResult)), 0644); err != nil {
-					return err
-				}
-			default:
-				// Human-readable output
-				if result.Success {
-					fmt.Printf("✓ Sdk Change retrieved successfully!\n\n")
-					fmt.Printf("Package: %s\n", result.PackagePath)
-					fmt.Printf("Status: %s\n", result.PackageStatus)
-					fmt.Printf("HasBreakingChange: %s\n", result.HasBreakingChange)
-					if result.ChangelogMD != "" {
-						fmt.Printf("\nSDK Change:\n%s\n", result.ChangelogMD)
-					}
-				} else {
-					fmt.Printf("✗ Sdk change retrieve failed: %s\n", result.Message)
-					return fmt.Errorf("Sdk change retrieve failed")
-				}
+			jsonResult, err := json.MarshalIndent(result, "", "  ")
+			if err != nil {
+				return fmt.Errorf("failed to marshal result: %v", err)
+			}
+			fmt.Println(string(jsonResult))
+			// path := filepath.Join(packagePath, utils.SDKChangeJsonFile)
+			if err = os.WriteFile(outputJsonFile, []byte(string(jsonResult)), 0644); err != nil {
+				return err
 			}
 
 			return nil

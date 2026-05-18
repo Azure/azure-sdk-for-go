@@ -21,17 +21,29 @@ import (
 
 // EntitiesServer is a fake server for instances of the armcloudhealth.EntitiesClient type.
 type EntitiesServer struct {
-	// CreateOrUpdate is the fake for method EntitiesClient.CreateOrUpdate
+	// BeginCreateOrUpdate is the fake for method EntitiesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource armcloudhealth.Entity, options *armcloudhealth.EntitiesClientCreateOrUpdateOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource armcloudhealth.Entity, options *armcloudhealth.EntitiesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcloudhealth.EntitiesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method EntitiesClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *armcloudhealth.EntitiesClientDeleteOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method EntitiesClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *armcloudhealth.EntitiesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcloudhealth.EntitiesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method EntitiesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *armcloudhealth.EntitiesClientGetOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetHistory is the fake for method EntitiesClient.GetHistory
+	// HTTP status codes to indicate success: http.StatusOK
+	GetHistory func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body armcloudhealth.EntityHistoryRequest, options *armcloudhealth.EntitiesClientGetHistoryOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientGetHistoryResponse], errResp azfake.ErrorResponder)
+
+	// GetSignalHistory is the fake for method EntitiesClient.GetSignalHistory
+	// HTTP status codes to indicate success: http.StatusOK
+	GetSignalHistory func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body armcloudhealth.SignalHistoryRequest, options *armcloudhealth.EntitiesClientGetSignalHistoryOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientGetSignalHistoryResponse], errResp azfake.ErrorResponder)
+
+	// IngestHealthReport is the fake for method EntitiesClient.IngestHealthReport
+	// HTTP status codes to indicate success: http.StatusNoContent
+	IngestHealthReport func(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body armcloudhealth.HealthReportRequest, options *armcloudhealth.EntitiesClientIngestHealthReportOptions) (resp azfake.Responder[armcloudhealth.EntitiesClientIngestHealthReportResponse], errResp azfake.ErrorResponder)
 
 	// NewListByHealthModelPager is the fake for method EntitiesClient.NewListByHealthModelPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,6 +56,8 @@ type EntitiesServer struct {
 func NewEntitiesServerTransport(srv *EntitiesServer) *EntitiesServerTransport {
 	return &EntitiesServerTransport{
 		srv:                       srv,
+		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armcloudhealth.EntitiesClientCreateOrUpdateResponse]](),
+		beginDelete:               newTracker[azfake.PollerResponder[armcloudhealth.EntitiesClientDeleteResponse]](),
 		newListByHealthModelPager: newTracker[azfake.PagerResponder[armcloudhealth.EntitiesClientListByHealthModelResponse]](),
 	}
 }
@@ -52,6 +66,8 @@ func NewEntitiesServerTransport(srv *EntitiesServer) *EntitiesServerTransport {
 // Don't use this type directly, use NewEntitiesServerTransport instead.
 type EntitiesServerTransport struct {
 	srv                       *EntitiesServer
+	beginCreateOrUpdate       *tracker[azfake.PollerResponder[armcloudhealth.EntitiesClientCreateOrUpdateResponse]]
+	beginDelete               *tracker[azfake.PollerResponder[armcloudhealth.EntitiesClientDeleteResponse]]
 	newListByHealthModelPager *tracker[azfake.PagerResponder[armcloudhealth.EntitiesClientListByHealthModelResponse]]
 }
 
@@ -78,12 +94,18 @@ func (e *EntitiesServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "EntitiesClient.CreateOrUpdate":
-				res.resp, res.err = e.dispatchCreateOrUpdate(req)
-			case "EntitiesClient.Delete":
-				res.resp, res.err = e.dispatchDelete(req)
+			case "EntitiesClient.BeginCreateOrUpdate":
+				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
+			case "EntitiesClient.BeginDelete":
+				res.resp, res.err = e.dispatchBeginDelete(req)
 			case "EntitiesClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
+			case "EntitiesClient.GetHistory":
+				res.resp, res.err = e.dispatchGetHistory(req)
+			case "EntitiesClient.GetSignalHistory":
+				res.resp, res.err = e.dispatchGetSignalHistory(req)
+			case "EntitiesClient.IngestHealthReport":
+				res.resp, res.err = e.dispatchIngestHealthReport(req)
 			case "EntitiesClient.NewListByHealthModelPager":
 				res.resp, res.err = e.dispatchNewListByHealthModelPager(req)
 			default:
@@ -105,81 +127,103 @@ func (e *EntitiesServerTransport) dispatchToMethodFake(req *http.Request, method
 	}
 }
 
-func (e *EntitiesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+func (e *EntitiesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcloudhealth.Entity](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+		if err != nil {
+			return nil, err
+		}
+		entityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, healthModelNameParam, entityNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		e.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcloudhealth.Entity](req)
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		e.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		e.beginCreateOrUpdate.remove(req)
 	}
-	entityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, healthModelNameParam, entityNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Entity, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
-func (e *EntitiesServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if e.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (e *EntitiesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := e.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+		if err != nil {
+			return nil, err
+		}
+		entityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginDelete(req.Context(), resourceGroupNameParam, healthModelNameParam, entityNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		e.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	entityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		e.beginDelete.remove(req)
 	}
-	respr, errRespr := e.srv.Delete(req.Context(), resourceGroupNameParam, healthModelNameParam, entityNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
@@ -214,6 +258,129 @@ func (e *EntitiesServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Entity, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EntitiesServerTransport) dispatchGetHistory(req *http.Request) (*http.Response, error) {
+	if e.srv.GetHistory == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetHistory not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getHistory`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcloudhealth.EntityHistoryRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+	if err != nil {
+		return nil, err
+	}
+	entityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetHistory(req.Context(), resourceGroupNameParam, healthModelNameParam, entityNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EntityHistoryResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EntitiesServerTransport) dispatchGetSignalHistory(req *http.Request) (*http.Response, error) {
+	if e.srv.GetSignalHistory == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetSignalHistory not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getSignalHistory`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcloudhealth.SignalHistoryRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+	if err != nil {
+		return nil, err
+	}
+	entityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetSignalHistory(req.Context(), resourceGroupNameParam, healthModelNameParam, entityNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SignalHistoryResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EntitiesServerTransport) dispatchIngestHealthReport(req *http.Request) (*http.Response, error) {
+	if e.srv.IngestHealthReport == nil {
+		return nil, &nonRetriableError{errors.New("fake for method IngestHealthReport not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities/(?P<entityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ingestHealthReport`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcloudhealth.HealthReportRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+	if err != nil {
+		return nil, err
+	}
+	entityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.IngestHealthReport(req.Context(), resourceGroupNameParam, healthModelNameParam, entityNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}

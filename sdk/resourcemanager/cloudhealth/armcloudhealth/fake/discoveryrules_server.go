@@ -21,13 +21,13 @@ import (
 
 // DiscoveryRulesServer is a fake server for instances of the armcloudhealth.DiscoveryRulesClient type.
 type DiscoveryRulesServer struct {
-	// CreateOrUpdate is the fake for method DiscoveryRulesClient.CreateOrUpdate
+	// BeginCreateOrUpdate is the fake for method DiscoveryRulesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource armcloudhealth.DiscoveryRule, options *armcloudhealth.DiscoveryRulesClientCreateOrUpdateOptions) (resp azfake.Responder[armcloudhealth.DiscoveryRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource armcloudhealth.DiscoveryRule, options *armcloudhealth.DiscoveryRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcloudhealth.DiscoveryRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method DiscoveryRulesClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, options *armcloudhealth.DiscoveryRulesClientDeleteOptions) (resp azfake.Responder[armcloudhealth.DiscoveryRulesClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method DiscoveryRulesClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, options *armcloudhealth.DiscoveryRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcloudhealth.DiscoveryRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DiscoveryRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,6 +44,8 @@ type DiscoveryRulesServer struct {
 func NewDiscoveryRulesServerTransport(srv *DiscoveryRulesServer) *DiscoveryRulesServerTransport {
 	return &DiscoveryRulesServerTransport{
 		srv:                       srv,
+		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armcloudhealth.DiscoveryRulesClientCreateOrUpdateResponse]](),
+		beginDelete:               newTracker[azfake.PollerResponder[armcloudhealth.DiscoveryRulesClientDeleteResponse]](),
 		newListByHealthModelPager: newTracker[azfake.PagerResponder[armcloudhealth.DiscoveryRulesClientListByHealthModelResponse]](),
 	}
 }
@@ -52,6 +54,8 @@ func NewDiscoveryRulesServerTransport(srv *DiscoveryRulesServer) *DiscoveryRules
 // Don't use this type directly, use NewDiscoveryRulesServerTransport instead.
 type DiscoveryRulesServerTransport struct {
 	srv                       *DiscoveryRulesServer
+	beginCreateOrUpdate       *tracker[azfake.PollerResponder[armcloudhealth.DiscoveryRulesClientCreateOrUpdateResponse]]
+	beginDelete               *tracker[azfake.PollerResponder[armcloudhealth.DiscoveryRulesClientDeleteResponse]]
 	newListByHealthModelPager *tracker[azfake.PagerResponder[armcloudhealth.DiscoveryRulesClientListByHealthModelResponse]]
 }
 
@@ -78,10 +82,10 @@ func (d *DiscoveryRulesServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "DiscoveryRulesClient.CreateOrUpdate":
-				res.resp, res.err = d.dispatchCreateOrUpdate(req)
-			case "DiscoveryRulesClient.Delete":
-				res.resp, res.err = d.dispatchDelete(req)
+			case "DiscoveryRulesClient.BeginCreateOrUpdate":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
+			case "DiscoveryRulesClient.BeginDelete":
+				res.resp, res.err = d.dispatchBeginDelete(req)
 			case "DiscoveryRulesClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DiscoveryRulesClient.NewListByHealthModelPager":
@@ -105,81 +109,103 @@ func (d *DiscoveryRulesServerTransport) dispatchToMethodFake(req *http.Request, 
 	}
 }
 
-func (d *DiscoveryRulesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+func (d *DiscoveryRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/discoveryrules/(?P<discoveryRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/discoveryrules/(?P<discoveryRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcloudhealth.DiscoveryRule](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+		if err != nil {
+			return nil, err
+		}
+		discoveryRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("discoveryRuleName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, healthModelNameParam, discoveryRuleNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcloudhealth.DiscoveryRule](req)
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		d.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		d.beginCreateOrUpdate.remove(req)
 	}
-	discoveryRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("discoveryRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, healthModelNameParam, discoveryRuleNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiscoveryRule, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
-func (d *DiscoveryRulesServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if d.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (d *DiscoveryRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/discoveryrules/(?P<discoveryRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := d.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/discoveryrules/(?P<discoveryRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+		if err != nil {
+			return nil, err
+		}
+		discoveryRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("discoveryRuleName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameParam, healthModelNameParam, discoveryRuleNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		d.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	discoveryRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("discoveryRuleName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		d.beginDelete.remove(req)
 	}
-	respr, errRespr := d.srv.Delete(req.Context(), resourceGroupNameParam, healthModelNameParam, discoveryRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

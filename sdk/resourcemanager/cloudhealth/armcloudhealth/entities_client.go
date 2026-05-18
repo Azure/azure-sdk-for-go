@@ -40,39 +40,60 @@ func NewEntitiesClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// CreateOrUpdate - Create a Entity
+// BeginCreateOrUpdate - Create a Entity
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - entityName - Name of the entity. Must be unique within a health model.
 //   - resource - Resource create parameters.
-//   - options - EntitiesClientCreateOrUpdateOptions contains the optional parameters for the EntitiesClient.CreateOrUpdate method.
-func (client *EntitiesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource Entity, options *EntitiesClientCreateOrUpdateOptions) (EntitiesClientCreateOrUpdateResponse, error) {
+//   - options - EntitiesClientBeginCreateOrUpdateOptions contains the optional parameters for the EntitiesClient.BeginCreateOrUpdate
+//     method.
+func (client *EntitiesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource Entity, options *EntitiesClientBeginCreateOrUpdateOptions) (*runtime.Poller[EntitiesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, healthModelName, entityName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EntitiesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EntitiesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Create a Entity
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
+func (client *EntitiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource Entity, options *EntitiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "EntitiesClient.CreateOrUpdate"
+	const operationName = "EntitiesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, healthModelName, entityName, resource, options)
 	if err != nil {
-		return EntitiesClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return EntitiesClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EntitiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource Entity, _ *EntitiesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *EntitiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource Entity, _ *EntitiesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +116,7 @@ func (client *EntitiesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
+	reqQP.Set("api-version", "2026-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -105,46 +126,58 @@ func (client *EntitiesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *EntitiesClient) createOrUpdateHandleResponse(resp *http.Response) (EntitiesClientCreateOrUpdateResponse, error) {
-	result := EntitiesClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Entity); err != nil {
-		return EntitiesClientCreateOrUpdateResponse{}, err
+// BeginDelete - Delete a Entity
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - healthModelName - Name of health model resource
+//   - entityName - Name of the entity. Must be unique within a health model.
+//   - options - EntitiesClientBeginDeleteOptions contains the optional parameters for the EntitiesClient.BeginDelete method.
+func (client *EntitiesClient) BeginDelete(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *EntitiesClientBeginDeleteOptions) (*runtime.Poller[EntitiesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, healthModelName, entityName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EntitiesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EntitiesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
-	return result, nil
 }
 
 // Delete - Delete a Entity
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - healthModelName - Name of health model resource
-//   - entityName - Name of the entity. Must be unique within a health model.
-//   - options - EntitiesClientDeleteOptions contains the optional parameters for the EntitiesClient.Delete method.
-func (client *EntitiesClient) Delete(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *EntitiesClientDeleteOptions) (EntitiesClientDeleteResponse, error) {
+// Generated from API version 2026-01-01-preview
+func (client *EntitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *EntitiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "EntitiesClient.Delete"
+	const operationName = "EntitiesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, healthModelName, entityName, options)
 	if err != nil {
-		return EntitiesClientDeleteResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return EntitiesClientDeleteResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientDeleteResponse{}, err
+		return nil, err
 	}
-	return EntitiesClientDeleteResponse{}, nil
+	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *EntitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, _ *EntitiesClientDeleteOptions) (*policy.Request, error) {
+func (client *EntitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, _ *EntitiesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -167,7 +200,7 @@ func (client *EntitiesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
+	reqQP.Set("api-version", "2026-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -175,7 +208,7 @@ func (client *EntitiesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get a Entity
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - entityName - Name of the entity. Must be unique within a health model.
@@ -226,7 +259,7 @@ func (client *EntitiesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
+	reqQP.Set("api-version", "2026-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,9 +274,222 @@ func (client *EntitiesClient) getHandleResponse(resp *http.Response) (EntitiesCl
 	return result, nil
 }
 
+// GetHistory - Retrieve the health state transition history for an entity
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - healthModelName - Name of health model resource
+//   - entityName - Name of the entity. Must be unique within a health model.
+//   - body - The content of the action request
+//   - options - EntitiesClientGetHistoryOptions contains the optional parameters for the EntitiesClient.GetHistory method.
+func (client *EntitiesClient) GetHistory(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body EntityHistoryRequest, options *EntitiesClientGetHistoryOptions) (EntitiesClientGetHistoryResponse, error) {
+	var err error
+	const operationName = "EntitiesClient.GetHistory"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getHistoryCreateRequest(ctx, resourceGroupName, healthModelName, entityName, body, options)
+	if err != nil {
+		return EntitiesClientGetHistoryResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EntitiesClientGetHistoryResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return EntitiesClientGetHistoryResponse{}, err
+	}
+	resp, err := client.getHistoryHandleResponse(httpResp)
+	return resp, err
+}
+
+// getHistoryCreateRequest creates the GetHistory request.
+func (client *EntitiesClient) getHistoryCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body EntityHistoryRequest, _ *EntitiesClientGetHistoryOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getHistory"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if healthModelName == "" {
+		return nil, errors.New("parameter healthModelName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
+	if entityName == "" {
+		return nil, errors.New("parameter entityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{entityName}", url.PathEscape(entityName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// getHistoryHandleResponse handles the GetHistory response.
+func (client *EntitiesClient) getHistoryHandleResponse(resp *http.Response) (EntitiesClientGetHistoryResponse, error) {
+	result := EntitiesClientGetHistoryResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EntityHistoryResponse); err != nil {
+		return EntitiesClientGetHistoryResponse{}, err
+	}
+	return result, nil
+}
+
+// GetSignalHistory - Retrieve the time series history for a signal on an entity
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - healthModelName - Name of health model resource
+//   - entityName - Name of the entity. Must be unique within a health model.
+//   - body - The content of the action request
+//   - options - EntitiesClientGetSignalHistoryOptions contains the optional parameters for the EntitiesClient.GetSignalHistory
+//     method.
+func (client *EntitiesClient) GetSignalHistory(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body SignalHistoryRequest, options *EntitiesClientGetSignalHistoryOptions) (EntitiesClientGetSignalHistoryResponse, error) {
+	var err error
+	const operationName = "EntitiesClient.GetSignalHistory"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getSignalHistoryCreateRequest(ctx, resourceGroupName, healthModelName, entityName, body, options)
+	if err != nil {
+		return EntitiesClientGetSignalHistoryResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EntitiesClientGetSignalHistoryResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return EntitiesClientGetSignalHistoryResponse{}, err
+	}
+	resp, err := client.getSignalHistoryHandleResponse(httpResp)
+	return resp, err
+}
+
+// getSignalHistoryCreateRequest creates the GetSignalHistory request.
+func (client *EntitiesClient) getSignalHistoryCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body SignalHistoryRequest, _ *EntitiesClientGetSignalHistoryOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getSignalHistory"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if healthModelName == "" {
+		return nil, errors.New("parameter healthModelName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
+	if entityName == "" {
+		return nil, errors.New("parameter entityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{entityName}", url.PathEscape(entityName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// getSignalHistoryHandleResponse handles the GetSignalHistory response.
+func (client *EntitiesClient) getSignalHistoryHandleResponse(resp *http.Response) (EntitiesClientGetSignalHistoryResponse, error) {
+	result := EntitiesClientGetSignalHistoryResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SignalHistoryResponse); err != nil {
+		return EntitiesClientGetSignalHistoryResponse{}, err
+	}
+	return result, nil
+}
+
+// IngestHealthReport - Ingest a health report for a specific signal on an entity (the entity must already exist)
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - healthModelName - Name of health model resource
+//   - entityName - Name of the entity. Must be unique within a health model.
+//   - body - The content of the action request
+//   - options - EntitiesClientIngestHealthReportOptions contains the optional parameters for the EntitiesClient.IngestHealthReport
+//     method.
+func (client *EntitiesClient) IngestHealthReport(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body HealthReportRequest, options *EntitiesClientIngestHealthReportOptions) (EntitiesClientIngestHealthReportResponse, error) {
+	var err error
+	const operationName = "EntitiesClient.IngestHealthReport"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.ingestHealthReportCreateRequest(ctx, resourceGroupName, healthModelName, entityName, body, options)
+	if err != nil {
+		return EntitiesClientIngestHealthReportResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EntitiesClientIngestHealthReportResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return EntitiesClientIngestHealthReportResponse{}, err
+	}
+	return EntitiesClientIngestHealthReportResponse{}, nil
+}
+
+// ingestHealthReportCreateRequest creates the IngestHealthReport request.
+func (client *EntitiesClient) ingestHealthReportCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body HealthReportRequest, _ *EntitiesClientIngestHealthReportOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/ingestHealthReport"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if healthModelName == "" {
+		return nil, errors.New("parameter healthModelName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
+	if entityName == "" {
+		return nil, errors.New("parameter entityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{entityName}", url.PathEscape(entityName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // NewListByHealthModelPager - List Entity resources by HealthModel
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - options - EntitiesClientListByHealthModelOptions contains the optional parameters for the EntitiesClient.NewListByHealthModelPager
@@ -291,7 +537,7 @@ func (client *EntitiesClient) listByHealthModelCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
+	reqQP.Set("api-version", "2026-01-01-preview")
 	if options != nil && options.Timestamp != nil {
 		reqQP.Set("timestamp", options.Timestamp.Format(time.RFC3339Nano))
 	}

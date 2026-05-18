@@ -88,8 +88,10 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DependenciesAggregationType string
 
 const (
-	// DependenciesAggregationTypeThresholds - Based on configurable thresholds.
-	DependenciesAggregationTypeThresholds DependenciesAggregationType = "Thresholds"
+	// DependenciesAggregationTypeMaxNotHealthy - Healthy if the count/percentage of not-healthy children stays below the threshold.
+	DependenciesAggregationTypeMaxNotHealthy DependenciesAggregationType = "MaxNotHealthy"
+	// DependenciesAggregationTypeMinHealthy - Healthy if the count/percentage of healthy children meets the threshold.
+	DependenciesAggregationTypeMinHealthy DependenciesAggregationType = "MinHealthy"
 	// DependenciesAggregationTypeWorstOf - Default behavior: Worst child health state is propagated.
 	DependenciesAggregationTypeWorstOf DependenciesAggregationType = "WorstOf"
 )
@@ -97,8 +99,45 @@ const (
 // PossibleDependenciesAggregationTypeValues returns the possible values for the DependenciesAggregationType const type.
 func PossibleDependenciesAggregationTypeValues() []DependenciesAggregationType {
 	return []DependenciesAggregationType{
-		DependenciesAggregationTypeThresholds,
+		DependenciesAggregationTypeMaxNotHealthy,
+		DependenciesAggregationTypeMinHealthy,
 		DependenciesAggregationTypeWorstOf,
+	}
+}
+
+// DependenciesAggregationUnit - Unit type for dependency aggregation thresholds.
+type DependenciesAggregationUnit string
+
+const (
+	// DependenciesAggregationUnitAbsolute - Threshold is an absolute count of entities.
+	DependenciesAggregationUnitAbsolute DependenciesAggregationUnit = "Absolute"
+	// DependenciesAggregationUnitPercentage - Threshold is a percentage of entities (0-100).
+	DependenciesAggregationUnitPercentage DependenciesAggregationUnit = "Percentage"
+)
+
+// PossibleDependenciesAggregationUnitValues returns the possible values for the DependenciesAggregationUnit const type.
+func PossibleDependenciesAggregationUnitValues() []DependenciesAggregationUnit {
+	return []DependenciesAggregationUnit{
+		DependenciesAggregationUnitAbsolute,
+		DependenciesAggregationUnitPercentage,
+	}
+}
+
+// DiscoveryRuleKind - Discovery rule specification kind discriminator
+type DiscoveryRuleKind string
+
+const (
+	// DiscoveryRuleKindApplicationInsightsTopology - Application Insights topology based discovery
+	DiscoveryRuleKindApplicationInsightsTopology DiscoveryRuleKind = "ApplicationInsightsTopology"
+	// DiscoveryRuleKindResourceGraphQuery - Azure Resource Graph query based discovery
+	DiscoveryRuleKindResourceGraphQuery DiscoveryRuleKind = "ResourceGraphQuery"
+)
+
+// PossibleDiscoveryRuleKindValues returns the possible values for the DiscoveryRuleKind const type.
+func PossibleDiscoveryRuleKindValues() []DiscoveryRuleKind {
+	return []DiscoveryRuleKind{
+		DiscoveryRuleKindApplicationInsightsTopology,
+		DiscoveryRuleKindResourceGraphQuery,
 	}
 }
 
@@ -135,42 +174,6 @@ func PossibleDiscoveryRuleRelationshipDiscoveryBehaviorValues() []DiscoveryRuleR
 	return []DiscoveryRuleRelationshipDiscoveryBehavior{
 		DiscoveryRuleRelationshipDiscoveryBehaviorDisabled,
 		DiscoveryRuleRelationshipDiscoveryBehaviorEnabled,
-	}
-}
-
-// DynamicThresholdDirection - Threshold direction for dynamic thresholds
-type DynamicThresholdDirection string
-
-const (
-	// DynamicThresholdDirectionGreaterOrLowerThan - Greater or Lower Than
-	DynamicThresholdDirectionGreaterOrLowerThan DynamicThresholdDirection = "GreaterOrLowerThan"
-	// DynamicThresholdDirectionGreaterThan - Greater than
-	DynamicThresholdDirectionGreaterThan DynamicThresholdDirection = "GreaterThan"
-	// DynamicThresholdDirectionLowerThan - Lower than
-	DynamicThresholdDirectionLowerThan DynamicThresholdDirection = "LowerThan"
-)
-
-// PossibleDynamicThresholdDirectionValues returns the possible values for the DynamicThresholdDirection const type.
-func PossibleDynamicThresholdDirectionValues() []DynamicThresholdDirection {
-	return []DynamicThresholdDirection{
-		DynamicThresholdDirectionGreaterOrLowerThan,
-		DynamicThresholdDirectionGreaterThan,
-		DynamicThresholdDirectionLowerThan,
-	}
-}
-
-// DynamicThresholdModel - ML-based model variants
-type DynamicThresholdModel string
-
-const (
-	// DynamicThresholdModelAnomalyDetection - Anomaly detection model
-	DynamicThresholdModelAnomalyDetection DynamicThresholdModel = "AnomalyDetection"
-)
-
-// PossibleDynamicThresholdModelValues returns the possible values for the DynamicThresholdModel const type.
-func PossibleDynamicThresholdModelValues() []DynamicThresholdModel {
-	return []DynamicThresholdModel{
-		DynamicThresholdModelAnomalyDetection,
 	}
 }
 
@@ -228,10 +231,10 @@ const (
 	HealthStateDegraded HealthState = "Degraded"
 	// HealthStateDeleted - Deleted status
 	HealthStateDeleted HealthState = "Deleted"
-	// HealthStateError - Error status (Unhealthy)
-	HealthStateError HealthState = "Error"
 	// HealthStateHealthy - Healthy status
 	HealthStateHealthy HealthState = "Healthy"
+	// HealthStateUnhealthy - Unhealthy status
+	HealthStateUnhealthy HealthState = "Unhealthy"
 	// HealthStateUnknown - Unknown status
 	HealthStateUnknown HealthState = "Unknown"
 )
@@ -241,8 +244,8 @@ func PossibleHealthStateValues() []HealthState {
 	return []HealthState{
 		HealthStateDegraded,
 		HealthStateDeleted,
-		HealthStateError,
 		HealthStateHealthy,
+		HealthStateUnhealthy,
 		HealthStateUnknown,
 	}
 }
@@ -352,6 +355,7 @@ type SignalKind string
 
 const (
 	SignalKindAzureResourceMetric    SignalKind = "AzureResourceMetric"
+	SignalKindExternalSignal         SignalKind = "External"
 	SignalKindLogAnalyticsQuery      SignalKind = "LogAnalyticsQuery"
 	SignalKindPrometheusMetricsQuery SignalKind = "PrometheusMetricsQuery"
 )
@@ -360,6 +364,7 @@ const (
 func PossibleSignalKindValues() []SignalKind {
 	return []SignalKind{
 		SignalKindAzureResourceMetric,
+		SignalKindExternalSignal,
 		SignalKindLogAnalyticsQuery,
 		SignalKindPrometheusMetricsQuery,
 	}
@@ -369,25 +374,28 @@ func PossibleSignalKindValues() []SignalKind {
 type SignalOperator string
 
 const (
-	// SignalOperatorEquals - Equal to
-	SignalOperatorEquals SignalOperator = "Equals"
-	// SignalOperatorGreaterOrEquals - Greater than or equal to
-	SignalOperatorGreaterOrEquals SignalOperator = "GreaterOrEquals"
+	// SignalOperatorEqual - Equal to
+	SignalOperatorEqual SignalOperator = "Equal"
 	// SignalOperatorGreaterThan - Greater than
 	SignalOperatorGreaterThan SignalOperator = "GreaterThan"
-	// SignalOperatorLowerOrEquals - Lower than or equal to
-	SignalOperatorLowerOrEquals SignalOperator = "LowerOrEquals"
-	// SignalOperatorLowerThan - Lower than
-	SignalOperatorLowerThan SignalOperator = "LowerThan"
+	// SignalOperatorGreaterThanOrEqual - Greater than or equal to
+	SignalOperatorGreaterThanOrEqual SignalOperator = "GreaterThanOrEqual"
+	// SignalOperatorLessThan - Less than
+	SignalOperatorLessThan SignalOperator = "LessThan"
+	// SignalOperatorLessThanOrEqual - Less than or equal to
+	SignalOperatorLessThanOrEqual SignalOperator = "LessThanOrEqual"
+	// SignalOperatorNotEqual - Not equal to
+	SignalOperatorNotEqual SignalOperator = "NotEqual"
 )
 
 // PossibleSignalOperatorValues returns the possible values for the SignalOperator const type.
 func PossibleSignalOperatorValues() []SignalOperator {
 	return []SignalOperator{
-		SignalOperatorEquals,
-		SignalOperatorGreaterOrEquals,
+		SignalOperatorEqual,
 		SignalOperatorGreaterThan,
-		SignalOperatorLowerOrEquals,
-		SignalOperatorLowerThan,
+		SignalOperatorGreaterThanOrEqual,
+		SignalOperatorLessThan,
+		SignalOperatorLessThanOrEqual,
+		SignalOperatorNotEqual,
 	}
 }

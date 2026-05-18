@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/SignalDefinitions_CreateOrUpdate.json
-func ExampleSignalDefinitionsClient_CreateOrUpdate() {
+// Generated from example definition: 2026-01-01-preview/SignalDefinitions_CreateOrUpdate.json
+func ExampleSignalDefinitionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleSignalDefinitionsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSignalDefinitionsClient().CreateOrUpdate(ctx, "rgopenapi", "myHealthModel", "sig1", armcloudhealth.SignalDefinition{
+	poller, err := clientFactory.NewSignalDefinitionsClient().BeginCreateOrUpdate(ctx, "rgopenapi", "myHealthModel", "sig1", armcloudhealth.SignalDefinition{
 		Properties: &armcloudhealth.ResourceMetricSignalDefinitionProperties{
 			MetricNamespace: to.Ptr("microsoft.compute/virtualMachines"),
 			MetricName:      to.Ptr("cpuusage"),
@@ -33,25 +33,29 @@ func ExampleSignalDefinitionsClient_CreateOrUpdate() {
 			DisplayName:     to.Ptr("cpu usage"),
 			SignalKind:      to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
 			RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
-			Labels: map[string]*string{
+			Tags: map[string]*string{
 				"key4788": to.Ptr("ixfvzsfnpvkkbrce"),
 			},
 			TimeGrain: to.Ptr("PT1M"),
 			DataUnit:  to.Ptr("byte"),
 			EvaluationRules: &armcloudhealth.EvaluationRule{
-				DegradedRule: &armcloudhealth.ThresholdRule{
-					Operator:  to.Ptr(armcloudhealth.SignalOperatorLowerThan),
-					Threshold: to.Ptr("65"),
+				DegradedRule: &armcloudhealth.ThresholdRuleV2{
+					Operator:  to.Ptr(armcloudhealth.SignalOperator("LowerThan")),
+					Threshold: to.Ptr[float64](65),
 				},
-				UnhealthyRule: &armcloudhealth.ThresholdRule{
-					Operator:  to.Ptr(armcloudhealth.SignalOperatorLowerThan),
-					Threshold: to.Ptr("60"),
+				UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+					Operator:  to.Ptr(armcloudhealth.SignalOperator("LowerThan")),
+					Threshold: to.Ptr[float64](60),
 				},
 			},
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -68,19 +72,19 @@ func ExampleSignalDefinitionsClient_CreateOrUpdate() {
 	// 			DisplayName: to.Ptr("cpu usage"),
 	// 			SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
 	// 			RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
-	// 			Labels: map[string]*string{
+	// 			Tags: map[string]*string{
 	// 				"key4788": to.Ptr("ixfvzsfnpvkkbrce"),
 	// 			},
 	// 			TimeGrain: to.Ptr("PT1M"),
 	// 			DataUnit: to.Ptr("byte"),
 	// 			EvaluationRules: &armcloudhealth.EvaluationRule{
-	// 				DegradedRule: &armcloudhealth.ThresholdRule{
-	// 					Operator: to.Ptr(armcloudhealth.SignalOperatorLowerThan),
-	// 					Threshold: to.Ptr("65"),
+	// 				DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 					Operator: to.Ptr(armcloudhealth.SignalOperator("LowerThan")),
+	// 					Threshold: to.Ptr[float64](65),
 	// 				},
-	// 				UnhealthyRule: &armcloudhealth.ThresholdRule{
-	// 					Operator: to.Ptr(armcloudhealth.SignalOperatorLowerThan),
-	// 					Threshold: to.Ptr("60"),
+	// 				UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 					Operator: to.Ptr(armcloudhealth.SignalOperator("LowerThan")),
+	// 					Threshold: to.Ptr[float64](60),
 	// 				},
 	// 			},
 	// 		},
@@ -99,8 +103,8 @@ func ExampleSignalDefinitionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/SignalDefinitions_Delete.json
-func ExampleSignalDefinitionsClient_Delete() {
+// Generated from example definition: 2026-01-01-preview/SignalDefinitions_Delete.json
+func ExampleSignalDefinitionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -110,18 +114,17 @@ func ExampleSignalDefinitionsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSignalDefinitionsClient().Delete(ctx, "rgopenapi", "model1", "sig", nil)
+	poller, err := clientFactory.NewSignalDefinitionsClient().BeginDelete(ctx, "rgopenapi", "model1", "sig", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcloudhealth.SignalDefinitionsClientDeleteResponse{
-	// }
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: 2025-05-01-preview/SignalDefinitions_Get.json
+// Generated from example definition: 2026-01-01-preview/SignalDefinitions_Get.json
 func ExampleSignalDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,16 +154,19 @@ func ExampleSignalDefinitionsClient_Get() {
 	// 			DisplayName: to.Ptr("cpu upsage"),
 	// 			SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
 	// 			RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
-	// 			Labels: map[string]*string{
+	// 			Tags: map[string]*string{
 	// 				"key4788": to.Ptr("foo"),
 	// 			},
 	// 			TimeGrain: to.Ptr("PT1M"),
 	// 			DataUnit: to.Ptr("Count"),
 	// 			EvaluationRules: &armcloudhealth.EvaluationRule{
-	// 				DynamicDetectionRule: &armcloudhealth.DynamicDetectionRule{
-	// 					DynamicThresholdModel: to.Ptr(armcloudhealth.DynamicThresholdModelAnomalyDetection),
-	// 					ModelSensitivity: to.Ptr[float32](4.5),
-	// 					DynamicThresholdDirection: to.Ptr(armcloudhealth.DynamicThresholdDirectionGreaterThan),
+	// 				DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 					Operator: to.Ptr(armcloudhealth.SignalOperator("LowerThan")),
+	// 					Threshold: to.Ptr[float64](10),
+	// 				},
+	// 				UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 					Operator: to.Ptr(armcloudhealth.SignalOperator("LowerThan")),
+	// 					Threshold: to.Ptr[float64](1),
 	// 				},
 	// 			},
 	// 		},
@@ -179,7 +185,7 @@ func ExampleSignalDefinitionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/SignalDefinitions_ListByHealthModel.json
+// Generated from example definition: 2026-01-01-preview/SignalDefinitions_ListByHealthModel.json
 func ExampleSignalDefinitionsClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,19 +221,19 @@ func ExampleSignalDefinitionsClient_NewListByHealthModelPager() {
 		// 					DisplayName: to.Ptr("cpu usage"),
 		// 					SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
 		// 					RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
-		// 					Labels: map[string]*string{
+		// 					Tags: map[string]*string{
 		// 						"key4788": to.Ptr("bar"),
 		// 					},
 		// 					TimeGrain: to.Ptr("PT10M"),
 		// 					DataUnit: to.Ptr("Count"),
 		// 					EvaluationRules: &armcloudhealth.EvaluationRule{
-		// 						DegradedRule: &armcloudhealth.ThresholdRule{
-		// 							Operator: to.Ptr(armcloudhealth.SignalOperatorLowerThan),
-		// 							Threshold: to.Ptr("10"),
+		// 						DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 							Operator: to.Ptr(armcloudhealth.SignalOperator("LowerThan")),
+		// 							Threshold: to.Ptr[float64](10),
 		// 						},
-		// 						UnhealthyRule: &armcloudhealth.ThresholdRule{
-		// 							Operator: to.Ptr(armcloudhealth.SignalOperatorLowerThan),
-		// 							Threshold: to.Ptr("1"),
+		// 						UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 							Operator: to.Ptr(armcloudhealth.SignalOperator("LowerThan")),
+		// 							Threshold: to.Ptr[float64](1),
 		// 						},
 		// 					},
 		// 				},
@@ -252,16 +258,19 @@ func ExampleSignalDefinitionsClient_NewListByHealthModelPager() {
 		// 					DisplayName: to.Ptr("memorey usage"),
 		// 					SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
 		// 					RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
-		// 					Labels: map[string]*string{
+		// 					Tags: map[string]*string{
 		// 						"key4788": to.Ptr("bar"),
 		// 					},
 		// 					TimeGrain: to.Ptr("PT10M"),
 		// 					DataUnit: to.Ptr("Count"),
 		// 					EvaluationRules: &armcloudhealth.EvaluationRule{
-		// 						DynamicDetectionRule: &armcloudhealth.DynamicDetectionRule{
-		// 							DynamicThresholdModel: to.Ptr(armcloudhealth.DynamicThresholdModelAnomalyDetection),
-		// 							ModelSensitivity: to.Ptr[float32](4.5),
-		// 							DynamicThresholdDirection: to.Ptr(armcloudhealth.DynamicThresholdDirectionGreaterThan),
+		// 						DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 							Operator: to.Ptr(armcloudhealth.SignalOperator("LowerThan")),
+		// 							Threshold: to.Ptr[float64](10),
+		// 						},
+		// 						UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 							Operator: to.Ptr(armcloudhealth.SignalOperator("LowerThan")),
+		// 							Threshold: to.Ptr[float64](1),
 		// 						},
 		// 					},
 		// 				},

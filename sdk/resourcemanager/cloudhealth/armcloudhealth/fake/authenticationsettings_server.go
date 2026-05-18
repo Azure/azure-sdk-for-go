@@ -20,13 +20,13 @@ import (
 
 // AuthenticationSettingsServer is a fake server for instances of the armcloudhealth.AuthenticationSettingsClient type.
 type AuthenticationSettingsServer struct {
-	// CreateOrUpdate is the fake for method AuthenticationSettingsClient.CreateOrUpdate
+	// BeginCreateOrUpdate is the fake for method AuthenticationSettingsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource armcloudhealth.AuthenticationSetting, options *armcloudhealth.AuthenticationSettingsClientCreateOrUpdateOptions) (resp azfake.Responder[armcloudhealth.AuthenticationSettingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource armcloudhealth.AuthenticationSetting, options *armcloudhealth.AuthenticationSettingsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcloudhealth.AuthenticationSettingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method AuthenticationSettingsClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, options *armcloudhealth.AuthenticationSettingsClientDeleteOptions) (resp azfake.Responder[armcloudhealth.AuthenticationSettingsClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method AuthenticationSettingsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, options *armcloudhealth.AuthenticationSettingsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcloudhealth.AuthenticationSettingsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AuthenticationSettingsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -43,6 +43,8 @@ type AuthenticationSettingsServer struct {
 func NewAuthenticationSettingsServerTransport(srv *AuthenticationSettingsServer) *AuthenticationSettingsServerTransport {
 	return &AuthenticationSettingsServerTransport{
 		srv:                       srv,
+		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armcloudhealth.AuthenticationSettingsClientCreateOrUpdateResponse]](),
+		beginDelete:               newTracker[azfake.PollerResponder[armcloudhealth.AuthenticationSettingsClientDeleteResponse]](),
 		newListByHealthModelPager: newTracker[azfake.PagerResponder[armcloudhealth.AuthenticationSettingsClientListByHealthModelResponse]](),
 	}
 }
@@ -51,6 +53,8 @@ func NewAuthenticationSettingsServerTransport(srv *AuthenticationSettingsServer)
 // Don't use this type directly, use NewAuthenticationSettingsServerTransport instead.
 type AuthenticationSettingsServerTransport struct {
 	srv                       *AuthenticationSettingsServer
+	beginCreateOrUpdate       *tracker[azfake.PollerResponder[armcloudhealth.AuthenticationSettingsClientCreateOrUpdateResponse]]
+	beginDelete               *tracker[azfake.PollerResponder[armcloudhealth.AuthenticationSettingsClientDeleteResponse]]
 	newListByHealthModelPager *tracker[azfake.PagerResponder[armcloudhealth.AuthenticationSettingsClientListByHealthModelResponse]]
 }
 
@@ -77,10 +81,10 @@ func (a *AuthenticationSettingsServerTransport) dispatchToMethodFake(req *http.R
 		}
 		if !intercepted {
 			switch method {
-			case "AuthenticationSettingsClient.CreateOrUpdate":
-				res.resp, res.err = a.dispatchCreateOrUpdate(req)
-			case "AuthenticationSettingsClient.Delete":
-				res.resp, res.err = a.dispatchDelete(req)
+			case "AuthenticationSettingsClient.BeginCreateOrUpdate":
+				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
+			case "AuthenticationSettingsClient.BeginDelete":
+				res.resp, res.err = a.dispatchBeginDelete(req)
 			case "AuthenticationSettingsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AuthenticationSettingsClient.NewListByHealthModelPager":
@@ -104,81 +108,103 @@ func (a *AuthenticationSettingsServerTransport) dispatchToMethodFake(req *http.R
 	}
 }
 
-func (a *AuthenticationSettingsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+func (a *AuthenticationSettingsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authenticationsettings/(?P<authenticationSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCreateOrUpdate := a.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authenticationsettings/(?P<authenticationSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcloudhealth.AuthenticationSetting](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+		if err != nil {
+			return nil, err
+		}
+		authenticationSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authenticationSettingName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, healthModelNameParam, authenticationSettingNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		a.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcloudhealth.AuthenticationSetting](req)
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		a.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		a.beginCreateOrUpdate.remove(req)
 	}
-	authenticationSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authenticationSettingName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, healthModelNameParam, authenticationSettingNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AuthenticationSetting, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
-func (a *AuthenticationSettingsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if a.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (a *AuthenticationSettingsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authenticationsettings/(?P<authenticationSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := a.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CloudHealth/healthmodels/(?P<healthModelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authenticationsettings/(?P<authenticationSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
+		if err != nil {
+			return nil, err
+		}
+		authenticationSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authenticationSettingName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, healthModelNameParam, authenticationSettingNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		a.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	healthModelNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthModelName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		a.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	authenticationSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authenticationSettingName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		a.beginDelete.remove(req)
 	}
-	respr, errRespr := a.srv.Delete(req.Context(), resourceGroupNameParam, healthModelNameParam, authenticationSettingNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

@@ -17,6 +17,8 @@ import (
 
 // AlertConfigurationsClient contains the methods for the AlertConfigurations group.
 // Don't use this type directly, use NewAlertConfigurationsClient() instead.
+//
+// Generated from API version 2022-08-01-preview
 type AlertConfigurationsClient struct {
 	internal *arm.Client
 }
@@ -37,8 +39,6 @@ func NewAlertConfigurationsClient(credential azcore.TokenCredential, options *ar
 
 // Get - Get the specified alert configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - alertID - The name of the alert configuration to get.
 //   - options - AlertConfigurationsClientGetOptions contains the optional parameters for the AlertConfigurationsClient.Get method.
@@ -80,8 +80,8 @@ func (client *AlertConfigurationsClient) getCreateRequest(ctx context.Context, s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -96,8 +96,6 @@ func (client *AlertConfigurationsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListForScopePager - Gets alert configurations for a resource scope.
-//
-// Generated from API version 2022-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - AlertConfigurationsClientListForScopeOptions contains the optional parameters for the AlertConfigurationsClient.NewListForScopePager
 //     method.
@@ -136,8 +134,8 @@ func (client *AlertConfigurationsClient) listForScopeCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -153,8 +151,6 @@ func (client *AlertConfigurationsClient) listForScopeHandleResponse(resp *http.R
 
 // Update - Update an alert configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - alertID - The name of the alert configuration to get.
 //   - parameters - Parameters for the alert configuration.
@@ -197,8 +193,8 @@ func (client *AlertConfigurationsClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

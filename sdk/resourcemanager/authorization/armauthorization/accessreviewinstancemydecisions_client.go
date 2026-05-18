@@ -18,6 +18,8 @@ import (
 
 // AccessReviewInstanceMyDecisionsClient contains the methods for the AccessReviewInstanceMyDecisions group.
 // Don't use this type directly, use NewAccessReviewInstanceMyDecisionsClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type AccessReviewInstanceMyDecisionsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewAccessReviewInstanceMyDecisionsClient(credential azcore.TokenCredential,
 
 // GetByID - Get my single access review instance decision.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
 //   - decisionID - The id of the decision record.
@@ -87,8 +87,8 @@ func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -103,8 +103,6 @@ func (client *AccessReviewInstanceMyDecisionsClient) getByIDHandleResponse(resp 
 }
 
 // NewListPager - Get my access review instance decisions.
-//
-// Generated from API version 2021-12-01-preview
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
 //   - options - AccessReviewInstanceMyDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.NewListPager
@@ -151,8 +149,8 @@ func (client *AccessReviewInstanceMyDecisionsClient) listCreateRequest(ctx conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -168,8 +166,6 @@ func (client *AccessReviewInstanceMyDecisionsClient) listHandleResponse(resp *ht
 
 // Patch - Record a decision.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
 //   - decisionID - The id of the decision record.
@@ -218,8 +214,8 @@ func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

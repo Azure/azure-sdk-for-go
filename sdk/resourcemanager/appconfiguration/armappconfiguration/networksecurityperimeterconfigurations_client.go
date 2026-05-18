@@ -18,6 +18,8 @@ import (
 
 // NetworkSecurityPerimeterConfigurationsClient contains the methods for the NetworkSecurityPerimeterConfigurations group.
 // Don't use this type directly, use NewNetworkSecurityPerimeterConfigurationsClient() instead.
+//
+// Generated from API version 2025-08-01-preview
 type NetworkSecurityPerimeterConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, cred
 
 // Get - Gets the specified network security perimeter configuration associated with the configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - networkSecurityPerimeterConfigurationName - The name of the NetworkSecurityPerimeterConfiguration
@@ -94,8 +94,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +110,6 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getHandleResponse(re
 }
 
 // NewListByConfigurationStorePager - Lists all network security perimeter configurations for a configuration store.
-//
-// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - options - NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreOptions contains the optional parameters
@@ -159,8 +157,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listByConfigurationS
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -176,8 +174,6 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listByConfigurationS
 
 // BeginReconcile - Forces a refresh of the specified network security perimeter configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - networkSecurityPerimeterConfigurationName - The name of the NetworkSecurityPerimeterConfiguration
@@ -202,8 +198,6 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginReconcile(ctx c
 
 // Reconcile - Forces a refresh of the specified network security perimeter configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01-preview
 func (client *NetworkSecurityPerimeterConfigurationsClient) reconcile(ctx context.Context, resourceGroupName string, configStoreName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginReconcile"
@@ -249,8 +243,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

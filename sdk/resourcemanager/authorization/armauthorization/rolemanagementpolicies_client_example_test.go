@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
 	"log"
 )
 
@@ -53,7 +53,7 @@ func ExampleRoleManagementPoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleManagementPoliciesClientGetResponse{
-	// 	RoleManagementPolicy: &armauthorization.RoleManagementPolicy{
+	// 	RoleManagementPolicy: armauthorization.RoleManagementPolicy{
 	// 		Name: to.Ptr("570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 	// 		Type: to.Ptr("Microsoft.Authorization/RoleManagementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
@@ -1366,7 +1366,7 @@ func ExampleRoleManagementPoliciesClient_Update_patchPartialRoleManagementPolicy
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleManagementPoliciesClientUpdateResponse{
-	// 	RoleManagementPolicy: &armauthorization.RoleManagementPolicy{
+	// 	RoleManagementPolicy: armauthorization.RoleManagementPolicy{
 	// 		Name: to.Ptr("570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 	// 		Type: to.Ptr("Microsoft.Authorization/RoleManagementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
@@ -2336,7 +2336,7 @@ func ExampleRoleManagementPoliciesClient_Update_patchRoleManagementPolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleManagementPoliciesClientUpdateResponse{
-	// 	RoleManagementPolicy: &armauthorization.RoleManagementPolicy{
+	// 	RoleManagementPolicy: armauthorization.RoleManagementPolicy{
 	// 		Name: to.Ptr("570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 	// 		Type: to.Ptr("Microsoft.Authorization/RoleManagementPolicies"),
 	// 		ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
@@ -3055,7 +3055,7 @@ func ExampleRoleManagementPoliciesClient_Update_patchRoleManagementPolicyToEnabl
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleManagementPoliciesClientUpdateResponse{
-	// 	RoleManagementPolicy: &armauthorization.RoleManagementPolicy{
+	// 	RoleManagementPolicy: armauthorization.RoleManagementPolicy{
 	// 		Name: to.Ptr("570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 	// 		Type: to.Ptr("Microsoft.Authorization/RoleManagementPolicies"),
 	// 		ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),

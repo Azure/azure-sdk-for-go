@@ -18,6 +18,8 @@ import (
 
 // PublishersClient contains the methods for the Publishers group.
 // Don't use this type directly, use NewPublishersClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type PublishersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPublishersClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Get - Get Publisher resource details of HCI Cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - publisherName - The name of the publisher available within HCI cluster.
@@ -93,8 +93,8 @@ func (client *PublishersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *PublishersClient) getHandleResponse(resp *http.Response) (Publishe
 }
 
 // NewListByClusterPager - List Publishers available for the HCI Cluster.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - PublishersClientListByClusterOptions contains the optional parameters for the PublishersClient.NewListByClusterPager
@@ -158,8 +156,8 @@ func (client *PublishersClient) listByClusterCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

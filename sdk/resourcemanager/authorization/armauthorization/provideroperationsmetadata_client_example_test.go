@@ -7,7 +7,7 @@ package armauthorization_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleProviderOperationsMetadataClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.ProviderOperationsMetadataClientGetResponse{
-	// 	ProviderOperationsMetadata: &armauthorization.ProviderOperationsMetadata{
+	// 	ProviderOperationsMetadata: armauthorization.ProviderOperationsMetadata{
 	// 		Name: to.Ptr("name"),
 	// 		Type: to.Ptr("type"),
 	// 		DisplayName: to.Ptr("displayName"),

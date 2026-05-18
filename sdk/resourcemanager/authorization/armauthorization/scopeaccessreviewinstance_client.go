@@ -18,6 +18,8 @@ import (
 
 // ScopeAccessReviewInstanceClient contains the methods for the ScopeAccessReviewInstance group.
 // Don't use this type directly, use NewScopeAccessReviewInstanceClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type ScopeAccessReviewInstanceClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewScopeAccessReviewInstanceClient(credential azcore.TokenCredential, optio
 
 // ApplyDecisions - An action to apply all decisions for an access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
@@ -86,15 +86,13 @@ func (client *ScopeAccessReviewInstanceClient) applyDecisionsCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // RecordAllDecisions - An action to approve/deny all decisions for a review with certain filters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
@@ -142,8 +140,8 @@ func (client *ScopeAccessReviewInstanceClient) recordAllDecisionsCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err
@@ -153,8 +151,6 @@ func (client *ScopeAccessReviewInstanceClient) recordAllDecisionsCreateRequest(c
 
 // ResetDecisions - An action to reset all decisions for an access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
@@ -201,15 +197,13 @@ func (client *ScopeAccessReviewInstanceClient) resetDecisionsCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // SendReminders - An action to send reminders for an access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
@@ -256,15 +250,13 @@ func (client *ScopeAccessReviewInstanceClient) sendRemindersCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Stop - An action to stop an access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
@@ -311,7 +303,7 @@ func (client *ScopeAccessReviewInstanceClient) stopCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

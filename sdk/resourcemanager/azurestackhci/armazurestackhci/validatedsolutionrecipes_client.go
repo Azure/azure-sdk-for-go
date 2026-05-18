@@ -18,6 +18,8 @@ import (
 
 // ValidatedSolutionRecipesClient contains the methods for the ValidatedSolutionRecipes group.
 // Don't use this type directly, use NewValidatedSolutionRecipesClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type ValidatedSolutionRecipesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewValidatedSolutionRecipesClient(subscriptionID string, credential azcore.
 
 // Get - Get a validated solution recipe.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - validatedSolutionRecipeName - The name of the ValidatedSolutionRecipe
 //   - options - ValidatedSolutionRecipesClientGetOptions contains the optional parameters for the ValidatedSolutionRecipesClient.Get
@@ -89,8 +89,8 @@ func (client *ValidatedSolutionRecipesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -105,8 +105,6 @@ func (client *ValidatedSolutionRecipesClient) getHandleResponse(resp *http.Respo
 }
 
 // NewListBySubscriptionLocationResourcePager - List all validated solution recipes.
-//
-// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - options - ValidatedSolutionRecipesClientListBySubscriptionLocationResourceOptions contains the optional parameters for
 //     the ValidatedSolutionRecipesClient.NewListBySubscriptionLocationResourcePager method.
@@ -149,8 +147,8 @@ func (client *ValidatedSolutionRecipesClient) listBySubscriptionLocationResource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

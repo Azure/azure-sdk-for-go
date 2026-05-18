@@ -7,7 +7,7 @@ package armappservice_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleWorkflowTriggersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WorkflowTriggersClientGetResponse{
-	// 	WorkflowTrigger: &armappservice.WorkflowTrigger{
+	// 	WorkflowTrigger: armappservice.WorkflowTrigger{
 	// 		Name: to.Ptr("manual"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/workflows/triggers"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/providers/Microsoft.Web/sites/test-name/workflows/test-workflow/triggers/manual"),
@@ -68,7 +68,7 @@ func ExampleWorkflowTriggersClient_GetSchemaJSON() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WorkflowTriggersClientGetSchemaJSONResponse{
-	// 	JSONSchema: &armappservice.JSONSchema{
+	// 	JSONSchema: armappservice.JSONSchema{
 	// 		Content: to.Ptr("JsonContent"),
 	// 		Title: to.Ptr("JsonTitle"),
 	// 	},
@@ -141,7 +141,7 @@ func ExampleWorkflowTriggersClient_ListCallbackURL() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WorkflowTriggersClientListCallbackURLResponse{
-	// 	WorkflowTriggerCallbackURL: &armappservice.WorkflowTriggerCallbackURL{
+	// 	WorkflowTriggerCallbackURL: armappservice.WorkflowTriggerCallbackURL{
 	// 		Method: to.Ptr("POST"),
 	// 		BasePath: to.Ptr("https://test-site.azurewebsites.net:443/runtime/webhooks/workflow/scaleUnits/prod-00/workflows/fb9c8d79b15f41ce9b12861862f43546/versions/08587100027316071865/triggers/manualTrigger/paths/invoke"),
 	// 		Queries: &armappservice.WorkflowTriggerListCallbackURLQueries{
@@ -172,7 +172,7 @@ func ExampleWorkflowTriggersClient_BeginRun() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

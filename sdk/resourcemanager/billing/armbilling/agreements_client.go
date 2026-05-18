@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAgreementsClientVersion string = "2024-04-01"
-
 // AgreementsClient contains the methods for the Agreements group.
 // Don't use this type directly, use NewAgreementsClient() instead.
 //
@@ -83,7 +81,7 @@ func (client *AgreementsClient) getCreateRequest(ctx context.Context, billingAcc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAgreementsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -137,7 +135,7 @@ func (client *AgreementsClient) listByBillingAccountCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAgreementsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Expand != nil {
 		reqQP.Set("expand", *options.Expand)
 	}

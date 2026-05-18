@@ -18,6 +18,8 @@ import (
 
 // WorkspacesClient contains the methods for the Workspaces group.
 // Don't use this type directly, use NewWorkspacesClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type WorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Create or update a Workspace resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - resource - Workspace resource to be created or updated.
@@ -67,8 +67,6 @@ func (client *WorkspacesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Create or update a Workspace resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, resource Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspacesClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Delete a Workspace resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - options - WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
@@ -146,8 +142,6 @@ func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Delete a Workspace resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspacesClient.BeginDelete"
@@ -189,15 +183,13 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Workspace resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - options - WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
@@ -243,8 +235,8 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -259,8 +251,6 @@ func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (Workspac
 }
 
 // NewListPager - Get a list of Workspace resources in a resource group.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.NewListPager method.
 func (client *WorkspacesClient) NewListPager(resourceGroupName string, options *WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse] {
@@ -302,11 +292,11 @@ func (client *WorkspacesClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -321,8 +311,6 @@ func (client *WorkspacesClient) listHandleResponse(resp *http.Response) (Workspa
 }
 
 // NewListAllPager - Get a list of all Workspace resources in a subscription.
-//
-// Generated from API version 2026-05-01-preview
 //   - options - WorkspacesClientListAllOptions contains the optional parameters for the WorkspacesClient.NewListAllPager method.
 func (client *WorkspacesClient) NewListAllPager(options *WorkspacesClientListAllOptions) *runtime.Pager[WorkspacesClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkspacesClientListAllResponse]{
@@ -359,11 +347,11 @@ func (client *WorkspacesClient) listAllCreateRequest(ctx context.Context, option
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -379,8 +367,6 @@ func (client *WorkspacesClient) listAllHandleResponse(resp *http.Response) (Work
 
 // BeginRefreshRecommendations - Refreshes recommendation status for all scenarios in a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - options - WorkspacesClientBeginRefreshRecommendationsOptions contains the optional parameters for the WorkspacesClient.BeginRefreshRecommendations
@@ -404,8 +390,6 @@ func (client *WorkspacesClient) BeginRefreshRecommendations(ctx context.Context,
 
 // RefreshRecommendations - Refreshes recommendation status for all scenarios in a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *WorkspacesClient) refreshRecommendations(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginRefreshRecommendationsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspacesClient.BeginRefreshRecommendations"
@@ -447,15 +431,13 @@ func (client *WorkspacesClient) refreshRecommendationsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdate - The operation to update a Workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - properties - Parameters supplied to the Update Workspace operation.
@@ -479,8 +461,6 @@ func (client *WorkspacesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - The operation to update a Workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *WorkspacesClient) update(ctx context.Context, resourceGroupName string, workspaceName string, properties WorkspaceUpdate, options *WorkspacesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspacesClient.BeginUpdate"
@@ -522,8 +502,8 @@ func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

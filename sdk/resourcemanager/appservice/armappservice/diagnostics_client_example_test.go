@@ -7,7 +7,7 @@ package armappservice_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteAnalysis() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientExecuteSiteAnalysisResponse{
-	// 	DiagnosticAnalysis: &armappservice.DiagnosticAnalysis{
+	// 	DiagnosticAnalysis: armappservice.DiagnosticAnalysis{
 	// 		Name: to.Ptr("apprestartanalysis"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/analyses/apprestartanalyses"),
 	// 		Properties: &armappservice.DiagnosticAnalysisProperties{
@@ -164,7 +164,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteSlotAnalysis() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientExecuteSiteAnalysisResponse{
-	// 	DiagnosticAnalysis: &armappservice.DiagnosticAnalysis{
+	// 	DiagnosticAnalysis: armappservice.DiagnosticAnalysis{
 	// 		Name: to.Ptr("apprestartanalysis"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/apprestartanalyses"),
 	// 		Properties: &armappservice.DiagnosticAnalysisProperties{
@@ -298,7 +298,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot_executeSiteSlotAnalysis() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientExecuteSiteAnalysisSlotResponse{
-	// 	DiagnosticAnalysis: &armappservice.DiagnosticAnalysis{
+	// 	DiagnosticAnalysis: armappservice.DiagnosticAnalysis{
 	// 		Name: to.Ptr("apprestartanalysis"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/apprestartanalyses"),
 	// 		Properties: &armappservice.DiagnosticAnalysisProperties{
@@ -432,7 +432,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot_executeSiteAnalysis() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientExecuteSiteAnalysisSlotResponse{
-	// 	DiagnosticAnalysis: &armappservice.DiagnosticAnalysis{
+	// 	DiagnosticAnalysis: armappservice.DiagnosticAnalysis{
 	// 		Name: to.Ptr("apprestartanalysis"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/analyses/apprestartanalyses"),
 	// 		Properties: &armappservice.DiagnosticAnalysisProperties{
@@ -566,7 +566,7 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteDetector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientExecuteSiteDetectorResponse{
-	// 	DiagnosticDetectorResponse: &armappservice.DiagnosticDetectorResponse{
+	// 	DiagnosticDetectorResponse: armappservice.DiagnosticDetectorResponse{
 	// 		Name: to.Ptr("sitecrashes"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/detectors/sitecrashes"),
 	// 		Properties: &armappservice.DiagnosticDetectorResponseProperties{
@@ -604,7 +604,7 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteSlotDetector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientExecuteSiteDetectorResponse{
-	// 	DiagnosticDetectorResponse: &armappservice.DiagnosticDetectorResponse{
+	// 	DiagnosticDetectorResponse: armappservice.DiagnosticDetectorResponse{
 	// 		Name: to.Ptr("sitecrashes"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/detectors/sitecrashes"),
 	// 		Properties: &armappservice.DiagnosticDetectorResponseProperties{
@@ -642,7 +642,7 @@ func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot_executeSiteSlotDetector() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientExecuteSiteDetectorSlotResponse{
-	// 	DiagnosticDetectorResponse: &armappservice.DiagnosticDetectorResponse{
+	// 	DiagnosticDetectorResponse: armappservice.DiagnosticDetectorResponse{
 	// 		Name: to.Ptr("sitecrashes"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/detectors/sitecrashes"),
 	// 		Properties: &armappservice.DiagnosticDetectorResponseProperties{
@@ -680,7 +680,7 @@ func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot_executeSiteDetector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientExecuteSiteDetectorSlotResponse{
-	// 	DiagnosticDetectorResponse: &armappservice.DiagnosticDetectorResponse{
+	// 	DiagnosticDetectorResponse: armappservice.DiagnosticDetectorResponse{
 	// 		Name: to.Ptr("sitecrashes"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/detectors/sitecrashes"),
 	// 		Properties: &armappservice.DiagnosticDetectorResponseProperties{
@@ -718,7 +718,7 @@ func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{
-	// 	DetectorResponse: &armappservice.DetectorResponse{
+	// 	DetectorResponse: armappservice.DetectorResponse{
 	// 		Name: to.Ptr("runtimeavailability"),
 	// 		ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/hostingEnvironments/SampleAppServiceEnvironment/detectors/runtimeavailability"),
 	// 		Properties: &armappservice.DetectorResponseProperties{
@@ -860,7 +860,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysis_getAppAnalysis() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteAnalysisResponse{
-	// 	AnalysisDefinition: &armappservice.AnalysisDefinition{
+	// 	AnalysisDefinition: armappservice.AnalysisDefinition{
 	// 		Name: to.Ptr("appanalysis"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/appanalysis"),
 	// 		Properties: &armappservice.AnalysisDefinitionProperties{
@@ -889,7 +889,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysis_getAppSlotAnalysis() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteAnalysisResponse{
-	// 	AnalysisDefinition: &armappservice.AnalysisDefinition{
+	// 	AnalysisDefinition: armappservice.AnalysisDefinition{
 	// 		Name: to.Ptr("appanalysis"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/appanalysis"),
 	// 		Properties: &armappservice.AnalysisDefinitionProperties{
@@ -918,7 +918,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysisSlot_getAppSlotAnalysis() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteAnalysisSlotResponse{
-	// 	AnalysisDefinition: &armappservice.AnalysisDefinition{
+	// 	AnalysisDefinition: armappservice.AnalysisDefinition{
 	// 		Name: to.Ptr("appanalysis"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/appanalysis"),
 	// 		Properties: &armappservice.AnalysisDefinitionProperties{
@@ -947,7 +947,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysisSlot_getAppAnalysis() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteAnalysisSlotResponse{
-	// 	AnalysisDefinition: &armappservice.AnalysisDefinition{
+	// 	AnalysisDefinition: armappservice.AnalysisDefinition{
 	// 		Name: to.Ptr("appanalysis"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/appanalysis"),
 	// 		Properties: &armappservice.AnalysisDefinitionProperties{
@@ -976,7 +976,7 @@ func ExampleDiagnosticsClient_GetSiteDetector_getAppDetector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDetectorResponse{
-	// 	DetectorDefinitionResource: &armappservice.DetectorDefinitionResource{
+	// 	DetectorDefinitionResource: armappservice.DetectorDefinitionResource{
 	// 		Name: to.Ptr("sitecrashes"),
 	// 		ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/sitecrashes"),
 	// 		Properties: &armappservice.DetectorDefinition{
@@ -1007,7 +1007,7 @@ func ExampleDiagnosticsClient_GetSiteDetector_getAppSlotDetector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDetectorResponse{
-	// 	DetectorDefinitionResource: &armappservice.DetectorDefinitionResource{
+	// 	DetectorDefinitionResource: armappservice.DetectorDefinitionResource{
 	// 		Name: to.Ptr("sitecrashes"),
 	// 		ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/slots/staging/diagnostics/availability/detectors/sitecrashes"),
 	// 		Properties: &armappservice.DetectorDefinition{
@@ -1038,7 +1038,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppDetectorResponse() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDetectorResponseResponse{
-	// 	DetectorResponse: &armappservice.DetectorResponse{
+	// 	DetectorResponse: armappservice.DetectorResponse{
 	// 		Name: to.Ptr("runtimeavailability"),
 	// 		ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/detectors/runtimeavailability"),
 	// 		Properties: &armappservice.DetectorResponseProperties{
@@ -1180,7 +1180,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppSlotDetectorResponse
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDetectorResponseResponse{
-	// 	DetectorResponse: &armappservice.DetectorResponse{
+	// 	DetectorResponse: armappservice.DetectorResponse{
 	// 		Name: to.Ptr("runtimeavailability"),
 	// 		ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/slots/staging/detectors/runtimeavailability"),
 	// 		Properties: &armappservice.DetectorResponseProperties{
@@ -1322,7 +1322,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot_getAppSlotDetectorResp
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDetectorResponseSlotResponse{
-	// 	DetectorResponse: &armappservice.DetectorResponse{
+	// 	DetectorResponse: armappservice.DetectorResponse{
 	// 		Name: to.Ptr("runtimeavailability"),
 	// 		ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/slots/staging/detectors/runtimeavailability"),
 	// 		Properties: &armappservice.DetectorResponseProperties{
@@ -1464,7 +1464,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot_getAppDetectorResponse
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDetectorResponseSlotResponse{
-	// 	DetectorResponse: &armappservice.DetectorResponse{
+	// 	DetectorResponse: armappservice.DetectorResponse{
 	// 		Name: to.Ptr("runtimeavailability"),
 	// 		ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/detectors/runtimeavailability"),
 	// 		Properties: &armappservice.DetectorResponseProperties{
@@ -1606,7 +1606,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorSlot_getAppSlotDetector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDetectorSlotResponse{
-	// 	DetectorDefinitionResource: &armappservice.DetectorDefinitionResource{
+	// 	DetectorDefinitionResource: armappservice.DetectorDefinitionResource{
 	// 		Name: to.Ptr("sitecrashes"),
 	// 		ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/slots/staging/diagnostics/availability/detectors/sitecrashes"),
 	// 		Properties: &armappservice.DetectorDefinition{
@@ -1637,7 +1637,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorSlot_getAppDetector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDetectorSlotResponse{
-	// 	DetectorDefinitionResource: &armappservice.DetectorDefinitionResource{
+	// 	DetectorDefinitionResource: armappservice.DetectorDefinitionResource{
 	// 		Name: to.Ptr("sitecrashes"),
 	// 		ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/sitecrashes"),
 	// 		Properties: &armappservice.DetectorDefinition{
@@ -1668,7 +1668,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppDiagnosticCategory
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDiagnosticCategoryResponse{
-	// 	DiagnosticCategory: &armappservice.DiagnosticCategory{
+	// 	DiagnosticCategory: armappservice.DiagnosticCategory{
 	// 		Name: to.Ptr("availability"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability"),
 	// 		Properties: &armappservice.DiagnosticCategoryProperties{
@@ -1697,7 +1697,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppSlotDiagnosticCate
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDiagnosticCategoryResponse{
-	// 	DiagnosticCategory: &armappservice.DiagnosticCategory{
+	// 	DiagnosticCategory: armappservice.DiagnosticCategory{
 	// 		Name: to.Ptr("availability"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability"),
 	// 		Properties: &armappservice.DiagnosticCategoryProperties{
@@ -1726,7 +1726,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot_getAppSlotDiagnostic
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{
-	// 	DiagnosticCategory: &armappservice.DiagnosticCategory{
+	// 	DiagnosticCategory: armappservice.DiagnosticCategory{
 	// 		Name: to.Ptr("availability"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability"),
 	// 		Properties: &armappservice.DiagnosticCategoryProperties{
@@ -1755,7 +1755,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot_getAppDiagnosticCate
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{
-	// 	DiagnosticCategory: &armappservice.DiagnosticCategory{
+	// 	DiagnosticCategory: armappservice.DiagnosticCategory{
 	// 		Name: to.Ptr("availability"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability"),
 	// 		Properties: &armappservice.DiagnosticCategoryProperties{

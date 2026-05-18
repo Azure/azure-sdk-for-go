@@ -7,7 +7,7 @@ package armbilling_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"log"
 )
 

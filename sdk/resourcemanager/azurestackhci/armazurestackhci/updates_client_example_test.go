@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci"
 	"log"
 	"time"
 )
@@ -30,7 +30,7 @@ func ExampleUpdatesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -58,7 +58,7 @@ func ExampleUpdatesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.UpdatesClientGetResponse{
-	// 	Update: &armazurestackhci.Update{
+	// 	Update: armazurestackhci.Update{
 	// 		Name: to.Ptr("Microsoft4.2203.2.32"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/updates"),
 	// 		ID: to.Ptr("/subscriptions/b8d594e5-51f3-4c11-9c54-a7771b81c712/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/clusters/testcluster/updates/Microsoft4.2203.2.32"),
@@ -171,7 +171,7 @@ func ExampleUpdatesClient_BeginPost() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -197,7 +197,7 @@ func ExampleUpdatesClient_BeginPrepare() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -246,7 +246,7 @@ func ExampleUpdatesClient_Put() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.UpdatesClientPutResponse{
-	// 	Update: &armazurestackhci.Update{
+	// 	Update: armazurestackhci.Update{
 	// 		Name: to.Ptr("Microsoft4.2203.2.32"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/updates"),
 	// 		ID: to.Ptr("/subscriptions/b8d594e5-51f3-4c11-9c54-a7771b81c712/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/clusters/testcluster/updates/Microsoft4.2203.2.32"),

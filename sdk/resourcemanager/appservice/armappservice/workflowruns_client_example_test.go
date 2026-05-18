@@ -7,7 +7,7 @@ package armappservice_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -52,7 +52,7 @@ func ExampleWorkflowRunsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WorkflowRunsClientGetResponse{
-	// 	WorkflowRun: &armappservice.WorkflowRun{
+	// 	WorkflowRun: armappservice.WorkflowRun{
 	// 		Name: to.Ptr("08586676746934337772206998657CU22"),
 	// 		Type: to.Ptr("Microsoft.Web/workflows/runs"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/providers/Microsoft.Web/workflows/test-workflow/runs/08586676746934337772206998657CU22"),

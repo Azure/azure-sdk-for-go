@@ -19,6 +19,8 @@ import (
 
 // ApplicationClient contains the methods for the Application group.
 // Don't use this type directly, use NewApplicationClient() instead.
+//
+// Generated from API version 2025-06-01
 type ApplicationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewApplicationClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Create - Adds an application to the specified Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -97,8 +97,8 @@ func (client *ApplicationClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -118,8 +118,6 @@ func (client *ApplicationClient) createHandleResponse(resp *http.Response) (Appl
 
 // Delete - Deletes an application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -171,15 +169,13 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information about the specified application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -232,8 +228,8 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -248,8 +244,6 @@ func (client *ApplicationClient) getHandleResponse(resp *http.Response) (Applica
 }
 
 // NewListPager - Lists all of the applications in the specified account.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -298,11 +292,11 @@ func (client *ApplicationClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", version20250601)
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -318,8 +312,6 @@ func (client *ApplicationClient) listHandleResponse(resp *http.Response) (Applic
 
 // Update - Updates settings for the specified application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -373,8 +365,8 @@ func (client *ApplicationClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

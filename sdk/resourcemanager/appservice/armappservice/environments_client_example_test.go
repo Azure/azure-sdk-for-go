@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -36,13 +36,13 @@ func ExampleEnvironmentsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse{
-	// 	RemotePrivateEndpointConnectionARMResource: &armappservice.RemotePrivateEndpointConnectionARMResource{
+	// 	RemotePrivateEndpointConnectionARMResource: armappservice.RemotePrivateEndpointConnectionARMResource{
 	// 		Name: to.Ptr("fa38656c-034e-43d8-adce-fe06ce039c98"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/privateEndpointConnections/fa38656c-034e-43d8-adce-fe06ce039c98"),
@@ -82,7 +82,7 @@ func ExampleEnvironmentsClient_BeginChangeVnet() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	for res.More() {
 		page, err := res.NextPage(ctx)
@@ -128,13 +128,13 @@ func ExampleEnvironmentsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientCreateOrUpdateResponse{
-	// 	EnvironmentResource: &armappservice.EnvironmentResource{
+	// 	EnvironmentResource: armappservice.EnvironmentResource{
 	// 		Name: to.Ptr("test-ase"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase"),
@@ -209,13 +209,13 @@ func ExampleEnvironmentsClient_BeginCreateOrUpdateMultiRolePool() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientCreateOrUpdateMultiRolePoolResponse{
-	// 	WorkerPoolResource: &armappservice.WorkerPoolResource{
+	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
 	// 	},
 	// }
 }
@@ -242,13 +242,13 @@ func ExampleEnvironmentsClient_BeginCreateOrUpdateWorkerPool() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientCreateOrUpdateWorkerPoolResponse{
-	// 	WorkerPoolResource: &armappservice.WorkerPoolResource{
+	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
 	// 	},
 	// }
 }
@@ -270,7 +270,7 @@ func ExampleEnvironmentsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -293,7 +293,7 @@ func ExampleEnvironmentsClient_DeleteAseCustomDNSSuffixConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse{
-	// 	undefined: map[string]any{
+	// 	Interface: map[string]any{
 	// 	},
 	// }
 }
@@ -315,7 +315,7 @@ func ExampleEnvironmentsClient_BeginDeletePrivateEndpointConnection() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -343,7 +343,7 @@ func ExampleEnvironmentsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientGetResponse{
-	// 	EnvironmentResource: &armappservice.EnvironmentResource{
+	// 	EnvironmentResource: armappservice.EnvironmentResource{
 	// 		Name: to.Ptr("test-ase"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase"),
@@ -415,7 +415,7 @@ func ExampleEnvironmentsClient_GetAseCustomDNSSuffixConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientGetAseCustomDNSSuffixConfigurationResponse{
-	// 	CustomDNSSuffixConfiguration: &armappservice.CustomDNSSuffixConfiguration{
+	// 	CustomDNSSuffixConfiguration: armappservice.CustomDNSSuffixConfiguration{
 	// 		Name: to.Ptr("customDnsSuffix"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/configurations/customdnssuffix"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/configurations/customdnssuffix"),
@@ -448,7 +448,7 @@ func ExampleEnvironmentsClient_GetAseV3NetworkingConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientGetAseV3NetworkingConfigurationResponse{
-	// 	AseV3NetworkingConfiguration: &armappservice.AseV3NetworkingConfiguration{
+	// 	AseV3NetworkingConfiguration: armappservice.AseV3NetworkingConfiguration{
 	// 		Name: to.Ptr("networking"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/configurations/networking"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/configurations/networking"),
@@ -493,7 +493,7 @@ func ExampleEnvironmentsClient_GetDiagnosticsItem() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientGetDiagnosticsItemResponse{
-	// 	HostingEnvironmentDiagnostics: &armappservice.HostingEnvironmentDiagnostics{
+	// 	HostingEnvironmentDiagnostics: armappservice.HostingEnvironmentDiagnostics{
 	// 		Name: to.Ptr("test-diagnostic"),
 	// 	},
 	// }
@@ -611,7 +611,7 @@ func ExampleEnvironmentsClient_GetMultiRolePool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientGetMultiRolePoolResponse{
-	// 	WorkerPoolResource: &armappservice.WorkerPoolResource{
+	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/multiRolePools"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/multiRolePools/default"),
@@ -1469,7 +1469,7 @@ func ExampleEnvironmentsClient_GetPrivateEndpointConnection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientGetPrivateEndpointConnectionResponse{
-	// 	RemotePrivateEndpointConnectionARMResource: &armappservice.RemotePrivateEndpointConnectionARMResource{
+	// 	RemotePrivateEndpointConnectionARMResource: armappservice.RemotePrivateEndpointConnectionARMResource{
 	// 		Name: to.Ptr("fa38656c-034e-43d8-adce-fe06ce039c98"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/privateEndpointConnections/fa38656c-034e-43d8-adce-fe06ce039c98"),
@@ -1558,7 +1558,7 @@ func ExampleEnvironmentsClient_GetPrivateLinkResources() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientGetPrivateLinkResourcesResponse{
-	// 	PrivateLinkResourcesWrapper: &armappservice.PrivateLinkResourcesWrapper{
+	// 	PrivateLinkResourcesWrapper: armappservice.PrivateLinkResourcesWrapper{
 	// 		Value: []*armappservice.PrivateLinkResource{
 	// 		},
 	// 	},
@@ -1584,7 +1584,7 @@ func ExampleEnvironmentsClient_GetVipInfo() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientGetVipInfoResponse{
-	// 	AddressResponse: &armappservice.AddressResponse{
+	// 	AddressResponse: armappservice.AddressResponse{
 	// 		Name: to.Ptr("test-ase"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/capacities"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/capacities/virtualip"),
@@ -1631,7 +1631,7 @@ func ExampleEnvironmentsClient_GetWorkerPool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientGetWorkerPoolResponse{
-	// 	WorkerPoolResource: &armappservice.WorkerPoolResource{
+	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
 	// 		Name: to.Ptr("workerPool1"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/workerPools"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/workerPools/workerPool1"),
@@ -2331,7 +2331,7 @@ func ExampleEnvironmentsClient_ListOperations() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientListOperationsResponse{
-	// 	undefined: &[]*armappservice.Operation{
+	// 	OperationArray: []*armappservice.Operation{
 	// 	},
 	// }
 }
@@ -2797,7 +2797,7 @@ func ExampleEnvironmentsClient_BeginResume() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	for res.More() {
 		page, err := res.NextPage(ctx)
@@ -2835,7 +2835,7 @@ func ExampleEnvironmentsClient_BeginSuspend() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	for res.More() {
 		page, err := res.NextPage(ctx)
@@ -2904,7 +2904,7 @@ func ExampleEnvironmentsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientUpdateResponse{
-	// 	EnvironmentResource: &armappservice.EnvironmentResource{
+	// 	EnvironmentResource: armappservice.EnvironmentResource{
 	// 		Name: to.Ptr("test-ase"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase"),
@@ -2982,7 +2982,7 @@ func ExampleEnvironmentsClient_UpdateAseCustomDNSSuffixConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientUpdateAseCustomDNSSuffixConfigurationResponse{
-	// 	CustomDNSSuffixConfiguration: &armappservice.CustomDNSSuffixConfiguration{
+	// 	CustomDNSSuffixConfiguration: armappservice.CustomDNSSuffixConfiguration{
 	// 		Name: to.Ptr("customDnsSuffix"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/configurations/customdnssuffix"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/configurations/customdnssuffix"),
@@ -3020,7 +3020,7 @@ func ExampleEnvironmentsClient_UpdateAseNetworkingConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientUpdateAseNetworkingConfigurationResponse{
-	// 	AseV3NetworkingConfiguration: &armappservice.AseV3NetworkingConfiguration{
+	// 	AseV3NetworkingConfiguration: armappservice.AseV3NetworkingConfiguration{
 	// 		Name: to.Ptr("networking"),
 	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/configurations/networking"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/configurations/networking"),
@@ -3070,7 +3070,7 @@ func ExampleEnvironmentsClient_UpdateMultiRolePool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientUpdateMultiRolePoolResponse{
-	// 	WorkerPoolResource: &armappservice.WorkerPoolResource{
+	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
 	// 	},
 	// }
 }
@@ -3099,7 +3099,7 @@ func ExampleEnvironmentsClient_UpdateWorkerPool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientUpdateWorkerPoolResponse{
-	// 	WorkerPoolResource: &armappservice.WorkerPoolResource{
+	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
 	// 	},
 	// }
 }
@@ -3121,6 +3121,6 @@ func ExampleEnvironmentsClient_BeginUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

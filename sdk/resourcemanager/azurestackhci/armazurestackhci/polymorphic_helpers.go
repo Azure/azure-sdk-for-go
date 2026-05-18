@@ -16,10 +16,10 @@ func unmarshalClusterJobPropertiesClassification(rawMsg json.RawMessage) (Cluste
 	}
 	var b ClusterJobPropertiesClassification
 	switch m["jobType"] {
-	case string(HciJobTypeConfigureSdnIntegration):
-		b = &HciConfigureSdnIntegrationJobProperties{}
 	case string(HciJobTypeConfigureCVM):
 		b = &HciConfigureCvmJobProperties{}
+	case string(HciJobTypeConfigureSdnIntegration):
+		b = &HciConfigureSdnIntegrationJobProperties{}
 	default:
 		b = &ClusterJobProperties{}
 	}
@@ -119,14 +119,14 @@ func unmarshalEdgeMachineJobPropertiesClassification(rawMsg json.RawMessage) (Ed
 	}
 	var b EdgeMachineJobPropertiesClassification
 	switch m["jobType"] {
-	case string(EdgeMachineJobTypeRemoteSupport):
-		b = &EdgeMachineRemoteSupportJobProperties{}
-	case string(EdgeMachineJobTypeProvisionOs):
-		b = &ProvisionOsJobProperties{}
-	case string(EdgeMachineJobTypeDownloadOs):
-		b = &DownloadOsJobProperties{}
 	case string(EdgeMachineJobTypeCollectLog):
 		b = &EdgeMachineCollectLogJobProperties{}
+	case string(EdgeMachineJobTypeDownloadOs):
+		b = &DownloadOsJobProperties{}
+	case string(EdgeMachineJobTypeProvisionOs):
+		b = &ProvisionOsJobProperties{}
+	case string(EdgeMachineJobTypeRemoteSupport):
+		b = &EdgeMachineRemoteSupportJobProperties{}
 	default:
 		b = &EdgeMachineJobProperties{}
 	}

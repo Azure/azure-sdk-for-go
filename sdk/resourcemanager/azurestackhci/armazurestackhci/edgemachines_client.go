@@ -18,6 +18,8 @@ import (
 
 // EdgeMachinesClient contains the methods for the EdgeMachines group.
 // Don't use this type directly, use NewEdgeMachinesClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type EdgeMachinesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewEdgeMachinesClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateOrUpdate - Create or update an edge machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeMachineName - Name of Device
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *EdgeMachinesClient) BeginCreateOrUpdate(ctx context.Context, resou
 
 // CreateOrUpdate - Create or update an edge machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 func (client *EdgeMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, resource EdgeMachine, options *EdgeMachinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeMachinesClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *EdgeMachinesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *EdgeMachinesClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // BeginDelete - Delete an edge machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeMachineName - Name of Device
 //   - options - EdgeMachinesClientBeginDeleteOptions contains the optional parameters for the EdgeMachinesClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *EdgeMachinesClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Delete an edge machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 func (client *EdgeMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, edgeMachineName string, options *EdgeMachinesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeMachinesClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *EdgeMachinesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get an edge machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeMachineName - Name of Device
 //   - options - EdgeMachinesClientGetOptions contains the optional parameters for the EdgeMachinesClient.Get method.
@@ -244,8 +236,8 @@ func (client *EdgeMachinesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,8 +252,6 @@ func (client *EdgeMachinesClient) getHandleResponse(resp *http.Response) (EdgeMa
 }
 
 // NewListByResourceGroupPager - List all edge machines in a resource group.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - EdgeMachinesClientListByResourceGroupOptions contains the optional parameters for the EdgeMachinesClient.NewListByResourceGroupPager
 //     method.
@@ -304,8 +294,8 @@ func (client *EdgeMachinesClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -320,8 +310,6 @@ func (client *EdgeMachinesClient) listByResourceGroupHandleResponse(resp *http.R
 }
 
 // NewListBySubscriptionPager - List all edge machines in a subscription.
-//
-// Generated from API version 2026-04-01-preview
 //   - options - EdgeMachinesClientListBySubscriptionOptions contains the optional parameters for the EdgeMachinesClient.NewListBySubscriptionPager
 //     method.
 func (client *EdgeMachinesClient) NewListBySubscriptionPager(options *EdgeMachinesClientListBySubscriptionOptions) *runtime.Pager[EdgeMachinesClientListBySubscriptionResponse] {
@@ -359,8 +347,8 @@ func (client *EdgeMachinesClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -376,8 +364,6 @@ func (client *EdgeMachinesClient) listBySubscriptionHandleResponse(resp *http.Re
 
 // BeginUpdate - Update an edge machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeMachineName - Name of Device
 //   - properties - The resource properties to be updated.
@@ -402,8 +388,6 @@ func (client *EdgeMachinesClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Update an edge machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 func (client *EdgeMachinesClient) update(ctx context.Context, resourceGroupName string, edgeMachineName string, properties EdgeMachinePatch, options *EdgeMachinesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeMachinesClient.BeginUpdate"
@@ -445,8 +429,8 @@ func (client *EdgeMachinesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

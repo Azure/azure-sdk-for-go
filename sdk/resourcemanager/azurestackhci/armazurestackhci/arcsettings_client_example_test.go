@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleArcSettingsClient_ConsentAndInstallDefaultExtensions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ArcSettingsClientConsentAndInstallDefaultExtensionsResponse{
-	// 	ArcSetting: &armazurestackhci.ArcSetting{
+	// 	ArcSetting: armazurestackhci.ArcSetting{
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
 	// 		Properties: &armazurestackhci.ArcSettingProperties{
@@ -93,7 +93,7 @@ func ExampleArcSettingsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ArcSettingsClientCreateResponse{
-	// 	ArcSetting: &armazurestackhci.ArcSetting{
+	// 	ArcSetting: armazurestackhci.ArcSetting{
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
 	// 		Properties: &armazurestackhci.ArcSettingProperties{
@@ -153,13 +153,13 @@ func ExampleArcSettingsClient_BeginCreateIdentity() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ArcSettingsClientCreateIdentityResponse{
-	// 	ArcIdentityResponse: &armazurestackhci.ArcIdentityResponse{
+	// 	ArcIdentityResponse: armazurestackhci.ArcIdentityResponse{
 	// 		Properties: &armazurestackhci.ArcIdentityResponseProperties{
 	// 			ArcApplicationClientID: to.Ptr("7b93bf67-60ac-4909-a987-ac438e69f9ba"),
 	// 			ArcApplicationObjectID: to.Ptr("400bd05f-395f-45a6-ba75-72601df80107"),
@@ -187,7 +187,7 @@ func ExampleArcSettingsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -215,7 +215,7 @@ func ExampleArcSettingsClient_GeneratePassword() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ArcSettingsClientGeneratePasswordResponse{
-	// 	PasswordCredential: &armazurestackhci.PasswordCredential{
+	// 	PasswordCredential: armazurestackhci.PasswordCredential{
 	// 		EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2121-02-17T16:24:23.6264377+05:30"); return t}()),
 	// 		KeyID: to.Ptr("00000000-2d47-4fb2-8ed2-fed71a5c197b"),
 	// 		SecretText: to.Ptr("secretText"),
@@ -243,7 +243,7 @@ func ExampleArcSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ArcSettingsClientGetResponse{
-	// 	ArcSetting: &armazurestackhci.ArcSetting{
+	// 	ArcSetting: armazurestackhci.ArcSetting{
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
 	// 		Properties: &armazurestackhci.ArcSettingProperties{
@@ -310,7 +310,7 @@ func ExampleArcSettingsClient_BeginInitializeDisableProcess() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -421,13 +421,13 @@ func ExampleArcSettingsClient_BeginReconcile() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ArcSettingsClientReconcileResponse{
-	// 	ArcSetting: &armazurestackhci.ArcSetting{
+	// 	ArcSetting: armazurestackhci.ArcSetting{
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
 	// 		Properties: &armazurestackhci.ArcSettingProperties{
@@ -510,7 +510,7 @@ func ExampleArcSettingsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ArcSettingsClientUpdateResponse{
-	// 	ArcSetting: &armazurestackhci.ArcSetting{
+	// 	ArcSetting: armazurestackhci.ArcSetting{
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
 	// 		Properties: &armazurestackhci.ArcSettingProperties{

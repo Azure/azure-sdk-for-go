@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
 	"log"
 	"time"
 )
@@ -86,7 +86,7 @@ func ExampleRoleEligibilityScheduleRequestsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleEligibilityScheduleRequestsClientGetResponse{
-	// 	RoleEligibilityScheduleRequest: &armauthorization.RoleEligibilityScheduleRequest{
+	// 	RoleEligibilityScheduleRequest: armauthorization.RoleEligibilityScheduleRequest{
 	// 		Name: to.Ptr("64caffb6-55c0-4deb-a585-68e948ea1ad6"),
 	// 		Type: to.Ptr("Microsoft.Authorization/RoleEligibilityRequests"),
 	// 		ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleEligibilityRequests/64caffb6-55c0-4deb-a585-68e948ea1ad6"),
@@ -245,7 +245,7 @@ func ExampleRoleEligibilityScheduleRequestsClient_Validate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleEligibilityScheduleRequestsClientValidateResponse{
-	// 	RoleEligibilityScheduleRequest: &armauthorization.RoleEligibilityScheduleRequest{
+	// 	RoleEligibilityScheduleRequest: armauthorization.RoleEligibilityScheduleRequest{
 	// 		Name: to.Ptr("64caffb6-55c0-4deb-a585-68e948ea1ad6"),
 	// 		Type: to.Ptr("Microsoft.Authorization/RoleEligibilityScheduleRequests"),
 	// 		ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleEligibilityScheduleRequests/64caffb6-55c0-4deb-a585-68e948ea1ad6"),

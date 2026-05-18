@@ -19,6 +19,8 @@ import (
 // AccessReviewInstancesAssignedForMyApprovalClient contains the methods for the AccessReviewInstancesAssignedForMyApproval
 // group.
 // Don't use this type directly, use NewAccessReviewInstancesAssignedForMyApprovalClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type AccessReviewInstancesAssignedForMyApprovalClient struct {
 	internal *arm.Client
 }
@@ -39,8 +41,6 @@ func NewAccessReviewInstancesAssignedForMyApprovalClient(credential azcore.Token
 
 // GetByID - Get single access review instance assigned for my approval.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
 //   - options - AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.GetByID
@@ -83,8 +83,8 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,8 +99,6 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDHandleRes
 }
 
 // NewListPager - Get access review instances assigned for my approval.
-//
-// Generated from API version 2021-12-01-preview
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - options - AccessReviewInstancesAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.NewListPager
 //     method.
@@ -142,8 +140,8 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) listCreateReques
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

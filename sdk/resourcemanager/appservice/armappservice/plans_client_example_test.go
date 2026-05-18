@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -40,13 +40,13 @@ func ExamplePlansClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.PlansClientCreateOrUpdateResponse{
-	// 	Plan: &armappservice.Plan{
+	// 	Plan: armappservice.Plan{
 	// 		Name: to.Ptr("testsf6141"),
 	// 		Type: to.Ptr("Microsoft.Web/serverfarms"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/testsf6141"),
@@ -115,7 +115,7 @@ func ExamplePlansClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.PlansClientGetResponse{
-	// 	Plan: &armappservice.Plan{
+	// 	Plan: armappservice.Plan{
 	// 		Name: to.Ptr("testsf6141"),
 	// 		Type: to.Ptr("Microsoft.Web/serverfarms"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/testsf6141"),
@@ -332,7 +332,7 @@ func ExamplePlansClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.PlansClientUpdateResponse{
-	// 	Plan: &armappservice.Plan{
+	// 	Plan: armappservice.Plan{
 	// 		Name: to.Ptr("testsf6141"),
 	// 		Type: to.Ptr("Microsoft.Web/serverfarms"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/testsf6141"),

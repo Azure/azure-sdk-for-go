@@ -12,10 +12,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -139,9 +140,7 @@ func (w *WebSiteManagementServerTransport) Do(req *http.Request) (*http.Response
 }
 
 func (w *WebSiteManagementServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -193,10 +192,7 @@ func (w *WebSiteManagementServerTransport) dispatchToMethodFake(req *http.Reques
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -226,7 +222,7 @@ func (w *WebSiteManagementServerTransport) dispatchCheckNameAvailability(req *ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceNameAvailability, req)
@@ -245,7 +241,7 @@ func (w *WebSiteManagementServerTransport) dispatchGetPublishingUser(req *http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).User, req)
@@ -274,7 +270,7 @@ func (w *WebSiteManagementServerTransport) dispatchGetSourceControl(req *http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SourceControl, req)
@@ -299,7 +295,7 @@ func (w *WebSiteManagementServerTransport) dispatchGetSubscriptionDeploymentLoca
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentLocations, req)
@@ -332,7 +328,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListAseRegionsPager(req *h
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		w.newListAseRegionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -355,16 +351,8 @@ func (w *WebSiteManagementServerTransport) dispatchNewListBillingMetersPager(req
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		billingLocationUnescaped, err := url.QueryUnescape(qp.Get("billingLocation"))
-		if err != nil {
-			return nil, err
-		}
-		billingLocationParam := getOptional(billingLocationUnescaped)
-		oSTypeUnescaped, err := url.QueryUnescape(qp.Get("osType"))
-		if err != nil {
-			return nil, err
-		}
-		oSTypeParam := getOptional(oSTypeUnescaped)
+		billingLocationParam := getOptional(qp.Get("billingLocation"))
+		oSTypeParam := getOptional(qp.Get("osType"))
 		var options *armappservice.WebSiteManagementClientListBillingMetersOptions
 		if billingLocationParam != nil || oSTypeParam != nil {
 			options = &armappservice.WebSiteManagementClientListBillingMetersOptions{
@@ -383,7 +371,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListBillingMetersPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		w.newListBillingMetersPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -406,11 +394,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListCustomHostNameSitesPag
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		hostnameUnescaped, err := url.QueryUnescape(qp.Get("hostname"))
-		if err != nil {
-			return nil, err
-		}
-		hostnameParam := getOptional(hostnameUnescaped)
+		hostnameParam := getOptional(qp.Get("hostname"))
 		var options *armappservice.WebSiteManagementClientListCustomHostNameSitesOptions
 		if hostnameParam != nil {
 			options = &armappservice.WebSiteManagementClientListCustomHostNameSitesOptions{
@@ -428,7 +412,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListCustomHostNameSitesPag
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		w.newListCustomHostNameSitesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -451,40 +435,20 @@ func (w *WebSiteManagementServerTransport) dispatchNewListGeoRegionsPager(req *h
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		sKUUnescaped, err := url.QueryUnescape(qp.Get("sku"))
+		sKUParam := getOptional(armappservice.SKUName(qp.Get("sku")))
+		linuxWorkersEnabledParam, err := parseOptional(qp.Get("linuxWorkersEnabled"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
-		sKUParam := getOptional(armappservice.SKUName(sKUUnescaped))
-		linuxWorkersEnabledUnescaped, err := url.QueryUnescape(qp.Get("linuxWorkersEnabled"))
+		xenonWorkersEnabledParam, err := parseOptional(qp.Get("xenonWorkersEnabled"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
-		linuxWorkersEnabledParam, err := parseOptional(linuxWorkersEnabledUnescaped, strconv.ParseBool)
+		linuxDynamicWorkersEnabledParam, err := parseOptional(qp.Get("linuxDynamicWorkersEnabled"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
-		xenonWorkersEnabledUnescaped, err := url.QueryUnescape(qp.Get("xenonWorkersEnabled"))
-		if err != nil {
-			return nil, err
-		}
-		xenonWorkersEnabledParam, err := parseOptional(xenonWorkersEnabledUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		linuxDynamicWorkersEnabledUnescaped, err := url.QueryUnescape(qp.Get("linuxDynamicWorkersEnabled"))
-		if err != nil {
-			return nil, err
-		}
-		linuxDynamicWorkersEnabledParam, err := parseOptional(linuxDynamicWorkersEnabledUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		customModeWorkersEnabledUnescaped, err := url.QueryUnescape(qp.Get("customModeWorkersEnabled"))
-		if err != nil {
-			return nil, err
-		}
-		customModeWorkersEnabledParam, err := parseOptional(customModeWorkersEnabledUnescaped, strconv.ParseBool)
+		customModeWorkersEnabledParam, err := parseOptional(qp.Get("customModeWorkersEnabled"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -509,7 +473,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListGeoRegionsPager(req *h
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		w.newListGeoRegionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -542,7 +506,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListPremierAddOnOffersPage
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		w.newListPremierAddOnOffersPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -567,7 +531,7 @@ func (w *WebSiteManagementServerTransport) dispatchListSKUs(req *http.Request) (
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUInfos, req)
@@ -604,7 +568,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListSiteIdentifiersAssigne
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		w.newListSiteIdentifiersAssignedToHostNamePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -631,7 +595,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListSourceControlsPager(re
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		w.newListSourceControlsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -664,7 +628,7 @@ func (w *WebSiteManagementServerTransport) dispatchMove(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -697,7 +661,7 @@ func (w *WebSiteManagementServerTransport) dispatchRegionalCheckNameAvailability
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DnlResourceNameAvailability, req)
@@ -720,7 +684,7 @@ func (w *WebSiteManagementServerTransport) dispatchUpdatePublishingUser(req *htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).User, req)
@@ -753,7 +717,7 @@ func (w *WebSiteManagementServerTransport) dispatchUpdateSourceControl(req *http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SourceControl, req)
@@ -786,7 +750,7 @@ func (w *WebSiteManagementServerTransport) dispatchValidate(req *http.Request) (
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ValidateResponse, req)
@@ -819,7 +783,7 @@ func (w *WebSiteManagementServerTransport) dispatchValidateMove(req *http.Reques
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -848,7 +812,7 @@ func (w *WebSiteManagementServerTransport) dispatchVerifyHostingEnvironmentVnet(
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VnetValidationFailureDetails, req)

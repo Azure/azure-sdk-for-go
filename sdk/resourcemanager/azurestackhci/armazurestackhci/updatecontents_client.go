@@ -18,6 +18,8 @@ import (
 
 // UpdateContentsClient contains the methods for the UpdateContents group.
 // Don't use this type directly, use NewUpdateContentsClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type UpdateContentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewUpdateContentsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Gets content for an update.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - updateContentName - The name of the UpdateContent
 //   - options - UpdateContentsClientGetOptions contains the optional parameters for the UpdateContentsClient.Get method.
@@ -88,8 +88,8 @@ func (client *UpdateContentsClient) getCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,8 +104,6 @@ func (client *UpdateContentsClient) getHandleResponse(resp *http.Response) (Upda
 }
 
 // NewListPager - List all update contents.
-//
-// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - options - UpdateContentsClientListOptions contains the optional parameters for the UpdateContentsClient.NewListPager method.
 func (client *UpdateContentsClient) NewListPager(location string, options *UpdateContentsClientListOptions) *runtime.Pager[UpdateContentsClientListResponse] {
@@ -147,8 +145,8 @@ func (client *UpdateContentsClient) listCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

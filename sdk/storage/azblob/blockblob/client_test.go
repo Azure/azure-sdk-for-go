@@ -34,6 +34,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
@@ -6325,6 +6326,11 @@ func TestUploadLogEvent(t *testing.T) {
 			require.Equal(t, msg, "blob name path1/path2 actual size 270000000 block-size 4194304 block-count 65")
 		}
 	})
+	// Reset global log state so it doesn't leak into subsequent tests.
+	t.Cleanup(func() {
+		log.SetListener(nil)
+		log.SetEvents()
+	})
 
 	fbb := &fakeBlockBlob{}
 	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path1/path2", &blockblob.ClientOptions{
@@ -6375,6 +6381,11 @@ func TestRequestIDGeneration(t *testing.T) {
 		require.Contains(t, msg, "X-Ms-Client-Request-Id: azblob-test-request-id")
 		require.Contains(t, msg, "User-Agent: testApp/1.0.0-preview.2")
 		requestIdMatch = true
+	})
+	// Reset global log state so it doesn't leak into subsequent tests.
+	t.Cleanup(func() {
+		log.SetListener(nil)
+		log.SetEvents()
 	})
 
 	fbb := &fakeBlockBlob{}
@@ -7476,4 +7487,161 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadBufferWithSMCustomSegmentSize(
 	downloadedData, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 	_require.Equal(content, downloadedData)
+}
+
+// expectHeaderObserver records the value of the Expect header on every outgoing request.
+type expectHeaderObserver struct {
+	seen []string
+}
+
+func (e *expectHeaderObserver) Do(req *policy.Request) (*http.Response, error) {
+	e.seen = append(e.seen, req.Raw().Header.Get("Expect"))
+	return req.Next()
+}
+
+// TestUploadExpectContinue verifies that, when ExpectContinueModeOn is configured, requests with
+// a body carry the Expect: 100-continue header.
+func TestUploadExpectContinue(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	observer := &expectHeaderObserver{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		ExpectContinueBehavior: &azblob.ExpectContinueOptions{Mode: azblob.ExpectContinueModeOn},
+		ClientOptions: policy.ClientOptions{
+			Transport:        fbb,
+			PerRetryPolicies: []policy.Policy{observer},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	buffer := bytes.Repeat([]byte{1}, 4*1024)
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+
+	require.NotEmpty(t, observer.seen)
+	for _, v := range observer.seen {
+		require.Equal(t, "100-continue", v)
+	}
+}
+
+// TestUploadExpectContinueOff verifies the header is not set when the mode is Off.
+func TestUploadExpectContinueOff(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	observer := &expectHeaderObserver{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		ExpectContinueBehavior: &azblob.ExpectContinueOptions{Mode: azblob.ExpectContinueModeOff},
+		ClientOptions: policy.ClientOptions{
+			Transport:        fbb,
+			PerRetryPolicies: []policy.Policy{observer},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	buffer := bytes.Repeat([]byte{1}, 4*1024)
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+
+	require.NotEmpty(t, observer.seen)
+	for _, v := range observer.seen {
+		require.Empty(t, v)
+	}
+}
+
+// throttlingBlockBlob is a fake transport that returns the response codes in `statuses`
+// in sequence; subsequent calls past the slice length reuse the final entry. Bodies are
+// drained so the Upload request's content stream is fully consumed.
+type throttlingBlockBlob struct {
+	statuses []int
+	idx      int
+}
+
+func (t *throttlingBlockBlob) Do(req *http.Request) (*http.Response, error) {
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	status := t.statuses[len(t.statuses)-1]
+	if t.idx < len(t.statuses) {
+		status = t.statuses[t.idx]
+	}
+	t.idx++
+	return &http.Response{
+		Request:    req,
+		StatusCode: status,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+// TestUploadExpectContinueApplyOnThrottle verifies the default behavior end-to-end through
+// an actual blockblob client: with no ExpectContinueBehavior configured, the first request
+// carries no Expect header; once the service returns a throttling status code (429), the
+// next request inside the throttle window carries Expect: 100-continue.
+func TestUploadExpectContinueApplyOnThrottle(t *testing.T) {
+	transport := &throttlingBlockBlob{statuses: []int{http.StatusTooManyRequests, http.StatusCreated}}
+	observer := &expectHeaderObserver{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		// ExpectContinueBehavior omitted -> defaults to ExpectContinueModeApplyOnThrottle.
+		ClientOptions: policy.ClientOptions{
+			Transport:        transport,
+			PerRetryPolicies: []policy.Policy{observer},
+			Retry:            policy.RetryOptions{MaxRetries: -1},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	buffer := bytes.Repeat([]byte{1}, 4*1024)
+
+	// 1st upload: transport returns 429. Policy records the throttle timestamp.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.Error(t, err)
+
+	// 2nd upload: we are inside the throttle window, so the header must be set.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+
+	require.Len(t, observer.seen, 2)
+	require.Empty(t, observer.seen[0], "first request must not carry Expect header (no prior throttle)")
+	require.Equal(t, "100-continue", observer.seen[1], "request after throttle must carry Expect: 100-continue")
+}
+
+// TestUploadExpectContinueDisabledByEnv verifies end-to-end through an actual blockblob client
+// that the AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER environment variable suppresses the
+// Expect: 100-continue policy entirely, even when the response sequence would normally trigger
+// the throttle-driven header.
+func TestUploadExpectContinueDisabledByEnv(t *testing.T) {
+	// Setting the env var before invalidating the cache ensures the fresh sync.OnceValue picks
+	// up the new value on its first read inside NewExpectContinuePolicy.
+	t.Setenv(base.DisableExpectContinueHeaderEnvVar, "true")
+	t.Cleanup(base.ResetExpectContinueEnvCacheForTest())
+
+	transport := &throttlingBlockBlob{statuses: []int{http.StatusTooManyRequests, http.StatusCreated}}
+	observer := &expectHeaderObserver{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		// ExpectContinueBehavior is left unset; the env var alone must suppress the policy.
+		ClientOptions: policy.ClientOptions{
+			Transport:        transport,
+			PerRetryPolicies: []policy.Policy{observer},
+			Retry:            policy.RetryOptions{MaxRetries: -1},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	buffer := bytes.Repeat([]byte{1}, 4*1024)
+
+	// 1st upload: transport returns 429 — in the default ApplyOnThrottle mode this would arm the
+	// throttle window. With the env var set, no policy is installed at all.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.Error(t, err)
+
+	// 2nd upload: still inside what would have been the throttle window — must not carry the header.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+
+	require.Len(t, observer.seen, 2)
+	for i, v := range observer.seen {
+		require.Empty(t, v, "request #%d unexpectedly carries Expect header when env var is set", i)
+	}
 }

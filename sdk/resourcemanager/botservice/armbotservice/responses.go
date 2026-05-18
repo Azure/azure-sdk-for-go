@@ -140,6 +140,24 @@ type HostSettingsClientGetResponse struct {
 	HostSettingsResponse
 }
 
+// NetworkSecurityPerimeterConfigurationsClientGetResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.Get.
+type NetworkSecurityPerimeterConfigurationsClientGetResponse struct {
+	// Network Security Perimeter configuration
+	NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.NewListPager.
+type NetworkSecurityPerimeterConfigurationsClientListResponse struct {
+	// Result of the List NetworkSecurityPerimeterConfiguration operation.
+	NetworkSecurityPerimeterConfigurationList
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcile.
+type NetworkSecurityPerimeterConfigurationsClientReconcileResponse struct {
+	// Network Security Perimeter configuration
+	NetworkSecurityPerimeterConfiguration
+}
+
 // OperationResultsClientGetResponse contains the response from method OperationResultsClient.BeginGet.
 type OperationResultsClientGetResponse struct {
 	// The properties indicating the operation result of an operation on a service.

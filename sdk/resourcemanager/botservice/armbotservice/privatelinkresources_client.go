@@ -27,7 +27,7 @@ type PrivateLinkResourcesClient struct {
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
 //   - subscriptionID - Azure Subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // ListByBotResource - Gets the private link resources that need to be created for a Bot.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-15
+// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the Bot resource group in the user subscription.
 //   - resourceName - The name of the Bot resource.
 //   - options - PrivateLinkResourcesClientListByBotResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByBotResource
@@ -71,7 +71,7 @@ func (client *PrivateLinkResourcesClient) ListByBotResource(ctx context.Context,
 }
 
 // listByBotResourceCreateRequest creates the ListByBotResource request.
-func (client *PrivateLinkResourcesClient) listByBotResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListByBotResourceOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) listByBotResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *PrivateLinkResourcesClientListByBotResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/privateLinkResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -90,7 +90,7 @@ func (client *PrivateLinkResourcesClient) listByBotResourceCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

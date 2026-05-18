@@ -5,8 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/e7bf3adfa2d5e5cdbb804eec35279501794f461c/specification/botservice/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/e7bf3adfa2d5e5cdbb804eec35279501794f461c/specification/botservice/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/549e13fda6874099890b133b993217f8cd325946/specification/botservice/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/549e13fda6874099890b133b993217f8cd325946/specification/botservice/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.2.0
+module-version: 1.3.0-beta.1
+tag: package-preview-2023-09
 ```

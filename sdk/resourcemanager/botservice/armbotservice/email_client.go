@@ -27,7 +27,7 @@ type EmailClient struct {
 // NewEmailClient creates a new instance of EmailClient with the specified values.
 //   - subscriptionID - Azure Subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEmailClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EmailClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewEmailClient(subscriptionID string, credential azcore.TokenCredential, op
 // CreateSignInURL - Creates an email channel sign in url for a Bot Service
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-15
+// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the Bot resource group in the user subscription.
 //   - resourceName - The name of the Bot resource.
 //   - options - EmailClientCreateSignInURLOptions contains the optional parameters for the EmailClient.CreateSignInURL method.
@@ -70,7 +70,7 @@ func (client *EmailClient) CreateSignInURL(ctx context.Context, resourceGroupNam
 }
 
 // createSignInURLCreateRequest creates the CreateSignInURL request.
-func (client *EmailClient) createSignInURLCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *EmailClientCreateSignInURLOptions) (*policy.Request, error) {
+func (client *EmailClient) createSignInURLCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *EmailClientCreateSignInURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/createEmailSignInUrl"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -89,7 +89,7 @@ func (client *EmailClient) createSignInURLCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

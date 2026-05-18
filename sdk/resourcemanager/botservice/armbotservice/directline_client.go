@@ -27,7 +27,7 @@ type DirectLineClient struct {
 // NewDirectLineClient creates a new instance of DirectLineClient with the specified values.
 //   - subscriptionID - Azure Subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDirectLineClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DirectLineClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewDirectLineClient(subscriptionID string, credential azcore.TokenCredentia
 // RegenerateKeys - Regenerates secret keys and returns them for the DirectLine Channel of a particular BotService resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-15
+// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the Bot resource group in the user subscription.
 //   - resourceName - The name of the Bot resource.
 //   - channelName - The name of the Channel resource for which keys are to be regenerated.
@@ -73,7 +73,7 @@ func (client *DirectLineClient) RegenerateKeys(ctx context.Context, resourceGrou
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *DirectLineClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName RegenerateKeysChannelName, parameters SiteInfo, options *DirectLineClientRegenerateKeysOptions) (*policy.Request, error) {
+func (client *DirectLineClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName RegenerateKeysChannelName, parameters SiteInfo, _ *DirectLineClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/channels/{channelName}/regeneratekeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -96,7 +96,7 @@ func (client *DirectLineClient) regenerateKeysCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-15")
+	reqQP.Set("api-version", "2023-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

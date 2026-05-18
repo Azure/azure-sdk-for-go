@@ -77,7 +77,7 @@ type AlexaChannelProperties struct {
 
 // Bot resource definition
 type Bot struct {
-	// Entity Tag
+	// Entity Tag.
 	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
@@ -110,7 +110,7 @@ type Bot struct {
 
 // BotChannel - Bot channel resource definition
 type BotChannel struct {
-	// Entity Tag
+	// Entity Tag.
 	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
@@ -242,6 +242,9 @@ type BotProperties struct {
 	// READ-ONLY; Token used to migrate non Azure bot to azure subscription
 	MigrationToken *string
 
+	// READ-ONLY; List of Network Security Perimeter configurations for the bot
+	NetworkSecurityPerimeterConfigurations []*NetworkSecurityPerimeterConfiguration
+
 	// READ-ONLY; List of Private Endpoint Connections configured for the bot
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
@@ -349,7 +352,7 @@ type ConnectionItemName struct {
 
 // ConnectionSetting - Bot channel resource definition
 type ConnectionSetting struct {
-	// Entity Tag
+	// Entity Tag.
 	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
@@ -396,6 +399,12 @@ type ConnectionSettingProperties struct {
 
 	// Client Secret associated with the Connection Setting
 	ClientSecret *string
+
+	// Id of the Connection Setting.
+	ID *string
+
+	// Name of the Connection Setting.
+	Name *string
 
 	// Service Provider Parameters associated with the Connection Setting
 	Parameters []*ConnectionSettingParameter
@@ -650,6 +659,15 @@ type Error struct {
 	Error *ErrorBody
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
 // ErrorBody - Bot Service error body.
 type ErrorBody struct {
 	// REQUIRED; error code
@@ -657,6 +675,31 @@ type ErrorBody struct {
 
 	// REQUIRED; error message
 	Message *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
 }
 
 // FacebookChannel - Facebook channel definition
@@ -847,7 +890,7 @@ type ListChannelWithKeysResponse struct {
 	// Entity tag of the resource
 	EntityTag *string
 
-	// Entity Tag
+	// Entity Tag.
 	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
@@ -959,6 +1002,97 @@ type MsTeamsChannelProperties struct {
 
 	// Webhook for Microsoft Teams channel calls
 	IncomingCallRoute *string
+}
+
+// NetworkSecurityPerimeter - Information about Network Security Perimeter
+type NetworkSecurityPerimeter struct {
+	// Location of the Network Security Perimeter
+	Location *string
+
+	// Guid of the Network Security Perimeter
+	PerimeterGUID *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+}
+
+// NetworkSecurityPerimeterConfiguration - Network Security Perimeter configuration
+type NetworkSecurityPerimeterConfiguration struct {
+	// Fully qualified identifier of the resource
+	ID *string
+
+	// Name of the resource
+	Name *string
+
+	// Type of the resource
+	Type *string
+
+	// READ-ONLY; Properties of the Network Security Perimeter configuration
+	Properties *NetworkSecurityPerimeterConfigurationProperties
+}
+
+// NetworkSecurityPerimeterConfigurationList - Result of the List NetworkSecurityPerimeterConfiguration operation.
+type NetworkSecurityPerimeterConfigurationList struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; A collection of Network Security Perimeter configurations
+	Value []*NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationProperties - Properties of Network Security Perimeter configuration
+type NetworkSecurityPerimeterConfigurationProperties struct {
+	// List of Provisioning Issues if any
+	ProvisioningIssues []*ProvisioningIssue
+	ProvisioningState  *ProvisioningState
+
+	// READ-ONLY; Information about Network Security Perimeter
+	NetworkSecurityPerimeter *NetworkSecurityPerimeter
+
+	// READ-ONLY; Information about profile
+	Profile *Profile
+
+	// READ-ONLY; Information about resource association
+	ResourceAssociation *ResourceAssociation
+}
+
+// NspAccessRule - Information of Access Rule in a profile
+type NspAccessRule struct {
+	// Name of the access rule
+	Name *string
+
+	// READ-ONLY; Properties of Access Rule
+	Properties *NspAccessRuleProperties
+}
+
+// NspAccessRuleProperties - Properties of Access Rule
+type NspAccessRuleProperties struct {
+	// Address prefixes in the CIDR format for inbound rules
+	AddressPrefixes []*string
+
+	// Direction of Access Rule
+	Direction *NspAccessRuleDirection
+
+	// Subscriptions for inbound rules
+	Subscriptions []*NspAccessRulePropertiesSubscriptionsItem
+
+	// READ-ONLY; Email addresses for outbound rules
+	EmailAddresses []*string
+
+	// READ-ONLY; FQDN for outbound rules
+	FullyQualifiedDomainNames []*string
+
+	// READ-ONLY; NetworkSecurityPerimeters for inbound rules
+	NetworkSecurityPerimeters []*NetworkSecurityPerimeter
+
+	// READ-ONLY; Phone numbers for outbound rules
+	PhoneNumbers []*string
+}
+
+// NspAccessRulePropertiesSubscriptionsItem - Subscription for inbound rule
+type NspAccessRulePropertiesSubscriptionsItem struct {
+	// Fully qualified identifier of subscription
+	ID *string
 }
 
 // Omnichannel channel definition
@@ -1165,6 +1299,51 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
+// Profile - Information about profile
+type Profile struct {
+	// List of Access Rules
+	AccessRules []*NspAccessRule
+
+	// Current access rules version
+	AccessRulesVersion *int64
+
+	// Current diagnostic settings version
+	DiagnosticSettingsVersion *int64
+
+	// Name of the profile
+	Name *string
+
+	// READ-ONLY; List of log categories
+	EnabledLogCategories []*string
+}
+
+// ProvisioningIssue - Describes Provisioning issue for given Network Security Perimeter configuration
+type ProvisioningIssue struct {
+	// Name of the issue
+	Name *string
+
+	// READ-ONLY; Properties of Provisioning Issue
+	Properties *ProvisioningIssueProperties
+}
+
+// ProvisioningIssueProperties - Properties of Provisioning Issue
+type ProvisioningIssueProperties struct {
+	// Description of the issue
+	Description *string
+
+	// Type of Issue
+	IssueType *string
+
+	// Provisioning state of Network Security Perimeter configuration propagation
+	Severity *Severity
+
+	// Access rules that can be added to the same profile to remediate the issue.
+	SuggestedAccessRules []*NspAccessRule
+
+	// READ-ONLY; ARM IDs of resources that can be associated to the same perimeter to remediate the issue.
+	SuggestedResourceIDs []*string
+}
+
 // QnAMakerEndpointKeysRequestBody - The request body for a request to Bot Service Management to list QnA Maker endpoint keys.
 type QnAMakerEndpointKeysRequestBody struct {
 	// Subscription key which provides access to this API.
@@ -1191,7 +1370,7 @@ type QnAMakerEndpointKeysResponse struct {
 
 // Resource - Azure resource
 type Resource struct {
-	// Entity Tag
+	// Entity Tag.
 	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
@@ -1217,6 +1396,15 @@ type Resource struct {
 
 	// READ-ONLY; Entity zones
 	Zones []*string
+}
+
+// ResourceAssociation - Information about resource association
+type ResourceAssociation struct {
+	// Access Mode of the resource association
+	AccessMode *AccessMode
+
+	// Name of the resource association
+	Name *string
 }
 
 // SKU - The SKU of the cognitive services account.

@@ -34,6 +34,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
@@ -7603,4 +7604,44 @@ func TestUploadExpectContinueApplyOnThrottle(t *testing.T) {
 	require.Len(t, observer.seen, 2)
 	require.Empty(t, observer.seen[0], "first request must not carry Expect header (no prior throttle)")
 	require.Equal(t, "100-continue", observer.seen[1], "request after throttle must carry Expect: 100-continue")
+}
+
+// TestUploadExpectContinueDisabledByEnv verifies end-to-end through an actual blockblob client
+// that the AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER environment variable suppresses the
+// Expect: 100-continue policy entirely, even when the response sequence would normally trigger
+// the throttle-driven header.
+func TestUploadExpectContinueDisabledByEnv(t *testing.T) {
+	// Setting the env var before invalidating the cache ensures the fresh sync.OnceValue picks
+	// up the new value on its first read inside NewExpectContinuePolicy.
+	t.Setenv(base.DisableExpectContinueHeaderEnvVar, "true")
+	t.Cleanup(base.ResetExpectContinueEnvCacheForTest())
+
+	transport := &throttlingBlockBlob{statuses: []int{http.StatusTooManyRequests, http.StatusCreated}}
+	observer := &expectHeaderObserver{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		// ExpectContinueBehavior is left unset; the env var alone must suppress the policy.
+		ClientOptions: policy.ClientOptions{
+			Transport:        transport,
+			PerRetryPolicies: []policy.Policy{observer},
+			Retry:            policy.RetryOptions{MaxRetries: -1},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	buffer := bytes.Repeat([]byte{1}, 4*1024)
+
+	// 1st upload: transport returns 429 — in the default ApplyOnThrottle mode this would arm the
+	// throttle window. With the env var set, no policy is installed at all.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.Error(t, err)
+
+	// 2nd upload: still inside what would have been the throttle window — must not carry the header.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+
+	require.Len(t, observer.seen, 2)
+	for i, v := range observer.seen {
+		require.Empty(t, v, "request #%d unexpectedly carries Expect header when env var is set", i)
+	}
 }

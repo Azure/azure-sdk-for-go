@@ -24,7 +24,7 @@ import (
 // expectation checks against the mock server's response sequence deterministic.
 func newPipelineForPolicy(p policy.Policy, srv policy.Transporter) runtime.Pipeline {
 	return runtime.NewPipeline("test", "v0.0.0",
-		runtime.PipelineOptions{PerCall: []policy.Policy{p}},
+		runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
 		&policy.ClientOptions{
 			Transport: srv,
 			Retry:     policy.RetryOptions{MaxRetries: -1},
@@ -343,7 +343,7 @@ func TestNewExpectContinuePolicyDefaultThrottleIntervalIsOneMinute(t *testing.T)
 // overrides the default throttle interval.
 func TestNewExpectContinuePolicyHonorsAutoInterval(t *testing.T) {
 	custom := 250 * time.Millisecond
-	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{AutoInterval: &custom})
+	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{ThrottleInterval: &custom})
 	require.NotNil(t, p)
 	tp, ok := p.(*expectContinueOnThrottlePolicy)
 	require.True(t, ok, "expected *expectContinueOnThrottlePolicy, got %T", p)
@@ -361,7 +361,7 @@ func TestExpectContinueOnThrottlePolicyAutoIntervalEndToEnd(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 
 	backoff := 10 * time.Millisecond
-	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{AutoInterval: &backoff})
+	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{ThrottleInterval: &backoff})
 	require.NotNil(t, p)
 	pl := newPipelineForPolicy(p, srv)
 

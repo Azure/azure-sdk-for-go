@@ -356,16 +356,17 @@ func PossibleEvictionPolicyValues() []EvictionPolicy {
 type FleetMode string
 
 const (
-	// FleetModeInstance - Instance mode for Compute Fleet will directly provision VM instances.
-	FleetModeInstance FleetMode = "Instance"
-	// FleetModeManaged - Default. Managed is the default mode for Compute Fleet where VMs are provisioned via VMSS.
+	// FleetModeLaunch - Launch mode for Compute Fleet will directly launch VM instances to be managed by the customer.
+	FleetModeLaunch FleetMode = "Launch"
+	// FleetModeManaged - Default. Managed is the default mode for Compute Fleet where VMs are provisioned via virtual machine
+	// scale sets.
 	FleetModeManaged FleetMode = "Managed"
 )
 
 // PossibleFleetModeValues returns the possible values for the FleetMode const type.
 func PossibleFleetModeValues() []FleetMode {
 	return []FleetMode{
-		FleetModeInstance,
+		FleetModeLaunch,
 		FleetModeManaged,
 	}
 }
@@ -941,17 +942,14 @@ func PossibleVMCategoryValues() []VMCategory {
 type VMOperationStatus string
 
 const (
-	// VMOperationStatusCancelFailedStatusUnknown - Indicates that the cancellation request could not be applied because the virtual
-	// machine had already been created.
-	VMOperationStatusCancelFailedStatusUnknown VMOperationStatus = "CancelFailedStatusUnknown"
-	// VMOperationStatusCanceled - Indicates that the cancellation request was successful because the virtual machine had not
-	// been created yet.
-	VMOperationStatusCanceled VMOperationStatus = "Canceled"
 	// VMOperationStatusCreating - Indicates that the virtual machine is either in the process of being created or is scheduled
 	// to be created.
 	VMOperationStatusCreating VMOperationStatus = "Creating"
 	// VMOperationStatusFailed - Indicates that the virtual machine operation failed.
 	VMOperationStatusFailed VMOperationStatus = "Failed"
+	// VMOperationStatusLaunching - Indicates that the virtual machine has not been accepted by Compute yet and is still scheduled
+	// to be created.
+	VMOperationStatusLaunching VMOperationStatus = "Launching"
 	// VMOperationStatusSucceeded - Indicates that the virtual machine operation completed successfully.
 	VMOperationStatusSucceeded VMOperationStatus = "Succeeded"
 )
@@ -959,10 +957,9 @@ const (
 // PossibleVMOperationStatusValues returns the possible values for the VMOperationStatus const type.
 func PossibleVMOperationStatusValues() []VMOperationStatus {
 	return []VMOperationStatus{
-		VMOperationStatusCancelFailedStatusUnknown,
-		VMOperationStatusCanceled,
 		VMOperationStatusCreating,
 		VMOperationStatusFailed,
+		VMOperationStatusLaunching,
 		VMOperationStatusSucceeded,
 	}
 }

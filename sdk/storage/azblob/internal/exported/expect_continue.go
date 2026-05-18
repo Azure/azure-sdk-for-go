@@ -37,8 +37,8 @@ type ExpectContinueOptions struct {
 	// non-empty body and a computable content length is eligible.
 	ContentLengthThreshold *int64
 
-	// AutoInterval is used in ExpectContinueModeApplyOnThrottle mode to set the time window
+	// ThrottleInterval is used in ExpectContinueModeApplyOnThrottle mode to set the time window
 	// during which the Expect: 100-continue header is applied after a triggering error response
 	// (429, 500, or 503) is observed. When nil, the default of one minute is used.
-	AutoInterval *time.Duration
+	ThrottleInterval *time.Duration
 }

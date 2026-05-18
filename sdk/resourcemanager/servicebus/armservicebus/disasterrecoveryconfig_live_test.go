@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -88,10 +88,10 @@ func (testsuite *DisasterRecoveryConfigTestSuite) Prepare() {
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
-	var namespacesClientCreateOrUpdateResponse *armservicebus.NamespacesClientCreateOrUpdateResponse
-	namespacesClientCreateOrUpdateResponse, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
+	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
 	testsuite.Require().NoError(err)
-	testsuite.primaryNamespaceId = *namespacesClientCreateOrUpdateResponse.ID
+	testsuite.primaryNamespaceId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.ServiceBus/namespaces/%s",
+		testsuite.subscriptionId, testsuite.resourceGroupName, testsuite.primaryNamespaceName)
 
 	// From step Namespaces_CreateOrUpdateAuthorizationRule
 	fmt.Println("Call operation: Namespaces_CreateOrUpdateAuthorizationRule")

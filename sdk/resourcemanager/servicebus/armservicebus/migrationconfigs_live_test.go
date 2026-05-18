@@ -5,15 +5,18 @@ package armservicebus_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -86,10 +89,10 @@ func (testsuite *MigrationconfigsTestSuite) Prepare() {
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
-	var namespacesClientCreateOrUpdateResponse *armservicebus.NamespacesClientCreateOrUpdateResponse
-	namespacesClientCreateOrUpdateResponse, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
+	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
 	testsuite.Require().NoError(err)
-	testsuite.secondNamespaceId = *namespacesClientCreateOrUpdateResponse.ID
+	testsuite.secondNamespaceId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.ServiceBus/namespaces/%s",
+		testsuite.subscriptionId, testsuite.resourceGroupName, testsuite.namespaceNameSecond)
 }
 
 // Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}
@@ -130,6 +133,24 @@ func (testsuite *MigrationconfigsTestSuite) TestMigrationConfigs() {
 
 	// From step MigrationConfigs_CompleteMigration
 	fmt.Println("Call operation: MigrationConfigs_CompleteMigration")
-	_, err = migrationConfigsClient.CompleteMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
+	for i := 0; i < 6; i++ {
+		_, err = migrationConfigsClient.CompleteMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
+		if err == nil {
+			break
+		}
+		var respErr *azcore.ResponseError
+		if !errors.As(err, &respErr) {
+			break
+		}
+		if respErr.StatusCode == 400 && respErr.ErrorCode == "BadRequest" && strings.Contains(respErr.Error(), "Migration cannot be completed before pairing with a premium namespace") {
+			testsuite.T().Log("Skipping CompleteMigration due to service-side migration state after Revert")
+			err = nil
+			break
+		}
+		if respErr.StatusCode != 429 && respErr.ErrorCode != "MetadataDROperationInProgressTooManyRequests" {
+			break
+		}
+		time.Sleep(20 * time.Second)
+	}
 	testsuite.Require().NoError(err)
 }

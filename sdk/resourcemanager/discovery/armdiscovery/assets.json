@@ -1,0 +1,6 @@
+{
+    "AssetsRepo": "Azure/azure-sdk-assets",
+    "AssetsRepoPrefixPath": "go",
+    "TagPrefix": "go/resourcemanager/discovery/armdiscovery",
+    "Tag": "go/resourcemanager/discovery/armdiscovery_878e1b81e3"
+}

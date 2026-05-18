@@ -9485,120 +9485,6 @@ func (w *WafMetricsResponseSeriesPropertiesItemsItem) UnmarshalJSON(data []byte)
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WafPolicy.
-func (w WafPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "etag", w.Etag)
-	populate(objectMap, "id", w.ID)
-	populate(objectMap, "location", w.Location)
-	populate(objectMap, "name", w.Name)
-	populate(objectMap, "properties", w.Properties)
-	populate(objectMap, "sku", w.SKU)
-	populate(objectMap, "systemData", w.SystemData)
-	populate(objectMap, "tags", w.Tags)
-	populate(objectMap, "type", w.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WafPolicy.
-func (w *WafPolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", w, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, "Etag", &w.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &w.ID)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, "Location", &w.Location)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &w.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &w.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, "SKU", &w.SKU)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &w.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, "Tags", &w.Tags)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &w.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", w, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WafPolicyProperties.
-func (w WafPolicyProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "customRules", w.CustomRules)
-	populate(objectMap, "endpointLinks", w.EndpointLinks)
-	populate(objectMap, "extendedProperties", w.ExtendedProperties)
-	populate(objectMap, "managedRules", w.ManagedRules)
-	populate(objectMap, "policySettings", w.PolicySettings)
-	populate(objectMap, "provisioningState", w.ProvisioningState)
-	populate(objectMap, "rateLimitRules", w.RateLimitRules)
-	populate(objectMap, "resourceState", w.ResourceState)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WafPolicyProperties.
-func (w *WafPolicyProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", w, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "customRules":
-			err = unpopulate(val, "CustomRules", &w.CustomRules)
-			delete(rawMsg, key)
-		case "endpointLinks":
-			err = unpopulate(val, "EndpointLinks", &w.EndpointLinks)
-			delete(rawMsg, key)
-		case "extendedProperties":
-			err = unpopulate(val, "ExtendedProperties", &w.ExtendedProperties)
-			delete(rawMsg, key)
-		case "managedRules":
-			err = unpopulate(val, "ManagedRules", &w.ManagedRules)
-			delete(rawMsg, key)
-		case "policySettings":
-			err = unpopulate(val, "PolicySettings", &w.PolicySettings)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, "ProvisioningState", &w.ProvisioningState)
-			delete(rawMsg, key)
-		case "rateLimitRules":
-			err = unpopulate(val, "RateLimitRules", &w.RateLimitRules)
-			delete(rawMsg, key)
-		case "resourceState":
-			err = unpopulate(val, "ResourceState", &w.ResourceState)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", w, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type WafRankingsResponse.
 func (w WafRankingsResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -9669,6 +9555,65 @@ func (w *WafRankingsResponseDataItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type WebApplicationFirewallPolicy.
+func (w WebApplicationFirewallPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "etag", w.Etag)
+	populate(objectMap, "id", w.ID)
+	populate(objectMap, "location", w.Location)
+	populate(objectMap, "name", w.Name)
+	populate(objectMap, "properties", w.Properties)
+	populate(objectMap, "sku", w.SKU)
+	populate(objectMap, "systemData", w.SystemData)
+	populate(objectMap, "tags", w.Tags)
+	populate(objectMap, "type", w.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type WebApplicationFirewallPolicy.
+func (w *WebApplicationFirewallPolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", w, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &w.Etag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &w.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &w.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &w.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &w.Properties)
+			delete(rawMsg, key)
+		case "sku":
+			err = unpopulate(val, "SKU", &w.SKU)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &w.SystemData)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &w.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &w.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", w, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type WebApplicationFirewallPolicyList.
 func (w WebApplicationFirewallPolicyList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -9718,6 +9663,61 @@ func (w *WebApplicationFirewallPolicyPatchParameters) UnmarshalJSON(data []byte)
 		switch key {
 		case "tags":
 			err = unpopulate(val, "Tags", &w.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", w, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type WebApplicationFirewallPolicyProperties.
+func (w WebApplicationFirewallPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "customRules", w.CustomRules)
+	populate(objectMap, "endpointLinks", w.EndpointLinks)
+	populate(objectMap, "extendedProperties", w.ExtendedProperties)
+	populate(objectMap, "managedRules", w.ManagedRules)
+	populate(objectMap, "policySettings", w.PolicySettings)
+	populate(objectMap, "provisioningState", w.ProvisioningState)
+	populate(objectMap, "rateLimitRules", w.RateLimitRules)
+	populate(objectMap, "resourceState", w.ResourceState)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type WebApplicationFirewallPolicyProperties.
+func (w *WebApplicationFirewallPolicyProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", w, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "customRules":
+			err = unpopulate(val, "CustomRules", &w.CustomRules)
+			delete(rawMsg, key)
+		case "endpointLinks":
+			err = unpopulate(val, "EndpointLinks", &w.EndpointLinks)
+			delete(rawMsg, key)
+		case "extendedProperties":
+			err = unpopulate(val, "ExtendedProperties", &w.ExtendedProperties)
+			delete(rawMsg, key)
+		case "managedRules":
+			err = unpopulate(val, "ManagedRules", &w.ManagedRules)
+			delete(rawMsg, key)
+		case "policySettings":
+			err = unpopulate(val, "PolicySettings", &w.PolicySettings)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &w.ProvisioningState)
+			delete(rawMsg, key)
+		case "rateLimitRules":
+			err = unpopulate(val, "RateLimitRules", &w.RateLimitRules)
+			delete(rawMsg, key)
+		case "resourceState":
+			err = unpopulate(val, "ResourceState", &w.ResourceState)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -23,7 +23,7 @@ import (
 type PoliciesServer struct {
 	// BeginCreateOrUpdate is the fake for method PoliciesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicy armcdn.WafPolicy, options *armcdn.PoliciesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcdn.PoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicy armcdn.WebApplicationFirewallPolicy, options *armcdn.PoliciesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcdn.PoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method PoliciesClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -122,7 +122,7 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcdn.WafPolicy](req)
+		body, err := server.UnmarshalRequestAsJSON[armcdn.WebApplicationFirewallPolicy](req)
 		if err != nil {
 			return nil, err
 		}
@@ -217,7 +217,7 @@ func (p *PoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WafPolicy, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WebApplicationFirewallPolicy, req)
 	if err != nil {
 		return nil, err
 	}

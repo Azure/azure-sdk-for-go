@@ -50,7 +50,7 @@ func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential,
 //   - cdnWebApplicationFirewallPolicy - Policy to be created.
 //   - options - PoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdate
 //     method.
-func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicy WafPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PoliciesClientCreateOrUpdateResponse], error) {
+func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicy WebApplicationFirewallPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PoliciesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, policyName, cdnWebApplicationFirewallPolicy, options)
 		if err != nil {
@@ -69,7 +69,7 @@ func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Create or update policy with specified rule set name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicy WafPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicy WebApplicationFirewallPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -91,7 +91,7 @@ func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicy WafPolicy, _ *PoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicy WebApplicationFirewallPolicy, _ *PoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/cdnWebApplicationFirewallPolicies/{policyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -227,7 +227,7 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 // getHandleResponse handles the Get response.
 func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesClientGetResponse, error) {
 	result := PoliciesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WafPolicy); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebApplicationFirewallPolicy); err != nil {
 		return PoliciesClientGetResponse{}, err
 	}
 	return result, nil

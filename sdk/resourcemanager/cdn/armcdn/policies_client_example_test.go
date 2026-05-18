@@ -23,9 +23,9 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPoliciesClient().BeginCreateOrUpdate(ctx, "rg1", "MicrosoftCdnWafPolicy", armcdn.WafPolicy{
+	poller, err := clientFactory.NewPoliciesClient().BeginCreateOrUpdate(ctx, "rg1", "MicrosoftCdnWafPolicy", armcdn.WebApplicationFirewallPolicy{
 		Location: to.Ptr("WestUs"),
-		Properties: &armcdn.WafPolicyProperties{
+		Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 			CustomRules: &armcdn.CustomRuleList{
 				Rules: []*armcdn.CustomRule{
 					{
@@ -140,12 +140,12 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.PoliciesClientCreateOrUpdateResponse{
-	// 	WafPolicy: armcdn.WafPolicy{
+	// 	WebApplicationFirewallPolicy: armcdn.WebApplicationFirewallPolicy{
 	// 		Name: to.Ptr("MicrosoftCdnWafPolicy"),
 	// 		Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
 	// 		Location: to.Ptr("WestUs"),
-	// 		Properties: &armcdn.WafPolicyProperties{
+	// 		Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 	// 			CustomRules: &armcdn.CustomRuleList{
 	// 				Rules: []*armcdn.CustomRule{
 	// 					{
@@ -312,12 +312,12 @@ func ExamplePoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.PoliciesClientGetResponse{
-	// 	WafPolicy: armcdn.WafPolicy{
+	// 	WebApplicationFirewallPolicy: armcdn.WebApplicationFirewallPolicy{
 	// 		Name: to.Ptr("MicrosoftCdnWafPolicy"),
 	// 		Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
 	// 		Location: to.Ptr("WestUs"),
-	// 		Properties: &armcdn.WafPolicyProperties{
+	// 		Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 	// 			CustomRules: &armcdn.CustomRuleList{
 	// 				Rules: []*armcdn.CustomRule{
 	// 					{
@@ -467,13 +467,13 @@ func ExamplePoliciesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armcdn.PoliciesClientListResponse{
 		// 	WebApplicationFirewallPolicyList: armcdn.WebApplicationFirewallPolicyList{
-		// 		Value: []*armcdn.WafPolicy{
+		// 		Value: []*armcdn.WebApplicationFirewallPolicy{
 		// 			{
 		// 				Name: to.Ptr("MicrosoftCdnWafPolicy"),
 		// 				Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
 		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
 		// 				Location: to.Ptr("WestUs"),
-		// 				Properties: &armcdn.WafPolicyProperties{
+		// 				Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 		// 					CustomRules: &armcdn.CustomRuleList{
 		// 						Rules: []*armcdn.CustomRule{
 		// 							{
@@ -601,7 +601,7 @@ func ExamplePoliciesClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
 		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/VerizonStandardCdnWafPolicy"),
 		// 				Location: to.Ptr("WestUs"),
-		// 				Properties: &armcdn.WafPolicyProperties{
+		// 				Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 		// 					CustomRules: &armcdn.CustomRuleList{
 		// 						Rules: []*armcdn.CustomRule{
 		// 							{
@@ -752,12 +752,12 @@ func ExamplePoliciesClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcdn.PoliciesClientUpdateResponse{
-	// 	WafPolicy: armcdn.WafPolicy{
+	// 	WebApplicationFirewallPolicy: armcdn.WebApplicationFirewallPolicy{
 	// 		Name: to.Ptr("MicrosoftCdnWafPolicy"),
 	// 		Type: to.Ptr("Microsoft.Cdn/cdnwebapplicationfirewallpolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cdn/CdnWebApplicationFirewallPolicies/MicrosoftCdnWafPolicy"),
 	// 		Location: to.Ptr("WestUs"),
-	// 		Properties: &armcdn.WafPolicyProperties{
+	// 		Properties: &armcdn.WebApplicationFirewallPolicyProperties{
 	// 			CustomRules: &armcdn.CustomRuleList{
 	// 				Rules: []*armcdn.CustomRule{
 	// 					{

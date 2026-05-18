@@ -4022,8 +4022,21 @@ type WafMetricsResponseSeriesPropertiesItemsItem struct {
 	Value *string
 }
 
-// WafPolicy - Defines web application firewall policy for Azure CDN.
-type WafPolicy struct {
+// WafRankingsResponse - Waf Rankings Response
+type WafRankingsResponse struct {
+	Data          []*WafRankingsResponseDataItem
+	DateTimeBegin *time.Time
+	DateTimeEnd   *time.Time
+	Groups        []*string
+}
+
+type WafRankingsResponseDataItem struct {
+	GroupValues []*string
+	Metrics     []*ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems
+}
+
+// WebApplicationFirewallPolicy - Defines web application firewall policy for Azure CDN.
+type WebApplicationFirewallPolicy struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
@@ -4034,7 +4047,7 @@ type WafPolicy struct {
 	Etag *string
 
 	// Properties of the web application firewall policy.
-	Properties *WafPolicyProperties
+	Properties *WebApplicationFirewallPolicyProperties
 
 	// Resource tags.
 	Tags map[string]*string
@@ -4052,8 +4065,24 @@ type WafPolicy struct {
 	Type *string
 }
 
-// WafPolicyProperties - Defines CDN web application firewall policy properties.
-type WafPolicyProperties struct {
+// WebApplicationFirewallPolicyList - Defines a list of WebApplicationFirewallPolicies for Azure CDN. It contains a list of
+// WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
+type WebApplicationFirewallPolicyList struct {
+	// REQUIRED; The CdnWebApplicationFirewallPolicy items on this page
+	Value []*WebApplicationFirewallPolicy
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// WebApplicationFirewallPolicyPatchParameters - Properties required to update a CdnWebApplicationFirewallPolicy.
+type WebApplicationFirewallPolicyPatchParameters struct {
+	// CdnWebApplicationFirewallPolicy tags
+	Tags map[string]*string
+}
+
+// WebApplicationFirewallPolicyProperties - Defines CDN web application firewall policy properties.
+type WebApplicationFirewallPolicyProperties struct {
 	// Describes custom rules inside the policy.
 	CustomRules *CustomRuleList
 
@@ -4077,33 +4106,4 @@ type WafPolicyProperties struct {
 
 	// READ-ONLY; Resource status of the policy.
 	ResourceState *PolicyResourceState
-}
-
-// WafRankingsResponse - Waf Rankings Response
-type WafRankingsResponse struct {
-	Data          []*WafRankingsResponseDataItem
-	DateTimeBegin *time.Time
-	DateTimeEnd   *time.Time
-	Groups        []*string
-}
-
-type WafRankingsResponseDataItem struct {
-	GroupValues []*string
-	Metrics     []*ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems
-}
-
-// WebApplicationFirewallPolicyList - Defines a list of WebApplicationFirewallPolicies for Azure CDN. It contains a list of
-// WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
-type WebApplicationFirewallPolicyList struct {
-	// REQUIRED; The CdnWebApplicationFirewallPolicy items on this page
-	Value []*WafPolicy
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// WebApplicationFirewallPolicyPatchParameters - Properties required to update a CdnWebApplicationFirewallPolicy.
-type WebApplicationFirewallPolicyPatchParameters struct {
-	// CdnWebApplicationFirewallPolicy tags
-	Tags map[string]*string
 }

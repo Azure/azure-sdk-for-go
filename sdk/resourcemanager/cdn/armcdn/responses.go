@@ -195,7 +195,8 @@ type CustomDomainsClientCreateResponse struct {
 
 // CustomDomainsClientDeleteResponse contains the response from method CustomDomainsClient.BeginDelete.
 type CustomDomainsClientDeleteResponse struct {
-	// placeholder for future response values
+	// Friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes, e.g. www.contoso.com.
+	CustomDomain
 }
 
 // CustomDomainsClientDisableCustomHTTPSResponse contains the response from method CustomDomainsClient.BeginDisableCustomHTTPS.
@@ -433,7 +434,7 @@ type OriginsClientUpdateResponse struct {
 // PoliciesClientCreateOrUpdateResponse contains the response from method PoliciesClient.BeginCreateOrUpdate.
 type PoliciesClientCreateOrUpdateResponse struct {
 	// Defines web application firewall policy for Azure CDN.
-	WafPolicy
+	WebApplicationFirewallPolicy
 }
 
 // PoliciesClientDeleteResponse contains the response from method PoliciesClient.Delete.
@@ -444,7 +445,7 @@ type PoliciesClientDeleteResponse struct {
 // PoliciesClientGetResponse contains the response from method PoliciesClient.Get.
 type PoliciesClientGetResponse struct {
 	// Defines web application firewall policy for Azure CDN.
-	WafPolicy
+	WebApplicationFirewallPolicy
 }
 
 // PoliciesClientListResponse contains the response from method PoliciesClient.NewListPager.
@@ -457,7 +458,7 @@ type PoliciesClientListResponse struct {
 // PoliciesClientUpdateResponse contains the response from method PoliciesClient.BeginUpdate.
 type PoliciesClientUpdateResponse struct {
 	// Defines web application firewall policy for Azure CDN.
-	WafPolicy
+	WebApplicationFirewallPolicy
 }
 
 // ProfilesClientCanMigrateResponse contains the response from method ProfilesClient.BeginCanMigrate.

@@ -17,68 +17,66 @@ import (
 	"strings"
 )
 
-// RacksClient contains the methods for the Racks group.
-// Don't use this type directly, use NewRacksClient() instead.
-type RacksClient struct {
+// AccessBridgesClient contains the methods for the AccessBridges group.
+// Don't use this type directly, use NewAccessBridgesClient() instead.
+type AccessBridgesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewRacksClient creates a new instance of RacksClient with the specified values.
+// NewAccessBridgesClient creates a new instance of AccessBridgesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewRacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RacksClient, error) {
+func NewAccessBridgesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessBridgesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &RacksClient{
+	client := &AccessBridgesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create a new rack or update properties of the existing one. All customer initiated requests will
-// be rejected as the life cycle of this resource is managed by the system.
+// BeginCreateOrUpdate - Create a new access bridge or update the properties of the existing access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - rackName - The name of the rack.
-//   - rackParameters - The request body.
-//   - options - RacksClientBeginCreateOrUpdateOptions contains the optional parameters for the RacksClient.BeginCreateOrUpdate
+//   - accessBridgeName - The name of the access bridge.
+//   - accessBridge - The access bridge configuration.
+//   - options - AccessBridgesClientBeginCreateOrUpdateOptions contains the optional parameters for the AccessBridgesClient.BeginCreateOrUpdate
 //     method.
-func (client *RacksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, rackName string, rackParameters Rack, options *RacksClientBeginCreateOrUpdateOptions) (*runtime.Poller[RacksClientCreateOrUpdateResponse], error) {
+func (client *AccessBridgesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridge AccessBridge, options *AccessBridgesClientBeginCreateOrUpdateOptions) (*runtime.Poller[AccessBridgesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, rackName, rackParameters, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, accessBridgeName, accessBridge, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RacksClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessBridgesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RacksClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessBridgesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-// as the life cycle of this resource is managed by the system.
+// CreateOrUpdate - Create a new access bridge or update the properties of the existing access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-05-01-preview
-func (client *RacksClient) createOrUpdate(ctx context.Context, resourceGroupName string, rackName string, rackParameters Rack, options *RacksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *AccessBridgesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridge AccessBridge, options *AccessBridgesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RacksClient.BeginCreateOrUpdate"
+	const operationName = "AccessBridgesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, rackName, rackParameters, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accessBridgeName, accessBridge, options)
 	if err != nil {
 		return nil, err
 	}
@@ -94,8 +92,8 @@ func (client *RacksClient) createOrUpdate(ctx context.Context, resourceGroupName
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RacksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, rackName string, rackParameters Rack, options *RacksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}"
+func (client *AccessBridgesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridge AccessBridge, _ *AccessBridgesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -104,10 +102,10 @@ func (client *RacksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if rackName == "" {
-		return nil, errors.New("parameter rackName cannot be empty")
+	if accessBridgeName == "" {
+		return nil, errors.New("parameter accessBridgeName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{rackName}", url.PathEscape(rackName))
+	urlPath = strings.ReplaceAll(urlPath, "{accessBridgeName}", url.PathEscape(string(accessBridgeName)))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -116,56 +114,49 @@ func (client *RacksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
-	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, rackParameters); err != nil {
+	if err := runtime.MarshalAsJSON(req, accessBridge); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// BeginDelete - Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-// is managed by the system.
+// BeginDelete - Delete the specified access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - rackName - The name of the rack.
-//   - options - RacksClientBeginDeleteOptions contains the optional parameters for the RacksClient.BeginDelete method.
-func (client *RacksClient) BeginDelete(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientBeginDeleteOptions) (*runtime.Poller[RacksClientDeleteResponse], error) {
+//   - accessBridgeName - The name of the access bridge.
+//   - options - AccessBridgesClientBeginDeleteOptions contains the optional parameters for the AccessBridgesClient.BeginDelete
+//     method.
+func (client *AccessBridgesClient) BeginDelete(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, options *AccessBridgesClientBeginDeleteOptions) (*runtime.Poller[AccessBridgesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, rackName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accessBridgeName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RacksClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessBridgesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RacksClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessBridgesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-// is managed by the system.
+// Delete - Delete the specified access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-05-01-preview
-func (client *RacksClient) deleteOperation(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AccessBridgesClient) deleteOperation(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, options *AccessBridgesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RacksClient.BeginDelete"
+	const operationName = "AccessBridgesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, rackName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accessBridgeName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -181,8 +172,8 @@ func (client *RacksClient) deleteOperation(ctx context.Context, resourceGroupNam
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RacksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}"
+func (client *AccessBridgesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, options *AccessBridgesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -191,10 +182,10 @@ func (client *RacksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if rackName == "" {
-		return nil, errors.New("parameter rackName cannot be empty")
+	if accessBridgeName == "" {
+		return nil, errors.New("parameter accessBridgeName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{rackName}", url.PathEscape(rackName))
+	urlPath = strings.ReplaceAll(urlPath, "{accessBridgeName}", url.PathEscape(string(accessBridgeName)))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -211,38 +202,38 @@ func (client *RacksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// Get - Get properties of the provided rack.
+// Get - Get the properties of the provided access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - rackName - The name of the rack.
-//   - options - RacksClientGetOptions contains the optional parameters for the RacksClient.Get method.
-func (client *RacksClient) Get(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientGetOptions) (RacksClientGetResponse, error) {
+//   - accessBridgeName - The name of the access bridge.
+//   - options - AccessBridgesClientGetOptions contains the optional parameters for the AccessBridgesClient.Get method.
+func (client *AccessBridgesClient) Get(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, options *AccessBridgesClientGetOptions) (AccessBridgesClientGetResponse, error) {
 	var err error
-	const operationName = "RacksClient.Get"
+	const operationName = "AccessBridgesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, rackName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accessBridgeName, options)
 	if err != nil {
-		return RacksClientGetResponse{}, err
+		return AccessBridgesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return RacksClientGetResponse{}, err
+		return AccessBridgesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return RacksClientGetResponse{}, err
+		return AccessBridgesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *RacksClient) getCreateRequest(ctx context.Context, resourceGroupName string, rackName string, _ *RacksClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}"
+func (client *AccessBridgesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, _ *AccessBridgesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -251,10 +242,10 @@ func (client *RacksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if rackName == "" {
-		return nil, errors.New("parameter rackName cannot be empty")
+	if accessBridgeName == "" {
+		return nil, errors.New("parameter accessBridgeName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{rackName}", url.PathEscape(rackName))
+	urlPath = strings.ReplaceAll(urlPath, "{accessBridgeName}", url.PathEscape(string(accessBridgeName)))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -267,27 +258,27 @@ func (client *RacksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *RacksClient) getHandleResponse(resp *http.Response) (RacksClientGetResponse, error) {
-	result := RacksClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Rack); err != nil {
-		return RacksClientGetResponse{}, err
+func (client *AccessBridgesClient) getHandleResponse(resp *http.Response) (AccessBridgesClientGetResponse, error) {
+	result := AccessBridgesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccessBridge); err != nil {
+		return AccessBridgesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Get a list of racks in the provided resource group.
+// NewListByResourceGroupPager - Get a list of access bridges in the provided resource group.
 //
 // Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - RacksClientListByResourceGroupOptions contains the optional parameters for the RacksClient.NewListByResourceGroupPager
+//   - options - AccessBridgesClientListByResourceGroupOptions contains the optional parameters for the AccessBridgesClient.NewListByResourceGroupPager
 //     method.
-func (client *RacksClient) NewListByResourceGroupPager(resourceGroupName string, options *RacksClientListByResourceGroupOptions) *runtime.Pager[RacksClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[RacksClientListByResourceGroupResponse]{
-		More: func(page RacksClientListByResourceGroupResponse) bool {
+func (client *AccessBridgesClient) NewListByResourceGroupPager(resourceGroupName string, options *AccessBridgesClientListByResourceGroupOptions) *runtime.Pager[AccessBridgesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccessBridgesClientListByResourceGroupResponse]{
+		More: func(page AccessBridgesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *RacksClientListByResourceGroupResponse) (RacksClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RacksClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *AccessBridgesClientListByResourceGroupResponse) (AccessBridgesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessBridgesClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -296,7 +287,7 @@ func (client *RacksClient) NewListByResourceGroupPager(resourceGroupName string,
 				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 			}, nil)
 			if err != nil {
-				return RacksClientListByResourceGroupResponse{}, err
+				return AccessBridgesClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -305,8 +296,8 @@ func (client *RacksClient) NewListByResourceGroupPager(resourceGroupName string,
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *RacksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *RacksClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks"
+func (client *AccessBridgesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AccessBridgesClientListByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -333,26 +324,26 @@ func (client *RacksClient) listByResourceGroupCreateRequest(ctx context.Context,
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *RacksClient) listByResourceGroupHandleResponse(resp *http.Response) (RacksClientListByResourceGroupResponse, error) {
-	result := RacksClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RackList); err != nil {
-		return RacksClientListByResourceGroupResponse{}, err
+func (client *AccessBridgesClient) listByResourceGroupHandleResponse(resp *http.Response) (AccessBridgesClientListByResourceGroupResponse, error) {
+	result := AccessBridgesClientListByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccessBridgeList); err != nil {
+		return AccessBridgesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListBySubscriptionPager - Get a list of racks in the provided subscription.
+// NewListBySubscriptionPager - Get a list of access bridges in the provided subscription.
 //
 // Generated from API version 2026-05-01-preview
-//   - options - RacksClientListBySubscriptionOptions contains the optional parameters for the RacksClient.NewListBySubscriptionPager
+//   - options - AccessBridgesClientListBySubscriptionOptions contains the optional parameters for the AccessBridgesClient.NewListBySubscriptionPager
 //     method.
-func (client *RacksClient) NewListBySubscriptionPager(options *RacksClientListBySubscriptionOptions) *runtime.Pager[RacksClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[RacksClientListBySubscriptionResponse]{
-		More: func(page RacksClientListBySubscriptionResponse) bool {
+func (client *AccessBridgesClient) NewListBySubscriptionPager(options *AccessBridgesClientListBySubscriptionOptions) *runtime.Pager[AccessBridgesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccessBridgesClientListBySubscriptionResponse]{
+		More: func(page AccessBridgesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *RacksClientListBySubscriptionResponse) (RacksClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RacksClient.NewListBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *AccessBridgesClientListBySubscriptionResponse) (AccessBridgesClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessBridgesClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -361,7 +352,7 @@ func (client *RacksClient) NewListBySubscriptionPager(options *RacksClientListBy
 				return client.listBySubscriptionCreateRequest(ctx, options)
 			}, nil)
 			if err != nil {
-				return RacksClientListBySubscriptionResponse{}, err
+				return AccessBridgesClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
@@ -370,8 +361,8 @@ func (client *RacksClient) NewListBySubscriptionPager(options *RacksClientListBy
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *RacksClient) listBySubscriptionCreateRequest(ctx context.Context, options *RacksClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/racks"
+func (client *AccessBridgesClient) listBySubscriptionCreateRequest(ctx context.Context, options *AccessBridgesClientListBySubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/accessBridges"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -394,52 +385,53 @@ func (client *RacksClient) listBySubscriptionCreateRequest(ctx context.Context, 
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *RacksClient) listBySubscriptionHandleResponse(resp *http.Response) (RacksClientListBySubscriptionResponse, error) {
-	result := RacksClientListBySubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RackList); err != nil {
-		return RacksClientListBySubscriptionResponse{}, err
+func (client *AccessBridgesClient) listBySubscriptionHandleResponse(resp *http.Response) (AccessBridgesClientListBySubscriptionResponse, error) {
+	result := AccessBridgesClientListBySubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccessBridgeList); err != nil {
+		return AccessBridgesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
-// can be done independently.
+// BeginUpdate - Update properties of the provided access bridge, or update tags associated with the access bridge. Properties
+// and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - rackName - The name of the rack.
-//   - rackUpdateParameters - The request body.
-//   - options - RacksClientBeginUpdateOptions contains the optional parameters for the RacksClient.BeginUpdate method.
-func (client *RacksClient) BeginUpdate(ctx context.Context, resourceGroupName string, rackName string, rackUpdateParameters RackPatchParameters, options *RacksClientBeginUpdateOptions) (*runtime.Poller[RacksClientUpdateResponse], error) {
+//   - accessBridgeName - The name of the access bridge.
+//   - accessBridgeUpdateParameters - The request body.
+//   - options - AccessBridgesClientBeginUpdateOptions contains the optional parameters for the AccessBridgesClient.BeginUpdate
+//     method.
+func (client *AccessBridgesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*runtime.Poller[AccessBridgesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, rackName, rackUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, accessBridgeName, accessBridgeUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RacksClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessBridgesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RacksClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessBridgesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
-// can be done independently.
+// Update - Update properties of the provided access bridge, or update tags associated with the access bridge. Properties
+// and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-05-01-preview
-func (client *RacksClient) update(ctx context.Context, resourceGroupName string, rackName string, rackUpdateParameters RackPatchParameters, options *RacksClientBeginUpdateOptions) (*http.Response, error) {
+func (client *AccessBridgesClient) update(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RacksClient.BeginUpdate"
+	const operationName = "AccessBridgesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, rackName, rackUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accessBridgeName, accessBridgeUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -455,8 +447,8 @@ func (client *RacksClient) update(ctx context.Context, resourceGroupName string,
 }
 
 // updateCreateRequest creates the Update request.
-func (client *RacksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, rackName string, rackUpdateParameters RackPatchParameters, options *RacksClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}"
+func (client *AccessBridgesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -465,10 +457,10 @@ func (client *RacksClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if rackName == "" {
-		return nil, errors.New("parameter rackName cannot be empty")
+	if accessBridgeName == "" {
+		return nil, errors.New("parameter accessBridgeName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{rackName}", url.PathEscape(rackName))
+	urlPath = strings.ReplaceAll(urlPath, "{accessBridgeName}", url.PathEscape(string(accessBridgeName)))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -484,7 +476,7 @@ func (client *RacksClient) updateCreateRequest(ctx context.Context, resourceGrou
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, rackUpdateParameters); err != nil {
+	if err := runtime.MarshalAsJSON(req, accessBridgeUpdateParameters); err != nil {
 		return nil, err
 	}
 	return req, nil

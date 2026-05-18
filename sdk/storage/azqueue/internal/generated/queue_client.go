@@ -19,6 +19,9 @@ type MessagesClient struct {
 	// client just here for back compatibility. Use QueueClient instead.
 }
 
+// NewQueueClient creates a new instance of QueueClient with the specified values.
+//   - endpoint - The URL of the service account, queue, or message that is the target of the desired operation.
+//   - azClient - azcore.Client is a basic HTTP client. It consists of a pipeline and tracing provider.
 func NewQueueClient(url string, azClient *azcore.Client) *QueueClient {
 	client := &QueueClient{
 		internal: azClient,

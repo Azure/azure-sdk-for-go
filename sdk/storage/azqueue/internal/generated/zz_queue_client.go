@@ -19,8 +19,6 @@ import (
 	"time"
 )
 
-const defaultQueueClientVersion string = "2026-04-06"
-
 // QueueClient contains the methods for the Queue group.
 // Don't use this type directly, use a constructor function instead.
 //
@@ -66,7 +64,7 @@ func (client *QueueClient) clearCreateRequest(ctx context.Context, options *Queu
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -135,7 +133,7 @@ func (client *QueueClient) createCreateRequest(ctx context.Context, options *Que
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -196,7 +194,7 @@ func (client *QueueClient) deleteCreateRequest(ctx context.Context, options *Que
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -266,7 +264,7 @@ func (client *QueueClient) deleteMessageCreateRequest(ctx context.Context, messa
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -329,7 +327,7 @@ func (client *QueueClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -397,7 +395,7 @@ func (client *QueueClient) getPropertiesCreateRequest(ctx context.Context, optio
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -478,7 +476,7 @@ func (client *QueueClient) peekMessagesCreateRequest(ctx context.Context, option
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -553,7 +551,7 @@ func (client *QueueClient) receiveMessagesCreateRequest(ctx context.Context, opt
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -632,7 +630,7 @@ func (client *QueueClient) sendMessageCreateRequest(ctx context.Context, queueMe
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, queueMessage); err != nil {
 		return nil, err
@@ -705,7 +703,7 @@ func (client *QueueClient) setAccessPolicyCreateRequest(ctx context.Context, que
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	type wrapper struct {
 		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		QueueACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
@@ -782,7 +780,7 @@ func (client *QueueClient) setMetadataCreateRequest(ctx context.Context, options
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -860,7 +858,7 @@ func (client *QueueClient) updateMessageCreateRequest(ctx context.Context, messa
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultQueueClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, queueMessage); err != nil {
 		return nil, err

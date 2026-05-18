@@ -16,8 +16,6 @@ import (
 	"time"
 )
 
-const defaultServiceClientVersion string = "2026-04-06"
-
 // ServiceClient contains the methods for the Service group.
 // Don't use this type directly, use a constructor function instead.
 //
@@ -65,7 +63,7 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultServiceClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -135,7 +133,7 @@ func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, opt
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultServiceClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -208,7 +206,7 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultServiceClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, keyInfo); err != nil {
 		return nil, err
@@ -304,7 +302,7 @@ func (client *ServiceClient) listQueuesSegmentCreateRequest(ctx context.Context,
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultServiceClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	return req, nil
 }
 
@@ -374,7 +372,7 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, que
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{defaultServiceClientVersion}
+	req.Raw().Header["x-ms-version"] = []string{version20260406}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, queueServiceProperties); err != nil {
 		return nil, err

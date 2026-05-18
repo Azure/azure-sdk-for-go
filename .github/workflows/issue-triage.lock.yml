@@ -76,12 +76,13 @@ run-name: "Agentic Triage"
 
 jobs:
   activation:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       actions: read
       contents: read
+      discussions: write
       issues: write
-      pull-requests: read
+      pull-requests: write
     outputs:
       body: ${{ steps.sanitized.outputs.body }}
       comment_id: ""
@@ -951,8 +952,9 @@ jobs:
     runs-on: ubuntu-slim
     permissions:
       contents: read
+      discussions: write
       issues: write
-      pull-requests: read
+      pull-requests: write
     concurrency:
       group: "gh-aw-conclusion-issue-triage"
       cancel-in-progress: false
@@ -1374,8 +1376,9 @@ jobs:
     runs-on: ubuntu-slim
     permissions:
       contents: read
+      discussions: write
       issues: write
-      pull-requests: read
+      pull-requests: write
     timeout-minutes: 15
     env:
       GH_AW_CALLER_WORKFLOW_ID: "${{ github.repository }}/issue-triage"

@@ -84,8 +84,8 @@ func NewExpectContinuePolicy(opts *exported.ExpectContinueOptions) policy.Policy
 		fallthrough
 	default:
 		interval := defaultThrottleInterval
-		if opts.AutoInterval != nil {
-			interval = *opts.AutoInterval
+		if opts.ThrottleInterval != nil {
+			interval = *opts.ThrottleInterval
 		}
 		return &expectContinueOnThrottlePolicy{
 			contentLengthThreshold: threshold,

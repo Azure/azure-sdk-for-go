@@ -29,7 +29,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Compute Schedule module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule/v2
 ```
 
 ## Authorization

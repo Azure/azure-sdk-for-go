@@ -1,14 +1,11 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
-
+## 1.5.0-beta.2 (2026-05-18)
 ### Features Added
 
-### Breaking Changes
+- New struct `PlatformManaged`
+- New field `PlatformManaged` in struct `CertificatePolicy`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.5.0-beta.1 (2026-04-08)
 

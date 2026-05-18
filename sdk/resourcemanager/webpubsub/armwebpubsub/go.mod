@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub/v2
 
 go 1.25.0
 

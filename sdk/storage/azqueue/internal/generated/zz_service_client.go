@@ -73,9 +73,6 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
-	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -142,9 +139,6 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 	result := ServiceClientGetStatisticsResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -219,9 +213,6 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 	result := ServiceClientGetUserDelegationKeyResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -311,9 +302,6 @@ func (client *ServiceClient) listQueuesSegmentHandleResponse(resp *http.Response
 	result := ServiceClientListQueuesSegmentResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)

@@ -337,9 +337,6 @@ func (client *QueueClient) getAccessPolicyHandleResponse(resp *http.Response) (Q
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
-	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -486,9 +483,6 @@ func (client *QueueClient) peekMessagesHandleResponse(resp *http.Response) (Mess
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
-	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -560,9 +554,6 @@ func (client *QueueClient) receiveMessagesHandleResponse(resp *http.Response) (M
 	result := MessagesClientDequeueResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -643,9 +634,6 @@ func (client *QueueClient) sendMessageHandleResponse(resp *http.Response) (Messa
 	result := MessagesClientEnqueueResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)

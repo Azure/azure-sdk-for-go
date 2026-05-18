@@ -11,8 +11,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-05/getGuestConfigurationHCRPAssignmentReportById.json
-func ExampleHCRPAssignmentReportsClient_Get() {
+// Generated from example definition: 2024-04-05/getGuestConfigurationConnectedVMwarevSphereAssignmentReportById.json
+func ExampleConnectedVMwarevSphereAssignmentsReportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,17 +22,17 @@ func ExampleHCRPAssignmentReportsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewHCRPAssignmentReportsClient().Get(ctx, "myResourceGroupName", "myMachineName", "AuditSecureProtocol", "7367cbb8-ae99-47d0-a33b-a283564d2cb1", nil)
+	res, err := clientFactory.NewConnectedVMwarevSphereAssignmentsReportsClient().Get(ctx, "myResourceGroupName", "myvm", "AuditSecureProtocol", "7367cbb8-ae99-47d0-a33b-a283564d2cb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armguestconfiguration.HCRPAssignmentReportsClientGetResponse{
+	// res = armguestconfiguration.ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{
 	// 	AssignmentReport: &armguestconfiguration.AssignmentReport{
 	// 		Name: to.Ptr("7367cbb8-ae99-47d0-a33b-a283564d2cb1"),
-	// 		ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.HybridCompute/machines/myMachineName/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/AuditSecureProtocol/reports/7367cbb8-ae99-47d0-a33b-a283564d2cb1"),
+	// 		ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.Connectedvmwarevsphere/virtualmachines/myvm/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/AuditSecureProtocol/reports/7367cbb8-ae99-47d0-a33b-a283564d2cb1"),
 	// 		Properties: &armguestconfiguration.AssignmentReportProperties{
 	// 			Assignment: &armguestconfiguration.AssignmentInfo{
 	// 				Name: to.Ptr("AuditSecureProtocol"),
@@ -46,7 +46,7 @@ func ExampleHCRPAssignmentReportsClient_Get() {
 	// 			ReportID: to.Ptr("7367cbb8-ae99-47d0-a33b-a283564d2cb1"),
 	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-29T22:13:53Z"); return t}()),
 	// 			VM: &armguestconfiguration.VMInfo{
-	// 				ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.HybridCompute/machines/myMachineName"),
+	// 				ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.Connectedvmwarevsphere/virtualmachines/myvm"),
 	// 				UUID: to.Ptr("vmuuid"),
 	// 			},
 	// 			Details: &armguestconfiguration.AssignmentReportDetails{
@@ -113,8 +113,8 @@ func ExampleHCRPAssignmentReportsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-04-05/listAllGuestConfigurationHCRPAssignmentReports.json
-func ExampleHCRPAssignmentReportsClient_List() {
+// Generated from example definition: 2024-04-05/listAllGuestConfigurationConnectedVMwarevSphereAssignmentsReports.json
+func ExampleConnectedVMwarevSphereAssignmentsReportsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -124,19 +124,19 @@ func ExampleHCRPAssignmentReportsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewHCRPAssignmentReportsClient().List(ctx, "myResourceGroupName", "myMachineName", "AuditSecureProtocol", nil)
+	res, err := clientFactory.NewConnectedVMwarevSphereAssignmentsReportsClient().List(ctx, "myResourceGroupName", "myVMName", "AuditSecureProtocol", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armguestconfiguration.HCRPAssignmentReportsClientListResponse{
+	// res = armguestconfiguration.ConnectedVMwarevSphereAssignmentsReportsClientListResponse{
 	// 	AssignmentReportList: &armguestconfiguration.AssignmentReportList{
 	// 		Value: []*armguestconfiguration.AssignmentReport{
 	// 			{
 	// 				Name: to.Ptr("7367cbb8-ae99-47d0-a33b-a283564d2cb1"),
-	// 				ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.HybridCompute/machines/myMachineName/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/AuditSecureProtocol/reports/7367cbb8-ae99-47d0-a33b-a283564d2cb1"),
+	// 				ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.Connectedvmwarevsphere/virtualmachines/myvm/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/AuditSecureProtocol/reports/7367cbb8-ae99-47d0-a33b-a283564d2cb1"),
 	// 				Properties: &armguestconfiguration.AssignmentReportProperties{
 	// 					Assignment: &armguestconfiguration.AssignmentInfo{
 	// 						Name: to.Ptr("AuditSecureProtocol"),
@@ -149,7 +149,7 @@ func ExampleHCRPAssignmentReportsClient_List() {
 	// 					ReportID: to.Ptr("7367cbb8-ae99-47d0-a33b-a283564d2cb1"),
 	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-29T22:13:53Z"); return t}()),
 	// 					VM: &armguestconfiguration.VMInfo{
-	// 						ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.HybridCompute/machines/myMachineName"),
+	// 						ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.Connectedvmwarevsphere/virtualmachines/myvm"),
 	// 						UUID: to.Ptr("vmuuid"),
 	// 					},
 	// 					Details: nil,
@@ -157,7 +157,7 @@ func ExampleHCRPAssignmentReportsClient_List() {
 	// 			},
 	// 			{
 	// 				Name: to.Ptr("41ee2caf-48f9-4999-a793-82ec7c6beb2c"),
-	// 				ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.HybridCompute/machines/myMachineName/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/AuditSecureProtocol/reports/41ee2caf-48f9-4999-a793-82ec7c6beb2c"),
+	// 				ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.Connectedvmwarevsphere/virtualmachines/myvm/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/AuditSecureProtocol/reports/41ee2caf-48f9-4999-a793-82ec7c6beb2c"),
 	// 				Properties: &armguestconfiguration.AssignmentReportProperties{
 	// 					Assignment: &armguestconfiguration.AssignmentInfo{
 	// 						Name: to.Ptr("AuditSecureProtocol"),
@@ -170,7 +170,7 @@ func ExampleHCRPAssignmentReportsClient_List() {
 	// 					ReportID: to.Ptr("41ee2caf-48f9-4999-a793-82ec7c6beb2c"),
 	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-29T20:13:53Z"); return t}()),
 	// 					VM: &armguestconfiguration.VMInfo{
-	// 						ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.HybridCompute/machines/myMachineName"),
+	// 						ID: to.Ptr("/subscriptions/mysubscriptionid/resourceGroups/myResourceGroupName/providers/Microsoft.Connectedvmwarevsphere/virtualmachines/myvm"),
 	// 						UUID: to.Ptr("vmuuid"),
 	// 					},
 	// 					Details: nil,

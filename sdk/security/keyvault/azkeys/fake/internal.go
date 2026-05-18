@@ -23,15 +23,6 @@ func (nonRetriableError) NonRetriable() {
 	// marker method
 }
 
-func contains[T comparable](s []T, v T) bool {
-	for _, vv := range s {
-		if vv == v {
-			return true
-		}
-	}
-	return false
-}
-
 func newTracker[T any]() *tracker[T] {
 	return &tracker[T]{
 		items: map[string]*T{},

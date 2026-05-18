@@ -1,5 +1,18 @@
 # Release History
 
+## 1.5.0-beta.1 (2026-05-18)
+### Features Added
+
+- New enum type `JSONWebKeyWrapAlgorithm` with values `JSONWebKeyWrapAlgorithmA128KW`, `JSONWebKeyWrapAlgorithmA128KWPAD`, `JSONWebKeyWrapAlgorithmA192KW`, `JSONWebKeyWrapAlgorithmA192KWPAD`, `JSONWebKeyWrapAlgorithmA256KW`, `JSONWebKeyWrapAlgorithmA256KWPAD`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAP`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAPPAD`, `JSONWebKeyWrapAlgorithmRSAOAEP256`
+- New function `*Client.SecureUnwrapKey(ctx context.Context, name string, version string, parameters SecureKeyUnWrapOperationParameters, options *SecureUnwrapKeyOptions) (SecureUnwrapKeyResponse, error)`
+- New function `*Client.SecureWrapKey(ctx context.Context, name string, version string, parameters SecureKeyWrapOperationParameters, options *SecureWrapKeyOptions) (SecureWrapKeyResponse, error)`
+- New struct `ExternalKey`
+- New struct `SecureKeyOperationResult`
+- New struct `SecureKeyUnWrapOperationParameters`
+- New struct `SecureKeyWrapOperationParameters`
+- New field `ExternalKey`, `KeySize` in struct `KeyAttributes`
+
+
 ## 1.5.0 (Unreleased)
 
 ### Features Added

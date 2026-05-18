@@ -17,7 +17,6 @@ const (
 
 	AutomationRunModeRelease = "release"
 	AutomationRunModeLocal   = "local"
-	SDKChangeJsonFile        = "SDKCHANGE.json"
 )
 
 // PullRequestLabel represents a pull request label type

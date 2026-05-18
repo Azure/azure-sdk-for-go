@@ -36,7 +36,7 @@
       "path": ""
     },
     "getSDKChangesScript":{
-      "command": "generator sdkchange {packagePath} {outputJsonFile}",
+      "command": "generator changelog {packagePath} --report-file {outputJsonFile}",
       "path": ""
     },
     "updateChangelogContentScript": {

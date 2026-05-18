@@ -1,5 +1,15 @@
 # Release History
 
+## 0.4.12 (2026-05-18)
+
+### Features Added
+
+- Added `--report-file` flag to the `changelog` command. When provided, the command runs in report-only mode: it computes the SDK change report (including `hasBreakingChange` and the generated changelog markdown) and writes it as JSON to the given file path without modifying `CHANGELOG.md`. This replaces the standalone `sdkchange` command.
+
+### Breaking Changes
+
+- Removed the `sdkchange` subcommand. Use `generator changelog <package-path> --report-file <output-json-file>` instead.
+
 ## 0.4.11 (2026-05-13)
 
 ### Bugs Fixed

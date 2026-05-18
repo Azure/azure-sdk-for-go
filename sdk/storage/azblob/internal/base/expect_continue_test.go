@@ -14,19 +14,44 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/stretchr/testify/require"
 )
 
-// newPipelineForPolicy wraps the given policy in a pipeline targeting the supplied mock server.
-// Retries are disabled so each pipeline invocation produces exactly one transport call, making
-// expectation checks against the mock server's response sequence deterministic.
-func newPipelineForPolicy(p policy.Policy, srv policy.Transporter) runtime.Pipeline {
+// recordingTransport records the value of the Expect header on every outgoing request, then
+// returns the next response from a configurable status-code queue. When the queue is exhausted
+// it returns 200 OK. Asserting against rt.seen is necessary because the retry policy clones the
+// request before invoking per-retry policies, so header mutations are only visible to the
+// transport (and to the wire), not to the original *policy.Request the test holds.
+type recordingTransport struct {
+	statuses []int
+	seen     []string
+}
+
+func (rt *recordingTransport) Do(req *http.Request) (*http.Response, error) {
+	rt.seen = append(rt.seen, req.Header.Get("Expect"))
+	code := http.StatusOK
+	if len(rt.statuses) > 0 {
+		code = rt.statuses[0]
+		rt.statuses = rt.statuses[1:]
+	}
+	return &http.Response{
+		Request:    req,
+		StatusCode: code,
+		Status:     http.StatusText(code),
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+// newPipelineForPolicy wraps the given policy as a per-retry policy in a pipeline targeting the
+// supplied transport. Retries are disabled so each pipeline invocation produces exactly one
+// transport call, making expectation checks against the recorded request sequence deterministic.
+func newPipelineForPolicy(p policy.Policy, transport policy.Transporter) runtime.Pipeline {
 	return runtime.NewPipeline("test", "v0.0.0",
 		runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
 		&policy.ClientOptions{
-			Transport: srv,
+			Transport: transport,
 			Retry:     policy.RetryOptions{MaxRetries: -1},
 		},
 	)
@@ -48,28 +73,24 @@ func newRequestWithBody(t *testing.T, body []byte) *policy.Request {
 // set only when a non-empty body is present.
 func TestExpectContinuePolicyAddsHeaderOnContentBody(t *testing.T) {
 	for _, hasBody := range []bool{true, false} {
-		hasBody := hasBody
 		t.Run("", func(t *testing.T) {
-			srv, closeSrv := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer closeSrv()
-			srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-
+			rt := &recordingTransport{}
 			p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeOn})
 			require.NotNil(t, p)
-			pl := newPipelineForPolicy(p, srv)
+			pl := newPipelineForPolicy(p, rt)
 
 			var body []byte
 			if hasBody {
 				body = []byte("foo")
 			}
-			req := newRequestWithBody(t, body)
-			_, err := pl.Do(req)
+			_, err := pl.Do(newRequestWithBody(t, body))
 			require.NoError(t, err)
 
+			require.Len(t, rt.seen, 1)
 			if hasBody {
-				require.Equal(t, "100-continue", req.Raw().Header.Get("Expect"))
+				require.Equal(t, "100-continue", rt.seen[0])
 			} else {
-				require.Empty(t, req.Raw().Header.Get("Expect"))
+				require.Empty(t, rt.seen[0])
 			}
 		})
 	}
@@ -89,27 +110,23 @@ func TestExpectContinuePolicyRespectsThreshold(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		tc := tc
 		t.Run("", func(t *testing.T) {
-			srv, closeSrv := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer closeSrv()
-			srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-
+			rt := &recordingTransport{}
 			p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{
 				Mode:                   exported.ExpectContinueModeOn,
 				ContentLengthThreshold: to.Ptr(tc.threshold),
 			})
 			require.NotNil(t, p)
-			pl := newPipelineForPolicy(p, srv)
+			pl := newPipelineForPolicy(p, rt)
 
-			req := newRequestWithBody(t, bytes.Repeat([]byte("a"), tc.bodyLength))
-			_, err := pl.Do(req)
+			_, err := pl.Do(newRequestWithBody(t, bytes.Repeat([]byte("a"), tc.bodyLength)))
 			require.NoError(t, err)
 
+			require.Len(t, rt.seen, 1)
 			if tc.expectHeader {
-				require.Equal(t, "100-continue", req.Raw().Header.Get("Expect"))
+				require.Equal(t, "100-continue", rt.seen[0])
 			} else {
-				require.Empty(t, req.Raw().Header.Get("Expect"))
+				require.Empty(t, rt.seen[0])
 			}
 		})
 	}
@@ -120,35 +137,25 @@ func TestExpectContinuePolicyRespectsThreshold(t *testing.T) {
 // subsequent requests carry the header.
 func TestExpectContinueOnThrottlePolicyAddsHeaderOnlyAfterError(t *testing.T) {
 	for _, status := range []int{http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable} {
-		status := status
 		t.Run("", func(t *testing.T) {
-			srv, closeSrv := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer closeSrv()
-			srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-			srv.AppendResponse(mock.WithStatusCode(status))
-			srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-
+			rt := &recordingTransport{statuses: []int{http.StatusAccepted, status, http.StatusOK}}
 			p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeApplyOnThrottle})
 			require.NotNil(t, p)
-			pl := newPipelineForPolicy(p, srv)
+			pl := newPipelineForPolicy(p, rt)
 
 			// message 1 doesn't get expect header (no prior throttle)
-			req1 := newRequestWithBody(t, []byte("foo"))
-			_, err := pl.Do(req1)
+			_, err := pl.Do(newRequestWithBody(t, []byte("foo")))
 			require.NoError(t, err)
-			require.Empty(t, req1.Raw().Header.Get("Expect"))
 
 			// message 2 doesn't get expect header but triggers future messages
-			req2 := newRequestWithBody(t, []byte("foo"))
-			_, err = pl.Do(req2)
+			_, err = pl.Do(newRequestWithBody(t, []byte("foo")))
 			require.NoError(t, err)
-			require.Empty(t, req2.Raw().Header.Get("Expect"))
 
 			// message 3 gets expect header
-			req3 := newRequestWithBody(t, []byte("foo"))
-			_, err = pl.Do(req3)
+			_, err = pl.Do(newRequestWithBody(t, []byte("foo")))
 			require.NoError(t, err)
-			require.Equal(t, "100-continue", req3.Raw().Header.Get("Expect"))
+
+			require.Equal(t, []string{"", "", "100-continue"}, rt.seen)
 		})
 	}
 }
@@ -168,35 +175,29 @@ func TestExpectContinueOnThrottlePolicyRespectsThreshold(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		tc := tc
 		t.Run("", func(t *testing.T) {
-			srv, closeSrv := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer closeSrv()
-			srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
-			srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-
+			rt := &recordingTransport{statuses: []int{http.StatusTooManyRequests, http.StatusOK}}
 			p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{
 				Mode:                   exported.ExpectContinueModeApplyOnThrottle,
 				ContentLengthThreshold: to.Ptr(tc.threshold),
 			})
 			require.NotNil(t, p)
-			pl := newPipelineForPolicy(p, srv)
+			pl := newPipelineForPolicy(p, rt)
 
 			// message 1 doesn't get expect header but triggers future messages
-			req1 := newRequestWithBody(t, bytes.Repeat([]byte("a"), tc.bodyLength))
-			_, err := pl.Do(req1)
+			_, err := pl.Do(newRequestWithBody(t, bytes.Repeat([]byte("a"), tc.bodyLength)))
 			require.NoError(t, err)
-			require.Empty(t, req1.Raw().Header.Get("Expect"))
 
 			// message 2 may or may not get expect header depending on threshold
-			req2 := newRequestWithBody(t, bytes.Repeat([]byte("a"), tc.bodyLength))
-			_, err = pl.Do(req2)
+			_, err = pl.Do(newRequestWithBody(t, bytes.Repeat([]byte("a"), tc.bodyLength)))
 			require.NoError(t, err)
 
+			require.Len(t, rt.seen, 2)
+			require.Empty(t, rt.seen[0])
 			if tc.expectHeader {
-				require.Equal(t, "100-continue", req2.Raw().Header.Get("Expect"))
+				require.Equal(t, "100-continue", rt.seen[1])
 			} else {
-				require.Empty(t, req2.Raw().Header.Get("Expect"))
+				require.Empty(t, rt.seen[1])
 			}
 		})
 	}
@@ -206,36 +207,28 @@ func TestExpectContinueOnThrottlePolicyRespectsThreshold(t *testing.T) {
 // elapses, the header is no longer applied. The throttle interval is overridden on the policy
 // struct so the test runs fast.
 func TestExpectContinueOnThrottlePolicyRevertsAfterBackoff(t *testing.T) {
-	srv, closeSrv := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeSrv()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	rt := &recordingTransport{statuses: []int{http.StatusTooManyRequests, http.StatusOK, http.StatusOK}}
 
 	backoff := 10 * time.Millisecond
 	throttlePolicy := &expectContinueOnThrottlePolicy{throttleInterval: backoff}
-	pl := newPipelineForPolicy(throttlePolicy, srv)
+	pl := newPipelineForPolicy(throttlePolicy, rt)
 
 	// message 1 doesn't get expect header but triggers future messages
-	req1 := newRequestWithBody(t, []byte("foo"))
-	_, err := pl.Do(req1)
+	_, err := pl.Do(newRequestWithBody(t, []byte("foo")))
 	require.NoError(t, err)
-	require.Empty(t, req1.Raw().Header.Get("Expect"))
 
 	// message 2 gets expect header
-	req2 := newRequestWithBody(t, []byte("foo"))
-	_, err = pl.Do(req2)
+	_, err = pl.Do(newRequestWithBody(t, []byte("foo")))
 	require.NoError(t, err)
-	require.Equal(t, "100-continue", req2.Raw().Header.Get("Expect"))
 
 	// wait out the throttle window
 	time.Sleep(2 * backoff)
 
 	// message 3 no longer gets expect header
-	req3 := newRequestWithBody(t, []byte("foo"))
-	_, err = pl.Do(req3)
+	_, err = pl.Do(newRequestWithBody(t, []byte("foo")))
 	require.NoError(t, err)
-	require.Empty(t, req3.Raw().Header.Get("Expect"))
+
+	require.Equal(t, []string{"", "100-continue", ""}, rt.seen)
 }
 
 // TestNewExpectContinuePolicyOffReturnsNil verifies that mode Off causes no policy to be added.
@@ -313,20 +306,18 @@ func TestExpectContinueEnvCacheIsMemoized(t *testing.T) {
 // TestExpectContinuePolicyIgnoresUnknownContentLength verifies the header is not added when
 // content length is unknown (e.g. -1 from chunked encoding).
 func TestExpectContinuePolicyIgnoresUnknownContentLength(t *testing.T) {
-	srv, closeSrv := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeSrv()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-
+	rt := &recordingTransport{}
 	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeOn})
 	require.NotNil(t, p)
-	pl := newPipelineForPolicy(p, srv)
+	pl := newPipelineForPolicy(p, rt)
 
 	req := newRequestWithBody(t, []byte("foo"))
 	// Simulate an unknown content length (chunked encoding).
 	req.Raw().ContentLength = -1
 	_, err := pl.Do(req)
 	require.NoError(t, err)
-	require.Empty(t, req.Raw().Header.Get("Expect"))
+	require.Len(t, rt.seen, 1)
+	require.Empty(t, rt.seen[0])
 }
 
 // TestNewExpectContinuePolicyDefaultThrottleIntervalIsOneMinute verifies that the default
@@ -339,9 +330,9 @@ func TestNewExpectContinuePolicyDefaultThrottleIntervalIsOneMinute(t *testing.T)
 	require.Equal(t, time.Minute, tp.throttleInterval)
 }
 
-// TestNewExpectContinuePolicyHonorsAutoInterval verifies that a caller-supplied AutoInterval
-// overrides the default throttle interval.
-func TestNewExpectContinuePolicyHonorsAutoInterval(t *testing.T) {
+// TestNewExpectContinuePolicyHonorsThrottleInterval verifies that a caller-supplied
+// ThrottleInterval overrides the default throttle interval.
+func TestNewExpectContinuePolicyHonorsThrottleInterval(t *testing.T) {
 	custom := 250 * time.Millisecond
 	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{ThrottleInterval: &custom})
 	require.NotNil(t, p)
@@ -350,39 +341,31 @@ func TestNewExpectContinuePolicyHonorsAutoInterval(t *testing.T) {
 	require.Equal(t, custom, tp.throttleInterval)
 }
 
-// TestExpectContinueOnThrottlePolicyAutoIntervalEndToEnd verifies that the user-supplied
-// AutoInterval is observed end-to-end through the factory and the pipeline: the header is set
-// while the configured window is open and removed after it elapses.
-func TestExpectContinueOnThrottlePolicyAutoIntervalEndToEnd(t *testing.T) {
-	srv, closeSrv := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeSrv()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+// TestExpectContinueOnThrottlePolicyThrottleIntervalEndToEnd verifies that the user-supplied
+// ThrottleInterval is observed end-to-end through the factory and the pipeline: the header is
+// set while the configured window is open and removed after it elapses.
+func TestExpectContinueOnThrottlePolicyThrottleIntervalEndToEnd(t *testing.T) {
+	rt := &recordingTransport{statuses: []int{http.StatusTooManyRequests, http.StatusOK, http.StatusOK}}
 
 	backoff := 10 * time.Millisecond
 	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{ThrottleInterval: &backoff})
 	require.NotNil(t, p)
-	pl := newPipelineForPolicy(p, srv)
+	pl := newPipelineForPolicy(p, rt)
 
 	// message 1 doesn't get expect header but triggers future messages
-	req1 := newRequestWithBody(t, []byte("foo"))
-	_, err := pl.Do(req1)
+	_, err := pl.Do(newRequestWithBody(t, []byte("foo")))
 	require.NoError(t, err)
-	require.Empty(t, req1.Raw().Header.Get("Expect"))
 
 	// message 2 gets expect header
-	req2 := newRequestWithBody(t, []byte("foo"))
-	_, err = pl.Do(req2)
+	_, err = pl.Do(newRequestWithBody(t, []byte("foo")))
 	require.NoError(t, err)
-	require.Equal(t, "100-continue", req2.Raw().Header.Get("Expect"))
 
 	// wait out the user-supplied window
 	time.Sleep(2 * backoff)
 
 	// message 3 no longer gets expect header
-	req3 := newRequestWithBody(t, []byte("foo"))
-	_, err = pl.Do(req3)
+	_, err = pl.Do(newRequestWithBody(t, []byte("foo")))
 	require.NoError(t, err)
-	require.Empty(t, req3.Raw().Header.Get("Expect"))
+
+	require.Equal(t, []string{"", "100-continue", ""}, rt.seen)
 }

@@ -54,6 +54,18 @@ func newExpectContinueEnvCheck() func() bool {
 	})
 }
 
+// ResetExpectContinueEnvCacheForTest replaces the cached env-var lookup with a fresh
+// sync.OnceValue so the next call to NewExpectContinuePolicy re-reads the current environment.
+// It returns a restore function that swaps the previous cache back; callers should pass the
+// restore function to t.Cleanup.
+//
+// This helper is intended for tests within the azblob module only.
+func ResetExpectContinueEnvCacheForTest() (restore func()) {
+	prev := envCheckExpectContinueDisabled
+	envCheckExpectContinueDisabled = newExpectContinueEnvCheck()
+	return func() { envCheckExpectContinueDisabled = prev }
+}
+
 // NewExpectContinuePolicy returns a per-retry policy that applies the "Expect: 100-continue" HTTP
 // header to outgoing requests according to the provided options.
 //

@@ -279,9 +279,7 @@ func TestNewExpectContinuePolicyEnvVarFalsyValuesEnable(t *testing.T) {
 // when the test (or subtest) completes.
 func resetExpectContinueEnvCacheForTest(t *testing.T) {
 	t.Helper()
-	prev := envCheckExpectContinueDisabled
-	envCheckExpectContinueDisabled = newExpectContinueEnvCheck()
-	t.Cleanup(func() { envCheckExpectContinueDisabled = prev })
+	t.Cleanup(ResetExpectContinueEnvCacheForTest())
 }
 
 // TestExpectContinueEnvCacheIsMemoized verifies the env-var lookup is performed exactly once

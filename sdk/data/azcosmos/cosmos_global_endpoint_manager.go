@@ -24,8 +24,36 @@ type globalEndpointManager struct {
 	preferredLocations  []string
 	locationCache       *locationCache
 	refreshTimeInterval time.Duration
-	gemMutex            sync.RWMutex
+	gemMutex            sync.Mutex
 	lastUpdateTime      time.Time
+	// lastAttemptTime records the most recent Update attempt regardless of
+	// outcome. shouldRefresh() honours it so a failed GetAccountProperties is
+	// throttled to refreshTimeInterval just like a successful one. This
+	// prevents the failure-loop described in
+	// https://github.com/Azure/azure-sdk-for-go/issues/25468 where every
+	// caller after a failed Update would re-issue the HTTP call immediately.
+	lastAttemptTime time.Time
+	// lastUpdateErr is the error from the most recent refresh attempt. It is
+	// returned to callers that hit the throttle window before the GEM has
+	// ever been successfully populated, so a chronic bootstrap failure is
+	// surfaced on every request rather than silently swallowed.
+	lastUpdateErr error
+	// inflight coalesces concurrent Update callers: only the first does the
+	// HTTP call; the rest wait on the per-flight done channel and read
+	// per-flight err. Each refresh has its own *updateFlight so late waiters
+	// cannot accidentally read a subsequent flight's error.
+	inflight *updateFlight
+	// invalidationGen is bumped by invalidate(). The Update leader snapshots
+	// it before the HTTP call and, if it changed by completion, declines to
+	// advance lastUpdateTime/lastAttemptTime -- so an invalidation that
+	// happens during an in-flight refresh is not lost.
+	invalidationGen uint64
+}
+
+// updateFlight tracks a single in-flight refresh.
+type updateFlight struct {
+	done chan struct{}
+	err  error
 }
 
 func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableCrossRegionRetries bool) (*globalEndpointManager, error) {
@@ -59,11 +87,45 @@ func (gem *globalEndpointManager) GetReadEndpoints() ([]url.URL, error) {
 }
 
 func (gem *globalEndpointManager) MarkEndpointUnavailableForWrite(endpoint url.URL) error {
-	return gem.locationCache.markEndpointUnavailableForWrite(endpoint)
+	// Snapshot the unavailability state before marking so we can decide
+	// whether this is a "newly unavailable" event. A new event invalidates
+	// the GEM cache so the next Update(false) actually fires -- the first
+	// 403/WriteForbidden or network error for an endpoint may indicate a
+	// failover and we want to learn about new write regions promptly.
+	// Subsequent retries within the unavailability window do not invalidate.
+	wasUnavailable := gem.locationCache.isEndpointUnavailable(endpoint, write)
+	if err := gem.locationCache.markEndpointUnavailableForWrite(endpoint); err != nil {
+		return err
+	}
+	if !wasUnavailable {
+		gem.invalidate()
+	}
+	return nil
 }
 
 func (gem *globalEndpointManager) MarkEndpointUnavailableForRead(endpoint url.URL) error {
-	return gem.locationCache.markEndpointUnavailableForRead(endpoint)
+	wasUnavailable := gem.locationCache.isEndpointUnavailable(endpoint, read)
+	if err := gem.locationCache.markEndpointUnavailableForRead(endpoint); err != nil {
+		return err
+	}
+	if !wasUnavailable {
+		gem.invalidate()
+	}
+	return nil
+}
+
+// invalidate forces the next non-force Update to actually issue a refresh by
+// clearing both lastUpdateTime and lastAttemptTime, and bumps
+// invalidationGen so that a refresh currently in flight cannot mask the
+// invalidation by writing the post-call timestamps. Used when we learn about
+// a newly-unavailable endpoint and want to discover potential failover
+// targets without waiting for the next refresh interval.
+func (gem *globalEndpointManager) invalidate() {
+	gem.gemMutex.Lock()
+	defer gem.gemMutex.Unlock()
+	gem.lastUpdateTime = time.Time{}
+	gem.lastAttemptTime = time.Time{}
+	gem.invalidationGen++
 }
 
 func (gem *globalEndpointManager) GetEndpointLocation(endpoint url.URL) string {
@@ -82,39 +144,116 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 	gem.locationCache.refreshStaleEndpoints()
 }
 
+// populated reports whether the GEM has been successfully refreshed at least
+// once. Used by the policy's bootstrap path to decide whether the first
+// request on a new client should synchronously wait for GetDatabaseAccount.
+// Repeated calls after the first success are cheap (one mutex acquisition).
+func (gem *globalEndpointManager) populated() bool {
+	gem.gemMutex.Lock()
+	defer gem.gemMutex.Unlock()
+	return !gem.lastUpdateTime.IsZero()
+}
+
 func (gem *globalEndpointManager) ShouldRefresh() bool {
-	gem.gemMutex.RLock()
-	defer gem.gemMutex.RUnlock()
+	gem.gemMutex.Lock()
+	defer gem.gemMutex.Unlock()
 	return gem.shouldRefresh()
 }
 
 func (gem *globalEndpointManager) shouldRefresh() bool {
-	return time.Since(gem.lastUpdateTime) > gem.refreshTimeInterval
+	// Honor whichever happened more recently: a successful update or an
+	// attempt that failed. Failures must be throttled too, otherwise a
+	// failing endpoint causes every caller to re-issue GetDatabaseAccount
+	// immediately (issue #25468).
+	last := gem.lastUpdateTime
+	if gem.lastAttemptTime.After(last) {
+		last = gem.lastAttemptTime
+	}
+	return time.Since(last) > gem.refreshTimeInterval
 }
 
 func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, resourceType resourceType, isWriteOperation, useWriteEndpoint bool) url.URL {
 	return gem.locationCache.resolveServiceEndpoint(locationIndex, resourceType, isWriteOperation, useWriteEndpoint)
 }
 
+// Update refreshes the GEM cache by calling GetAccountProperties when needed.
+// Concurrent callers are coalesced via a single-in-flight pattern so at most
+// one HTTP call is in flight per client at any time. Both successes and
+// failures advance lastAttemptTime so the next refresh is throttled to
+// refreshTimeInterval -- this prevents the failure-storm described in
+// https://github.com/Azure/azure-sdk-for-go/issues/25468.
+//
+// If the GEM has never been successfully populated and the throttle is
+// active, Update returns the cached error from the most recent failed
+// attempt so a chronic bootstrap failure is surfaced on every request
+// rather than silently swallowed.
 func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {
 	gem.gemMutex.Lock()
-	defer gem.gemMutex.Unlock()
 	if !gem.shouldRefresh() && !forceRefresh {
-		return nil
+		// Throttled. Surface the cached error if we have never succeeded.
+		var cached error
+		if gem.lastUpdateTime.IsZero() {
+			cached = gem.lastUpdateErr
+		}
+		gem.gemMutex.Unlock()
+		return cached
 	}
+	if gem.inflight != nil {
+		// Another goroutine is performing a refresh. Wait for it and share
+		// its result rather than spawning a duplicate HTTP call. The result
+		// lives on the per-flight struct so subsequent flights cannot
+		// overwrite it.
+		flight := gem.inflight
+		gem.gemMutex.Unlock()
+		<-flight.done
+		return flight.err
+	}
+	// We are the leader. Publish the inflight flight and snapshot the
+	// invalidation generation, then release the lock while we perform the
+	// HTTP call so ShouldRefresh and other non-Update paths don't block on
+	// a network round-trip.
+	flight := &updateFlight{done: make(chan struct{})}
+	gem.inflight = flight
+	genAtStart := gem.invalidationGen
+	gem.gemMutex.Unlock()
+
+	err := gem.refreshOnce(ctx)
+
+	gem.gemMutex.Lock()
+	flight.err = err
+	gem.lastUpdateErr = err
+	if gem.invalidationGen == genAtStart {
+		// No invalidation occurred during the flight, so commit the
+		// timestamps and let the throttle take effect.
+		gem.lastAttemptTime = time.Now()
+		if err == nil {
+			gem.lastUpdateTime = gem.lastAttemptTime
+		}
+	}
+	// If invalidationGen changed, leave the timestamps untouched so the
+	// next caller observes shouldRefresh()==true and performs a fresh
+	// refresh that reflects the post-invalidation state.
+	gem.inflight = nil
+	gem.gemMutex.Unlock()
+	close(flight.done)
+	return err
+}
+
+// refreshOnce performs the actual GetAccountProperties HTTP call and
+// propagates the result into the location cache. It must not hold gemMutex.
+func (gem *globalEndpointManager) refreshOnce(ctx context.Context) error {
 	accountProperties, err := gem.GetAccountProperties(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to retrieve account properties: %v", err)
 	}
-	err = gem.locationCache.update(
+	if err := gem.locationCache.update(
 		accountProperties.WriteRegions,
 		accountProperties.ReadRegions,
 		gem.preferredLocations,
-		&accountProperties.EnableMultipleWriteLocations)
-	if err != nil {
+		&accountProperties.EnableMultipleWriteLocations,
+	); err != nil {
 		return fmt.Errorf("failed to update location cache: %v", err)
 	}
-	gem.lastUpdateTime = time.Now()
 	return nil
 }
 

@@ -142,7 +142,13 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 		}
 	}
 
-	err := p.gem.Update(req.Raw().Context(), isWriteOperation)
+	// Pass forceRefresh=false. The MarkEndpointUnavailable* calls above
+	// already invalidate the GEM cache the first time an endpoint becomes
+	// unavailable, so the next Update will actually issue a refresh. On
+	// subsequent retries within the unavailability window we honour the
+	// 5-min throttle instead of forcing a fresh GetDatabaseAccount call per
+	// attempt (https://github.com/Azure/azure-sdk-for-go/issues/25468).
+	err := p.gem.Update(req.Raw().Context(), false)
 	if err != nil {
 		return false, err
 	}

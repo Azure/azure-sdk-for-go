@@ -246,9 +246,9 @@ func (c *ContainerClient) executeOneChunkPage(
 	path string,
 ) ([][]byte, float32, string, error) {
 	var err error
-	spanName, spanErr := c.getSpanForItems(operationTypeQuery)
-	if spanErr != nil {
-		return nil, 0, "", spanErr
+	spanName, err := c.getSpanForItems(operationTypeQuery)
+	if err != nil {
+		return nil, 0, "", err
 	}
 	ctx, endSpan := startSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()

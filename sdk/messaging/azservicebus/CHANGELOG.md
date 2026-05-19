@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Read `com.microsoft:max-message-batch-size` vendor property from the AMQP sender link to correctly limit batch size on Premium large-message entities, where `max-message-size` can be up to 100 MB but the batch limit is 1 MB.
+
 ### Other Changes
 
 - Cleaned up accumulated `golangci-lint` findings in `azservicebus` (deprecated

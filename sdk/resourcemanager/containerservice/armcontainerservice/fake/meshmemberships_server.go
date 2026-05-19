@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // MeshMembershipsServer is a fake server for instances of the armcontainerservice.MeshMembershipsClient type.
@@ -70,9 +71,7 @@ func (m *MeshMembershipsServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (m *MeshMembershipsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -94,10 +93,7 @@ func (m *MeshMembershipsServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -149,7 +145,7 @@ func (m *MeshMembershipsServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		m.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -197,7 +193,7 @@ func (m *MeshMembershipsServerTransport) dispatchBeginDelete(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		m.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -235,7 +231,7 @@ func (m *MeshMembershipsServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MeshMembership, req)
@@ -276,7 +272,7 @@ func (m *MeshMembershipsServerTransport) dispatchNewListByManagedClusterPager(re
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		m.newListByManagedClusterPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

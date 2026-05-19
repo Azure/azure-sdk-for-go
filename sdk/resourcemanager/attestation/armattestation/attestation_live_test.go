@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
@@ -149,7 +149,7 @@ func (testsuite *AttestationTestSuite) TestPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -175,7 +175,7 @@ func (testsuite *AttestationTestSuite) TestPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('networkInterfaceName')]",
 				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
@@ -204,7 +204,7 @@ func (testsuite *AttestationTestSuite) TestPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('privateEndpointName')]",
 				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
@@ -236,7 +236,7 @@ func (testsuite *AttestationTestSuite) TestPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
 				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
@@ -300,8 +300,12 @@ func (testsuite *AttestationTestSuite) TestOperations() {
 	fmt.Println("Call operation: Operations_List")
 	operationsClient, err := armattestation.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = operationsClient.List(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
+	operationsClientNewListPager := operationsClient.NewListPager(nil)
+	for operationsClientNewListPager.More() {
+		_, err := operationsClientNewListPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
 }
 
 func (testsuite *AttestationTestSuite) Cleanup() {

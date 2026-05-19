@@ -157,9 +157,9 @@ func (o *CreateOptions) format(fileRequestIntent *generated.ShareTokenIntent, al
 		if o.FilePropertySemantics != nil {
 			opts.FilePropertySemantics = o.FilePropertySemantics
 		}
-		if len(o.ContentMD5) > 0 {
-			opts.ContentMD5 = o.ContentMD5
-		}
+	}
+	if len(o.ContentMD5) > 0 {
+		opts.ContentMD5 = o.ContentMD5
 	}
 	return opts
 }

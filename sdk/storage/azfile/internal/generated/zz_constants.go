@@ -403,3 +403,246 @@ func PossibleShareTokenIntentValues() []ShareTokenIntent {
 		ShareTokenIntentBackup,
 	}
 }
+
+// StorageErrorCode - Error codes returned by the service
+type StorageErrorCode string
+
+const (
+	// StorageErrorCodeAccountAlreadyExists - AccountAlreadyExists
+	StorageErrorCodeAccountAlreadyExists StorageErrorCode = "AccountAlreadyExists"
+	// StorageErrorCodeAccountBeingCreated - AccountBeingCreated
+	StorageErrorCodeAccountBeingCreated StorageErrorCode = "AccountBeingCreated"
+	// StorageErrorCodeAccountIsDisabled - AccountIsDisabled
+	StorageErrorCodeAccountIsDisabled StorageErrorCode = "AccountIsDisabled"
+	// StorageErrorCodeAuthenticationFailed - AuthenticationFailed
+	StorageErrorCodeAuthenticationFailed StorageErrorCode = "AuthenticationFailed"
+	// StorageErrorCodeAuthorizationFailure - AuthorizationFailure
+	StorageErrorCodeAuthorizationFailure StorageErrorCode = "AuthorizationFailure"
+	// StorageErrorCodeAuthorizationPermissionMismatch - AuthorizationPermissionMismatch
+	StorageErrorCodeAuthorizationPermissionMismatch StorageErrorCode = "AuthorizationPermissionMismatch"
+	// StorageErrorCodeAuthorizationProtocolMismatch - AuthorizationProtocolMismatch
+	StorageErrorCodeAuthorizationProtocolMismatch StorageErrorCode = "AuthorizationProtocolMismatch"
+	// StorageErrorCodeAuthorizationResourceTypeMismatch - AuthorizationResourceTypeMismatch
+	StorageErrorCodeAuthorizationResourceTypeMismatch StorageErrorCode = "AuthorizationResourceTypeMismatch"
+	// StorageErrorCodeAuthorizationServiceMismatch - AuthorizationServiceMismatch
+	StorageErrorCodeAuthorizationServiceMismatch StorageErrorCode = "AuthorizationServiceMismatch"
+	// StorageErrorCodeAuthorizationSourceIPMismatch - AuthorizationSourceIPMismatch
+	StorageErrorCodeAuthorizationSourceIPMismatch StorageErrorCode = "AuthorizationSourceIPMismatch"
+	// StorageErrorCodeCannotDeleteFileOrDirectory - CannotDeleteFileOrDirectory
+	StorageErrorCodeCannotDeleteFileOrDirectory StorageErrorCode = "CannotDeleteFileOrDirectory"
+	// StorageErrorCodeClientCacheFlushDelay - ClientCacheFlushDelay
+	StorageErrorCodeClientCacheFlushDelay StorageErrorCode = "ClientCacheFlushDelay"
+	// StorageErrorCodeConditionHeadersNotSupported - ConditionHeadersNotSupported
+	StorageErrorCodeConditionHeadersNotSupported StorageErrorCode = "ConditionHeadersNotSupported"
+	// StorageErrorCodeConditionNotMet - ConditionNotMet
+	StorageErrorCodeConditionNotMet StorageErrorCode = "ConditionNotMet"
+	// StorageErrorCodeContainerQuotaDowngradeNotAllowed - ContainerQuotaDowngradeNotAllowed
+	StorageErrorCodeContainerQuotaDowngradeNotAllowed StorageErrorCode = "ContainerQuotaDowngradeNotAllowed"
+	// StorageErrorCodeDeletePending - DeletePending
+	StorageErrorCodeDeletePending StorageErrorCode = "DeletePending"
+	// StorageErrorCodeDirectoryNotEmpty - DirectoryNotEmpty
+	StorageErrorCodeDirectoryNotEmpty StorageErrorCode = "DirectoryNotEmpty"
+	// StorageErrorCodeEmptyMetadataKey - EmptyMetadataKey
+	StorageErrorCodeEmptyMetadataKey StorageErrorCode = "EmptyMetadataKey"
+	// StorageErrorCodeFeatureVersionMismatch - FeatureVersionMismatch
+	StorageErrorCodeFeatureVersionMismatch StorageErrorCode = "FeatureVersionMismatch"
+	// StorageErrorCodeFileLockConflict - FileLockConflict
+	StorageErrorCodeFileLockConflict StorageErrorCode = "FileLockConflict"
+	// StorageErrorCodeFileShareProvisionedBandwidthDowngradeNotAllowed - FileShareProvisionedBandwidthDowngradeNotAllowed
+	StorageErrorCodeFileShareProvisionedBandwidthDowngradeNotAllowed StorageErrorCode = "FileShareProvisionedBandwidthDowngradeNotAllowed"
+	// StorageErrorCodeFileShareProvisionedBandwidthInvalid - FileShareProvisionedBandwidthInvalid
+	StorageErrorCodeFileShareProvisionedBandwidthInvalid StorageErrorCode = "FileShareProvisionedBandwidthInvalid"
+	// StorageErrorCodeFileShareProvisionedIopsDowngradeNotAllowed - FileShareProvisionedIopsDowngradeNotAllowed
+	StorageErrorCodeFileShareProvisionedIopsDowngradeNotAllowed StorageErrorCode = "FileShareProvisionedIopsDowngradeNotAllowed"
+	// StorageErrorCodeFileShareProvisionedIopsInvalid - FileShareProvisionedIopsInvalid
+	StorageErrorCodeFileShareProvisionedIopsInvalid StorageErrorCode = "FileShareProvisionedIopsInvalid"
+	// StorageErrorCodeFileShareProvisionedStorageInvalid - FileShareProvisionedStorageInvalid
+	StorageErrorCodeFileShareProvisionedStorageInvalid StorageErrorCode = "FileShareProvisionedStorageInvalid"
+	// StorageErrorCodeInsufficientAccountPermissions - InsufficientAccountPermissions
+	StorageErrorCodeInsufficientAccountPermissions StorageErrorCode = "InsufficientAccountPermissions"
+	// StorageErrorCodeInternalError - InternalError
+	StorageErrorCodeInternalError StorageErrorCode = "InternalError"
+	// StorageErrorCodeInvalidAuthenticationInfo - InvalidAuthenticationInfo
+	StorageErrorCodeInvalidAuthenticationInfo StorageErrorCode = "InvalidAuthenticationInfo"
+	// StorageErrorCodeInvalidFileOrDirectoryPathName - InvalidFileOrDirectoryPathName
+	StorageErrorCodeInvalidFileOrDirectoryPathName StorageErrorCode = "InvalidFileOrDirectoryPathName"
+	// StorageErrorCodeInvalidHTTPVerb - InvalidHttpVerb
+	StorageErrorCodeInvalidHTTPVerb StorageErrorCode = "InvalidHttpVerb"
+	// StorageErrorCodeInvalidHeaderValue - InvalidHeaderValue
+	StorageErrorCodeInvalidHeaderValue StorageErrorCode = "InvalidHeaderValue"
+	// StorageErrorCodeInvalidInput - InvalidInput
+	StorageErrorCodeInvalidInput StorageErrorCode = "InvalidInput"
+	// StorageErrorCodeInvalidMD5 - InvalidMd5
+	StorageErrorCodeInvalidMD5 StorageErrorCode = "InvalidMd5"
+	// StorageErrorCodeInvalidMetadata - InvalidMetadata
+	StorageErrorCodeInvalidMetadata StorageErrorCode = "InvalidMetadata"
+	// StorageErrorCodeInvalidQueryParameterValue - InvalidQueryParameterValue
+	StorageErrorCodeInvalidQueryParameterValue StorageErrorCode = "InvalidQueryParameterValue"
+	// StorageErrorCodeInvalidRange - InvalidRange
+	StorageErrorCodeInvalidRange StorageErrorCode = "InvalidRange"
+	// StorageErrorCodeInvalidResourceName - InvalidResourceName
+	StorageErrorCodeInvalidResourceName StorageErrorCode = "InvalidResourceName"
+	// StorageErrorCodeInvalidURI - InvalidUri
+	StorageErrorCodeInvalidURI StorageErrorCode = "InvalidUri"
+	// StorageErrorCodeInvalidXMLDocument - InvalidXmlDocument
+	StorageErrorCodeInvalidXMLDocument StorageErrorCode = "InvalidXmlDocument"
+	// StorageErrorCodeInvalidXMLNodeValue - InvalidXmlNodeValue
+	StorageErrorCodeInvalidXMLNodeValue StorageErrorCode = "InvalidXmlNodeValue"
+	// StorageErrorCodeMD5Mismatch - Md5Mismatch
+	StorageErrorCodeMD5Mismatch StorageErrorCode = "Md5Mismatch"
+	// StorageErrorCodeMetadataTooLarge - MetadataTooLarge
+	StorageErrorCodeMetadataTooLarge StorageErrorCode = "MetadataTooLarge"
+	// StorageErrorCodeMissingContentLengthHeader - MissingContentLengthHeader
+	StorageErrorCodeMissingContentLengthHeader StorageErrorCode = "MissingContentLengthHeader"
+	// StorageErrorCodeMissingRequiredHeader - MissingRequiredHeader
+	StorageErrorCodeMissingRequiredHeader StorageErrorCode = "MissingRequiredHeader"
+	// StorageErrorCodeMissingRequiredQueryParameter - MissingRequiredQueryParameter
+	StorageErrorCodeMissingRequiredQueryParameter StorageErrorCode = "MissingRequiredQueryParameter"
+	// StorageErrorCodeMissingRequiredXMLNode - MissingRequiredXmlNode
+	StorageErrorCodeMissingRequiredXMLNode StorageErrorCode = "MissingRequiredXmlNode"
+	// StorageErrorCodeMultipleConditionHeadersNotSupported - MultipleConditionHeadersNotSupported
+	StorageErrorCodeMultipleConditionHeadersNotSupported StorageErrorCode = "MultipleConditionHeadersNotSupported"
+	// StorageErrorCodeOperationTimedOut - OperationTimedOut
+	StorageErrorCodeOperationTimedOut StorageErrorCode = "OperationTimedOut"
+	// StorageErrorCodeOutOfRangeInput - OutOfRangeInput
+	StorageErrorCodeOutOfRangeInput StorageErrorCode = "OutOfRangeInput"
+	// StorageErrorCodeOutOfRangeQueryParameterValue - OutOfRangeQueryParameterValue
+	StorageErrorCodeOutOfRangeQueryParameterValue StorageErrorCode = "OutOfRangeQueryParameterValue"
+	// StorageErrorCodeParentNotFound - ParentNotFound
+	StorageErrorCodeParentNotFound StorageErrorCode = "ParentNotFound"
+	// StorageErrorCodePreviousSnapshotNotFound - PreviousSnapshotNotFound
+	StorageErrorCodePreviousSnapshotNotFound StorageErrorCode = "PreviousSnapshotNotFound"
+	// StorageErrorCodeReadOnlyAttribute - ReadOnlyAttribute
+	StorageErrorCodeReadOnlyAttribute StorageErrorCode = "ReadOnlyAttribute"
+	// StorageErrorCodeRequestBodyTooLarge - RequestBodyTooLarge
+	StorageErrorCodeRequestBodyTooLarge StorageErrorCode = "RequestBodyTooLarge"
+	// StorageErrorCodeRequestURLFailedToParse - RequestUrlFailedToParse
+	StorageErrorCodeRequestURLFailedToParse StorageErrorCode = "RequestUrlFailedToParse"
+	// StorageErrorCodeResourceAlreadyExists - ResourceAlreadyExists
+	StorageErrorCodeResourceAlreadyExists StorageErrorCode = "ResourceAlreadyExists"
+	// StorageErrorCodeResourceNotFound - ResourceNotFound
+	StorageErrorCodeResourceNotFound StorageErrorCode = "ResourceNotFound"
+	// StorageErrorCodeResourceTypeMismatch - ResourceTypeMismatch
+	StorageErrorCodeResourceTypeMismatch StorageErrorCode = "ResourceTypeMismatch"
+	// StorageErrorCodeServerBusy - ServerBusy
+	StorageErrorCodeServerBusy StorageErrorCode = "ServerBusy"
+	// StorageErrorCodeShareAlreadyExists - ShareAlreadyExists
+	StorageErrorCodeShareAlreadyExists StorageErrorCode = "ShareAlreadyExists"
+	// StorageErrorCodeShareBeingDeleted - ShareBeingDeleted
+	StorageErrorCodeShareBeingDeleted StorageErrorCode = "ShareBeingDeleted"
+	// StorageErrorCodeShareDisabled - ShareDisabled
+	StorageErrorCodeShareDisabled StorageErrorCode = "ShareDisabled"
+	// StorageErrorCodeShareHasSnapshots - ShareHasSnapshots
+	StorageErrorCodeShareHasSnapshots StorageErrorCode = "ShareHasSnapshots"
+	// StorageErrorCodeShareNotFound - ShareNotFound
+	StorageErrorCodeShareNotFound StorageErrorCode = "ShareNotFound"
+	// StorageErrorCodeShareSnapshotCountExceeded - ShareSnapshotCountExceeded
+	StorageErrorCodeShareSnapshotCountExceeded StorageErrorCode = "ShareSnapshotCountExceeded"
+	// StorageErrorCodeShareSnapshotInProgress - ShareSnapshotInProgress
+	StorageErrorCodeShareSnapshotInProgress StorageErrorCode = "ShareSnapshotInProgress"
+	// StorageErrorCodeShareSnapshotNotFound - ShareSnapshotNotFound
+	StorageErrorCodeShareSnapshotNotFound StorageErrorCode = "ShareSnapshotNotFound"
+	// StorageErrorCodeShareSnapshotOperationNotSupported - ShareSnapshotOperationNotSupported
+	StorageErrorCodeShareSnapshotOperationNotSupported StorageErrorCode = "ShareSnapshotOperationNotSupported"
+	// StorageErrorCodeSharingViolation - SharingViolation
+	StorageErrorCodeSharingViolation StorageErrorCode = "SharingViolation"
+	// StorageErrorCodeTotalSharesCountExceedsAccountLimit - TotalSharesCountExceedsAccountLimit
+	StorageErrorCodeTotalSharesCountExceedsAccountLimit StorageErrorCode = "TotalSharesCountExceedsAccountLimit"
+	// StorageErrorCodeTotalSharesProvisionedBandwidthExceedsAccountLimit - TotalSharesProvisionedBandwidthExceedsAccountLimit
+	StorageErrorCodeTotalSharesProvisionedBandwidthExceedsAccountLimit StorageErrorCode = "TotalSharesProvisionedBandwidthExceedsAccountLimit"
+	// StorageErrorCodeTotalSharesProvisionedCapacityExceedsAccountLimit - TotalSharesProvisionedCapacityExceedsAccountLimit
+	StorageErrorCodeTotalSharesProvisionedCapacityExceedsAccountLimit StorageErrorCode = "TotalSharesProvisionedCapacityExceedsAccountLimit"
+	// StorageErrorCodeTotalSharesProvisionedIopsExceedsAccountLimit - TotalSharesProvisionedIopsExceedsAccountLimit
+	StorageErrorCodeTotalSharesProvisionedIopsExceedsAccountLimit StorageErrorCode = "TotalSharesProvisionedIopsExceedsAccountLimit"
+	// StorageErrorCodeUnsupportedHTTPVerb - UnsupportedHttpVerb
+	StorageErrorCodeUnsupportedHTTPVerb StorageErrorCode = "UnsupportedHttpVerb"
+	// StorageErrorCodeUnsupportedHeader - UnsupportedHeader
+	StorageErrorCodeUnsupportedHeader StorageErrorCode = "UnsupportedHeader"
+	// StorageErrorCodeUnsupportedQueryParameter - UnsupportedQueryParameter
+	StorageErrorCodeUnsupportedQueryParameter StorageErrorCode = "UnsupportedQueryParameter"
+	// StorageErrorCodeUnsupportedXMLNode - UnsupportedXmlNode
+	StorageErrorCodeUnsupportedXMLNode StorageErrorCode = "UnsupportedXmlNode"
+)
+
+// PossibleStorageErrorCodeValues returns the possible values for the StorageErrorCode const type.
+func PossibleStorageErrorCodeValues() []StorageErrorCode {
+	return []StorageErrorCode{
+		StorageErrorCodeAccountAlreadyExists,
+		StorageErrorCodeAccountBeingCreated,
+		StorageErrorCodeAccountIsDisabled,
+		StorageErrorCodeAuthenticationFailed,
+		StorageErrorCodeAuthorizationFailure,
+		StorageErrorCodeAuthorizationPermissionMismatch,
+		StorageErrorCodeAuthorizationProtocolMismatch,
+		StorageErrorCodeAuthorizationResourceTypeMismatch,
+		StorageErrorCodeAuthorizationServiceMismatch,
+		StorageErrorCodeAuthorizationSourceIPMismatch,
+		StorageErrorCodeCannotDeleteFileOrDirectory,
+		StorageErrorCodeClientCacheFlushDelay,
+		StorageErrorCodeConditionHeadersNotSupported,
+		StorageErrorCodeConditionNotMet,
+		StorageErrorCodeContainerQuotaDowngradeNotAllowed,
+		StorageErrorCodeDeletePending,
+		StorageErrorCodeDirectoryNotEmpty,
+		StorageErrorCodeEmptyMetadataKey,
+		StorageErrorCodeFeatureVersionMismatch,
+		StorageErrorCodeFileLockConflict,
+		StorageErrorCodeFileShareProvisionedBandwidthDowngradeNotAllowed,
+		StorageErrorCodeFileShareProvisionedBandwidthInvalid,
+		StorageErrorCodeFileShareProvisionedIopsDowngradeNotAllowed,
+		StorageErrorCodeFileShareProvisionedIopsInvalid,
+		StorageErrorCodeFileShareProvisionedStorageInvalid,
+		StorageErrorCodeInsufficientAccountPermissions,
+		StorageErrorCodeInternalError,
+		StorageErrorCodeInvalidAuthenticationInfo,
+		StorageErrorCodeInvalidFileOrDirectoryPathName,
+		StorageErrorCodeInvalidHTTPVerb,
+		StorageErrorCodeInvalidHeaderValue,
+		StorageErrorCodeInvalidInput,
+		StorageErrorCodeInvalidMD5,
+		StorageErrorCodeInvalidMetadata,
+		StorageErrorCodeInvalidQueryParameterValue,
+		StorageErrorCodeInvalidRange,
+		StorageErrorCodeInvalidResourceName,
+		StorageErrorCodeInvalidURI,
+		StorageErrorCodeInvalidXMLDocument,
+		StorageErrorCodeInvalidXMLNodeValue,
+		StorageErrorCodeMD5Mismatch,
+		StorageErrorCodeMetadataTooLarge,
+		StorageErrorCodeMissingContentLengthHeader,
+		StorageErrorCodeMissingRequiredHeader,
+		StorageErrorCodeMissingRequiredQueryParameter,
+		StorageErrorCodeMissingRequiredXMLNode,
+		StorageErrorCodeMultipleConditionHeadersNotSupported,
+		StorageErrorCodeOperationTimedOut,
+		StorageErrorCodeOutOfRangeInput,
+		StorageErrorCodeOutOfRangeQueryParameterValue,
+		StorageErrorCodeParentNotFound,
+		StorageErrorCodePreviousSnapshotNotFound,
+		StorageErrorCodeReadOnlyAttribute,
+		StorageErrorCodeRequestBodyTooLarge,
+		StorageErrorCodeRequestURLFailedToParse,
+		StorageErrorCodeResourceAlreadyExists,
+		StorageErrorCodeResourceNotFound,
+		StorageErrorCodeResourceTypeMismatch,
+		StorageErrorCodeServerBusy,
+		StorageErrorCodeShareAlreadyExists,
+		StorageErrorCodeShareBeingDeleted,
+		StorageErrorCodeShareDisabled,
+		StorageErrorCodeShareHasSnapshots,
+		StorageErrorCodeShareNotFound,
+		StorageErrorCodeShareSnapshotCountExceeded,
+		StorageErrorCodeShareSnapshotInProgress,
+		StorageErrorCodeShareSnapshotNotFound,
+		StorageErrorCodeShareSnapshotOperationNotSupported,
+		StorageErrorCodeSharingViolation,
+		StorageErrorCodeTotalSharesCountExceedsAccountLimit,
+		StorageErrorCodeTotalSharesProvisionedBandwidthExceedsAccountLimit,
+		StorageErrorCodeTotalSharesProvisionedCapacityExceedsAccountLimit,
+		StorageErrorCodeTotalSharesProvisionedIopsExceedsAccountLimit,
+		StorageErrorCodeUnsupportedHTTPVerb,
+		StorageErrorCodeUnsupportedHeader,
+		StorageErrorCodeUnsupportedQueryParameter,
+		StorageErrorCodeUnsupportedXMLNode,
+	}
+}

@@ -290,6 +290,18 @@ func (s ShareNFSSettings) MarshalXML(enc *xml.Encoder, start xml.StartElement) e
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type ShareNFSSettingsEncryptionInTransit.
+func (s ShareNFSSettingsEncryptionInTransit) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "ShareNfsSettingsEncryptionInTransit"
+	type alias ShareNFSSettingsEncryptionInTransit
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&s),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SharePermission.
 func (s SharePermission) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

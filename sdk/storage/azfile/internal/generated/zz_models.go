@@ -343,11 +343,11 @@ type ShareFileRangeList struct {
 // ShareNFSSettings - Settings for SMB protocol.
 type ShareNFSSettings struct {
 	// Enable or disable encryption in transit.
-	EncryptionInTransit *ShareNfsSettingsEncryptionInTransit `xml:"EncryptionInTransit"`
+	EncryptionInTransit *ShareNFSSettingsEncryptionInTransit `xml:"EncryptionInTransit"`
 }
 
-// ShareNfsSettingsEncryptionInTransit - Enable or disable encryption in transit.
-type ShareNfsSettingsEncryptionInTransit struct {
+// ShareNFSSettingsEncryptionInTransit - Enable or disable encryption in transit.
+type ShareNFSSettingsEncryptionInTransit struct {
 	// If encryption in transit is required
 	Required *bool `xml:"Required"`
 }

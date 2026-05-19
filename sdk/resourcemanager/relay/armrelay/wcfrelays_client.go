@@ -25,10 +25,9 @@ type WCFRelaysClient struct {
 }
 
 // NewWCFRelaysClient creates a new instance of WCFRelaysClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWCFRelaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WCFRelaysClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,8 +43,8 @@ func NewWCFRelaysClient(subscriptionID string, credential azcore.TokenCredential
 // CreateOrUpdate - Creates or updates a WCF relay. This operation is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - relayName - The relay name.
 //   - parameters - Parameters supplied to create a WCF relay.
@@ -74,8 +73,12 @@ func (client *WCFRelaysClient) CreateOrUpdate(ctx context.Context, resourceGroup
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WCFRelaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, parameters WcfRelay, options *WCFRelaysClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, parameters WcfRelay, _ *WCFRelaysClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -88,16 +91,12 @@ func (client *WCFRelaysClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter relayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{relayName}", url.PathEscape(relayName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -118,8 +117,8 @@ func (client *WCFRelaysClient) createOrUpdateHandleResponse(resp *http.Response)
 // CreateOrUpdateAuthorizationRule - Creates or updates an authorization rule for a WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - relayName - The relay name.
 //   - authorizationRuleName - The authorization rule name.
@@ -149,8 +148,12 @@ func (client *WCFRelaysClient) CreateOrUpdateAuthorizationRule(ctx context.Conte
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
-func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters AuthorizationRule, options *WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters AuthorizationRule, _ *WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -167,16 +170,12 @@ func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 		return nil, errors.New("parameter authorizationRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -197,8 +196,8 @@ func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleHandleResponse(res
 // Delete - Deletes a WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - relayName - The relay name.
 //   - options - WCFRelaysClientDeleteOptions contains the optional parameters for the WCFRelaysClient.Delete method.
@@ -224,8 +223,12 @@ func (client *WCFRelaysClient) Delete(ctx context.Context, resourceGroupName str
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WCFRelaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientDeleteOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, _ *WCFRelaysClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -238,16 +241,12 @@ func (client *WCFRelaysClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter relayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{relayName}", url.PathEscape(relayName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -256,8 +255,8 @@ func (client *WCFRelaysClient) deleteCreateRequest(ctx context.Context, resource
 // DeleteAuthorizationRule - Deletes a WCF relay authorization rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - relayName - The relay name.
 //   - authorizationRuleName - The authorization rule name.
@@ -285,8 +284,12 @@ func (client *WCFRelaysClient) DeleteAuthorizationRule(ctx context.Context, reso
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
-func (client *WCFRelaysClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, _ *WCFRelaysClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -303,16 +306,12 @@ func (client *WCFRelaysClient) deleteAuthorizationRuleCreateRequest(ctx context.
 		return nil, errors.New("parameter authorizationRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,8 +320,8 @@ func (client *WCFRelaysClient) deleteAuthorizationRuleCreateRequest(ctx context.
 // Get - Returns the description for the specified WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - relayName - The relay name.
 //   - options - WCFRelaysClientGetOptions contains the optional parameters for the WCFRelaysClient.Get method.
@@ -349,8 +348,12 @@ func (client *WCFRelaysClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *WCFRelaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientGetOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, _ *WCFRelaysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -363,16 +366,12 @@ func (client *WCFRelaysClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter relayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{relayName}", url.PathEscape(relayName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -390,8 +389,8 @@ func (client *WCFRelaysClient) getHandleResponse(resp *http.Response) (WCFRelays
 // GetAuthorizationRule - Get authorizationRule for a WCF relay by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - relayName - The relay name.
 //   - authorizationRuleName - The authorization rule name.
@@ -420,8 +419,12 @@ func (client *WCFRelaysClient) GetAuthorizationRule(ctx context.Context, resourc
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
-func (client *WCFRelaysClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysClientGetAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, _ *WCFRelaysClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -438,16 +441,12 @@ func (client *WCFRelaysClient) getAuthorizationRuleCreateRequest(ctx context.Con
 		return nil, errors.New("parameter authorizationRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -464,8 +463,8 @@ func (client *WCFRelaysClient) getAuthorizationRuleHandleResponse(resp *http.Res
 
 // NewListAuthorizationRulesPager - Authorization rules for a WCF relay.
 //
-// Generated from API version 2021-11-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - relayName - The relay name.
 //   - options - WCFRelaysClientListAuthorizationRulesOptions contains the optional parameters for the WCFRelaysClient.NewListAuthorizationRulesPager
@@ -494,8 +493,12 @@ func (client *WCFRelaysClient) NewListAuthorizationRulesPager(resourceGroupName 
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *WCFRelaysClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientListAuthorizationRulesOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, _ *WCFRelaysClientListAuthorizationRulesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -508,16 +511,12 @@ func (client *WCFRelaysClient) listAuthorizationRulesCreateRequest(ctx context.C
 		return nil, errors.New("parameter relayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{relayName}", url.PathEscape(relayName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -534,8 +533,8 @@ func (client *WCFRelaysClient) listAuthorizationRulesHandleResponse(resp *http.R
 
 // NewListByNamespacePager - Lists the WCF relays within the namespace.
 //
-// Generated from API version 2021-11-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - options - WCFRelaysClientListByNamespaceOptions contains the optional parameters for the WCFRelaysClient.NewListByNamespacePager
 //     method.
@@ -563,8 +562,12 @@ func (client *WCFRelaysClient) NewListByNamespacePager(resourceGroupName string,
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
-func (client *WCFRelaysClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *WCFRelaysClientListByNamespaceOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *WCFRelaysClientListByNamespaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -573,16 +576,12 @@ func (client *WCFRelaysClient) listByNamespaceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -600,8 +599,8 @@ func (client *WCFRelaysClient) listByNamespaceHandleResponse(resp *http.Response
 // ListKeys - Primary and secondary connection strings to the WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - relayName - The relay name.
 //   - authorizationRuleName - The authorization rule name.
@@ -629,8 +628,12 @@ func (client *WCFRelaysClient) ListKeys(ctx context.Context, resourceGroupName s
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *WCFRelaysClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysClientListKeysOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, _ *WCFRelaysClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -647,16 +650,12 @@ func (client *WCFRelaysClient) listKeysCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter authorizationRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -674,8 +673,8 @@ func (client *WCFRelaysClient) listKeysHandleResponse(resp *http.Response) (WCFR
 // RegenerateKeys - Regenerates the primary or secondary connection strings to the WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
-//   - resourceGroupName - Name of the Resource group within the Azure subscription.
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - relayName - The relay name.
 //   - authorizationRuleName - The authorization rule name.
@@ -705,8 +704,12 @@ func (client *WCFRelaysClient) RegenerateKeys(ctx context.Context, resourceGroup
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *WCFRelaysClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *WCFRelaysClientRegenerateKeysOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, _ *WCFRelaysClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}/regenerateKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -723,16 +726,12 @@ func (client *WCFRelaysClient) regenerateKeysCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter authorizationRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

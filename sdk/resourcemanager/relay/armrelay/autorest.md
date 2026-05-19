@@ -5,8 +5,8 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/relay/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/relay/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/00b39ba3d62a87b463165988c4b281dc2bb825f1/specification/relay/resource-manager/Microsoft.Relay/Relay/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/00b39ba3d62a87b463165988c4b281dc2bb825f1/specification/relay/resource-manager/Microsoft.Relay/Relay/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.2.0
+module-version: 2.0.0
 ```

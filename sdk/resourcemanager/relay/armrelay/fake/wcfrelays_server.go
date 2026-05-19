@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,43 +23,43 @@ import (
 type WCFRelaysServer struct {
 	// CreateOrUpdate is the fake for method WCFRelaysClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, parameters armrelay.WcfRelay, options *armrelay.WCFRelaysClientCreateOrUpdateOptions) (resp azfake.Responder[armrelay.WCFRelaysClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate	func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, parameters armrelay.WcfRelay, options *armrelay.WCFRelaysClientCreateOrUpdateOptions) (resp azfake.Responder[armrelay.WCFRelaysClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateAuthorizationRule is the fake for method WCFRelaysClient.CreateOrUpdateAuthorizationRule
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters armrelay.AuthorizationRule, options *armrelay.WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions) (resp azfake.Responder[armrelay.WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateAuthorizationRule	func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters armrelay.AuthorizationRule, options *armrelay.WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions) (resp azfake.Responder[armrelay.WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method WCFRelaysClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *armrelay.WCFRelaysClientDeleteOptions) (resp azfake.Responder[armrelay.WCFRelaysClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete	func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *armrelay.WCFRelaysClientDeleteOptions) (resp azfake.Responder[armrelay.WCFRelaysClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// DeleteAuthorizationRule is the fake for method WCFRelaysClient.DeleteAuthorizationRule
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *armrelay.WCFRelaysClientDeleteAuthorizationRuleOptions) (resp azfake.Responder[armrelay.WCFRelaysClientDeleteAuthorizationRuleResponse], errResp azfake.ErrorResponder)
+	DeleteAuthorizationRule	func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *armrelay.WCFRelaysClientDeleteAuthorizationRuleOptions) (resp azfake.Responder[armrelay.WCFRelaysClientDeleteAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method WCFRelaysClient.Get
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Get func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *armrelay.WCFRelaysClientGetOptions) (resp azfake.Responder[armrelay.WCFRelaysClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *armrelay.WCFRelaysClientGetOptions) (resp azfake.Responder[armrelay.WCFRelaysClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetAuthorizationRule is the fake for method WCFRelaysClient.GetAuthorizationRule
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *armrelay.WCFRelaysClientGetAuthorizationRuleOptions) (resp azfake.Responder[armrelay.WCFRelaysClientGetAuthorizationRuleResponse], errResp azfake.ErrorResponder)
+	GetAuthorizationRule	func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *armrelay.WCFRelaysClientGetAuthorizationRuleOptions) (resp azfake.Responder[armrelay.WCFRelaysClientGetAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
 	// NewListAuthorizationRulesPager is the fake for method WCFRelaysClient.NewListAuthorizationRulesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAuthorizationRulesPager func(resourceGroupName string, namespaceName string, relayName string, options *armrelay.WCFRelaysClientListAuthorizationRulesOptions) (resp azfake.PagerResponder[armrelay.WCFRelaysClientListAuthorizationRulesResponse])
+	NewListAuthorizationRulesPager	func(resourceGroupName string, namespaceName string, relayName string, options *armrelay.WCFRelaysClientListAuthorizationRulesOptions) (resp azfake.PagerResponder[armrelay.WCFRelaysClientListAuthorizationRulesResponse])
 
 	// NewListByNamespacePager is the fake for method WCFRelaysClient.NewListByNamespacePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByNamespacePager func(resourceGroupName string, namespaceName string, options *armrelay.WCFRelaysClientListByNamespaceOptions) (resp azfake.PagerResponder[armrelay.WCFRelaysClientListByNamespaceResponse])
+	NewListByNamespacePager	func(resourceGroupName string, namespaceName string, options *armrelay.WCFRelaysClientListByNamespaceOptions) (resp azfake.PagerResponder[armrelay.WCFRelaysClientListByNamespaceResponse])
 
 	// ListKeys is the fake for method WCFRelaysClient.ListKeys
 	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *armrelay.WCFRelaysClientListKeysOptions) (resp azfake.Responder[armrelay.WCFRelaysClientListKeysResponse], errResp azfake.ErrorResponder)
+	ListKeys	func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *armrelay.WCFRelaysClientListKeysOptions) (resp azfake.Responder[armrelay.WCFRelaysClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// RegenerateKeys is the fake for method WCFRelaysClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
-	RegenerateKeys func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters armrelay.RegenerateAccessKeyParameters, options *armrelay.WCFRelaysClientRegenerateKeysOptions) (resp azfake.Responder[armrelay.WCFRelaysClientRegenerateKeysResponse], errResp azfake.ErrorResponder)
+	RegenerateKeys	func(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters armrelay.RegenerateAccessKeyParameters, options *armrelay.WCFRelaysClientRegenerateKeysOptions) (resp azfake.Responder[armrelay.WCFRelaysClientRegenerateKeysResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWCFRelaysServerTransport creates a new instance of WCFRelaysServerTransport with the provided implementation.
@@ -67,18 +67,18 @@ type WCFRelaysServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWCFRelaysServerTransport(srv *WCFRelaysServer) *WCFRelaysServerTransport {
 	return &WCFRelaysServerTransport{
-		srv:                            srv,
-		newListAuthorizationRulesPager: newTracker[azfake.PagerResponder[armrelay.WCFRelaysClientListAuthorizationRulesResponse]](),
-		newListByNamespacePager:        newTracker[azfake.PagerResponder[armrelay.WCFRelaysClientListByNamespaceResponse]](),
+		srv:				srv,
+		newListAuthorizationRulesPager:	newTracker[azfake.PagerResponder[armrelay.WCFRelaysClientListAuthorizationRulesResponse]](),
+		newListByNamespacePager:	newTracker[azfake.PagerResponder[armrelay.WCFRelaysClientListByNamespaceResponse]](),
 	}
 }
 
 // WCFRelaysServerTransport connects instances of armrelay.WCFRelaysClient to instances of WCFRelaysServer.
 // Don't use this type directly, use NewWCFRelaysServerTransport instead.
 type WCFRelaysServerTransport struct {
-	srv                            *WCFRelaysServer
-	newListAuthorizationRulesPager *tracker[azfake.PagerResponder[armrelay.WCFRelaysClientListAuthorizationRulesResponse]]
-	newListByNamespacePager        *tracker[azfake.PagerResponder[armrelay.WCFRelaysClientListByNamespaceResponse]]
+	srv				*WCFRelaysServer
+	newListAuthorizationRulesPager	*tracker[azfake.PagerResponder[armrelay.WCFRelaysClientListAuthorizationRulesResponse]]
+	newListByNamespacePager		*tracker[azfake.PagerResponder[armrelay.WCFRelaysClientListByNamespaceResponse]]
 }
 
 // Do implements the policy.Transporter interface for WCFRelaysServerTransport.
@@ -89,39 +89,58 @@ func (w *WCFRelaysServerTransport) Do(req *http.Request) (*http.Response, error)
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return w.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "WCFRelaysClient.CreateOrUpdate":
-		resp, err = w.dispatchCreateOrUpdate(req)
-	case "WCFRelaysClient.CreateOrUpdateAuthorizationRule":
-		resp, err = w.dispatchCreateOrUpdateAuthorizationRule(req)
-	case "WCFRelaysClient.Delete":
-		resp, err = w.dispatchDelete(req)
-	case "WCFRelaysClient.DeleteAuthorizationRule":
-		resp, err = w.dispatchDeleteAuthorizationRule(req)
-	case "WCFRelaysClient.Get":
-		resp, err = w.dispatchGet(req)
-	case "WCFRelaysClient.GetAuthorizationRule":
-		resp, err = w.dispatchGetAuthorizationRule(req)
-	case "WCFRelaysClient.NewListAuthorizationRulesPager":
-		resp, err = w.dispatchNewListAuthorizationRulesPager(req)
-	case "WCFRelaysClient.NewListByNamespacePager":
-		resp, err = w.dispatchNewListByNamespacePager(req)
-	case "WCFRelaysClient.ListKeys":
-		resp, err = w.dispatchListKeys(req)
-	case "WCFRelaysClient.RegenerateKeys":
-		resp, err = w.dispatchRegenerateKeys(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (w *WCFRelaysServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if wcfRelaysServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = wcfRelaysServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "WCFRelaysClient.CreateOrUpdate":
+				res.resp, res.err = w.dispatchCreateOrUpdate(req)
+			case "WCFRelaysClient.CreateOrUpdateAuthorizationRule":
+				res.resp, res.err = w.dispatchCreateOrUpdateAuthorizationRule(req)
+			case "WCFRelaysClient.Delete":
+				res.resp, res.err = w.dispatchDelete(req)
+			case "WCFRelaysClient.DeleteAuthorizationRule":
+				res.resp, res.err = w.dispatchDeleteAuthorizationRule(req)
+			case "WCFRelaysClient.Get":
+				res.resp, res.err = w.dispatchGet(req)
+			case "WCFRelaysClient.GetAuthorizationRule":
+				res.resp, res.err = w.dispatchGetAuthorizationRule(req)
+			case "WCFRelaysClient.NewListAuthorizationRulesPager":
+				res.resp, res.err = w.dispatchNewListAuthorizationRulesPager(req)
+			case "WCFRelaysClient.NewListByNamespacePager":
+				res.resp, res.err = w.dispatchNewListByNamespacePager(req)
+			case "WCFRelaysClient.ListKeys":
+				res.resp, res.err = w.dispatchListKeys(req)
+			case "WCFRelaysClient.RegenerateKeys":
+				res.resp, res.err = w.dispatchRegenerateKeys(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (w *WCFRelaysServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -131,7 +150,7 @@ func (w *WCFRelaysServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wcfRelays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armrelay.WcfRelay](req)
@@ -172,7 +191,7 @@ func (w *WCFRelaysServerTransport) dispatchCreateOrUpdateAuthorizationRule(req *
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wcfRelays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armrelay.AuthorizationRule](req)
@@ -217,7 +236,7 @@ func (w *WCFRelaysServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wcfRelays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -254,7 +273,7 @@ func (w *WCFRelaysServerTransport) dispatchDeleteAuthorizationRule(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wcfRelays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -295,7 +314,7 @@ func (w *WCFRelaysServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wcfRelays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -332,7 +351,7 @@ func (w *WCFRelaysServerTransport) dispatchGetAuthorizationRule(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wcfRelays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -375,7 +394,7 @@ func (w *WCFRelaysServerTransport) dispatchNewListAuthorizationRulesPager(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wcfRelays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -420,7 +439,7 @@ func (w *WCFRelaysServerTransport) dispatchNewListByNamespacePager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wcfRelays`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -459,7 +478,7 @@ func (w *WCFRelaysServerTransport) dispatchListKeys(req *http.Request) (*http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wcfRelays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -500,7 +519,7 @@ func (w *WCFRelaysServerTransport) dispatchRegenerateKeys(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wcfRelays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationRules/(?P<authorizationRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armrelay.RegenerateAccessKeyParameters](req)
@@ -536,4 +555,10 @@ func (w *WCFRelaysServerTransport) dispatchRegenerateKeys(req *http.Request) (*h
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to WCFRelaysServerTransport
+var wcfRelaysServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -13,22 +13,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay/v2"
 	"github.com/stretchr/testify/suite"
 )
 
 type HybridConnectionsTestSuite struct {
 	suite.Suite
 
-	ctx                   context.Context
-	cred                  azcore.TokenCredential
-	options               *arm.ClientOptions
-	authorizationRuleName string
-	hybridConnectionName  string
-	namespaceName         string
-	location              string
-	resourceGroupName     string
-	subscriptionId        string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	authorizationRuleName	string
+	hybridConnectionName	string
+	namespaceName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *HybridConnectionsTestSuite) SetupSuite() {
@@ -66,14 +66,14 @@ func (testsuite *HybridConnectionsTestSuite) Prepare() {
 	namespacesClient, err := armrelay.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	namespacesClientCreateOrUpdateResponsePoller, err := namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armrelay.Namespace{
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
 		},
 		SKU: &armrelay.SKU{
-			Name: to.Ptr(armrelay.SKUNameStandard),
-			Tier: to.Ptr(armrelay.SKUTierStandard),
+			Name:	to.Ptr(armrelay.SKUNameStandard),
+			Tier:	to.Ptr(armrelay.SKUTierStandard),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

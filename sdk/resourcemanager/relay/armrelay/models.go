@@ -39,20 +39,20 @@ type AuthorizationRule struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// AuthorizationRuleListResult - The response from the list namespace operation.
+// AuthorizationRuleListResult - The response of a AuthorizationRule list operation.
 type AuthorizationRuleListResult struct {
-	// Link to the next set of results. Not empty if value contains incomplete list of authorization rules.
-	NextLink *string
-
-	// Result of the list authorization rules operation.
+	// REQUIRED; The AuthorizationRule items on this page
 	Value []*AuthorizationRule
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // AuthorizationRuleProperties - Properties supplied to create or update AuthorizationRule
@@ -137,20 +137,20 @@ type HybridConnection struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// HybridConnectionListResult - The response of the list hybrid connection operation.
+// HybridConnectionListResult - The response of a HybridConnection list operation.
 type HybridConnectionListResult struct {
-	// Link to the next set of results. Not empty if value contains incomplete list hybrid connection operation.
-	NextLink *string
-
-	// Result of the list hybrid connections.
+	// REQUIRED; The HybridConnection items on this page
 	Value []*HybridConnection
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // HybridConnectionProperties - Properties of the HybridConnection.
@@ -184,7 +184,7 @@ type NWRuleSetIPRules struct {
 
 // Namespace - Description of a namespace resource.
 type Namespace struct {
-	// REQUIRED; Resource location.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Description of Relay namespace
@@ -196,26 +196,26 @@ type Namespace struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// NamespaceListResult - The response from the list namespace operation.
+// NamespaceListResult - The response of a RelayNamespace list operation.
 type NamespaceListResult struct {
-	// Link to the next set of results. Not empty if value contains incomplete list of namespaces.
-	NextLink *string
-
-	// Result of the list namespace operation.
+	// REQUIRED; The RelayNamespace items on this page
 	Value []*Namespace
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // NamespaceProperties - Properties of the namespace.
@@ -250,16 +250,16 @@ type NetworkRuleSet struct {
 	// NetworkRuleSet properties
 	Properties *NetworkRuleSetProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -270,48 +270,60 @@ type NetworkRuleSetProperties struct {
 
 	// List of IpRules
 	IPRules []*NWRuleSetIPRules
+
+	// This determines if traffic is allowed over public network. By default it is enabled
+	PublicNetworkAccess *PublicNetworkAccess
+
+	// Value that indicates whether Trusted Service Access is Enabled or not.
+	TrustedServiceAccessEnabled *bool
 }
 
-// Operation - A Relay REST API operation
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Properties of the operation
-	Properties any
-
-	// READ-ONLY; Display of the operation
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
 
-	// READ-ONLY; Indicates whether the operation is a data action
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool
 
-	// READ-ONLY; Operation name: {provider}/{resource}/{operation}
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
-	// READ-ONLY; Origin of the operation
-	Origin *string
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
-// OperationDisplay - Operation display payload
+// OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
-	// READ-ONLY; Localized friendly description for the operation
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-	// READ-ONLY; Localized friendly name for the operation
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-	// READ-ONLY; Resource provider of the operation
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-	// READ-ONLY; Resource of the operation
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
-// OperationListResult - Result of the request to list Relay operations. It contains a list of operations and a URL link to
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
-	// READ-ONLY; URL to get the next set of operation list results if there are any.
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string
 
-	// READ-ONLY; List of Relay operations supported by the Microsoft.EventHub resource provider.
+	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation
 }
 
@@ -335,20 +347,20 @@ type PrivateEndpointConnection struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// PrivateEndpointConnectionListResult - Result of the list of all private endpoint connections operation.
+// PrivateEndpointConnectionListResult - The response of a PrivateEndpointConnection list operation.
 type PrivateEndpointConnectionListResult struct {
-	// A link for the next page of private endpoint connection resources.
-	NextLink *string
-
-	// A collection of private endpoint connection resources.
+	// REQUIRED; The PrivateEndpointConnection items on this page
 	Value []*PrivateEndpointConnection
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // PrivateEndpointConnectionProperties - Properties of the private endpoint connection resource.
@@ -363,18 +375,21 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *EndPointProvisioningState
 }
 
-// PrivateLinkResource - Information of the private link resource.
+// PrivateLinkResource - A resource that supports private link capabilities.
 type PrivateLinkResource struct {
-	// Fully qualified identifier of the resource.
-	ID *string
-
-	// Name of the resource
-	Name *string
-
-	// Properties of the private link resource.
+	// A resource that supports private link capabilities.
 	Properties *PrivateLinkResourceProperties
 
-	// Type of the resource
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -392,25 +407,26 @@ type PrivateLinkResourceProperties struct {
 
 // PrivateLinkResourcesListResult - Result of the List private link resources operation.
 type PrivateLinkResourcesListResult struct {
+	// REQUIRED; A collection of private link resources
+	Value []*PrivateLinkResource
+
 	// A link for the next page of private link resources.
 	NextLink *string
-
-	// A collection of private link resources
-	Value []*PrivateLinkResource
 }
 
-// ProxyResource - Common fields that are returned in the response for all Azure Resource Manager resources
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; The geo-location where the resource lives
-	Location *string
-
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -424,15 +440,18 @@ type RegenerateAccessKeyParameters struct {
 	Key *string
 }
 
-// Resource - The resource definition.
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -441,13 +460,16 @@ type ResourceNamespacePatch struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -481,21 +503,25 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// TrackedResource - Definition of resource.
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	// REQUIRED; Resource location.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -510,13 +536,16 @@ type UpdateParameters struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -534,10 +563,10 @@ type WcfRelay struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -572,9 +601,9 @@ type WcfRelayProperties struct {
 
 // WcfRelaysListResult - The response of the list WCF relay operation.
 type WcfRelaysListResult struct {
-	// Link to the next set of results. Not empty if value contains incomplete list of WCF relays.
-	NextLink *string
-
-	// Result of the list WCF relay operation.
+	// REQUIRED; The WcfRelay items on this page
 	Value []*WcfRelay
+
+	// The link to the next page of items
+	NextLink *string
 }

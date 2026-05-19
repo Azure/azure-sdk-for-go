@@ -16,12 +16,23 @@ import (
 
 // ServerFactory is a fake server for instances of the armrelay.ClientFactory type.
 type ServerFactory struct {
-	HybridConnectionsServer          HybridConnectionsServer
-	NamespacesServer                 NamespacesServer
-	OperationsServer                 OperationsServer
+	// HybridConnectionsServer contains the fakes for client HybridConnectionsClient
+	HybridConnectionsServer HybridConnectionsServer
+
+	// NamespacesServer contains the fakes for client NamespacesClient
+	NamespacesServer NamespacesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer       PrivateLinkResourcesServer
-	WCFRelaysServer                  WCFRelaysServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// WCFRelaysServer contains the fakes for client WCFRelaysClient
+	WCFRelaysServer WCFRelaysServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

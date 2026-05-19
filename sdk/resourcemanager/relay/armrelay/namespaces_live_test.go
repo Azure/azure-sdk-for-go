@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
@@ -21,15 +21,15 @@ import (
 type NamespacesTestSuite struct {
 	suite.Suite
 
-	ctx                   context.Context
-	cred                  azcore.TokenCredential
-	options               *arm.ClientOptions
-	authorizationRuleName string
-	namespaceId           string
-	namespaceName         string
-	location              string
-	resourceGroupName     string
-	subscriptionId        string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	authorizationRuleName	string
+	namespaceId		string
+	namespaceName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *NamespacesTestSuite) SetupSuite() {
@@ -66,14 +66,14 @@ func (testsuite *NamespacesTestSuite) Prepare() {
 	namespacesClient, err := armrelay.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	namespacesClientCreateOrUpdateResponsePoller, err := namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armrelay.Namespace{
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
 		},
 		SKU: &armrelay.SKU{
-			Name: to.Ptr(armrelay.SKUNameStandard),
-			Tier: to.Ptr(armrelay.SKUTierStandard),
+			Name:	to.Ptr(armrelay.SKUNameStandard),
+			Tier:	to.Ptr(armrelay.SKUTierStandard),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -99,10 +99,10 @@ func (testsuite *NamespacesTestSuite) TestNamespaces() {
 	fmt.Println("Call operation: Namespaces_Update")
 	_, err = namespacesClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armrelay.UpdateParameters{
 		Tags: map[string]*string{
-			"tag3": to.Ptr("value3"),
-			"tag4": to.Ptr("value4"),
-			"tag5": to.Ptr("value5"),
-			"tag6": to.Ptr("value6"),
+			"tag3":	to.Ptr("value3"),
+			"tag4":	to.Ptr("value4"),
+			"tag5":	to.Ptr("value5"),
+			"tag6":	to.Ptr("value6"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -137,78 +137,78 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 	var err error
 	// From step Create_PrivateEndpoint
 	template := map[string]any{
-		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-		"contentVersion": "1.0.0.0",
+		"$schema":		"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion":	"1.0.0.0",
 		"parameters": map[string]any{
 			"location": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.location,
+				"type":		"string",
+				"defaultValue":	testsuite.location,
 			},
 			"namespaceId": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.namespaceId,
+				"type":		"string",
+				"defaultValue":	testsuite.namespaceId,
 			},
 			"networkInterfaceName": map[string]any{
-				"type":         "string",
-				"defaultValue": "eprelay-nic",
+				"type":		"string",
+				"defaultValue":	"eprelay-nic",
 			},
 			"privateEndpointName": map[string]any{
-				"type":         "string",
-				"defaultValue": "eprealy",
+				"type":		"string",
+				"defaultValue":	"eprealy",
 			},
 			"virtualNetworksName": map[string]any{
-				"type":         "string",
-				"defaultValue": "relaynet",
+				"type":		"string",
+				"defaultValue":	"relaynet",
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('virtualNetworksName')]",
-				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
-				"location":   "[parameters('location')]",
+				"name":		"[parameters('virtualNetworksName')]",
+				"type":		"Microsoft.Network/virtualNetworks",
+				"apiVersion":	"2020-11-01",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
 						"addressPrefixes": []any{
 							"10.0.0.0/16",
 						},
 					},
-					"enableDdosProtection": false,
+					"enableDdosProtection":	false,
 					"subnets": []any{
 						map[string]any{
-							"name": "default",
+							"name":	"default",
 							"properties": map[string]any{
-								"addressPrefix":                     "10.0.0.0/24",
-								"delegations":                       []any{},
-								"privateEndpointNetworkPolicies":    "Disabled",
-								"privateLinkServiceNetworkPolicies": "Enabled",
+								"addressPrefix":			"10.0.0.0/24",
+								"delegations":				[]any{},
+								"privateEndpointNetworkPolicies":	"Disabled",
+								"privateLinkServiceNetworkPolicies":	"Enabled",
 							},
 						},
 					},
-					"virtualNetworkPeerings": []any{},
+					"virtualNetworkPeerings":	[]any{},
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('networkInterfaceName')]",
-				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('networkInterfaceName')]",
+				"type":		"Microsoft.Network/networkInterfaces",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"dnsSettings": map[string]any{
 						"dnsServers": []any{},
 					},
-					"enableIPForwarding": false,
+					"enableIPForwarding":	false,
 					"ipConfigurations": []any{
 						map[string]any{
-							"name": "privateEndpointIpConfig",
+							"name":	"privateEndpointIpConfig",
 							"properties": map[string]any{
-								"primary":                   true,
-								"privateIPAddress":          "10.0.0.4",
-								"privateIPAddressVersion":   "IPv4",
-								"privateIPAllocationMethod": "Dynamic",
+								"primary":			true,
+								"privateIPAddress":		"10.0.0.4",
+								"privateIPAddressVersion":	"IPv4",
+								"privateIPAllocationMethod":	"Dynamic",
 								"subnet": map[string]any{
 									"id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 								},
@@ -218,29 +218,29 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('privateEndpointName')]",
-				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('privateEndpointName')]",
+				"type":		"Microsoft.Network/privateEndpoints",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
-					"customDnsConfigs":                    []any{},
-					"manualPrivateLinkServiceConnections": []any{},
+					"customDnsConfigs":			[]any{},
+					"manualPrivateLinkServiceConnections":	[]any{},
 					"privateLinkServiceConnections": []any{
 						map[string]any{
-							"name": "[parameters('privateEndpointName')]",
+							"name":	"[parameters('privateEndpointName')]",
 							"properties": map[string]any{
 								"groupIds": []any{
 									"namespace",
 								},
 								"privateLinkServiceConnectionState": map[string]any{
-									"description":     "Auto-Approved",
-									"actionsRequired": "None",
-									"status":          "Approved",
+									"description":		"Auto-Approved",
+									"actionsRequired":	"None",
+									"status":		"Approved",
 								},
-								"privateLinkServiceId": "[parameters('namespaceId')]",
+								"privateLinkServiceId":	"[parameters('namespaceId')]",
 							},
 						},
 					},
@@ -250,26 +250,26 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 				},
 			},
 			map[string]any{
-				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
-				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"name":		"[concat(parameters('virtualNetworksName'), '/default')]",
+				"type":		"Microsoft.Network/virtualNetworks/subnets",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
-					"addressPrefix":                     "10.0.0.0/24",
-					"delegations":                       []any{},
-					"privateEndpointNetworkPolicies":    "Disabled",
-					"privateLinkServiceNetworkPolicies": "Enabled",
+					"addressPrefix":			"10.0.0.0/24",
+					"delegations":				[]any{},
+					"privateEndpointNetworkPolicies":	"Disabled",
+					"privateLinkServiceNetworkPolicies":	"Enabled",
 				},
 			},
 		},
-		"variables": map[string]any{},
+		"variables":	map[string]any{},
 	}
 	deployment := armdeployments.Deployment{
 		Properties: &armdeployments.DeploymentProperties{
-			Template: template,
-			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
+			Template:	template,
+			Mode:		to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
@@ -365,27 +365,27 @@ func (testsuite *NamespacesTestSuite) TestNamespacesNetworkRuleSet() {
 	testsuite.Require().NoError(err)
 	_, err = namespacesClient.CreateOrUpdateNetworkRuleSet(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armrelay.NetworkRuleSet{
 		Properties: &armrelay.NetworkRuleSetProperties{
-			DefaultAction: to.Ptr(armrelay.DefaultActionDeny),
+			DefaultAction:	to.Ptr(armrelay.DefaultActionDeny),
 			IPRules: []*armrelay.NWRuleSetIPRules{
 				{
-					Action: to.Ptr(armrelay.NetworkRuleIPActionAllow),
-					IPMask: to.Ptr("1.1.1.1"),
+					Action:	to.Ptr(armrelay.NetworkRuleIPActionAllow),
+					IPMask:	to.Ptr("1.1.1.1"),
 				},
 				{
-					Action: to.Ptr(armrelay.NetworkRuleIPActionAllow),
-					IPMask: to.Ptr("1.1.1.2"),
+					Action:	to.Ptr(armrelay.NetworkRuleIPActionAllow),
+					IPMask:	to.Ptr("1.1.1.2"),
 				},
 				{
-					Action: to.Ptr(armrelay.NetworkRuleIPActionAllow),
-					IPMask: to.Ptr("1.1.1.3"),
+					Action:	to.Ptr(armrelay.NetworkRuleIPActionAllow),
+					IPMask:	to.Ptr("1.1.1.3"),
 				},
 				{
-					Action: to.Ptr(armrelay.NetworkRuleIPActionAllow),
-					IPMask: to.Ptr("1.1.1.4"),
+					Action:	to.Ptr(armrelay.NetworkRuleIPActionAllow),
+					IPMask:	to.Ptr("1.1.1.4"),
 				},
 				{
-					Action: to.Ptr(armrelay.NetworkRuleIPActionAllow),
-					IPMask: to.Ptr("1.1.1.5"),
+					Action:	to.Ptr(armrelay.NetworkRuleIPActionAllow),
+					IPMask:	to.Ptr("1.1.1.5"),
 				}},
 		},
 	}, nil)

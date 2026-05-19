@@ -41,13 +41,13 @@ type HybridConnectionsClientGetResponse struct {
 
 // HybridConnectionsClientListAuthorizationRulesResponse contains the response from method HybridConnectionsClient.NewListAuthorizationRulesPager.
 type HybridConnectionsClientListAuthorizationRulesResponse struct {
-	// The response from the list namespace operation.
+	// The response of a AuthorizationRule list operation.
 	AuthorizationRuleListResult
 }
 
 // HybridConnectionsClientListByNamespaceResponse contains the response from method HybridConnectionsClient.NewListByNamespacePager.
 type HybridConnectionsClientListByNamespaceResponse struct {
-	// The response of the list hybrid connection operation.
+	// The response of a HybridConnection list operation.
 	HybridConnectionListResult
 }
 
@@ -117,13 +117,13 @@ type NamespacesClientGetResponse struct {
 
 // NamespacesClientListAuthorizationRulesResponse contains the response from method NamespacesClient.NewListAuthorizationRulesPager.
 type NamespacesClientListAuthorizationRulesResponse struct {
-	// The response from the list namespace operation.
+	// The response of a AuthorizationRule list operation.
 	AuthorizationRuleListResult
 }
 
 // NamespacesClientListByResourceGroupResponse contains the response from method NamespacesClient.NewListByResourceGroupPager.
 type NamespacesClientListByResourceGroupResponse struct {
-	// The response from the list namespace operation.
+	// The response of a RelayNamespace list operation.
 	NamespaceListResult
 }
 
@@ -135,7 +135,7 @@ type NamespacesClientListKeysResponse struct {
 
 // NamespacesClientListResponse contains the response from method NamespacesClient.NewListPager.
 type NamespacesClientListResponse struct {
-	// The response from the list namespace operation.
+	// The response of a RelayNamespace list operation.
 	NamespaceListResult
 }
 
@@ -153,8 +153,7 @@ type NamespacesClientUpdateResponse struct {
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// Result of the request to list Relay operations. It contains a list of operations and a URL link to get the next set of
-	// results.
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
 }
 
@@ -177,13 +176,13 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 
 // PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
-	// Result of the list of all private endpoint connections operation.
+	// The response of a PrivateEndpointConnection list operation.
 	PrivateEndpointConnectionListResult
 }
 
 // PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
 type PrivateLinkResourcesClientGetResponse struct {
-	// Information of the private link resource.
+	// A resource that supports private link capabilities.
 	PrivateLinkResource
 }
 
@@ -229,7 +228,7 @@ type WCFRelaysClientGetResponse struct {
 
 // WCFRelaysClientListAuthorizationRulesResponse contains the response from method WCFRelaysClient.NewListAuthorizationRulesPager.
 type WCFRelaysClientListAuthorizationRulesResponse struct {
-	// The response from the list namespace operation.
+	// The response of a AuthorizationRule list operation.
 	AuthorizationRuleListResult
 }
 

@@ -221,6 +221,7 @@ func (s *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOp
 func (s *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	opts := options.format(s.getClientOptions().FileRequestIntent)
 
+	var shareACL []*SignedIdentifier
 	if options != nil && options.ShareACL != nil {
 		for _, si := range options.ShareACL {
 			err := formatTime(si)
@@ -228,10 +229,6 @@ func (s *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 				return SetAccessPolicyResponse{}, err
 			}
 		}
-	}
-
-	var shareACL []*SignedIdentifier
-	if options != nil && options.ShareACL != nil {
 		shareACL = options.ShareACL
 	}
 	return s.generated().SetAccessPolicy(ctx, shareACL, opts)

@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -893,4 +894,77 @@ func TestReadMany_createsSpanPerPage(t *testing.T) {
 	for i, s := range querySpans {
 		require.True(t, s.ended, "query_items span %d should be ended", i)
 	}
+	require.Equal(t, float32(3.5), resp.RequestCharge, "per-page charges must sum")
+}
+
+func TestReadMany_querySpanRecordsErrorOnFailure(t *testing.T) {
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	expectedSpan := "query_items containerId"
+	matcher := &spanMatcher{
+		ExpectedSpans: []string{expectedSpan},
+	}
+	tp := newSpanValidator(t, matcher)
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	require.NoError(t, err)
+
+	internalClient, err := azcore.NewClient("azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{Tracing: azruntime.TracingOptions{Namespace: "Microsoft.DocumentDB"}},
+		&policy.ClientOptions{
+			Transport:      srv,
+			TracingProvider: tp,
+			Retry:          policy.RetryOptions{MaxRetries: 0, StatusCodes: []int{}},
+		})
+	require.NoError(t, err)
+
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	containerCache := newContainerPropertiesCache()
+	pkRangeCache := newPartitionKeyRangeCache()
+	client := &Client{
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			containerCache: containerCache,
+			pkRangeCache:   pkRangeCache,
+		},
+	}
+
+	containerLink := "dbs/databaseId/colls/containerId"
+	containerCache.set(containerLink, &ContainerProperties{
+		ID:         "containerId",
+		ResourceID: "testRID",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths:   []string{"/pk"},
+			Kind:    PartitionKeyKindHash,
+			Version: 2,
+		},
+	})
+	pkRangeCache.entries["testRID"] = &pkRangeCacheEntry{
+		routingMap: newCollectionRoutingMap([]partitionKeyRange{
+			{ID: "0", MinInclusive: "", MaxExclusive: "FF", ResourceID: "testRID"},
+		}, "etag1"),
+	}
+
+	srv.SetResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	items := []ItemIdentity{{ID: "item1", PartitionKey: NewPartitionKeyString("pkA")}}
+	_, err = container.ReadManyItems(context.Background(), items, nil)
+	require.Error(t, err)
+
+	var querySpans []*matchingSpan
+	for _, s := range matcher.MatchedSpans {
+		if s.name == expectedSpan {
+			querySpans = append(querySpans, s)
+		}
+	}
+	require.Len(t, querySpans, 1, "expected 1 query_items span even on error")
+	require.True(t, querySpans[0].ended, "span must be ended even on error")
+	require.Equal(t, tracing.SpanStatusError, querySpans[0].status)
 }

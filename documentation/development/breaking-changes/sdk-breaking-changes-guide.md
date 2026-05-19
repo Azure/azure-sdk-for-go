@@ -4,14 +4,6 @@ The Azure Go SDK generally prohibits breaking changes unless they result from se
 
 Some breaking changes can be resolved through client customizations. You should follow the guidelines below to review and resolve breaking changes.
 
-Each pattern below is documented using the following structure:
-
-- **Changelog Pattern**: The entries that appear in `CHANGELOG.md` when this breaking change occurs.
-- **Spec Pattern** (optional): The TypeSpec definition that produces the changelog pattern.
-- **Breaking**: A concise description of what the breaking change is.
-- **Reason**: The root cause of the breaking change.
-- **Resolution**: How to resolve the breaking change. If it cannot be mitigated through client customizations, this is explicitly noted.
-
 Client customizations should be implemented in a file named `client.tsp` located in the service's specification directory alongside the main entry point `main.tsp`. This `client.tsp` becomes the new specification entry point, so import `main.tsp` in the `client.tsp` file. **Do not** import `client.tsp` in the `main.tsp` file. **Do not** modify the entry point in `tspconfig.yaml`.
 
 ```tsp

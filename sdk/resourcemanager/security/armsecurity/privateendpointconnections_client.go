@@ -50,9 +50,9 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 //   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
 //   - options - PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 //     method.
-func (client *PrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionProperties, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error) {
+func (client *PrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, privateEndpointConnectionName, properties, privateLinkName, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, privateEndpointConnectionName, privateEndpointConnection, privateLinkName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -70,13 +70,13 @@ func (client *PrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.
 // CreateOrUpdate - Update the state of specified private endpoint connection associated with the private link. This operation
 // is typically used to approve or reject pending private endpoint connections.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionProperties, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *PrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateEndpointConnectionName, properties, privateLinkName, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateEndpointConnectionName, privateEndpointConnection, privateLinkName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdate(ctx context.Conte
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionProperties, privateLinkName PrivateLinkParameters, _ *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, privateLinkName PrivateLinkParameters, _ *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -119,7 +119,7 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+	if err := runtime.MarshalAsJSON(req, privateEndpointConnection); err != nil {
 		return nil, err
 	}
 	return req, nil

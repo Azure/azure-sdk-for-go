@@ -483,7 +483,6 @@ func (a *AlertSyncSettings) GetSetting() *Setting {
 		ID:         a.ID,
 		Kind:       a.Kind,
 		Name:       a.Name,
-		Properties: a.Properties,
 		SystemData: a.SystemData,
 		Type:       a.Type,
 	}
@@ -854,24 +853,6 @@ type ArcAutoProvisioningConfiguration struct {
 
 	// Optional HTTP proxy endpoint to use for the Arc agent
 	Proxy *string
-}
-
-// ArmPrivateEndpointConnection - The private endpoint connection resource
-type ArmPrivateEndpointConnection struct {
-	// The private endpoint connection properties
-	Properties *PrivateEndpointConnectionProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // ArmSecurityStandard - Security Standard on a resource
@@ -2006,7 +1987,6 @@ func (a *AzureServersSetting) GetServerVulnerabilityAssessmentsSetting() *Server
 		ID:         a.ID,
 		Kind:       a.Kind,
 		Name:       a.Name,
-		Properties: a.Properties,
 		SystemData: a.SystemData,
 		Type:       a.Type,
 	}
@@ -2806,7 +2786,6 @@ func (d *DataExportSettings) GetSetting() *Setting {
 		ID:         d.ID,
 		Kind:       d.Kind,
 		Name:       d.Name,
-		Properties: d.Properties,
 		SystemData: d.SystemData,
 		Type:       d.Type,
 	}
@@ -7403,9 +7382,6 @@ type ServerVulnerabilityAssessmentsSetting struct {
 	// REQUIRED; The kind of the server vulnerability assessments setting.
 	Kind *ServerVulnerabilityAssessmentsSettingKind
 
-	// The resource-specific properties for this resource.
-	Properties *ServerVulnerabilityAssessmentsSettingProperties
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
@@ -7423,9 +7399,6 @@ type ServerVulnerabilityAssessmentsSetting struct {
 // type ServerVulnerabilityAssessmentsSetting.
 func (s *ServerVulnerabilityAssessmentsSetting) GetServerVulnerabilityAssessmentsSetting() *ServerVulnerabilityAssessmentsSetting {
 	return s
-}
-
-type ServerVulnerabilityAssessmentsSettingProperties struct {
 }
 
 // ServerVulnerabilityAssessmentsSettingsList - A page of a server vulnerability assessments settings list
@@ -7476,9 +7449,6 @@ type Setting struct {
 	// REQUIRED; the kind of the settings string
 	Kind *SettingKind
 
-	// The resource-specific properties for this resource.
-	Properties *SettingProperties
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
@@ -7494,9 +7464,6 @@ type Setting struct {
 
 // GetSetting implements the SettingClassification interface for type Setting.
 func (s *Setting) GetSetting() *Setting { return s }
-
-type SettingProperties struct {
-}
 
 // SettingsList - Subscription settings list.
 type SettingsList struct {

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.15.0 (2026-05-13)
+## 0.15.0 (2026-05-19)
 ### Breaking Changes
 
 - Function `*SQLVulnerabilityAssessmentBaselineRulesClient.Add` parameter(s) have been changed from `(ctx context.Context, workspaceID string, resourceID string, options *SQLVulnerabilityAssessmentBaselineRulesClientAddOptions)` to `(ctx context.Context, resourceID string, options *SQLVulnerabilityAssessmentBaselineRulesClientAddOptions)`
@@ -264,7 +264,7 @@
 - New function `*OperationStatusesClient.Get(ctx context.Context, location string, operationID string, options *OperationStatusesClientGetOptions) (OperationStatusesClientGetResponse, error)`
 - New function `PossibleStandardSupportedCloudValues() []StandardSupportedCloud`
 - New function `NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error)`
-- New function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionProperties, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
 - New function `*PrivateEndpointConnectionsClient.BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
 - New function `*PrivateEndpointConnectionsClient.Get(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error)`
 - New function `*PrivateEndpointConnectionsClient.NewListPager(resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
@@ -298,7 +298,6 @@
 - New function `*StandardsClient.NewListPager(resourceGroupName string, options *StandardsClientListOptions) *runtime.Pager[StandardsClientListResponse]`
 - New struct `AccessTokenAuthentication`
 - New struct `AgentlessConfiguration`
-- New struct `ArmPrivateEndpointConnection`
 - New struct `ArmSecurityStandard`
 - New struct `ArmSecurityStandardList`
 - New struct `ArmSecurityStandardProperties`
@@ -360,8 +359,6 @@
 - New struct `ScanSummary`
 - New struct `ScanV2`
 - New struct `ScansV2`
-- New struct `ServerVulnerabilityAssessmentsSettingProperties`
-- New struct `SettingProperties`
 - New struct `Standard`
 - New struct `StandardAssignment`
 - New struct `StandardAssignmentMetadata`
@@ -438,8 +435,7 @@
 - New field `SystemData` in struct `SecureScoreControlDetails`
 - New field `SystemData` in struct `SecureScoreItem`
 - New field `SystemData` in struct `ServerVulnerabilityAssessment`
-- New field `Properties` in struct `ServerVulnerabilityAssessmentsSetting`
-- New field `Properties`, `SystemData` in struct `Setting`
+- New field `SystemData` in struct `Setting`
 - New field `SystemData` in struct `Solution`
 - New field `SystemData` in struct `SolutionsReferenceData`
 - New field `SystemData` in struct `SubAssessment`

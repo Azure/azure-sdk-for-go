@@ -1612,49 +1612,6 @@ func (a *ArcAutoProvisioningConfiguration) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ArmPrivateEndpointConnection.
-func (a ArmPrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ArmPrivateEndpointConnection.
-func (a *ArmPrivateEndpointConnection) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &a.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ArmSecurityStandard.
 func (a ArmSecurityStandard) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -16093,7 +16050,6 @@ func (s ServerVulnerabilityAssessmentsSetting) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "kind", s.Kind)
 	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "systemData", s.SystemData)
 	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
@@ -16116,9 +16072,6 @@ func (s *ServerVulnerabilityAssessmentsSetting) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &s.Properties)
 			delete(rawMsg, key)
 		case "systemData":
 			err = unpopulate(val, "SystemData", &s.SystemData)
@@ -16226,7 +16179,6 @@ func (s Setting) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "kind", s.Kind)
 	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "systemData", s.SystemData)
 	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
@@ -16249,9 +16201,6 @@ func (s *Setting) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &s.Properties)
 			delete(rawMsg, key)
 		case "systemData":
 			err = unpopulate(val, "SystemData", &s.SystemData)

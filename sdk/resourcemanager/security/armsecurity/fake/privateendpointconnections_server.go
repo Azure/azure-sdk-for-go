@@ -23,7 +23,7 @@ import (
 type PrivateEndpointConnectionsServer struct {
 	// BeginCreateOrUpdate is the fake for method PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, properties armsecurity.PrivateEndpointConnectionProperties, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsecurity.PrivateEndpointConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateEndpointConnection armsecurity.PrivateEndpointConnection, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsecurity.PrivateEndpointConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PrivateEndpointConnectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -116,7 +116,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginCreateOrUpdate(
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armsecurity.PrivateEndpointConnectionProperties](req)
+		body, err := server.UnmarshalRequestAsJSON[armsecurity.PrivateEndpointConnection](req)
 		if err != nil {
 			return nil, err
 		}

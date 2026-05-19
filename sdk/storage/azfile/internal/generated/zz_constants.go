@@ -4,6 +4,10 @@
 
 package generated
 
+const (
+	version20260606 string = "2026-06-06"
+)
+
 // AccessRight - Access rights of the access policy.
 type AccessRight string
 

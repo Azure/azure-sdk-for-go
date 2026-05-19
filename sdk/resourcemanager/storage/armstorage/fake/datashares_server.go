@@ -39,7 +39,7 @@ type DataSharesServer struct {
 
 	// BeginUpdate is the fake for method DataSharesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties armstorage.DataShare, options *armstorage.DataSharesClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorage.DataSharesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties armstorage.DataShareUpdate, options *armstorage.DataSharesClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorage.DataSharesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDataSharesServerTransport creates a new instance of DataSharesServerTransport with the provided implementation.
@@ -302,7 +302,7 @@ func (d *DataSharesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armstorage.DataShare](req)
+		body, err := server.UnmarshalRequestAsJSON[armstorage.DataShareUpdate](req)
 		if err != nil {
 			return nil, err
 		}

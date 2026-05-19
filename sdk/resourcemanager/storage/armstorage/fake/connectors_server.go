@@ -43,7 +43,7 @@ type ConnectorsServer struct {
 
 	// BeginUpdate is the fake for method ConnectorsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties armstorage.Connector, options *armstorage.ConnectorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorage.ConnectorsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties armstorage.ConnectorUpdate, options *armstorage.ConnectorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorage.ConnectorsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConnectorsServerTransport creates a new instance of ConnectorsServerTransport with the provided implementation.
@@ -362,7 +362,7 @@ func (c *ConnectorsServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armstorage.Connector](req)
+		body, err := server.UnmarshalRequestAsJSON[armstorage.ConnectorUpdate](req)
 		if err != nil {
 			return nil, err
 		}

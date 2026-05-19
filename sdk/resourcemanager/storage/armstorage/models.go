@@ -1114,6 +1114,17 @@ type ConnectorAuthProperties struct {
 // GetConnectorAuthProperties implements the ConnectorAuthPropertiesClassification interface for type ConnectorAuthProperties.
 func (c *ConnectorAuthProperties) GetConnectorAuthProperties() *ConnectorAuthProperties { return c }
 
+// ConnectorAuthPropertiesUpdate - The authentication properties of the backing data source
+type ConnectorAuthPropertiesUpdate struct {
+	// REQUIRED; Type of the authentication properties. Controls the type of the authProperties object
+	Type *StorageConnectorAuthType
+}
+
+// GetConnectorAuthPropertiesUpdate implements the ConnectorAuthPropertiesUpdateClassification interface for type ConnectorAuthPropertiesUpdate.
+func (c *ConnectorAuthPropertiesUpdate) GetConnectorAuthPropertiesUpdate() *ConnectorAuthPropertiesUpdate {
+	return c
+}
+
 // ConnectorConnection - The connection properties of the backing data source
 type ConnectorConnection struct {
 	// REQUIRED; Type of the connection. Controls the type of the connection object. Not mutable once the Storage Connector is
@@ -1163,6 +1174,23 @@ type ConnectorProperties struct {
 	UniqueID *string
 }
 
+// ConnectorPropertiesUpdate - The storage connector properties
+type ConnectorPropertiesUpdate struct {
+	// Arbitrary description of this Storage Connector. Max 250 characters.
+	Description *string
+
+	// Information about how to communicate with and authenticate to the backing data store.
+	Source ConnectorSourceUpdateClassification
+
+	// State - Active or Inactive. Whether or not the Storage Connector should start as active (default: Active)
+	// (While set to false on the Storage Connector, all data plane requests using this Storage Connector fail, and this Storage
+	// Connector is not billed if it would be otherwise.
+	State *StorageConnectorState
+
+	// Test connection to backing data source before creating the storage connector.
+	TestConnection *bool
+}
+
 // ConnectorSource - The storage connector backing data source information
 type ConnectorSource struct {
 	// REQUIRED; Type of the Storage Connector. Not mutable once the Storage Connector is created."
@@ -1171,6 +1199,36 @@ type ConnectorSource struct {
 
 // GetConnectorSource implements the ConnectorSourceClassification interface for type ConnectorSource.
 func (c *ConnectorSource) GetConnectorSource() *ConnectorSource { return c }
+
+// ConnectorSourceUpdate - The storage connector backing data source information
+type ConnectorSourceUpdate struct {
+	// REQUIRED; Type of the Storage Connector. Not mutable once the Storage Connector is created."
+	Type *StorageConnectorSourceType
+}
+
+// GetConnectorSourceUpdate implements the ConnectorSourceUpdateClassification interface for type ConnectorSourceUpdate.
+func (c *ConnectorSourceUpdate) GetConnectorSourceUpdate() *ConnectorSourceUpdate { return c }
+
+// ConnectorUpdate - A Connector is a tracked ARM resource modeled as a sub-resource of a Storage Account.
+type ConnectorUpdate struct {
+	// The properties of the Storage Connector.
+	Properties *ConnectorPropertiesUpdate
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
 
 // ContainerProperties - The properties of a container.
 type ContainerProperties struct {
@@ -1335,7 +1393,7 @@ type DataShareConnection struct {
 	// REQUIRED; The URI of the backing DataShare. Must be in the format: azds://<region>:<DataShareName>:<DataShareIdentifier>
 	DataShareURI *string
 
-	// READ-ONLY; The type for data share connection
+	// CONSTANT; The type for data share connection
 	// Field has constant value StorageConnectorConnectionTypeDataShare, any specified value is ignored.
 	Type *StorageConnectorConnectionType
 }
@@ -1386,6 +1444,26 @@ type DataShareProperties struct {
 	ProvisioningState *NativeDataSharingProvisioningState
 }
 
+// DataSharePropertiesUpdate - The storage datashare properties
+type DataSharePropertiesUpdate struct {
+	// List of access policies that specify the permission allowed to a managed identity.
+	// For Create - This property is required and cannot be null. If no access policies are provided at creation time, specify
+	// an empty array.
+	// For Update - This property is optional. If set to null or not passed, the existing access policies are left unchanged.
+	// If provided with a non-null value, the existing access policies are replaced with the specified list.
+	AccessPolicies []*DataShareAccessPolicy
+
+	// List of assets that specify the properties of the shared resources.
+	// For Create - This property is required and cannot be null. If no assets are provided at creation time, specify an empty
+	// array.
+	// For Update - This property is optional. If set to null or not passed, the existing assets are left unchanged.
+	// If provided with a non-null value, the existing assets are replaced with the specified list.
+	Assets []*DataShareAsset
+
+	// Arbitrary description of this Data Share. Max 250 characters.
+	Description *string
+}
+
 // DataShareSource - The properties of data share source
 type DataShareSource struct {
 	// REQUIRED; Details for how to authenticate to the backing data store.
@@ -1394,7 +1472,7 @@ type DataShareSource struct {
 	// REQUIRED; Details for how to connect to the backing data store.
 	Connection ConnectorConnectionClassification
 
-	// READ-ONLY; The type for data share source
+	// CONSTANT; The type for data share source
 	// Field has constant value StorageConnectorSourceTypeDataShare, any specified value is ignored.
 	Type *StorageConnectorSourceType
 }
@@ -1404,6 +1482,44 @@ func (d *DataShareSource) GetConnectorSource() *ConnectorSource {
 	return &ConnectorSource{
 		Type: d.Type,
 	}
+}
+
+// DataShareSourceUpdate - The properties of data share source
+type DataShareSourceUpdate struct {
+	// CONSTANT; Discriminator value for DataShare
+	// Field has constant value StorageConnectorSourceTypeDataShare, any specified value is ignored.
+	Type *StorageConnectorSourceType
+
+	// Details for how to authenticate to the backing data store.
+	AuthProperties ConnectorAuthPropertiesUpdateClassification
+}
+
+// GetConnectorSourceUpdate implements the ConnectorSourceUpdateClassification interface for type DataShareSourceUpdate.
+func (d *DataShareSourceUpdate) GetConnectorSourceUpdate() *ConnectorSourceUpdate {
+	return &ConnectorSourceUpdate{
+		Type: d.Type,
+	}
+}
+
+// DataShareUpdate - A DataShare is a tracked ARM resource modeled as a sub-resource of a Storage Account.
+type DataShareUpdate struct {
+	// The properties of the Storage DataShare.
+	Properties *DataSharePropertiesUpdate
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // DateAfterCreation - Object to define snapshot and version action conditions.
@@ -2463,7 +2579,7 @@ type LocalUsers struct {
 
 // ManagedIdentityAuthProperties - The managed identity auth properties for dataShare connection.
 type ManagedIdentityAuthProperties struct {
-	// READ-ONLY; The type of managed identity auth
+	// CONSTANT; The type of managed identity auth
 	// Field has constant value StorageConnectorAuthTypeManagedIdentity, any specified value is ignored.
 	Type *StorageConnectorAuthType
 
@@ -2474,6 +2590,23 @@ type ManagedIdentityAuthProperties struct {
 // GetConnectorAuthProperties implements the ConnectorAuthPropertiesClassification interface for type ManagedIdentityAuthProperties.
 func (m *ManagedIdentityAuthProperties) GetConnectorAuthProperties() *ConnectorAuthProperties {
 	return &ConnectorAuthProperties{
+		Type: m.Type,
+	}
+}
+
+// ManagedIdentityAuthPropertiesUpdate - The managed identity auth properties for dataShare connection.
+type ManagedIdentityAuthPropertiesUpdate struct {
+	// CONSTANT; Discriminator value for ManagedIdentity
+	// Field has constant value StorageConnectorAuthTypeManagedIdentity, any specified value is ignored.
+	Type *StorageConnectorAuthType
+
+	// ARM ResourceId of the managed identity that should be used to authenticate to the backing data source.
+	IdentityResourceID *string
+}
+
+// GetConnectorAuthPropertiesUpdate implements the ConnectorAuthPropertiesUpdateClassification interface for type ManagedIdentityAuthPropertiesUpdate.
+func (m *ManagedIdentityAuthPropertiesUpdate) GetConnectorAuthPropertiesUpdate() *ConnectorAuthPropertiesUpdate {
+	return &ConnectorAuthPropertiesUpdate{
 		Type: m.Type,
 	}
 }

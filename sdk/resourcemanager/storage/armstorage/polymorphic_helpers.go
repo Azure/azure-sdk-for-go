@@ -27,6 +27,27 @@ func unmarshalConnectorAuthPropertiesClassification(rawMsg json.RawMessage) (Con
 	return b, nil
 }
 
+func unmarshalConnectorAuthPropertiesUpdateClassification(rawMsg json.RawMessage) (ConnectorAuthPropertiesUpdateClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ConnectorAuthPropertiesUpdateClassification
+	switch m["type"] {
+	case string(StorageConnectorAuthTypeManagedIdentity):
+		b = &ManagedIdentityAuthPropertiesUpdate{}
+	default:
+		b = &ConnectorAuthPropertiesUpdate{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalConnectorConnectionClassification(rawMsg json.RawMessage) (ConnectorConnectionClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -62,6 +83,27 @@ func unmarshalConnectorSourceClassification(rawMsg json.RawMessage) (ConnectorSo
 		b = &DataShareSource{}
 	default:
 		b = &ConnectorSource{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalConnectorSourceUpdateClassification(rawMsg json.RawMessage) (ConnectorSourceUpdateClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ConnectorSourceUpdateClassification
+	switch m["type"] {
+	case string(StorageConnectorSourceTypeDataShare):
+		b = &DataShareSourceUpdate{}
+	default:
+		b = &ConnectorSourceUpdate{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

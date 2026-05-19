@@ -450,7 +450,7 @@ func (client *ConnectorsClient) testExistingConnectionCreateRequest(ctx context.
 //   - connectorName - The name of the Storage Connector.
 //   - properties - The updated properties of the Storage Connector.
 //   - options - ConnectorsClientBeginUpdateOptions contains the optional parameters for the ConnectorsClient.BeginUpdate method.
-func (client *ConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties Connector, options *ConnectorsClientBeginUpdateOptions) (*runtime.Poller[ConnectorsClientUpdateResponse], error) {
+func (client *ConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, options *ConnectorsClientBeginUpdateOptions) (*runtime.Poller[ConnectorsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, connectorName, properties, options)
 		if err != nil {
@@ -471,7 +471,7 @@ func (client *ConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01
-func (client *ConnectorsClient) update(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties Connector, options *ConnectorsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ConnectorsClient) update(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, options *ConnectorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -493,7 +493,7 @@ func (client *ConnectorsClient) update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties Connector, _ *ConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, _ *ConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

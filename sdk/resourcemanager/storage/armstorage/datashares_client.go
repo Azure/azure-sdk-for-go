@@ -354,7 +354,7 @@ func (client *DataSharesClient) listByStorageAccountHandleResponse(resp *http.Re
 //   - dataShareName - The name of the Storage DataShare.
 //   - properties - The updated properties of the Storage DataShare.
 //   - options - DataSharesClientBeginUpdateOptions contains the optional parameters for the DataSharesClient.BeginUpdate method.
-func (client *DataSharesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties DataShare, options *DataSharesClientBeginUpdateOptions) (*runtime.Poller[DataSharesClientUpdateResponse], error) {
+func (client *DataSharesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties DataShareUpdate, options *DataSharesClientBeginUpdateOptions) (*runtime.Poller[DataSharesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, dataShareName, properties, options)
 		if err != nil {
@@ -375,7 +375,7 @@ func (client *DataSharesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01
-func (client *DataSharesClient) update(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties DataShare, options *DataSharesClientBeginUpdateOptions) (*http.Response, error) {
+func (client *DataSharesClient) update(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties DataShareUpdate, options *DataSharesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataSharesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -397,7 +397,7 @@ func (client *DataSharesClient) update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DataSharesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties DataShare, _ *DataSharesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *DataSharesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties DataShareUpdate, _ *DataSharesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/dataShares/{dataShareName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

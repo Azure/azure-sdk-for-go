@@ -273,11 +273,11 @@ func ExampleConnectorsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewConnectorsClient().BeginUpdate(ctx, "testrg", "teststorageaccount", "testconnector", armstorage.Connector{
-		Properties: &armstorage.ConnectorProperties{
-			Source: &armstorage.DataShareSource{
+	poller, err := clientFactory.NewConnectorsClient().BeginUpdate(ctx, "testrg", "teststorageaccount", "testconnector", armstorage.ConnectorUpdate{
+		Properties: &armstorage.ConnectorPropertiesUpdate{
+			Source: &armstorage.DataShareSourceUpdate{
 				Type: to.Ptr(armstorage.StorageConnectorSourceTypeDataShare),
-				AuthProperties: &armstorage.ManagedIdentityAuthProperties{
+				AuthProperties: &armstorage.ManagedIdentityAuthPropertiesUpdate{
 					Type:               to.Ptr(armstorage.StorageConnectorAuthTypeManagedIdentity),
 					IdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/newTestIdentity"),
 				},

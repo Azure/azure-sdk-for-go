@@ -13,6 +13,15 @@ type ConnectorAuthPropertiesClassification interface {
 	GetConnectorAuthProperties() *ConnectorAuthProperties
 }
 
+// ConnectorAuthPropertiesUpdateClassification provides polymorphic access to related types.
+// Call the interface's GetConnectorAuthPropertiesUpdate() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ConnectorAuthPropertiesUpdate, *ManagedIdentityAuthPropertiesUpdate
+type ConnectorAuthPropertiesUpdateClassification interface {
+	// GetConnectorAuthPropertiesUpdate returns the ConnectorAuthPropertiesUpdate content of the underlying type.
+	GetConnectorAuthPropertiesUpdate() *ConnectorAuthPropertiesUpdate
+}
+
 // ConnectorConnectionClassification provides polymorphic access to related types.
 // Call the interface's GetConnectorConnection() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -29,4 +38,13 @@ type ConnectorConnectionClassification interface {
 type ConnectorSourceClassification interface {
 	// GetConnectorSource returns the ConnectorSource content of the underlying type.
 	GetConnectorSource() *ConnectorSource
+}
+
+// ConnectorSourceUpdateClassification provides polymorphic access to related types.
+// Call the interface's GetConnectorSourceUpdate() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ConnectorSourceUpdate, *DataShareSourceUpdate
+type ConnectorSourceUpdateClassification interface {
+	// GetConnectorSourceUpdate returns the ConnectorSourceUpdate content of the underlying type.
+	GetConnectorSourceUpdate() *ConnectorSourceUpdate
 }

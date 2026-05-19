@@ -241,8 +241,8 @@ func ExampleDataSharesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDataSharesClient().BeginUpdate(ctx, "testrg", "teststorageaccount", "testdatashare", armstorage.DataShare{
-		Properties: &armstorage.DataShareProperties{
+	poller, err := clientFactory.NewDataSharesClient().BeginUpdate(ctx, "testrg", "teststorageaccount", "testdatashare", armstorage.DataShareUpdate{
+		Properties: &armstorage.DataSharePropertiesUpdate{
 			Description: to.Ptr("New dummy data share"),
 			AccessPolicies: []*armstorage.DataShareAccessPolicy{
 				{

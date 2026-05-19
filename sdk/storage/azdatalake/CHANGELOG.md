@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+## 1.5.0 (2026-05-15)
+
+### Features Added
+* Includes all features from `1.5.0-beta.1`
+
 ## 1.6.0-beta.1 (2026-05-05)
 
 ### Features Added

@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-04-02)
+## 3.0.0-beta.1 (2026-05-12)
 ### Breaking Changes
 
 - Type of `SystemData.CreatedByType` has been changed from `*string` to `*CreatedByType`

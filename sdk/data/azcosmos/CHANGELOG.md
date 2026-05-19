@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed missing OTel tracing spans for internal queries executed by `ReadManyItems`. Each per-partition query page now creates a `query_items` span, matching the tracing behavior of `NewQueryItemsPager`.
+
 ### Other Changes
 
 ## 1.5.0-beta.6 (2026-05-15)

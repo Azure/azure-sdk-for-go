@@ -19,6 +19,8 @@ import (
 
 // PlansClient contains the methods for the Plans group.
 // Don't use this type directly, use NewPlansClient() instead.
+//
+// Generated from API version 2025-05-01
 type PlansClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +46,6 @@ func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, op
 //
 // Description for Creates or updates an App Service Plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - appServicePlan - Details of the App Service plan.
@@ -72,8 +72,6 @@ func (client *PlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 //
 // Description for Creates or updates an App Service Plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 func (client *PlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan Plan, options *PlansClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PlansClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *PlansClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, appServicePlan); err != nil {
@@ -129,8 +127,6 @@ func (client *PlansClient) createOrUpdateCreateRequest(ctx context.Context, reso
 //
 // Description for Create or update a Virtual Network route in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - vnetName - Name of the Virtual Network.
@@ -188,8 +184,8 @@ func (client *PlansClient) createOrUpdateVnetRouteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, route); err != nil {
@@ -211,8 +207,6 @@ func (client *PlansClient) createOrUpdateVnetRouteHandleResponse(resp *http.Resp
 //
 // Description for Delete an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientDeleteOptions contains the optional parameters for the PlansClient.Delete method.
@@ -257,8 +251,8 @@ func (client *PlansClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -266,8 +260,6 @@ func (client *PlansClient) deleteCreateRequest(ctx context.Context, resourceGrou
 //
 // Description for Delete a Hybrid Connection in use in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - namespaceName - Name of the Service Bus namespace.
@@ -323,8 +315,8 @@ func (client *PlansClient) deleteHybridConnectionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -332,8 +324,6 @@ func (client *PlansClient) deleteHybridConnectionCreateRequest(ctx context.Conte
 //
 // Description for Delete a Virtual Network route in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - vnetName - Name of the Virtual Network.
@@ -388,8 +378,8 @@ func (client *PlansClient) deleteVnetRouteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -397,8 +387,6 @@ func (client *PlansClient) deleteVnetRouteCreateRequest(ctx context.Context, res
 //
 // Description for Get an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientGetOptions contains the optional parameters for the PlansClient.Get method.
@@ -444,8 +432,8 @@ func (client *PlansClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -463,8 +451,6 @@ func (client *PlansClient) getHandleResponse(resp *http.Response) (PlansClientGe
 //
 // Description for Retrieve a Hybrid Connection in use in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - namespaceName - Name of the Service Bus namespace.
@@ -521,8 +507,8 @@ func (client *PlansClient) getHybridConnectionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -540,8 +526,6 @@ func (client *PlansClient) getHybridConnectionHandleResponse(resp *http.Response
 //
 // Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientGetHybridConnectionPlanLimitOptions contains the optional parameters for the PlansClient.GetHybridConnectionPlanLimit
@@ -588,8 +572,8 @@ func (client *PlansClient) getHybridConnectionPlanLimitCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -607,8 +591,6 @@ func (client *PlansClient) getHybridConnectionPlanLimitHandleResponse(resp *http
 //
 // Description for Get a Virtual Network route in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - vnetName - Name of the Virtual Network.
@@ -664,8 +646,8 @@ func (client *PlansClient) getRouteForVnetCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -683,8 +665,6 @@ func (client *PlansClient) getRouteForVnetHandleResponse(resp *http.Response) (P
 //
 // Description for Get the instance details for an app service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientGetServerFarmInstanceDetailsOptions contains the optional parameters for the PlansClient.GetServerFarmInstanceDetails
@@ -731,8 +711,8 @@ func (client *PlansClient) getServerFarmInstanceDetailsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -750,8 +730,6 @@ func (client *PlansClient) getServerFarmInstanceDetailsHandleResponse(resp *http
 //
 // Description for Get the RDP password for an IsCustomMode ServerFarm.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientGetServerFarmRdpPasswordOptions contains the optional parameters for the PlansClient.GetServerFarmRdpPassword
@@ -798,8 +776,8 @@ func (client *PlansClient) getServerFarmRdpPasswordCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -817,8 +795,6 @@ func (client *PlansClient) getServerFarmRdpPasswordHandleResponse(resp *http.Res
 //
 // Description for Gets all selectable SKUs for a given App Service Plan
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientGetServerFarmSKUsOptions contains the optional parameters for the PlansClient.GetServerFarmSKUs method.
@@ -864,8 +840,8 @@ func (client *PlansClient) getServerFarmSKUsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -883,8 +859,6 @@ func (client *PlansClient) getServerFarmSKUsHandleResponse(resp *http.Response) 
 //
 // Description for Get a Virtual Network associated with an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - vnetName - Name of the Virtual Network.
@@ -936,8 +910,8 @@ func (client *PlansClient) getVnetFromServerFarmCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -955,8 +929,6 @@ func (client *PlansClient) getVnetFromServerFarmHandleResponse(resp *http.Respon
 //
 // Description for Get a Virtual Network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - vnetName - Name of the Virtual Network.
@@ -1012,8 +984,8 @@ func (client *PlansClient) getVnetGatewayCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1030,8 +1002,6 @@ func (client *PlansClient) getVnetGatewayHandleResponse(resp *http.Response) (Pl
 // NewListPager - Get all App Service plans for a subscription.
 //
 // Description for Get all App Service plans for a subscription.
-//
-// Generated from API version 2025-05-01
 //   - options - PlansClientListOptions contains the optional parameters for the PlansClient.NewListPager method.
 func (client *PlansClient) NewListPager(options *PlansClientListOptions) *runtime.Pager[PlansClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PlansClientListResponse]{
@@ -1068,11 +1038,11 @@ func (client *PlansClient) listCreateRequest(ctx context.Context, options *Plans
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", version20250501)
 	if options != nil && options.Detailed != nil {
 		reqQP.Set("detailed", strconv.FormatBool(*options.Detailed))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1089,8 +1059,6 @@ func (client *PlansClient) listHandleResponse(resp *http.Response) (PlansClientL
 // NewListByResourceGroupPager - Get all App Service plans in a resource group.
 //
 // Description for Get all App Service plans in a resource group.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PlansClientListByResourceGroupOptions contains the optional parameters for the PlansClient.NewListByResourceGroupPager
 //     method.
@@ -1133,8 +1101,8 @@ func (client *PlansClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1152,8 +1120,6 @@ func (client *PlansClient) listByResourceGroupHandleResponse(resp *http.Response
 //
 // Description for List all capabilities of an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientListCapabilitiesOptions contains the optional parameters for the PlansClient.ListCapabilities method.
@@ -1199,8 +1165,8 @@ func (client *PlansClient) listCapabilitiesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1218,8 +1184,6 @@ func (client *PlansClient) listCapabilitiesHandleResponse(resp *http.Response) (
 //
 // Description for Get the send key name and value of a Hybrid Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - namespaceName - Name of the Service Bus namespace.
@@ -1276,8 +1240,8 @@ func (client *PlansClient) listHybridConnectionKeysCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1294,8 +1258,6 @@ func (client *PlansClient) listHybridConnectionKeysHandleResponse(resp *http.Res
 // NewListHybridConnectionsPager - Retrieve all Hybrid Connections in use in an App Service plan.
 //
 // Description for Retrieve all Hybrid Connections in use in an App Service plan.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientListHybridConnectionsOptions contains the optional parameters for the PlansClient.NewListHybridConnectionsPager
@@ -1343,8 +1305,8 @@ func (client *PlansClient) listHybridConnectionsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1362,8 +1324,6 @@ func (client *PlansClient) listHybridConnectionsHandleResponse(resp *http.Respon
 //
 // Description for Get all routes that are associated with a Virtual Network in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - vnetName - Name of the Virtual Network.
@@ -1414,8 +1374,8 @@ func (client *PlansClient) listRoutesForVnetCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1431,9 +1391,7 @@ func (client *PlansClient) listRoutesForVnetHandleResponse(resp *http.Response) 
 
 // NewListUsagesPager - Gets server farm usage information
 //
-// # Description for Gets server farm usage information
-//
-// Generated from API version 2025-05-01
+// Description for Gets server farm usage information
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientListUsagesOptions contains the optional parameters for the PlansClient.NewListUsagesPager method.
@@ -1483,8 +1441,8 @@ func (client *PlansClient) listUsagesCreateRequest(ctx context.Context, resource
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1502,8 +1460,6 @@ func (client *PlansClient) listUsagesHandleResponse(resp *http.Response) (PlansC
 //
 // Description for Get all Virtual Networks associated with an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientListVnetsOptions contains the optional parameters for the PlansClient.ListVnets method.
@@ -1549,8 +1505,8 @@ func (client *PlansClient) listVnetsCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1567,8 +1523,6 @@ func (client *PlansClient) listVnetsHandleResponse(resp *http.Response) (PlansCl
 // NewListWebAppsPager - Get all apps associated with an App Service plan.
 //
 // Description for Get all apps associated with an App Service plan.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.NewListWebAppsPager method.
@@ -1624,8 +1578,8 @@ func (client *PlansClient) listWebAppsCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", *options.Top)
 	}
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1642,8 +1596,6 @@ func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response) (Plans
 // NewListWebAppsByHybridConnectionPager - Get all apps that use a Hybrid Connection in an App Service Plan.
 //
 // Description for Get all apps that use a Hybrid Connection in an App Service Plan.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - namespaceName - Name of the Service Bus namespace.
@@ -1701,8 +1653,8 @@ func (client *PlansClient) listWebAppsByHybridConnectionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1720,8 +1672,6 @@ func (client *PlansClient) listWebAppsByHybridConnectionHandleResponse(resp *htt
 //
 // Description for Reboot a worker machine in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - App Service plan.
 //   - workerName - Name of worker machine, which typically starts with RD.
@@ -1771,8 +1721,8 @@ func (client *PlansClient) rebootWorkerCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -1780,8 +1730,6 @@ func (client *PlansClient) rebootWorkerCreateRequest(ctx context.Context, resour
 //
 // Description for Recycles a managed instance worker machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - App Service plan.
 //   - workerName - Name of worker machine, which typically starts with RD.
@@ -1833,8 +1781,8 @@ func (client *PlansClient) recycleManagedInstanceWorkerCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1852,8 +1800,6 @@ func (client *PlansClient) recycleManagedInstanceWorkerHandleResponse(resp *http
 //
 // Description for Restart all apps in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - options - PlansClientRestartWebAppsOptions contains the optional parameters for the PlansClient.RestartWebApps method.
@@ -1898,11 +1844,11 @@ func (client *PlansClient) restartWebAppsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", version20250501)
 	if options != nil && options.SoftRestart != nil {
 		reqQP.Set("softRestart", strconv.FormatBool(*options.SoftRestart))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -1910,8 +1856,6 @@ func (client *PlansClient) restartWebAppsCreateRequest(ctx context.Context, reso
 //
 // Description for Creates or updates an App Service Plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - appServicePlan - Details of the App Service plan.
@@ -1958,8 +1902,8 @@ func (client *PlansClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, appServicePlan); err != nil {
@@ -1981,8 +1925,6 @@ func (client *PlansClient) updateHandleResponse(resp *http.Response) (PlansClien
 //
 // Description for Update a Virtual Network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - vnetName - Name of the Virtual Network.
@@ -2039,8 +1981,8 @@ func (client *PlansClient) updateVnetGatewayCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -2062,8 +2004,6 @@ func (client *PlansClient) updateVnetGatewayHandleResponse(resp *http.Response) 
 //
 // Description for Create or update a Virtual Network route in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - vnetName - Name of the Virtual Network.
@@ -2120,8 +2060,8 @@ func (client *PlansClient) updateVnetRouteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, route); err != nil {

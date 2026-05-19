@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci"
 	"log"
 	"time"
 )
@@ -35,13 +35,13 @@ func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeMachineJobsClientCreateOrUpdateResponse{
-	// 	EdgeMachineJob: &armazurestackhci.EdgeMachineJob{
+	// 	EdgeMachineJob: armazurestackhci.EdgeMachineJob{
 	// 		Properties: &armazurestackhci.EdgeMachineCollectLogJobProperties{
 	// 			JobType: to.Ptr(armazurestackhci.EdgeMachineJobTypeCollectLog),
 	// 			FromDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T10:43:27.9471574Z"); return t}()),
@@ -102,13 +102,13 @@ func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeMachineJobsClientCreateOrUpdateResponse{
-	// 	EdgeMachineJob: &armazurestackhci.EdgeMachineJob{
+	// 	EdgeMachineJob: armazurestackhci.EdgeMachineJob{
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.AzureStackHCI/edgeMachines/machine1/jobs/DownloadOs"),
 	// 		Name: to.Ptr("DownloadOs"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/edgeMachines/jobs"),
@@ -280,13 +280,13 @@ func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeMachineJobsClientCreateOrUpdateResponse{
-	// 	EdgeMachineJob: &armazurestackhci.EdgeMachineJob{
+	// 	EdgeMachineJob: armazurestackhci.EdgeMachineJob{
 	// 		ID: to.Ptr("/subscriptions/ff0aa6da-20f8-44fe-9aee-381c8e8a4aeb/resourceGroups/bhukumar-test-rg/providers/Microsoft.AzureStackHCI/EdgeMachines/em1/jobs/ProvisionOs"),
 	// 		Name: to.Ptr("ProvisionOs"),
 	// 		Type: to.Ptr("microsoft.azurestackhci/edgemachines/jobs"),
@@ -448,13 +448,13 @@ func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeMachineJobsClientCreateOrUpdateResponse{
-	// 	EdgeMachineJob: &armazurestackhci.EdgeMachineJob{
+	// 	EdgeMachineJob: armazurestackhci.EdgeMachineJob{
 	// 		Properties: &armazurestackhci.EdgeMachineRemoteSupportJobProperties{
 	// 			JobType: to.Ptr(armazurestackhci.EdgeMachineJobTypeRemoteSupport),
 	// 			AccessLevel: to.Ptr(armazurestackhci.RemoteSupportAccessLevelDiagnostics),
@@ -560,13 +560,13 @@ func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeMachineJobsClientCreateOrUpdateResponse{
-	// 	EdgeMachineJob: &armazurestackhci.EdgeMachineJob{
+	// 	EdgeMachineJob: armazurestackhci.EdgeMachineJob{
 	// 		ID: to.Ptr("/subscriptions/ff0aa6da-20f8-44fe-9aee-381c8e8a4aeb/resourceGroups/bhukumar-test-rg/providers/Microsoft.AzureStackHCI/EdgeMachines/em1/jobs/UpdateOs"),
 	// 		Name: to.Ptr("UpdateOs"),
 	// 		Type: to.Ptr("microsoft.azurestackhci/edgemachines/jobs"),
@@ -718,7 +718,7 @@ func ExampleEdgeMachineJobsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -741,7 +741,7 @@ func ExampleEdgeMachineJobsClient_Get_edgeMachineJobsGetCollectLog() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeMachineJobsClientGetResponse{
-	// 	EdgeMachineJob: &armazurestackhci.EdgeMachineJob{
+	// 	EdgeMachineJob: armazurestackhci.EdgeMachineJob{
 	// 		Properties: &armazurestackhci.EdgeMachineCollectLogJobProperties{
 	// 			JobType: to.Ptr(armazurestackhci.EdgeMachineJobTypeCollectLog),
 	// 			FromDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T10:43:27.9471574Z"); return t}()),
@@ -787,7 +787,7 @@ func ExampleEdgeMachineJobsClient_Get_edgeMachineJobsGetProvisionOS() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeMachineJobsClientGetResponse{
-	// 	EdgeMachineJob: &armazurestackhci.EdgeMachineJob{
+	// 	EdgeMachineJob: armazurestackhci.EdgeMachineJob{
 	// 		ID: to.Ptr("/subscriptions/ff0aa6da-20f8-44fe-9aee-381c8e8a4aeb/resourceGroups/bhukumar-test-rg/providers/Microsoft.AzureStackHCI/EdgeMachines/em1/jobs/ProvisionOs"),
 	// 		Name: to.Ptr("ProvisionOs"),
 	// 		Type: to.Ptr("microsoft.azurestackhci/edgemachines/jobs"),
@@ -933,7 +933,7 @@ func ExampleEdgeMachineJobsClient_Get_edgeMachineJobsGetRemoteSupport() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeMachineJobsClientGetResponse{
-	// 	EdgeMachineJob: &armazurestackhci.EdgeMachineJob{
+	// 	EdgeMachineJob: armazurestackhci.EdgeMachineJob{
 	// 		Properties: &armazurestackhci.EdgeMachineRemoteSupportJobProperties{
 	// 			JobType: to.Ptr(armazurestackhci.EdgeMachineJobTypeRemoteSupport),
 	// 			AccessLevel: to.Ptr(armazurestackhci.RemoteSupportAccessLevelDiagnostics),

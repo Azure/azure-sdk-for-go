@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -34,13 +34,13 @@ func ExampleKubeEnvironmentsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.KubeEnvironmentsClientCreateOrUpdateResponse{
-	// 	KubeEnvironment: &armappservice.KubeEnvironment{
+	// 	KubeEnvironment: armappservice.KubeEnvironment{
 	// 		Name: to.Ptr("testkubeenv"),
 	// 		Type: to.Ptr("Microsoft.Web/kubeEnvironments"),
 	// 		ExtendedLocation: &armappservice.ExtendedLocation{
@@ -79,7 +79,7 @@ func ExampleKubeEnvironmentsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -107,7 +107,7 @@ func ExampleKubeEnvironmentsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.KubeEnvironmentsClientGetResponse{
-	// 	KubeEnvironment: &armappservice.KubeEnvironment{
+	// 	KubeEnvironment: armappservice.KubeEnvironment{
 	// 		Name: to.Ptr("jlaw-demo1"),
 	// 		Type: to.Ptr("Microsoft.Web/kubeEnvironments"),
 	// 		ExtendedLocation: &armappservice.ExtendedLocation{
@@ -278,7 +278,7 @@ func ExampleKubeEnvironmentsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.KubeEnvironmentsClientUpdateResponse{
-	// 	KubeEnvironment: &armappservice.KubeEnvironment{
+	// 	KubeEnvironment: armappservice.KubeEnvironment{
 	// 		Name: to.Ptr("testkubeenv"),
 	// 		Type: to.Ptr("Microsoft.Web/kubeEnvironments"),
 	// 		ExtendedLocation: &armappservice.ExtendedLocation{

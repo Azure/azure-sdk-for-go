@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci"
 	"log"
 	"time"
 )
@@ -34,13 +34,13 @@ func ExampleClustersClient_BeginChangeRing() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ClustersClientChangeRingResponse{
-	// 	Cluster: &armazurestackhci.Cluster{
+	// 	Cluster: armazurestackhci.Cluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
@@ -128,13 +128,13 @@ func ExampleClustersClient_BeginConfigureRemoteSupport() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ClustersClientConfigureRemoteSupportResponse{
-	// 	Cluster: &armazurestackhci.Cluster{
+	// 	Cluster: armazurestackhci.Cluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
@@ -259,7 +259,7 @@ func ExampleClustersClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ClustersClientCreateResponse{
-	// 	Cluster: &armazurestackhci.Cluster{
+	// 	Cluster: armazurestackhci.Cluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
@@ -320,13 +320,13 @@ func ExampleClustersClient_BeginCreateIdentity() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ClustersClientCreateIdentityResponse{
-	// 	ClusterIdentityResponse: &armazurestackhci.ClusterIdentityResponse{
+	// 	ClusterIdentityResponse: armazurestackhci.ClusterIdentityResponse{
 	// 		Properties: &armazurestackhci.ClusterIdentityResponseProperties{
 	// 			AADApplicationObjectID: to.Ptr("00cc4014-482e-4de9-9932-83415cc75f45"),
 	// 			AADClientID: to.Ptr("7b93bf67-60ac-4909-a987-ac438e69f9ba"),
@@ -354,7 +354,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -384,13 +384,13 @@ func ExampleClustersClient_BeginExtendSoftwareAssuranceBenefit() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ClustersClientExtendSoftwareAssuranceBenefitResponse{
-	// 	Cluster: &armazurestackhci.Cluster{
+	// 	Cluster: armazurestackhci.Cluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
@@ -473,7 +473,7 @@ func ExampleClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ClustersClientGetResponse{
-	// 	Cluster: &armazurestackhci.Cluster{
+	// 	Cluster: armazurestackhci.Cluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
@@ -930,13 +930,13 @@ func ExampleClustersClient_BeginTriggerLogCollection() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ClustersClientTriggerLogCollectionResponse{
-	// 	Cluster: &armazurestackhci.Cluster{
+	// 	Cluster: armazurestackhci.Cluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
@@ -1046,7 +1046,7 @@ func ExampleClustersClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ClustersClientUpdateResponse{
-	// 	Cluster: &armazurestackhci.Cluster{
+	// 	Cluster: armazurestackhci.Cluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
@@ -1170,13 +1170,13 @@ func ExampleClustersClient_BeginUpdateSecretsLocations() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ClustersClientUpdateSecretsLocationsResponse{
-	// 	Cluster: &armazurestackhci.Cluster{
+	// 	Cluster: armazurestackhci.Cluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
@@ -1280,6 +1280,6 @@ func ExampleClustersClient_BeginUploadCertificate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

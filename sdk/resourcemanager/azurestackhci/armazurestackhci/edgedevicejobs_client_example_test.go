@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci"
 	"log"
 	"time"
 )
@@ -37,13 +37,13 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeDeviceJobsClientCreateOrUpdateResponse{
-	// 	HciEdgeDeviceJob: &armazurestackhci.HciEdgeDeviceJob{
+	// 	EdgeDeviceJobClassification: &armazurestackhci.HciEdgeDeviceJob{
 	// 		Name: to.Ptr("collectLog"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/edgeDevices/jobs"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/providers/Microsoft.AzureStackHCI/edgeDevices/default/jobs/collectLog"),
@@ -90,13 +90,13 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeDeviceJobsClientCreateOrUpdateResponse{
-	// 	HciEdgeDeviceJob: &armazurestackhci.HciEdgeDeviceJob{
+	// 	EdgeDeviceJobClassification: &armazurestackhci.HciEdgeDeviceJob{
 	// 		Name: to.Ptr("collectLog"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/edgeDevices/jobs"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/providers/Microsoft.AzureStackHCI/edgeDevices/default/jobs/remoteSupport"),
@@ -136,7 +136,7 @@ func ExampleEdgeDeviceJobsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -159,7 +159,7 @@ func ExampleEdgeDeviceJobsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeDeviceJobsClientGetResponse{
-	// 	HciEdgeDeviceJob: &armazurestackhci.HciEdgeDeviceJob{
+	// 	EdgeDeviceJobClassification: &armazurestackhci.HciEdgeDeviceJob{
 	// 		Name: to.Ptr("collectLog"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/edgeDevices/jobs"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/providers/Microsoft.AzureStackHCI/edgeDevices/default/jobs/RemoteSupport"),

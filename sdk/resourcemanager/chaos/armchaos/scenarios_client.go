@@ -18,6 +18,8 @@ import (
 
 // ScenariosClient contains the methods for the Scenarios group.
 // Don't use this type directly, use NewScenariosClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type ScenariosClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewScenariosClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Create or update a scenario.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -95,8 +95,8 @@ func (client *ScenariosClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -116,8 +116,6 @@ func (client *ScenariosClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Delete a scenario.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -167,15 +165,13 @@ func (client *ScenariosClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a scenario.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -226,8 +222,8 @@ func (client *ScenariosClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -242,8 +238,6 @@ func (client *ScenariosClient) getHandleResponse(resp *http.Response) (Scenarios
 }
 
 // NewListAllPager - Get a list of scenarios.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - options - ScenariosClientListAllOptions contains the optional parameters for the ScenariosClient.NewListAllPager method.
@@ -290,8 +284,8 @@ func (client *ScenariosClient) listAllCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -7,7 +7,7 @@ package armazurestackhci_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExamplePublishersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.PublishersClientGetResponse{
-	// 	Publisher: &armazurestackhci.Publisher{
+	// 	Publisher: armazurestackhci.Publisher{
 	// 		Name: to.Ptr("publisher1"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/publishers"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/publishers/publisher1"),

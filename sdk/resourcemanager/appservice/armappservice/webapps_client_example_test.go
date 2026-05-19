@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 	"time"
 )
@@ -32,7 +32,7 @@ func ExampleWebAppsClient_AnalyzeCustomHostname() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientAnalyzeCustomHostnameResponse{
-	// 	CustomHostnameAnalysisResult: &armappservice.CustomHostnameAnalysisResult{
+	// 	CustomHostnameAnalysisResult: armappservice.CustomHostnameAnalysisResult{
 	// 		Name: to.Ptr("sitef6141"),
 	// 		Type: to.Ptr("Microsoft.Web/sites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
@@ -73,7 +73,7 @@ func ExampleWebAppsClient_AnalyzeCustomHostnameSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientAnalyzeCustomHostnameSlotResponse{
-	// 	CustomHostnameAnalysisResult: &armappservice.CustomHostnameAnalysisResult{
+	// 	CustomHostnameAnalysisResult: armappservice.CustomHostnameAnalysisResult{
 	// 		Name: to.Ptr("sitef6141/staging"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/stagings"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/slots/staging"),
@@ -145,13 +145,13 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse{
-	// 	RemotePrivateEndpointConnectionARMResource: &armappservice.RemotePrivateEndpointConnectionARMResource{
+	// 	RemotePrivateEndpointConnectionARMResource: armappservice.RemotePrivateEndpointConnectionARMResource{
 	// 		Name: to.Ptr("connection"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/privateEndpointConnections/connection"),
@@ -195,13 +195,13 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse{
-	// 	RemotePrivateEndpointConnectionARMResource: &armappservice.RemotePrivateEndpointConnectionARMResource{
+	// 	RemotePrivateEndpointConnectionARMResource: armappservice.RemotePrivateEndpointConnectionARMResource{
 	// 		Name: to.Ptr("connection"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slots/stage/privateEndpointConnections/connection"),
@@ -266,7 +266,7 @@ func ExampleWebAppsClient_Backup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientBackupResponse{
-	// 	BackupItem: &armappservice.BackupItem{
+	// 	BackupItem: armappservice.BackupItem{
 	// 		Name: to.Ptr("sitef6141"),
 	// 		Type: to.Ptr("Microsoft.Web/sites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
@@ -337,13 +337,13 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_cloneWebApp() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientCreateOrUpdateResponse{
-	// 	Site: &armappservice.Site{
+	// 	Site: armappservice.Site{
 	// 		Name: to.Ptr("sitef6141"),
 	// 		Type: to.Ptr("Microsoft.Web/sites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
@@ -516,13 +516,13 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateFlexConsumptionFunct
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientCreateOrUpdateResponse{
-	// 	Site: &armappservice.Site{
+	// 	Site: armappservice.Site{
 	// 		Name: to.Ptr("sitef6141"),
 	// 		Type: to.Ptr("Microsoft.Web/sites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
@@ -736,13 +736,13 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateFlexConsumptionFunct
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientCreateOrUpdateResponse{
-	// 	Site: &armappservice.Site{
+	// 	Site: armappservice.Site{
 	// 		Name: to.Ptr("sitef6141"),
 	// 		Type: to.Ptr("Microsoft.Web/sites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
@@ -922,13 +922,13 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateWebApp() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientCreateOrUpdateResponse{
-	// 	Site: &armappservice.Site{
+	// 	Site: armappservice.Site{
 	// 		Name: to.Ptr("sitef6141"),
 	// 		Type: to.Ptr("Microsoft.Web/sites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
@@ -1121,7 +1121,7 @@ func ExampleWebAppsClient_CreateOrUpdateConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientCreateOrUpdateConfigurationResponse{
-	// 	SiteConfigResource: &armappservice.SiteConfigResource{
+	// 	SiteConfigResource: armappservice.SiteConfigResource{
 	// 		Name: to.Ptr("web"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/config"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/web"),
@@ -1217,13 +1217,13 @@ func ExampleWebAppsClient_BeginCreateOrUpdateSlot_cloneWebAppSlot() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientCreateOrUpdateSlotResponse{
-	// 	Site: &armappservice.Site{
+	// 	Site: armappservice.Site{
 	// 		Name: to.Ptr("sitef6141/staging"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/slots"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/slots/staging"),
@@ -1362,13 +1362,13 @@ func ExampleWebAppsClient_BeginCreateOrUpdateSlot_createOrUpdateWebAppSlot() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientCreateOrUpdateSlotResponse{
-	// 	Site: &armappservice.Site{
+	// 	Site: armappservice.Site{
 	// 		Name: to.Ptr("sitef6141/staging"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/slots"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/slots/staging"),
@@ -1545,7 +1545,7 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnection() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1571,7 +1571,7 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnectionSlot() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1785,7 +1785,7 @@ func ExampleWebAppsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetResponse{
-	// 	Site: &armappservice.Site{
+	// 	Site: armappservice.Site{
 	// 		Name: to.Ptr("sitef6141"),
 	// 		Type: to.Ptr("Microsoft.Web/sites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
@@ -1926,7 +1926,7 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReference() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetAppSettingKeyVaultReferenceResponse{
-	// 	APIKVReference: &armappservice.APIKVReference{
+	// 	APIKVReference: armappservice.APIKVReference{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testc6282/config/configreferences/appsettings/setting"),
 	// 		Properties: &armappservice.APIKVReferenceProperties{
 	// 			SecretName: to.Ptr("secretName"),
@@ -1956,7 +1956,7 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReferenceSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse{
-	// 	APIKVReference: &armappservice.APIKVReference{
+	// 	APIKVReference: armappservice.APIKVReference{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testc6282/slots/stage/config/configreferences/appsettings/setting"),
 	// 		Properties: &armappservice.APIKVReferenceProperties{
 	// 			SecretName: to.Ptr("secretName"),
@@ -2080,7 +2080,7 @@ func ExampleWebAppsClient_GetAuthSettings() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetAuthSettingsResponse{
-	// 	SiteAuthSettings: &armappservice.SiteAuthSettings{
+	// 	SiteAuthSettings: armappservice.SiteAuthSettings{
 	// 		Name: to.Ptr("authsettings"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/authsettings"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/authsettings"),
@@ -2121,7 +2121,7 @@ func ExampleWebAppsClient_GetAuthSettingsV2() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetAuthSettingsV2Response{
-	// 	SiteAuthSettingsV2: &armappservice.SiteAuthSettingsV2{
+	// 	SiteAuthSettingsV2: armappservice.SiteAuthSettingsV2{
 	// 		Name: to.Ptr("authsettingsv2"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/authsettingsv2"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/authsettingsv2"),
@@ -2216,7 +2216,7 @@ func ExampleWebAppsClient_GetAuthSettingsV2WithoutSecrets() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetAuthSettingsV2WithoutSecretsResponse{
-	// 	SiteAuthSettingsV2: &armappservice.SiteAuthSettingsV2{
+	// 	SiteAuthSettingsV2: armappservice.SiteAuthSettingsV2{
 	// 		Name: to.Ptr("authsettingsv2"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/authsettingsv2"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/authsettingsv2"),
@@ -2311,7 +2311,7 @@ func ExampleWebAppsClient_GetBackupStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetBackupStatusResponse{
-	// 	BackupItem: &armappservice.BackupItem{
+	// 	BackupItem: armappservice.BackupItem{
 	// 		Name: to.Ptr("sitef6141"),
 	// 		Type: to.Ptr("Microsoft.Web/sites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/backups/12345"),
@@ -2366,7 +2366,7 @@ func ExampleWebAppsClient_GetConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetConfigurationResponse{
-	// 	SiteConfigResource: &armappservice.SiteConfigResource{
+	// 	SiteConfigResource: armappservice.SiteConfigResource{
 	// 		Name: to.Ptr("web"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/config"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/web"),
@@ -2446,7 +2446,7 @@ func ExampleWebAppsClient_GetFtpAllowed() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetFtpAllowedResponse{
-	// 	CsmPublishingCredentialsPoliciesEntity: &armappservice.CsmPublishingCredentialsPoliciesEntity{
+	// 	CsmPublishingCredentialsPoliciesEntity: armappservice.CsmPublishingCredentialsPoliciesEntity{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/basicPublishingCredentialsPolicies/ftp"),
 	// 		Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 	// 			Allow: to.Ptr(false),
@@ -2474,7 +2474,7 @@ func ExampleWebAppsClient_GetFtpAllowedSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetFtpAllowedSlotResponse{
-	// 	CsmPublishingCredentialsPoliciesEntity: &armappservice.CsmPublishingCredentialsPoliciesEntity{
+	// 	CsmPublishingCredentialsPoliciesEntity: armappservice.CsmPublishingCredentialsPoliciesEntity{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slots/stage/basicPublishingCredentialsPolicies/ftp"),
 	// 		Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 	// 			Allow: to.Ptr(false),
@@ -2502,7 +2502,7 @@ func ExampleWebAppsClient_GetInstanceInfo() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetInstanceInfoResponse{
-	// 	WebSiteInstanceStatus: &armappservice.WebSiteInstanceStatus{
+	// 	WebSiteInstanceStatus: armappservice.WebSiteInstanceStatus{
 	// 		Name: to.Ptr("134987120"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/instances"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/tests346/slot/staging/instances/134987120"),
@@ -2539,7 +2539,7 @@ func ExampleWebAppsClient_GetInstanceInfoSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetInstanceInfoSlotResponse{
-	// 	WebSiteInstanceStatus: &armappservice.WebSiteInstanceStatus{
+	// 	WebSiteInstanceStatus: armappservice.WebSiteInstanceStatus{
 	// 		Name: to.Ptr("134987120"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/instances"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/tests346/slot/staging/instances/134987120"),
@@ -2576,7 +2576,7 @@ func ExampleWebAppsClient_GetInstanceWorkflowSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetInstanceWorkflowSlotResponse{
-	// 	WorkflowEnvelope: &armappservice.WorkflowEnvelope{
+	// 	WorkflowEnvelope: armappservice.WorkflowEnvelope{
 	// 		Name: to.Ptr("testsite2/stateful1"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/workflows"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testsite2/workflows/stateful1"),
@@ -2645,7 +2645,7 @@ func ExampleWebAppsClient_GetNetworkTraceOperation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetNetworkTraceOperationResponse{
-	// 	undefined: &[]*armappservice.NetworkTrace{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
 	// 		{
 	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
 	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
@@ -2674,7 +2674,7 @@ func ExampleWebAppsClient_GetNetworkTraceOperationSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetNetworkTraceOperationSlotResponse{
-	// 	undefined: &[]*armappservice.NetworkTrace{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
 	// 		{
 	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
 	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
@@ -2703,7 +2703,7 @@ func ExampleWebAppsClient_GetNetworkTraceOperationSlotV2() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetNetworkTraceOperationSlotV2Response{
-	// 	undefined: &[]*armappservice.NetworkTrace{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
 	// 		{
 	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
 	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
@@ -2732,7 +2732,7 @@ func ExampleWebAppsClient_GetNetworkTraceOperationV2() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetNetworkTraceOperationV2Response{
-	// 	undefined: &[]*armappservice.NetworkTrace{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
 	// 		{
 	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
 	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
@@ -2761,7 +2761,7 @@ func ExampleWebAppsClient_GetNetworkTraces() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetNetworkTracesResponse{
-	// 	undefined: &[]*armappservice.NetworkTrace{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
 	// 		{
 	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
 	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
@@ -2790,7 +2790,7 @@ func ExampleWebAppsClient_GetNetworkTracesSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetNetworkTracesSlotResponse{
-	// 	undefined: &[]*armappservice.NetworkTrace{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
 	// 		{
 	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
 	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
@@ -2819,7 +2819,7 @@ func ExampleWebAppsClient_GetNetworkTracesSlotV2() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetNetworkTracesSlotV2Response{
-	// 	undefined: &[]*armappservice.NetworkTrace{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
 	// 		{
 	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
 	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
@@ -2848,7 +2848,7 @@ func ExampleWebAppsClient_GetNetworkTracesV2() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetNetworkTracesV2Response{
-	// 	undefined: &[]*armappservice.NetworkTrace{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
 	// 		{
 	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
 	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
@@ -2877,7 +2877,7 @@ func ExampleWebAppsClient_GetPrivateEndpointConnection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetPrivateEndpointConnectionResponse{
-	// 	RemotePrivateEndpointConnectionARMResource: &armappservice.RemotePrivateEndpointConnectionARMResource{
+	// 	RemotePrivateEndpointConnectionARMResource: armappservice.RemotePrivateEndpointConnectionARMResource{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/privateEndpointConnections/connection"),
 	// 		Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
 	// 			PrivateEndpoint: &armappservice.ArmIDWrapper{
@@ -2913,7 +2913,7 @@ func ExampleWebAppsClient_GetPrivateEndpointConnectionSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetPrivateEndpointConnectionSlotResponse{
-	// 	RemotePrivateEndpointConnectionARMResource: &armappservice.RemotePrivateEndpointConnectionARMResource{
+	// 	RemotePrivateEndpointConnectionARMResource: armappservice.RemotePrivateEndpointConnectionARMResource{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slot/stage/privateEndpointConnections/connection"),
 	// 		Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
 	// 			PrivateEndpoint: &armappservice.ArmIDWrapper{
@@ -2949,7 +2949,7 @@ func ExampleWebAppsClient_GetPrivateLinkResources() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetPrivateLinkResourcesResponse{
-	// 	PrivateLinkResourcesWrapper: &armappservice.PrivateLinkResourcesWrapper{
+	// 	PrivateLinkResourcesWrapper: armappservice.PrivateLinkResourcesWrapper{
 	// 		Value: []*armappservice.PrivateLinkResource{
 	// 			{
 	// 				Name: to.Ptr("site"),
@@ -2989,7 +2989,7 @@ func ExampleWebAppsClient_GetPrivateLinkResourcesSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetPrivateLinkResourcesSlotResponse{
-	// 	PrivateLinkResourcesWrapper: &armappservice.PrivateLinkResourcesWrapper{
+	// 	PrivateLinkResourcesWrapper: armappservice.PrivateLinkResourcesWrapper{
 	// 		Value: []*armappservice.PrivateLinkResource{
 	// 			{
 	// 				Name: to.Ptr("site"),
@@ -3027,13 +3027,13 @@ func ExampleWebAppsClient_BeginGetProductionSiteDeploymentStatus() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse{
-	// 	CsmDeploymentStatus: &armappservice.CsmDeploymentStatus{
+	// 	CsmDeploymentStatus: armappservice.CsmDeploymentStatus{
 	// 		Name: to.Ptr("eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/deploymentStatus"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/deploymentStatus/eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
@@ -3069,7 +3069,7 @@ func ExampleWebAppsClient_GetScmAllowed() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetScmAllowedResponse{
-	// 	CsmPublishingCredentialsPoliciesEntity: &armappservice.CsmPublishingCredentialsPoliciesEntity{
+	// 	CsmPublishingCredentialsPoliciesEntity: armappservice.CsmPublishingCredentialsPoliciesEntity{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/basicPublishingCredentialsPolicies/ftp"),
 	// 		Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 	// 			Allow: to.Ptr(false),
@@ -3097,7 +3097,7 @@ func ExampleWebAppsClient_GetScmAllowedSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetScmAllowedSlotResponse{
-	// 	CsmPublishingCredentialsPoliciesEntity: &armappservice.CsmPublishingCredentialsPoliciesEntity{
+	// 	CsmPublishingCredentialsPoliciesEntity: armappservice.CsmPublishingCredentialsPoliciesEntity{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slots/stage/basicPublishingCredentialsPolicies/ftp"),
 	// 		Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 	// 			Allow: to.Ptr(false),
@@ -3125,7 +3125,7 @@ func ExampleWebAppsClient_GetSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetSlotResponse{
-	// 	Site: &armappservice.Site{
+	// 	Site: armappservice.Site{
 	// 		Name: to.Ptr("sitef6141/staging"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/slots"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/slots/staging"),
@@ -3259,13 +3259,13 @@ func ExampleWebAppsClient_BeginGetSlotSiteDeploymentStatusSlot() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse{
-	// 	CsmDeploymentStatus: &armappservice.CsmDeploymentStatus{
+	// 	CsmDeploymentStatus: armappservice.CsmDeploymentStatus{
 	// 		Name: to.Ptr("eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/slots/deploymentStatus"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slots/stage/deploymentStatus/eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
@@ -3301,7 +3301,7 @@ func ExampleWebAppsClient_GetWorkflow() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientGetWorkflowResponse{
-	// 	WorkflowEnvelope: &armappservice.WorkflowEnvelope{
+	// 	WorkflowEnvelope: armappservice.WorkflowEnvelope{
 	// 		Name: to.Ptr("testsite2/stateful1"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/workflows"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testsite2/workflows/stateful1"),
@@ -3637,7 +3637,7 @@ func ExampleWebAppsClient_ListApplicationSettings() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientListApplicationSettingsResponse{
-	// 	StringDictionary: &armappservice.StringDictionary{
+	// 	StringDictionary: armappservice.StringDictionary{
 	// 		Name: to.Ptr("appsettings"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/config"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/appsettings"),
@@ -3696,7 +3696,7 @@ func ExampleWebAppsClient_ListBackupStatusSecrets() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientListBackupStatusSecretsResponse{
-	// 	BackupItem: &armappservice.BackupItem{
+	// 	BackupItem: armappservice.BackupItem{
 	// 		Name: to.Ptr("sitef6141"),
 	// 		Type: to.Ptr("Microsoft.Web/sites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/backups/12345"),
@@ -4788,7 +4788,7 @@ func ExampleWebAppsClient_ListWorkflowsConnections() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientListWorkflowsConnectionsResponse{
-	// 	WorkflowEnvelope: &armappservice.WorkflowEnvelope{
+	// 	WorkflowEnvelope: armappservice.WorkflowEnvelope{
 	// 		Name: to.Ptr("testsite2/connections"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/workflowsconfiguration"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testsite2/workflowconfigurations/connections"),
@@ -4841,7 +4841,7 @@ func ExampleWebAppsClient_ListWorkflowsConnectionsSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientListWorkflowsConnectionsSlotResponse{
-	// 	WorkflowEnvelope: &armappservice.WorkflowEnvelope{
+	// 	WorkflowEnvelope: armappservice.WorkflowEnvelope{
 	// 		Name: to.Ptr("testsite2/connections"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/workflowsconfiguration"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testsite2/workflowconfigurations/connections"),
@@ -4912,7 +4912,7 @@ func ExampleWebAppsClient_BeginRestore() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -4939,7 +4939,7 @@ func ExampleWebAppsClient_BeginStartNetworkTrace() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -4966,7 +4966,7 @@ func ExampleWebAppsClient_BeginStartNetworkTraceSlot() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -4993,7 +4993,7 @@ func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -5020,7 +5020,7 @@ func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperationSlot() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -5140,7 +5140,7 @@ func ExampleWebAppsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateResponse{
-	// 	Site: &armappservice.Site{
+	// 	Site: armappservice.Site{
 	// 		Name: to.Ptr("sitef6141"),
 	// 		Type: to.Ptr("Microsoft.Web/sites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
@@ -5285,7 +5285,7 @@ func ExampleWebAppsClient_UpdateApplicationSettings() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateApplicationSettingsResponse{
-	// 	StringDictionary: &armappservice.StringDictionary{
+	// 	StringDictionary: armappservice.StringDictionary{
 	// 		Name: to.Ptr("appsettings"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/config"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/appsettings"),
@@ -5331,7 +5331,7 @@ func ExampleWebAppsClient_UpdateAuthSettings() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateAuthSettingsResponse{
-	// 	SiteAuthSettings: &armappservice.SiteAuthSettings{
+	// 	SiteAuthSettings: armappservice.SiteAuthSettings{
 	// 		Name: to.Ptr("authsettings"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/authsettings"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/authsettings"),
@@ -5440,7 +5440,7 @@ func ExampleWebAppsClient_UpdateAuthSettingsV2() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateAuthSettingsV2Response{
-	// 	SiteAuthSettingsV2: &armappservice.SiteAuthSettingsV2{
+	// 	SiteAuthSettingsV2: armappservice.SiteAuthSettingsV2{
 	// 		Name: to.Ptr("authsettingsv2"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/authsettingsv2"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/authsettingsv2"),
@@ -5545,7 +5545,7 @@ func ExampleWebAppsClient_UpdateAzureStorageAccounts() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateAzureStorageAccountsResponse{
-	// 	AzureStoragePropertyDictionaryResource: &armappservice.AzureStoragePropertyDictionaryResource{
+	// 	AzureStoragePropertyDictionaryResource: armappservice.AzureStoragePropertyDictionaryResource{
 	// 		Name: to.Ptr("web"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/config"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/web"),
@@ -5586,7 +5586,7 @@ func ExampleWebAppsClient_UpdateFtpAllowed() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateFtpAllowedResponse{
-	// 	CsmPublishingCredentialsPoliciesEntity: &armappservice.CsmPublishingCredentialsPoliciesEntity{
+	// 	CsmPublishingCredentialsPoliciesEntity: armappservice.CsmPublishingCredentialsPoliciesEntity{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slots/stage/basicPublishingCredentialsPolicies/ftp"),
 	// 		Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 	// 			Allow: to.Ptr(true),
@@ -5618,7 +5618,7 @@ func ExampleWebAppsClient_UpdateFtpAllowedSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateFtpAllowedSlotResponse{
-	// 	CsmPublishingCredentialsPoliciesEntity: &armappservice.CsmPublishingCredentialsPoliciesEntity{
+	// 	CsmPublishingCredentialsPoliciesEntity: armappservice.CsmPublishingCredentialsPoliciesEntity{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slots/stage/basicPublishingCredentialsPolicies/ftp"),
 	// 		Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 	// 			Allow: to.Ptr(true),
@@ -5646,7 +5646,7 @@ func ExampleWebAppsClient_UpdateMachineKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateMachineKeyResponse{
-	// 	undefined: map[string]any{
+	// 	Interface: map[string]any{
 	// 	},
 	// }
 }
@@ -5674,7 +5674,7 @@ func ExampleWebAppsClient_UpdateScmAllowed() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateScmAllowedResponse{
-	// 	CsmPublishingCredentialsPoliciesEntity: &armappservice.CsmPublishingCredentialsPoliciesEntity{
+	// 	CsmPublishingCredentialsPoliciesEntity: armappservice.CsmPublishingCredentialsPoliciesEntity{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/basicPublishingCredentialsPolicies/ftp"),
 	// 		Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 	// 			Allow: to.Ptr(true),
@@ -5706,7 +5706,7 @@ func ExampleWebAppsClient_UpdateScmAllowedSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateScmAllowedSlotResponse{
-	// 	CsmPublishingCredentialsPoliciesEntity: &armappservice.CsmPublishingCredentialsPoliciesEntity{
+	// 	CsmPublishingCredentialsPoliciesEntity: armappservice.CsmPublishingCredentialsPoliciesEntity{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slots/stage/basicPublishingCredentialsPolicies/ftp"),
 	// 		Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 	// 			Allow: to.Ptr(true),
@@ -5738,7 +5738,7 @@ func ExampleWebAppsClient_UpdateSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WebAppsClientUpdateSlotResponse{
-	// 	Site: &armappservice.Site{
+	// 	Site: armappservice.Site{
 	// 		Name: to.Ptr("sitef6141/staging"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/slots"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/slots/staging"),

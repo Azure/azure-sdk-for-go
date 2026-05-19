@@ -1,5 +1,12 @@
 # Release History
 
+## 1.3.0 (2026-05-19)
+### Features Added
+
+- New field `KubernetesWorkloadProfile` in struct `DeviceProperties`
+- New field `IPRange` in struct `LoadBalancerConfig`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

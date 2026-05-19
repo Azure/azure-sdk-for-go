@@ -26,7 +26,7 @@ type DevicesServer struct {
 	CreateOrUpdate func(ctx context.Context, deviceName string, resourceGroupName string, dataBoxEdgeDevice armdataboxedge.Device, options *armdataboxedge.DevicesClientCreateOrUpdateOptions) (resp azfake.Responder[armdataboxedge.DevicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdateSecuritySettings is the fake for method DevicesClient.BeginCreateOrUpdateSecuritySettings
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginCreateOrUpdateSecuritySettings func(ctx context.Context, deviceName string, resourceGroupName string, securitySettings armdataboxedge.SecuritySettings, options *armdataboxedge.DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientCreateOrUpdateSecuritySettingsResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method DevicesClient.BeginDelete
@@ -34,7 +34,7 @@ type DevicesServer struct {
 	BeginDelete func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginDownloadUpdates is the fake for method DevicesClient.BeginDownloadUpdates
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDownloadUpdates func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientBeginDownloadUpdatesOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientDownloadUpdatesResponse], errResp azfake.ErrorResponder)
 
 	// GenerateCertificate is the fake for method DevicesClient.GenerateCertificate
@@ -58,7 +58,7 @@ type DevicesServer struct {
 	GetUpdateSummary func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientGetUpdateSummaryOptions) (resp azfake.Responder[armdataboxedge.DevicesClientGetUpdateSummaryResponse], errResp azfake.ErrorResponder)
 
 	// BeginInstallUpdates is the fake for method DevicesClient.BeginInstallUpdates
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginInstallUpdates func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientBeginInstallUpdatesOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientInstallUpdatesResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method DevicesClient.NewListByResourceGroupPager
@@ -70,7 +70,7 @@ type DevicesServer struct {
 	NewListBySubscriptionPager func(options *armdataboxedge.DevicesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdataboxedge.DevicesClientListBySubscriptionResponse])
 
 	// BeginScanForUpdates is the fake for method DevicesClient.BeginScanForUpdates
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginScanForUpdates func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DevicesClientBeginScanForUpdatesOptions) (resp azfake.PollerResponder[armdataboxedge.DevicesClientScanForUpdatesResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method DevicesClient.Update
@@ -123,51 +123,70 @@ func (d *DevicesServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DevicesClient.CreateOrUpdate":
-		resp, err = d.dispatchCreateOrUpdate(req)
-	case "DevicesClient.BeginCreateOrUpdateSecuritySettings":
-		resp, err = d.dispatchBeginCreateOrUpdateSecuritySettings(req)
-	case "DevicesClient.BeginDelete":
-		resp, err = d.dispatchBeginDelete(req)
-	case "DevicesClient.BeginDownloadUpdates":
-		resp, err = d.dispatchBeginDownloadUpdates(req)
-	case "DevicesClient.GenerateCertificate":
-		resp, err = d.dispatchGenerateCertificate(req)
-	case "DevicesClient.Get":
-		resp, err = d.dispatchGet(req)
-	case "DevicesClient.GetExtendedInformation":
-		resp, err = d.dispatchGetExtendedInformation(req)
-	case "DevicesClient.GetNetworkSettings":
-		resp, err = d.dispatchGetNetworkSettings(req)
-	case "DevicesClient.GetUpdateSummary":
-		resp, err = d.dispatchGetUpdateSummary(req)
-	case "DevicesClient.BeginInstallUpdates":
-		resp, err = d.dispatchBeginInstallUpdates(req)
-	case "DevicesClient.NewListByResourceGroupPager":
-		resp, err = d.dispatchNewListByResourceGroupPager(req)
-	case "DevicesClient.NewListBySubscriptionPager":
-		resp, err = d.dispatchNewListBySubscriptionPager(req)
-	case "DevicesClient.BeginScanForUpdates":
-		resp, err = d.dispatchBeginScanForUpdates(req)
-	case "DevicesClient.Update":
-		resp, err = d.dispatchUpdate(req)
-	case "DevicesClient.UpdateExtendedInformation":
-		resp, err = d.dispatchUpdateExtendedInformation(req)
-	case "DevicesClient.UploadCertificate":
-		resp, err = d.dispatchUploadCertificate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DevicesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if devicesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = devicesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DevicesClient.CreateOrUpdate":
+				res.resp, res.err = d.dispatchCreateOrUpdate(req)
+			case "DevicesClient.BeginCreateOrUpdateSecuritySettings":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdateSecuritySettings(req)
+			case "DevicesClient.BeginDelete":
+				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DevicesClient.BeginDownloadUpdates":
+				res.resp, res.err = d.dispatchBeginDownloadUpdates(req)
+			case "DevicesClient.GenerateCertificate":
+				res.resp, res.err = d.dispatchGenerateCertificate(req)
+			case "DevicesClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DevicesClient.GetExtendedInformation":
+				res.resp, res.err = d.dispatchGetExtendedInformation(req)
+			case "DevicesClient.GetNetworkSettings":
+				res.resp, res.err = d.dispatchGetNetworkSettings(req)
+			case "DevicesClient.GetUpdateSummary":
+				res.resp, res.err = d.dispatchGetUpdateSummary(req)
+			case "DevicesClient.BeginInstallUpdates":
+				res.resp, res.err = d.dispatchBeginInstallUpdates(req)
+			case "DevicesClient.NewListByResourceGroupPager":
+				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
+			case "DevicesClient.NewListBySubscriptionPager":
+				res.resp, res.err = d.dispatchNewListBySubscriptionPager(req)
+			case "DevicesClient.BeginScanForUpdates":
+				res.resp, res.err = d.dispatchBeginScanForUpdates(req)
+			case "DevicesClient.Update":
+				res.resp, res.err = d.dispatchUpdate(req)
+			case "DevicesClient.UpdateExtendedInformation":
+				res.resp, res.err = d.dispatchUpdateExtendedInformation(req)
+			case "DevicesClient.UploadCertificate":
+				res.resp, res.err = d.dispatchUploadCertificate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DevicesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -177,7 +196,7 @@ func (d *DevicesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdataboxedge.Device](req)
@@ -216,7 +235,7 @@ func (d *DevicesServerTransport) dispatchBeginCreateOrUpdateSecuritySettings(req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securitySettings/default/update`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdataboxedge.SecuritySettings](req)
@@ -244,9 +263,9 @@ func (d *DevicesServerTransport) dispatchBeginCreateOrUpdateSecuritySettings(req
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		d.beginCreateOrUpdateSecuritySettings.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdateSecuritySettings) {
 		d.beginCreateOrUpdateSecuritySettings.remove(req)
@@ -264,7 +283,7 @@ func (d *DevicesServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -308,7 +327,7 @@ func (d *DevicesServerTransport) dispatchBeginDownloadUpdates(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/downloadUpdates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -332,9 +351,9 @@ func (d *DevicesServerTransport) dispatchBeginDownloadUpdates(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		d.beginDownloadUpdates.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDownloadUpdates) {
 		d.beginDownloadUpdates.remove(req)
@@ -350,7 +369,7 @@ func (d *DevicesServerTransport) dispatchGenerateCertificate(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateCertificate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -383,7 +402,7 @@ func (d *DevicesServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -416,7 +435,7 @@ func (d *DevicesServerTransport) dispatchGetExtendedInformation(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getExtendedInformation`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -449,7 +468,7 @@ func (d *DevicesServerTransport) dispatchGetNetworkSettings(req *http.Request) (
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkSettings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -482,7 +501,7 @@ func (d *DevicesServerTransport) dispatchGetUpdateSummary(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateSummary/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -517,7 +536,7 @@ func (d *DevicesServerTransport) dispatchBeginInstallUpdates(req *http.Request) 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/installUpdates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -541,9 +560,9 @@ func (d *DevicesServerTransport) dispatchBeginInstallUpdates(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		d.beginInstallUpdates.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginInstallUpdates) {
 		d.beginInstallUpdates.remove(req)
@@ -561,7 +580,7 @@ func (d *DevicesServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -610,7 +629,7 @@ func (d *DevicesServerTransport) dispatchNewListBySubscriptionPager(req *http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -655,7 +674,7 @@ func (d *DevicesServerTransport) dispatchBeginScanForUpdates(req *http.Request) 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scanForUpdates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -679,9 +698,9 @@ func (d *DevicesServerTransport) dispatchBeginScanForUpdates(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		d.beginScanForUpdates.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginScanForUpdates) {
 		d.beginScanForUpdates.remove(req)
@@ -697,7 +716,7 @@ func (d *DevicesServerTransport) dispatchUpdate(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdataboxedge.DevicePatch](req)
@@ -734,7 +753,7 @@ func (d *DevicesServerTransport) dispatchUpdateExtendedInformation(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateExtendedInformation`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdataboxedge.DeviceExtendedInfoPatch](req)
@@ -771,7 +790,7 @@ func (d *DevicesServerTransport) dispatchUploadCertificate(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/uploadCertificate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdataboxedge.UploadCertificateRequest](req)
@@ -799,4 +818,10 @@ func (d *DevicesServerTransport) dispatchUploadCertificate(req *http.Request) (*
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DevicesServerTransport
+var devicesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

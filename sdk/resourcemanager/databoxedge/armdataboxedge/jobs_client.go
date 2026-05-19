@@ -27,7 +27,7 @@ type JobsClient struct {
 // NewJobsClient creates a new instance of JobsClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // Get - Gets the details of a specified job on a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - name - The job name.
 //   - resourceGroupName - The resource group name.
@@ -71,7 +71,7 @@ func (client *JobsClient) Get(ctx context.Context, deviceName string, name strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobsClient) getCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, options *JobsClientGetOptions) (*policy.Request, error) {
+func (client *JobsClient) getCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *JobsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/jobs/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -94,7 +94,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, deviceName strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

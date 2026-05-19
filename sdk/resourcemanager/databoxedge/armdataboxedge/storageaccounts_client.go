@@ -27,7 +27,7 @@ type StorageAccountsClient struct {
 // NewStorageAccountsClient creates a new instance of StorageAccountsClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStorageAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageAccountsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewStorageAccountsClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreateOrUpdate - Creates a new StorageAccount or updates an existing StorageAccount on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - storageAccountName - The StorageAccount name.
 //   - resourceGroupName - The resource group name.
@@ -70,7 +70,7 @@ func (client *StorageAccountsClient) BeginCreateOrUpdate(ctx context.Context, de
 // CreateOrUpdate - Creates a new StorageAccount or updates an existing StorageAccount on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *StorageAccountsClient) createOrUpdate(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, options *StorageAccountsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageAccountsClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *StorageAccountsClient) createOrUpdate(ctx context.Context, deviceN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, options *StorageAccountsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, _ *StorageAccountsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccounts/{storageAccountName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -116,7 +116,7 @@ func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, storageAccount); err != nil {
@@ -128,7 +128,7 @@ func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - storageAccountName - The StorageAccount name.
 //   - resourceGroupName - The resource group name.
@@ -154,7 +154,7 @@ func (client *StorageAccountsClient) BeginDelete(ctx context.Context, deviceName
 // Delete - Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *StorageAccountsClient) deleteOperation(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageAccountsClient.BeginDelete"
@@ -177,7 +177,7 @@ func (client *StorageAccountsClient) deleteOperation(ctx context.Context, device
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, _ *StorageAccountsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccounts/{storageAccountName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -200,7 +200,7 @@ func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, de
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, de
 // Get - Gets a StorageAccount by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - storageAccountName - The storage account name.
 //   - resourceGroupName - The resource group name.
@@ -237,7 +237,7 @@ func (client *StorageAccountsClient) Get(ctx context.Context, deviceName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *StorageAccountsClient) getCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientGetOptions) (*policy.Request, error) {
+func (client *StorageAccountsClient) getCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, _ *StorageAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccounts/{storageAccountName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -260,7 +260,7 @@ func (client *StorageAccountsClient) getCreateRequest(ctx context.Context, devic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *StorageAccountsClient) getHandleResponse(resp *http.Response) (Sto
 
 // NewListByDataBoxEdgeDevicePager - Lists all the StorageAccounts in a Data Box Edge/Data Box Gateway device.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - options - StorageAccountsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the StorageAccountsClient.NewListByDataBoxEdgeDevicePager
@@ -306,7 +306,7 @@ func (client *StorageAccountsClient) NewListByDataBoxEdgeDevicePager(deviceName 
 }
 
 // listByDataBoxEdgeDeviceCreateRequest creates the ListByDataBoxEdgeDevice request.
-func (client *StorageAccountsClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *StorageAccountsClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
+func (client *StorageAccountsClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *StorageAccountsClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccounts"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -325,7 +325,7 @@ func (client *StorageAccountsClient) listByDataBoxEdgeDeviceCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

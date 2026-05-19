@@ -64,27 +64,46 @@ func (d *DiagnosticSettingsServerTransport) Do(req *http.Request) (*http.Respons
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DiagnosticSettingsClient.GetDiagnosticProactiveLogCollectionSettings":
-		resp, err = d.dispatchGetDiagnosticProactiveLogCollectionSettings(req)
-	case "DiagnosticSettingsClient.GetDiagnosticRemoteSupportSettings":
-		resp, err = d.dispatchGetDiagnosticRemoteSupportSettings(req)
-	case "DiagnosticSettingsClient.BeginUpdateDiagnosticProactiveLogCollectionSettings":
-		resp, err = d.dispatchBeginUpdateDiagnosticProactiveLogCollectionSettings(req)
-	case "DiagnosticSettingsClient.BeginUpdateDiagnosticRemoteSupportSettings":
-		resp, err = d.dispatchBeginUpdateDiagnosticRemoteSupportSettings(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DiagnosticSettingsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if diagnosticSettingsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = diagnosticSettingsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DiagnosticSettingsClient.GetDiagnosticProactiveLogCollectionSettings":
+				res.resp, res.err = d.dispatchGetDiagnosticProactiveLogCollectionSettings(req)
+			case "DiagnosticSettingsClient.GetDiagnosticRemoteSupportSettings":
+				res.resp, res.err = d.dispatchGetDiagnosticRemoteSupportSettings(req)
+			case "DiagnosticSettingsClient.BeginUpdateDiagnosticProactiveLogCollectionSettings":
+				res.resp, res.err = d.dispatchBeginUpdateDiagnosticProactiveLogCollectionSettings(req)
+			case "DiagnosticSettingsClient.BeginUpdateDiagnosticRemoteSupportSettings":
+				res.resp, res.err = d.dispatchBeginUpdateDiagnosticRemoteSupportSettings(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DiagnosticSettingsServerTransport) dispatchGetDiagnosticProactiveLogCollectionSettings(req *http.Request) (*http.Response, error) {
@@ -94,7 +113,7 @@ func (d *DiagnosticSettingsServerTransport) dispatchGetDiagnosticProactiveLogCol
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnosticProactiveLogCollectionSettings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -127,7 +146,7 @@ func (d *DiagnosticSettingsServerTransport) dispatchGetDiagnosticRemoteSupportSe
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnosticRemoteSupportSettings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
@@ -162,7 +181,7 @@ func (d *DiagnosticSettingsServerTransport) dispatchBeginUpdateDiagnosticProacti
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnosticProactiveLogCollectionSettings/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdataboxedge.DiagnosticProactiveLogCollectionSettings](req)
@@ -210,7 +229,7 @@ func (d *DiagnosticSettingsServerTransport) dispatchBeginUpdateDiagnosticRemoteS
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnosticRemoteSupportSettings/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdataboxedge.DiagnosticRemoteSupportSettings](req)
@@ -247,4 +266,10 @@ func (d *DiagnosticSettingsServerTransport) dispatchBeginUpdateDiagnosticRemoteS
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DiagnosticSettingsServerTransport
+var diagnosticSettingsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

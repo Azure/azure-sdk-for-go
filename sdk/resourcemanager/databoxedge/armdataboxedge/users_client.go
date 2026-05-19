@@ -27,7 +27,7 @@ type UsersClient struct {
 // NewUsersClient creates a new instance of UsersClient with the specified values.
 //   - subscriptionID - The subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, op
 // device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - name - The user name.
 //   - resourceGroupName - The resource group name.
@@ -71,7 +71,7 @@ func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, deviceName s
 // CreateOrUpdate - Creates a new user or updates an existing user's information on a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *UsersClient) createOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, userParam User, options *UsersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UsersClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *UsersClient) createOrUpdate(ctx context.Context, deviceName string
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, userParam User, options *UsersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, userParam User, _ *UsersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -117,7 +117,7 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, devi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, userParam); err != nil {
@@ -129,7 +129,7 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, devi
 // BeginDelete - Deletes the user on a databox edge/gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - name - The user name.
 //   - resourceGroupName - The resource group name.
@@ -154,7 +154,7 @@ func (client *UsersClient) BeginDelete(ctx context.Context, deviceName string, n
 // Delete - Deletes the user on a databox edge/gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 func (client *UsersClient) deleteOperation(ctx context.Context, deviceName string, name string, resourceGroupName string, options *UsersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UsersClient.BeginDelete"
@@ -177,7 +177,7 @@ func (client *UsersClient) deleteOperation(ctx context.Context, deviceName strin
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *UsersClient) deleteCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, options *UsersClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *UsersClient) deleteCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *UsersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -200,7 +200,7 @@ func (client *UsersClient) deleteCreateRequest(ctx context.Context, deviceName s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *UsersClient) deleteCreateRequest(ctx context.Context, deviceName s
 // Get - Gets the properties of the specified user.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - name - The user name.
 //   - resourceGroupName - The resource group name.
@@ -237,7 +237,7 @@ func (client *UsersClient) Get(ctx context.Context, deviceName string, name stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *UsersClient) getCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, options *UsersClientGetOptions) (*policy.Request, error) {
+func (client *UsersClient) getCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *UsersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users/{name}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -260,7 +260,7 @@ func (client *UsersClient) getCreateRequest(ctx context.Context, deviceName stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *UsersClient) getHandleResponse(resp *http.Response) (UsersClientGe
 
 // NewListByDataBoxEdgeDevicePager - Gets all the users registered on a Data Box Edge/Data Box Gateway device.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2023-12-01
 //   - deviceName - The device name.
 //   - resourceGroupName - The resource group name.
 //   - options - UsersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the UsersClient.NewListByDataBoxEdgeDevicePager
@@ -325,10 +325,10 @@ func (client *UsersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -4,6 +4,16 @@ This guide helps you identify, review, and resolve breaking changes specific to 
 
 Breaking changes should be resolved through TypeSpec client and/or configuration customizations. Low-impact breaking changes can be reviewed by Go architects as they may be acceptable.
 
+Each pattern below is documented using the following structure:
+
+- **Changelog Pattern**: The entries that appear in `CHANGELOG.md` when this breaking change occurs.
+- **Spec Pattern** (optional): The TypeSpec definition that produces the changelog pattern.
+- **Breaking**: A concise description of what the breaking change is.
+- **Reason**: The root cause of the breaking change.
+- **Resolution**: How to resolve the breaking change. If it cannot be mitigated through client customizations, this is explicitly noted.
+
+For breaking changes that are accepted into a new major version, an additional **Impact** line records how disruptive the change is for users, and a **Migration Guide** section shows how to update calling code.
+
 ## TypeSpec Configuration Changes
 
 TypeSpec configuration changes should be made in the `tspconfig.yaml` file located in the service's specification directory. This file configures the TypeSpec compiler and client generator options. For example:
@@ -29,8 +39,6 @@ Paired removal and addition entries showing naming changes from words to numbers
 - New value `Minute0`, `Minute30` added to enum type `Minute`
 ```
 
-**Reason**: Swagger automatically converts numeric names to words during code generation, while TypeSpec preserves the original naming. This affects all type names, including enums, models, and operations.
-
 **Spec Pattern**:
 
 Find the type definition by examining the names from the addition entries in the changelog (pattern: `New xxx '<type name>'`):
@@ -41,6 +49,10 @@ enum Minute {
   Minute30 = "30"
 }
 ```
+
+**Breaking**: Enum value names are emitted using their numeric source names (e.g., `Minute0`, `Minute30`) instead of the previous word-based names (e.g., `MinuteZero`, `MinuteThirty`), breaking references to the original constants.
+
+**Reason**: Emitter change. The Swagger emitter automatically converted numeric names to words during code generation, while the TypeSpec emitter preserves the original naming. This affects all type names, including enums, models, and operations.
 
 **Resolution**:
 
@@ -64,8 +76,6 @@ Removal of an enum type and addition of a new enum type with the service name pr
 - New enum type `Scope` with values `ScopeExtension`, `ScopeHost`, `ScopeInGuestPatch`, `ScopeOSImage`, `ScopeResource`, `ScopeSQLDB`, `ScopeSQLManagedInstance`
 ```
 
-**Reason**: Differences in enum anti-stuttering rules between Swagger and TypeSpec can cause enum name changes.
-
 **Spec Pattern**:
 
 Find the enum using the name from the removal entries (pattern: `Enum '<enum name>' has been removed`):
@@ -77,6 +87,10 @@ union MaintenanceScope {
   Resource: "Resource",
 }
 ```
+
+**Breaking**: The enum type that previously had the service-name prefix (e.g., `MaintenanceScope`) is renamed to the unprefixed form (e.g., `Scope`), and every property that referenced it is updated, breaking type references.
+
+**Reason**: Differences in enum anti-stuttering rules between the Swagger emitter and the TypeSpec emitter can cause enum name changes during migration.
 
 **Resolution**:
 
@@ -99,8 +113,6 @@ Removal of an operation and addition of a similarly named operation for the same
 - New function `*StorageTaskAssignmentClient.NewStorageTaskAssignmentListPager(string, string, *StorageTaskAssignmentClientStorageTaskAssignmentListOptions) *runtime.Pager[StorageTaskAssignmentClientStorageTaskAssignmentListResponse]`
 ```
 
-**Reason**: TypeSpec may generate different operation names than Swagger to avoid naming collisions.
-
 **Spec Pattern**:
 
 Find the interface and operation using the name from the addition entries. Operation types include:
@@ -114,6 +126,10 @@ interface StorageTaskAssignment {
   op storageTaskAssignmentList(xxx): xxx;
 }
 ```
+
+**Breaking**: A client method is renamed (e.g., `NewListPager` → `NewStorageTaskAssignmentListPager`), breaking any caller of the original method.
+
+**Reason**: The TypeSpec emitter may generate different operation names than the Swagger emitter to avoid naming collisions in the generated client.
 
 **Resolution**:
 
@@ -137,8 +153,6 @@ Operations moving between clients, sometimes accompanied by client removal:
 - New function `*VolumesClient.BeginRestoreVolume(context.Context, string, string, string, string, *VolumesClientBeginRestoreVolumeOptions) (*runtime.Poller[VolumesClientRestoreVolumeResponse], error)`
 ```
 
-**Reason**: TypeSpec uses different logic for organizing client operations than Swagger.
-
 **Spec Pattern**:
 
 Find the interface and operation using the name from the addition entries (pattern: `New function *<interface name>Client.<operation name>(...)`):
@@ -151,6 +165,10 @@ interface Volumes {
   op restoreVolume is ArmResourceActionAsync<Volume, void, Volume>;
 }
 ```
+
+**Breaking**: An operation moves from one client to another (e.g., from `ManagementClient` to `VolumesClient`), and sometimes the original client is removed entirely, breaking callers that used the old client.
+
+**Reason**: The TypeSpec emitter uses different logic for organizing operations into clients than the Swagger emitter.
 
 **Resolution**:
 
@@ -170,8 +188,6 @@ Removal of fields in response structures with the `xxxResponse` naming pattern:
 - Field `CacheAccessPolicyAssignment` of struct `AccessPolicyAssignmentClientCreateUpdateResponse` has been removed
 ```
 
-**Reason**: Incorrect TypeSpec conversion for Long-Running Operation (LRO) responses.
-
 **Spec Pattern**:
 
 Find the interface and operation using the name from the removal entries (pattern: `Field 'xxx' of struct *<interface name>Client<operation name>Response`):
@@ -187,6 +203,10 @@ interface RedisCacheAccessPolicies {
 ```
 
 If the response type name does not have the `<interface name>` prefix and starts with `Client` directly, use the service name as the interface name instead.
+
+**Breaking**: A field that previously existed on an LRO response struct (e.g., `CacheAccessPolicyAssignment` on `AccessPolicyAssignmentClientCreateUpdateResponse`) is missing, breaking callers that read the final result.
+
+**Reason**: Incorrect TypeSpec conversion of Long-Running Operation (LRO) responses: the LRO header template did not declare the `FinalResult` type, so the generated response struct does not expose the resource field.
 
 **Resolution**:
 
@@ -223,8 +243,6 @@ directive:
   to: 'ResourceInfo'
 ```
 
-**Reason**: Swagger has directives to change the naming.
-
 **Spec Pattern**:
 
 Find the type definition by examining the names from the addition entries in the changelog (pattern: `New xxx '<type name>'`):
@@ -234,6 +252,10 @@ model RedisResource {
   ...
 }
 ```
+
+**Breaking**: A struct is renamed (e.g., `ResourceInfo` → `RedisResource`), breaking any code that referenced the original name.
+
+**Reason**: The Swagger configuration used directives (e.g., `rename-model`) to customize the type name. The TypeSpec emitter does not replay those directives, so the original spec name is now used.
 
 **Resolution**:
 
@@ -254,8 +276,6 @@ One property type changes from `*string` to another enum type, along with a newl
 - New enum type `ResourceType` with values `ResourceTypeMicrosoftContainerRegistryRegistries`
 ```
 
-**Reason**: In Swagger, we converted single-value fixed enums to constants, but in TypeSpec we need to ensure the same behavior with client customization.
-
 **Spec Pattern**:
 
 Find the model property and enum using the name from the changelog (pattern: `Type of <model name>.<property name>` has been changed from *string to *<enum name>):
@@ -269,6 +289,10 @@ enum ContainerRegistryResourceType {
   `Microsoft.ContainerRegistry/registries`,
 }
 ```
+
+**Breaking**: A property's type changes from `*string` to an enum type (e.g., `*ResourceType`), breaking callers that previously assigned or compared raw string values.
+
+**Reason**: The Swagger emitter converted single-value fixed enums into constant strings, while the TypeSpec emitter generates a full enum type by default. Client customization is needed to restore the constant-string behavior.
 
 **Resolution**:
 
@@ -288,8 +312,6 @@ A method parameter is renamed, typically for resource create or update operation
 - Function `*LoadTestsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResource LoadTestResource, options *LoadTestsClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, loadTestName string, resource LoadTestResource, options *LoadTestsClientBeginCreateOrUpdateOptions)`
 ```
 
-**Reason**: When using TypeSpec ARM resource operation templates (e.g., `ArmResourceCreateOrReplaceAsync`), the body parameter defaults to the name `resource`. In Swagger-generated SDKs, the body parameter may have had a customized name (e.g., `loadTestResource`). This difference surfaces as a parameter renaming in the generated SDK.
-
 **Spec Pattern**:
 
 Find the interface and operation using the name from the changelog (pattern: `Function *<interface name>Client.<operation name> parameter(s) have been changed`):
@@ -300,6 +322,10 @@ interface LoadTests {
   createOrUpdate is ArmResourceCreateOrReplaceAsync<LoadTestResource>;
 }
 ```
+
+**Breaking**: The body parameter of a resource create or update method is renamed (e.g., `loadTestResource` → `resource`), breaking call sites that used positional or named arguments.
+
+**Reason**: When using TypeSpec ARM resource operation templates (e.g., `ArmResourceCreateOrReplaceAsync`), the body parameter defaults to the name `resource`. In Swagger-generated SDKs, the body parameter often had a customized name (e.g., `loadTestResource`). This difference surfaces as a parameter renaming in the generated SDK.
 
 **Resolution**:
 
@@ -329,6 +355,8 @@ Multiple changes related to the `Operation` type and its fields, sometimes inclu
 - New struct `OperationDisplay`
 - New field `ActionType` in struct `Operation`
 ```
+
+**Breaking**: The `Operation` type and its related structures (`OperationInfo`, `Origin`) are replaced by the standard `OperationDisplay`, `Origin` enum, and `ActionType` enum from the common library, breaking callers that consumed the previous shape.
 
 **Reason**: The operations list operation is upgraded to use the standard library definition.
 
@@ -388,6 +416,8 @@ Multiple changes related to common infrastructure types such as `SystemData`, `E
 - Struct `ErrorError` has been removed
 ```
 
+**Breaking**: Common infrastructure types such as `IdentityType` and `ErrorError` are replaced with their newer equivalents (`CreatedByType`, `ErrorDetail`), breaking references to the old names.
+
 **Reason**: Common types are upgraded to their latest versions during TypeSpec migration.
 
 **Impact**: Low impact since these are common infrastructure types rarely used directly by users.
@@ -426,6 +456,8 @@ An additional parameter is added to an operation, and a corresponding field is r
 - Field `Body` of struct `MarketplaceAgreementsClientCreateOrUpdateOptions` has been removed
 - Field `Body` of struct `MonitorsClientBeginCreateOptions` has been removed
 ```
+
+**Breaking**: The request body parameter moves from an optional `Body` field on the method's options struct into a required positional argument on the method signature.
 
 **Reason**: For PUT and PATCH operations, the request body is always treated as required in TypeSpec.
 
@@ -480,7 +512,9 @@ Removal of a `xxxListResult` model, addition of a `xxxListListResult` model and 
 - New anonymous field `DomainListListResult` in struct `DomainListsClientListResponse`
 ```
 
-**Reason**: Swagger has naming logic to remove the stuttering part of type names. When we migrate to TypeSpec, we want to keep the original names without this logic to avoid confusion.
+**Breaking**: List-result structs lose their de-stuttered names (e.g., `DomainListResult` → `DomainListListResult`) and the embedded field on the response struct is renamed accordingly.
+
+**Reason**: The Swagger emitter applied naming logic to remove the stuttering part of type names. During TypeSpec migration, the original names are preserved without this logic to avoid confusion.
 
 **Impact**: Low impact since list structs are rarely used directly by users.
 
@@ -531,7 +565,9 @@ Removal of enum values and addition of new enum values with the new enum type:
 - New enum type `ActionTypeFlag` with values `ActionTypeFlagEnable`, `ActionTypeFlagOptOut`
 ```
 
-**Reason**: Swagger merges the enum values of enum types with the same name. This is incorrect. When migrating to TypeSpec, we fix this with a new enum type.
+**Breaking**: Enum values that were previously merged into a single enum (e.g., `ActionType`) are split into a new, separate enum type (e.g., `ActionTypeFlag`), breaking references to the old constants.
+
+**Reason**: The Swagger emitter merged enum values of enum types that shared a name. This was incorrect; migration to TypeSpec fixes it by introducing a distinct enum type.
 
 **Impact**: This corrects the previous SDK behavior.
 
@@ -569,7 +605,9 @@ Removal of an enum type and change the refer of this enum type to string:
 - Function `PossibleTranscriptContentTypeValues` has been removed
 ```
 
-**Reason**: Swagger allows extensible enums without any known values. This is incorrect. When migrating to TypeSpec, we change this to string directly.
+**Breaking**: A property previously typed as an enum (e.g., `*TranscriptContentType`) becomes `*string`, and the corresponding enum type and its `Possible*Values` helper are removed.
+
+**Reason**: The Swagger emitter allowed extensible enums without any known values. This was incorrect; migration to TypeSpec changes such enums to `string` directly.
 
 **Impact**: This corrects the previous SDK behavior.
 
@@ -605,7 +643,9 @@ Type change for ETag fields from `*string` to `*azcore.ETag`:
 - Type of `PrivateEndpointConnection.Etag` has been changed from `*string` to `*azcore.ETag`
 ```
 
-**Reason**: When migrating to TypeSpec, we change ETag fields from `*string` to `azcore.ETag`.
+**Breaking**: ETag fields change type from `*string` to `*azcore.ETag`, requiring callers to construct values through the `azcore.ETag` type.
+
+**Reason**: During TypeSpec migration, ETag fields are emitted using the strongly-typed `azcore.ETag` instead of a plain `*string`.
 
 **Impact**: Low impact since underlaying type of `azure.Etag` is `string`.
 
@@ -635,6 +675,8 @@ privateEndpointConnection.Etag = to.Ptr(azcore.ETag("*"))
 - Function `*ServicesClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, options *ServicesClientDeleteOptions)`
 - Field `ClientRequestID` of struct `SearchManagementRequestOptions` has been removed
 ```
+
+**Breaking**: A parameter group struct (e.g., `SearchManagementRequestOptions`) is reduced or removed entirely, and its optional fields move into the method's options struct, changing the method signature.
 
 **Reason**: TypeSpec moves optional parameters from parameter groups into the method's options type and keeps only required parameters in the named group. If no required parameters remain, the parameter group is removed entirely.
 
@@ -673,6 +715,8 @@ Multiple removals of unreferenced types that are typically not used in the SDK:
 - Struct `ErrorAdditionalInfo` has been removed
 - Struct `SCConfluentListMetadata` has been removed
 ```
+
+**Breaking**: Several public types that were not referenced by any operation or model are removed.
 
 **Reason**: Unreferenced types are removed during TypeSpec migration.
 

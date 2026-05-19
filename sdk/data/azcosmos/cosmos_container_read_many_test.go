@@ -913,9 +913,9 @@ func TestReadMany_querySpanRecordsErrorOnFailure(t *testing.T) {
 	internalClient, err := azcore.NewClient("azcosmostest", "v1.0.0",
 		azruntime.PipelineOptions{Tracing: azruntime.TracingOptions{Namespace: "Microsoft.DocumentDB"}},
 		&policy.ClientOptions{
-			Transport:      srv,
+			Transport:       srv,
 			TracingProvider: tp,
-			Retry:          policy.RetryOptions{MaxRetries: 0, StatusCodes: []int{}},
+			Retry:           policy.RetryOptions{MaxRetries: 0, StatusCodes: []int{}},
 		})
 	require.NoError(t, err)
 

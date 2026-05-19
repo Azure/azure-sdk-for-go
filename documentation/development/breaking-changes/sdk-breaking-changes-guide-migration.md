@@ -4,16 +4,6 @@ This guide helps you identify, review, and resolve breaking changes specific to 
 
 Breaking changes should be resolved through TypeSpec client and/or configuration customizations. Low-impact breaking changes can be reviewed by Go architects as they may be acceptable.
 
-Each pattern below is documented using the following structure:
-
-- **Changelog Pattern**: The entries that appear in `CHANGELOG.md` when this breaking change occurs.
-- **Spec Pattern** (optional): The TypeSpec definition that produces the changelog pattern.
-- **Breaking**: A concise description of what the breaking change is.
-- **Reason**: The root cause of the breaking change.
-- **Resolution**: How to resolve the breaking change. If it cannot be mitigated through client customizations, this is explicitly noted.
-
-For breaking changes that are accepted into a new major version, an additional **Impact** line records how disruptive the change is for users, and a **Migration Guide** section shows how to update calling code.
-
 ## TypeSpec Configuration Changes
 
 TypeSpec configuration changes should be made in the `tspconfig.yaml` file located in the service's specification directory. This file configures the TypeSpec compiler and client generator options. For example:

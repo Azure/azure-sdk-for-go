@@ -336,16 +336,13 @@ func (f *Client) SetExpiry(ctx context.Context, expiryValues SetExpiryValues, o 
 	if reflect.ValueOf(expiryValues).IsZero() {
 		expiryValues.ExpiryType = SetExpiryTypeNeverExpire
 	}
-	opts := &generated.PathClientSetExpiryOptions{}
+	opts := &generated_blob.BlobClientSetExpiryOptions{}
 	if expiryValues.ExpiryType != SetExpiryTypeNeverExpire {
 		opts.ExpiresOn = &expiryValues.ExpiresOn
 	}
-	// SetExpiry is a blob-endpoint operation; route the request to the blob URL
-	// while reusing the underlying azcore.Client (pipeline) from the DFS path client.
-	blobEndpointPathClient := generated.NewPathClient(f.BlobURL(), f.generatedFileClientWithPath().InternalClient())
-	resp, err := blobEndpointPathClient.SetExpiry(ctx, generated.PathExpiryOptions(expiryValues.ExpiryType), opts)
+	resp, err := f.generatedFileClientWithBlob().SetExpiry(ctx, expiryValues.ExpiryType, opts)
 	err = exported.ConvertToDFSError(err)
-	return generated_blob.BlobClientSetExpiryResponse(resp), err
+	return resp, err
 }
 
 // SetAccessControl sets the owner, owning group, and permissions for a file.

@@ -4,15 +4,13 @@
 
 package generated_blob
 
-import "time"
-
 // BlobClientSetExpiryOptions contains the optional parameters for the BlobClient.SetExpiry method.
 type BlobClientSetExpiryOptions struct {
 	// An opaque, globally-unique, client-generated string identifier for the request.
 	ClientRequestID *string
 
 	// The date-time this blob will expire.
-	ExpiresOn *time.Time
+	ExpiresOn *string
 
 	// The timeout parameter is expressed in seconds. For more information, see <a href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\">Setting
 	// Timeouts for Blob Service Operations.</a>

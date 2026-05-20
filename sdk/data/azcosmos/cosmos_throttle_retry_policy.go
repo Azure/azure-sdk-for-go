@@ -92,9 +92,11 @@ func (p *throttleRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 
 		log.Writef(azlog.EventRetryPolicy, "Cosmos throttle retry attempt %d after %s (cumulative %s)", attemptCount, delay, cumulativeDelay)
 
+		timer := time.NewTimer(delay)
 		select {
-		case <-time.After(delay):
+		case <-timer.C:
 		case <-req.Raw().Context().Done():
+			timer.Stop()
 			return response, req.Raw().Context().Err()
 		}
 	}

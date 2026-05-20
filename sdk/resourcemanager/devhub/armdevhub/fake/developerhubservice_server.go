@@ -25,6 +25,10 @@ type DeveloperHubServiceServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GeneratePreviewArtifacts func(ctx context.Context, location string, parameters armdevhub.ArtifactGenerationProperties, options *armdevhub.DeveloperHubServiceClientGeneratePreviewArtifactsOptions) (resp azfake.Responder[armdevhub.DeveloperHubServiceClientGeneratePreviewArtifactsResponse], errResp azfake.ErrorResponder)
 
+	// GetADOOAuthInfo is the fake for method DeveloperHubServiceClient.GetADOOAuthInfo
+	// HTTP status codes to indicate success: http.StatusOK
+	GetADOOAuthInfo func(ctx context.Context, location string, options *armdevhub.DeveloperHubServiceClientGetADOOAuthInfoOptions) (resp azfake.Responder[armdevhub.DeveloperHubServiceClientGetADOOAuthInfoResponse], errResp azfake.ErrorResponder)
+
 	// GitHubOAuth is the fake for method DeveloperHubServiceClient.GitHubOAuth
 	// HTTP status codes to indicate success: http.StatusOK
 	GitHubOAuth func(ctx context.Context, location string, options *armdevhub.DeveloperHubServiceClientGitHubOAuthOptions) (resp azfake.Responder[armdevhub.DeveloperHubServiceClientGitHubOAuthResponse], errResp azfake.ErrorResponder)
@@ -59,27 +63,48 @@ func (d *DeveloperHubServiceServerTransport) Do(req *http.Request) (*http.Respon
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DeveloperHubServiceClient.GeneratePreviewArtifacts":
-		resp, err = d.dispatchGeneratePreviewArtifacts(req)
-	case "DeveloperHubServiceClient.GitHubOAuth":
-		resp, err = d.dispatchGitHubOAuth(req)
-	case "DeveloperHubServiceClient.GitHubOAuthCallback":
-		resp, err = d.dispatchGitHubOAuthCallback(req)
-	case "DeveloperHubServiceClient.ListGitHubOAuth":
-		resp, err = d.dispatchListGitHubOAuth(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DeveloperHubServiceServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if developerHubServiceServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = developerHubServiceServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DeveloperHubServiceClient.GeneratePreviewArtifacts":
+				res.resp, res.err = d.dispatchGeneratePreviewArtifacts(req)
+			case "DeveloperHubServiceClient.GetADOOAuthInfo":
+				res.resp, res.err = d.dispatchGetADOOAuthInfo(req)
+			case "DeveloperHubServiceClient.GitHubOAuth":
+				res.resp, res.err = d.dispatchGitHubOAuth(req)
+			case "DeveloperHubServiceClient.GitHubOAuthCallback":
+				res.resp, res.err = d.dispatchGitHubOAuthCallback(req)
+			case "DeveloperHubServiceClient.ListGitHubOAuth":
+				res.resp, res.err = d.dispatchListGitHubOAuth(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DeveloperHubServiceServerTransport) dispatchGeneratePreviewArtifacts(req *http.Request) (*http.Response, error) {
@@ -89,7 +114,7 @@ func (d *DeveloperHubServiceServerTransport) dispatchGeneratePreviewArtifacts(re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generatePreviewArtifacts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdevhub.ArtifactGenerationProperties](req)
@@ -115,6 +140,45 @@ func (d *DeveloperHubServiceServerTransport) dispatchGeneratePreviewArtifacts(re
 	return resp, nil
 }
 
+func (d *DeveloperHubServiceServerTransport) dispatchGetADOOAuthInfo(req *http.Request) (*http.Response, error) {
+	if d.srv.GetADOOAuthInfo == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetADOOAuthInfo not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/adooauth/default/getADOOAuthInfo`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdevhub.ADOOAuthCallRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armdevhub.DeveloperHubServiceClientGetADOOAuthInfoOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armdevhub.DeveloperHubServiceClientGetADOOAuthInfoOptions{
+			Parameters: &body,
+		}
+	}
+	respr, errRespr := d.srv.GetADOOAuthInfo(req.Context(), locationParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ADOOAuthInfoResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (d *DeveloperHubServiceServerTransport) dispatchGitHubOAuth(req *http.Request) (*http.Response, error) {
 	if d.srv.GitHubOAuth == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GitHubOAuth not implemented")}
@@ -122,7 +186,7 @@ func (d *DeveloperHubServiceServerTransport) dispatchGitHubOAuth(req *http.Reque
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/githuboauth/default/getGitHubOAuthInfo`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armdevhub.GitHubOAuthCallRequest](req)
@@ -161,7 +225,7 @@ func (d *DeveloperHubServiceServerTransport) dispatchGitHubOAuthCallback(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/githuboauth/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -199,7 +263,7 @@ func (d *DeveloperHubServiceServerTransport) dispatchListGitHubOAuth(req *http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/githuboauth`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -219,4 +283,10 @@ func (d *DeveloperHubServiceServerTransport) dispatchListGitHubOAuth(req *http.R
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DeveloperHubServiceServerTransport
+var developerHubServiceServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

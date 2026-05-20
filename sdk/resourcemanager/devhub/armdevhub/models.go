@@ -22,6 +22,81 @@ type ACR struct {
 	AcrSubscriptionID *string
 }
 
+// ADOOAuth - The properties of ADO OAuth.
+type ADOOAuth struct {
+	// user making request
+	Username *string
+}
+
+// ADOOAuthCallRequest - ADOOAuth request object
+type ADOOAuthCallRequest struct {
+	// The URL the client will redirect to on successful authentication. If empty, no redirect will occur.
+	RedirectURL *string
+}
+
+// ADOOAuthInfoResponse - Response containing ADO OAuth information
+type ADOOAuthInfoResponse struct {
+	// URL used to authorize ADO app using Entra ID
+	AuthURL *string
+
+	// OAuth token used to make calls to ADO APIs
+	Token *string
+}
+
+// ADOOAuthListResponse - The response from List ADOOAuth operation.
+type ADOOAuthListResponse struct {
+	// Singleton list response containing one ADOOAuthResponse
+	Value []*ADOOAuthResponse
+
+	// READ-ONLY; The URL to the next set of ADO OAuth results.
+	NextLink *string
+}
+
+// ADOOAuthResponse - Singleton response of ADO OAuth.
+type ADOOAuthResponse struct {
+	// Details of ADO OAuth.
+	Properties *ADOOAuth
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ADOProviderProfile - Details of the GitHub repository associated with the workflow.
+type ADOProviderProfile struct {
+	// The name of the ARM Service Connection the pipeline is associated with.
+	ArmServiceConnection *string
+
+	// Details of the ADO repository associated with the workflow.
+	Repository *ADORepository
+}
+
+// ADORepository - Details of the ADO repository associated with the workflow.
+type ADORepository struct {
+	// The name of the Azure DevOps organization the pipeline is associated with.
+	AdoOrganization *string
+
+	// The name of the branch the workflow is associated with.
+	BranchName *string
+
+	// The name of the project the pipeline is associated with.
+	ProjectName *string
+
+	// The name of the repository the workflow is associated with.
+	RepositoryName *string
+
+	// The owner of the repository the workflow is associated with.
+	RepositoryOwner *string
+}
+
 // ArtifactGenerationProperties - Properties used for generating artifacts such as Dockerfiles and manifests.
 type ArtifactGenerationProperties struct {
 	// The name of the app.
@@ -64,13 +139,54 @@ type ArtifactGenerationProperties struct {
 	Port *string
 }
 
+// AzurePipelineProfile - Azure Pipeline Profile
+type AzurePipelineProfile struct {
+	// Resource identifier for azure container registry repository associated with the workflow.
+	Acr *string
+
+	// The name of the ARM Service Connection the pipeline is associated with.
+	ArmServiceConnection *string
+
+	// Build details of the repository associated with the workflow.
+	Build *Build
+
+	// The Azure Kubernetes Cluster Resource the application will be deployed to.
+	ClusterID *string
+
+	// Deployment details of the repository associated with the workflow.
+	Deployment      *Deployment
+	LastWorkflowRun *WorkflowRun
+
+	// Kubernetes namespace the application is deployed to.
+	Namespace *string
+
+	// Details of the pull request containing the workflow.
+	PullRequest *PullRequest
+
+	// Details of the ADO repository associated with the workflow.
+	Repository *ADORepository
+
+	// READ-ONLY; Determines the authorization status of requests.
+	AuthStatus *AuthorizationStatus
+}
+
+// Build details of the repository associated with the workflow.
+type Build struct {
+	// Path to Dockerfile Build Context within the repository.
+	DockerBuildContext *string
+
+	// Path to the Dockerfile within the repository.
+	Dockerfile *string
+}
+
 // DeleteWorkflowResponse - delete response if content must be provided on delete operation
 type DeleteWorkflowResponse struct {
 	// delete status message
 	Status *string
 }
 
-type DeploymentProperties struct {
+// Deployment details of the repository associated with the workflow.
+type Deployment struct {
 	// Helm chart directory path in repository.
 	HelmChartPath *string
 
@@ -93,6 +209,12 @@ type ExportTemplateRequest struct {
 
 	// Template Name
 	TemplateName *string
+}
+
+// GenerateVersionedTemplateResponse - Generated template files returned as a map
+type GenerateVersionedTemplateResponse struct {
+	// files returned as a map
+	GeneratedFiles map[string]*string
 }
 
 // GitHubOAuthCallRequest - GitHubOAuth request object
@@ -140,6 +262,27 @@ type GitHubOAuthResponse struct {
 	Type *string
 }
 
+// GitHubProviderProfile - Details of the GitHub repository and credentials associated with the workflow.
+type GitHubProviderProfile struct {
+	// The fields needed for OIDC with GitHub.
+	OidcCredentials *OidcCredentials
+
+	// Details of the GitHub repository associated with the workflow.
+	Repository *GitHubRepository
+}
+
+// GitHubRepository - Details of the GitHub repository associated with the workflow.
+type GitHubRepository struct {
+	// The name of the branch the workflow is associated with.
+	BranchName *string
+
+	// The name of the repository the workflow is associated with.
+	RepositoryName *string
+
+	// The owner of the repository the workflow is associated with.
+	RepositoryOwner *string
+}
+
 // GitHubWorkflowProfile - GitHub Workflow Profile
 type GitHubWorkflowProfile struct {
 	// Information on the azure container registry
@@ -149,8 +292,10 @@ type GitHubWorkflowProfile struct {
 	AksResourceID *string
 
 	// Repository Branch Name
-	BranchName           *string
-	DeploymentProperties *DeploymentProperties
+	BranchName *string
+
+	// Deployment details of the repository associated with the workflow.
+	DeploymentProperties *Deployment
 
 	// Path to Dockerfile Build Context within the repository.
 	DockerBuildContext *string
@@ -282,15 +427,24 @@ type IacTemplateProperties struct {
 	// the source stage of the template
 	InstanceStage *string
 
-	// Determines the authorization status of requests.
-	QuickStartTemplateType *QuickStartTemplateType
-
 	// the source store of the template
 	SourceResourceID *string
 	TemplateDetails  []*IacTemplateDetails
 
 	// Template Name
 	TemplateName *string
+
+	// READ-ONLY; Determines the authorization status of requests.
+	QuickStartTemplateType *QuickStartTemplateType
+}
+
+// OidcCredentials - The fields needed for OIDC with GitHub.
+type OidcCredentials struct {
+	// Azure Application Client ID
+	AzureClientID *string
+
+	// Azure Directory (tenant) ID
+	AzureTenantID *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -342,14 +496,56 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
+// Parameter for the template.
+type Parameter struct {
+	// A reference to a default parameter value or a reference parameter to take the value from.
+	Default *ParameterDefault
+
+	// Description of what the paramater is used for.
+	Description *string
+
+	// The paramater name.
+	Name *string
+
+	// Whether the parameter is required.
+	Required *bool
+
+	// READ-ONLY; The type of the template parameter.
+	ParameterKind *ParameterKind
+
+	// READ-ONLY; The type of the template parameter.
+	ParameterType *ParameterType
+}
+
+// ParameterDefault - A reference to a default parameter value or a reference parameter to take the value from.
+type ParameterDefault struct {
+	// The Parameter to reference a value from.
+	ReferenceParameter *string
+
+	// The default value for this parameter.
+	Value *string
+}
+
 type PrLinkResponse struct {
 	// The link of the pull request.
 	PrLink *string
 }
 
+// PullRequest - Details of the pull request containing the workflow.
+type PullRequest struct {
+	// READ-ONLY; The status of the Pull Request submitted against the users repository.
+	PrStatus *PullRequestStatus
+
+	// READ-ONLY; The URL to the Pull Request submitted against the users repository.
+	PrURL *string
+
+	// READ-ONLY; The number associated with the submitted pull request.
+	PullNumber *int32
+}
+
 type ScaleProperty struct {
 	// Number of the store
-	NumberOfStores *int32
+	NumberOfStore *int32
 
 	// The region of the store
 	Region *string
@@ -359,7 +555,7 @@ type ScaleProperty struct {
 }
 
 type ScaleTemplateRequest struct {
-	ScaleProperties []*ScaleProperty
+	ScaleRequirement []*ScaleProperty
 
 	// Template Name
 	TemplateName *string
@@ -401,6 +597,91 @@ type TagsObject struct {
 	Tags map[string]*string
 }
 
+// Template - Resource representation of a Template
+type Template struct {
+	// Properties of a Template.
+	Properties *TemplateProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+type TemplateListResult struct {
+	// The list of Template.
+	Value []*Template
+
+	// READ-ONLY; The URL to the next set of Template results.
+	NextLink *string
+}
+
+// TemplateProperties - Template properties
+type TemplateProperties struct {
+	// The default version of the template.
+	DefaultVersion *string
+
+	// Description of the template
+	Description *string
+
+	// The name of the template.
+	TemplateName *string
+
+	// The valid versions of the template.
+	Versions []*string
+
+	// READ-ONLY; The type of the template.
+	TemplateType *TemplateType
+}
+
+// TemplateReference - The properties of ADO OAuth.
+type TemplateReference struct {
+	// destination for template creation
+	Destination *string
+
+	// parameters for template creation
+	Parameters map[string]*string
+
+	// The versioned template arm resource id.
+	TemplateID *string
+}
+
+// TemplateWorkflowProfile - Template Workflow Profile
+type TemplateWorkflowProfile struct {
+	// Details of the GitHub repository associated with the workflow.
+	AdoProviderProfile *ADOProviderProfile
+
+	// The properties of ADO OAuth.
+	DeploymentTemplate *TemplateReference
+
+	// The properties of ADO OAuth.
+	DockerfileTemplate *TemplateReference
+
+	// Details of the GitHub repository and credentials associated with the workflow.
+	GitHubProviderProfile *GitHubProviderProfile
+	LastWorkflowRun       *WorkflowRun
+	ManifestTemplates     []*TemplateReference
+
+	// Details of the pull request containing the workflow.
+	PullRequest *PullRequest
+
+	// The status of the Pull Request submitted against the users repository.
+	RepositoryProvider *RepositoryProviderType
+
+	// The properties of ADO OAuth.
+	WorkflowTemplate *TemplateReference
+
+	// READ-ONLY; Determines the authorization status of requests.
+	AuthStatus *AuthorizationStatus
+}
+
 // TerraformProfile - Terraform backend profile.
 type TerraformProfile struct {
 	// Terraform Storage Account Name
@@ -414,6 +695,44 @@ type TerraformProfile struct {
 
 	// Terraform Container Name
 	StorageContainerName *string
+}
+
+// VersionedTemplate - Resource representation of a VersionedTemplate
+type VersionedTemplate struct {
+	// Properties of a VersionedTemplate.
+	Properties *VersionedTemplateProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+type VersionedTemplateListResult struct {
+	// The list of VersionedTemplates.
+	Value []*VersionedTemplate
+
+	// READ-ONLY; The URL to the next set of VersionedTemplate results.
+	NextLink *string
+}
+
+// VersionedTemplateProperties - VersionedTemplate properties
+type VersionedTemplateProperties struct {
+	// The template parameters.
+	Parameters []*Parameter
+
+	// The version of the template.
+	Version *string
+
+	// READ-ONLY; The type of the template.
+	TemplateType *TemplateType
 }
 
 // Workflow - Resource representation of a workflow
@@ -454,19 +773,25 @@ type WorkflowProperties struct {
 	// Properties for generating artifacts like dockerfile and manifests.
 	ArtifactGenerationProperties *ArtifactGenerationProperties
 
+	// Profile of an azure pipeline.
+	AzurePipelineProfile *AzurePipelineProfile
+
 	// Profile of a github workflow.
 	GithubWorkflowProfile *GitHubWorkflowProfile
+
+	// Profile of an template workflow.
+	TemplateWorkflowProfile *TemplateWorkflowProfile
 }
 
 type WorkflowRun struct {
-	// Describes the status of the workflow run
-	WorkflowRunStatus *WorkflowRunStatus
-
 	// READ-ONLY; The timestamp of the last workflow run.
 	LastRunAt *time.Time
 
 	// READ-ONLY; Describes if the workflow run succeeded.
 	Succeeded *bool
+
+	// READ-ONLY; Describes the status of the workflow run
+	WorkflowRunStatus *WorkflowRunStatus
 
 	// READ-ONLY; URL to the run of the workflow.
 	WorkflowRunURL *string

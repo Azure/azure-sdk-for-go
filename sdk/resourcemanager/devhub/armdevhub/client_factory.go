@@ -33,6 +33,14 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewADOOAuthClient creates a new instance of ADOOAuthClient.
+func (c *ClientFactory) NewADOOAuthClient() *ADOOAuthClient {
+	return &ADOOAuthClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDeveloperHubServiceClient creates a new instance of DeveloperHubServiceClient.
 func (c *ClientFactory) NewDeveloperHubServiceClient() *DeveloperHubServiceClient {
 	return &DeveloperHubServiceClient{
@@ -53,6 +61,22 @@ func (c *ClientFactory) NewIacProfilesClient() *IacProfilesClient {
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewTemplateClient creates a new instance of TemplateClient.
+func (c *ClientFactory) NewTemplateClient() *TemplateClient {
+	return &TemplateClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVersionedTemplateClient creates a new instance of VersionedTemplateClient.
+func (c *ClientFactory) NewVersionedTemplateClient() *VersionedTemplateClient {
+	return &VersionedTemplateClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }
 

@@ -5,11 +5,6 @@
 
 package armdevhub
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub"
-	moduleVersion = "v0.6.0"
-)
-
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -207,6 +202,150 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// ParameterKind - The type of the template parameter.
+type ParameterKind string
+
+const (
+	// ParameterKindAzureContainerRegistry - azure container registry name
+	ParameterKindAzureContainerRegistry ParameterKind = "azureContainerRegistry"
+	// ParameterKindAzureKeyvaultURI - azure keyvault uri
+	ParameterKindAzureKeyvaultURI ParameterKind = "azureKeyvaultUri"
+	// ParameterKindAzureManagedCluster - azure managed cluster name
+	ParameterKindAzureManagedCluster ParameterKind = "azureManagedCluster"
+	// ParameterKindAzureResourceGroup - azure resource group
+	ParameterKindAzureResourceGroup ParameterKind = "azureResourceGroup"
+	// ParameterKindAzureServiceConnection - azure service connection
+	ParameterKindAzureServiceConnection ParameterKind = "azureServiceConnection"
+	// ParameterKindClusterResourceType - cluster resource type
+	ParameterKindClusterResourceType ParameterKind = "clusterResourceType"
+	// ParameterKindContainerImageName - container image name
+	ParameterKindContainerImageName ParameterKind = "containerImageName"
+	// ParameterKindContainerImageVersion - container image version
+	ParameterKindContainerImageVersion ParameterKind = "containerImageVersion"
+	// ParameterKindDirPath - directory path
+	ParameterKindDirPath ParameterKind = "dirPath"
+	// ParameterKindDockerFileName - dockerfile name
+	ParameterKindDockerFileName ParameterKind = "dockerFileName"
+	// ParameterKindEnvVarMap - environment variables in the form of a json object
+	ParameterKindEnvVarMap ParameterKind = "envVarMap"
+	// ParameterKindFilePath - file path
+	ParameterKindFilePath ParameterKind = "filePath"
+	// ParameterKindFlag - boolean flag
+	ParameterKindFlag ParameterKind = "flag"
+	// ParameterKindHelmChartOverrides - helm overrides in the form of a string key1=value1,key2=value2
+	ParameterKindHelmChartOverrides ParameterKind = "helmChartOverrides"
+	// ParameterKindImagePullPolicy - kubernetes deployment image pull policy
+	ParameterKindImagePullPolicy ParameterKind = "imagePullPolicy"
+	// ParameterKindIngressHostName - kubernetes ingress host name
+	ParameterKindIngressHostName ParameterKind = "ingressHostName"
+	// ParameterKindKubernetesNamespace - kubernetes namespace
+	ParameterKindKubernetesNamespace ParameterKind = "kubernetesNamespace"
+	// ParameterKindKubernetesProbeDelay - kubernetes probe delay
+	ParameterKindKubernetesProbeDelay ParameterKind = "kubernetesProbeDelay"
+	// ParameterKindKubernetesProbeHTTPPath - kubernetes probe http path
+	ParameterKindKubernetesProbeHTTPPath ParameterKind = "kubernetesProbeHttpPath"
+	// ParameterKindKubernetesProbePeriod - kubernetes probe period
+	ParameterKindKubernetesProbePeriod ParameterKind = "kubernetesProbePeriod"
+	// ParameterKindKubernetesProbeThreshold - kubernetes probe threshold
+	ParameterKindKubernetesProbeThreshold ParameterKind = "kubernetesProbeThreshold"
+	// ParameterKindKubernetesProbeTimeout - kubernetes probe timeout
+	ParameterKindKubernetesProbeTimeout ParameterKind = "kubernetesProbeTimeout"
+	// ParameterKindKubernetesProbeType - kubernetes probe type
+	ParameterKindKubernetesProbeType ParameterKind = "kubernetesProbeType"
+	// ParameterKindKubernetesResourceLimit - kubernetes resource limit
+	ParameterKindKubernetesResourceLimit ParameterKind = "kubernetesResourceLimit"
+	// ParameterKindKubernetesResourceName - kubernetes resource name
+	ParameterKindKubernetesResourceName ParameterKind = "kubernetesResourceName"
+	// ParameterKindKubernetesResourceRequest - kubernetes resource request
+	ParameterKindKubernetesResourceRequest ParameterKind = "kubernetesResourceRequest"
+	// ParameterKindLabel - kubernetes label value
+	ParameterKindLabel ParameterKind = "label"
+	// ParameterKindPort - service port
+	ParameterKindPort ParameterKind = "port"
+	// ParameterKindReplicaCount - kubernetes replica count
+	ParameterKindReplicaCount ParameterKind = "replicaCount"
+	// ParameterKindRepositoryBranch - repository branch name
+	ParameterKindRepositoryBranch ParameterKind = "repositoryBranch"
+	// ParameterKindResourceLimit - kubernetes resource limit
+	ParameterKindResourceLimit ParameterKind = "resourceLimit"
+	// ParameterKindScalingResourceType - kubernetes scaling resource type
+	ParameterKindScalingResourceType ParameterKind = "scalingResourceType"
+	// ParameterKindScalingResourceUtilization - kubernetes resource utilization type
+	ParameterKindScalingResourceUtilization ParameterKind = "scalingResourceUtilization"
+	// ParameterKindWorkflowAuthType - workflow authentication type
+	ParameterKindWorkflowAuthType ParameterKind = "workflowAuthType"
+	// ParameterKindWorkflowName - workflow name
+	ParameterKindWorkflowName ParameterKind = "workflowName"
+)
+
+// PossibleParameterKindValues returns the possible values for the ParameterKind const type.
+func PossibleParameterKindValues() []ParameterKind {
+	return []ParameterKind{
+		ParameterKindAzureContainerRegistry,
+		ParameterKindAzureKeyvaultURI,
+		ParameterKindAzureManagedCluster,
+		ParameterKindAzureResourceGroup,
+		ParameterKindAzureServiceConnection,
+		ParameterKindClusterResourceType,
+		ParameterKindContainerImageName,
+		ParameterKindContainerImageVersion,
+		ParameterKindDirPath,
+		ParameterKindDockerFileName,
+		ParameterKindEnvVarMap,
+		ParameterKindFilePath,
+		ParameterKindFlag,
+		ParameterKindHelmChartOverrides,
+		ParameterKindImagePullPolicy,
+		ParameterKindIngressHostName,
+		ParameterKindKubernetesNamespace,
+		ParameterKindKubernetesProbeDelay,
+		ParameterKindKubernetesProbeHTTPPath,
+		ParameterKindKubernetesProbePeriod,
+		ParameterKindKubernetesProbeThreshold,
+		ParameterKindKubernetesProbeTimeout,
+		ParameterKindKubernetesProbeType,
+		ParameterKindKubernetesResourceLimit,
+		ParameterKindKubernetesResourceName,
+		ParameterKindKubernetesResourceRequest,
+		ParameterKindLabel,
+		ParameterKindPort,
+		ParameterKindReplicaCount,
+		ParameterKindRepositoryBranch,
+		ParameterKindResourceLimit,
+		ParameterKindScalingResourceType,
+		ParameterKindScalingResourceUtilization,
+		ParameterKindWorkflowAuthType,
+		ParameterKindWorkflowName,
+	}
+}
+
+// ParameterType - The type of the template parameter.
+type ParameterType string
+
+const (
+	// ParameterTypeBool - boolean parameter type.
+	ParameterTypeBool ParameterType = "bool"
+	// ParameterTypeFloat - float parameter type.
+	ParameterTypeFloat ParameterType = "float"
+	// ParameterTypeInt - int parameter type.
+	ParameterTypeInt ParameterType = "int"
+	// ParameterTypeObject - object parameter type.
+	ParameterTypeObject ParameterType = "object"
+	// ParameterTypeString - string parameter type.
+	ParameterTypeString ParameterType = "string"
+)
+
+// PossibleParameterTypeValues returns the possible values for the ParameterType const type.
+func PossibleParameterTypeValues() []ParameterType {
+	return []ParameterType{
+		ParameterTypeBool,
+		ParameterTypeFloat,
+		ParameterTypeInt,
+		ParameterTypeObject,
+		ParameterTypeString,
+	}
+}
+
 // PullRequestStatus - The status of the Pull Request submitted against the users repository.
 type PullRequestStatus string
 
@@ -235,8 +374,6 @@ func PossiblePullRequestStatusValues() []PullRequestStatus {
 type QuickStartTemplateType string
 
 const (
-	// QuickStartTemplateTypeALL - The template use quick start template of All supported products
-	QuickStartTemplateTypeALL QuickStartTemplateType = "ALL"
 	// QuickStartTemplateTypeHCI - The template use quick start template of HCI
 	QuickStartTemplateTypeHCI QuickStartTemplateType = "HCI"
 	// QuickStartTemplateTypeHCIAKS - The template use quick start template of HCI and AKS
@@ -250,11 +387,52 @@ const (
 // PossibleQuickStartTemplateTypeValues returns the possible values for the QuickStartTemplateType const type.
 func PossibleQuickStartTemplateTypeValues() []QuickStartTemplateType {
 	return []QuickStartTemplateType{
-		QuickStartTemplateTypeALL,
 		QuickStartTemplateTypeHCI,
 		QuickStartTemplateTypeHCIAKS,
 		QuickStartTemplateTypeHCIARCVM,
 		QuickStartTemplateTypeNone,
+	}
+}
+
+// RepositoryProviderType - The status of the Pull Request submitted against the users repository.
+type RepositoryProviderType string
+
+const (
+	// RepositoryProviderTypeAdo - ADO repository provider type.
+	RepositoryProviderTypeAdo RepositoryProviderType = "ado"
+	// RepositoryProviderTypeGithub - GitHub repository provider type.
+	RepositoryProviderTypeGithub RepositoryProviderType = "github"
+)
+
+// PossibleRepositoryProviderTypeValues returns the possible values for the RepositoryProviderType const type.
+func PossibleRepositoryProviderTypeValues() []RepositoryProviderType {
+	return []RepositoryProviderType{
+		RepositoryProviderTypeAdo,
+		RepositoryProviderTypeGithub,
+	}
+}
+
+// TemplateType - The type of the template.
+type TemplateType string
+
+const (
+	// TemplateTypeDeployment - Deployment template type.
+	TemplateTypeDeployment TemplateType = "deployment"
+	// TemplateTypeDockerfile - Dockerfile template type.
+	TemplateTypeDockerfile TemplateType = "dockerfile"
+	// TemplateTypeManifest - Manifest template type.
+	TemplateTypeManifest TemplateType = "manifest"
+	// TemplateTypeWorkflow - Workflow template type.
+	TemplateTypeWorkflow TemplateType = "workflow"
+)
+
+// PossibleTemplateTypeValues returns the possible values for the TemplateType const type.
+func PossibleTemplateTypeValues() []TemplateType {
+	return []TemplateType{
+		TemplateTypeDeployment,
+		TemplateTypeDockerfile,
+		TemplateTypeManifest,
+		TemplateTypeWorkflow,
 	}
 }
 

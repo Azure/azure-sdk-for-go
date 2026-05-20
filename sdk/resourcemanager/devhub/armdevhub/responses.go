@@ -5,10 +5,28 @@
 
 package armdevhub
 
+// ADOOAuthClientGetResponse contains the response from method ADOOAuthClient.Get.
+type ADOOAuthClientGetResponse struct {
+	// Singleton response of ADO OAuth.
+	ADOOAuthResponse
+}
+
+// ADOOAuthClientListResponse contains the response from method ADOOAuthClient.NewListPager.
+type ADOOAuthClientListResponse struct {
+	// The response from List ADOOAuth operation.
+	ADOOAuthListResponse
+}
+
 // DeveloperHubServiceClientGeneratePreviewArtifactsResponse contains the response from method DeveloperHubServiceClient.GeneratePreviewArtifacts.
 type DeveloperHubServiceClientGeneratePreviewArtifactsResponse struct {
 	// Dockerfile and manifest artifacts generated as a preview are returned as a map<path string,content string>
 	Value map[string]*string
+}
+
+// DeveloperHubServiceClientGetADOOAuthInfoResponse contains the response from method DeveloperHubServiceClient.GetADOOAuthInfo.
+type DeveloperHubServiceClientGetADOOAuthInfoResponse struct {
+	// Response containing ADO OAuth information
+	ADOOAuthInfoResponse
 }
 
 // DeveloperHubServiceClientGitHubOAuthCallbackResponse contains the response from method DeveloperHubServiceClient.GitHubOAuthCallback.
@@ -81,6 +99,34 @@ type IacProfilesClientUpdateTagsResponse struct {
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// TemplateClientGetResponse contains the response from method TemplateClient.Get.
+type TemplateClientGetResponse struct {
+	// Resource representation of a Template
+	Template
+}
+
+// TemplateClientListResponse contains the response from method TemplateClient.NewListPager.
+type TemplateClientListResponse struct {
+	TemplateListResult
+}
+
+// VersionedTemplateClientGenerateResponse contains the response from method VersionedTemplateClient.Generate.
+type VersionedTemplateClientGenerateResponse struct {
+	// Generated template files returned as a map<path string,content string>
+	GenerateVersionedTemplateResponse
+}
+
+// VersionedTemplateClientGetResponse contains the response from method VersionedTemplateClient.Get.
+type VersionedTemplateClientGetResponse struct {
+	// Resource representation of a VersionedTemplate
+	VersionedTemplate
+}
+
+// VersionedTemplateClientListResponse contains the response from method VersionedTemplateClient.NewListPager.
+type VersionedTemplateClientListResponse struct {
+	VersionedTemplateListResult
 }
 
 // WorkflowClientCreateOrUpdateResponse contains the response from method WorkflowClient.CreateOrUpdate.

@@ -5,10 +5,27 @@
 
 package armdevhub
 
+// ADOOAuthClientGetOptions contains the optional parameters for the ADOOAuthClient.Get method.
+type ADOOAuthClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ADOOAuthClientListOptions contains the optional parameters for the ADOOAuthClient.NewListPager method.
+type ADOOAuthClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DeveloperHubServiceClientGeneratePreviewArtifactsOptions contains the optional parameters for the DeveloperHubServiceClient.GeneratePreviewArtifacts
 // method.
 type DeveloperHubServiceClientGeneratePreviewArtifactsOptions struct {
 	// placeholder for future optional parameters
+}
+
+// DeveloperHubServiceClientGetADOOAuthInfoOptions contains the optional parameters for the DeveloperHubServiceClient.GetADOOAuthInfo
+// method.
+type DeveloperHubServiceClientGetADOOAuthInfoOptions struct {
+	// The fields required in ADO OAuth call request.
+	Parameters *ADOOAuthCallRequest
 }
 
 // DeveloperHubServiceClientGitHubOAuthCallbackOptions contains the optional parameters for the DeveloperHubServiceClient.GitHubOAuthCallback
@@ -77,6 +94,31 @@ type IacProfilesClientUpdateTagsOptions struct {
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TemplateClientGetOptions contains the optional parameters for the TemplateClient.Get method.
+type TemplateClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TemplateClientListOptions contains the optional parameters for the TemplateClient.NewListPager method.
+type TemplateClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VersionedTemplateClientGenerateOptions contains the optional parameters for the VersionedTemplateClient.Generate method.
+type VersionedTemplateClientGenerateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VersionedTemplateClientGetOptions contains the optional parameters for the VersionedTemplateClient.Get method.
+type VersionedTemplateClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VersionedTemplateClientListOptions contains the optional parameters for the VersionedTemplateClient.NewListPager method.
+type VersionedTemplateClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

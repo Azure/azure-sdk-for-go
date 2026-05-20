@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/0a227a224a4d9160fce352ba99145e8b5fc108d8/specification/developerhub/resource-manager/Microsoft.DevHub/DeveloperHub/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/0a227a224a4d9160fce352ba99145e8b5fc108d8/specification/developerhub/resource-manager/Microsoft.DevHub/DeveloperHub/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.6.0
-tag: package-preview-2024-05
+module-version: 0.7.0
+tag: package-preview-2025-03
 ```

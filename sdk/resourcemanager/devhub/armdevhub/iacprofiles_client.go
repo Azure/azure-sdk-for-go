@@ -27,7 +27,7 @@ type IacProfilesClient struct {
 // NewIacProfilesClient creates a new instance of IacProfilesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIacProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IacProfilesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewIacProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 // CreateOrUpdate - Creates or updates a IacProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - iacProfileName - The name of the IacProfile.
 //   - options - IacProfilesClientCreateOrUpdateOptions contains the optional parameters for the IacProfilesClient.CreateOrUpdate
@@ -71,7 +71,7 @@ func (client *IacProfilesClient) CreateOrUpdate(ctx context.Context, resourceGro
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IacProfilesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters IacProfile, options *IacProfilesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IacProfilesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters IacProfile, _ *IacProfilesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,7 +90,7 @@ func (client *IacProfilesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -111,7 +111,7 @@ func (client *IacProfilesClient) createOrUpdateHandleResponse(resp *http.Respons
 // Delete - Deletes a IacProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - iacProfileName - The name of the IacProfile.
 //   - options - IacProfilesClientDeleteOptions contains the optional parameters for the IacProfilesClient.Delete method.
@@ -137,7 +137,7 @@ func (client *IacProfilesClient) Delete(ctx context.Context, resourceGroupName s
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IacProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, options *IacProfilesClientDeleteOptions) (*policy.Request, error) {
+func (client *IacProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, _ *IacProfilesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -156,7 +156,7 @@ func (client *IacProfilesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -165,7 +165,7 @@ func (client *IacProfilesClient) deleteCreateRequest(ctx context.Context, resour
 // Export - Export a template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - iacProfileName - The name of the IacProfile.
 //   - options - IacProfilesClientExportOptions contains the optional parameters for the IacProfilesClient.Export method.
@@ -192,7 +192,7 @@ func (client *IacProfilesClient) Export(ctx context.Context, resourceGroupName s
 }
 
 // exportCreateRequest creates the Export request.
-func (client *IacProfilesClient) exportCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters ExportTemplateRequest, options *IacProfilesClientExportOptions) (*policy.Request, error) {
+func (client *IacProfilesClient) exportCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters ExportTemplateRequest, _ *IacProfilesClientExportOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}/export"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -211,7 +211,7 @@ func (client *IacProfilesClient) exportCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -232,7 +232,7 @@ func (client *IacProfilesClient) exportHandleResponse(resp *http.Response) (IacP
 // Get - Gets a IacProfile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - iacProfileName - The name of the IacProfile.
 //   - options - IacProfilesClientGetOptions contains the optional parameters for the IacProfilesClient.Get method.
@@ -259,7 +259,7 @@ func (client *IacProfilesClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *IacProfilesClient) getCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, options *IacProfilesClientGetOptions) (*policy.Request, error) {
+func (client *IacProfilesClient) getCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, _ *IacProfilesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -278,7 +278,7 @@ func (client *IacProfilesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -295,7 +295,7 @@ func (client *IacProfilesClient) getHandleResponse(resp *http.Response) (IacProf
 
 // NewListPager - Gets a list of IacProfiles associated with the specified subscription.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-03-01-preview
 //   - options - IacProfilesClientListOptions contains the optional parameters for the IacProfilesClient.NewListPager method.
 func (client *IacProfilesClient) NewListPager(options *IacProfilesClientListOptions) *runtime.Pager[IacProfilesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IacProfilesClientListResponse]{
@@ -321,7 +321,7 @@ func (client *IacProfilesClient) NewListPager(options *IacProfilesClientListOpti
 }
 
 // listCreateRequest creates the List request.
-func (client *IacProfilesClient) listCreateRequest(ctx context.Context, options *IacProfilesClientListOptions) (*policy.Request, error) {
+func (client *IacProfilesClient) listCreateRequest(ctx context.Context, _ *IacProfilesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/iacProfiles"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -332,7 +332,7 @@ func (client *IacProfilesClient) listCreateRequest(ctx context.Context, options 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -349,7 +349,7 @@ func (client *IacProfilesClient) listHandleResponse(resp *http.Response) (IacPro
 
 // NewListByResourceGroupPager - Gets a list of iacProfiles within a resource group.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - IacProfilesClientListByResourceGroupOptions contains the optional parameters for the IacProfilesClient.NewListByResourceGroupPager
 //     method.
@@ -377,7 +377,7 @@ func (client *IacProfilesClient) NewListByResourceGroupPager(resourceGroupName s
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *IacProfilesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *IacProfilesClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *IacProfilesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *IacProfilesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -392,7 +392,7 @@ func (client *IacProfilesClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -410,7 +410,7 @@ func (client *IacProfilesClient) listByResourceGroupHandleResponse(resp *http.Re
 // Scale - Scale by template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - iacProfileName - The name of the IacProfile.
 //   - options - IacProfilesClientScaleOptions contains the optional parameters for the IacProfilesClient.Scale method.
@@ -437,7 +437,7 @@ func (client *IacProfilesClient) Scale(ctx context.Context, resourceGroupName st
 }
 
 // scaleCreateRequest creates the Scale request.
-func (client *IacProfilesClient) scaleCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters ScaleTemplateRequest, options *IacProfilesClientScaleOptions) (*policy.Request, error) {
+func (client *IacProfilesClient) scaleCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters ScaleTemplateRequest, _ *IacProfilesClientScaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}/scale"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -456,7 +456,7 @@ func (client *IacProfilesClient) scaleCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -477,7 +477,7 @@ func (client *IacProfilesClient) scaleHandleResponse(resp *http.Response) (IacPr
 // Sync - Sync template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - iacProfileName - The name of the IacProfile.
 //   - options - IacProfilesClientSyncOptions contains the optional parameters for the IacProfilesClient.Sync method.
@@ -503,7 +503,7 @@ func (client *IacProfilesClient) Sync(ctx context.Context, resourceGroupName str
 }
 
 // syncCreateRequest creates the Sync request.
-func (client *IacProfilesClient) syncCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, options *IacProfilesClientSyncOptions) (*policy.Request, error) {
+func (client *IacProfilesClient) syncCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, _ *IacProfilesClientSyncOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}/sync"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -522,7 +522,7 @@ func (client *IacProfilesClient) syncCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -531,7 +531,7 @@ func (client *IacProfilesClient) syncCreateRequest(ctx context.Context, resource
 // UpdateTags - Updates tags on a IacProfile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - iacProfileName - The name of the IacProfile.
 //   - parameters - Parameters supplied to the Update TagsObject Tags operation.
@@ -559,7 +559,7 @@ func (client *IacProfilesClient) UpdateTags(ctx context.Context, resourceGroupNa
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *IacProfilesClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters TagsObject, options *IacProfilesClientUpdateTagsOptions) (*policy.Request, error) {
+func (client *IacProfilesClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters TagsObject, _ *IacProfilesClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -578,7 +578,7 @@ func (client *IacProfilesClient) updateTagsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -16,10 +16,26 @@ import (
 
 // ServerFactory is a fake server for instances of the armdevhub.ClientFactory type.
 type ServerFactory struct {
+	// ADOOAuthServer contains the fakes for client ADOOAuthClient
+	ADOOAuthServer ADOOAuthServer
+
+	// DeveloperHubServiceServer contains the fakes for client DeveloperHubServiceClient
 	DeveloperHubServiceServer DeveloperHubServiceServer
-	IacProfilesServer         IacProfilesServer
-	OperationsServer          OperationsServer
-	WorkflowServer            WorkflowServer
+
+	// IacProfilesServer contains the fakes for client IacProfilesClient
+	IacProfilesServer IacProfilesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// TemplateServer contains the fakes for client TemplateClient
+	TemplateServer TemplateServer
+
+	// VersionedTemplateServer contains the fakes for client VersionedTemplateClient
+	VersionedTemplateServer VersionedTemplateServer
+
+	// WorkflowServer contains the fakes for client WorkflowClient
+	WorkflowServer WorkflowServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -36,9 +52,12 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                         *ServerFactory
 	trMu                        sync.Mutex
+	trADOOAuthServer            *ADOOAuthServerTransport
 	trDeveloperHubServiceServer *DeveloperHubServiceServerTransport
 	trIacProfilesServer         *IacProfilesServerTransport
 	trOperationsServer          *OperationsServerTransport
+	trTemplateServer            *TemplateServerTransport
+	trVersionedTemplateServer   *VersionedTemplateServerTransport
 	trWorkflowServer            *WorkflowServerTransport
 }
 
@@ -55,6 +74,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ADOOAuthClient":
+		initServer(s, &s.trADOOAuthServer, func() *ADOOAuthServerTransport { return NewADOOAuthServerTransport(&s.srv.ADOOAuthServer) })
+		resp, err = s.trADOOAuthServer.Do(req)
 	case "DeveloperHubServiceClient":
 		initServer(s, &s.trDeveloperHubServiceServer, func() *DeveloperHubServiceServerTransport {
 			return NewDeveloperHubServiceServerTransport(&s.srv.DeveloperHubServiceServer)
@@ -66,6 +88,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "TemplateClient":
+		initServer(s, &s.trTemplateServer, func() *TemplateServerTransport { return NewTemplateServerTransport(&s.srv.TemplateServer) })
+		resp, err = s.trTemplateServer.Do(req)
+	case "VersionedTemplateClient":
+		initServer(s, &s.trVersionedTemplateServer, func() *VersionedTemplateServerTransport {
+			return NewVersionedTemplateServerTransport(&s.srv.VersionedTemplateServer)
+		})
+		resp, err = s.trVersionedTemplateServer.Do(req)
 	case "WorkflowClient":
 		initServer(s, &s.trWorkflowServer, func() *WorkflowServerTransport { return NewWorkflowServerTransport(&s.srv.WorkflowServer) })
 		resp, err = s.trWorkflowServer.Do(req)

@@ -46,15 +46,6 @@ type Capacity struct {
 	ScaleType *IotHubScaleType
 }
 
-// CertificateBodyDescription - The JSON-serialized X509 Certificate.
-type CertificateBodyDescription struct {
-	// base-64 representation of the X509 leaf certificate .cer file or just .pem file content.
-	Certificate *string
-
-	// True indicates that the certificate will be created in verified state and proof of possession will not be required.
-	IsVerified *bool
-}
-
 // CertificateDescription - The X509 Certificate.
 type CertificateDescription struct {
 	// The description of an X509 CA Certificate.
@@ -63,13 +54,16 @@ type CertificateDescription struct {
 	// READ-ONLY; The entity tag.
 	Etag *string
 
-	// READ-ONLY; The resource identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the certificate.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -91,10 +85,10 @@ type CertificateProperties struct {
 	PolicyResourceID *string
 
 	// READ-ONLY; The certificate's create date and time.
-	Created *time.Time
+	Created *string
 
 	// READ-ONLY; The certificate's expiration date and time.
-	Expiry *time.Time
+	Expiry *string
 
 	// READ-ONLY; The certificate's subject name.
 	Subject *string
@@ -103,7 +97,7 @@ type CertificateProperties struct {
 	Thumbprint *string
 
 	// READ-ONLY; The certificate's last update date and time.
-	Updated *time.Time
+	Updated *string
 }
 
 // CertificatePropertiesWithNonce - The description of an X509 CA Certificate including the challenge nonce issued for the
@@ -116,10 +110,10 @@ type CertificatePropertiesWithNonce struct {
 	Certificate *string
 
 	// READ-ONLY; The certificate's create date and time.
-	Created *time.Time
+	Created *string
 
 	// READ-ONLY; The certificate's expiration date and time.
-	Expiry *time.Time
+	Expiry *string
 
 	// READ-ONLY; Determines whether certificate has been verified.
 	IsVerified *bool
@@ -131,7 +125,7 @@ type CertificatePropertiesWithNonce struct {
 	Thumbprint *string
 
 	// READ-ONLY; The certificate's last update date and time.
-	Updated *time.Time
+	Updated *string
 
 	// READ-ONLY; The certificate's verification code that will be used for proof of possession.
 	VerificationCode *string
@@ -175,7 +169,7 @@ type CloudToDeviceProperties struct {
 
 // Description - The description of the IoT hub.
 type Description struct {
-	// REQUIRED; The resource location.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// REQUIRED; IotHub SKU info
@@ -191,29 +185,35 @@ type Description struct {
 	// IotHub properties
 	Properties *Properties
 
-	// The resource tags.
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The resource identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The resource type.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// DescriptionListResult - The JSON-serialized array of IotHubDescription objects with a next link.
+// DescriptionListResult - The response of a IotHubDescription list operation.
 type DescriptionListResult struct {
-	// The array of IotHubDescription objects.
+	// REQUIRED; The IotHubDescription items on this page
 	Value []*Description
 
-	// READ-ONLY; The next link.
+	// The link to the next page of items
 	NextLink *string
+}
+
+// Details - Set of additional read-only properties for the IoT hub.
+type Details struct {
+	// The IoT hub Gateway version.
+	GatewayVersion *GatewayVersion
 }
 
 // DeviceRegistry - Represents properties related to the Azure Device Registry (ADR).
@@ -253,21 +253,21 @@ type EndpointHealthData struct {
 	LastKnownError *string
 
 	// Time at which the last known error occurred
-	LastKnownErrorTime *time.Time
+	LastKnownErrorTime *string
 
 	// Last time iot hub tried to send a message to the endpoint
-	LastSendAttemptTime *time.Time
+	LastSendAttemptTime *string
 
 	// Last time iot hub successfully sent a message to the endpoint
-	LastSuccessfulSendAttemptTime *time.Time
+	LastSuccessfulSendAttemptTime *string
 }
 
 // EndpointHealthDataListResult - The JSON-serialized array of EndpointHealthData objects with a next link.
 type EndpointHealthDataListResult struct {
-	// JSON-serialized array of Endpoint health data
+	// REQUIRED; The EndpointHealthData items on this page
 	Value []*EndpointHealthData
 
-	// READ-ONLY; Link to more results
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -312,13 +312,16 @@ type EventHubConsumerGroupInfo struct {
 	// READ-ONLY; The etag.
 	Etag *string
 
-	// READ-ONLY; The Event Hub-compatible consumer group identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The Event Hub-compatible consumer group name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; the resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -328,12 +331,12 @@ type EventHubConsumerGroupName struct {
 	Name *string
 }
 
-// EventHubConsumerGroupsListResult - The JSON-serialized array of Event Hub-compatible consumer group names with a next link.
+// EventHubConsumerGroupsListResult - The JSON-serialized list of consumer groups for the Event Hub-compatible endpoint.
 type EventHubConsumerGroupsListResult struct {
-	// List of consumer groups objects
+	// REQUIRED; The EventHubConsumerGroupInfo items on this page
 	Value []*EventHubConsumerGroupInfo
 
-	// READ-ONLY; The next link.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -491,7 +494,7 @@ type ImportDevicesRequest struct {
 // JobResponse - The properties of the Job Response object.
 type JobResponse struct {
 	// READ-ONLY; The time the job stopped processing.
-	EndTimeUTC *time.Time
+	EndTimeUTC *string
 
 	// READ-ONLY; If status == failed, this string containing the reason for the failure.
 	FailureReason *string
@@ -503,7 +506,7 @@ type JobResponse struct {
 	ParentJobID *string
 
 	// READ-ONLY; The start time of the job.
-	StartTimeUTC *time.Time
+	StartTimeUTC *string
 
 	// READ-ONLY; The status of the job.
 	Status *JobStatus
@@ -517,10 +520,10 @@ type JobResponse struct {
 
 // JobResponseListResult - The JSON-serialized array of JobResponse objects with a next link.
 type JobResponseListResult struct {
-	// The array of JobResponse objects.
+	// REQUIRED; The JobResponse items on this page
 	Value []*JobResponse
 
-	// READ-ONLY; The next link.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -664,13 +667,16 @@ type PrivateEndpointConnection struct {
 	// REQUIRED; The properties of a private endpoint connection
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; The resource identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -783,14 +789,23 @@ type Properties struct {
 	// is set to True, causes an error to be thrown.
 	StorageEndpoints map[string]*StorageEndpointProperties
 
+	// READ-ONLY; The name of the device host. Supports secure connections over TLS 1.3.
+	DeviceHostName *string
+
 	// READ-ONLY; The name of the host.
 	HostName *string
+
+	// READ-ONLY; Set of additional read-only properties for the IoT hub.
+	IotHubDetails *Details
 
 	// READ-ONLY; Primary and secondary location for iot hub
 	Locations []*LocationDescription
 
 	// READ-ONLY; The provisioning state.
 	ProvisioningState *string
+
+	// READ-ONLY; The name of the service host. Supports secure connections over TLS 1.3.
+	ServiceHostName *string
 
 	// READ-ONLY; The hub state.
 	State *string
@@ -800,6 +815,22 @@ type Properties struct {
 type PropertiesDeviceStreams struct {
 	// List of Device Streams Endpoints.
 	StreamingEndpoints []*string
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // QuotaMetricInfo - Quota metrics properties.
@@ -816,10 +847,10 @@ type QuotaMetricInfo struct {
 
 // QuotaMetricInfoListResult - The JSON-serialized array of IotHubQuotaMetricInfo objects with a next link.
 type QuotaMetricInfoListResult struct {
-	// The array of quota metrics objects.
+	// REQUIRED; The IotHubQuotaMetricInfo items on this page
 	Value []*QuotaMetricInfo
 
-	// READ-ONLY; The next link.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -835,21 +866,18 @@ type RegistryStatistics struct {
 	TotalDeviceCount *int64
 }
 
-// Resource - The common properties of an Azure resource.
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// REQUIRED; The resource location.
-	Location *string
-
-	// The resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; The resource identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1192,10 +1220,10 @@ type SKUDescription struct {
 
 // SKUDescriptionListResult - The JSON-serialized array of IotHubSkuDescription objects with a next link.
 type SKUDescriptionListResult struct {
-	// The array of IotHubSkuDescription.
+	// REQUIRED; The IotHubSkuDescription items on this page
 	Value []*SKUDescription
 
-	// READ-ONLY; The next link.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -1228,10 +1256,10 @@ type SharedAccessSignatureAuthorizationRule struct {
 
 // SharedAccessSignatureAuthorizationRuleListResult - The list of shared access policies with a next link.
 type SharedAccessSignatureAuthorizationRuleListResult struct {
-	// The list of shared access policies.
+	// REQUIRED; The SharedAccessSignatureAuthorizationRule items on this page
 	Value []*SharedAccessSignatureAuthorizationRule
 
-	// READ-ONLY; The next link.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -1327,6 +1355,28 @@ type TestRouteResultDetails struct {
 	CompilationErrors []*RouteCompilationError
 }
 
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // UserSubscriptionQuota - User subscription quota response
 type UserSubscriptionQuota struct {
 	// Current number of IotHub type
@@ -1350,8 +1400,9 @@ type UserSubscriptionQuota struct {
 
 // UserSubscriptionQuotaListResult - Json-serialized array of User subscription quota response
 type UserSubscriptionQuotaListResult struct {
+	// The UserSubscriptionQuota items on this page
 	Value []*UserSubscriptionQuota
 
-	// READ-ONLY
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }

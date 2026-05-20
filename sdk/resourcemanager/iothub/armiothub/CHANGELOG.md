@@ -1,5 +1,38 @@
 # Release History
 
+## 1.4.0-beta.2 (2026-05-20)
+### Breaking Changes
+
+- Function `*Client.BeginManualFailover` parameter(s) have been changed from `(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions)` to `(ctx context.Context, resourceGroupName string, iotHubName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions)`
+- Function `*ResourceClient.TestAllRoutes` parameter(s) have been changed from `(ctx context.Context, iotHubName string, resourceGroupName string, input TestAllRoutesInput, options *ResourceClientTestAllRoutesOptions)` to `(ctx context.Context, resourceGroupName string, iotHubName string, input TestAllRoutesInput, options *ResourceClientTestAllRoutesOptions)`
+- Function `*ResourceClient.TestRoute` parameter(s) have been changed from `(ctx context.Context, iotHubName string, resourceGroupName string, input TestRouteInput, options *ResourceClientTestRouteOptions)` to `(ctx context.Context, resourceGroupName string, iotHubName string, input TestRouteInput, options *ResourceClientTestRouteOptions)`
+- Type of `CertificateProperties.Created` has been changed from `*time.Time` to `*string`
+- Type of `CertificateProperties.Expiry` has been changed from `*time.Time` to `*string`
+- Type of `CertificateProperties.Updated` has been changed from `*time.Time` to `*string`
+- Type of `CertificatePropertiesWithNonce.Created` has been changed from `*time.Time` to `*string`
+- Type of `CertificatePropertiesWithNonce.Expiry` has been changed from `*time.Time` to `*string`
+- Type of `CertificatePropertiesWithNonce.Updated` has been changed from `*time.Time` to `*string`
+- Type of `EndpointHealthData.LastKnownErrorTime` has been changed from `*time.Time` to `*string`
+- Type of `EndpointHealthData.LastSendAttemptTime` has been changed from `*time.Time` to `*string`
+- Type of `EndpointHealthData.LastSuccessfulSendAttemptTime` has been changed from `*time.Time` to `*string`
+- Type of `JobResponse.EndTimeUTC` has been changed from `*time.Time` to `*string`
+- Type of `JobResponse.StartTimeUTC` has been changed from `*time.Time` to `*string`
+- Struct `CertificateBodyDescription` has been removed
+- Field `Location`, `Tags` of struct `Resource` has been removed
+
+### Features Added
+
+- New enum type `GatewayVersion` with values `GatewayVersionV1`, `GatewayVersionV2`
+- New struct `Details`
+- New struct `ProxyResource`
+- New struct `TrackedResource`
+- New field `SystemData` in struct `CertificateDescription`
+- New field `SystemData` in struct `EventHubConsumerGroupInfo`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `DeviceHostName`, `IotHubDetails`, `ServiceHostName` in struct `Properties`
+- New field `SystemData` in struct `Resource`
+
+
 ## 1.4.0-beta.1 (2025-11-11)
 ### Features Added
 

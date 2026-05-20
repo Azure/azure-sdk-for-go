@@ -103,11 +103,11 @@ type ResourceServer struct {
 
 	// TestAllRoutes is the fake for method ResourceClient.TestAllRoutes
 	// HTTP status codes to indicate success: http.StatusOK
-	TestAllRoutes func(ctx context.Context, iotHubName string, resourceGroupName string, input armiothub.TestAllRoutesInput, options *armiothub.ResourceClientTestAllRoutesOptions) (resp azfake.Responder[armiothub.ResourceClientTestAllRoutesResponse], errResp azfake.ErrorResponder)
+	TestAllRoutes func(ctx context.Context, resourceGroupName string, iotHubName string, input armiothub.TestAllRoutesInput, options *armiothub.ResourceClientTestAllRoutesOptions) (resp azfake.Responder[armiothub.ResourceClientTestAllRoutesResponse], errResp azfake.ErrorResponder)
 
 	// TestRoute is the fake for method ResourceClient.TestRoute
 	// HTTP status codes to indicate success: http.StatusOK
-	TestRoute func(ctx context.Context, iotHubName string, resourceGroupName string, input armiothub.TestRouteInput, options *armiothub.ResourceClientTestRouteOptions) (resp azfake.Responder[armiothub.ResourceClientTestRouteResponse], errResp azfake.ErrorResponder)
+	TestRoute func(ctx context.Context, resourceGroupName string, iotHubName string, input armiothub.TestRouteInput, options *armiothub.ResourceClientTestRouteOptions) (resp azfake.Responder[armiothub.ResourceClientTestRouteResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method ResourceClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -1042,15 +1042,15 @@ func (r *ResourceServerTransport) dispatchTestAllRoutes(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	iotHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("iotHubName")])
-	if err != nil {
-		return nil, err
-	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.TestAllRoutes(req.Context(), iotHubNameParam, resourceGroupNameParam, body, nil)
+	iotHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("iotHubName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.TestAllRoutes(req.Context(), resourceGroupNameParam, iotHubNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1079,15 +1079,15 @@ func (r *ResourceServerTransport) dispatchTestRoute(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	iotHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("iotHubName")])
-	if err != nil {
-		return nil, err
-	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.TestRoute(req.Context(), iotHubNameParam, resourceGroupNameParam, body, nil)
+	iotHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("iotHubName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.TestRoute(req.Context(), resourceGroupNameParam, iotHubNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

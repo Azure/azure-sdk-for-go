@@ -22,7 +22,7 @@ import (
 type Server struct {
 	// BeginManualFailover is the fake for method Client.BeginManualFailover
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginManualFailover func(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput armiothub.FailoverInput, options *armiothub.ClientBeginManualFailoverOptions) (resp azfake.PollerResponder[armiothub.ClientManualFailoverResponse], errResp azfake.ErrorResponder)
+	BeginManualFailover func(ctx context.Context, resourceGroupName string, iotHubName string, failoverInput armiothub.FailoverInput, options *armiothub.ClientBeginManualFailoverOptions) (resp azfake.PollerResponder[armiothub.ClientManualFailoverResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -102,15 +102,15 @@ func (s *ServerTransport) dispatchBeginManualFailover(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		iotHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("iotHubName")])
-		if err != nil {
-			return nil, err
-		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginManualFailover(req.Context(), iotHubNameParam, resourceGroupNameParam, body, nil)
+		iotHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("iotHubName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginManualFailover(req.Context(), resourceGroupNameParam, iotHubNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

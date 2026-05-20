@@ -9,21 +9,36 @@ package armiothub
 type AccessRights string
 
 const (
-	AccessRightsDeviceConnect                                        AccessRights = "DeviceConnect"
-	AccessRightsRegistryRead                                         AccessRights = "RegistryRead"
-	AccessRightsRegistryReadDeviceConnect                            AccessRights = "RegistryRead, DeviceConnect"
-	AccessRightsRegistryReadRegistryWrite                            AccessRights = "RegistryRead, RegistryWrite"
-	AccessRightsRegistryReadRegistryWriteDeviceConnect               AccessRights = "RegistryRead, RegistryWrite, DeviceConnect"
-	AccessRightsRegistryReadRegistryWriteServiceConnect              AccessRights = "RegistryRead, RegistryWrite, ServiceConnect"
+	// AccessRightsDeviceConnect - DeviceConnect
+	AccessRightsDeviceConnect AccessRights = "DeviceConnect"
+	// AccessRightsRegistryRead - RegistryRead
+	AccessRightsRegistryRead AccessRights = "RegistryRead"
+	// AccessRightsRegistryReadDeviceConnect - RegistryRead, DeviceConnect
+	AccessRightsRegistryReadDeviceConnect AccessRights = "RegistryRead, DeviceConnect"
+	// AccessRightsRegistryReadRegistryWrite - RegistryRead, RegistryWrite
+	AccessRightsRegistryReadRegistryWrite AccessRights = "RegistryRead, RegistryWrite"
+	// AccessRightsRegistryReadRegistryWriteDeviceConnect - RegistryRead, RegistryWrite, DeviceConnect
+	AccessRightsRegistryReadRegistryWriteDeviceConnect AccessRights = "RegistryRead, RegistryWrite, DeviceConnect"
+	// AccessRightsRegistryReadRegistryWriteServiceConnect - RegistryRead, RegistryWrite, ServiceConnect
+	AccessRightsRegistryReadRegistryWriteServiceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect"
+	// AccessRightsRegistryReadRegistryWriteServiceConnectDeviceConnect - RegistryRead, RegistryWrite, ServiceConnect, DeviceConnect
 	AccessRightsRegistryReadRegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect, DeviceConnect"
-	AccessRightsRegistryReadServiceConnect                           AccessRights = "RegistryRead, ServiceConnect"
-	AccessRightsRegistryReadServiceConnectDeviceConnect              AccessRights = "RegistryRead, ServiceConnect, DeviceConnect"
-	AccessRightsRegistryWrite                                        AccessRights = "RegistryWrite"
-	AccessRightsRegistryWriteDeviceConnect                           AccessRights = "RegistryWrite, DeviceConnect"
-	AccessRightsRegistryWriteServiceConnect                          AccessRights = "RegistryWrite, ServiceConnect"
-	AccessRightsRegistryWriteServiceConnectDeviceConnect             AccessRights = "RegistryWrite, ServiceConnect, DeviceConnect"
-	AccessRightsServiceConnect                                       AccessRights = "ServiceConnect"
-	AccessRightsServiceConnectDeviceConnect                          AccessRights = "ServiceConnect, DeviceConnect"
+	// AccessRightsRegistryReadServiceConnect - RegistryRead, ServiceConnect
+	AccessRightsRegistryReadServiceConnect AccessRights = "RegistryRead, ServiceConnect"
+	// AccessRightsRegistryReadServiceConnectDeviceConnect - RegistryRead, ServiceConnect, DeviceConnect
+	AccessRightsRegistryReadServiceConnectDeviceConnect AccessRights = "RegistryRead, ServiceConnect, DeviceConnect"
+	// AccessRightsRegistryWrite - RegistryWrite
+	AccessRightsRegistryWrite AccessRights = "RegistryWrite"
+	// AccessRightsRegistryWriteDeviceConnect - RegistryWrite, DeviceConnect
+	AccessRightsRegistryWriteDeviceConnect AccessRights = "RegistryWrite, DeviceConnect"
+	// AccessRightsRegistryWriteServiceConnect - RegistryWrite, ServiceConnect
+	AccessRightsRegistryWriteServiceConnect AccessRights = "RegistryWrite, ServiceConnect"
+	// AccessRightsRegistryWriteServiceConnectDeviceConnect - RegistryWrite, ServiceConnect, DeviceConnect
+	AccessRightsRegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryWrite, ServiceConnect, DeviceConnect"
+	// AccessRightsServiceConnect - ServiceConnect
+	AccessRightsServiceConnect AccessRights = "ServiceConnect"
+	// AccessRightsServiceConnectDeviceConnect - ServiceConnect, DeviceConnect
+	AccessRightsServiceConnectDeviceConnect AccessRights = "ServiceConnect, DeviceConnect"
 )
 
 // PossibleAccessRightsValues returns the possible values for the AccessRights const type.
@@ -51,8 +66,10 @@ func PossibleAccessRightsValues() []AccessRights {
 type AuthenticationType string
 
 const (
+	// AuthenticationTypeIdentityBased - identityBased
 	AuthenticationTypeIdentityBased AuthenticationType = "identityBased"
-	AuthenticationTypeKeyBased      AuthenticationType = "keyBased"
+	// AuthenticationTypeKeyBased - keyBased
+	AuthenticationTypeKeyBased AuthenticationType = "keyBased"
 )
 
 // PossibleAuthenticationTypeValues returns the possible values for the AuthenticationType const type.
@@ -67,8 +84,10 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 type Capabilities string
 
 const (
+	// CapabilitiesDeviceManagement - DeviceManagement
 	CapabilitiesDeviceManagement Capabilities = "DeviceManagement"
-	CapabilitiesNone             Capabilities = "None"
+	// CapabilitiesNone - None
+	CapabilitiesNone Capabilities = "None"
 )
 
 // PossibleCapabilitiesValues returns the possible values for the Capabilities const type.
@@ -103,8 +122,10 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DefaultAction string
 
 const (
+	// DefaultActionAllow - Allow
 	DefaultActionAllow DefaultAction = "Allow"
-	DefaultActionDeny  DefaultAction = "Deny"
+	// DefaultActionDeny - Deny
+	DefaultActionDeny DefaultAction = "Deny"
 )
 
 // PossibleDefaultActionValues returns the possible values for the DefaultAction const type.
@@ -126,11 +147,16 @@ func PossibleDefaultActionValues() []DefaultAction {
 type EndpointHealthStatus string
 
 const (
-	EndpointHealthStatusDead      EndpointHealthStatus = "dead"
-	EndpointHealthStatusDegraded  EndpointHealthStatus = "degraded"
-	EndpointHealthStatusHealthy   EndpointHealthStatus = "healthy"
+	// EndpointHealthStatusDead - dead
+	EndpointHealthStatusDead EndpointHealthStatus = "dead"
+	// EndpointHealthStatusDegraded - degraded
+	EndpointHealthStatusDegraded EndpointHealthStatus = "degraded"
+	// EndpointHealthStatusHealthy - healthy
+	EndpointHealthStatusHealthy EndpointHealthStatus = "healthy"
+	// EndpointHealthStatusUnhealthy - unhealthy
 	EndpointHealthStatusUnhealthy EndpointHealthStatus = "unhealthy"
-	EndpointHealthStatusUnknown   EndpointHealthStatus = "unknown"
+	// EndpointHealthStatusUnknown - unknown
+	EndpointHealthStatusUnknown EndpointHealthStatus = "unknown"
 )
 
 // PossibleEndpointHealthStatusValues returns the possible values for the EndpointHealthStatus const type.
@@ -144,11 +170,31 @@ func PossibleEndpointHealthStatusValues() []EndpointHealthStatus {
 	}
 }
 
+// GatewayVersion - The IoT hub Gateway version.
+type GatewayVersion string
+
+const (
+	// GatewayVersionV1 - V1
+	GatewayVersionV1 GatewayVersion = "V1"
+	// GatewayVersionV2 - V2
+	GatewayVersionV2 GatewayVersion = "V2"
+)
+
+// PossibleGatewayVersionValues returns the possible values for the GatewayVersion const type.
+func PossibleGatewayVersionValues() []GatewayVersion {
+	return []GatewayVersion{
+		GatewayVersionV1,
+		GatewayVersionV2,
+	}
+}
+
 // IPFilterActionType - The desired action for requests captured by this rule.
 type IPFilterActionType string
 
 const (
+	// IPFilterActionTypeAccept - Accept
 	IPFilterActionTypeAccept IPFilterActionType = "Accept"
+	// IPFilterActionTypeReject - Reject
 	IPFilterActionTypeReject IPFilterActionType = "Reject"
 )
 
@@ -164,9 +210,12 @@ func PossibleIPFilterActionTypeValues() []IPFilterActionType {
 type IPVersion string
 
 const (
-	IPVersionIPv4     IPVersion = "ipv4"
+	// IPVersionIPv4 - ipv4
+	IPVersionIPv4 IPVersion = "ipv4"
+	// IPVersionIPv4IPv6 - ipv4ipv6
 	IPVersionIPv4IPv6 IPVersion = "ipv4ipv6"
-	IPVersionIPv6     IPVersion = "ipv6"
+	// IPVersionIPv6 - ipv6
+	IPVersionIPv6 IPVersion = "ipv6"
 )
 
 // PossibleIPVersionValues returns the possible values for the IPVersion const type.
@@ -182,8 +231,10 @@ func PossibleIPVersionValues() []IPVersion {
 type IotHubNameUnavailabilityReason string
 
 const (
+	// IotHubNameUnavailabilityReasonAlreadyExists - AlreadyExists
 	IotHubNameUnavailabilityReasonAlreadyExists IotHubNameUnavailabilityReason = "AlreadyExists"
-	IotHubNameUnavailabilityReasonInvalid       IotHubNameUnavailabilityReason = "Invalid"
+	// IotHubNameUnavailabilityReasonInvalid - Invalid
+	IotHubNameUnavailabilityReasonInvalid IotHubNameUnavailabilityReason = "Invalid"
 )
 
 // PossibleIotHubNameUnavailabilityReasonValues returns the possible values for the IotHubNameUnavailabilityReason const type.
@@ -200,7 +251,9 @@ func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityRe
 type IotHubReplicaRoleType string
 
 const (
-	IotHubReplicaRoleTypePrimary   IotHubReplicaRoleType = "primary"
+	// IotHubReplicaRoleTypePrimary - primary
+	IotHubReplicaRoleTypePrimary IotHubReplicaRoleType = "primary"
+	// IotHubReplicaRoleTypeSecondary - secondary
 	IotHubReplicaRoleTypeSecondary IotHubReplicaRoleType = "secondary"
 )
 
@@ -216,14 +269,22 @@ func PossibleIotHubReplicaRoleTypeValues() []IotHubReplicaRoleType {
 type IotHubSKU string
 
 const (
-	IotHubSKUB1   IotHubSKU = "B1"
-	IotHubSKUB2   IotHubSKU = "B2"
-	IotHubSKUB3   IotHubSKU = "B3"
-	IotHubSKUF1   IotHubSKU = "F1"
+	// IotHubSKUB1 - B1
+	IotHubSKUB1 IotHubSKU = "B1"
+	// IotHubSKUB2 - B2
+	IotHubSKUB2 IotHubSKU = "B2"
+	// IotHubSKUB3 - B3
+	IotHubSKUB3 IotHubSKU = "B3"
+	// IotHubSKUF1 - F1
+	IotHubSKUF1 IotHubSKU = "F1"
+	// IotHubSKUGEN2 - GEN2
 	IotHubSKUGEN2 IotHubSKU = "GEN2"
-	IotHubSKUS1   IotHubSKU = "S1"
-	IotHubSKUS2   IotHubSKU = "S2"
-	IotHubSKUS3   IotHubSKU = "S3"
+	// IotHubSKUS1 - S1
+	IotHubSKUS1 IotHubSKU = "S1"
+	// IotHubSKUS2 - S2
+	IotHubSKUS2 IotHubSKU = "S2"
+	// IotHubSKUS3 - S3
+	IotHubSKUS3 IotHubSKU = "S3"
 )
 
 // PossibleIotHubSKUValues returns the possible values for the IotHubSKU const type.
@@ -244,10 +305,14 @@ func PossibleIotHubSKUValues() []IotHubSKU {
 type IotHubSKUTier string
 
 const (
-	IotHubSKUTierBasic       IotHubSKUTier = "Basic"
-	IotHubSKUTierFree        IotHubSKUTier = "Free"
+	// IotHubSKUTierBasic - Basic
+	IotHubSKUTierBasic IotHubSKUTier = "Basic"
+	// IotHubSKUTierFree - Free
+	IotHubSKUTierFree IotHubSKUTier = "Free"
+	// IotHubSKUTierGeneration2 - Generation2
 	IotHubSKUTierGeneration2 IotHubSKUTier = "Generation2"
-	IotHubSKUTierStandard    IotHubSKUTier = "Standard"
+	// IotHubSKUTierStandard - Standard
+	IotHubSKUTierStandard IotHubSKUTier = "Standard"
 )
 
 // PossibleIotHubSKUTierValues returns the possible values for the IotHubSKUTier const type.
@@ -264,9 +329,12 @@ func PossibleIotHubSKUTierValues() []IotHubSKUTier {
 type IotHubScaleType string
 
 const (
+	// IotHubScaleTypeAutomatic - Automatic
 	IotHubScaleTypeAutomatic IotHubScaleType = "Automatic"
-	IotHubScaleTypeManual    IotHubScaleType = "Manual"
-	IotHubScaleTypeNone      IotHubScaleType = "None"
+	// IotHubScaleTypeManual - Manual
+	IotHubScaleTypeManual IotHubScaleType = "Manual"
+	// IotHubScaleTypeNone - None
+	IotHubScaleTypeNone IotHubScaleType = "None"
 )
 
 // PossibleIotHubScaleTypeValues returns the possible values for the IotHubScaleType const type.
@@ -282,12 +350,18 @@ func PossibleIotHubScaleTypeValues() []IotHubScaleType {
 type JobStatus string
 
 const (
+	// JobStatusCancelled - cancelled
 	JobStatusCancelled JobStatus = "cancelled"
+	// JobStatusCompleted - completed
 	JobStatusCompleted JobStatus = "completed"
-	JobStatusEnqueued  JobStatus = "enqueued"
-	JobStatusFailed    JobStatus = "failed"
-	JobStatusRunning   JobStatus = "running"
-	JobStatusUnknown   JobStatus = "unknown"
+	// JobStatusEnqueued - enqueued
+	JobStatusEnqueued JobStatus = "enqueued"
+	// JobStatusFailed - failed
+	JobStatusFailed JobStatus = "failed"
+	// JobStatusRunning - running
+	JobStatusRunning JobStatus = "running"
+	// JobStatusUnknown - unknown
+	JobStatusUnknown JobStatus = "unknown"
 )
 
 // PossibleJobStatusValues returns the possible values for the JobStatus const type.
@@ -306,16 +380,26 @@ func PossibleJobStatusValues() []JobStatus {
 type JobType string
 
 const (
-	JobTypeBackup                    JobType = "backup"
-	JobTypeExport                    JobType = "export"
-	JobTypeFactoryResetDevice        JobType = "factoryResetDevice"
-	JobTypeFirmwareUpdate            JobType = "firmwareUpdate"
-	JobTypeImport                    JobType = "import"
-	JobTypeReadDeviceProperties      JobType = "readDeviceProperties"
-	JobTypeRebootDevice              JobType = "rebootDevice"
-	JobTypeUnknown                   JobType = "unknown"
+	// JobTypeBackup - backup
+	JobTypeBackup JobType = "backup"
+	// JobTypeExport - export
+	JobTypeExport JobType = "export"
+	// JobTypeFactoryResetDevice - factoryResetDevice
+	JobTypeFactoryResetDevice JobType = "factoryResetDevice"
+	// JobTypeFirmwareUpdate - firmwareUpdate
+	JobTypeFirmwareUpdate JobType = "firmwareUpdate"
+	// JobTypeImport - import
+	JobTypeImport JobType = "import"
+	// JobTypeReadDeviceProperties - readDeviceProperties
+	JobTypeReadDeviceProperties JobType = "readDeviceProperties"
+	// JobTypeRebootDevice - rebootDevice
+	JobTypeRebootDevice JobType = "rebootDevice"
+	// JobTypeUnknown - unknown
+	JobTypeUnknown JobType = "unknown"
+	// JobTypeUpdateDeviceConfiguration - updateDeviceConfiguration
 	JobTypeUpdateDeviceConfiguration JobType = "updateDeviceConfiguration"
-	JobTypeWriteDeviceProperties     JobType = "writeDeviceProperties"
+	// JobTypeWriteDeviceProperties - writeDeviceProperties
+	JobTypeWriteDeviceProperties JobType = "writeDeviceProperties"
 )
 
 // PossibleJobTypeValues returns the possible values for the JobType const type.
@@ -338,6 +422,7 @@ func PossibleJobTypeValues() []JobType {
 type NetworkRuleIPAction string
 
 const (
+	// NetworkRuleIPActionAllow - Allow
 	NetworkRuleIPActionAllow NetworkRuleIPAction = "Allow"
 )
 
@@ -352,10 +437,14 @@ func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 type PrivateLinkServiceConnectionStatus string
 
 const (
-	PrivateLinkServiceConnectionStatusApproved     PrivateLinkServiceConnectionStatus = "Approved"
+	// PrivateLinkServiceConnectionStatusApproved - Approved
+	PrivateLinkServiceConnectionStatusApproved PrivateLinkServiceConnectionStatus = "Approved"
+	// PrivateLinkServiceConnectionStatusDisconnected - Disconnected
 	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = "Disconnected"
-	PrivateLinkServiceConnectionStatusPending      PrivateLinkServiceConnectionStatus = "Pending"
-	PrivateLinkServiceConnectionStatusRejected     PrivateLinkServiceConnectionStatus = "Rejected"
+	// PrivateLinkServiceConnectionStatusPending - Pending
+	PrivateLinkServiceConnectionStatusPending PrivateLinkServiceConnectionStatus = "Pending"
+	// PrivateLinkServiceConnectionStatusRejected - Rejected
+	PrivateLinkServiceConnectionStatusRejected PrivateLinkServiceConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateLinkServiceConnectionStatusValues returns the possible values for the PrivateLinkServiceConnectionStatus const type.
@@ -372,8 +461,10 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 type PublicNetworkAccess string
 
 const (
+	// PublicNetworkAccessDisabled - Disabled
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	// PublicNetworkAccessEnabled - Enabled
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -390,10 +481,14 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 type ResourceIdentityType string
 
 const (
-	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
-	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
+	// ResourceIdentityTypeNone - None
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
+	// ResourceIdentityTypeSystemAssigned - SystemAssigned
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
+	// ResourceIdentityTypeSystemAssignedUserAssigned - SystemAssigned, UserAssigned
 	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
-	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
+	// ResourceIdentityTypeUserAssigned - UserAssigned
+	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
@@ -410,7 +505,9 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type RouteErrorSeverity string
 
 const (
-	RouteErrorSeverityError   RouteErrorSeverity = "error"
+	// RouteErrorSeverityError - error
+	RouteErrorSeverityError RouteErrorSeverity = "error"
+	// RouteErrorSeverityWarning - warning
 	RouteErrorSeverityWarning RouteErrorSeverity = "warning"
 )
 
@@ -426,14 +523,22 @@ func PossibleRouteErrorSeverityValues() []RouteErrorSeverity {
 type RoutingSource string
 
 const (
+	// RoutingSourceDeviceConnectionStateEvents - DeviceConnectionStateEvents
 	RoutingSourceDeviceConnectionStateEvents RoutingSource = "DeviceConnectionStateEvents"
-	RoutingSourceDeviceJobLifecycleEvents    RoutingSource = "DeviceJobLifecycleEvents"
-	RoutingSourceDeviceLifecycleEvents       RoutingSource = "DeviceLifecycleEvents"
-	RoutingSourceDeviceMessages              RoutingSource = "DeviceMessages"
-	RoutingSourceDigitalTwinChangeEvents     RoutingSource = "DigitalTwinChangeEvents"
-	RoutingSourceInvalid                     RoutingSource = "Invalid"
-	RoutingSourceMqttBrokerMessages          RoutingSource = "MqttBrokerMessages"
-	RoutingSourceTwinChangeEvents            RoutingSource = "TwinChangeEvents"
+	// RoutingSourceDeviceJobLifecycleEvents - DeviceJobLifecycleEvents
+	RoutingSourceDeviceJobLifecycleEvents RoutingSource = "DeviceJobLifecycleEvents"
+	// RoutingSourceDeviceLifecycleEvents - DeviceLifecycleEvents
+	RoutingSourceDeviceLifecycleEvents RoutingSource = "DeviceLifecycleEvents"
+	// RoutingSourceDeviceMessages - DeviceMessages
+	RoutingSourceDeviceMessages RoutingSource = "DeviceMessages"
+	// RoutingSourceDigitalTwinChangeEvents - DigitalTwinChangeEvents
+	RoutingSourceDigitalTwinChangeEvents RoutingSource = "DigitalTwinChangeEvents"
+	// RoutingSourceInvalid - Invalid
+	RoutingSourceInvalid RoutingSource = "Invalid"
+	// RoutingSourceMqttBrokerMessages - MqttBrokerMessages
+	RoutingSourceMqttBrokerMessages RoutingSource = "MqttBrokerMessages"
+	// RoutingSourceTwinChangeEvents - TwinChangeEvents
+	RoutingSourceTwinChangeEvents RoutingSource = "TwinChangeEvents"
 )
 
 // PossibleRoutingSourceValues returns the possible values for the RoutingSource const type.
@@ -455,9 +560,12 @@ func PossibleRoutingSourceValues() []RoutingSource {
 type RoutingStorageContainerPropertiesEncoding string
 
 const (
-	RoutingStorageContainerPropertiesEncodingAvro        RoutingStorageContainerPropertiesEncoding = "Avro"
+	// RoutingStorageContainerPropertiesEncodingAvro - Avro
+	RoutingStorageContainerPropertiesEncodingAvro RoutingStorageContainerPropertiesEncoding = "Avro"
+	// RoutingStorageContainerPropertiesEncodingAvroDeflate - AvroDeflate
 	RoutingStorageContainerPropertiesEncodingAvroDeflate RoutingStorageContainerPropertiesEncoding = "AvroDeflate"
-	RoutingStorageContainerPropertiesEncodingJSON        RoutingStorageContainerPropertiesEncoding = "JSON"
+	// RoutingStorageContainerPropertiesEncodingJSON - JSON
+	RoutingStorageContainerPropertiesEncodingJSON RoutingStorageContainerPropertiesEncoding = "JSON"
 )
 
 // PossibleRoutingStorageContainerPropertiesEncodingValues returns the possible values for the RoutingStorageContainerPropertiesEncoding const type.
@@ -473,8 +581,11 @@ func PossibleRoutingStorageContainerPropertiesEncodingValues() []RoutingStorageC
 type TestResultStatus string
 
 const (
-	TestResultStatusFalse     TestResultStatus = "false"
-	TestResultStatusTrue      TestResultStatus = "true"
+	// TestResultStatusFalse - false
+	TestResultStatusFalse TestResultStatus = "false"
+	// TestResultStatusTrue - true
+	TestResultStatusTrue TestResultStatus = "true"
+	// TestResultStatusUndefined - undefined
 	TestResultStatusUndefined TestResultStatus = "undefined"
 )
 

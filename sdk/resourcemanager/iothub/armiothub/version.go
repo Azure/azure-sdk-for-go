@@ -6,5 +6,5 @@ package armiothub
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub"
-	moduleVersion = "v1.4.0-beta.1"
+	moduleVersion = "v1.4.0-beta.2"
 )

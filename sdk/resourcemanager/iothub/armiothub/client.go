@@ -25,7 +25,7 @@ type Client struct {
 }
 
 // NewClient creates a new instance of Client with the specified values.
-//   - subscriptionID - The subscription identifier.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
@@ -43,20 +43,20 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // BeginManualFailover - Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-08-01-preview
-//   - iotHubName - Name of the IoT hub to failover
-//   - resourceGroupName - Name of the resource group containing the IoT hub resource
+// Generated from API version 2026-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - failoverInput - Region to failover to. Must be the Azure paired region. Get the value from the secondary location in the
 //     locations property. To learn more, see https://aka.ms/manualfailover/region
 //   - options - ClientBeginManualFailoverOptions contains the optional parameters for the Client.BeginManualFailover method.
-func (client *Client) BeginManualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*runtime.Poller[ClientManualFailoverResponse], error) {
+func (client *Client) BeginManualFailover(ctx context.Context, resourceGroupName string, iotHubName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*runtime.Poller[ClientManualFailoverResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.manualFailover(ctx, iotHubName, resourceGroupName, failoverInput, options)
+		resp, err := client.manualFailover(ctx, resourceGroupName, iotHubName, failoverInput, options)
 		if err != nil {
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientManualFailoverResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -69,14 +69,14 @@ func (client *Client) BeginManualFailover(ctx context.Context, iotHubName string
 // ManualFailover - Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-08-01-preview
-func (client *Client) manualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*http.Response, error) {
+// Generated from API version 2026-03-01-preview
+func (client *Client) manualFailover(ctx context.Context, resourceGroupName string, iotHubName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginManualFailover"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.manualFailoverCreateRequest(ctx, iotHubName, resourceGroupName, failoverInput, options)
+	req, err := client.manualFailoverCreateRequest(ctx, resourceGroupName, iotHubName, failoverInput, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,12 +92,8 @@ func (client *Client) manualFailover(ctx context.Context, iotHubName string, res
 }
 
 // manualFailoverCreateRequest creates the ManualFailover request.
-func (client *Client) manualFailoverCreateRequest(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, _ *ClientBeginManualFailoverOptions) (*policy.Request, error) {
+func (client *Client) manualFailoverCreateRequest(ctx context.Context, resourceGroupName string, iotHubName string, failoverInput FailoverInput, _ *ClientBeginManualFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/failover"
-	if iotHubName == "" {
-		return nil, errors.New("parameter iotHubName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{iotHubName}", url.PathEscape(iotHubName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -106,12 +102,16 @@ func (client *Client) manualFailoverCreateRequest(ctx context.Context, iotHubNam
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if iotHubName == "" {
+		return nil, errors.New("parameter iotHubName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{iotHubName}", url.PathEscape(iotHubName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, failoverInput); err != nil {

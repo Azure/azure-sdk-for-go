@@ -25,7 +25,7 @@ type ResourceProviderCommonClient struct {
 }
 
 // NewResourceProviderCommonClient creates a new instance of ResourceProviderCommonClient with the specified values.
-//   - subscriptionID - The subscription identifier.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewResourceProviderCommonClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceProviderCommonClient, error) {
@@ -43,7 +43,7 @@ func NewResourceProviderCommonClient(subscriptionID string, credential azcore.To
 // GetSubscriptionQuota - Get the number of free and paid iot hubs in the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-08-01-preview
+// Generated from API version 2026-03-01-preview
 //   - options - ResourceProviderCommonClientGetSubscriptionQuotaOptions contains the optional parameters for the ResourceProviderCommonClient.GetSubscriptionQuota
 //     method.
 func (client *ResourceProviderCommonClient) GetSubscriptionQuota(ctx context.Context, options *ResourceProviderCommonClientGetSubscriptionQuotaOptions) (ResourceProviderCommonClientGetSubscriptionQuotaResponse, error) {
@@ -80,7 +80,7 @@ func (client *ResourceProviderCommonClient) getSubscriptionQuotaCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01-preview")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

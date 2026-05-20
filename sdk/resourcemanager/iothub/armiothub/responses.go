@@ -66,7 +66,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 
 // PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
 type PrivateEndpointConnectionsClientListResponse struct {
-	// The list of private endpoint connections for an IotHub
+	// Array of PrivateEndpointConnection
 	PrivateEndpointConnectionArray []*PrivateEndpointConnection
 }
 
@@ -179,19 +179,19 @@ type ResourceClientImportDevicesResponse struct {
 
 // ResourceClientListByResourceGroupResponse contains the response from method ResourceClient.NewListByResourceGroupPager.
 type ResourceClientListByResourceGroupResponse struct {
-	// The JSON-serialized array of IotHubDescription objects with a next link.
+	// The response of a IotHubDescription list operation.
 	DescriptionListResult
 }
 
 // ResourceClientListBySubscriptionResponse contains the response from method ResourceClient.NewListBySubscriptionPager.
 type ResourceClientListBySubscriptionResponse struct {
-	// The JSON-serialized array of IotHubDescription objects with a next link.
+	// The response of a IotHubDescription list operation.
 	DescriptionListResult
 }
 
 // ResourceClientListEventHubConsumerGroupsResponse contains the response from method ResourceClient.NewListEventHubConsumerGroupsPager.
 type ResourceClientListEventHubConsumerGroupsResponse struct {
-	// The JSON-serialized array of Event Hub-compatible consumer group names with a next link.
+	// The JSON-serialized list of consumer groups for the Event Hub-compatible endpoint.
 	EventHubConsumerGroupsListResult
 }
 

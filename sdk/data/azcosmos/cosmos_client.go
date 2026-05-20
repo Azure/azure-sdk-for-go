@@ -197,6 +197,7 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 			},
 			PerRetry: []policy.Policy{
 				authPolicy,
+				newThrottleRetryPolicy(&options.ThrottlingRetryOptions),
 				&clientRetryPolicy{gem: gem},
 			},
 			Tracing: azruntime.TracingOptions{

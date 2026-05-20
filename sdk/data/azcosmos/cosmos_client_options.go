@@ -4,6 +4,8 @@
 package azcosmos
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -25,4 +27,24 @@ type ClientOptions struct {
 	// The valid range is 1 to 5 (inclusive).
 	// Can be overridden per-request via the operation options.
 	ThroughputBucket *int32
+	// ThrottlingRetryOptions configures how the client retries requests that fail with
+	// HTTP 429 (Too Many Requests). When unset, defaults consistent with the other
+	// Cosmos SDKs are used (9 attempts, 30s cumulative wait).
+	ThrottlingRetryOptions ThrottlingRetryOptions
+}
+
+// ThrottlingRetryOptions configures the retry behavior for HTTP 429
+// (Too Many Requests) responses. The Cosmos service indicates the recommended
+// retry delay via the x-ms-retry-after-ms response header; the client respects
+// that value subject to the limits in this struct.
+type ThrottlingRetryOptions struct {
+	// MaxRetryAttempts is the maximum number of times the client will retry a
+	// throttled request. The default is 9. Set to a negative value to disable
+	// throttling retries.
+	MaxRetryAttempts int
+	// MaxRetryWaitTime is the maximum cumulative time the client will spend
+	// waiting between throttled retries for a single request. Once this budget
+	// is exhausted, the most recent 429 response is returned to the caller.
+	// The default is 30 seconds.
+	MaxRetryWaitTime time.Duration
 }

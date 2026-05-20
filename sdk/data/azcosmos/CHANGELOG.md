@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added a dedicated 429 (Too Many Requests) throttling retry policy that honors the `x-ms-retry-after-ms` response header and is configurable via `ClientOptions.ThrottlingRetryOptions` (`MaxRetryAttempts`, `MaxRetryWaitTime`). This brings parity with the throttling retry behavior in the .NET, Java, and Python Cosmos SDKs.
+
 ### Breaking Changes
 
 ### Bugs Fixed

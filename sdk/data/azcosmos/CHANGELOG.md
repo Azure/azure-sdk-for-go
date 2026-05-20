@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-* Set the default HTTP client connect (dial) timeout to 5 seconds (down from the azcore default of 30 seconds) and the default end-to-end request timeout to 65 seconds (the azcore default was unbounded). The 65-second timeout applies to the entire HTTP round-trip, including response-body streaming. Increased the default idle connection pool size to 1000 total / 1000 per host (up from the azcore defaults of 100 / 10) to better support high-concurrency workloads against the Cosmos gateway. Callers that supply a custom `Transport` via `azcore.ClientOptions` are unaffected.
+* Set the default HTTP client connect (dial) timeout to 5 seconds (down from the azcore default of 30 seconds) and the default request timeout to 65 seconds (the azcore default was unbounded). The 65-second timeout applies to the entire HTTP round-trip, including response-body streaming. Increased the default idle connection pool size to 1000 total / 1000 per host (up from the azcore defaults of 100 / 10) to better support high-concurrency workloads against the Cosmos gateway. Callers that supply a custom `Transport` via `azcore.ClientOptions` are unaffected. See [PR 2](https://github.com/tvaron3/azure-sdk-for-go/pull/2).
 
 ## 1.5.0-beta.6 (2026-05-15)
 

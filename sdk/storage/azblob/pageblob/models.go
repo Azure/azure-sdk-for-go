@@ -68,12 +68,13 @@ func (o *CreateOptions) format() *generated.PageBlobClientCreateOptions {
 		return nil
 	}
 
+	// TODO: commented out fields tracked in https://github.com/Azure/azure-sdk-for-go/issues/26857
 	opts := &generated.PageBlobClientCreateOptions{
-		BlobSequenceNumber:       o.SequenceNumber,
-		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
-		Metadata:                 o.Metadata,
-		Tier:                     o.Tier,
-		ImmutabilityPolicyExpiry: shared.ConvertToGMT(o.ImmutabilityPolicyExpiry),
+		BlobSequenceNumber: o.SequenceNumber,
+		BlobTagsString:     shared.SerializeBlobTagsToStrPtr(o.Tags),
+		Metadata:           o.Metadata,
+		Tier:               o.Tier,
+		//ImmutabilityPolicyExpiry: shared.ConvertToGMT(o.ImmutabilityPolicyExpiry),
 		//ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
 		LegalHold: o.LegalHold,
 	}

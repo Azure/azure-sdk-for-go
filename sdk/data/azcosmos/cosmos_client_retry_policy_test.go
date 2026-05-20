@@ -849,6 +849,58 @@ func TestReadServerError_MixedWith503(t *testing.T) {
 	assert.True(t, verifier.requests[0].retryContext.retryCount == 2)
 }
 
+// TestReadServerError_SingleReadEndpoint verifies that when the location cache has
+// only one resolved read endpoint, the cross-region retry is skipped because failing
+// over would just hit the same endpoint as the in-region retry. This covers
+// single-region accounts and the case where preferred locations resolve to only one
+// available read endpoint.
+func TestReadServerError_SingleReadEndpoint(t *testing.T) {
+	srv, closeFunc := mock.NewTLSServer()
+	defer closeFunc()
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	assert.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	lc := CreateMockLC(*defaultEndpoint, false)
+	// Simulate a single-region account: only one resolved read endpoint, even though
+	// the caller provided multiple preferred locations.
+	lc.locationInfo.readEndpoints = []url.URL{*defaultEndpoint}
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{"East US", "Central US"},
+		locationCache:       lc,
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := clientRetryPolicyVerifier{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+
+	// Two 5xx responses queued: the in-region retry consumes the second one and
+	// fails. The cross-region retry must NOT fire because readEndpoints has length 1.
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	assert.Error(t, err)
+	assert.Equal(t, 1, verifier.requests[0].retryContext.serverErrorRetryCount)
+	assert.Equal(t, 0, verifier.requests[0].retryContext.retryCount)
+	assert.Equal(t, 0, verifier.requests[0].retryContext.preferredLocationIndex)
+}
+
 func TestDnsErrorRetry(t *testing.T) {
 	srv, closeFunc := mock.NewTLSServer()
 	defer closeFunc()
@@ -904,12 +956,16 @@ func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
 	availableReadEndpointsByLoc := map[string]url.URL{}
 	dereferencedEndpoint := defaultEndpoint
 
+	writeEndpoints := make([]url.URL, 0, len(availableWriteLocs))
 	for _, value := range availableWriteLocs {
 		availableWriteEndpointsByLoc[value] = defaultEndpoint
+		writeEndpoints = append(writeEndpoints, dereferencedEndpoint)
 	}
 
+	readEndpoints := make([]url.URL, 0, len(availableReadLocs))
 	for _, value := range availableReadLocs {
 		availableReadEndpointsByLoc[value] = defaultEndpoint
+		readEndpoints = append(readEndpoints, dereferencedEndpoint)
 	}
 
 	dbAccountLocationInfo := &databaseAccountLocationsInfo{
@@ -918,8 +974,8 @@ func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
 		availReadLocations:            availableReadLocs,
 		availWriteEndpointsByLocation: availableWriteEndpointsByLoc,
 		availReadEndpointsByLocation:  availableReadEndpointsByLoc,
-		writeEndpoints:                []url.URL{dereferencedEndpoint},
-		readEndpoints:                 []url.URL{dereferencedEndpoint},
+		writeEndpoints:                writeEndpoints,
+		readEndpoints:                 readEndpoints,
 	}
 
 	return &locationCache{

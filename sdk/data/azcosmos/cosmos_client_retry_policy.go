@@ -211,8 +211,10 @@ func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(isWriteOperation bo
 // the other Cosmos SDKs (.NET, Python, Java), only read operations are retried. The
 // retry budget is one in-region retry followed by one cross-region retry, after which
 // the error is surfaced to the caller. The cross-region retry is only attempted when
-// cross-region retries are enabled and a preferred location is available to fail over
-// to. The returned inRegion flag tells the caller whether to keep targeting the current
+// cross-region retries are enabled, a preferred location is available to fail over to,
+// and the location cache has resolved more than one read endpoint - otherwise the
+// "cross-region" retry would just hit the same endpoint as the in-region retry. The
+// returned inRegion flag tells the caller whether to keep targeting the current
 // endpoint (true) or to advance to the next preferred region (false).
 func (p *clientRetryPolicy) attemptRetryOnServerError(isWriteOperation bool, retryContext *retryContext) (shouldRetry bool, inRegion bool) {
 	if isWriteOperation {
@@ -226,6 +228,9 @@ func (p *clientRetryPolicy) attemptRetryOnServerError(isWriteOperation bool, ret
 		return true, true
 	}
 	if !p.gem.locationCache.enableCrossRegionRetries || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
+		return false, false
+	}
+	if len(p.gem.locationCache.locationInfo.readEndpoints) <= 1 {
 		return false, false
 	}
 	retryContext.serverErrorRetryCount += 1

@@ -381,7 +381,7 @@ func (c *ContainerClient) refreshPKRangeCache(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
-		_, err = c.database.client.getPKRangeCache().forceRefresh(ctx, containerRID, c.link, c.database.client)
+		_, err = c.database.client.getPKRangeCache().forceRefresh(ctx, containerRID, c.link, c.database.client, nil)
 		if err != nil {
 			return err
 		}

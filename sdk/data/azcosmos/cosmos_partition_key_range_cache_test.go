@@ -247,7 +247,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_success(t *testing.T) {
 	client.caches.pkRangeCache.mu.Unlock()
 
 	// forceRefresh should do incremental refresh
-	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(rm.orderedRanges))
 	require.Equal(t, "", rm.orderedRanges[0].MinInclusive)
@@ -282,7 +282,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_304_immediate(t *testing.T) 
 	client.caches.pkRangeCache.entries["testRID"] = entry
 	client.caches.pkRangeCache.mu.Unlock()
 
-	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
 	require.NoError(t, err)
 	// Ranges should be preserved
 	require.Equal(t, 2, len(rm.orderedRanges))
@@ -347,7 +347,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_mergeFailure_fullRefresh(t *
 	client.caches.pkRangeCache.entries["testRID"] = entry
 	client.caches.pkRangeCache.mu.Unlock()
 
-	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
 	require.NoError(t, err)
 	// Should have the 3 ranges from full refresh
 	require.Equal(t, 3, len(rm.orderedRanges))
@@ -383,7 +383,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_contextCancelled(t *testing.
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 
-	_, err := client.caches.pkRangeCache.forceRefresh(ctx, "testRID", "dbs/db1/colls/col1", client)
+	_, err := client.caches.pkRangeCache.forceRefresh(ctx, "testRID", "dbs/db1/colls/col1", client, nil)
 	require.Error(t, err)
 	require.ErrorIs(t, err, context.Canceled)
 
@@ -689,7 +689,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_emptyPagesBeforeData(t *test
 	require.Equal(t, 1, len(rm.orderedRanges))
 
 	// Trigger incremental refresh
-	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
 	require.NoError(t, err)
 
 	// Should have 2 ranges after split (parent "0" filtered)
@@ -766,7 +766,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_cascadingSplitAcrossPages(t 
 	require.Equal(t, "0", rm.orderedRanges[0].ID)
 
 	// Trigger incremental refresh via forceRefresh
-	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
 	require.NoError(t, err)
 
 	// Final state should have 2 ranges: "1" and "2" (parent "0" filtered)
@@ -781,4 +781,433 @@ func Test_partitionKeyRangeCache_incrementalRefresh_cascadingSplitAcrossPages(t 
 
 	// Verify parent is marked as gone
 	require.True(t, rm.isGone("0"))
+}
+
+// gatePolicy blocks each request on a "started" signal until the test
+// closes the "release" channel. It also counts requests so tests can assert
+// single-flight (factory invoked exactly once).
+type gatePolicy struct {
+	started chan struct{}
+	release chan struct{}
+	count   atomic.Int32
+}
+
+func newGatePolicy() *gatePolicy {
+	return &gatePolicy{
+		started: make(chan struct{}, 16),
+		release: make(chan struct{}),
+	}
+}
+
+func (g *gatePolicy) Do(req *policy.Request) (*http.Response, error) {
+	g.count.Add(1)
+	// non-blocking signal so tests can count "arrivals" without deadlock
+	select {
+	case g.started <- struct{}{}:
+	default:
+	}
+	select {
+	case <-g.release:
+	case <-req.Raw().Context().Done():
+		return nil, req.Raw().Context().Err()
+	}
+	return req.Next()
+}
+
+func createGatedClientForPKRangeCache(srv *mock.Server, gate *gatePolicy) *Client {
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{PerCall: []policy.Policy{gate}},
+		&policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	return &Client{
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			pkRangeCache:   newPartitionKeyRangeCache(),
+			containerCache: newContainerPropertiesCache(),
+		},
+	}
+}
+
+// appendPKRangesAndTerminator queues a 200 with the given ranges + ETag and
+// a follow-up 304 to terminate the change-feed loop.
+func appendPKRangesAndTerminator(srv *mock.Server, body []byte, etag string) {
+	srv.AppendResponse(
+		mock.WithBody(body),
+		mock.WithHeader(cosmosHeaderEtag, etag),
+		mock.WithStatusCode(200),
+	)
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, etag),
+	)
+}
+
+func Test_partitionKeyRangeCache_getRoutingMap_returnsCachedDuringRefresh(t *testing.T) {
+	// While a forced refresh is in flight, a concurrent getRoutingMap should
+	// return the cached map immediately rather than waiting for the refresh.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body, "etag2")
+
+	gate := newGatePolicy()
+	client := createGatedClientForPKRangeCache(srv, gate)
+
+	// Seed the entry with a routing map so getRoutingMap should fast-path.
+	existing := newCollectionRoutingMap([]partitionKeyRange{{ID: "0", MinInclusive: "", MaxExclusive: "FF"}}, "etag1")
+	entry := &pkRangeCacheEntry{routingMap: existing}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	// Start a forced refresh in the background; it will block in the gate.
+	refreshDone := make(chan struct{})
+	go func() {
+		defer close(refreshDone)
+		_, _ = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, existing)
+	}()
+
+	// Wait for the refresh goroutine to actually issue its HTTP request.
+	<-gate.started
+
+	// Concurrent getRoutingMap MUST return immediately with the existing map.
+	got, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	require.Same(t, existing, got)
+
+	close(gate.release)
+	<-refreshDone
+}
+
+func Test_partitionKeyRangeCache_forceRefresh_concurrentCallersShareOneFetch(t *testing.T) {
+	// Multiple concurrent forceRefresh callers must trigger only one network
+	// fetch and all observe the same resulting routing map.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body, "etag1")
+
+	gate := newGatePolicy()
+	client := createGatedClientForPKRangeCache(srv, gate)
+
+	// Seed entry without a routing map so concurrent forceRefresh callers all
+	// fall into the in-flight path.
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	const N = 8
+	var wg sync.WaitGroup
+	results := make([]*collectionRoutingMap, N)
+	errs := make([]error, N)
+	wg.Add(N)
+	for i := 0; i < N; i++ {
+		i := i
+		go func() {
+			defer wg.Done()
+			results[i], errs[i] = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+		}()
+	}
+
+	// Let the (single) fetch arrive then release it.
+	<-gate.started
+	close(gate.release)
+	wg.Wait()
+
+	for i := 0; i < N; i++ {
+		require.NoError(t, errs[i])
+		require.NotNil(t, results[i])
+		require.Same(t, results[0], results[i], "all callers must share the same routing map pointer")
+	}
+	// Exactly one full-refresh sequence (200 + 304) = 2 HTTP requests.
+	require.Equal(t, int32(2), gate.count.Load())
+}
+
+func Test_partitionKeyRangeCache_forceRefresh_staleViewSuppressesNewFetch(t *testing.T) {
+	// When the entry already holds a fresher routing map than the caller's
+	// `previous` pointer, forceRefresh must return the fresher map without
+	// issuing a new fetch (pointer-identity dedup).
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	gate := newGatePolicy()
+	close(gate.release) // never block
+	client := createGatedClientForPKRangeCache(srv, gate)
+
+	stale := newCollectionRoutingMap([]partitionKeyRange{{ID: "0", MinInclusive: "", MaxExclusive: "FF"}}, "etagOld")
+	fresh := newCollectionRoutingMap([]partitionKeyRange{{ID: "0", MinInclusive: "", MaxExclusive: "FF"}}, "etagNew")
+
+	entry := &pkRangeCacheEntry{routingMap: fresh}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	got, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, stale)
+	require.NoError(t, err)
+	require.Same(t, fresh, got)
+	// No HTTP request should have been issued.
+	require.Equal(t, int32(0), gate.count.Load())
+}
+
+func Test_partitionKeyRangeCache_callerCancelDoesNotAbortSharedFetch(t *testing.T) {
+	// A caller whose context is cancelled while awaiting the in-flight refresh
+	// must return ctx.Err(); the refresh must continue and serve other waiters.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body, "etag1")
+
+	gate := newGatePolicy()
+	client := createGatedClientForPKRangeCache(srv, gate)
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	// Caller A cancels mid-await.
+	ctxA, cancelA := context.WithCancel(context.Background())
+	errA := make(chan error, 1)
+	go func() {
+		_, err := client.caches.pkRangeCache.getRoutingMap(ctxA, "testRID", "dbs/db1/colls/col1", client)
+		errA <- err
+	}()
+
+	// Caller B uses background and should succeed.
+	errB := make(chan error, 1)
+	rmB := make(chan *collectionRoutingMap, 1)
+	go func() {
+		rm, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+		rmB <- rm
+		errB <- err
+	}()
+
+	<-gate.started
+	cancelA()
+	require.ErrorIs(t, <-errA, context.Canceled)
+
+	// Release the refresh and B should observe the populated map.
+	close(gate.release)
+	require.NoError(t, <-errB)
+	require.NotNil(t, <-rmB)
+}
+
+func Test_partitionKeyRangeCache_invalidateDuringRefresh_keepsNewResult(t *testing.T) {
+	// invalidate() during an in-flight refresh must NOT abort the refresh;
+	// when the refresh completes, its result becomes the cached map.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body, "etagNew")
+
+	gate := newGatePolicy()
+	client := createGatedClientForPKRangeCache(srv, gate)
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	done := make(chan struct {
+		rm  *collectionRoutingMap
+		err error
+	}, 1)
+	go func() {
+		rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+		done <- struct {
+			rm  *collectionRoutingMap
+			err error
+		}{rm, err}
+	}()
+
+	<-gate.started
+	client.caches.pkRangeCache.invalidate("testRID")
+	close(gate.release)
+
+	res := <-done
+	require.NoError(t, res.err)
+	require.NotNil(t, res.rm)
+	require.Equal(t, "etagNew", res.rm.changeFeedETag)
+
+	// The cached map is the refresh result (not nil from the invalidate).
+	entry.mu.Lock()
+	require.Same(t, res.rm, entry.routingMap)
+	entry.mu.Unlock()
+}
+
+func Test_partitionKeyRangeCache_refreshError_clearsInFlightForRetry(t *testing.T) {
+	// When a refresh fails, current waiters observe the error and the
+	// in-flight slot is cleared so the next caller starts a fresh op.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	// First refresh fails with 401 (non-transient, won't be retried by either
+	// the pipeline or our per-page retry). Second refresh succeeds.
+	srv.AppendResponse(mock.WithBody([]byte(`{"code":"Unauthorized"}`)), mock.WithStatusCode(401))
+	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body, "etag1")
+
+	client := createMockClientForPKRangeCache(srv)
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	require.Error(t, err)
+
+	// in-flight slot cleared so next call kicks off another op.
+	entry.mu.Lock()
+	require.Nil(t, entry.inFlight)
+	entry.mu.Unlock()
+
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	require.NoError(t, err)
+	require.NotNil(t, rm)
+	require.Equal(t, "etag1", rm.changeFeedETag)
+}
+
+// createMockClientForPKRangeCacheNoRetry is like createMockClientForPKRangeCache
+// but disables the pipeline's built-in retry policy so tests can exercise the
+// change-feed loop's own per-page retry behaviour without the pipeline
+// silently retrying transient failures first.
+func createMockClientForPKRangeCacheNoRetry(srv *mock.Server) *Client {
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{
+		Transport: srv,
+		Retry:     policy.RetryOptions{MaxRetries: -1},
+	})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	return &Client{
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			pkRangeCache:   newPartitionKeyRangeCache(),
+			containerCache: newContainerPropertiesCache(),
+		},
+	}
+}
+
+func Test_partitionKeyRangeCache_midPagination_transientRetrySucceeds(t *testing.T) {
+	// The change-feed loop must survive a transient 503 between pages by
+	// retrying the failing page, preserving the pages already accumulated.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	// Page 1: 200 with one range, etag "p1"
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"80","parents":[]}],"_count":1}`)),
+		mock.WithHeader(cosmosHeaderEtag, "p1"),
+		mock.WithStatusCode(200),
+	)
+	// Page 2: 503 transient — must be retried
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{"code":"ServiceUnavailable"}`)),
+		mock.WithStatusCode(503),
+	)
+	// Page 2 retry: 200 with second range, etag "p2"
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r1","id":"1","minInclusive":"80","maxExclusive":"FF","parents":[]}],"_count":1}`)),
+		mock.WithHeader(cosmosHeaderEtag, "p2"),
+		mock.WithStatusCode(200),
+	)
+	// Terminator
+	srv.AppendResponse(mock.WithStatusCode(304), mock.WithHeader(cosmosHeaderEtag, "p2"))
+
+	client := createMockClientForPKRangeCacheNoRetry(srv)
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	require.NoError(t, err)
+	require.NotNil(t, rm)
+	require.Equal(t, 2, len(rm.orderedRanges), "both pages must be in the final routing map")
+	require.Equal(t, "0", rm.orderedRanges[0].ID)
+	require.Equal(t, "1", rm.orderedRanges[1].ID)
+	require.Equal(t, "p2", rm.changeFeedETag)
+}
+
+func Test_partitionKeyRangeCache_midPagination_exhaustedRetriesFails(t *testing.T) {
+	// If all retry attempts of a single page fail, the refresh fails as a
+	// whole (cache stays in its prior state). Verify the configured
+	// attempt cap is honored.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	// Page 1: success
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"80","parents":[]}],"_count":1}`)),
+		mock.WithHeader(cosmosHeaderEtag, "p1"),
+		mock.WithStatusCode(200),
+	)
+	// Page 2: 503 on every attempt. Enqueue exactly changeFeedPageMaxAttempts 503s.
+	for i := 0; i < changeFeedPageMaxAttempts; i++ {
+		srv.AppendResponse(
+			mock.WithBody([]byte(`{"code":"ServiceUnavailable"}`)),
+			mock.WithStatusCode(503),
+		)
+	}
+
+	client := createMockClientForPKRangeCacheNoRetry(srv)
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	require.Error(t, err)
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusServiceUnavailable, respErr.StatusCode)
+}
+
+func Test_partitionKeyRangeCache_midPagination_nonTransientFailsFast(t *testing.T) {
+	// A non-transient error (e.g. 401) on a mid-loop page must NOT be
+	// retried; it should be surfaced immediately.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	// Page 1: success
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"80","parents":[]}],"_count":1}`)),
+		mock.WithHeader(cosmosHeaderEtag, "p1"),
+		mock.WithStatusCode(200),
+	)
+	// Page 2: 401 — fail fast, no retries
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{"code":"Unauthorized"}`)),
+		mock.WithStatusCode(401),
+	)
+	// Sentinel: if we DID retry, the next response would be a 200, which
+	// would mask the bug. Make it a 503 instead so an unintended retry
+	// also fails (test would still fail with the wrong status code).
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{"code":"ServiceUnavailable"}`)),
+		mock.WithStatusCode(503),
+	)
+
+	client := createMockClientForPKRangeCacheNoRetry(srv)
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	require.Error(t, err)
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusUnauthorized, respErr.StatusCode, "non-transient 401 must fail fast without retry")
 }

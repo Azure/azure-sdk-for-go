@@ -4,6 +4,9 @@
 
 ### Features Added
 
+* Partition key range cache now serves concurrent callers from a single in-flight refresh per container, and the cached routing map remains readable while a refresh is in progress. The refresh runs on a detached background context so one caller's cancellation no longer aborts the shared fetch for other waiters; each caller continues to honor its own context deadline.
+* Partition key range cache change-feed pagination is now resilient to transient mid-pagination failures (5xx, 408, 429, network errors). The failing page is retried with linear backoff while preserving the pages already accumulated, instead of restarting the entire drain from page 1 on the next refresh.
+
 ### Breaking Changes
 
 ### Bugs Fixed

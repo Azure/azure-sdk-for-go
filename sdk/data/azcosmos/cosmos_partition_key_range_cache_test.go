@@ -10,6 +10,7 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -1014,15 +1015,14 @@ func Test_partitionKeyRangeCache_invalidateDuringRefresh_discardsResult(t *testi
 	close(gate.release)
 
 	res := <-done
-	// The awaiter still sees the refresh result (it's a valid map; the
-	// awaiter has no way of knowing it was invalidated during the fetch).
-	require.NoError(t, res.err)
-	require.NotNil(t, res.rm)
-	require.Equal(t, "etagNew", res.rm.changeFeedETag)
+	// The awaiter must NOT receive the refresh result: by the invalidate's
+	// definition that map is stale. Instead the awaiter sees the sentinel
+	// errPKRangeCacheInvalidatedDuringRefresh and is expected to retry,
+	// which starts a fresh post-invalidate refresh.
+	require.ErrorIs(t, res.err, errPKRangeCacheInvalidatedDuringRefresh)
+	require.Nil(t, res.rm)
 
-	// But the CACHE must not silently retain that result — the invalidate
-	// said "drop what you have" and a fetch that pre-dates the invalidate
-	// is by definition stale relative to it.
+	// And the CACHE must not silently retain that result.
 	entry.mu.Lock()
 	require.Nil(t, entry.routingMap, "invalidate during refresh must cause the refresh result to be discarded from the cache")
 	entry.mu.Unlock()
@@ -1287,4 +1287,44 @@ func Test_partitionKeyRangeCache_forceRefresh_canceledCallerNoBackgroundFetch(t 
 	entry.mu.Lock()
 	require.Nil(t, entry.inFlight)
 	entry.mu.Unlock()
+}
+
+func Test_partitionKeyRangeCache_refreshTimeout_isWrapped(t *testing.T) {
+	// When the detached refresh's own deadline fires (independently of any
+	// caller ctx), awaiters must see errPKRangeCacheRefreshTimeout instead
+	// of bare context.DeadlineExceeded so upstream errors.Is checks for
+	// the caller's own deadline don't misclassify.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	gate := newGatePolicy() // never released → request hangs until ctx fires
+	client := createGatedClientForPKRangeCache(srv, gate)
+
+	// Shorten the refresh timeout for this test only.
+	orig := pkRangeBackgroundRefreshTimeout
+	pkRangeBackgroundRefreshTimeout = 150 * time.Millisecond
+	defer func() { pkRangeBackgroundRefreshTimeout = orig }()
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	// Caller uses a much longer ctx so the only deadline that can fire is
+	// the cache's own.
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err := client.caches.pkRangeCache.forceRefresh(ctx, "testRID", "dbs/db1/colls/col1", client)
+	require.Error(t, err)
+	require.ErrorIs(t, err, errPKRangeCacheRefreshTimeout, "must wrap with the cache-specific sentinel")
+	require.ErrorIs(t, err, context.DeadlineExceeded, "must preserve DeadlineExceeded as the cause")
+
+	// Slot cleared so a fresh refresh can start next time.
+	entry.mu.Lock()
+	require.Nil(t, entry.inFlight)
+	entry.mu.Unlock()
+
+	// Drain the gate so the server-side goroutine doesn't leak.
+	close(gate.release)
 }

@@ -36,21 +36,6 @@ import (
 //   - The cached routing map remains readable while a refresh is in flight;
 //     getRoutingMap returns immediately whenever the entry already has a
 //     non-nil routingMap and does not wait for the in-flight refresh.
-//   - The refresh goroutine runs on context.Background() so a single caller's
-//     ctx cancellation does not abort the shared fetch for other waiters.
-//     Each waiter still honors its own ctx and returns ctx.Err() if it fires
-//     before the shared refresh completes.
-//   - forceRefresh accepts the routing map pointer the caller observed when
-//     it decided to refresh ("previous"). If the entry already holds a
-//     different (fresher) routing map, the caller is served that map
-//
-// Concurrency model (single-pending-I/O per container):
-//
-//   - At most one refresh runs per container at any time. Concurrent callers
-//     that arrive while a refresh is in flight share its result.
-//   - The cached routing map remains readable while a refresh is in flight;
-//     getRoutingMap returns immediately whenever the entry already has a
-//     non-nil routingMap and does not wait for the in-flight refresh.
 //   - The refresh goroutine runs on a detached context (a child of
 //     context.Background() with pkRangeBackgroundRefreshTimeout) so a single
 //     caller's ctx cancellation does not abort the shared fetch for other
@@ -59,8 +44,11 @@ import (
 //   - The detached refresh timeout guarantees the inFlight slot is eventually
 //     cleared even when the transport hangs, so a wedged fetch cannot wedge
 //     the cache slot indefinitely.
-//   - Tracing span context is carried from the triggering caller onto the
-//     detached refresh so the resulting HTTP spans are not orphaned.
+//   - invalidate() bumps the entry's generation. A refresh whose result is
+//     ready after an invalidate sees a generation mismatch, discards its
+//     result from the cache, AND surfaces errPKRangeCacheInvalidatedDuringRefresh
+//     to its awaiters so they re-enter and start a fresh post-invalidate op
+//     rather than routing against the stale view they were waiting on.
 type partitionKeyRangeCache struct {
 	mu      sync.RWMutex
 	entries map[string]*pkRangeCacheEntry // keyed by container ResourceID
@@ -70,7 +58,26 @@ type partitionKeyRangeCache struct {
 // is allowed to run. Beyond this the goroutine errors out, clears the
 // in-flight slot, and the next caller starts a fresh op. Defends against
 // hung transports / wedged regions.
-const pkRangeBackgroundRefreshTimeout = 60 * time.Second
+//
+// Exposed as a var (not a const) so tests can override it without sleeping
+// for the production default. The size must be large enough to cover a full
+// change-feed drain (up to maxChangeFeedIterations pages) on a container
+// undergoing a heavy split storm.
+var pkRangeBackgroundRefreshTimeout = 60 * time.Second
+
+// errPKRangeCacheInvalidatedDuringRefresh is returned to awaiters of a
+// refresh that was implicitly invalidated mid-flight via invalidate(). The
+// awaiter must NOT consume the routing map the refresh produced: by the
+// invalidate's definition that map is stale. Awaiters typically retry,
+// which starts a fresh post-invalidate refresh.
+var errPKRangeCacheInvalidatedDuringRefresh = errors.New("partition key range cache: invalidated during refresh")
+
+// errPKRangeCacheRefreshTimeout wraps a context.DeadlineExceeded that
+// originated from the detached refresh's own pkRangeBackgroundRefreshTimeout
+// (not from a caller's context). Wrapped so upstream code that uses
+// errors.Is(err, context.DeadlineExceeded) to decide "my own deadline fired"
+// does not misclassify a cache-refresh timeout as a caller-deadline timeout.
+var errPKRangeCacheRefreshTimeout = errors.New("partition key range cache: detached refresh timed out")
 
 // refreshOp represents an in-flight partition-key-range refresh for one
 // container. Awaiters receive the (rm, err) pair by reading the fields after
@@ -148,7 +155,7 @@ func (c *partitionKeyRangeCache) getRoutingMap(
 			return nil, err
 		}
 	}
-	op := c.ensureInFlightLocked(ctx, entry, containerLink, client)
+	op := c.ensureInFlightLocked(entry, containerLink, client)
 	entry.mu.Unlock()
 
 	return awaitRefresh(ctx, op)
@@ -173,7 +180,7 @@ func (c *partitionKeyRangeCache) forceRefresh(
 			return nil, err
 		}
 	}
-	op := c.ensureInFlightLocked(ctx, entry, containerLink, client)
+	op := c.ensureInFlightLocked(entry, containerLink, client)
 	entry.mu.Unlock()
 
 	return awaitRefresh(ctx, op)
@@ -181,11 +188,7 @@ func (c *partitionKeyRangeCache) forceRefresh(
 
 // ensureInFlightLocked returns the entry's in-flight refresh op, creating
 // (and spawning) one if none is already running. Caller MUST hold entry.mu.
-// callerCtx is consulted only for tracing-span propagation onto the detached
-// refresh; the detached refresh has its own timeout-bounded lifetime and
-// is not cancelable by the caller.
 func (c *partitionKeyRangeCache) ensureInFlightLocked(
-	callerCtx context.Context,
 	entry *pkRangeCacheEntry,
 	containerLink string,
 	client *Client,
@@ -196,16 +199,14 @@ func (c *partitionKeyRangeCache) ensureInFlightLocked(
 	op := &refreshOp{done: make(chan struct{})}
 	entry.inFlight = op
 	startGeneration := entry.generation
-	go c.runRefresh(callerCtx, entry, containerLink, client, op, startGeneration)
+	go c.runRefresh(entry, containerLink, client, op, startGeneration)
 	return op
 }
 
-// runRefresh executes the change-feed refresh on a detached context that
-// inherits only the caller's tracing span (so resulting HTTP spans are not
-// orphaned) and is bounded by pkRangeBackgroundRefreshTimeout. Caller
-// cancellations do not abort the shared fetch. On completion the entry is
-// updated under entry.mu, the in-flight slot is cleared, and awaiters are
-// signaled by closing op.done.
+// runRefresh executes the change-feed refresh on a detached context bounded
+// by pkRangeBackgroundRefreshTimeout. Caller cancellations do not abort the
+// shared fetch. On completion the entry is updated under entry.mu, the
+// in-flight slot is cleared, and awaiters are signaled by closing op.done.
 //
 // IMPORTANT: close(op.done) is performed while holding entry.mu so that any
 // caller racing the completion edge observes either (a) the in-flight slot
@@ -213,41 +214,67 @@ func (c *partitionKeyRangeCache) ensureInFlightLocked(
 // never a state that would let it start a duplicate refresh in between.
 //
 // If entry.generation changed during the refresh (i.e., invalidate() was
-// called), the result is discarded rather than installed.
+// called), the result is discarded from the cache AND the awaiters of this
+// op receive errPKRangeCacheInvalidatedDuringRefresh so they re-enter and
+// start a fresh post-invalidate refresh instead of routing against the stale
+// view they were waiting on.
+//
+// A context.DeadlineExceeded that originated from the detached refresh's own
+// timeout is wrapped with errPKRangeCacheRefreshTimeout so awaiters can
+// distinguish "the cache's own deadline fired" from "my own deadline fired."
 func (c *partitionKeyRangeCache) runRefresh(
-	callerCtx context.Context,
 	entry *pkRangeCacheEntry,
 	containerLink string,
 	client *Client,
 	op *refreshOp,
 	startGeneration uint64,
 ) {
-	ctx, cancel := newDetachedRefreshContext(callerCtx)
+	ctx, cancel := newDetachedRefreshContext()
 	defer cancel()
 
-	log.Writef(azlog.EventResponse, "partition key range cache refresh starting for container %s (timeout %s)", containerLink, pkRangeBackgroundRefreshTimeout)
 	start := time.Now()
 	rm, err := c.refreshEntryDetached(ctx, containerLink, entry, client)
-	log.Writef(azlog.EventResponse, "partition key range cache refresh finished for container %s in %s (err=%v)", containerLink, time.Since(start), err)
+	elapsed := time.Since(start)
+
+	// Wrap detached-timeout DeadlineExceeded so upstream callers using
+	// errors.Is(err, context.DeadlineExceeded) don't misclassify it as
+	// their own deadline firing.
+	if err != nil && errors.Is(err, context.DeadlineExceeded) && ctx.Err() == context.DeadlineExceeded {
+		err = fmt.Errorf("%w (container %s, elapsed %s, timeout %s): %w",
+			errPKRangeCacheRefreshTimeout, containerLink, elapsed, pkRangeBackgroundRefreshTimeout, err)
+	}
 
 	entry.mu.Lock()
-	if err == nil && rm != nil && entry.generation == startGeneration {
+	invalidated := entry.generation != startGeneration
+	if err == nil && rm != nil && !invalidated {
 		entry.routingMap = rm
 	}
-	op.rm = rm
-	op.err = err
+	if invalidated {
+		// Don't hand awaiters a routing map we just refused to install.
+		// They must re-enter and start a post-invalidate refresh.
+		op.rm = nil
+		op.err = errPKRangeCacheInvalidatedDuringRefresh
+	} else {
+		op.rm = rm
+		op.err = err
+	}
 	entry.inFlight = nil
 	close(op.done)
 	entry.mu.Unlock()
+
+	// Single log line per refresh on the result side. Operators correlate the
+	// detached HTTP spans by container link + elapsed; logging on start as
+	// well would double the log volume on busy clients with frequent 410s.
+	log.Writef(azlog.EventResponse,
+		"partition key range cache refresh for container %s finished in %s (err=%v, invalidated=%t)",
+		containerLink, elapsed, op.err, invalidated)
 }
 
 // newDetachedRefreshContext returns a context whose deadline is bounded by
-// pkRangeBackgroundRefreshTimeout. It does NOT inherit cancellation from
-// callerCtx — the caller's cancellation must not abort the shared refresh
-// that other waiters are observing. callerCtx is reserved for a future
-// upgrade that wires the caller's tracing span through (the current azcore
-// tracing API does not expose a way to do that without an extra dependency).
-func newDetachedRefreshContext(_ context.Context) (context.Context, context.CancelFunc) {
+// pkRangeBackgroundRefreshTimeout. It does NOT inherit cancellation from any
+// caller — the caller's cancellation must not abort the shared refresh that
+// other waiters are observing.
+func newDetachedRefreshContext() (context.Context, context.CancelFunc) {
 	return context.WithTimeout(context.Background(), pkRangeBackgroundRefreshTimeout)
 }
 

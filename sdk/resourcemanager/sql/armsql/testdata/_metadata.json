@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Sql": "2025-01-01"
+  },
+  "emitterVersion": "0.14.0"
+}

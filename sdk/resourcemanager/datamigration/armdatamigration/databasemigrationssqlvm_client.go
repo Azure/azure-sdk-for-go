@@ -28,7 +28,7 @@ type DatabaseMigrationsSQLVMClient struct {
 // NewDatabaseMigrationsSQLVMClient creates a new instance of DatabaseMigrationsSQLVMClient with the specified values.
 //   - subscriptionID - Subscription ID that identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseMigrationsSQLVMClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseMigrationsSQLVMClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewDatabaseMigrationsSQLVMClient(subscriptionID string, credential azcore.T
 // BeginCancel - Stop in-progress database migration to SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -70,7 +70,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginCancel(ctx context.Context, re
 // Cancel - Stop in-progress database migration to SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 func (client *DatabaseMigrationsSQLVMClient) cancel(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLVMClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsSQLVMClient.BeginCancel"
@@ -116,7 +116,7 @@ func (client *DatabaseMigrationsSQLVMClient) cancelCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -127,7 +127,7 @@ func (client *DatabaseMigrationsSQLVMClient) cancelCreateRequest(ctx context.Con
 // BeginCreateOrUpdate - Create a new database migration to a given SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -154,7 +154,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginCreateOrUpdate(ctx context.Con
 // CreateOrUpdate - Create a new database migration to a given SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 func (client *DatabaseMigrationsSQLVMClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters DatabaseMigrationSQLVM, options *DatabaseMigrationsSQLVMClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsSQLVMClient.BeginCreateOrUpdate"
@@ -200,7 +200,7 @@ func (client *DatabaseMigrationsSQLVMClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -212,7 +212,7 @@ func (client *DatabaseMigrationsSQLVMClient) createOrUpdateCreateRequest(ctx con
 // BeginCutover - Initiate cutover for in-progress online database migration to SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -238,7 +238,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginCutover(ctx context.Context, r
 // Cutover - Initiate cutover for in-progress online database migration to SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 func (client *DatabaseMigrationsSQLVMClient) cutover(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLVMClientBeginCutoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsSQLVMClient.BeginCutover"
@@ -284,7 +284,7 @@ func (client *DatabaseMigrationsSQLVMClient) cutoverCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -295,7 +295,7 @@ func (client *DatabaseMigrationsSQLVMClient) cutoverCreateRequest(ctx context.Co
 // BeginDelete - Delete Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -321,7 +321,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginDelete(ctx context.Context, re
 // Delete - Delete Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 func (client *DatabaseMigrationsSQLVMClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, options *DatabaseMigrationsSQLVMClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsSQLVMClient.BeginDelete"
@@ -367,7 +367,7 @@ func (client *DatabaseMigrationsSQLVMClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -379,7 +379,7 @@ func (client *DatabaseMigrationsSQLVMClient) deleteCreateRequest(ctx context.Con
 // Get - Retrieve the specified database migration for a given SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -434,7 +434,7 @@ func (client *DatabaseMigrationsSQLVMClient) getCreateRequest(ctx context.Contex
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	if options != nil && options.MigrationOperationID != nil {
 		reqQP.Set("migrationOperationId", *options.MigrationOperationID)
 	}

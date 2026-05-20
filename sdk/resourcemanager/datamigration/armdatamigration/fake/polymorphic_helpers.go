@@ -7,7 +7,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration/v3"
 )
 
 func unmarshalCommandPropertiesClassification(rawMsg json.RawMessage) (armdatamigration.CommandPropertiesClassification, error) {

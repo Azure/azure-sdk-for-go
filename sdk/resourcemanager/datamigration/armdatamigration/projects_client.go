@@ -28,7 +28,7 @@ type ProjectsClient struct {
 // NewProjectsClient creates a new instance of ProjectsClient with the specified values.
 //   - subscriptionID - Subscription ID that identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +45,7 @@ func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential,
 // a new project or updates an existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -97,7 +97,7 @@ func (client *ProjectsClient) createOrUpdateCreateRequest(ctx context.Context, g
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -119,7 +119,7 @@ func (client *ProjectsClient) createOrUpdateHandleResponse(resp *http.Response) 
 // project.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -169,7 +169,7 @@ func (client *ProjectsClient) deleteCreateRequest(ctx context.Context, groupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	if options != nil && options.DeleteRunningTasks != nil {
 		reqQP.Set("deleteRunningTasks", strconv.FormatBool(*options.DeleteRunningTasks))
 	}
@@ -182,7 +182,7 @@ func (client *ProjectsClient) deleteCreateRequest(ctx context.Context, groupName
 // about a project.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -233,7 +233,7 @@ func (client *ProjectsClient) getCreateRequest(ctx context.Context, groupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -251,7 +251,7 @@ func (client *ProjectsClient) getHandleResponse(resp *http.Response) (ProjectsCl
 // NewListPager - The project resource is a nested resource representing a stored migration project. This method returns a
 // list of projects owned by a service resource.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - options - ProjectsClientListOptions contains the optional parameters for the ProjectsClient.NewListPager method.
@@ -298,7 +298,7 @@ func (client *ProjectsClient) listCreateRequest(ctx context.Context, groupName s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -317,7 +317,7 @@ func (client *ProjectsClient) listHandleResponse(resp *http.Response) (ProjectsC
 // existing project.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - projectName - Name of the project
@@ -369,7 +369,7 @@ func (client *ProjectsClient) updateCreateRequest(ctx context.Context, groupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

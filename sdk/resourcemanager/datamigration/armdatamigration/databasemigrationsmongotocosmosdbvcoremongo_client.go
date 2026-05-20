@@ -29,7 +29,7 @@ type DatabaseMigrationsMongoToCosmosDbvCoreMongoClient struct {
 // NewDatabaseMigrationsMongoToCosmosDbvCoreMongoClient creates a new instance of DatabaseMigrationsMongoToCosmosDbvCoreMongoClient with the specified values.
 //   - subscriptionID - Subscription ID that identifies an Azure subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseMigrationsMongoToCosmosDbvCoreMongoClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseMigrationsMongoToCosmosDbvCoreMongoClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +45,7 @@ func NewDatabaseMigrationsMongoToCosmosDbvCoreMongoClient(subscriptionID string,
 // BeginCreate - Create or Update Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetResourceName - The name of the target resource/account.
@@ -73,7 +73,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) BeginCreate(ctx
 // Create - Create or Update Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) create(ctx context.Context, resourceGroupName string, targetResourceName string, migrationName string, parameters DatabaseMigrationCosmosDbMongo, options *DatabaseMigrationsMongoToCosmosDbvCoreMongoClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsMongoToCosmosDbvCoreMongoClient.BeginCreate"
@@ -119,7 +119,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) createCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -131,7 +131,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) createCreateReq
 // BeginDelete - Delete Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetResourceName - The name of the target resource/account.
@@ -158,7 +158,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) BeginDelete(ctx
 // Delete - Delete Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) deleteOperation(ctx context.Context, resourceGroupName string, targetResourceName string, migrationName string, options *DatabaseMigrationsMongoToCosmosDbvCoreMongoClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsMongoToCosmosDbvCoreMongoClient.BeginDelete"
@@ -204,7 +204,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) deleteCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -216,7 +216,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) deleteCreateReq
 // Get - Get Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetResourceName - The name of the target resource/account.
@@ -269,7 +269,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) getCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,7 +286,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) getHandleRespon
 
 // NewGetForScopePager - Get Database Migration resources for the scope.
 //
-// Generated from API version 2025-06-30
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetResourceName - The name of the target resource/account.
@@ -335,7 +335,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) getForScopeCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-30")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -321,9 +321,10 @@ func (o *CommitBlockListOptions) format() *generated.BlockBlobClientCommitBlockL
 	if o == nil {
 		return nil
 	}
-	// Note: no mapping for o.RequestID
+
 	opts := &generated.BlockBlobClientCommitBlockListOptions{
 		BlobTagsString:            shared.SerializeBlobTagsToStrPtr(o.Tags),
+		ClientRequestID:           o.RequestID,
 		Metadata:                  o.Metadata,
 		Tier:                      o.Tier,
 		Timeout:                   o.Timeout,
@@ -376,13 +377,18 @@ func (o *GetBlockListOptions) format() *generated.BlockBlobClientGetBlockListOpt
 	if o == nil {
 		return nil
 	}
-	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions
+	// Note: the generated layer only exposes IfTags from ModifiedAccessConditions for this operation.
 
 	opts := &generated.BlockBlobClientGetBlockListOptions{
 		Snapshot: o.Snapshot,
 	}
-	if o.AccessConditions != nil && o.AccessConditions.LeaseAccessConditions != nil {
-		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
+		}
 	}
 
 	return opts

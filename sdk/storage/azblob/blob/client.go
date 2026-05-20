@@ -409,12 +409,13 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	}
 
 	return DownloadStreamResponse{
-		client:                 b,
-		DownloadResponse:       convertDownloadResponse(dr),
-		getInfo:                httpGetterInfo{Range: o.Range, ETag: dr.ETag},
-		ObjectReplicationRules: deserializeORSPolicies(dr.ObjectReplicationRules),
-		cpkInfo:                o.CPKInfo,
-		cpkScope:               o.CPKScopeInfo,
+		client:                  b,
+		DownloadResponse:        convertDownloadResponse(dr),
+		getInfo:                 httpGetterInfo{Range: o.Range, ETag: dr.ETag},
+		ObjectReplicationRules:  deserializeORSPolicies(dr.ObjectReplicationRules),
+		cpkInfo:                 o.CPKInfo,
+		cpkScope:                o.CPKScopeInfo,
+		transactionalValidation: o.TransactionalValidation,
 	}, err
 }
 

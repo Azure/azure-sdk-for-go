@@ -6,9 +6,12 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"io"
 	"net"
 	"net/http"
 	"net/url"
+	"syscall"
 	"testing"
 	"time"
 
@@ -521,10 +524,306 @@ func TestDnsErrorRetry(t *testing.T) {
 		mock.WithStatusCode(200))
 
 	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
-	// Request should retry twice and then succeed
+	// Request should retry twice on the same region and then succeed; no
+	// cross-region failover, so retryCount stays at 0 and
+	// sameRegionRetryCount reflects the two retries.
 	assert.NoError(t, err)
-	assert.True(t, verifier.requests[0].retryContext.retryCount == 2)
+	assert.Equal(t, 0, verifier.requests[0].retryContext.retryCount)
+	assert.Equal(t, 2, verifier.requests[0].retryContext.sameRegionRetryCount)
 
+}
+
+// setupRetryPolicyTestClient creates a Client wired to a single mock cosmos
+// server with the client retry policy under test. Tests can append responses
+// (or errors) to `srv` to drive the retry behavior.
+func setupRetryPolicyTestClient(t *testing.T) (*Client, *mock.Server, *clientRetryPolicyVerifier, func()) {
+	t.Helper()
+	srv, srvClose := mock.NewTLSServer()
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	assert.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{},
+		locationCache:       CreateMockLC(*defaultEndpoint, true),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := &clientRetryPolicyVerifier{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	cleanup := func() {
+		srvClose()
+		gemClose()
+	}
+	return client, srv, verifier, cleanup
+}
+
+func TestConnectionErrorReadFailsOverAfterThreeSameRegionAttempts(t *testing.T) {
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	dnsErr := &net.DNSError{}
+	for i := 0; i < 4; i++ {
+		srv.AppendError(dnsErr)
+	}
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+
+	assert.NoError(t, err)
+	rc := verifier.requests[0].retryContext
+	// 3 same-region attempts exhausted, then a cross-region failover that
+	// succeeded. After failover sameRegionRetryCount is reset and
+	// retryCount is incremented to pick a different endpoint.
+	assert.Equal(t, 0, rc.sameRegionRetryCount)
+	assert.Equal(t, 1, rc.retryCount)
+}
+
+func TestNotSentConnectionErrorWriteFailsOver(t *testing.T) {
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	dnsErr := &net.DNSError{}
+	for i := 0; i < 4; i++ {
+		srv.AppendError(dnsErr)
+	}
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	item := map[string]interface{}{"id": "1", "value": "2"}
+	marshalled, _ := json.Marshal(item)
+	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+
+	assert.NoError(t, err)
+	rc := verifier.requests[0].retryContext
+	assert.Equal(t, 0, rc.sameRegionRetryCount)
+	assert.Equal(t, 1, rc.retryCount)
+}
+
+// fakeNetOpError satisfies net.Error to drive ambiguous classification.
+type fakeNetOpError struct{ msg string }
+
+func (e *fakeNetOpError) Error() string   { return e.msg }
+func (e *fakeNetOpError) Timeout() bool   { return false }
+func (e *fakeNetOpError) Temporary() bool { return false }
+func (e *fakeNetOpError) Unwrap() error   { return syscall.ECONNRESET }
+
+func TestAmbiguousConnectionErrorWriteDoesNotFailOver(t *testing.T) {
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	ambErr := &fakeNetOpError{msg: "connection reset by peer"}
+	// More errors than we should ever consume.
+	for i := 0; i < 6; i++ {
+		srv.AppendError(ambErr)
+	}
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	item := map[string]interface{}{"id": "1", "value": "2"}
+	marshalled, _ := json.Marshal(item)
+	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+
+	assert.Error(t, err)
+	rc := verifier.requests[0].retryContext
+	// 3 same-region attempts, no cross-region failover for ambiguous writes.
+	assert.Equal(t, 3, rc.sameRegionRetryCount)
+	assert.Equal(t, 0, rc.retryCount)
+}
+
+func TestAmbiguousConnectionErrorReadFailsOver(t *testing.T) {
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	ambErr := &fakeNetOpError{msg: "connection reset by peer"}
+	for i := 0; i < 4; i++ {
+		srv.AppendError(ambErr)
+	}
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+
+	assert.NoError(t, err)
+	rc := verifier.requests[0].retryContext
+	assert.Equal(t, 0, rc.sameRegionRetryCount)
+	assert.Equal(t, 1, rc.retryCount)
+}
+
+func TestCallerDeadlineExceededDoesNotRetry(t *testing.T) {
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	srv.AppendError(&net.DNSError{})
+
+	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
+	defer cancel()
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err := container.ReadItem(ctx, NewPartitionKeyString("1"), "doc1", nil)
+
+	assert.Error(t, err)
+	// No retries should have been attempted.
+	rc := verifier.requests[0].retryContext
+	assert.Equal(t, 0, rc.sameRegionRetryCount)
+	assert.Equal(t, 0, rc.retryCount)
+	assert.Equal(t, 1, len(verifier.requests))
+}
+
+func TestNotSentConnectionErrorMultiMasterWriteFailsOver(t *testing.T) {
+	// Multi-master account: writes can fail over to a different write region.
+	// 3 same-region DNS errors + 1 cross-region failover that succeeds.
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	dnsErr := &net.DNSError{}
+	for i := 0; i < 4; i++ {
+		srv.AppendError(dnsErr)
+	}
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	item := map[string]interface{}{"id": "1", "value": "2"}
+	marshalled, _ := json.Marshal(item)
+	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+
+	assert.NoError(t, err)
+	rc := verifier.requests[0].retryContext
+	assert.True(t, rc.crossRegionFailoverDone, "expected one cross-region failover")
+	assert.Equal(t, 1, rc.retryCount)
+	assert.Equal(t, 0, rc.sameRegionRetryCount)
+}
+
+func TestConnectionErrorGivesUpAfterSingleCrossRegionFailover(t *testing.T) {
+	// 3 same-region errors + 1 cross-region failover that ALSO errors →
+	// the policy must NOT chain a second failover; it returns the error.
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	dnsErr := &net.DNSError{}
+	// More errors than we should ever consume (3 same-region + 1 failover = 4).
+	for i := 0; i < 8; i++ {
+		srv.AppendError(dnsErr)
+	}
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+
+	assert.Error(t, err)
+	rc := verifier.requests[0].retryContext
+	// One cross-region failover happened and then we gave up.
+	assert.True(t, rc.crossRegionFailoverDone)
+	assert.Equal(t, 1, rc.retryCount)
+	// Mock server should have served exactly 5 requests:
+	// 1 initial + 3 same-region retries + 1 cross-region failover.
+	assert.Equal(t, 5, srv.Requests())
+}
+
+func TestRequestTimeoutReadRetriesCrossRegion(t *testing.T) {
+	// One 408 on a read → single cross-region retry that succeeds.
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+
+	assert.NoError(t, err)
+	rc := verifier.requests[0].retryContext
+	assert.True(t, rc.requestTimeoutRetryDone)
+	assert.Equal(t, 1, rc.retryCount)
+	assert.Equal(t, 2, srv.Requests())
+}
+
+func TestRequestTimeoutReadGivesUpAfterOneCrossRegionRetry(t *testing.T) {
+	// Two consecutive 408s on a read → exactly one cross-region retry,
+	// then the policy returns the 408 as non-retriable.
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	for i := 0; i < 4; i++ {
+		srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	}
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+
+	assert.Error(t, err)
+	rc := verifier.requests[0].retryContext
+	assert.True(t, rc.requestTimeoutRetryDone)
+	assert.Equal(t, 1, rc.retryCount)
+	// 1 initial + 1 cross-region retry = 2 requests.
+	assert.Equal(t, 2, srv.Requests())
+}
+
+func TestRequestTimeoutWriteDoesNotRetry(t *testing.T) {
+	// A 408 on a write should NOT be retried — writes on 408 are
+	// ambiguous and could lead to duplicates.
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	item := map[string]interface{}{"id": "1", "value": "2"}
+	marshalled, _ := json.Marshal(item)
+	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+
+	assert.Error(t, err)
+	rc := verifier.requests[0].retryContext
+	assert.False(t, rc.requestTimeoutRetryDone)
+	assert.Equal(t, 0, rc.retryCount)
+	assert.Equal(t, 1, srv.Requests())
+}
+
+func TestClassifyNetworkError(t *testing.T) {
+	cases := []struct {
+		name string
+		err  error
+		want connectionErrorKind
+	}{
+		{"nil", nil, connectionErrorNone},
+		{"dns", &net.DNSError{}, connectionErrorNotSent},
+		{"dial op", &net.OpError{Op: "dial", Err: errors.New("boom")}, connectionErrorNotSent},
+		{"connection refused", syscall.ECONNREFUSED, connectionErrorNotSent},
+		{"host unreachable", syscall.EHOSTUNREACH, connectionErrorNotSent},
+		{"eof", io.EOF, connectionErrorAmbiguous},
+		{"unexpected eof", io.ErrUnexpectedEOF, connectionErrorAmbiguous},
+		{"connection reset", syscall.ECONNRESET, connectionErrorAmbiguous},
+		{"deadline exceeded", context.DeadlineExceeded, connectionErrorAmbiguous},
+		{"read op", &net.OpError{Op: "read", Err: errors.New("boom")}, connectionErrorAmbiguous},
+		{"plain error", errors.New("nope"), connectionErrorNone},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			assert.Equal(t, tc.want, classifyNetworkError(tc.err))
+		})
+	}
 }
 
 func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {

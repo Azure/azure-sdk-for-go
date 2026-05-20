@@ -184,6 +184,16 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	// Copy the embedded azcore.ClientOptions so adjustments to retry defaults
+	// don't mutate the caller-supplied struct. The throttleRetryPolicy below
+	// owns 429 handling with Cosmos-specific semantics (x-ms-retry-after-ms
+	// header, cumulative wait budget), so when the caller hasn't customized
+	// the retry status codes or supplied a ShouldRetry callback, exclude 429
+	// from azcore's default retry list to avoid double-retry.
+	clientOpts := options.ClientOptions
+	if clientOpts.Retry.StatusCodes == nil && clientOpts.Retry.ShouldRetry == nil {
+		clientOpts.Retry.StatusCodes = defaultAzcoreRetryStatusCodesWithout429()
+	}
 	return azcore.NewClient(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),
@@ -197,13 +207,29 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 			},
 			PerRetry: []policy.Policy{
 				authPolicy,
+				newThrottleRetryPolicy(&options.ThrottlingRetryOptions),
 				&clientRetryPolicy{gem: gem},
 			},
 			Tracing: azruntime.TracingOptions{
 				Namespace: "Microsoft.DocumentDB",
 			},
 		},
-		&options.ClientOptions)
+		&clientOpts)
+}
+
+// defaultAzcoreRetryStatusCodesWithout429 returns azcore's default retryable
+// HTTP status codes with 429 removed. The Cosmos throttleRetryPolicy already
+// retries 429 with x-ms-retry-after-ms semantics and a cumulative wait budget,
+// so layering azcore's default 429 retry on top would result in compounded
+// retry attempts.
+func defaultAzcoreRetryStatusCodesWithout429() []int {
+	return []int{
+		http.StatusRequestTimeout,      // 408
+		http.StatusInternalServerError, // 500
+		http.StatusBadGateway,          // 502
+		http.StatusServiceUnavailable,  // 503
+		http.StatusGatewayTimeout,      // 504
+	}
 }
 
 func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {

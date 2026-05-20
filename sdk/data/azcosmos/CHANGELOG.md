@@ -4,11 +4,15 @@
 
 ### Features Added
 
+* Added a dedicated 429 (Too Many Requests) throttling retry policy that honors the `x-ms-retry-after-ms` response header and is configurable via `ClientOptions.ThrottlingRetryOptions` (`MaxRetryAttempts`, `MaxRetryWaitTime`). This brings parity with the throttling retry behavior in the .NET, Java, and Python Cosmos SDKs. When `ClientOptions.Retry.StatusCodes` and `ClientOptions.Retry.ShouldRetry` are both unset, 429 is no longer in the azcore retry policy's default status codes (it is now handled exclusively by the throttling retry policy); the other transient status codes (408, 500, 502, 503, 504) remain.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+* Throttling retry policy: an explicit `x-ms-retry-after-ms: 0` header is now honored as "retry immediately" instead of being treated as a missing header (which would have applied the default delay). NaN/Inf values for the header are now rejected as invalid. The request body is rewound before the 429 response body is drained so a rewind failure surfaces a usable 429 response to the caller.
 
 ## 1.5.0-beta.6 (2026-05-15)
 

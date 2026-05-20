@@ -38,6 +38,14 @@ type globalEndpointManager struct {
 	// ever been successfully populated, so a chronic bootstrap failure is
 	// surfaced on every request rather than silently swallowed.
 	lastUpdateErr error
+	// everPopulated is set true on the first successful refresh and never
+	// reset, even when invalidate() zeroes lastUpdateTime to force a fresh
+	// refresh. populated() reads this flag rather than the timestamp, so a
+	// transient post-invalidation refresh failure does not stall the data
+	// plane: requests can still route through the existing locationCache
+	// topology while the next refresh attempt is pending the throttle
+	// window. See issue #25468 deep-review finding.
+	everPopulated bool
 	// inflight coalesces concurrent Update callers: only the first does the
 	// HTTP call; the rest wait on the per-flight done channel and read
 	// per-flight err. Each refresh has its own *updateFlight so late waiters
@@ -148,14 +156,17 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 	gem.locationCache.refreshStaleEndpoints()
 }
 
-// populated reports whether the GEM has been successfully refreshed at least
-// once. Used by the policy's bootstrap path to decide whether the first
-// request on a new client should synchronously wait for GetDatabaseAccount.
-// Repeated calls after the first success are cheap (one mutex acquisition).
+// populated reports whether the GEM has ever been successfully populated.
+// Unlike a check of !lastUpdateTime.IsZero(), this remains true after
+// invalidate() zeroes the timestamps -- so a transient post-invalidation
+// refresh failure does not stall the data plane: the policy can still
+// route requests through the existing locationCache topology while the
+// next refresh attempt waits for the throttle window. See issue #25468
+// deep-review finding.
 func (gem *globalEndpointManager) populated() bool {
 	gem.gemMutex.Lock()
 	defer gem.gemMutex.Unlock()
-	return !gem.lastUpdateTime.IsZero()
+	return gem.everPopulated
 }
 
 func (gem *globalEndpointManager) ShouldRefresh() bool {
@@ -190,13 +201,25 @@ func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, reso
 // If the GEM has never been successfully populated and the throttle is
 // active, Update returns the cached error from the most recent failed
 // attempt so a chronic bootstrap failure is surfaced on every request
-// rather than silently swallowed.
+// rather than silently swallowed. Once the GEM HAS been populated, a
+// throttled Update returns nil even after a subsequent refresh failure --
+// the data plane keeps using the cached topology until the throttle expires
+// and a fresh refresh can run.
+//
+// Update respects ctx cancellation in both leader and waiter roles. The
+// leader's HTTP call uses ctx directly (or a derived context inside
+// GetAccountProperties). Waiters select between flight completion and
+// ctx.Done() so a caller-side timeout cannot be exceeded by an unrelated
+// stuck refresh.
 func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {
 	gem.gemMutex.Lock()
 	if !gem.shouldRefresh() && !forceRefresh {
-		// Throttled. Surface the cached error if we have never succeeded.
+		// Throttled. Surface the cached error only if we have NEVER
+		// successfully populated the GEM -- otherwise the data plane has
+		// a valid cached topology and should continue working until the
+		// next refresh attempt succeeds.
 		var cached error
-		if gem.lastUpdateTime.IsZero() {
+		if !gem.everPopulated {
 			cached = gem.lastUpdateErr
 		}
 		gem.gemMutex.Unlock()
@@ -206,11 +229,16 @@ func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool)
 		// Another goroutine is performing a refresh. Wait for it and share
 		// its result rather than spawning a duplicate HTTP call. The result
 		// lives on the per-flight struct so subsequent flights cannot
-		// overwrite it.
+		// overwrite it. Honour the waiter's ctx so a caller-side timeout
+		// is not extended by the leader's HTTP call duration.
 		flight := gem.inflight
 		gem.gemMutex.Unlock()
-		<-flight.done
-		return flight.err
+		select {
+		case <-flight.done:
+			return flight.err
+		case <-ctx.Done():
+			return ctx.Err()
+		}
 	}
 	// We are the leader. Publish the inflight flight and snapshot the
 	// invalidation generation, then release the lock while we perform the
@@ -242,6 +270,7 @@ func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool)
 				gem.lastAttemptTime = time.Now()
 				if err == nil {
 					gem.lastUpdateTime = gem.lastAttemptTime
+					gem.everPopulated = true
 				}
 			}
 			// If invalidationGen changed, leave the timestamps untouched so

@@ -36,11 +36,12 @@ import (
 // GetDatabaseAccount behaviour. body, when set, is returned as the response
 // body.
 type countingTransport struct {
-	count   atomic.Int64
-	status  int
-	body    []byte
-	respErr error
-	delay   time.Duration
+	count    atomic.Int64
+	status   int
+	body     []byte
+	respErr  error
+	delay    time.Duration
+	respFunc func() (int, []byte) // when non-nil, overrides status/body per call
 }
 
 func (c *countingTransport) Do(req *http.Request) (*http.Response, error) {
@@ -51,10 +52,14 @@ func (c *countingTransport) Do(req *http.Request) (*http.Response, error) {
 	if c.respErr != nil {
 		return nil, c.respErr
 	}
+	status, body := c.status, c.body
+	if c.respFunc != nil {
+		status, body = c.respFunc()
+	}
 	resp := &http.Response{
-		StatusCode: c.status,
+		StatusCode: status,
 		Header:     http.Header{"Content-Type": []string{"application/json"}},
-		Body:       jsonBody(c.body),
+		Body:       jsonBody(body),
 		Request:    req,
 	}
 	return resp, nil
@@ -270,11 +275,18 @@ func TestFix3c_ConcurrentSameEndpointMarksAreBounded(t *testing.T) {
 	// With the atomic check-and-mark in markEndpointUnavailable, only the
 	// FIRST goroutine to win the mapMutex Lock observes wasAlreadyUnavailable
 	// == false and triggers invalidate(). All other markers see true and
-	// skip the invalidation. The leader's refresh + at most one
-	// post-invalidation refresh therefore bounds the total to 2.
+	// skip the invalidation. Combined with the in-flight singleflight in
+	// gem.Update, the upper bound is provably 1 HTTP call -- the leader's
+	// refresh handles the single invalidation, and waiters share its result.
+	// If invalidate were to land AFTER the leader started its flight
+	// (impossible here because the test fixture starts with a non-stale
+	// lastUpdateTime and the marker is the trigger for the first refresh),
+	// invalidationGen would advance mid-flight and a second leader would
+	// fire -- so 2 is the theoretical maximum across all timings. We
+	// assert the tight bound to guard against regressions in atomicity.
 	calls := transport.count.Load()
-	require.LessOrEqual(t, calls, int64(2),
-		"concurrent same-endpoint marks must produce a tightly-bounded number of GEM calls (got %d for concurrency=%d)", calls, concurrency)
+	require.Equal(t, int64(1), calls,
+		"concurrent same-endpoint marks must collapse to exactly 1 GEM call (got %d for concurrency=%d)", calls, concurrency)
 }
 
 // to every request while the GEM has never been successfully populated, not
@@ -633,4 +645,117 @@ func TestDefaultEndpointElim_ZeroWriteRegionsReadGoesToReadRegion(t *testing.T) 
 		require.NotEqual(t, defaultEndpoint.Host, ep.Host,
 			"reads must route to a read region even when there are zero write regions; got default at idx=%d", idx)
 	}
+}
+
+// ----------------------------------------------------------------------------
+// F7: a transient post-invalidation refresh failure must NOT stall the data
+// plane for the full refreshTimeInterval. Once the GEM has ever been
+// populated, requests should keep routing through the cached topology even
+// while a refresh attempt is throttled after a failure. This guards the
+// regression flagged by the deep reviewer where invalidate() zeroed
+// lastUpdateTime, which in turn made populated() return false and caused
+// the policy's bootstrap path to surface the cached error on every request.
+// ----------------------------------------------------------------------------
+func TestFix7_InvalidateThenRefreshFailureDoesNotStallDataPlane(t *testing.T) {
+	// Programmable transport: succeed once (bootstrap), then fail.
+	responses := []int{http.StatusOK, http.StatusBadRequest, http.StatusBadRequest}
+	idx := atomic.Int32{}
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://west-us.documents.azure.com:443/"}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: "https://west-us.documents.azure.com:443/"}},
+	})
+	transport := &countingTransport{}
+	transport.respFunc = func() (int, []byte) {
+		i := idx.Add(1) - 1
+		if int(i) < len(responses) {
+			status := responses[i]
+			if status == http.StatusOK {
+				return status, body
+			}
+			return status, nil
+		}
+		return http.StatusBadRequest, nil
+	}
+	gem := newGEMWithTransport(t, []string{"West US"}, transport, 5*time.Minute)
+	pol := &globalEndpointManagerPolicy{gem: gem}
+
+	downstream := &countingTransport{status: http.StatusOK}
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{PerCall: []policy.Policy{pol}},
+		&policy.ClientOptions{Transport: downstream})
+
+	// 1. Bootstrap succeeds.
+	r1, _ := azruntime.NewRequest(context.Background(), http.MethodGet, "https://fake.documents.azure.com/")
+	r1.SetOperationValue(pipelineRequestOptions{resourceType: resourceTypeDocument})
+	_, err := pl.Do(r1)
+	require.NoError(t, err, "bootstrap must succeed")
+	require.True(t, gem.populated(), "GEM must be populated after a successful bootstrap")
+
+	// 2. Simulate a regional 403 -> MarkEndpointUnavailableForWrite -> invalidate.
+	west, _ := url.Parse("https://west-us.documents.azure.com:443/")
+	require.NoError(t, gem.MarkEndpointUnavailableForWrite(*west))
+
+	// 3. populated() must remain true even though lastUpdateTime is zero.
+	require.True(t, gem.populated(),
+		"populated() must remain true after invalidate() -- otherwise a transient refresh failure stalls the data plane")
+
+	// 4. A subsequent data-plane request must succeed (routing through the cached
+	// topology) even if the post-invalidation refresh attempt fails.
+	r2, _ := azruntime.NewRequest(context.Background(), http.MethodGet, "https://fake.documents.azure.com/")
+	r2.SetOperationValue(pipelineRequestOptions{resourceType: resourceTypeDocument})
+	_, err = pl.Do(r2)
+	require.NoError(t, err,
+		"data-plane request must succeed via cached topology even when post-invalidate refresh fails")
+}
+
+// ----------------------------------------------------------------------------
+// F8: a waiter on an in-flight refresh must respect its own ctx deadline,
+// not block for the leader's full HTTP round-trip duration. This matters
+// because clientRetryPolicy's GEM-refresh calls pass req.Raw().Context()
+// (a cancellable user context), so a caller-side timeout must take effect
+// promptly even when the user happens to be a waiter rather than the leader.
+// ----------------------------------------------------------------------------
+func TestFix8_UpdateWaiterRespectsContextCancellation(t *testing.T) {
+	// Slow leader: holds the in-flight slot for 2 seconds.
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+	})
+	transport := &countingTransport{status: http.StatusOK, body: body, delay: 2 * time.Second}
+	gem := newGEMWithTransport(t, []string{"West US"}, transport, 5*time.Minute)
+
+	// Leader starts a refresh in the background.
+	leaderDone := make(chan struct{})
+	go func() {
+		defer close(leaderDone)
+		_ = gem.Update(context.Background(), false)
+	}()
+
+	// Wait until the leader is actually in-flight.
+	deadline := time.Now().Add(500 * time.Millisecond)
+	for time.Now().Before(deadline) {
+		gem.gemMutex.Lock()
+		inflight := gem.inflight != nil
+		gem.gemMutex.Unlock()
+		if inflight {
+			break
+		}
+		time.Sleep(5 * time.Millisecond)
+	}
+
+	// Waiter has a 100 ms deadline. It must return promptly with the
+	// deadline error rather than blocking for the leader's 2-second HTTP
+	// call to complete.
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	defer cancel()
+	start := time.Now()
+	err := gem.Update(ctx, false)
+	waited := time.Since(start)
+
+	require.ErrorIs(t, err, context.DeadlineExceeded, "waiter must surface ctx error")
+	require.Less(t, waited, 500*time.Millisecond,
+		"waiter must respect ctx deadline -- waited %v but ctx deadline was 100ms", waited)
+
+	// Clean up: let the leader finish so the test doesn't leak the goroutine.
+	<-leaderDone
 }

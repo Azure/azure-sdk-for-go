@@ -34,7 +34,11 @@ func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, e
 	if p.gem.ShouldRefresh() {
 		go func() {
 			// Concurrent goroutines spawned here are coalesced inside
-			// gem.Update via the single-in-flight pattern.
+			// gem.Update via the single-in-flight pattern. gem.Update's
+			// panic-safe defer re-panics after cleanup; recover here so a
+			// panic in the GEM pipeline does not bring down the host
+			// process via this detached goroutine.
+			defer func() { _ = recover() }()
 			_ = p.gem.Update(context.WithoutCancel(req.Raw().Context()), false)
 		}()
 	}

@@ -16,10 +16,17 @@ import (
 
 // ServerFactory is a fake server for instances of the armdomainservices.ClientFactory type.
 type ServerFactory struct {
-	Server                        Server
+	// Server contains the fakes for client Client
+	Server Server
+
+	// DomainServiceOperationsServer contains the fakes for client DomainServiceOperationsClient
 	DomainServiceOperationsServer DomainServiceOperationsServer
-	OuContainerServer             OuContainerServer
-	OuContainerOperationsServer   OuContainerOperationsServer
+
+	// OuContainerServer contains the fakes for client OuContainerClient
+	OuContainerServer OuContainerServer
+
+	// OuContainerOperationsServer contains the fakes for client OuContainerOperationsClient
+	OuContainerOperationsServer OuContainerOperationsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

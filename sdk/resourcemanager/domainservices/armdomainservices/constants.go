@@ -5,10 +5,21 @@
 
 package armdomainservices
 
+// ChannelBinding - A flag to determine whether or not ChannelBinding is enabled or disabled.
+type ChannelBinding string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices"
-	moduleVersion = "v1.2.0"
+	ChannelBindingDisabled ChannelBinding = "Disabled"
+	ChannelBindingEnabled  ChannelBinding = "Enabled"
 )
+
+// PossibleChannelBindingValues returns the possible values for the ChannelBinding const type.
+func PossibleChannelBindingValues() []ChannelBinding {
+	return []ChannelBinding{
+		ChannelBindingDisabled,
+		ChannelBindingEnabled,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
@@ -91,6 +102,22 @@ func PossibleKerberosRc4EncryptionValues() []KerberosRc4Encryption {
 	return []KerberosRc4Encryption{
 		KerberosRc4EncryptionDisabled,
 		KerberosRc4EncryptionEnabled,
+	}
+}
+
+// LdapSigning - A flag to determine whether or not LdapSigning is enabled or disabled.
+type LdapSigning string
+
+const (
+	LdapSigningDisabled LdapSigning = "Disabled"
+	LdapSigningEnabled  LdapSigning = "Enabled"
+)
+
+// PossibleLdapSigningValues returns the possible values for the LdapSigning const type.
+func PossibleLdapSigningValues() []LdapSigning {
+	return []LdapSigning{
+		LdapSigningDisabled,
+		LdapSigningEnabled,
 	}
 }
 
@@ -227,6 +254,40 @@ func PossibleSyncOnPremPasswordsValues() []SyncOnPremPasswords {
 	return []SyncOnPremPasswords{
 		SyncOnPremPasswordsDisabled,
 		SyncOnPremPasswordsEnabled,
+	}
+}
+
+// SyncOnPremSamAccountName - A flag to determine whether the SyncOnPremSamAccountName feature is active. When enabled, the
+// samAccountName attribute in Entra Domain Services is synchronized from the onPremisesSamAccountName
+// attribute in Entra ID
+type SyncOnPremSamAccountName string
+
+const (
+	SyncOnPremSamAccountNameDisabled SyncOnPremSamAccountName = "Disabled"
+	SyncOnPremSamAccountNameEnabled  SyncOnPremSamAccountName = "Enabled"
+)
+
+// PossibleSyncOnPremSamAccountNameValues returns the possible values for the SyncOnPremSamAccountName const type.
+func PossibleSyncOnPremSamAccountNameValues() []SyncOnPremSamAccountName {
+	return []SyncOnPremSamAccountName{
+		SyncOnPremSamAccountNameDisabled,
+		SyncOnPremSamAccountNameEnabled,
+	}
+}
+
+// SyncScope - All or CloudOnly, All users in AAD are synced to AAD DS domain or only users actively syncing in the cloud
+type SyncScope string
+
+const (
+	SyncScopeAll       SyncScope = "All"
+	SyncScopeCloudOnly SyncScope = "CloudOnly"
+)
+
+// PossibleSyncScopeValues returns the possible values for the SyncScope const type.
+func PossibleSyncScopeValues() []SyncScope {
+	return []SyncScope{
+		SyncScopeAll,
+		SyncScopeCloudOnly,
 	}
 }
 

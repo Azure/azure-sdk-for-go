@@ -28,7 +28,7 @@ type Client struct {
 //   - subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -46,7 +46,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // properties will remain unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - domainServiceName - The name of the domain service.
 //   - domainService - Properties supplied to the Create or Update a Domain Service operation.
@@ -73,7 +73,7 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName
 // properties will remain unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdate"
@@ -96,7 +96,7 @@ func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName stri
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, options *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -115,7 +115,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, domainService); err != nil {
@@ -127,7 +127,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 // BeginDelete - The Delete Domain Service operation deletes an existing Domain Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - domainServiceName - The name of the domain service.
 //   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
@@ -151,7 +151,7 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 // Delete - The Delete Domain Service operation deletes an existing Domain Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, domainServiceName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDelete"
@@ -174,7 +174,7 @@ func (client *Client) deleteOperation(ctx context.Context, resourceGroupName str
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, options *ClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -193,7 +193,7 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,7 +202,7 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 // Get - The Get Domain Service operation retrieves a json representation of the Domain Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - domainServiceName - The name of the domain service.
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -229,7 +229,7 @@ func (client *Client) Get(ctx context.Context, resourceGroupName string, domainS
 }
 
 // getCreateRequest creates the Get request.
-func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, options *ClientGetOptions) (*policy.Request, error) {
+func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, _ *ClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -248,7 +248,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +266,7 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 // NewListPager - The List Domain Services in Subscription operation lists all the domain services available under the given
 // subscription (and across all resource groups within that subscription).
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
@@ -292,7 +292,7 @@ func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[Cl
 }
 
 // listCreateRequest creates the List request.
-func (client *Client) listCreateRequest(ctx context.Context, options *ClientListOptions) (*policy.Request, error) {
+func (client *Client) listCreateRequest(ctx context.Context, _ *ClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AAD/domainServices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -303,7 +303,7 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 // NewListByResourceGroupPager - The List Domain Services in Resource Group operation lists all the domain services available
 // under the given resource group.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - options - ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager
 //     method.
@@ -349,7 +349,7 @@ func (client *Client) NewListByResourceGroupPager(resourceGroupName string, opti
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -364,7 +364,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -379,11 +379,75 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 	return result, nil
 }
 
+// Unsuspend - Unsuspend a suspended Domain Service resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01-preview
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - domainServiceName - The name of the domain service.
+//   - options - ClientUnsuspendOptions contains the optional parameters for the Client.Unsuspend method.
+func (client *Client) Unsuspend(ctx context.Context, resourceGroupName string, domainServiceName string, options *ClientUnsuspendOptions) (ClientUnsuspendResponse, error) {
+	var err error
+	const operationName = "Client.Unsuspend"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.unsuspendCreateRequest(ctx, resourceGroupName, domainServiceName, options)
+	if err != nil {
+		return ClientUnsuspendResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientUnsuspendResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ClientUnsuspendResponse{}, err
+	}
+	resp, err := client.unsuspendHandleResponse(httpResp)
+	return resp, err
+}
+
+// unsuspendCreateRequest creates the Unsuspend request.
+func (client *Client) unsuspendCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, _ *ClientUnsuspendOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}/unsuspend"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if domainServiceName == "" {
+		return nil, errors.New("parameter domainServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{domainServiceName}", url.PathEscape(domainServiceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-10-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// unsuspendHandleResponse handles the Unsuspend response.
+func (client *Client) unsuspendHandleResponse(resp *http.Response) (ClientUnsuspendResponse, error) {
+	result := ClientUnsuspendResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UnsuspendDomainServiceResponse); err != nil {
+		return ClientUnsuspendResponse{}, err
+	}
+	return result, nil
+}
+
 // BeginUpdate - The Update Domain Service operation can be used to update the existing deployment. The update call only supports
 // the properties listed in the PATCH body.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - domainServiceName - The name of the domain service.
 //   - domainService - Properties supplied to the Update a Domain Service operation.
@@ -409,7 +473,7 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string,
 // the properties listed in the PATCH body.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2025-10-01-preview
 func (client *Client) update(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginUpdate"
@@ -432,7 +496,7 @@ func (client *Client) update(ctx context.Context, resourceGroupName string, doma
 }
 
 // updateCreateRequest creates the Update request.
-func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, options *ClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -451,7 +515,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, domainService); err != nil {

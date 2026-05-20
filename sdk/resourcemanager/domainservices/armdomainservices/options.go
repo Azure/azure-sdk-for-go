@@ -7,19 +7,19 @@ package armdomainservices
 
 // ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
 type ClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
 type ClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
 type ClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -38,6 +38,11 @@ type ClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClientUnsuspendOptions contains the optional parameters for the Client.Unsuspend method.
+type ClientUnsuspendOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DomainServiceOperationsClientListOptions contains the optional parameters for the DomainServiceOperationsClient.NewListPager
 // method.
 type DomainServiceOperationsClientListOptions struct {
@@ -46,19 +51,19 @@ type DomainServiceOperationsClientListOptions struct {
 
 // OuContainerClientBeginCreateOptions contains the optional parameters for the OuContainerClient.BeginCreate method.
 type OuContainerClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // OuContainerClientBeginDeleteOptions contains the optional parameters for the OuContainerClient.BeginDelete method.
 type OuContainerClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // OuContainerClientBeginUpdateOptions contains the optional parameters for the OuContainerClient.BeginUpdate method.
 type OuContainerClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

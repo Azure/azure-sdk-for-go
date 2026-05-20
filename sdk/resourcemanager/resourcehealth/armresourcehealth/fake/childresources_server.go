@@ -50,21 +50,40 @@ func (c *ChildResourcesServerTransport) Do(req *http.Request) (*http.Response, e
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return c.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ChildResourcesClient.NewListPager":
-		resp, err = c.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (c *ChildResourcesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if childResourcesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = childResourcesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ChildResourcesClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (c *ChildResourcesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -76,7 +95,7 @@ func (c *ChildResourcesServerTransport) dispatchNewListPager(req *http.Request) 
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/childResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -120,4 +139,10 @@ func (c *ChildResourcesServerTransport) dispatchNewListPager(req *http.Request) 
 		c.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ChildResourcesServerTransport
+var childResourcesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

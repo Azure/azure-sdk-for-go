@@ -20,6 +20,10 @@ import (
 
 // EventServer is a fake server for instances of the armresourcehealth.EventClient type.
 type EventServer struct {
+	// FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID is the fake for method EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID
+	// HTTP status codes to indicate success: http.StatusOK
+	FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID func(ctx context.Context, eventTrackingID string, options *armresourcehealth.EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (resp azfake.Responder[armresourcehealth.EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse], errResp azfake.ErrorResponder)
+
 	// FetchDetailsBySubscriptionIDAndTrackingID is the fake for method EventClient.FetchDetailsBySubscriptionIDAndTrackingID
 	// HTTP status codes to indicate success: http.StatusOK
 	FetchDetailsBySubscriptionIDAndTrackingID func(ctx context.Context, eventTrackingID string, options *armresourcehealth.EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions) (resp azfake.Responder[armresourcehealth.EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse], errResp azfake.ErrorResponder)
@@ -58,26 +62,76 @@ func (e *EventServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "EventClient.FetchDetailsBySubscriptionIDAndTrackingID":
-		resp, err = e.dispatchFetchDetailsBySubscriptionIDAndTrackingID(req)
-	case "EventClient.FetchDetailsByTenantIDAndTrackingID":
-		resp, err = e.dispatchFetchDetailsByTenantIDAndTrackingID(req)
-	case "EventClient.GetBySubscriptionIDAndTrackingID":
-		resp, err = e.dispatchGetBySubscriptionIDAndTrackingID(req)
-	case "EventClient.GetByTenantIDAndTrackingID":
-		resp, err = e.dispatchGetByTenantIDAndTrackingID(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *EventServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if eventServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = eventServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID":
+				res.resp, res.err = e.dispatchFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(req)
+			case "EventClient.FetchDetailsBySubscriptionIDAndTrackingID":
+				res.resp, res.err = e.dispatchFetchDetailsBySubscriptionIDAndTrackingID(req)
+			case "EventClient.FetchDetailsByTenantIDAndTrackingID":
+				res.resp, res.err = e.dispatchFetchDetailsByTenantIDAndTrackingID(req)
+			case "EventClient.GetBySubscriptionIDAndTrackingID":
+				res.resp, res.err = e.dispatchGetBySubscriptionIDAndTrackingID(req)
+			case "EventClient.GetByTenantIDAndTrackingID":
+				res.resp, res.err = e.dispatchGetByTenantIDAndTrackingID(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
+}
 
+func (e *EventServerTransport) dispatchFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(req *http.Request) (*http.Response, error) {
+	if e.srv.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchBillingCommunicationDetails`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	eventTrackingIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventTrackingId")])
 	if err != nil {
 		return nil, err
 	}
-
+	respr, errRespr := e.srv.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(req.Context(), eventTrackingIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Event, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -88,7 +142,7 @@ func (e *EventServerTransport) dispatchFetchDetailsBySubscriptionIDAndTrackingID
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchEventDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	eventTrackingIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventTrackingId")])
@@ -117,7 +171,7 @@ func (e *EventServerTransport) dispatchFetchDetailsByTenantIDAndTrackingID(req *
 	const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchEventDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	eventTrackingIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventTrackingId")])
@@ -146,7 +200,7 @@ func (e *EventServerTransport) dispatchGetBySubscriptionIDAndTrackingID(req *htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -193,7 +247,7 @@ func (e *EventServerTransport) dispatchGetByTenantIDAndTrackingID(req *http.Requ
 	const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -231,4 +285,10 @@ func (e *EventServerTransport) dispatchGetByTenantIDAndTrackingID(req *http.Requ
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to EventServerTransport
+var eventServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

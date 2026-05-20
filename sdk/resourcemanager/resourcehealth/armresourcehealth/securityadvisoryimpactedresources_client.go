@@ -27,7 +27,7 @@ type SecurityAdvisoryImpactedResourcesClient struct {
 // NewSecurityAdvisoryImpactedResourcesClient creates a new instance of SecurityAdvisoryImpactedResourcesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecurityAdvisoryImpactedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityAdvisoryImpactedResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewSecurityAdvisoryImpactedResourcesClient(subscriptionID string, credentia
 
 // NewListBySubscriptionIDAndEventIDPager - Lists impacted resources in the subscription by an event (Security Advisory).
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDOptions contains the optional parameters
 //     for the SecurityAdvisoryImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager method.
@@ -88,7 +88,7 @@ func (client *SecurityAdvisoryImpactedResourcesClient) listBySubscriptionIDAndEv
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *SecurityAdvisoryImpactedResourcesClient) listBySubscriptionIDAndEv
 
 // NewListByTenantIDAndEventIDPager - Lists impacted resources in the tenant by an event (Security Advisory).
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDOptions contains the optional parameters for the
 //     SecurityAdvisoryImpactedResourcesClient.NewListByTenantIDAndEventIDPager method.
@@ -147,7 +147,7 @@ func (client *SecurityAdvisoryImpactedResourcesClient) listByTenantIDAndEventIDC
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -23,7 +23,7 @@ type ChildResourcesClient struct {
 
 // NewChildResourcesClient creates a new instance of ChildResourcesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewChildResourcesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ChildResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -38,7 +38,7 @@ func NewChildResourcesClient(credential azcore.TokenCredential, options *arm.Cli
 // NewListPager - Lists the all the children and its current health status for a parent resource. Use the nextLink property
 // in the response to get the next page of children current health
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 //     only support not nested parent resource type:
 //     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
@@ -81,7 +81,7 @@ func (client *ChildResourcesClient) listCreateRequest(ctx context.Context, resou
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

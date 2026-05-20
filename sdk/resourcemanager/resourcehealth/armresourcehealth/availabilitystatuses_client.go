@@ -27,7 +27,7 @@ type AvailabilityStatusesClient struct {
 // NewAvailabilityStatusesClient creates a new instance of AvailabilityStatusesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAvailabilityStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailabilityStatusesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAvailabilityStatusesClient(subscriptionID string, credential azcore.Toke
 // GetByResource - Gets current availability status for a single resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 //     support not nested and one nesting level resource types :
 //     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
@@ -88,7 +88,7 @@ func (client *AvailabilityStatusesClient) getByResourceCreateRequest(ctx context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *AvailabilityStatusesClient) getByResourceHandleResponse(resp *http
 
 // NewListPager - Lists all historical availability transitions and impacting events for a single resource.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 //     support not nested and one nesting level resource types :
 //     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
@@ -151,7 +151,7 @@ func (client *AvailabilityStatusesClient) listCreateRequest(ctx context.Context,
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -168,7 +168,7 @@ func (client *AvailabilityStatusesClient) listHandleResponse(resp *http.Response
 
 // NewListByResourceGroupPager - Lists the current availability status for all the resources in the resource group.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AvailabilityStatusesClientListByResourceGroupOptions contains the optional parameters for the AvailabilityStatusesClient.NewListByResourceGroupPager
 //     method.
@@ -217,7 +217,7 @@ func (client *AvailabilityStatusesClient) listByResourceGroupCreateRequest(ctx c
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -234,7 +234,7 @@ func (client *AvailabilityStatusesClient) listByResourceGroupHandleResponse(resp
 
 // NewListBySubscriptionIDPager - Lists the current availability status for all the resources in the subscription.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - options - AvailabilityStatusesClientListBySubscriptionIDOptions contains the optional parameters for the AvailabilityStatusesClient.NewListBySubscriptionIDPager
 //     method.
 func (client *AvailabilityStatusesClient) NewListBySubscriptionIDPager(options *AvailabilityStatusesClientListBySubscriptionIDOptions) *runtime.Pager[AvailabilityStatusesClientListBySubscriptionIDResponse] {
@@ -278,7 +278,7 @@ func (client *AvailabilityStatusesClient) listBySubscriptionIDCreateRequest(ctx 
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

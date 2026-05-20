@@ -220,21 +220,6 @@ type EventImpactedResourceProperties struct {
 	// Additional information.
 	Info []*KeyValueItem
 
-	// READ-ONLY; End time of maintenance for the impacted resource.
-	MaintenanceEndTime *string
-
-	// READ-ONLY; Start time of maintenance for the impacted resource.
-	MaintenanceStartTime *string
-
-	// READ-ONLY; Resource group name of the impacted resource.
-	ResourceGroup *string
-
-	// READ-ONLY; Resource name of the impacted resource.
-	ResourceName *string
-
-	// READ-ONLY; Status of the impacted resource.
-	Status *string
-
 	// READ-ONLY; Impacted resource region name.
 	TargetRegion *string
 
@@ -250,13 +235,17 @@ type EventProperties struct {
 	// Additional information
 	AdditionalInformation *EventPropertiesAdditionalInformation
 
-	// Azure Resource Graph query to fetch the affected resources from their existing Azure Resource Graph locations.
-	ArgQuery *string
-
 	// Article of event.
 	Article *EventPropertiesArticle
 
-	// Contains the communication message for the event, that could include summary, root cause and other details.
+	// Billing identifier information.
+	BillingID *string
+
+	// Billing currency type information. Example: USD, CAD
+	CurrencyType *string
+
+	// Contains the communication message for the event, that could include summary, root cause and other details. Use fetchEventDetails
+	// endpoint to get description of sensitive events.
 	Description *string
 
 	// duration in seconds
@@ -274,8 +263,21 @@ type EventProperties struct {
 	// Source of event.
 	EventSource *EventSourceValues
 
-	// Sub type of the event. Currently used to determine retirement communications for health advisory events
+	// Sub-type of event.
 	EventSubType *EventSubTypeValues
+
+	// A list of metadata tags associated with the event. Possible values include: -Action Recommended: Action may be required
+	// by you to avoid possible disruptions or mitigate risks for your services. It is
+	// recommended to evaluate these actions and the potential impact on your services.
+	// * False Positive: After investigation, we've determined your service is healthy and service issues did not impact your
+	// services as originally communicated.
+	// * Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published
+	// generally within 72 hours of mitigation, to summarize what we have learned so
+	// far from the still-in-progress investigation.
+	// * Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings.
+	// Sometimes this requires us to complete an internal retrospective,
+	// generally within 14 days of mitigation.
+	EventTags []*string
 
 	// Type of event.
 	EventType *EventTypeValues
@@ -304,6 +306,11 @@ type EventProperties struct {
 	// The type of the impact
 	ImpactType *string
 
+	// If true the event may contains sensitive data. Use the post events/{trackingId}/fetchEventDetails endpoint to fetch sensitive
+	// data see
+	// https://learn.microsoft.com/en-us/azure/service-health/security-advisories-elevated-access
+	IsEventSensitive *bool
+
 	// It provides information if the event is High incident rate event or not.
 	IsHIR *bool
 
@@ -316,11 +323,11 @@ type EventProperties struct {
 	// Useful links of event.
 	Links []*Link
 
-	// Unique identifier for planned maintenance event.
-	MaintenanceID *string
+	// Billing rate change information - new rate
+	NewRate *float64
 
-	// The type of planned maintenance event.
-	MaintenanceType *string
+	// Billing rate change information - old rate
+	OldRate *float64
 
 	// Is true if the event is platform initiated.
 	PlatformInitiated *bool
@@ -339,7 +346,7 @@ type EventProperties struct {
 	// Current status of event.
 	Status *EventStatusValues
 
-	// Summary text of event.
+	// Summary text of event. Use fetchEventDetails endpoint to get summary of sensitive events.
 	Summary *string
 
 	// Title text of event.
@@ -413,6 +420,9 @@ type Impact struct {
 
 	// Impacted service name.
 	ImpactedService *string
+
+	// Impacted service guid. This is the permanent identifier for the impacted service.
+	ImpactedServiceGUID *string
 }
 
 // ImpactedRegion - Object of impacted region.
@@ -441,7 +451,7 @@ type ImpactedServiceRegion struct {
 	// Current status of event in the region.
 	Status *EventStatusValues
 
-	// List of updates for given service health event.
+	// List of updates for given service health event. Use fetchEventDetails endpoint to get updates of sensitive events.
 	Updates []*Update
 }
 
@@ -528,11 +538,20 @@ type MetadataSupportedValueDetail struct {
 	// The display name.
 	DisplayName *string
 
-	// The id.
+	// The id of the metadata value
 	ID *string
+
+	// The previous value of the id field incase the data has changed.
+	PreviousID *string
+
+	// Priority of this metadata supported value. Lower number is given higher preference.
+	Priority *int32
 
 	// The list of associated resource types.
 	ResourceTypes []*string
+
+	// The permanent guid for the service. Used when the id is a service name.
+	ServiceGUID *string
 }
 
 // Operation available in the Microsoft.ResourceHealth resource provider.
@@ -690,6 +709,19 @@ type SystemData struct {
 
 // Update for service health event.
 type Update struct {
+	// A list of metadata tags associated with the event. Possible values include: -Action Recommended: Action may be required
+	// by you to avoid possible disruptions or mitigate risks for your services. It is
+	// recommended to evaluate these actions and the potential impact on your services.
+	// * False Positive: After investigation, we've determined your service is healthy and service issues did not impact your
+	// services as originally communicated.
+	// * Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published
+	// generally within 72 hours of mitigation, to summarize what we have learned so
+	// far from the still-in-progress investigation.
+	// * Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings.
+	// Sometimes this requires us to complete an internal retrospective,
+	// generally within 14 days of mitigation.
+	EventTags []*string
+
 	// Summary text for the given update for the service health event.
 	Summary *string
 

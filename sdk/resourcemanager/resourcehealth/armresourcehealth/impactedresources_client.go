@@ -27,7 +27,7 @@ type ImpactedResourcesClient struct {
 // NewImpactedResourcesClient creates a new instance of ImpactedResourcesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewImpactedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImpactedResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewImpactedResourcesClient(subscriptionID string, credential azcore.TokenCr
 // Get - Gets the specific impacted resource in the subscription by an event.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - impactedResourceName - Name of the Impacted Resource.
 //   - options - ImpactedResourcesClientGetOptions contains the optional parameters for the ImpactedResourcesClient.Get method.
@@ -70,7 +70,7 @@ func (client *ImpactedResourcesClient) Get(ctx context.Context, eventTrackingID 
 }
 
 // getCreateRequest creates the Get request.
-func (client *ImpactedResourcesClient) getCreateRequest(ctx context.Context, eventTrackingID string, impactedResourceName string, options *ImpactedResourcesClientGetOptions) (*policy.Request, error) {
+func (client *ImpactedResourcesClient) getCreateRequest(ctx context.Context, eventTrackingID string, impactedResourceName string, _ *ImpactedResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources/{impactedResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,7 +89,7 @@ func (client *ImpactedResourcesClient) getCreateRequest(ctx context.Context, eve
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -107,7 +107,7 @@ func (client *ImpactedResourcesClient) getHandleResponse(resp *http.Response) (I
 // GetByTenantID - Gets the specific impacted resource in the tenant by an event.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - impactedResourceName - Name of the Impacted Resource.
 //   - options - ImpactedResourcesClientGetByTenantIDOptions contains the optional parameters for the ImpactedResourcesClient.GetByTenantID
@@ -135,7 +135,7 @@ func (client *ImpactedResourcesClient) GetByTenantID(ctx context.Context, eventT
 }
 
 // getByTenantIDCreateRequest creates the GetByTenantID request.
-func (client *ImpactedResourcesClient) getByTenantIDCreateRequest(ctx context.Context, eventTrackingID string, impactedResourceName string, options *ImpactedResourcesClientGetByTenantIDOptions) (*policy.Request, error) {
+func (client *ImpactedResourcesClient) getByTenantIDCreateRequest(ctx context.Context, eventTrackingID string, impactedResourceName string, _ *ImpactedResourcesClientGetByTenantIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources/{impactedResourceName}"
 	if eventTrackingID == "" {
 		return nil, errors.New("parameter eventTrackingID cannot be empty")
@@ -150,7 +150,7 @@ func (client *ImpactedResourcesClient) getByTenantIDCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -167,7 +167,7 @@ func (client *ImpactedResourcesClient) getByTenantIDHandleResponse(resp *http.Re
 
 // NewListBySubscriptionIDAndEventIDPager - Lists impacted resources in the subscription by an event.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions contains the optional parameters for the ImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager
 //     method.
@@ -213,7 +213,7 @@ func (client *ImpactedResourcesClient) listBySubscriptionIDAndEventIDCreateReque
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -230,7 +230,7 @@ func (client *ImpactedResourcesClient) listBySubscriptionIDAndEventIDHandleRespo
 
 // NewListByTenantIDAndEventIDPager - Lists impacted resources in the tenant by an event.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - ImpactedResourcesClientListByTenantIDAndEventIDOptions contains the optional parameters for the ImpactedResourcesClient.NewListByTenantIDAndEventIDPager
 //     method.
@@ -272,7 +272,7 @@ func (client *ImpactedResourcesClient) listByTenantIDAndEventIDCreateRequest(ctx
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

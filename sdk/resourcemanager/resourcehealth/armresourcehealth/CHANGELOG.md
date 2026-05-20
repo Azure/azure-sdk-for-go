@@ -1,16 +1,15 @@
 # Release History
 
-## 1.4.0-beta.2 (2024-02-07)
-### Bugs Fixed
-
-- Unmarshal time values in ISO8601 format.
-
-## 1.4.0-beta.1 (2023-11-30)
+## 1.4.0 (2026-05-20)
 ### Features Added
 
-- New enum type `EventSubTypeValues` with values `EventSubTypeValuesRetirement`
-- New field `MaintenanceEndTime`, `MaintenanceStartTime`, `ResourceGroup`, `ResourceName`, `Status` in struct `EventImpactedResourceProperties`
-- New field `ArgQuery`, `EventSubType`, `MaintenanceID`, `MaintenanceType` in struct `EventProperties`
+- New value `EventTypeValuesBilling` added to enum type `EventTypeValues`
+- New enum type `EventSubTypeValues` with values `EventSubTypeValuesForeignExchangeRateChange`, `EventSubTypeValuesMeterIDChanges`, `EventSubTypeValuesOverbilling`, `EventSubTypeValuesPriceChanges`, `EventSubTypeValuesRetirement`, `EventSubTypeValuesTaxChanges`, `EventSubTypeValuesUnauthorizedPartyAbuse`, `EventSubTypeValuesUnderbilling`
+- New function `*EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error)`
+- New field `BillingID`, `CurrencyType`, `EventSubType`, `EventTags`, `IsEventSensitive`, `NewRate`, `OldRate` in struct `EventProperties`
+- New field `ImpactedServiceGUID` in struct `Impact`
+- New field `PreviousID`, `Priority`, `ServiceGUID` in struct `MetadataSupportedValueDetail`
+- New field `EventTags` in struct `Update`
 
 
 ## 1.3.0 (2023-11-30)

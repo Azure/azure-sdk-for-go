@@ -5,11 +5,6 @@
 
 package armresourcehealth
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
-	moduleVersion = "v1.4.0-beta.2"
-)
-
 // AvailabilityStateValues - Impacted resource status of the resource.
 type AvailabilityStateValues string
 
@@ -102,17 +97,31 @@ func PossibleEventStatusValuesValues() []EventStatusValues {
 	}
 }
 
-// EventSubTypeValues - Sub type of the event. Currently used to determine retirement communications for health advisory events
+// EventSubTypeValues - Sub-type of event.
 type EventSubTypeValues string
 
 const (
-	EventSubTypeValuesRetirement EventSubTypeValues = "Retirement"
+	EventSubTypeValuesForeignExchangeRateChange EventSubTypeValues = "ForeignExchangeRateChange"
+	EventSubTypeValuesMeterIDChanges            EventSubTypeValues = "MeterIDChanges"
+	EventSubTypeValuesOverbilling               EventSubTypeValues = "Overbilling"
+	EventSubTypeValuesPriceChanges              EventSubTypeValues = "PriceChanges"
+	EventSubTypeValuesRetirement                EventSubTypeValues = "Retirement"
+	EventSubTypeValuesTaxChanges                EventSubTypeValues = "TaxChanges"
+	EventSubTypeValuesUnauthorizedPartyAbuse    EventSubTypeValues = "UnauthorizedPartyAbuse"
+	EventSubTypeValuesUnderbilling              EventSubTypeValues = "Underbilling"
 )
 
 // PossibleEventSubTypeValuesValues returns the possible values for the EventSubTypeValues const type.
 func PossibleEventSubTypeValuesValues() []EventSubTypeValues {
 	return []EventSubTypeValues{
+		EventSubTypeValuesForeignExchangeRateChange,
+		EventSubTypeValuesMeterIDChanges,
+		EventSubTypeValuesOverbilling,
+		EventSubTypeValuesPriceChanges,
 		EventSubTypeValuesRetirement,
+		EventSubTypeValuesTaxChanges,
+		EventSubTypeValuesUnauthorizedPartyAbuse,
+		EventSubTypeValuesUnderbilling,
 	}
 }
 
@@ -120,6 +129,7 @@ func PossibleEventSubTypeValuesValues() []EventSubTypeValues {
 type EventTypeValues string
 
 const (
+	EventTypeValuesBilling            EventTypeValues = "Billing"
 	EventTypeValuesEmergingIssues     EventTypeValues = "EmergingIssues"
 	EventTypeValuesHealthAdvisory     EventTypeValues = "HealthAdvisory"
 	EventTypeValuesPlannedMaintenance EventTypeValues = "PlannedMaintenance"
@@ -131,6 +141,7 @@ const (
 // PossibleEventTypeValuesValues returns the possible values for the EventTypeValues const type.
 func PossibleEventTypeValuesValues() []EventTypeValues {
 	return []EventTypeValues{
+		EventTypeValuesBilling,
 		EventTypeValuesEmergingIssues,
 		EventTypeValuesHealthAdvisory,
 		EventTypeValuesPlannedMaintenance,

@@ -84,6 +84,12 @@ type EmergingIssuesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the
+// EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID method.
+type EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions struct {
+	// placeholder for future optional parameters
+}
+
 // EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the EventClient.FetchDetailsBySubscriptionIDAndTrackingID
 // method.
 type EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions struct {
@@ -102,8 +108,8 @@ type EventClientGetBySubscriptionIDAndTrackingIDOptions struct {
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 
-	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
-	// queryStartTime=7%2F24%2F2020
+	// Specifies from when to return events (default is 3 days), based on the lastUpdateTime property. For example, queryStartTime
+	// = 7/24/2020 OR queryStartTime=7%2F24%2F2020
 	QueryStartTime *string
 }
 
@@ -113,8 +119,8 @@ type EventClientGetByTenantIDAndTrackingIDOptions struct {
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 
-	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
-	// queryStartTime=7%2F24%2F2020
+	// Specifies from when to return events (default is 3 days), based on the lastUpdateTime property. For example, queryStartTime
+	// = 7/24/2020 OR queryStartTime=7%2F24%2F2020
 	QueryStartTime *string
 }
 
@@ -131,8 +137,8 @@ type EventsClientListBySubscriptionIDOptions struct {
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 
-	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
-	// queryStartTime=7%2F24%2F2020
+	// Specifies from when to return events (default is 3 days), based on the lastUpdateTime property. For example, queryStartTime
+	// = 7/24/2020 OR queryStartTime=7%2F24%2F2020
 	QueryStartTime *string
 }
 
@@ -141,8 +147,8 @@ type EventsClientListByTenantIDOptions struct {
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 
-	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
-	// queryStartTime=7%2F24%2F2020
+	// Specifies from when to return events (default is 3 days), based on the lastUpdateTime property. For example, queryStartTime
+	// = 7/24/2020 OR queryStartTime=7%2F24%2F2020
 	QueryStartTime *string
 }
 

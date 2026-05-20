@@ -27,7 +27,7 @@ type EventClient struct {
 // NewEventClient creates a new instance of EventClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEventClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EventClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,11 +40,73 @@ func NewEventClient(subscriptionID string, credential azcore.TokenCredential, op
 	return client, nil
 }
 
-// FetchDetailsBySubscriptionIDAndTrackingID - Service health event details in the subscription by event tracking id. This
-// can be used to fetch sensitive properties for Security Advisory events
+// FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID - Service health event details specific in the subscription
+// by event tracking id. This can be used to fetch sensitive properties for Billing event type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
+//   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
+//   - options - EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters
+//     for the EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID method.
+func (client *EventClient) FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error) {
+	var err error
+	const operationName = "EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
+	if err != nil {
+		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
+	}
+	resp, err := client.fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp)
+	return resp, err
+}
+
+// fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest creates the FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID request.
+func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, _ *EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchBillingCommunicationDetails"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if eventTrackingID == "" {
+		return nil, errors.New("parameter eventTrackingID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{eventTrackingId}", url.PathEscape(eventTrackingID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse handles the FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID response.
+func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(resp *http.Response) (EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error) {
+	result := EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Event); err != nil {
+		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
+	}
+	return result, nil
+}
+
+// FetchDetailsBySubscriptionIDAndTrackingID - Service health event details in the subscription by event tracking id. This
+// can be used to fetch sensitive properties for Security Advisory events. Please see
+// https://learn.microsoft.com/en-us/azure/service-health/security-advisories-elevated-access
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the EventClient.FetchDetailsBySubscriptionIDAndTrackingID
 //     method.
@@ -71,7 +133,7 @@ func (client *EventClient) FetchDetailsBySubscriptionIDAndTrackingID(ctx context
 }
 
 // fetchDetailsBySubscriptionIDAndTrackingIDCreateRequest creates the FetchDetailsBySubscriptionIDAndTrackingID request.
-func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, options *EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
+func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, _ *EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchEventDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -86,7 +148,7 @@ func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -102,10 +164,11 @@ func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDHandleRespon
 }
 
 // FetchDetailsByTenantIDAndTrackingID - Service health event details in the tenant by event tracking id. This can be used
-// to fetch sensitive properties for Security Advisory events
+// to fetch sensitive properties for Security Advisory events. Please see
+// https://learn.microsoft.com/en-us/azure/service-health/security-advisories-elevated-access
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientFetchDetailsByTenantIDAndTrackingIDOptions contains the optional parameters for the EventClient.FetchDetailsByTenantIDAndTrackingID
 //     method.
@@ -132,7 +195,7 @@ func (client *EventClient) FetchDetailsByTenantIDAndTrackingID(ctx context.Conte
 }
 
 // fetchDetailsByTenantIDAndTrackingIDCreateRequest creates the FetchDetailsByTenantIDAndTrackingID request.
-func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, options *EventClientFetchDetailsByTenantIDAndTrackingIDOptions) (*policy.Request, error) {
+func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, _ *EventClientFetchDetailsByTenantIDAndTrackingIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchEventDetails"
 	if eventTrackingID == "" {
 		return nil, errors.New("parameter eventTrackingID cannot be empty")
@@ -143,7 +206,7 @@ func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -161,7 +224,7 @@ func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDHandleResponse(res
 // GetBySubscriptionIDAndTrackingID - Service health event in the subscription by event tracking id
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientGetBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the EventClient.GetBySubscriptionIDAndTrackingID
 //     method.
@@ -206,7 +269,7 @@ func (client *EventClient) getBySubscriptionIDAndTrackingIDCreateRequest(ctx con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.QueryStartTime != nil {
 		reqQP.Set("queryStartTime", *options.QueryStartTime)
 	}
@@ -227,7 +290,7 @@ func (client *EventClient) getBySubscriptionIDAndTrackingIDHandleResponse(resp *
 // GetByTenantIDAndTrackingID - Service health event in the tenant by event tracking id
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientGetByTenantIDAndTrackingIDOptions contains the optional parameters for the EventClient.GetByTenantIDAndTrackingID
 //     method.
@@ -268,7 +331,7 @@ func (client *EventClient) getByTenantIDAndTrackingIDCreateRequest(ctx context.C
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.QueryStartTime != nil {
 		reqQP.Set("queryStartTime", *options.QueryStartTime)
 	}

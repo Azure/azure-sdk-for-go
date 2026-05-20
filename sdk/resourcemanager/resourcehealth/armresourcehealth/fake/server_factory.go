@@ -16,15 +16,34 @@ import (
 
 // ServerFactory is a fake server for instances of the armresourcehealth.ClientFactory type.
 type ServerFactory struct {
-	AvailabilityStatusesServer              AvailabilityStatusesServer
-	ChildAvailabilityStatusesServer         ChildAvailabilityStatusesServer
-	ChildResourcesServer                    ChildResourcesServer
-	EmergingIssuesServer                    EmergingIssuesServer
-	EventServer                             EventServer
-	EventsServer                            EventsServer
-	ImpactedResourcesServer                 ImpactedResourcesServer
-	MetadataServer                          MetadataServer
-	OperationsServer                        OperationsServer
+	// AvailabilityStatusesServer contains the fakes for client AvailabilityStatusesClient
+	AvailabilityStatusesServer AvailabilityStatusesServer
+
+	// ChildAvailabilityStatusesServer contains the fakes for client ChildAvailabilityStatusesClient
+	ChildAvailabilityStatusesServer ChildAvailabilityStatusesServer
+
+	// ChildResourcesServer contains the fakes for client ChildResourcesClient
+	ChildResourcesServer ChildResourcesServer
+
+	// EmergingIssuesServer contains the fakes for client EmergingIssuesClient
+	EmergingIssuesServer EmergingIssuesServer
+
+	// EventServer contains the fakes for client EventClient
+	EventServer EventServer
+
+	// EventsServer contains the fakes for client EventsClient
+	EventsServer EventsServer
+
+	// ImpactedResourcesServer contains the fakes for client ImpactedResourcesClient
+	ImpactedResourcesServer ImpactedResourcesServer
+
+	// MetadataServer contains the fakes for client MetadataClient
+	MetadataServer MetadataServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// SecurityAdvisoryImpactedResourcesServer contains the fakes for client SecurityAdvisoryImpactedResourcesClient
 	SecurityAdvisoryImpactedResourcesServer SecurityAdvisoryImpactedResourcesServer
 }
 

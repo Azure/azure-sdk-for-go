@@ -42,7 +42,7 @@ type FileSystemList struct {
 // ListPathsHierarchySegmentResponse - An enumeration of blobs.
 type ListPathsHierarchySegmentResponse struct {
 	// REQUIRED; The container name.
-	ContainerName *string `xml:"ContainerName,attr"`
+	FileSystemName *string `xml:"ContainerName,attr"`
 
 	// REQUIRED; The blob segment.
 	Segment *PathHierarchyListSegment `xml:"Blobs"`
@@ -75,7 +75,7 @@ type Path struct {
 	CreationTime *string
 
 	// The entity tag.
-	ETag *azcore.ETag
+	ETag *string
 
 	// The encryption context.
 	EncryptionContext *string
@@ -111,7 +111,7 @@ type PathHierarchyListSegment struct {
 	PathItems []*PathItemInternal `xml:"Blob"`
 
 	// The blob prefixes.
-	BlobPrefixes []*PathPrefix `xml:"BlobPrefix"`
+	PathPrefixes []*PathPrefix `xml:"BlobPrefix"`
 }
 
 // PathItemInternal - An Azure Storage blob.
@@ -153,7 +153,7 @@ type PathPrefix struct {
 // PathPropertiesInternal - Properties of a blob.
 type PathPropertiesInternal struct {
 	// REQUIRED; The entity tag.
-	Etag *azcore.ETag `xml:"Etag"`
+	Etag *string `xml:"Etag"`
 
 	// REQUIRED; The last modified time.
 	LastModified *time.Time `xml:"Last-Modified"`

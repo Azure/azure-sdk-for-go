@@ -130,16 +130,16 @@ func (p PathHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	type alias PathHierarchyListSegment
 	aux := &struct {
 		*alias
-		BlobPrefixes *[]*PathPrefix       `xml:"BlobPrefix"`
 		PathItems    *[]*PathItemInternal `xml:"Blob"`
+		PathPrefixes *[]*PathPrefix       `xml:"BlobPrefix"`
 	}{
 		alias: (*alias)(&p),
 	}
-	if p.BlobPrefixes != nil {
-		aux.BlobPrefixes = &p.BlobPrefixes
-	}
 	if p.PathItems != nil {
 		aux.PathItems = &p.PathItems
+	}
+	if p.PathPrefixes != nil {
+		aux.PathPrefixes = &p.PathPrefixes
 	}
 	return enc.EncodeElement(aux, start)
 }

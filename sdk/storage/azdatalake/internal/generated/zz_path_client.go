@@ -128,11 +128,7 @@ func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathCli
 		result.ContentCRC64 = contentCRC64
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
-		contentMD5, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			return PathClientAppendDataResponse{}, err
-		}
-		result.ContentMD5 = contentMD5
+		result.ContentMD5 = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -711,11 +707,7 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 		result.ContentLength = &contentLength
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
-		contentMD5, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			return PathClientGetPropertiesResponse{}, err
-		}
-		result.ContentMD5 = contentMD5
+		result.ContentMD5 = &val
 	}
 	if val := resp.Header.Get("Content-Range"); val != "" {
 		result.ContentRange = &val
@@ -1014,11 +1006,7 @@ func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientRea
 		result.ContentLength = &contentLength
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
-		contentMD5, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			return PathClientReadResponse{}, err
-		}
-		result.ContentMD5 = contentMD5
+		result.ContentMD5 = &val
 	}
 	if val := resp.Header.Get("Content-Range"); val != "" {
 		result.ContentRange = &val
@@ -1566,11 +1554,7 @@ func (client *PathClient) updateHandleResponse(resp *http.Response) (PathClientU
 		result.ContentLength = &contentLength
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
-		contentMD5, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			return PathClientUpdateResponse{}, err
-		}
-		result.ContentMD5 = contentMD5
+		result.ContentMD5 = &val
 	}
 	if val := resp.Header.Get("Content-Range"); val != "" {
 		result.ContentRange = &val

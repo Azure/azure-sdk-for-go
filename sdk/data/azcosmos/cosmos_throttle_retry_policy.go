@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"math"
 	"net/http"
 	"strconv"
 	"time"
@@ -33,8 +34,11 @@ type throttleRetryPolicy struct {
 	defaultDelay time.Duration
 }
 
-// newThrottleRetryPolicy constructs a throttleRetryPolicy. Non-positive values
-// for either option fall back to defaults.
+// newThrottleRetryPolicy constructs a throttleRetryPolicy. For MaxRetryAttempts,
+// a positive value is used as the cap, zero falls back to the default
+// (defaultMaxThrottleRetryAttempts), and a negative value disables throttling
+// retries entirely. For MaxRetryWaitTime, a non-positive value falls back to
+// the default (defaultMaxThrottleRetryWaitTime).
 func newThrottleRetryPolicy(o *ThrottlingRetryOptions) *throttleRetryPolicy {
 	p := &throttleRetryPolicy{
 		maxRetryAttempts: defaultMaxThrottleRetryAttempts,
@@ -70,8 +74,10 @@ func (p *throttleRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			return response, nil
 		}
 
-		delay := readRetryAfterMs(response)
-		if delay <= 0 {
+		delay, ok := readRetryAfterMs(response)
+		if !ok {
+			// header missing or unparseable; fall back to the default delay.
+			// an explicit "0" header is honored (retry immediately).
 			delay = p.defaultDelay
 		}
 
@@ -83,12 +89,15 @@ func (p *throttleRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 		cumulativeDelay += delay
 		attemptCount++
 
-		// drain and close the response body so the connection can be reused
-		azruntime.Drain(response)
-
+		// Rewind the request body before discarding the response so that, if
+		// the body isn't seekable, the caller still receives a usable 429
+		// response for diagnostics.
 		if err := req.RewindBody(); err != nil {
 			return response, err
 		}
+
+		// drain and close the response body so the connection can be reused
+		azruntime.Drain(response)
 
 		log.Writef(azlog.EventRetryPolicy, "Cosmos throttle retry attempt %d after %s (cumulative %s)", attemptCount, delay, cumulativeDelay)
 
@@ -103,18 +112,21 @@ func (p *throttleRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 // readRetryAfterMs parses the Cosmos x-ms-retry-after-ms header (milliseconds).
-// Returns 0 if the header is missing or cannot be parsed.
-func readRetryAfterMs(resp *http.Response) time.Duration {
+// Returns (delay, true) on a successful parse of a non-negative finite value
+// (including an explicit "0", which means "retry immediately"). Returns
+// (0, false) when the header is missing, unparseable, NaN, infinite, or
+// negative so that the caller can apply a default delay only in that case.
+func readRetryAfterMs(resp *http.Response) (time.Duration, bool) {
 	if resp == nil {
-		return 0
+		return 0, false
 	}
 	v := resp.Header.Get(cosmosHeaderRetryAfterMs)
 	if v == "" {
-		return 0
+		return 0, false
 	}
 	ms, err := strconv.ParseFloat(v, 64)
-	if err != nil || ms < 0 {
-		return 0
+	if err != nil || math.IsNaN(ms) || math.IsInf(ms, 0) || ms < 0 {
+		return 0, false
 	}
-	return time.Duration(ms * float64(time.Millisecond))
+	return time.Duration(ms * float64(time.Millisecond)), true
 }

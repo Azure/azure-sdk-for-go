@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+* Throttling retry policy: an explicit `x-ms-retry-after-ms: 0` header is now honored as "retry immediately" instead of being treated as a missing header (which would have applied the default delay). NaN/Inf values for the header are now rejected as invalid. The request body is rewound before the 429 response body is drained so a rewind failure surfaces a usable 429 response to the caller.
+
 ## 1.5.0-beta.6 (2026-05-15)
 
 ### Features Added

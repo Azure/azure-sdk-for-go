@@ -135,6 +135,35 @@ func TestThrottleRetry_MissingHeaderUsesDefault(t *testing.T) {
 	require.Equal(t, 2, counter.attempts)
 }
 
+func TestThrottleRetry_ExplicitZeroRetryAfterIsHonored(t *testing.T) {
+	srv, closeFn := mock.NewTLSServer()
+	defer closeFn()
+
+	// Several 429s explicitly asking for "retry immediately" (header value "0"),
+	// followed by success. If the policy treated an explicit 0 as "missing" and
+	// fell back to defaultDelay (5s here) it would either exceed the 100ms
+	// cumulative budget (so the first retry would be skipped and the test would
+	// receive a 429) or take much longer than the assertion below allows.
+	for i := 0; i < 4; i++ {
+		srv.AppendResponse(mock.WithStatusCode(429), mock.WithHeader(cosmosHeaderRetryAfterMs, "0"))
+	}
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	client, counter := throttleTestPipeline(t, srv, &throttleRetryPolicy{
+		maxRetryAttempts: 10,
+		maxRetryWaitTime: 100 * time.Millisecond,
+		defaultDelay:     5 * time.Second,
+	})
+
+	start := time.Now()
+	resp, err := doThrottleRequest(t, client, srv.URL())
+	elapsed := time.Since(start)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.Equal(t, 5, counter.attempts, "expected 4 retries + 1 success")
+	require.Less(t, elapsed, time.Second, "explicit zero retry-after should not have waited the default delay")
+}
+
 func TestThrottleRetry_Non429PassesThrough(t *testing.T) {
 	srv, closeFn := mock.NewTLSServer()
 	defer closeFn()
@@ -213,12 +242,17 @@ func TestReadRetryAfterMs(t *testing.T) {
 		name   string
 		header string
 		want   time.Duration
+		wantOK bool
 	}{
-		{"missing", "", 0},
-		{"integer", "1500", 1500 * time.Millisecond},
-		{"float", "12.5", 12500 * time.Microsecond},
-		{"invalid", "not-a-number", 0},
-		{"negative", "-10", 0},
+		{"missing", "", 0, false},
+		{"integer", "1500", 1500 * time.Millisecond, true},
+		{"float", "12.5", 12500 * time.Microsecond, true},
+		{"explicit-zero", "0", 0, true},
+		{"invalid", "not-a-number", 0, false},
+		{"negative", "-10", 0, false},
+		{"nan", "NaN", 0, false},
+		{"positive-inf", "Inf", 0, false},
+		{"negative-inf", "-Inf", 0, false},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
@@ -226,10 +260,14 @@ func TestReadRetryAfterMs(t *testing.T) {
 			if tc.header != "" {
 				resp.Header.Set(cosmosHeaderRetryAfterMs, tc.header)
 			}
-			require.Equal(t, tc.want, readRetryAfterMs(resp))
+			got, ok := readRetryAfterMs(resp)
+			require.Equal(t, tc.want, got)
+			require.Equal(t, tc.wantOK, ok)
 		})
 	}
-	require.Equal(t, time.Duration(0), readRetryAfterMs(nil))
+	got, ok := readRetryAfterMs(nil)
+	require.Equal(t, time.Duration(0), got)
+	require.False(t, ok)
 }
 
 // trackingBody is a strings.Reader-backed body that records how many times Seek(0,0)

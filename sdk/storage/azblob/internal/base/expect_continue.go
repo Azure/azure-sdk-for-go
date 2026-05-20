@@ -116,15 +116,14 @@ func (p *expectContinuePolicy) Do(req *policy.Request) (*http.Response, error) {
 type expectContinueOnThrottlePolicy struct {
 	contentLengthThreshold int64
 	throttleInterval       time.Duration
-	// lastThrottleUnixNanos stores the UnixNano timestamp of the most recent triggering response.
-	// Accessed atomically to allow concurrent use across requests sharing a pipeline.
-	lastThrottleUnixNanos atomic.Int64
+	// lastThrottle stores the time of the most recent triggering response.
+	lastThrottle atomic.Pointer[time.Time]
 }
 
 func (p *expectContinueOnThrottlePolicy) Do(req *policy.Request) (*http.Response, error) {
 	if shouldApplyExpectContinue(req, p.contentLengthThreshold) {
-		last := p.lastThrottleUnixNanos.Load()
-		if last != 0 && time.Now().UnixNano()-last < p.throttleInterval.Nanoseconds() {
+		last := p.lastThrottle.Load()
+		if last != nil && time.Since(*last) < p.throttleInterval {
 			req.Raw().Header.Set(expectContinueHeader, expectContinueHeaderValue)
 		} else {
 			req.Raw().Header.Del(expectContinueHeader)
@@ -134,7 +133,8 @@ func (p *expectContinueOnThrottlePolicy) Do(req *policy.Request) (*http.Response
 	if resp != nil {
 		switch resp.StatusCode {
 		case http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable:
-			p.lastThrottleUnixNanos.Store(time.Now().UnixNano())
+			now := time.Now()
+			p.lastThrottle.Store(&now)
 		}
 	}
 	return resp, err

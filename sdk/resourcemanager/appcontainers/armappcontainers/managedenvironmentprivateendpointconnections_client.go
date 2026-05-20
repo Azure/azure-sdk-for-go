@@ -26,9 +26,9 @@ type ManagedEnvironmentPrivateEndpointConnectionsClient struct {
 }
 
 // NewManagedEnvironmentPrivateEndpointConnectionsClient creates a new instance of ManagedEnvironmentPrivateEndpointConnectionsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedEnvironmentPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentPrivateEndpointConnectionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,10 +44,10 @@ func NewManagedEnvironmentPrivateEndpointConnectionsClient(subscriptionID string
 // BeginCreateOrUpdate - Update the state of a private endpoint connection for a given managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Managed Environment.
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
+//   - environmentName - Name of the managed environment.
+//   - privateEndpointConnectionName - Name of the Private Endpoint Connection.
 //   - privateEndpointConnectionEnvelope - The resource of private endpoint and its properties
 //   - options - ManagedEnvironmentPrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters
 //     for the ManagedEnvironmentPrivateEndpointConnectionsClient.BeginCreateOrUpdate method.
@@ -58,7 +58,8 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) BeginCreateOrU
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedEnvironmentPrivateEndpointConnectionsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -71,7 +72,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) BeginCreateOrU
 // CreateOrUpdate - Update the state of a private endpoint connection for a given managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, privateEndpointConnectionName string, privateEndpointConnectionEnvelope PrivateEndpointConnection, options *ManagedEnvironmentPrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedEnvironmentPrivateEndpointConnectionsClient.BeginCreateOrUpdate"
@@ -117,7 +118,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) createOrUpdate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointConnectionEnvelope); err != nil {
@@ -129,10 +130,10 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) createOrUpdate
 // BeginDelete - Delete a private endpoint connection for a given managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Managed Environment.
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
+//   - environmentName - Name of the managed environment.
+//   - privateEndpointConnectionName - Name of the Private Endpoint Connection.
 //   - options - ManagedEnvironmentPrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the
 //     ManagedEnvironmentPrivateEndpointConnectionsClient.BeginDelete method.
 func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, environmentName string, privateEndpointConnectionName string, options *ManagedEnvironmentPrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[ManagedEnvironmentPrivateEndpointConnectionsClientDeleteResponse], error) {
@@ -142,7 +143,8 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) BeginDelete(ct
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedEnvironmentPrivateEndpointConnectionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -155,7 +157,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) BeginDelete(ct
 // Delete - Delete a private endpoint connection for a given managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, environmentName string, privateEndpointConnectionName string, options *ManagedEnvironmentPrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedEnvironmentPrivateEndpointConnectionsClient.BeginDelete"
@@ -201,7 +203,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) deleteCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,10 +212,10 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) deleteCreateRe
 // Get - Get a private endpoint connection for a given managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Managed Environment.
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
+//   - environmentName - Name of the managed environment.
+//   - privateEndpointConnectionName - Name of the Private Endpoint Connection.
 //   - options - ManagedEnvironmentPrivateEndpointConnectionsClientGetOptions contains the optional parameters for the ManagedEnvironmentPrivateEndpointConnectionsClient.Get
 //     method.
 func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, environmentName string, privateEndpointConnectionName string, options *ManagedEnvironmentPrivateEndpointConnectionsClientGetOptions) (ManagedEnvironmentPrivateEndpointConnectionsClientGetResponse, error) {
@@ -262,7 +264,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) getCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,9 +281,9 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) getHandleRespo
 
 // NewListPager - List private endpoint connections for a given managed environment.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Managed Environment.
+//   - environmentName - Name of the managed environment.
 //   - options - ManagedEnvironmentPrivateEndpointConnectionsClientListOptions contains the optional parameters for the ManagedEnvironmentPrivateEndpointConnectionsClient.NewListPager
 //     method.
 func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) NewListPager(resourceGroupName string, environmentName string, options *ManagedEnvironmentPrivateEndpointConnectionsClientListOptions) *runtime.Pager[ManagedEnvironmentPrivateEndpointConnectionsClientListResponse] {
@@ -327,7 +329,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) listCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

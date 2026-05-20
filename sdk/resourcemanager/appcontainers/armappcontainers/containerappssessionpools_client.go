@@ -25,9 +25,9 @@ type ContainerAppsSessionPoolsClient struct {
 }
 
 // NewContainerAppsSessionPoolsClient creates a new instance of ContainerAppsSessionPoolsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContainerAppsSessionPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsSessionPoolsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewContainerAppsSessionPoolsClient(subscriptionID string, credential azcore
 // BeginCreateOrUpdate - Create or update a session pool with the given properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sessionPoolName - Name of the session pool.
 //   - sessionPoolEnvelope - Properties used to create a session pool
@@ -70,7 +70,7 @@ func (client *ContainerAppsSessionPoolsClient) BeginCreateOrUpdate(ctx context.C
 // CreateOrUpdate - Create or update a session pool with the given properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 func (client *ContainerAppsSessionPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, sessionPoolName string, sessionPoolEnvelope SessionPool, options *ContainerAppsSessionPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContainerAppsSessionPoolsClient.BeginCreateOrUpdate"
@@ -112,7 +112,7 @@ func (client *ContainerAppsSessionPoolsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sessionPoolEnvelope); err != nil {
@@ -124,7 +124,7 @@ func (client *ContainerAppsSessionPoolsClient) createOrUpdateCreateRequest(ctx c
 // BeginDelete - Delete the session pool with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sessionPoolName - Name of the session pool.
 //   - options - ContainerAppsSessionPoolsClientBeginDeleteOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.BeginDelete
@@ -150,7 +150,7 @@ func (client *ContainerAppsSessionPoolsClient) BeginDelete(ctx context.Context, 
 // Delete - Delete the session pool with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 func (client *ContainerAppsSessionPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, sessionPoolName string, options *ContainerAppsSessionPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContainerAppsSessionPoolsClient.BeginDelete"
@@ -192,16 +192,81 @@ func (client *ContainerAppsSessionPoolsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
+// FetchMcpServerCredentials - Fetch the MCP server credentials of a session pool.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-02-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - sessionPoolName - Name of the session pool.
+//   - options - ContainerAppsSessionPoolsClientFetchMcpServerCredentialsOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.FetchMcpServerCredentials
+//     method.
+func (client *ContainerAppsSessionPoolsClient) FetchMcpServerCredentials(ctx context.Context, resourceGroupName string, sessionPoolName string, options *ContainerAppsSessionPoolsClientFetchMcpServerCredentialsOptions) (ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse, error) {
+	var err error
+	const operationName = "ContainerAppsSessionPoolsClient.FetchMcpServerCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.fetchMcpServerCredentialsCreateRequest(ctx, resourceGroupName, sessionPoolName, options)
+	if err != nil {
+		return ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse{}, err
+	}
+	resp, err := client.fetchMcpServerCredentialsHandleResponse(httpResp)
+	return resp, err
+}
+
+// fetchMcpServerCredentialsCreateRequest creates the FetchMcpServerCredentials request.
+func (client *ContainerAppsSessionPoolsClient) fetchMcpServerCredentialsCreateRequest(ctx context.Context, resourceGroupName string, sessionPoolName string, _ *ContainerAppsSessionPoolsClientFetchMcpServerCredentialsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sessionPools/{sessionPoolName}/fetchMcpServerCredentials"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sessionPoolName == "" {
+		return nil, errors.New("parameter sessionPoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sessionPoolName}", url.PathEscape(sessionPoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-10-02-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// fetchMcpServerCredentialsHandleResponse handles the FetchMcpServerCredentials response.
+func (client *ContainerAppsSessionPoolsClient) fetchMcpServerCredentialsHandleResponse(resp *http.Response) (ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse, error) {
+	result := ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.McpServerCredential); err != nil {
+		return ContainerAppsSessionPoolsClientFetchMcpServerCredentialsResponse{}, err
+	}
+	return result, nil
+}
+
 // Get - Get the properties of a session pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sessionPoolName - Name of the session pool.
 //   - options - ContainerAppsSessionPoolsClientGetOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.Get
@@ -248,7 +313,7 @@ func (client *ContainerAppsSessionPoolsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +330,7 @@ func (client *ContainerAppsSessionPoolsClient) getHandleResponse(resp *http.Resp
 
 // NewListByResourceGroupPager - Get the session pools in a given resource group of a subscription.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ContainerAppsSessionPoolsClientListByResourceGroupOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.NewListByResourceGroupPager
 //     method.
@@ -308,7 +373,7 @@ func (client *ContainerAppsSessionPoolsClient) listByResourceGroupCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -325,7 +390,7 @@ func (client *ContainerAppsSessionPoolsClient) listByResourceGroupHandleResponse
 
 // NewListBySubscriptionPager - Get the session pools in a given subscription.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - options - ContainerAppsSessionPoolsClientListBySubscriptionOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.NewListBySubscriptionPager
 //     method.
 func (client *ContainerAppsSessionPoolsClient) NewListBySubscriptionPager(options *ContainerAppsSessionPoolsClientListBySubscriptionOptions) *runtime.Pager[ContainerAppsSessionPoolsClientListBySubscriptionResponse] {
@@ -363,7 +428,7 @@ func (client *ContainerAppsSessionPoolsClient) listBySubscriptionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,10 +443,75 @@ func (client *ContainerAppsSessionPoolsClient) listBySubscriptionHandleResponse(
 	return result, nil
 }
 
+// RotateMcpServerCredentials - Rotate and fetch the rotated MCP server credentials of a session pool.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-02-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - sessionPoolName - Name of the session pool.
+//   - options - ContainerAppsSessionPoolsClientRotateMcpServerCredentialsOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.RotateMcpServerCredentials
+//     method.
+func (client *ContainerAppsSessionPoolsClient) RotateMcpServerCredentials(ctx context.Context, resourceGroupName string, sessionPoolName string, options *ContainerAppsSessionPoolsClientRotateMcpServerCredentialsOptions) (ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse, error) {
+	var err error
+	const operationName = "ContainerAppsSessionPoolsClient.RotateMcpServerCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.rotateMcpServerCredentialsCreateRequest(ctx, resourceGroupName, sessionPoolName, options)
+	if err != nil {
+		return ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse{}, err
+	}
+	resp, err := client.rotateMcpServerCredentialsHandleResponse(httpResp)
+	return resp, err
+}
+
+// rotateMcpServerCredentialsCreateRequest creates the RotateMcpServerCredentials request.
+func (client *ContainerAppsSessionPoolsClient) rotateMcpServerCredentialsCreateRequest(ctx context.Context, resourceGroupName string, sessionPoolName string, _ *ContainerAppsSessionPoolsClientRotateMcpServerCredentialsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sessionPools/{sessionPoolName}/rotateMcpServerCredentials"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sessionPoolName == "" {
+		return nil, errors.New("parameter sessionPoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sessionPoolName}", url.PathEscape(sessionPoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-10-02-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// rotateMcpServerCredentialsHandleResponse handles the RotateMcpServerCredentials response.
+func (client *ContainerAppsSessionPoolsClient) rotateMcpServerCredentialsHandleResponse(resp *http.Response) (ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse, error) {
+	result := ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.McpServerCredential); err != nil {
+		return ContainerAppsSessionPoolsClientRotateMcpServerCredentialsResponse{}, err
+	}
+	return result, nil
+}
+
 // BeginUpdate - Patches a session pool using JSON merge patch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sessionPoolName - Name of the session pool.
 //   - sessionPoolEnvelope - Properties used to create a session pool
@@ -408,7 +538,7 @@ func (client *ContainerAppsSessionPoolsClient) BeginUpdate(ctx context.Context, 
 // Update - Patches a session pool using JSON merge patch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 func (client *ContainerAppsSessionPoolsClient) update(ctx context.Context, resourceGroupName string, sessionPoolName string, sessionPoolEnvelope SessionPoolUpdatableProperties, options *ContainerAppsSessionPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContainerAppsSessionPoolsClient.BeginUpdate"
@@ -450,7 +580,7 @@ func (client *ContainerAppsSessionPoolsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sessionPoolEnvelope); err != nil {

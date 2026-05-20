@@ -25,9 +25,9 @@ type JavaComponentsClient struct {
 }
 
 // NewJavaComponentsClient creates a new instance of JavaComponentsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewJavaComponentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JavaComponentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,9 +43,9 @@ func NewJavaComponentsClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Creates or updates a Java Component in a Managed Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Managed Environment.
+//   - environmentName - Name of the managed environment.
 //   - name - Name of the Java Component.
 //   - javaComponentEnvelope - Configuration details of the Java Component.
 //   - options - JavaComponentsClientBeginCreateOrUpdateOptions contains the optional parameters for the JavaComponentsClient.BeginCreateOrUpdate
@@ -71,7 +71,7 @@ func (client *JavaComponentsClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Creates or updates a Java Component in a Managed Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 func (client *JavaComponentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, name string, javaComponentEnvelope JavaComponent, options *JavaComponentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JavaComponentsClient.BeginCreateOrUpdate"
@@ -117,7 +117,7 @@ func (client *JavaComponentsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, javaComponentEnvelope); err != nil {
@@ -129,9 +129,9 @@ func (client *JavaComponentsClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Delete a Java Component.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Managed Environment.
+//   - environmentName - Name of the managed environment.
 //   - name - Name of the Java Component.
 //   - options - JavaComponentsClientBeginDeleteOptions contains the optional parameters for the JavaComponentsClient.BeginDelete
 //     method.
@@ -156,7 +156,7 @@ func (client *JavaComponentsClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Delete a Java Component.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 func (client *JavaComponentsClient) deleteOperation(ctx context.Context, resourceGroupName string, environmentName string, name string, options *JavaComponentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JavaComponentsClient.BeginDelete"
@@ -202,7 +202,7 @@ func (client *JavaComponentsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,9 +211,9 @@ func (client *JavaComponentsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Get a Java Component.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Managed Environment.
+//   - environmentName - Name of the managed environment.
 //   - name - Name of the Java Component.
 //   - options - JavaComponentsClientGetOptions contains the optional parameters for the JavaComponentsClient.Get method.
 func (client *JavaComponentsClient) Get(ctx context.Context, resourceGroupName string, environmentName string, name string, options *JavaComponentsClientGetOptions) (JavaComponentsClientGetResponse, error) {
@@ -262,7 +262,7 @@ func (client *JavaComponentsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,9 +279,9 @@ func (client *JavaComponentsClient) getHandleResponse(resp *http.Response) (Java
 
 // NewListPager - Get the Java Components for a managed environment.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Managed Environment.
+//   - environmentName - Name of the managed environment.
 //   - options - JavaComponentsClientListOptions contains the optional parameters for the JavaComponentsClient.NewListPager method.
 func (client *JavaComponentsClient) NewListPager(resourceGroupName string, environmentName string, options *JavaComponentsClientListOptions) *runtime.Pager[JavaComponentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[JavaComponentsClientListResponse]{
@@ -326,7 +326,7 @@ func (client *JavaComponentsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -344,9 +344,9 @@ func (client *JavaComponentsClient) listHandleResponse(resp *http.Response) (Jav
 // BeginUpdate - Patches a Java Component using JSON Merge Patch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Managed Environment.
+//   - environmentName - Name of the managed environment.
 //   - name - Name of the Java Component.
 //   - javaComponentEnvelope - Configuration details of the Java Component.
 //   - options - JavaComponentsClientBeginUpdateOptions contains the optional parameters for the JavaComponentsClient.BeginUpdate
@@ -358,7 +358,8 @@ func (client *JavaComponentsClient) BeginUpdate(ctx context.Context, resourceGro
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JavaComponentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -371,7 +372,7 @@ func (client *JavaComponentsClient) BeginUpdate(ctx context.Context, resourceGro
 // Update - Patches a Java Component using JSON Merge Patch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-10-02-preview
 func (client *JavaComponentsClient) update(ctx context.Context, resourceGroupName string, environmentName string, name string, javaComponentEnvelope JavaComponent, options *JavaComponentsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JavaComponentsClient.BeginUpdate"
@@ -417,7 +418,7 @@ func (client *JavaComponentsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, javaComponentEnvelope); err != nil {

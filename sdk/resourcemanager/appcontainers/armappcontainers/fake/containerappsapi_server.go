@@ -12,7 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -21,7 +21,7 @@ import (
 // ContainerAppsAPIServer is a fake server for instances of the armappcontainers.ContainerAppsAPIClient type.
 type ContainerAppsAPIServer struct {
 	// GetCustomDomainVerificationID is the fake for method ContainerAppsAPIClient.GetCustomDomainVerificationID
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusOK
 	GetCustomDomainVerificationID func(ctx context.Context, options *armappcontainers.ContainerAppsAPIClientGetCustomDomainVerificationIDOptions) (resp azfake.Responder[armappcontainers.ContainerAppsAPIClientGetCustomDomainVerificationIDResponse], errResp azfake.ErrorResponder)
 
 	// JobExecution is the fake for method ContainerAppsAPIClient.JobExecution
@@ -103,10 +103,10 @@ func (c *ContainerAppsAPIServerTransport) dispatchGetCustomDomainVerificationID(
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Value, req)
+	resp, err := server.MarshalResponseAsText(respContent, server.GetResponse(respr).Value, req)
 	if err != nil {
 		return nil, err
 	}

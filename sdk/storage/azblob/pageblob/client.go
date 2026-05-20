@@ -168,11 +168,6 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, conte
 		return UploadPagesResponse{}, err
 	}
 
-	var httpRange string
-	if contentRange.Offset != 0 || contentRange.Count != 0 {
-		httpRange = *exported.FormatHTTPRange(contentRange)
-	}
-
 	opts := options.format()
 	if options != nil && options.TransactionalValidation != nil {
 		body, err = options.TransactionalValidation.Apply(body, opts)
@@ -185,7 +180,7 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, conte
 		}
 	}
 
-	return pb.generated().UploadPages(ctx, body, count, httpRange, opts)
+	return pb.generated().UploadPages(ctx, body, count, exported.GetHTTPRangeOrDefault(contentRange), opts)
 }
 
 // UploadPagesFromURL copies 1 or more pages from a source URL to the page blob.
@@ -202,8 +197,7 @@ func (pb *Client) UploadPagesFromURL(ctx context.Context, source string, sourceO
 // ClearPages frees the specified pages from the page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
 func (pb *Client) ClearPages(ctx context.Context, rnge blob.HTTPRange, options *ClearPagesOptions) (ClearPagesResponse, error) {
-	// TODO- right range param??
-	return pb.generated().ClearPages(ctx, *exported.FormatHTTPRange(rnge), options.format())
+	return pb.generated().ClearPages(ctx, exported.GetHTTPRangeOrDefault(rnge), options.format())
 }
 
 // NewGetPageRangesPager returns the list of valid page ranges for a page blob or snapshot of a page blob.

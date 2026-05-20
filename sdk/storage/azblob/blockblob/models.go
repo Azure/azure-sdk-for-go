@@ -283,7 +283,9 @@ func (o *StageBlockFromURLOptions) format() *generated.BlockBlobClientStageBlock
 		options.SourceEncryptionKey = o.SourceCustomerProvidedKey.SourceEncryptionKey
 		options.SourceEncryptionKeySHA256 = o.SourceCustomerProvidedKey.SourceEncryptionKeySHA256
 	}
-
+	if o.LeaseAccessConditions != nil {
+		options.LeaseID = o.LeaseAccessConditions.LeaseID
+	}
 	if o.SourceContentValidation != nil {
 		o.SourceContentValidation.Apply(options)
 	}

@@ -333,6 +333,7 @@ type SetTierOptions struct {
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
 
+	// Note that only ModifiedAccessConditions.IfTags is supported for this operation.
 	AccessConditions *AccessConditions
 }
 
@@ -340,7 +341,9 @@ func (o *SetTierOptions) format() *generated.BlobClientSetTierOptions {
 	if o == nil {
 		return nil
 	}
-	// Notes: no mapping for o.AccessConditions.ModifiedAccessConditions
+
+	// NOTE: per https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations
+	// only x-ms-if-tags is the supported conditional access header
 
 	opts := &generated.BlobClientSetTierOptions{
 		RehydratePriority: o.RehydratePriority,

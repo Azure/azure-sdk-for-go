@@ -25,10 +25,9 @@ type TriggersClient struct {
 }
 
 // NewTriggersClient creates a new instance of TriggersClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription Id forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,8 +43,8 @@ func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create or update a trigger for the specified virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - triggerName - The name of the trigger
 //   - parameters - Parameters supplied to the CreateTrigger operation
@@ -72,7 +71,7 @@ func (client *TriggersClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create or update a trigger for the specified virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-10-01
 func (client *TriggersClient) createOrUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, parameters Trigger, options *TriggersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TriggersClient.BeginCreateOrUpdate"
@@ -95,7 +94,7 @@ func (client *TriggersClient) createOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, parameters Trigger, options *TriggersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, parameters Trigger, _ *TriggersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -118,7 +117,7 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -130,8 +129,8 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete a trigger for the specified virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - triggerName - The name of the trigger
 //   - options - TriggersClientBeginDeleteOptions contains the optional parameters for the TriggersClient.BeginDelete method.
@@ -156,7 +155,7 @@ func (client *TriggersClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete a trigger for the specified virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-10-01
 func (client *TriggersClient) deleteOperation(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, options *TriggersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TriggersClient.BeginDelete"
@@ -179,7 +178,7 @@ func (client *TriggersClient) deleteOperation(ctx context.Context, resourceGroup
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, options *TriggersClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, _ *TriggersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -202,7 +201,7 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,8 +210,8 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get the specified trigger for the specified image template resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - triggerName - The name of the trigger
 //   - options - TriggersClientGetOptions contains the optional parameters for the TriggersClient.Get method.
@@ -239,7 +238,7 @@ func (client *TriggersClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, options *TriggersClientGetOptions) (*policy.Request, error) {
+func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, _ *TriggersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -262,7 +261,7 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,8 +278,8 @@ func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersCl
 
 // NewListByImageTemplatePager - List all triggers for the specified Image Template resource
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - options - TriggersClientListByImageTemplateOptions contains the optional parameters for the TriggersClient.NewListByImageTemplatePager
 //     method.
@@ -308,7 +307,7 @@ func (client *TriggersClient) NewListByImageTemplatePager(resourceGroupName stri
 }
 
 // listByImageTemplateCreateRequest creates the ListByImageTemplate request.
-func (client *TriggersClient) listByImageTemplateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *TriggersClientListByImageTemplateOptions) (*policy.Request, error) {
+func (client *TriggersClient) listByImageTemplateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *TriggersClientListByImageTemplateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -327,7 +326,7 @@ func (client *TriggersClient) listByImageTemplateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

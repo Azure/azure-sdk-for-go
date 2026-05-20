@@ -26,7 +26,7 @@ type TriggersServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, parameters armvirtualmachineimagebuilder.Trigger, options *armvirtualmachineimagebuilder.TriggersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.TriggersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method TriggersClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, options *armvirtualmachineimagebuilder.TriggersClientBeginDeleteOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.TriggersClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method TriggersClient.Get
@@ -67,27 +67,46 @@ func (t *TriggersServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return t.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "TriggersClient.BeginCreateOrUpdate":
-		resp, err = t.dispatchBeginCreateOrUpdate(req)
-	case "TriggersClient.BeginDelete":
-		resp, err = t.dispatchBeginDelete(req)
-	case "TriggersClient.Get":
-		resp, err = t.dispatchGet(req)
-	case "TriggersClient.NewListByImageTemplatePager":
-		resp, err = t.dispatchNewListByImageTemplatePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (t *TriggersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if triggersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = triggersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "TriggersClient.BeginCreateOrUpdate":
+				res.resp, res.err = t.dispatchBeginCreateOrUpdate(req)
+			case "TriggersClient.BeginDelete":
+				res.resp, res.err = t.dispatchBeginDelete(req)
+			case "TriggersClient.Get":
+				res.resp, res.err = t.dispatchGet(req)
+			case "TriggersClient.NewListByImageTemplatePager":
+				res.resp, res.err = t.dispatchNewListByImageTemplatePager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (t *TriggersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -99,7 +118,7 @@ func (t *TriggersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/triggers/(?P<triggerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armvirtualmachineimagebuilder.Trigger](req)
@@ -151,7 +170,7 @@ func (t *TriggersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/triggers/(?P<triggerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -179,9 +198,9 @@ func (t *TriggersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		t.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		t.beginDelete.remove(req)
@@ -197,7 +216,7 @@ func (t *TriggersServerTransport) dispatchGet(req *http.Request) (*http.Response
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/triggers/(?P<triggerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -236,7 +255,7 @@ func (t *TriggersServerTransport) dispatchNewListByImageTemplatePager(req *http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/triggers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -266,4 +285,10 @@ func (t *TriggersServerTransport) dispatchNewListByImageTemplatePager(req *http.
 		t.newListByImageTemplatePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to TriggersServerTransport
+var triggersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

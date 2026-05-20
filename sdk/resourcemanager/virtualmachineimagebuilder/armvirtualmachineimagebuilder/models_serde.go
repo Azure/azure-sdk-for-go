@@ -12,6 +12,33 @@ import (
 	"reflect"
 )
 
+// MarshalJSON implements the json.Marshaller interface for type DataDisk.
+func (d DataDisk) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "sizeGB", d.SizeGB)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataDisk.
+func (d *DataDisk) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "sizeGB":
+			err = unpopulate(val, "SizeGB", &d.SizeGB)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type DistributeVersioner.
 func (d DistributeVersioner) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -806,6 +833,7 @@ func (i *ImageTemplatePowerShellValidator) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ImageTemplateProperties.
 func (i ImageTemplateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "additionalDataDisks", i.AdditionalDataDisks)
 	populate(objectMap, "autoRun", i.AutoRun)
 	populate(objectMap, "buildTimeoutInMinutes", i.BuildTimeoutInMinutes)
 	populate(objectMap, "customize", i.Customize)
@@ -833,6 +861,9 @@ func (i *ImageTemplateProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "additionalDataDisks":
+			err = unpopulate(val, "AdditionalDataDisks", &i.AdditionalDataDisks)
+			delete(rawMsg, key)
 		case "autoRun":
 			err = unpopulate(val, "AutoRun", &i.AutoRun)
 			delete(rawMsg, key)
@@ -921,6 +952,7 @@ func (i *ImageTemplatePropertiesErrorHandling) UnmarshalJSON(data []byte) error 
 func (i ImageTemplatePropertiesOptimize) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "vmBoot", i.VMBoot)
+	populate(objectMap, "workload", i.Workload)
 	return json.Marshal(objectMap)
 }
 
@@ -935,6 +967,9 @@ func (i *ImageTemplatePropertiesOptimize) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "vmBoot":
 			err = unpopulate(val, "VMBoot", &i.VMBoot)
+			delete(rawMsg, key)
+		case "workload":
+			err = unpopulate(val, "Workload", &i.Workload)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -960,6 +995,41 @@ func (i *ImageTemplatePropertiesOptimizeVMBoot) UnmarshalJSON(data []byte) error
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "state":
+			err = unpopulate(val, "State", &i.State)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ImageTemplatePropertiesOptimizeWorkload.
+func (i ImageTemplatePropertiesOptimizeWorkload) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "sha256Checksum", i.SHA256Checksum)
+	populate(objectMap, "scriptUri", i.ScriptURI)
+	populate(objectMap, "state", i.State)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplatePropertiesOptimizeWorkload.
+func (i *ImageTemplatePropertiesOptimizeWorkload) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "sha256Checksum":
+			err = unpopulate(val, "SHA256Checksum", &i.SHA256Checksum)
+			delete(rawMsg, key)
+		case "scriptUri":
+			err = unpopulate(val, "ScriptURI", &i.ScriptURI)
+			delete(rawMsg, key)
 		case "state":
 			err = unpopulate(val, "State", &i.State)
 			delete(rawMsg, key)
@@ -1055,6 +1125,7 @@ func (i ImageTemplateSharedImageDistributor) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "artifactTags", i.ArtifactTags)
 	populate(objectMap, "excludeFromLatest", i.ExcludeFromLatest)
 	populate(objectMap, "galleryImageId", i.GalleryImageID)
+	populate(objectMap, "replicationMode", i.ReplicationMode)
 	populate(objectMap, "replicationRegions", i.ReplicationRegions)
 	populate(objectMap, "runOutputName", i.RunOutputName)
 	populate(objectMap, "storageAccountType", i.StorageAccountType)
@@ -1081,6 +1152,9 @@ func (i *ImageTemplateSharedImageDistributor) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "galleryImageId":
 			err = unpopulate(val, "GalleryImageID", &i.GalleryImageID)
+			delete(rawMsg, key)
+		case "replicationMode":
+			err = unpopulate(val, "ReplicationMode", &i.ReplicationMode)
 			delete(rawMsg, key)
 		case "replicationRegions":
 			err = unpopulate(val, "ReplicationRegions", &i.ReplicationRegions)

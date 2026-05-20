@@ -30,7 +30,7 @@ type VirtualMachineImageTemplatesServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters armvirtualmachineimagebuilder.ImageTemplate, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method VirtualMachineImageTemplatesClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, imageTemplateName string, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientBeginDeleteOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VirtualMachineImageTemplatesClient.Get
@@ -101,39 +101,58 @@ func (v *VirtualMachineImageTemplatesServerTransport) Do(req *http.Request) (*ht
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return v.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "VirtualMachineImageTemplatesClient.BeginCancel":
-		resp, err = v.dispatchBeginCancel(req)
-	case "VirtualMachineImageTemplatesClient.BeginCreateOrUpdate":
-		resp, err = v.dispatchBeginCreateOrUpdate(req)
-	case "VirtualMachineImageTemplatesClient.BeginDelete":
-		resp, err = v.dispatchBeginDelete(req)
-	case "VirtualMachineImageTemplatesClient.Get":
-		resp, err = v.dispatchGet(req)
-	case "VirtualMachineImageTemplatesClient.GetRunOutput":
-		resp, err = v.dispatchGetRunOutput(req)
-	case "VirtualMachineImageTemplatesClient.NewListPager":
-		resp, err = v.dispatchNewListPager(req)
-	case "VirtualMachineImageTemplatesClient.NewListByResourceGroupPager":
-		resp, err = v.dispatchNewListByResourceGroupPager(req)
-	case "VirtualMachineImageTemplatesClient.NewListRunOutputsPager":
-		resp, err = v.dispatchNewListRunOutputsPager(req)
-	case "VirtualMachineImageTemplatesClient.BeginRun":
-		resp, err = v.dispatchBeginRun(req)
-	case "VirtualMachineImageTemplatesClient.BeginUpdate":
-		resp, err = v.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (v *VirtualMachineImageTemplatesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if virtualMachineImageTemplatesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = virtualMachineImageTemplatesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "VirtualMachineImageTemplatesClient.BeginCancel":
+				res.resp, res.err = v.dispatchBeginCancel(req)
+			case "VirtualMachineImageTemplatesClient.BeginCreateOrUpdate":
+				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
+			case "VirtualMachineImageTemplatesClient.BeginDelete":
+				res.resp, res.err = v.dispatchBeginDelete(req)
+			case "VirtualMachineImageTemplatesClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VirtualMachineImageTemplatesClient.GetRunOutput":
+				res.resp, res.err = v.dispatchGetRunOutput(req)
+			case "VirtualMachineImageTemplatesClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
+			case "VirtualMachineImageTemplatesClient.NewListByResourceGroupPager":
+				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VirtualMachineImageTemplatesClient.NewListRunOutputsPager":
+				res.resp, res.err = v.dispatchNewListRunOutputsPager(req)
+			case "VirtualMachineImageTemplatesClient.BeginRun":
+				res.resp, res.err = v.dispatchBeginRun(req)
+			case "VirtualMachineImageTemplatesClient.BeginUpdate":
+				res.resp, res.err = v.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginCancel(req *http.Request) (*http.Response, error) {
@@ -145,7 +164,7 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginCancel(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -189,7 +208,7 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginCreateOrUpdat
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armvirtualmachineimagebuilder.ImageTemplate](req)
@@ -237,7 +256,7 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginDelete(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -261,9 +280,9 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginDelete(req *h
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		v.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		v.beginDelete.remove(req)
@@ -279,7 +298,7 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchGet(req *http.Requ
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -312,7 +331,7 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchGetRunOutput(req *
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runOutputs/(?P<runOutputName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -351,7 +370,7 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchNewListPager(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := v.srv.NewListPager(nil)
@@ -384,7 +403,7 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchNewListByResourceG
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -421,7 +440,7 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchNewListRunOutputsP
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runOutputs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -462,7 +481,7 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginRun(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/run`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -506,7 +525,7 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginUpdate(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.VirtualMachineImages/imageTemplates/(?P<imageTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armvirtualmachineimagebuilder.ImageTemplateUpdateParameters](req)
@@ -543,4 +562,10 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginUpdate(req *h
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to VirtualMachineImageTemplatesServerTransport
+var virtualMachineImageTemplatesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -16,8 +16,13 @@ import (
 
 // ServerFactory is a fake server for instances of the armvirtualmachineimagebuilder.ClientFactory type.
 type ServerFactory struct {
-	OperationsServer                   OperationsServer
-	TriggersServer                     TriggersServer
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// TriggersServer contains the fakes for client TriggersClient
+	TriggersServer TriggersServer
+
+	// VirtualMachineImageTemplatesServer contains the fakes for client VirtualMachineImageTemplatesClient
 	VirtualMachineImageTemplatesServer VirtualMachineImageTemplatesServer
 }
 

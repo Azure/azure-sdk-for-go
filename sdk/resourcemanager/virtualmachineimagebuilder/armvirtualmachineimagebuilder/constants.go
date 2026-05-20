@@ -5,11 +5,6 @@
 
 package armvirtualmachineimagebuilder
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder"
-	moduleVersion = "v2.3.0"
-)
-
 // AutoRunState - Enabling this field will trigger an automatic build on image template creation or update.
 type AutoRunState string
 
@@ -130,6 +125,24 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
+// ReplicationMode - Describes replication mode for distribution in Azure Compute Gallery. Omit to use the default (Full).
+type ReplicationMode string
+
+const (
+	// ReplicationModeFull - Full replication mode
+	ReplicationModeFull ReplicationMode = "Full"
+	// ReplicationModeShallow - Shallow replication mode
+	ReplicationModeShallow ReplicationMode = "Shallow"
+)
+
+// PossibleReplicationModeValues returns the possible values for the ReplicationMode const type.
+func PossibleReplicationModeValues() []ReplicationMode {
+	return []ReplicationMode{
+		ReplicationModeFull,
+		ReplicationModeShallow,
+	}
+}
+
 // ResourceIdentityType - The type of identity used for the image template. The type 'None' will remove any identities from
 // the image template.
 type ResourceIdentityType string
@@ -227,5 +240,23 @@ func PossibleVMBootOptimizationStateValues() []VMBootOptimizationState {
 	return []VMBootOptimizationState{
 		VMBootOptimizationStateDisabled,
 		VMBootOptimizationStateEnabled,
+	}
+}
+
+// WorkloadOptimizationState - Enabling this field will optimize vm images for specific workloads.
+type WorkloadOptimizationState string
+
+const (
+	// WorkloadOptimizationStateDisabled - Workload optimization is disabled
+	WorkloadOptimizationStateDisabled WorkloadOptimizationState = "Disabled"
+	// WorkloadOptimizationStateEnabled - Workload optimization is enabled
+	WorkloadOptimizationStateEnabled WorkloadOptimizationState = "Enabled"
+)
+
+// PossibleWorkloadOptimizationStateValues returns the possible values for the WorkloadOptimizationState const type.
+func PossibleWorkloadOptimizationStateValues() []WorkloadOptimizationState {
+	return []WorkloadOptimizationState{
+		WorkloadOptimizationStateDisabled,
+		WorkloadOptimizationStateEnabled,
 	}
 }

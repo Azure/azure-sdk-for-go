@@ -1,5 +1,17 @@
 # Release History
 
+## 2.4.0 (2026-05-20)
+### Features Added
+
+- New enum type `ReplicationMode` with values `ReplicationModeFull`, `ReplicationModeShallow`
+- New enum type `WorkloadOptimizationState` with values `WorkloadOptimizationStateDisabled`, `WorkloadOptimizationStateEnabled`
+- New struct `DataDisk`
+- New struct `ImageTemplatePropertiesOptimizeWorkload`
+- New field `AdditionalDataDisks` in struct `ImageTemplateProperties`
+- New field `Workload` in struct `ImageTemplatePropertiesOptimize`
+- New field `ReplicationMode` in struct `ImageTemplateSharedImageDistributor`
+
+
 ## 2.3.0 (2024-06-21)
 ### Features Added
 

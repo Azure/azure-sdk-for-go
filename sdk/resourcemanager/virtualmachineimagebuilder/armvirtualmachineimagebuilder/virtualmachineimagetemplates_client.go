@@ -25,10 +25,9 @@ type VirtualMachineImageTemplatesClient struct {
 }
 
 // NewVirtualMachineImageTemplatesClient creates a new instance of VirtualMachineImageTemplatesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription Id forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualMachineImageTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineImageTemplatesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,8 +43,8 @@ func NewVirtualMachineImageTemplatesClient(subscriptionID string, credential azc
 // BeginCancel - Cancel the long running image build based on the image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - options - VirtualMachineImageTemplatesClientBeginCancelOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginCancel
 //     method.
@@ -70,7 +69,7 @@ func (client *VirtualMachineImageTemplatesClient) BeginCancel(ctx context.Contex
 // Cancel - Cancel the long running image build based on the image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-10-01
 func (client *VirtualMachineImageTemplatesClient) cancel(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineImageTemplatesClient.BeginCancel"
@@ -93,7 +92,7 @@ func (client *VirtualMachineImageTemplatesClient) cancel(ctx context.Context, re
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *VirtualMachineImageTemplatesClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginCancelOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *VirtualMachineImageTemplatesClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -112,7 +111,7 @@ func (client *VirtualMachineImageTemplatesClient) cancelCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -121,8 +120,8 @@ func (client *VirtualMachineImageTemplatesClient) cancelCreateRequest(ctx contex
 // BeginCreateOrUpdate - Create or update a virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - parameters - Parameters supplied to the CreateImageTemplate operation
 //   - options - VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginCreateOrUpdate
@@ -148,7 +147,7 @@ func (client *VirtualMachineImageTemplatesClient) BeginCreateOrUpdate(ctx contex
 // CreateOrUpdate - Create or update a virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-10-01
 func (client *VirtualMachineImageTemplatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineImageTemplatesClient.BeginCreateOrUpdate"
@@ -171,7 +170,7 @@ func (client *VirtualMachineImageTemplatesClient) createOrUpdate(ctx context.Con
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualMachineImageTemplatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, _ *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -190,7 +189,7 @@ func (client *VirtualMachineImageTemplatesClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -202,8 +201,8 @@ func (client *VirtualMachineImageTemplatesClient) createOrUpdateCreateRequest(ct
 // BeginDelete - Delete a virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - options - VirtualMachineImageTemplatesClientBeginDeleteOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginDelete
 //     method.
@@ -228,7 +227,7 @@ func (client *VirtualMachineImageTemplatesClient) BeginDelete(ctx context.Contex
 // Delete - Delete a virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-10-01
 func (client *VirtualMachineImageTemplatesClient) deleteOperation(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineImageTemplatesClient.BeginDelete"
@@ -251,7 +250,7 @@ func (client *VirtualMachineImageTemplatesClient) deleteOperation(ctx context.Co
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualMachineImageTemplatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *VirtualMachineImageTemplatesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +269,7 @@ func (client *VirtualMachineImageTemplatesClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,8 +278,8 @@ func (client *VirtualMachineImageTemplatesClient) deleteCreateRequest(ctx contex
 // Get - Get information about a virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - options - VirtualMachineImageTemplatesClientGetOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.Get
 //     method.
@@ -307,7 +306,7 @@ func (client *VirtualMachineImageTemplatesClient) Get(ctx context.Context, resou
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualMachineImageTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientGetOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *VirtualMachineImageTemplatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -326,7 +325,7 @@ func (client *VirtualMachineImageTemplatesClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -344,8 +343,8 @@ func (client *VirtualMachineImageTemplatesClient) getHandleResponse(resp *http.R
 // GetRunOutput - Get the specified run output for the specified image template resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - runOutputName - The name of the run output
 //   - options - VirtualMachineImageTemplatesClientGetRunOutputOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.GetRunOutput
@@ -373,7 +372,7 @@ func (client *VirtualMachineImageTemplatesClient) GetRunOutput(ctx context.Conte
 }
 
 // getRunOutputCreateRequest creates the GetRunOutput request.
-func (client *VirtualMachineImageTemplatesClient) getRunOutputCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, runOutputName string, options *VirtualMachineImageTemplatesClientGetRunOutputOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) getRunOutputCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, runOutputName string, _ *VirtualMachineImageTemplatesClientGetRunOutputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs/{runOutputName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -396,7 +395,7 @@ func (client *VirtualMachineImageTemplatesClient) getRunOutputCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -413,7 +412,7 @@ func (client *VirtualMachineImageTemplatesClient) getRunOutputHandleResponse(res
 
 // NewListPager - Gets information about the VM image templates associated with the subscription.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-10-01
 //   - options - VirtualMachineImageTemplatesClientListOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.NewListPager
 //     method.
 func (client *VirtualMachineImageTemplatesClient) NewListPager(options *VirtualMachineImageTemplatesClientListOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListResponse] {
@@ -440,7 +439,7 @@ func (client *VirtualMachineImageTemplatesClient) NewListPager(options *VirtualM
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualMachineImageTemplatesClient) listCreateRequest(ctx context.Context, options *VirtualMachineImageTemplatesClientListOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) listCreateRequest(ctx context.Context, _ *VirtualMachineImageTemplatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -451,7 +450,7 @@ func (client *VirtualMachineImageTemplatesClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -468,8 +467,8 @@ func (client *VirtualMachineImageTemplatesClient) listHandleResponse(resp *http.
 
 // NewListByResourceGroupPager - Gets information about the VM image templates associated with the specified resource group.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VirtualMachineImageTemplatesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.NewListByResourceGroupPager
 //     method.
 func (client *VirtualMachineImageTemplatesClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualMachineImageTemplatesClientListByResourceGroupOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListByResourceGroupResponse] {
@@ -496,7 +495,7 @@ func (client *VirtualMachineImageTemplatesClient) NewListByResourceGroupPager(re
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *VirtualMachineImageTemplatesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VirtualMachineImageTemplatesClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *VirtualMachineImageTemplatesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -511,7 +510,7 @@ func (client *VirtualMachineImageTemplatesClient) listByResourceGroupCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -528,8 +527,8 @@ func (client *VirtualMachineImageTemplatesClient) listByResourceGroupHandleRespo
 
 // NewListRunOutputsPager - List all run outputs for the specified Image Template resource
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - options - VirtualMachineImageTemplatesClientListRunOutputsOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.NewListRunOutputsPager
 //     method.
@@ -557,7 +556,7 @@ func (client *VirtualMachineImageTemplatesClient) NewListRunOutputsPager(resourc
 }
 
 // listRunOutputsCreateRequest creates the ListRunOutputs request.
-func (client *VirtualMachineImageTemplatesClient) listRunOutputsCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientListRunOutputsOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) listRunOutputsCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *VirtualMachineImageTemplatesClientListRunOutputsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -576,7 +575,7 @@ func (client *VirtualMachineImageTemplatesClient) listRunOutputsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -594,8 +593,8 @@ func (client *VirtualMachineImageTemplatesClient) listRunOutputsHandleResponse(r
 // BeginRun - Create artifacts from a existing image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - options - VirtualMachineImageTemplatesClientBeginRunOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginRun
 //     method.
@@ -620,7 +619,7 @@ func (client *VirtualMachineImageTemplatesClient) BeginRun(ctx context.Context, 
 // Run - Create artifacts from a existing image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-10-01
 func (client *VirtualMachineImageTemplatesClient) run(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginRunOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineImageTemplatesClient.BeginRun"
@@ -643,7 +642,7 @@ func (client *VirtualMachineImageTemplatesClient) run(ctx context.Context, resou
 }
 
 // runCreateRequest creates the Run request.
-func (client *VirtualMachineImageTemplatesClient) runCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginRunOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) runCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *VirtualMachineImageTemplatesClientBeginRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/run"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -662,7 +661,7 @@ func (client *VirtualMachineImageTemplatesClient) runCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -671,8 +670,8 @@ func (client *VirtualMachineImageTemplatesClient) runCreateRequest(ctx context.C
 // BeginUpdate - Update the tags for this Virtual Machine Image Template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageTemplateName - The name of the image Template
 //   - parameters - Additional parameters for Image Template update.
 //   - options - VirtualMachineImageTemplatesClientBeginUpdateOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginUpdate
@@ -698,7 +697,7 @@ func (client *VirtualMachineImageTemplatesClient) BeginUpdate(ctx context.Contex
 // Update - Update the tags for this Virtual Machine Image Template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2025-10-01
 func (client *VirtualMachineImageTemplatesClient) update(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachineImageTemplatesClient.BeginUpdate"
@@ -721,7 +720,7 @@ func (client *VirtualMachineImageTemplatesClient) update(ctx context.Context, re
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VirtualMachineImageTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, _ *VirtualMachineImageTemplatesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -740,7 +739,7 @@ func (client *VirtualMachineImageTemplatesClient) updateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

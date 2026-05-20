@@ -508,11 +508,47 @@ func (l *LongTermRetentionManagedInstanceBackupsServerTransport) dispatchNewList
 			return nil, err
 		}
 		databaseStateParam := getOptional(armsql.DatabaseState(databaseStateUnescaped))
+		skipUnescaped, err := url.QueryUnescape(qp.Get("$skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armsql.LongTermRetentionManagedInstanceBackupsClientListByLocationOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil {
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skipParam != nil || topParam != nil || filterParam != nil {
 			options = &armsql.LongTermRetentionManagedInstanceBackupsClientListByLocationOptions{
 				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
 				DatabaseState:         databaseStateParam,
+				Skip:                  skipParam,
+				Top:                   topParam,
+				Filter:                filterParam,
 			}
 		}
 		resp := l.srv.NewListByLocationPager(locationNameParam, options)
@@ -706,11 +742,47 @@ func (l *LongTermRetentionManagedInstanceBackupsServerTransport) dispatchNewList
 			return nil, err
 		}
 		databaseStateParam := getOptional(armsql.DatabaseState(databaseStateUnescaped))
+		skipUnescaped, err := url.QueryUnescape(qp.Get("$skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions
-		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil {
+		if onlyLatestPerDatabaseParam != nil || databaseStateParam != nil || skipParam != nil || topParam != nil || filterParam != nil {
 			options = &armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions{
 				OnlyLatestPerDatabase: onlyLatestPerDatabaseParam,
 				DatabaseState:         databaseStateParam,
+				Skip:                  skipParam,
+				Top:                   topParam,
+				Filter:                filterParam,
 			}
 		}
 		resp := l.srv.NewListByResourceGroupLocationPager(resourceGroupNameParam, locationNameParam, options)

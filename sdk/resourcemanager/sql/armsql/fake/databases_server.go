@@ -57,14 +57,6 @@ type DatabasesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListInaccessibleByServerPager func(resourceGroupName string, serverName string, options *armsql.DatabasesClientListInaccessibleByServerOptions) (resp azfake.PagerResponder[armsql.DatabasesClientListInaccessibleByServerResponse])
 
-	// NewListMetricDefinitionsPager is the fake for method DatabasesClient.NewListMetricDefinitionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListMetricDefinitionsPager func(resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientListMetricDefinitionsOptions) (resp azfake.PagerResponder[armsql.DatabasesClientListMetricDefinitionsResponse])
-
-	// NewListMetricsPager is the fake for method DatabasesClient.NewListMetricsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListMetricsPager func(resourceGroupName string, serverName string, databaseName string, filter string, options *armsql.DatabasesClientListMetricsOptions) (resp azfake.PagerResponder[armsql.DatabasesClientListMetricsResponse])
-
 	// BeginPause is the fake for method DatabasesClient.BeginPause
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPause func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *armsql.DatabasesClientBeginPauseOptions) (resp azfake.PollerResponder[armsql.DatabasesClientPauseResponse], errResp azfake.ErrorResponder)
@@ -100,8 +92,6 @@ func NewDatabasesServerTransport(srv *DatabasesServer) *DatabasesServerTransport
 		newListByElasticPoolPager:        newTracker[azfake.PagerResponder[armsql.DatabasesClientListByElasticPoolResponse]](),
 		newListByServerPager:             newTracker[azfake.PagerResponder[armsql.DatabasesClientListByServerResponse]](),
 		newListInaccessibleByServerPager: newTracker[azfake.PagerResponder[armsql.DatabasesClientListInaccessibleByServerResponse]](),
-		newListMetricDefinitionsPager:    newTracker[azfake.PagerResponder[armsql.DatabasesClientListMetricDefinitionsResponse]](),
-		newListMetricsPager:              newTracker[azfake.PagerResponder[armsql.DatabasesClientListMetricsResponse]](),
 		beginPause:                       newTracker[azfake.PollerResponder[armsql.DatabasesClientPauseResponse]](),
 		beginResume:                      newTracker[azfake.PollerResponder[armsql.DatabasesClientResumeResponse]](),
 		beginUpdate:                      newTracker[azfake.PollerResponder[armsql.DatabasesClientUpdateResponse]](),
@@ -121,8 +111,6 @@ type DatabasesServerTransport struct {
 	newListByElasticPoolPager        *tracker[azfake.PagerResponder[armsql.DatabasesClientListByElasticPoolResponse]]
 	newListByServerPager             *tracker[azfake.PagerResponder[armsql.DatabasesClientListByServerResponse]]
 	newListInaccessibleByServerPager *tracker[azfake.PagerResponder[armsql.DatabasesClientListInaccessibleByServerResponse]]
-	newListMetricDefinitionsPager    *tracker[azfake.PagerResponder[armsql.DatabasesClientListMetricDefinitionsResponse]]
-	newListMetricsPager              *tracker[azfake.PagerResponder[armsql.DatabasesClientListMetricsResponse]]
 	beginPause                       *tracker[azfake.PollerResponder[armsql.DatabasesClientPauseResponse]]
 	beginResume                      *tracker[azfake.PollerResponder[armsql.DatabasesClientResumeResponse]]
 	beginUpdate                      *tracker[azfake.PollerResponder[armsql.DatabasesClientUpdateResponse]]
@@ -170,10 +158,6 @@ func (d *DatabasesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = d.dispatchNewListByServerPager(req)
 			case "DatabasesClient.NewListInaccessibleByServerPager":
 				res.resp, res.err = d.dispatchNewListInaccessibleByServerPager(req)
-			case "DatabasesClient.NewListMetricDefinitionsPager":
-				res.resp, res.err = d.dispatchNewListMetricDefinitionsPager(req)
-			case "DatabasesClient.NewListMetricsPager":
-				res.resp, res.err = d.dispatchNewListMetricsPager(req)
 			case "DatabasesClient.BeginPause":
 				res.resp, res.err = d.dispatchBeginPause(req)
 			case "DatabasesClient.Rename":
@@ -657,95 +641,6 @@ func (d *DatabasesServerTransport) dispatchNewListInaccessibleByServerPager(req 
 	}
 	if !server.PagerResponderMore(newListInaccessibleByServerPager) {
 		d.newListInaccessibleByServerPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DatabasesServerTransport) dispatchNewListMetricDefinitionsPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListMetricDefinitionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListMetricDefinitionsPager not implemented")}
-	}
-	newListMetricDefinitionsPager := d.newListMetricDefinitionsPager.get(req)
-	if newListMetricDefinitionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/metricDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListMetricDefinitionsPager(resourceGroupNameParam, serverNameParam, databaseNameParam, nil)
-		newListMetricDefinitionsPager = &resp
-		d.newListMetricDefinitionsPager.add(req, newListMetricDefinitionsPager)
-	}
-	resp, err := server.PagerResponderNext(newListMetricDefinitionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListMetricDefinitionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListMetricDefinitionsPager) {
-		d.newListMetricDefinitionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DatabasesServerTransport) dispatchNewListMetricsPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListMetricsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListMetricsPager not implemented")}
-	}
-	newListMetricsPager := d.newListMetricsPager.get(req)
-	if newListMetricsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/metrics`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListMetricsPager(resourceGroupNameParam, serverNameParam, databaseNameParam, filterParam, nil)
-		newListMetricsPager = &resp
-		d.newListMetricsPager.add(req, newListMetricsPager)
-	}
-	resp, err := server.PagerResponderNext(newListMetricsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListMetricsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListMetricsPager) {
-		d.newListMetricsPager.remove(req)
 	}
 	return resp, nil
 }

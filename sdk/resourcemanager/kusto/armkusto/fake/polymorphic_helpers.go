@@ -24,8 +24,12 @@ func unmarshalDataConnectionClassification(rawMsg json.RawMessage) (armkusto.Dat
 		b = &armkusto.CosmosDbDataConnection{}
 	case string(armkusto.DataConnectionKindEventGrid):
 		b = &armkusto.EventGridDataConnection{}
+	case string(armkusto.DataConnectionKindEventGridWithManagedIdentity):
+		b = &armkusto.EventGridDataConnectionWithManagedIdentity{}
 	case string(armkusto.DataConnectionKindEventHub):
 		b = &armkusto.EventHubDataConnection{}
+	case string(armkusto.DataConnectionKindEventHubWithManagedIdentity):
+		b = &armkusto.EventHubDataConnectionWithManagedIdentity{}
 	case string(armkusto.DataConnectionKindIotHub):
 		b = &armkusto.IotHubDataConnection{}
 	default:

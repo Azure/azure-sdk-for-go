@@ -332,8 +332,9 @@ type ClusterProperties struct {
 	// Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4 and IPv6)
 	PublicIPType *PublicIPType
 
-	// Public network access to the cluster is enabled by default. When disabled, only private endpoint connection to the cluster
-	// is allowed
+	// Public network access to the cluster is enabled by default. When disabled, only private endpoint connections to the cluster
+	// are allowed. When 'SecuredByPerimeter', inbound and outbound traffic is
+	// controlled by the NSP profile's access rules.
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// Whether or not to restrict outbound network access. Value is optional but if passed in, must be 'Enabled' or 'Disabled'
@@ -744,6 +745,50 @@ type EventGridConnectionProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// EventGridConnectionWithManagedIdentityProperties - Class representing the Kusto event grid connection with mandatory managed
+// identity properties.
+type EventGridConnectionWithManagedIdentityProperties struct {
+	// REQUIRED; The event hub consumer group.
+	ConsumerGroup *string
+
+	// REQUIRED; The resource ID of the event hub that is subscribed to the storage account events.
+	EventHubResourceIDForManagedIdentity *string
+
+	// REQUIRED; The resource ID of a managed identity (system or user assigned) to be used to authenticate with event hub and
+	// storage account.
+	ManagedIdentityResourceID *string
+
+	// REQUIRED; The resource ID of the storage account where the data resides.
+	StorageAccountResourceIDForManagedIdentity *string
+
+	// The name of blob storage event type to process.
+	BlobStorageEventType *BlobStorageEventType
+
+	// The data format of the message. Optionally the data format can be added to each message.
+	DataFormat *EventGridDataFormat
+
+	// Indication for database routing information from the data connection, by default only database routing information is allowed
+	DatabaseRouting *DatabaseRouting
+
+	// The resource ID where the event grid is configured to send events.
+	EventGridResourceID *string
+
+	// A Boolean value that, if set to true, indicates that ingestion should ignore the first record of every file
+	IgnoreFirstRecord *bool
+
+	// The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.
+	MappingRuleName *string
+
+	// The table where the data should be ingested. Optionally the table information can be added to each message.
+	TableName *string
+
+	// READ-ONLY; The object ID of managedIdentityResourceId
+	ManagedIdentityObjectID *string
+
+	// READ-ONLY; The provisioned state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
 // EventGridDataConnection - Class representing an Event Grid data connection.
 type EventGridDataConnection struct {
 	// REQUIRED; Kind of the endpoint for the data connection
@@ -767,6 +812,38 @@ type EventGridDataConnection struct {
 
 // GetDataConnection implements the DataConnectionClassification interface for type EventGridDataConnection.
 func (e *EventGridDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		ID:       e.ID,
+		Kind:     e.Kind,
+		Location: e.Location,
+		Name:     e.Name,
+		Type:     e.Type,
+	}
+}
+
+// EventGridDataConnectionWithManagedIdentity - Class representing an Event Grid data connection with mandatory managed identity.
+type EventGridDataConnectionWithManagedIdentity struct {
+	// REQUIRED; Kind of the endpoint for the data connection
+	Kind *DataConnectionKind
+
+	// Resource location.
+	Location *string
+
+	// The properties of the Event Grid data connection with mandatory managed identity.
+	Properties *EventGridConnectionWithManagedIdentityProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetDataConnection implements the DataConnectionClassification interface for type EventGridDataConnectionWithManagedIdentity.
+func (e *EventGridDataConnectionWithManagedIdentity) GetDataConnection() *DataConnection {
 	return &DataConnection{
 		ID:       e.ID,
 		Kind:     e.Kind,
@@ -816,6 +893,47 @@ type EventHubConnectionProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// EventHubConnectionWithManagedIdentityProperties - Class representing the Kusto event hub connection with required managed
+// identity properties.
+type EventHubConnectionWithManagedIdentityProperties struct {
+	// REQUIRED; The event hub consumer group.
+	ConsumerGroup *string
+
+	// REQUIRED; The resource ID of the event hub to be used to create a data connection.
+	EventHubResourceIDForManagedIdentity *string
+
+	// REQUIRED; The resource ID of a managed identity (system or user assigned) to be used to authenticate with event hub.
+	ManagedIdentityResourceID *string
+
+	// The event hub messages compression type
+	Compression *Compression
+
+	// The data format of the message. Optionally the data format can be added to each message.
+	DataFormat *EventHubDataFormat
+
+	// Indication for database routing information from the data connection, by default only database routing information is allowed
+	DatabaseRouting *DatabaseRouting
+
+	// System properties of the event hub
+	EventSystemProperties []*string
+
+	// The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.
+	MappingRuleName *string
+
+	// When defined, the data connection retrieves existing Event hub events created since the Retrieval start date. It can only
+	// retrieve events retained by the Event hub, based on its retention period.
+	RetrievalStartDate *time.Time
+
+	// The table where the data should be ingested. Optionally the table information can be added to each message.
+	TableName *string
+
+	// READ-ONLY; The object ID of the managedIdentityResourceId
+	ManagedIdentityObjectID *string
+
+	// READ-ONLY; The provisioned state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
 // EventHubDataConnection - Class representing an event hub data connection.
 type EventHubDataConnection struct {
 	// REQUIRED; Kind of the endpoint for the data connection
@@ -839,6 +957,38 @@ type EventHubDataConnection struct {
 
 // GetDataConnection implements the DataConnectionClassification interface for type EventHubDataConnection.
 func (e *EventHubDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		ID:       e.ID,
+		Kind:     e.Kind,
+		Location: e.Location,
+		Name:     e.Name,
+		Type:     e.Type,
+	}
+}
+
+// EventHubDataConnectionWithManagedIdentity - Class representing an event hub data connection with required managed identity.
+type EventHubDataConnectionWithManagedIdentity struct {
+	// REQUIRED; Kind of the endpoint for the data connection
+	Kind *DataConnectionKind
+
+	// Resource location.
+	Location *string
+
+	// The Event Hub data connection properties to validate.
+	Properties *EventHubConnectionWithManagedIdentityProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetDataConnection implements the DataConnectionClassification interface for type EventHubDataConnectionWithManagedIdentity.
+func (e *EventHubDataConnectionWithManagedIdentity) GetDataConnection() *DataConnection {
 	return &DataConnection{
 		ID:       e.ID,
 		Kind:     e.Kind,
@@ -992,6 +1142,11 @@ func (i *IotHubDataConnection) GetDataConnection() *DataConnection {
 
 // KeyVaultProperties - Properties of the key vault.
 type KeyVaultProperties struct {
+	// The application (client) ID of the multi-tenant Microsoft Entra application. Used for cross-tenant customer-managed key
+	// scenarios where the encryption key is stored in a different tenant than the
+	// cluster. The application must be configured with the user-assigned managed identity as a federated identity credential.
+	FederatedIdentityClientID *string
+
 	// The name of the key vault key.
 	KeyName *string
 
@@ -1001,7 +1156,9 @@ type KeyVaultProperties struct {
 	// The version of the key vault key.
 	KeyVersion *string
 
-	// The user assigned identity (ARM resource id) that has access to the key.
+	// The user assigned identity (ARM resource id) that has access to the key. The identity must have 'Get', 'Wrap Key', and
+	// 'Unwrap Key' permissions on the Key Vault key, or be assigned the 'Key Vault
+	// Crypto Service Encryption User' role.
 	UserIdentity *string
 }
 
@@ -1612,6 +1769,10 @@ type ScriptProperties struct {
 
 	// A unique string. If changed the script will be applied again.
 	ForceUpdateTag *string
+
+	// The resource identifier of the managed identity to be used. When provided, the managed identity will be used to read the
+	// script content from the scriptUrl.
+	ManagedIdentityResourceID *string
 
 	// Indicates if the permissions for the script caller are kept following completion of the script.
 	PrincipalPermissionsAction *PrincipalPermissionsAction

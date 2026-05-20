@@ -27,7 +27,7 @@ type DatabaseClient struct {
 // NewDatabaseClient creates a new instance of DatabaseClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential,
 // InviteFollower - Generates an invitation token that allows attaching a follower database to this database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-13
+// Generated from API version 2025-02-14
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -72,7 +72,7 @@ func (client *DatabaseClient) InviteFollower(ctx context.Context, resourceGroupN
 }
 
 // inviteFollowerCreateRequest creates the InviteFollower request.
-func (client *DatabaseClient) inviteFollowerCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseInviteFollowerRequest, options *DatabaseClientInviteFollowerOptions) (*policy.Request, error) {
+func (client *DatabaseClient) inviteFollowerCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseInviteFollowerRequest, _ *DatabaseClientInviteFollowerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/inviteFollower"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +95,7 @@ func (client *DatabaseClient) inviteFollowerCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-13")
+	reqQP.Set("api-version", "2025-02-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

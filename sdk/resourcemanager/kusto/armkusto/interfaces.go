@@ -8,7 +8,8 @@ package armkusto
 // DataConnectionClassification provides polymorphic access to related types.
 // Call the interface's GetDataConnection() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *CosmosDbDataConnection, *DataConnection, *EventGridDataConnection, *EventHubDataConnection, *IotHubDataConnection
+// - *CosmosDbDataConnection, *DataConnection, *EventGridDataConnection, *EventGridDataConnectionWithManagedIdentity, *EventHubDataConnection,
+// - *EventHubDataConnectionWithManagedIdentity, *IotHubDataConnection
 type DataConnectionClassification interface {
 	// GetDataConnection returns the DataConnection content of the underlying type.
 	GetDataConnection() *DataConnection

@@ -5,8 +5,6 @@
 
 package armkusto
 
-import "encoding/json"
-
 // AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse contains the response from method AttachedDatabaseConfigurationsClient.CheckNameAvailability.
 type AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse struct {
 	// The result returned from a check name availability request.
@@ -205,21 +203,6 @@ type DataConnectionsClientCreateOrUpdateResponse struct {
 	DataConnectionClassification
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataConnectionsClientCreateOrUpdateResponse.
-func (d DataConnectionsClientCreateOrUpdateResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.DataConnectionClassification)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataConnectionsClientCreateOrUpdateResponse.
-func (d *DataConnectionsClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalDataConnectionClassification(data)
-	if err != nil {
-		return err
-	}
-	d.DataConnectionClassification = res
-	return nil
-}
-
 // DataConnectionsClientDataConnectionValidationResponse contains the response from method DataConnectionsClient.BeginDataConnectionValidation.
 type DataConnectionsClientDataConnectionValidationResponse struct {
 	// The list Kusto data connection validation result.
@@ -237,16 +220,6 @@ type DataConnectionsClientGetResponse struct {
 	DataConnectionClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataConnectionsClientGetResponse.
-func (d *DataConnectionsClientGetResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalDataConnectionClassification(data)
-	if err != nil {
-		return err
-	}
-	d.DataConnectionClassification = res
-	return nil
-}
-
 // DataConnectionsClientListByDatabaseResponse contains the response from method DataConnectionsClient.NewListByDatabasePager.
 type DataConnectionsClientListByDatabaseResponse struct {
 	// The list Kusto data connections operation response.
@@ -257,21 +230,6 @@ type DataConnectionsClientListByDatabaseResponse struct {
 type DataConnectionsClientUpdateResponse struct {
 	// Class representing an data connection.
 	DataConnectionClassification
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataConnectionsClientUpdateResponse.
-func (d DataConnectionsClientUpdateResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.DataConnectionClassification)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataConnectionsClientUpdateResponse.
-func (d *DataConnectionsClientUpdateResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalDataConnectionClassification(data)
-	if err != nil {
-		return err
-	}
-	d.DataConnectionClassification = res
-	return nil
 }
 
 // DatabaseClientInviteFollowerResponse contains the response from method DatabaseClient.InviteFollower.
@@ -327,21 +285,6 @@ type DatabasesClientCreateOrUpdateResponse struct {
 	DatabaseClassification
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabasesClientCreateOrUpdateResponse.
-func (d DatabasesClientCreateOrUpdateResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.DatabaseClassification)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatabasesClientCreateOrUpdateResponse.
-func (d *DatabasesClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalDatabaseClassification(data)
-	if err != nil {
-		return err
-	}
-	d.DatabaseClassification = res
-	return nil
-}
-
 // DatabasesClientDeleteResponse contains the response from method DatabasesClient.BeginDelete.
 type DatabasesClientDeleteResponse struct {
 	// placeholder for future response values
@@ -351,16 +294,6 @@ type DatabasesClientDeleteResponse struct {
 type DatabasesClientGetResponse struct {
 	// Class representing a Kusto database.
 	DatabaseClassification
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatabasesClientGetResponse.
-func (d *DatabasesClientGetResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalDatabaseClassification(data)
-	if err != nil {
-		return err
-	}
-	d.DatabaseClassification = res
-	return nil
 }
 
 // DatabasesClientListByClusterResponse contains the response from method DatabasesClient.NewListByClusterPager.
@@ -385,21 +318,6 @@ type DatabasesClientRemovePrincipalsResponse struct {
 type DatabasesClientUpdateResponse struct {
 	// Class representing a Kusto database.
 	DatabaseClassification
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DatabasesClientUpdateResponse.
-func (d DatabasesClientUpdateResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.DatabaseClassification)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatabasesClientUpdateResponse.
-func (d *DatabasesClientUpdateResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalDatabaseClassification(data)
-	if err != nil {
-		return err
-	}
-	d.DatabaseClassification = res
-	return nil
 }
 
 // ManagedPrivateEndpointsClientCheckNameAvailabilityResponse contains the response from method ManagedPrivateEndpointsClient.CheckNameAvailability.

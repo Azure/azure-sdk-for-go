@@ -76,31 +76,50 @@ func (m *ManagedPrivateEndpointsServerTransport) Do(req *http.Request) (*http.Re
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return m.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ManagedPrivateEndpointsClient.CheckNameAvailability":
-		resp, err = m.dispatchCheckNameAvailability(req)
-	case "ManagedPrivateEndpointsClient.BeginCreateOrUpdate":
-		resp, err = m.dispatchBeginCreateOrUpdate(req)
-	case "ManagedPrivateEndpointsClient.BeginDelete":
-		resp, err = m.dispatchBeginDelete(req)
-	case "ManagedPrivateEndpointsClient.Get":
-		resp, err = m.dispatchGet(req)
-	case "ManagedPrivateEndpointsClient.NewListPager":
-		resp, err = m.dispatchNewListPager(req)
-	case "ManagedPrivateEndpointsClient.BeginUpdate":
-		resp, err = m.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (m *ManagedPrivateEndpointsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if managedPrivateEndpointsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = managedPrivateEndpointsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ManagedPrivateEndpointsClient.CheckNameAvailability":
+				res.resp, res.err = m.dispatchCheckNameAvailability(req)
+			case "ManagedPrivateEndpointsClient.BeginCreateOrUpdate":
+				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
+			case "ManagedPrivateEndpointsClient.BeginDelete":
+				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "ManagedPrivateEndpointsClient.Get":
+				res.resp, res.err = m.dispatchGet(req)
+			case "ManagedPrivateEndpointsClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
+			case "ManagedPrivateEndpointsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (m *ManagedPrivateEndpointsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
@@ -110,7 +129,7 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchCheckNameAvailability(r
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedPrivateEndpointsCheckNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armkusto.ManagedPrivateEndpointsCheckNameRequest](req)
@@ -149,7 +168,7 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginCreateOrUpdate(req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedPrivateEndpoints/(?P<managedPrivateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armkusto.ManagedPrivateEndpoint](req)
@@ -201,7 +220,7 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginDelete(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedPrivateEndpoints/(?P<managedPrivateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -247,7 +266,7 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchGet(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedPrivateEndpoints/(?P<managedPrivateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -286,7 +305,7 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchNewListPager(req *http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedPrivateEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -324,7 +343,7 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginUpdate(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedPrivateEndpoints/(?P<managedPrivateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armkusto.ManagedPrivateEndpoint](req)
@@ -365,4 +384,10 @@ func (m *ManagedPrivateEndpointsServerTransport) dispatchBeginUpdate(req *http.R
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ManagedPrivateEndpointsServerTransport
+var managedPrivateEndpointsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

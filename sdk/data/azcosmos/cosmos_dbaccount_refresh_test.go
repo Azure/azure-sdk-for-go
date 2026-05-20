@@ -143,8 +143,8 @@ func TestFix2_ConcurrentUpdateCallersCoalesce(t *testing.T) {
 		}(i)
 	}
 	wg.Wait()
-	for _, err := range errs {
-		require.NoError(t, err)
+	for i, err := range errs {
+		require.NoErrorf(t, err, "goroutine %d failed", i)
 	}
 	require.Equal(t, int64(1), transport.count.Load(),
 		"concurrent Update callers must coalesce into a single HTTP call")
@@ -216,7 +216,11 @@ func TestFix1b_InvalidateDuringInflightRefreshIsHonored(t *testing.T) {
 		defer wg.Done()
 		_ = gem.Update(context.Background(), false)
 	}()
-	time.Sleep(30 * time.Millisecond) // ensure the leader has the inflight slot
+	// Wait deterministically for the leader to claim the in-flight slot.
+	// A naive time.Sleep is racy on loaded CI hosts; polling hasInflight()
+	// confirms the leader has actually entered refreshOnce.
+	require.Eventually(t, gem.hasInflight, time.Second, 2*time.Millisecond,
+		"leader must claim the in-flight slot within 1s")
 	gem.invalidate()
 	wg.Wait()
 
@@ -406,6 +410,9 @@ func TestFix5_ReadEndpointsDoesNotDeadlock(t *testing.T) {
 // This is the headline regression guard for issue #25468.
 // ----------------------------------------------------------------------------
 func TestRegression25468_HealthyHighConcurrencyStaysAtOneGEMCall(t *testing.T) {
+	if testing.Short() {
+		t.Skip("500-goroutine soak; skipped under -short")
+	}
 	body, _ := json.Marshal(accountProperties{
 		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
 		WriteRegions: []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
@@ -442,6 +449,9 @@ func TestRegression25468_HealthyHighConcurrencyStaysAtOneGEMCall(t *testing.T) {
 // exactly one HTTP call, demonstrating that F1 + F2 together close the
 // failure-storm path.
 func TestRegression25468_FailingGEMHighConcurrencyStaysAtOneGEMCall(t *testing.T) {
+	if testing.Short() {
+		t.Skip("500-goroutine soak; skipped under -short")
+	}
 	transport := &countingTransport{status: http.StatusBadRequest, delay: 20 * time.Millisecond}
 	gem := newGEMWithTransport(t, []string{"West US"}, transport, 5*time.Minute)
 	pol := &globalEndpointManagerPolicy{gem: gem}
@@ -716,6 +726,9 @@ func TestFix7_InvalidateThenRefreshFailureDoesNotStallDataPlane(t *testing.T) {
 // promptly even when the user happens to be a waiter rather than the leader.
 // ----------------------------------------------------------------------------
 func TestFix8_UpdateWaiterRespectsContextCancellation(t *testing.T) {
+	if testing.Short() {
+		t.Skip("blocks on a 2s leader by design; skipped under -short")
+	}
 	// Slow leader: holds the in-flight slot for 2 seconds.
 	body, _ := json.Marshal(accountProperties{
 		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
@@ -731,17 +744,11 @@ func TestFix8_UpdateWaiterRespectsContextCancellation(t *testing.T) {
 		_ = gem.Update(context.Background(), false)
 	}()
 
-	// Wait until the leader is actually in-flight.
-	deadline := time.Now().Add(500 * time.Millisecond)
-	for time.Now().Before(deadline) {
-		gem.gemMutex.Lock()
-		inflight := gem.inflight != nil
-		gem.gemMutex.Unlock()
-		if inflight {
-			break
-		}
-		time.Sleep(5 * time.Millisecond)
-	}
+	// Wait until the leader is actually in-flight via the hasInflight test
+	// helper rather than peeking at internal mutex state -- keeps the test
+	// resilient to changes in the GEM's internal synchronization primitives.
+	require.Eventually(t, gem.hasInflight, 500*time.Millisecond, 5*time.Millisecond,
+		"leader must claim the in-flight slot within 500ms")
 
 	// Waiter has a 100 ms deadline. It must return promptly with the
 	// deadline error rather than blocking for the leader's 2-second HTTP

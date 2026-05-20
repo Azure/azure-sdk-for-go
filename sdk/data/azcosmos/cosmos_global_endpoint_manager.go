@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
@@ -44,8 +45,9 @@ type globalEndpointManager struct {
 	// transient post-invalidation refresh failure does not stall the data
 	// plane: requests can still route through the existing locationCache
 	// topology while the next refresh attempt is pending the throttle
-	// window. See issue #25468 deep-review finding.
-	everPopulated bool
+	// window. See issue #25468 deep-review finding. Stored as atomic.Bool
+	// so the hot-path policy check is lock-free.
+	everPopulated atomic.Bool
 	// inflight coalesces concurrent Update callers: only the first does the
 	// HTTP call; the rest wait on the per-flight done channel and read
 	// per-flight err. Each refresh has its own *updateFlight so late waiters
@@ -162,11 +164,20 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 // refresh failure does not stall the data plane: the policy can still
 // route requests through the existing locationCache topology while the
 // next refresh attempt waits for the throttle window. See issue #25468
-// deep-review finding.
+// deep-review finding. Lock-free atomic read so the policy's hot path
+// does not contend on gemMutex.
 func (gem *globalEndpointManager) populated() bool {
+	return gem.everPopulated.Load()
+}
+
+// hasInflight is a test-only accessor for the in-flight refresh slot.
+// Tests use it to wait until a leader has claimed the slot before firing
+// follow-up calls; keeping the field access inside the GEM means tests
+// don't need to grab gemMutex directly.
+func (gem *globalEndpointManager) hasInflight() bool {
 	gem.gemMutex.Lock()
 	defer gem.gemMutex.Unlock()
-	return gem.everPopulated
+	return gem.inflight != nil
 }
 
 func (gem *globalEndpointManager) ShouldRefresh() bool {
@@ -217,9 +228,11 @@ func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool)
 		// Throttled. Surface the cached error only if we have NEVER
 		// successfully populated the GEM -- otherwise the data plane has
 		// a valid cached topology and should continue working until the
-		// next refresh attempt succeeds.
+		// next refresh attempt succeeds. The cached error is shared across
+		// force=true and force=false callers: both want to surface
+		// "bootstrap is broken" and there's no caller-visible distinction.
 		var cached error
-		if !gem.everPopulated {
+		if !gem.everPopulated.Load() {
 			cached = gem.lastUpdateErr
 		}
 		gem.gemMutex.Unlock()
@@ -255,36 +268,34 @@ func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool)
 	// subsequent Update caller blocks forever on <-flight.done. We capture
 	// any panic, record it as the flight error, and re-panic after cleanup.
 	var err error
-	func() {
-		defer func() {
-			r := recover()
-			gem.gemMutex.Lock()
-			if r != nil && err == nil {
-				err = fmt.Errorf("panic in GEM refresh: %v", r)
+	defer func() {
+		r := recover()
+		gem.gemMutex.Lock()
+		if r != nil && err == nil {
+			err = fmt.Errorf("panic in GEM refresh: %v", r)
+		}
+		flight.err = err
+		gem.lastUpdateErr = err
+		if gem.invalidationGen == genAtStart {
+			// No invalidation occurred during the flight, so commit the
+			// timestamps and let the throttle take effect.
+			gem.lastAttemptTime = time.Now()
+			if err == nil {
+				gem.lastUpdateTime = gem.lastAttemptTime
+				gem.everPopulated.Store(true)
 			}
-			flight.err = err
-			gem.lastUpdateErr = err
-			if gem.invalidationGen == genAtStart {
-				// No invalidation occurred during the flight, so commit the
-				// timestamps and let the throttle take effect.
-				gem.lastAttemptTime = time.Now()
-				if err == nil {
-					gem.lastUpdateTime = gem.lastAttemptTime
-					gem.everPopulated = true
-				}
-			}
-			// If invalidationGen changed, leave the timestamps untouched so
-			// the next caller observes shouldRefresh()==true and performs a
-			// fresh refresh that reflects the post-invalidation state.
-			gem.inflight = nil
-			gem.gemMutex.Unlock()
-			close(flight.done)
-			if r != nil {
-				panic(r)
-			}
-		}()
-		err = gem.refreshOnce(ctx)
+		}
+		// If invalidationGen changed, leave the timestamps untouched so
+		// the next caller observes shouldRefresh()==true and performs a
+		// fresh refresh that reflects the post-invalidation state.
+		gem.inflight = nil
+		gem.gemMutex.Unlock()
+		close(flight.done)
+		if r != nil {
+			panic(r)
+		}
 	}()
+	err = gem.refreshOnce(ctx)
 	return err
 }
 
@@ -293,7 +304,7 @@ func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool)
 func (gem *globalEndpointManager) refreshOnce(ctx context.Context) error {
 	accountProperties, err := gem.GetAccountProperties(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to retrieve account properties: %v", err)
+		return fmt.Errorf("failed to retrieve account properties: %w", err)
 	}
 	if err := gem.locationCache.update(
 		accountProperties.WriteRegions,
@@ -301,7 +312,7 @@ func (gem *globalEndpointManager) refreshOnce(ctx context.Context) error {
 		gem.preferredLocations,
 		&accountProperties.EnableMultipleWriteLocations,
 	); err != nil {
-		return fmt.Errorf("failed to update location cache: %v", err)
+		return fmt.Errorf("failed to update location cache: %w", err)
 	}
 	return nil
 }

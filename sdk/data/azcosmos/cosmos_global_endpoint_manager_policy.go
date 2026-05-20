@@ -6,12 +6,25 @@ package azcosmos
 import (
 	"context"
 	"net/http"
+	"runtime/debug"
+	"sync/atomic"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 type globalEndpointManagerPolicy struct {
 	gem *globalEndpointManager
+	// asyncRefreshPending gates the spawn of the async refresh goroutine.
+	// Without this gate every request that observes ShouldRefresh()==true
+	// (potentially thousands during a burst that arrives right as the
+	// throttle expires) would spawn its own goroutine, each of which would
+	// then queue as a waiter inside gem.Update. The singleflight in Update
+	// collapses them to one HTTP call, but the goroutine + select overhead
+	// is wasted. CAS this to true before spawning; the goroutine clears it
+	// on exit.
+	asyncRefreshPending atomic.Bool
 }
 
 func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, error) {
@@ -31,14 +44,21 @@ func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, e
 		// triggering request.
 		err = p.gem.Update(context.WithoutCancel(req.Raw().Context()), false)
 	}
-	if p.gem.ShouldRefresh() {
+	if p.gem.ShouldRefresh() && p.asyncRefreshPending.CompareAndSwap(false, true) {
 		go func() {
-			// Concurrent goroutines spawned here are coalesced inside
-			// gem.Update via the single-in-flight pattern. gem.Update's
-			// panic-safe defer re-panics after cleanup; recover here so a
-			// panic in the GEM pipeline does not bring down the host
-			// process via this detached goroutine.
-			defer func() { _ = recover() }()
+			defer p.asyncRefreshPending.Store(false)
+			// gem.Update's panic-safe defer re-panics after cleanup. We
+			// recover here so a panic in the GEM pipeline does not bring
+			// down the host process via this detached goroutine. The
+			// recovered value is logged (rather than silently dropped) so
+			// production crashes remain triageable.
+			defer func() {
+				if r := recover(); r != nil {
+					log.Writef(azlog.EventResponse,
+						"panic in azcosmos GEM async refresh: %v\n%s",
+						r, debug.Stack())
+				}
+			}()
 			_ = p.gem.Update(context.WithoutCancel(req.Raw().Context()), false)
 		}()
 	}

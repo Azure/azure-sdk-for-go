@@ -25,7 +25,7 @@ type ExtensionPublisherClient struct {
 
 // NewExtensionPublisherClient creates a new instance of ExtensionPublisherClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExtensionPublisherClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionPublisherClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -39,7 +39,7 @@ func NewExtensionPublisherClient(credential azcore.TokenCredential, options *arm
 
 // NewListPager - Gets all Extension publishers based on the location
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 //   - location - The name of Azure region.
 //   - options - ExtensionPublisherClientListOptions contains the optional parameters for the ExtensionPublisherClient.NewListPager
 //     method.
@@ -78,7 +78,7 @@ func (client *ExtensionPublisherClient) listCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-19-preview")
+	reqQP.Set("api-version", "2025-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

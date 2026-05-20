@@ -27,7 +27,7 @@ type ExtensionMetadataClient struct {
 // NewExtensionMetadataClient creates a new instance of ExtensionMetadataClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExtensionMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionMetadataClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewExtensionMetadataClient(subscriptionID string, credential azcore.TokenCr
 // Get - Gets an Extension Metadata based on location, publisher, extensionType and version
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 //   - location - The location of the Extension being received.
 //   - publisher - The publisher of the Extension being received.
 //   - extensionType - The extensionType of the Extension being received.
@@ -99,7 +99,7 @@ func (client *ExtensionMetadataClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-19-preview")
+	reqQP.Set("api-version", "2025-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +116,7 @@ func (client *ExtensionMetadataClient) getHandleResponse(resp *http.Response) (E
 
 // NewListPager - Gets all Extension versions based on location, publisher, extensionType
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 //   - location - The location of the Extension being received.
 //   - publisher - The publisher of the Extension being received.
 //   - extensionType - The extensionType of the Extension being received.
@@ -170,7 +170,7 @@ func (client *ExtensionMetadataClient) listCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-19-preview")
+	reqQP.Set("api-version", "2025-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

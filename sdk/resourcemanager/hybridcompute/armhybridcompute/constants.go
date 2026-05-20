@@ -5,11 +5,6 @@
 
 package armhybridcompute
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
-	moduleVersion = "v2.1.0-beta.2"
-)
-
 // AccessMode - Property that impacts a resource's logging behavior and its connectivity with other resources and public networks.
 type AccessMode string
 
@@ -690,6 +685,35 @@ func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
 		PublicNetworkAccessTypeEnabled,
 		PublicNetworkAccessTypeSecuredByPerimeter,
 	}
+}
+
+// ServiceExtensionPublicNetworkAccess - The network access policy to determine if the specified Azure Arc Extension can use
+// public Azure Arc Extension service endpoints.
+type ServiceExtensionPublicNetworkAccess string
+
+const (
+	// ServiceExtensionPublicNetworkAccessDisabled - Does not allow Azure Arc Extension agents to communicate with Azure Arc services
+	// over public (internet) endpoints. The agents must use the private link.
+	ServiceExtensionPublicNetworkAccessDisabled ServiceExtensionPublicNetworkAccess = "disabled"
+	// ServiceExtensionPublicNetworkAccessEnabled - Allows Azure Arc Extension agents to communicate with Azure Arc services over
+	// both public (internet) and private endpoints.
+	ServiceExtensionPublicNetworkAccessEnabled ServiceExtensionPublicNetworkAccess = "enabled"
+)
+
+// PossibleServiceExtensionPublicNetworkAccessValues returns the possible values for the ServiceExtensionPublicNetworkAccess const type.
+func PossibleServiceExtensionPublicNetworkAccessValues() []ServiceExtensionPublicNetworkAccess {
+	return []ServiceExtensionPublicNetworkAccess{
+		ServiceExtensionPublicNetworkAccessDisabled,
+		ServiceExtensionPublicNetworkAccessEnabled,
+	}
+}
+
+// ServiceExtensionType - The name of the Azure Arc Extension.
+type ServiceExtensionType string
+
+// PossibleServiceExtensionTypeValues returns the possible values for the ServiceExtensionType const type.
+func PossibleServiceExtensionTypeValues() []ServiceExtensionType {
+	return []ServiceExtensionType{}
 }
 
 // StatusLevelTypes - The level code.

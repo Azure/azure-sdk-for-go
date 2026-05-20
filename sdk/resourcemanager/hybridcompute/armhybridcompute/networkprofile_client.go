@@ -27,7 +27,7 @@ type NetworkProfileClient struct {
 // NewNetworkProfileClient creates a new instance of NetworkProfileClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkProfileClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkProfileClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewNetworkProfileClient(subscriptionID string, credential azcore.TokenCrede
 // Get - The operation to get network information of hybrid machine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - options - NetworkProfileClientGetOptions contains the optional parameters for the NetworkProfileClient.Get method.
@@ -89,7 +89,7 @@ func (client *NetworkProfileClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-19-preview")
+	reqQP.Set("api-version", "2025-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

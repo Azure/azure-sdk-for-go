@@ -1679,6 +1679,9 @@ type PrivateLinkScopeProperties struct {
 	// Indicates whether machines associated with the private link scope can also use public Azure Arc service endpoints.
 	PublicNetworkAccess *PublicNetworkAccessType
 
+	// Enable private link validation for an Azure Arc Extension.
+	ServiceExtensions []*ServiceExtension
+
 	// READ-ONLY; The collection of associated Private Endpoint Connections.
 	PrivateEndpointConnections []*PrivateEndpointConnectionDataModel
 
@@ -1826,6 +1829,16 @@ type RunCommandManagedIdentity struct {
 
 	// Object Id (GUID value) of the user-assigned managed identity. ClientId should not be used if this is provided.
 	ObjectID *string
+}
+
+// ServiceExtension - Enable private link validation for an Azure Arc Extension
+type ServiceExtension struct {
+	// The network access policy to determine if the specified Azure Arc Extension can use public Azure Arc Extension service
+	// endpoints.
+	ServiceExtensionPublicNetworkAccess *ServiceExtensionPublicNetworkAccess
+
+	// The name of the Azure Arc Extension.
+	ServiceExtensionType *ServiceExtensionType
 }
 
 // ServiceStatus - Describes the status and behavior of a service.

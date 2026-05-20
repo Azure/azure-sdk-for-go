@@ -4145,6 +4145,7 @@ func (p PrivateLinkScopeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "privateLinkScopeId", p.PrivateLinkScopeID)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
 	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
+	populate(objectMap, "serviceExtensions", p.ServiceExtensions)
 	return json.Marshal(objectMap)
 }
 
@@ -4168,6 +4169,9 @@ func (p *PrivateLinkScopeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "publicNetworkAccess":
 			err = unpopulate(val, "PublicNetworkAccess", &p.PublicNetworkAccess)
+			delete(rawMsg, key)
+		case "serviceExtensions":
+			err = unpopulate(val, "ServiceExtensions", &p.ServiceExtensions)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4557,6 +4561,37 @@ func (r *RunCommandManagedIdentity) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceExtension.
+func (s ServiceExtension) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "serviceExtensionPublicNetworkAccess", s.ServiceExtensionPublicNetworkAccess)
+	populate(objectMap, "serviceExtensionType", s.ServiceExtensionType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceExtension.
+func (s *ServiceExtension) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "serviceExtensionPublicNetworkAccess":
+			err = unpopulate(val, "ServiceExtensionPublicNetworkAccess", &s.ServiceExtensionPublicNetworkAccess)
+			delete(rawMsg, key)
+		case "serviceExtensionType":
+			err = unpopulate(val, "ServiceExtensionType", &s.ServiceExtensionType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil

@@ -27,7 +27,7 @@ type LicenseProfilesClient struct {
 // NewLicenseProfilesClient creates a new instance of LicenseProfilesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLicenseProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LicenseProfilesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewLicenseProfilesClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreateOrUpdate - The operation to create or update a license profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - parameters - Parameters supplied to the Create or Update license profile operation.
@@ -69,7 +69,7 @@ func (client *LicenseProfilesClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - The operation to create or update a license profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 func (client *LicenseProfilesClient) createOrUpdate(ctx context.Context, resourceGroupName string, machineName string, parameters LicenseProfile, options *LicenseProfilesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LicenseProfilesClient.BeginCreateOrUpdate"
@@ -112,7 +112,7 @@ func (client *LicenseProfilesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-19-preview")
+	reqQP.Set("api-version", "2025-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -124,7 +124,7 @@ func (client *LicenseProfilesClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - The operation to delete a license profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - options - LicenseProfilesClientBeginDeleteOptions contains the optional parameters for the LicenseProfilesClient.BeginDelete
@@ -149,7 +149,7 @@ func (client *LicenseProfilesClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - The operation to delete a license profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 func (client *LicenseProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, machineName string, options *LicenseProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LicenseProfilesClient.BeginDelete"
@@ -192,7 +192,7 @@ func (client *LicenseProfilesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-19-preview")
+	reqQP.Set("api-version", "2025-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +201,7 @@ func (client *LicenseProfilesClient) deleteCreateRequest(ctx context.Context, re
 // Get - Retrieves information about the view of a license profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - options - LicenseProfilesClientGetOptions contains the optional parameters for the LicenseProfilesClient.Get method.
@@ -248,7 +248,7 @@ func (client *LicenseProfilesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-19-preview")
+	reqQP.Set("api-version", "2025-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *LicenseProfilesClient) getHandleResponse(resp *http.Response) (Lic
 
 // NewListPager - The operation to get all license profiles of a non-Azure machine
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the machine.
 //   - options - LicenseProfilesClientListOptions contains the optional parameters for the LicenseProfilesClient.NewListPager
@@ -313,7 +313,7 @@ func (client *LicenseProfilesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-19-preview")
+	reqQP.Set("api-version", "2025-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -331,7 +331,7 @@ func (client *LicenseProfilesClient) listHandleResponse(resp *http.Response) (Li
 // BeginUpdate - The operation to update a license profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - parameters - Parameters supplied to the Update license profile operation.
@@ -357,7 +357,7 @@ func (client *LicenseProfilesClient) BeginUpdate(ctx context.Context, resourceGr
 // Update - The operation to update a license profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-19-preview
+// Generated from API version 2025-09-16-preview
 func (client *LicenseProfilesClient) update(ctx context.Context, resourceGroupName string, machineName string, parameters LicenseProfileUpdate, options *LicenseProfilesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LicenseProfilesClient.BeginUpdate"
@@ -400,7 +400,7 @@ func (client *LicenseProfilesClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-19-preview")
+	reqQP.Set("api-version", "2025-09-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

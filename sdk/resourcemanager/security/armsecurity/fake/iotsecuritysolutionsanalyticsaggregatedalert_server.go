@@ -60,25 +60,44 @@ func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) Do(req *ht
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return i.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "IotSecuritySolutionsAnalyticsAggregatedAlertClient.Dismiss":
-		resp, err = i.dispatchDismiss(req)
-	case "IotSecuritySolutionsAnalyticsAggregatedAlertClient.Get":
-		resp, err = i.dispatchGet(req)
-	case "IotSecuritySolutionsAnalyticsAggregatedAlertClient.NewListPager":
-		resp, err = i.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if iotSecuritySolutionsAnalyticsAggregatedAlertServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = iotSecuritySolutionsAnalyticsAggregatedAlertServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "IotSecuritySolutionsAnalyticsAggregatedAlertClient.Dismiss":
+				res.resp, res.err = i.dispatchDismiss(req)
+			case "IotSecuritySolutionsAnalyticsAggregatedAlertClient.Get":
+				res.resp, res.err = i.dispatchGet(req)
+			case "IotSecuritySolutionsAnalyticsAggregatedAlertClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) dispatchDismiss(req *http.Request) (*http.Response, error) {
@@ -88,7 +107,7 @@ func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) dispatchDi
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyticsModels/default/aggregatedAlerts/(?P<aggregatedAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dismiss`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -125,7 +144,7 @@ func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) dispatchGe
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyticsModels/default/aggregatedAlerts/(?P<aggregatedAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -164,7 +183,7 @@ func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) dispatchNe
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyticsModels/default/aggregatedAlerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -215,4 +234,10 @@ func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) dispatchNe
 		i.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport
+var iotSecuritySolutionsAnalyticsAggregatedAlertServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

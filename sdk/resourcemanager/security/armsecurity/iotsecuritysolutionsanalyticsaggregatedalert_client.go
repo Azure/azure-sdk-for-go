@@ -18,7 +18,8 @@ import (
 	"strings"
 )
 
-// IotSecuritySolutionsAnalyticsAggregatedAlertClient contains the methods for the IotSecuritySolutionsAnalyticsAggregatedAlert group.
+// IotSecuritySolutionsAnalyticsAggregatedAlertClient contains the methods for the IotSecuritySolutionsAnalyticsAggregatedAlert
+// group.
 // Don't use this type directly, use NewIotSecuritySolutionsAnalyticsAggregatedAlertClient() instead.
 type IotSecuritySolutionsAnalyticsAggregatedAlertClient struct {
 	internal       *arm.Client
@@ -28,7 +29,7 @@ type IotSecuritySolutionsAnalyticsAggregatedAlertClient struct {
 // NewIotSecuritySolutionsAnalyticsAggregatedAlertClient creates a new instance of IotSecuritySolutionsAnalyticsAggregatedAlertClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionsAnalyticsAggregatedAlertClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +73,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) Dismiss(ctx co
 }
 
 // dismissCreateRequest creates the Dismiss request.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, _ *IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedAlerts/{aggregatedAlertName}/dismiss"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -134,7 +135,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) Get(ctx contex
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertClientGetOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, _ *IotSecuritySolutionsAnalyticsAggregatedAlertClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedAlerts/{aggregatedAlertName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

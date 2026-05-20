@@ -27,7 +27,7 @@ type GitHubOwnersClient struct {
 // NewGitHubOwnersClient creates a new instance of GitHubOwnersClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGitHubOwnersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GitHubOwnersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewGitHubOwnersClient(subscriptionID string, credential azcore.TokenCredent
 // Get - Returns a monitored GitHub owner.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - ownerName - The GitHub owner name.
@@ -71,7 +71,7 @@ func (client *GitHubOwnersClient) Get(ctx context.Context, resourceGroupName str
 }
 
 // getCreateRequest creates the Get request.
-func (client *GitHubOwnersClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, ownerName string, options *GitHubOwnersClientGetOptions) (*policy.Request, error) {
+func (client *GitHubOwnersClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, ownerName string, _ *GitHubOwnersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitHubOwners/{ownerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +94,7 @@ func (client *GitHubOwnersClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *GitHubOwnersClient) getHandleResponse(resp *http.Response) (GitHub
 
 // NewListPager - Returns a list of GitHub owners onboarded to the connector.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - GitHubOwnersClientListOptions contains the optional parameters for the GitHubOwnersClient.NewListPager method.
@@ -139,7 +139,7 @@ func (client *GitHubOwnersClient) NewListPager(resourceGroupName string, securit
 }
 
 // listCreateRequest creates the List request.
-func (client *GitHubOwnersClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, options *GitHubOwnersClientListOptions) (*policy.Request, error) {
+func (client *GitHubOwnersClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *GitHubOwnersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitHubOwners"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -158,7 +158,7 @@ func (client *GitHubOwnersClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -176,7 +176,7 @@ func (client *GitHubOwnersClient) listHandleResponse(resp *http.Response) (GitHu
 // ListAvailable - Returns a list of all GitHub owners accessible by the user token consumed by the connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - GitHubOwnersClientListAvailableOptions contains the optional parameters for the GitHubOwnersClient.ListAvailable
@@ -204,7 +204,7 @@ func (client *GitHubOwnersClient) ListAvailable(ctx context.Context, resourceGro
 }
 
 // listAvailableCreateRequest creates the ListAvailable request.
-func (client *GitHubOwnersClient) listAvailableCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, options *GitHubOwnersClientListAvailableOptions) (*policy.Request, error) {
+func (client *GitHubOwnersClient) listAvailableCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *GitHubOwnersClientListAvailableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/listAvailableGitHubOwners"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -223,7 +223,7 @@ func (client *GitHubOwnersClient) listAvailableCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

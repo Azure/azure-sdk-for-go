@@ -25,7 +25,7 @@ type GovernanceAssignmentsClient struct {
 
 // NewGovernanceAssignmentsClient creates a new instance of GovernanceAssignmentsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGovernanceAssignmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GovernanceAssignmentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *GovernanceAssignmentsClient) CreateOrUpdate(ctx context.Context, s
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GovernanceAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, assessmentName string, assignmentKey string, governanceAssignment GovernanceAssignment, options *GovernanceAssignmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *GovernanceAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, assessmentName string, assignmentKey string, governanceAssignment GovernanceAssignment, _ *GovernanceAssignmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -142,7 +142,7 @@ func (client *GovernanceAssignmentsClient) Delete(ctx context.Context, scope str
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GovernanceAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, assessmentName string, assignmentKey string, options *GovernanceAssignmentsClientDeleteOptions) (*policy.Request, error) {
+func (client *GovernanceAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, assessmentName string, assignmentKey string, _ *GovernanceAssignmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -200,7 +200,7 @@ func (client *GovernanceAssignmentsClient) Get(ctx context.Context, scope string
 }
 
 // getCreateRequest creates the Get request.
-func (client *GovernanceAssignmentsClient) getCreateRequest(ctx context.Context, scope string, assessmentName string, assignmentKey string, options *GovernanceAssignmentsClientGetOptions) (*policy.Request, error) {
+func (client *GovernanceAssignmentsClient) getCreateRequest(ctx context.Context, scope string, assessmentName string, assignmentKey string, _ *GovernanceAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -267,7 +267,7 @@ func (client *GovernanceAssignmentsClient) NewListPager(scope string, assessment
 }
 
 // listCreateRequest creates the List request.
-func (client *GovernanceAssignmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, options *GovernanceAssignmentsClientListOptions) (*policy.Request, error) {
+func (client *GovernanceAssignmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, _ *GovernanceAssignmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")

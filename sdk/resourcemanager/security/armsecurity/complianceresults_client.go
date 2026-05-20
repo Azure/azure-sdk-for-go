@@ -25,7 +25,7 @@ type ComplianceResultsClient struct {
 
 // NewComplianceResultsClient creates a new instance of ComplianceResultsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewComplianceResultsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ComplianceResultsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -67,7 +67,7 @@ func (client *ComplianceResultsClient) Get(ctx context.Context, resourceID strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *ComplianceResultsClient) getCreateRequest(ctx context.Context, resourceID string, complianceResultName string, options *ComplianceResultsClientGetOptions) (*policy.Request, error) {
+func (client *ComplianceResultsClient) getCreateRequest(ctx context.Context, resourceID string, complianceResultName string, _ *ComplianceResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/complianceResults/{complianceResultName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if complianceResultName == "" {
@@ -125,7 +125,7 @@ func (client *ComplianceResultsClient) NewListPager(scope string, options *Compl
 }
 
 // listCreateRequest creates the List request.
-func (client *ComplianceResultsClient) listCreateRequest(ctx context.Context, scope string, options *ComplianceResultsClientListOptions) (*policy.Request, error) {
+func (client *ComplianceResultsClient) listCreateRequest(ctx context.Context, scope string, _ *ComplianceResultsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/complianceResults"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

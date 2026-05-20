@@ -27,7 +27,7 @@ type ContactsClient struct {
 // NewContactsClient creates a new instance of ContactsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContactsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContactsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *ContactsClient) Create(ctx context.Context, securityContactName Se
 }
 
 // createCreateRequest creates the Create request.
-func (client *ContactsClient) createCreateRequest(ctx context.Context, securityContactName SecurityContactName, securityContact Contact, options *ContactsClientCreateOptions) (*policy.Request, error) {
+func (client *ContactsClient) createCreateRequest(ctx context.Context, securityContactName SecurityContactName, securityContact Contact, _ *ContactsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -131,7 +131,7 @@ func (client *ContactsClient) Delete(ctx context.Context, securityContactName Se
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityContactName SecurityContactName, options *ContactsClientDeleteOptions) (*policy.Request, error) {
+func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityContactName SecurityContactName, _ *ContactsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -181,7 +181,7 @@ func (client *ContactsClient) Get(ctx context.Context, securityContactName Secur
 }
 
 // getCreateRequest creates the Get request.
-func (client *ContactsClient) getCreateRequest(ctx context.Context, securityContactName SecurityContactName, options *ContactsClientGetOptions) (*policy.Request, error) {
+func (client *ContactsClient) getCreateRequest(ctx context.Context, securityContactName SecurityContactName, _ *ContactsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -239,7 +239,7 @@ func (client *ContactsClient) NewListPager(options *ContactsClientListOptions) *
 }
 
 // listCreateRequest creates the List request.
-func (client *ContactsClient) listCreateRequest(ctx context.Context, options *ContactsClientListOptions) (*policy.Request, error) {
+func (client *ContactsClient) listCreateRequest(ctx context.Context, _ *ContactsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

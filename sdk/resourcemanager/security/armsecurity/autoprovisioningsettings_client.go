@@ -27,7 +27,7 @@ type AutoProvisioningSettingsClient struct {
 // NewAutoProvisioningSettingsClient creates a new instance of AutoProvisioningSettingsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAutoProvisioningSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutoProvisioningSettingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *AutoProvisioningSettingsClient) Create(ctx context.Context, settin
 }
 
 // createCreateRequest creates the Create request.
-func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Context, settingName string, setting AutoProvisioningSetting, options *AutoProvisioningSettingsClientCreateOptions) (*policy.Request, error) {
+func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Context, settingName string, setting AutoProvisioningSetting, _ *AutoProvisioningSettingsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings/{settingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -134,7 +134,7 @@ func (client *AutoProvisioningSettingsClient) Get(ctx context.Context, settingNa
 }
 
 // getCreateRequest creates the Get request.
-func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Context, settingName string, options *AutoProvisioningSettingsClientGetOptions) (*policy.Request, error) {
+func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Context, settingName string, _ *AutoProvisioningSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings/{settingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -193,7 +193,7 @@ func (client *AutoProvisioningSettingsClient) NewListPager(options *AutoProvisio
 }
 
 // listCreateRequest creates the List request.
-func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Context, options *AutoProvisioningSettingsClientListOptions) (*policy.Request, error) {
+func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Context, _ *AutoProvisioningSettingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

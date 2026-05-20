@@ -55,23 +55,42 @@ func (r *RegulatoryComplianceControlsServerTransport) Do(req *http.Request) (*ht
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "RegulatoryComplianceControlsClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "RegulatoryComplianceControlsClient.NewListPager":
-		resp, err = r.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *RegulatoryComplianceControlsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if regulatoryComplianceControlsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = regulatoryComplianceControlsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "RegulatoryComplianceControlsClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RegulatoryComplianceControlsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *RegulatoryComplianceControlsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -81,7 +100,7 @@ func (r *RegulatoryComplianceControlsServerTransport) dispatchGet(req *http.Requ
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/regulatoryComplianceStandards/(?P<regulatoryComplianceStandardName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regulatoryComplianceControls/(?P<regulatoryComplianceControlName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	regulatoryComplianceStandardNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("regulatoryComplianceStandardName")])
@@ -116,7 +135,7 @@ func (r *RegulatoryComplianceControlsServerTransport) dispatchNewListPager(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/regulatoryComplianceStandards/(?P<regulatoryComplianceStandardName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regulatoryComplianceControls`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -154,4 +173,10 @@ func (r *RegulatoryComplianceControlsServerTransport) dispatchNewListPager(req *
 		r.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to RegulatoryComplianceControlsServerTransport
+var regulatoryComplianceControlsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

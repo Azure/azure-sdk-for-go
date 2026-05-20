@@ -27,7 +27,7 @@ type SolutionsClient struct {
 // NewSolutionsClient creates a new instance of SolutionsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSolutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *SolutionsClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, securitySolutionName string, options *SolutionsClientGetOptions) (*policy.Request, error) {
+func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, securitySolutionName string, _ *SolutionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/securitySolutions/{securitySolutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -137,7 +137,7 @@ func (client *SolutionsClient) NewListPager(options *SolutionsClientListOptions)
 }
 
 // listCreateRequest creates the List request.
-func (client *SolutionsClient) listCreateRequest(ctx context.Context, options *SolutionsClientListOptions) (*policy.Request, error) {
+func (client *SolutionsClient) listCreateRequest(ctx context.Context, _ *SolutionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securitySolutions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

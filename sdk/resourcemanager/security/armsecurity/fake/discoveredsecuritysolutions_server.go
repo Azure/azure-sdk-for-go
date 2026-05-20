@@ -61,25 +61,44 @@ func (d *DiscoveredSecuritySolutionsServerTransport) Do(req *http.Request) (*htt
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DiscoveredSecuritySolutionsClient.Get":
-		resp, err = d.dispatchGet(req)
-	case "DiscoveredSecuritySolutionsClient.NewListPager":
-		resp, err = d.dispatchNewListPager(req)
-	case "DiscoveredSecuritySolutionsClient.NewListByHomeRegionPager":
-		resp, err = d.dispatchNewListByHomeRegionPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DiscoveredSecuritySolutionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if discoveredSecuritySolutionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = discoveredSecuritySolutionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DiscoveredSecuritySolutionsClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DiscoveredSecuritySolutionsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
+			case "DiscoveredSecuritySolutionsClient.NewListByHomeRegionPager":
+				res.resp, res.err = d.dispatchNewListByHomeRegionPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DiscoveredSecuritySolutionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -89,7 +108,7 @@ func (d *DiscoveredSecuritySolutionsServerTransport) dispatchGet(req *http.Reque
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/discoveredSecuritySolutions/(?P<discoveredSecuritySolutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -128,7 +147,7 @@ func (d *DiscoveredSecuritySolutionsServerTransport) dispatchNewListPager(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/discoveredSecuritySolutions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := d.srv.NewListPager(nil)
@@ -161,7 +180,7 @@ func (d *DiscoveredSecuritySolutionsServerTransport) dispatchNewListByHomeRegion
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/discoveredSecuritySolutions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		ascLocationParam, err := url.PathUnescape(matches[regex.SubexpIndex("ascLocation")])
@@ -187,4 +206,10 @@ func (d *DiscoveredSecuritySolutionsServerTransport) dispatchNewListByHomeRegion
 		d.newListByHomeRegionPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DiscoveredSecuritySolutionsServerTransport
+var discoveredSecuritySolutionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

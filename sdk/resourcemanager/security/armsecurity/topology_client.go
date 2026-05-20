@@ -27,7 +27,7 @@ type TopologyClient struct {
 // NewTopologyClient creates a new instance of TopologyClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTopologyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TopologyClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *TopologyClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *TopologyClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, topologyResourceName string, options *TopologyClientGetOptions) (*policy.Request, error) {
+func (client *TopologyClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, topologyResourceName string, _ *TopologyClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/topologies/{topologyResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -137,7 +137,7 @@ func (client *TopologyClient) NewListPager(options *TopologyClientListOptions) *
 }
 
 // listCreateRequest creates the List request.
-func (client *TopologyClient) listCreateRequest(ctx context.Context, options *TopologyClientListOptions) (*policy.Request, error) {
+func (client *TopologyClient) listCreateRequest(ctx context.Context, _ *TopologyClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/topologies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -193,7 +193,7 @@ func (client *TopologyClient) NewListByHomeRegionPager(ascLocation string, optio
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *TopologyClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, options *TopologyClientListByHomeRegionOptions) (*policy.Request, error) {
+func (client *TopologyClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, _ *TopologyClientListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/topologies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

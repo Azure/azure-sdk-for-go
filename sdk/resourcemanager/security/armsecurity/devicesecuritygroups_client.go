@@ -25,7 +25,7 @@ type DeviceSecurityGroupsClient struct {
 
 // NewDeviceSecurityGroupsClient creates a new instance of DeviceSecurityGroupsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDeviceSecurityGroupsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DeviceSecurityGroupsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *DeviceSecurityGroupsClient) CreateOrUpdate(ctx context.Context, re
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup DeviceSecurityGroup, options *DeviceSecurityGroupsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup DeviceSecurityGroup, _ *DeviceSecurityGroupsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if deviceSecurityGroupName == "" {
@@ -131,7 +131,7 @@ func (client *DeviceSecurityGroupsClient) Delete(ctx context.Context, resourceID
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DeviceSecurityGroupsClient) deleteCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, options *DeviceSecurityGroupsClientDeleteOptions) (*policy.Request, error) {
+func (client *DeviceSecurityGroupsClient) deleteCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, _ *DeviceSecurityGroupsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if deviceSecurityGroupName == "" {
@@ -181,7 +181,7 @@ func (client *DeviceSecurityGroupsClient) Get(ctx context.Context, resourceID st
 }
 
 // getCreateRequest creates the Get request.
-func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, options *DeviceSecurityGroupsClientGetOptions) (*policy.Request, error) {
+func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, _ *DeviceSecurityGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if deviceSecurityGroupName == "" {
@@ -238,7 +238,7 @@ func (client *DeviceSecurityGroupsClient) NewListPager(resourceID string, option
 }
 
 // listCreateRequest creates the List request.
-func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context, resourceID string, options *DeviceSecurityGroupsClientListOptions) (*policy.Request, error) {
+func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context, resourceID string, _ *DeviceSecurityGroupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

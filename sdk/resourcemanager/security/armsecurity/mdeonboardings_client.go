@@ -27,7 +27,7 @@ type MdeOnboardingsClient struct {
 // NewMdeOnboardingsClient creates a new instance of MdeOnboardingsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMdeOnboardingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MdeOnboardingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,7 +68,7 @@ func (client *MdeOnboardingsClient) Get(ctx context.Context, options *MdeOnboard
 }
 
 // getCreateRequest creates the Get request.
-func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, options *MdeOnboardingsClientGetOptions) (*policy.Request, error) {
+func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, _ *MdeOnboardingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -122,7 +122,7 @@ func (client *MdeOnboardingsClient) List(ctx context.Context, options *MdeOnboar
 }
 
 // listCreateRequest creates the List request.
-func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, options *MdeOnboardingsClientListOptions) (*policy.Request, error) {
+func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, _ *MdeOnboardingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

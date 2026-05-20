@@ -27,7 +27,7 @@ type AzureDevOpsReposClient struct {
 // NewAzureDevOpsReposClient creates a new instance of AzureDevOpsReposClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAzureDevOpsReposClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureDevOpsReposClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAzureDevOpsReposClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Creates or updates a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - orgName - The Azure DevOps organization name.
@@ -73,7 +73,7 @@ func (client *AzureDevOpsReposClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Creates or updates a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 func (client *AzureDevOpsReposClient) createOrUpdate(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, azureDevOpsRepository AzureDevOpsRepository, options *AzureDevOpsReposClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureDevOpsReposClient.BeginCreateOrUpdate"
@@ -96,7 +96,7 @@ func (client *AzureDevOpsReposClient) createOrUpdate(ctx context.Context, resour
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AzureDevOpsReposClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, azureDevOpsRepository AzureDevOpsRepository, options *AzureDevOpsReposClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AzureDevOpsReposClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, azureDevOpsRepository AzureDevOpsRepository, _ *AzureDevOpsReposClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -127,7 +127,7 @@ func (client *AzureDevOpsReposClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, azureDevOpsRepository); err != nil {
@@ -139,7 +139,7 @@ func (client *AzureDevOpsReposClient) createOrUpdateCreateRequest(ctx context.Co
 // Get - Returns a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - orgName - The Azure DevOps organization name.
@@ -169,7 +169,7 @@ func (client *AzureDevOpsReposClient) Get(ctx context.Context, resourceGroupName
 }
 
 // getCreateRequest creates the Get request.
-func (client *AzureDevOpsReposClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, options *AzureDevOpsReposClientGetOptions) (*policy.Request, error) {
+func (client *AzureDevOpsReposClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, _ *AzureDevOpsReposClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -200,7 +200,7 @@ func (client *AzureDevOpsReposClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -217,7 +217,7 @@ func (client *AzureDevOpsReposClient) getHandleResponse(resp *http.Response) (Az
 
 // NewListPager - Returns a list of Azure DevOps repositories onboarded to the connector.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - orgName - The Azure DevOps organization name.
@@ -248,7 +248,7 @@ func (client *AzureDevOpsReposClient) NewListPager(resourceGroupName string, sec
 }
 
 // listCreateRequest creates the List request.
-func (client *AzureDevOpsReposClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, options *AzureDevOpsReposClientListOptions) (*policy.Request, error) {
+func (client *AzureDevOpsReposClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, _ *AzureDevOpsReposClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -275,7 +275,7 @@ func (client *AzureDevOpsReposClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -293,7 +293,7 @@ func (client *AzureDevOpsReposClient) listHandleResponse(resp *http.Response) (A
 // BeginUpdate - Updates a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - orgName - The Azure DevOps organization name.
@@ -323,7 +323,7 @@ func (client *AzureDevOpsReposClient) BeginUpdate(ctx context.Context, resourceG
 // Update - Updates a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 func (client *AzureDevOpsReposClient) update(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, azureDevOpsRepository AzureDevOpsRepository, options *AzureDevOpsReposClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureDevOpsReposClient.BeginUpdate"
@@ -346,7 +346,7 @@ func (client *AzureDevOpsReposClient) update(ctx context.Context, resourceGroupN
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AzureDevOpsReposClient) updateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, azureDevOpsRepository AzureDevOpsRepository, options *AzureDevOpsReposClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AzureDevOpsReposClient) updateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, azureDevOpsRepository AzureDevOpsRepository, _ *AzureDevOpsReposClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -377,7 +377,7 @@ func (client *AzureDevOpsReposClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, azureDevOpsRepository); err != nil {

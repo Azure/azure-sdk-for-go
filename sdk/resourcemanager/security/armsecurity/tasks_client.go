@@ -27,7 +27,7 @@ type TasksClient struct {
 // NewTasksClient creates a new instance of TasksClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTasksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TasksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *TasksClient) GetResourceGroupLevelTask(ctx context.Context, resour
 }
 
 // getResourceGroupLevelTaskCreateRequest creates the GetResourceGroupLevelTask request.
-func (client *TasksClient) getResourceGroupLevelTaskCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, taskName string, options *TasksClientGetResourceGroupLevelTaskOptions) (*policy.Request, error) {
+func (client *TasksClient) getResourceGroupLevelTaskCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, taskName string, _ *TasksClientGetResourceGroupLevelTaskOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -141,7 +141,7 @@ func (client *TasksClient) GetSubscriptionLevelTask(ctx context.Context, ascLoca
 }
 
 // getSubscriptionLevelTaskCreateRequest creates the GetSubscriptionLevelTask request.
-func (client *TasksClient) getSubscriptionLevelTaskCreateRequest(ctx context.Context, ascLocation string, taskName string, options *TasksClientGetSubscriptionLevelTaskOptions) (*policy.Request, error) {
+func (client *TasksClient) getSubscriptionLevelTaskCreateRequest(ctx context.Context, ascLocation string, taskName string, _ *TasksClientGetSubscriptionLevelTaskOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -395,7 +395,7 @@ func (client *TasksClient) UpdateResourceGroupLevelTaskState(ctx context.Context
 }
 
 // updateResourceGroupLevelTaskStateCreateRequest creates the UpdateResourceGroupLevelTaskState request.
-func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, taskName string, taskUpdateActionType TaskUpdateActionType, options *TasksClientUpdateResourceGroupLevelTaskStateOptions) (*policy.Request, error) {
+func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, taskName string, taskUpdateActionType TaskUpdateActionType, _ *TasksClientUpdateResourceGroupLevelTaskStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -459,7 +459,7 @@ func (client *TasksClient) UpdateSubscriptionLevelTaskState(ctx context.Context,
 }
 
 // updateSubscriptionLevelTaskStateCreateRequest creates the UpdateSubscriptionLevelTaskState request.
-func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx context.Context, ascLocation string, taskName string, taskUpdateActionType TaskUpdateActionType, options *TasksClientUpdateSubscriptionLevelTaskStateOptions) (*policy.Request, error) {
+func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx context.Context, ascLocation string, taskName string, taskUpdateActionType TaskUpdateActionType, _ *TasksClientUpdateSubscriptionLevelTaskStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

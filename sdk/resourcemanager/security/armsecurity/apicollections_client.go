@@ -27,7 +27,7 @@ type APICollectionsClient struct {
 // NewAPICollectionsClient creates a new instance of APICollectionsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAPICollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APICollectionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -75,7 +75,7 @@ func (client *APICollectionsClient) GetByAzureAPIManagementService(ctx context.C
 }
 
 // getByAzureAPIManagementServiceCreateRequest creates the GetByAzureAPIManagementService request.
-func (client *APICollectionsClient) getByAzureAPIManagementServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APICollectionsClientGetByAzureAPIManagementServiceOptions) (*policy.Request, error) {
+func (client *APICollectionsClient) getByAzureAPIManagementServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, _ *APICollectionsClientGetByAzureAPIManagementServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +147,7 @@ func (client *APICollectionsClient) NewListByAzureAPIManagementServicePager(reso
 }
 
 // listByAzureAPIManagementServiceCreateRequest creates the ListByAzureAPIManagementService request.
-func (client *APICollectionsClient) listByAzureAPIManagementServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *APICollectionsClientListByAzureAPIManagementServiceOptions) (*policy.Request, error) {
+func (client *APICollectionsClient) listByAzureAPIManagementServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *APICollectionsClientListByAzureAPIManagementServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -212,7 +212,7 @@ func (client *APICollectionsClient) NewListByResourceGroupPager(resourceGroupNam
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *APICollectionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *APICollectionsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *APICollectionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *APICollectionsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/apiCollections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -272,7 +272,7 @@ func (client *APICollectionsClient) NewListBySubscriptionPager(options *APIColle
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *APICollectionsClient) listBySubscriptionCreateRequest(ctx context.Context, options *APICollectionsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *APICollectionsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *APICollectionsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/apiCollections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -331,7 +331,7 @@ func (client *APICollectionsClient) OffboardAzureAPIManagementAPI(ctx context.Co
 }
 
 // offboardAzureAPIManagementAPICreateRequest creates the OffboardAzureAPIManagementAPI request.
-func (client *APICollectionsClient) offboardAzureAPIManagementAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APICollectionsClientOffboardAzureAPIManagementAPIOptions) (*policy.Request, error) {
+func (client *APICollectionsClient) offboardAzureAPIManagementAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, _ *APICollectionsClientOffboardAzureAPIManagementAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -418,7 +418,7 @@ func (client *APICollectionsClient) onboardAzureAPIManagementAPI(ctx context.Con
 }
 
 // onboardAzureAPIManagementAPICreateRequest creates the OnboardAzureAPIManagementAPI request.
-func (client *APICollectionsClient) onboardAzureAPIManagementAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (*policy.Request, error) {
+func (client *APICollectionsClient) onboardAzureAPIManagementAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, _ *APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

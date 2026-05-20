@@ -55,23 +55,42 @@ func (h *HealthReportsServerTransport) Do(req *http.Request) (*http.Response, er
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return h.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "HealthReportsClient.Get":
-		resp, err = h.dispatchGet(req)
-	case "HealthReportsClient.NewListPager":
-		resp, err = h.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (h *HealthReportsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if healthReportsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = healthReportsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "HealthReportsClient.Get":
+				res.resp, res.err = h.dispatchGet(req)
+			case "HealthReportsClient.NewListPager":
+				res.resp, res.err = h.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (h *HealthReportsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -81,7 +100,7 @@ func (h *HealthReportsServerTransport) dispatchGet(req *http.Request) (*http.Res
 	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/healthReports/(?P<healthReportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
@@ -116,7 +135,7 @@ func (h *HealthReportsServerTransport) dispatchNewListPager(req *http.Request) (
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/healthReports`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -142,4 +161,10 @@ func (h *HealthReportsServerTransport) dispatchNewListPager(req *http.Request) (
 		h.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to HealthReportsServerTransport
+var healthReportsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

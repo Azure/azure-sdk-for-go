@@ -25,7 +25,7 @@ type HealthReportsClient struct {
 
 // NewHealthReportsClient creates a new instance of HealthReportsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewHealthReportsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*HealthReportsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -67,7 +67,7 @@ func (client *HealthReportsClient) Get(ctx context.Context, resourceID string, h
 }
 
 // getCreateRequest creates the Get request.
-func (client *HealthReportsClient) getCreateRequest(ctx context.Context, resourceID string, healthReportName string, options *HealthReportsClientGetOptions) (*policy.Request, error) {
+func (client *HealthReportsClient) getCreateRequest(ctx context.Context, resourceID string, healthReportName string, _ *HealthReportsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/healthReports/{healthReportName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if healthReportName == "" {
@@ -125,7 +125,7 @@ func (client *HealthReportsClient) NewListPager(scope string, options *HealthRep
 }
 
 // listCreateRequest creates the List request.
-func (client *HealthReportsClient) listCreateRequest(ctx context.Context, scope string, options *HealthReportsClientListOptions) (*policy.Request, error) {
+func (client *HealthReportsClient) listCreateRequest(ctx context.Context, scope string, _ *HealthReportsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/healthReports"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

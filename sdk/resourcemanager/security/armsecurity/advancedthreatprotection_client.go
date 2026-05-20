@@ -24,7 +24,7 @@ type AdvancedThreatProtectionClient struct {
 
 // NewAdvancedThreatProtectionClient creates a new instance of AdvancedThreatProtectionClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAdvancedThreatProtectionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AdvancedThreatProtectionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -67,7 +67,7 @@ func (client *AdvancedThreatProtectionClient) Create(ctx context.Context, resour
 }
 
 // createCreateRequest creates the Create request.
-func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Context, resourceID string, advancedThreatProtectionSetting AdvancedThreatProtectionSetting, options *AdvancedThreatProtectionClientCreateOptions) (*policy.Request, error) {
+func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Context, resourceID string, advancedThreatProtectionSetting AdvancedThreatProtectionSetting, _ *AdvancedThreatProtectionClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape("current"))
@@ -124,7 +124,7 @@ func (client *AdvancedThreatProtectionClient) Get(ctx context.Context, resourceI
 }
 
 // getCreateRequest creates the Get request.
-func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Context, resourceID string, options *AdvancedThreatProtectionClientGetOptions) (*policy.Request, error) {
+func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Context, resourceID string, _ *AdvancedThreatProtectionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape("current"))

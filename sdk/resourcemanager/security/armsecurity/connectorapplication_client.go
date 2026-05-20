@@ -27,7 +27,7 @@ type ConnectorApplicationClient struct {
 // NewConnectorApplicationClient creates a new instance of ConnectorApplicationClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectorApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorApplicationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -73,7 +73,7 @@ func (client *ConnectorApplicationClient) CreateOrUpdate(ctx context.Context, re
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConnectorApplicationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, applicationID string, application Application, options *ConnectorApplicationClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ConnectorApplicationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, applicationID string, application Application, _ *ConnectorApplicationClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -145,7 +145,7 @@ func (client *ConnectorApplicationClient) Delete(ctx context.Context, resourceGr
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ConnectorApplicationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, applicationID string, options *ConnectorApplicationClientDeleteOptions) (*policy.Request, error) {
+func (client *ConnectorApplicationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, applicationID string, _ *ConnectorApplicationClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -205,7 +205,7 @@ func (client *ConnectorApplicationClient) Get(ctx context.Context, resourceGroup
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConnectorApplicationClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, applicationID string, options *ConnectorApplicationClientGetOptions) (*policy.Request, error) {
+func (client *ConnectorApplicationClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, applicationID string, _ *ConnectorApplicationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

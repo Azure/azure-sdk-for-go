@@ -4,12 +4,12 @@
 
 ``` yaml
 azure-arm: true
-tag: package-composite-v3
+tag: package-combine-2026-04
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/security/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/security/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/16a1db1052409e452b7364d5c8253e60a17bedf8/specification/security/resource-manager/Microsoft.Security/Security/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/16a1db1052409e452b7364d5c8253e60a17bedf8/specification/security/resource-manager/Microsoft.Security/Security/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.14.0
+module-version: 0.15.0
 directive:
 - from: externalSecuritySolutions.json
   where: $.definitions['ExternalSecuritySolutionKind']
@@ -52,4 +52,24 @@ directive:
           "$ref": "../../../common/v1/types.json#/definitions/Location"
         }
       ]
+- rename-model:
+    from: SecurityStandard
+    to: ArmSecurityStandard
+- rename-model:
+    from: SecurityStandards
+    to: ArmSecurityStandards
+- rename-model:
+    from: SecurityStandardList
+    to: ArmSecurityStandardList
+- rename-model:
+    from: SecurityStandardProperties
+    to: ArmSecurityStandardProperties
+- from: swagger-document
+  where: '$.paths.*[?(@.operationId.startsWith("SecurityStandards_"))]'
+  transform: >
+    $["operationId"] = $["operationId"].replace("SecurityStandards_", "ArmSecurityStandards_");
+- from: swagger-document
+  where: '$.paths.*[?(@.operationId.startsWith("Standards_"))]'
+  transform: >
+    $["operationId"] = $["operationId"].replace("Standards_", "ArmStandards_");
 ```

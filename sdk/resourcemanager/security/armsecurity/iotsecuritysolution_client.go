@@ -27,7 +27,7 @@ type IotSecuritySolutionClient struct {
 // NewIotSecuritySolutionClient creates a new instance of IotSecuritySolutionClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIotSecuritySolutionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *IotSecuritySolutionClient) CreateOrUpdate(ctx context.Context, res
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel, options *IotSecuritySolutionClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel, _ *IotSecuritySolutionClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +139,7 @@ func (client *IotSecuritySolutionClient) Delete(ctx context.Context, resourceGro
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionClientDeleteOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, _ *IotSecuritySolutionClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -194,7 +194,7 @@ func (client *IotSecuritySolutionClient) Get(ctx context.Context, resourceGroupN
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionClientGetOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, _ *IotSecuritySolutionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -382,7 +382,7 @@ func (client *IotSecuritySolutionClient) Update(ctx context.Context, resourceGro
 }
 
 // updateCreateRequest creates the Update request.
-func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData UpdateIotSecuritySolutionData, options *IotSecuritySolutionClientUpdateOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData UpdateIotSecuritySolutionData, _ *IotSecuritySolutionClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

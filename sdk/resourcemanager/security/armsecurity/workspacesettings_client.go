@@ -27,7 +27,7 @@ type WorkspaceSettingsClient struct {
 // NewWorkspaceSettingsClient creates a new instance of WorkspaceSettingsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceSettingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *WorkspaceSettingsClient) Create(ctx context.Context, workspaceSett
 }
 
 // createCreateRequest creates the Create request.
-func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsClientCreateOptions) (*policy.Request, error) {
+func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, _ *WorkspaceSettingsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -133,7 +133,7 @@ func (client *WorkspaceSettingsClient) Delete(ctx context.Context, workspaceSett
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsClientDeleteOptions) (*policy.Request, error) {
+func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, workspaceSettingName string, _ *WorkspaceSettingsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -184,7 +184,7 @@ func (client *WorkspaceSettingsClient) Get(ctx context.Context, workspaceSetting
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsClientGetOptions) (*policy.Request, error) {
+func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, workspaceSettingName string, _ *WorkspaceSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -244,7 +244,7 @@ func (client *WorkspaceSettingsClient) NewListPager(options *WorkspaceSettingsCl
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspaceSettingsClient) listCreateRequest(ctx context.Context, options *WorkspaceSettingsClientListOptions) (*policy.Request, error) {
+func (client *WorkspaceSettingsClient) listCreateRequest(ctx context.Context, _ *WorkspaceSettingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -301,7 +301,7 @@ func (client *WorkspaceSettingsClient) Update(ctx context.Context, workspaceSett
 }
 
 // updateCreateRequest creates the Update request.
-func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, options *WorkspaceSettingsClientUpdateOptions) (*policy.Request, error) {
+func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, _ *WorkspaceSettingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

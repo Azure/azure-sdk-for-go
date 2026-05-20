@@ -85,35 +85,54 @@ func (j *JitNetworkAccessPoliciesServerTransport) Do(req *http.Request) (*http.R
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return j.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "JitNetworkAccessPoliciesClient.CreateOrUpdate":
-		resp, err = j.dispatchCreateOrUpdate(req)
-	case "JitNetworkAccessPoliciesClient.Delete":
-		resp, err = j.dispatchDelete(req)
-	case "JitNetworkAccessPoliciesClient.Get":
-		resp, err = j.dispatchGet(req)
-	case "JitNetworkAccessPoliciesClient.Initiate":
-		resp, err = j.dispatchInitiate(req)
-	case "JitNetworkAccessPoliciesClient.NewListPager":
-		resp, err = j.dispatchNewListPager(req)
-	case "JitNetworkAccessPoliciesClient.NewListByRegionPager":
-		resp, err = j.dispatchNewListByRegionPager(req)
-	case "JitNetworkAccessPoliciesClient.NewListByResourceGroupPager":
-		resp, err = j.dispatchNewListByResourceGroupPager(req)
-	case "JitNetworkAccessPoliciesClient.NewListByResourceGroupAndRegionPager":
-		resp, err = j.dispatchNewListByResourceGroupAndRegionPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (j *JitNetworkAccessPoliciesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if jitNetworkAccessPoliciesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = jitNetworkAccessPoliciesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "JitNetworkAccessPoliciesClient.CreateOrUpdate":
+				res.resp, res.err = j.dispatchCreateOrUpdate(req)
+			case "JitNetworkAccessPoliciesClient.Delete":
+				res.resp, res.err = j.dispatchDelete(req)
+			case "JitNetworkAccessPoliciesClient.Get":
+				res.resp, res.err = j.dispatchGet(req)
+			case "JitNetworkAccessPoliciesClient.Initiate":
+				res.resp, res.err = j.dispatchInitiate(req)
+			case "JitNetworkAccessPoliciesClient.NewListPager":
+				res.resp, res.err = j.dispatchNewListPager(req)
+			case "JitNetworkAccessPoliciesClient.NewListByRegionPager":
+				res.resp, res.err = j.dispatchNewListByRegionPager(req)
+			case "JitNetworkAccessPoliciesClient.NewListByResourceGroupPager":
+				res.resp, res.err = j.dispatchNewListByResourceGroupPager(req)
+			case "JitNetworkAccessPoliciesClient.NewListByResourceGroupAndRegionPager":
+				res.resp, res.err = j.dispatchNewListByResourceGroupAndRegionPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (j *JitNetworkAccessPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -123,7 +142,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchCreateOrUpdate(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurity.JitNetworkAccessPolicy](req)
@@ -164,7 +183,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchDelete(req *http.Reque
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -201,7 +220,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchGet(req *http.Request)
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -238,7 +257,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchInitiate(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<jitNetworkAccessPolicyInitiateType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurity.JitNetworkAccessPolicyInitiateRequest](req)
@@ -281,7 +300,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListPager(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/jitNetworkAccessPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := j.srv.NewListPager(nil)
@@ -314,7 +333,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListByRegionPager(r
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		ascLocationParam, err := url.PathUnescape(matches[regex.SubexpIndex("ascLocation")])
@@ -351,7 +370,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListByResourceGroup
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/jitNetworkAccessPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -388,7 +407,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListByResourceGroup
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -418,4 +437,10 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListByResourceGroup
 		j.newListByResourceGroupAndRegionPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to JitNetworkAccessPoliciesServerTransport
+var jitNetworkAccessPoliciesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -31,7 +31,7 @@ type GovernanceRulesServer struct {
 	BeginDelete func(ctx context.Context, scope string, ruleID string, options *armsecurity.GovernanceRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armsecurity.GovernanceRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginExecute is the fake for method GovernanceRulesClient.BeginExecute
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginExecute func(ctx context.Context, scope string, ruleID string, options *armsecurity.GovernanceRulesClientBeginExecuteOptions) (resp azfake.PollerResponder[armsecurity.GovernanceRulesClientExecuteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method GovernanceRulesClient.Get
@@ -76,31 +76,50 @@ func (g *GovernanceRulesServerTransport) Do(req *http.Request) (*http.Response, 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return g.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "GovernanceRulesClient.CreateOrUpdate":
-		resp, err = g.dispatchCreateOrUpdate(req)
-	case "GovernanceRulesClient.BeginDelete":
-		resp, err = g.dispatchBeginDelete(req)
-	case "GovernanceRulesClient.BeginExecute":
-		resp, err = g.dispatchBeginExecute(req)
-	case "GovernanceRulesClient.Get":
-		resp, err = g.dispatchGet(req)
-	case "GovernanceRulesClient.NewListPager":
-		resp, err = g.dispatchNewListPager(req)
-	case "GovernanceRulesClient.OperationResults":
-		resp, err = g.dispatchOperationResults(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (g *GovernanceRulesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if governanceRulesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = governanceRulesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "GovernanceRulesClient.CreateOrUpdate":
+				res.resp, res.err = g.dispatchCreateOrUpdate(req)
+			case "GovernanceRulesClient.BeginDelete":
+				res.resp, res.err = g.dispatchBeginDelete(req)
+			case "GovernanceRulesClient.BeginExecute":
+				res.resp, res.err = g.dispatchBeginExecute(req)
+			case "GovernanceRulesClient.Get":
+				res.resp, res.err = g.dispatchGet(req)
+			case "GovernanceRulesClient.NewListPager":
+				res.resp, res.err = g.dispatchNewListPager(req)
+			case "GovernanceRulesClient.OperationResults":
+				res.resp, res.err = g.dispatchOperationResults(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (g *GovernanceRulesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -110,7 +129,7 @@ func (g *GovernanceRulesServerTransport) dispatchCreateOrUpdate(req *http.Reques
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/governanceRules/(?P<ruleId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurity.GovernanceRule](req)
@@ -149,7 +168,7 @@ func (g *GovernanceRulesServerTransport) dispatchBeginDelete(req *http.Request) 
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/governanceRules/(?P<ruleId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -193,7 +212,7 @@ func (g *GovernanceRulesServerTransport) dispatchBeginExecute(req *http.Request)
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/governanceRules/(?P<ruleId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/execute`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsecurity.ExecuteGovernanceRuleParams](req)
@@ -227,9 +246,9 @@ func (g *GovernanceRulesServerTransport) dispatchBeginExecute(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		g.beginExecute.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginExecute) {
 		g.beginExecute.remove(req)
@@ -245,7 +264,7 @@ func (g *GovernanceRulesServerTransport) dispatchGet(req *http.Request) (*http.R
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/governanceRules/(?P<ruleId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -280,7 +299,7 @@ func (g *GovernanceRulesServerTransport) dispatchNewListPager(req *http.Request)
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/governanceRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -315,7 +334,7 @@ func (g *GovernanceRulesServerTransport) dispatchOperationResults(req *http.Requ
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/governanceRules/(?P<ruleId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/operationResults/(?P<operationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -346,4 +365,10 @@ func (g *GovernanceRulesServerTransport) dispatchOperationResults(req *http.Requ
 		resp.Header.Set("location", *val)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to GovernanceRulesServerTransport
+var governanceRulesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

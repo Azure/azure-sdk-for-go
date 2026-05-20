@@ -18,7 +18,8 @@ import (
 	"strings"
 )
 
-// IotSecuritySolutionsAnalyticsRecommendationClient contains the methods for the IotSecuritySolutionsAnalyticsRecommendation group.
+// IotSecuritySolutionsAnalyticsRecommendationClient contains the methods for the IotSecuritySolutionsAnalyticsRecommendation
+// group.
 // Don't use this type directly, use NewIotSecuritySolutionsAnalyticsRecommendationClient() instead.
 type IotSecuritySolutionsAnalyticsRecommendationClient struct {
 	internal       *arm.Client
@@ -28,7 +29,7 @@ type IotSecuritySolutionsAnalyticsRecommendationClient struct {
 // NewIotSecuritySolutionsAnalyticsRecommendationClient creates a new instance of IotSecuritySolutionsAnalyticsRecommendationClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionsAnalyticsRecommendationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -74,7 +75,7 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) Get(ctx context
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedRecommendationName string, options *IotSecuritySolutionsAnalyticsRecommendationClientGetOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedRecommendationName string, _ *IotSecuritySolutionsAnalyticsRecommendationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations/{aggregatedRecommendationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

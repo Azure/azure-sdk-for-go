@@ -55,23 +55,42 @@ func (s *SecureScoreControlDefinitionsServerTransport) Do(req *http.Request) (*h
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "SecureScoreControlDefinitionsClient.NewListPager":
-		resp, err = s.dispatchNewListPager(req)
-	case "SecureScoreControlDefinitionsClient.NewListBySubscriptionPager":
-		resp, err = s.dispatchNewListBySubscriptionPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *SecureScoreControlDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if secureScoreControlDefinitionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = secureScoreControlDefinitionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "SecureScoreControlDefinitionsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			case "SecureScoreControlDefinitionsClient.NewListBySubscriptionPager":
+				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *SecureScoreControlDefinitionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -110,7 +129,7 @@ func (s *SecureScoreControlDefinitionsServerTransport) dispatchNewListBySubscrip
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/secureScoreControlDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := s.srv.NewListBySubscriptionPager(nil)
@@ -132,4 +151,10 @@ func (s *SecureScoreControlDefinitionsServerTransport) dispatchNewListBySubscrip
 		s.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to SecureScoreControlDefinitionsServerTransport
+var secureScoreControlDefinitionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

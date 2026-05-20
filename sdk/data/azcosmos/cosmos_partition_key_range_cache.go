@@ -12,7 +12,6 @@ import (
 	"math/rand"
 	"net"
 	"net/http"
-	"strconv"
 	"sync"
 	"syscall"
 	"time"
@@ -37,14 +36,12 @@ import (
 //   - The cached routing map remains readable while a refresh is in flight;
 //     getRoutingMap returns immediately whenever the entry already has a
 //     non-nil routingMap and does not wait for the in-flight refresh.
-//   - The refresh goroutine runs on a detached context (a child of
-//     context.Background() with pkRangeBackgroundRefreshTimeout) so a single
-//     caller's ctx cancellation does not abort the shared fetch for other
-//     waiters. Each waiter still honors its own ctx and returns ctx.Err() if
-//     it fires before the shared refresh completes.
-//   - The detached refresh timeout guarantees the inFlight slot is eventually
-//     cleared even when the transport hangs, so a wedged fetch cannot wedge
-//     the cache slot indefinitely.
+//   - The refresh goroutine runs on a detached context.Background() (no
+//     deadline), so a single caller's ctx cancellation does not abort the
+//     shared fetch for other waiters. Each waiter still honors its own ctx
+//     and returns ctx.Err() if it fires before the shared refresh completes.
+//   - Transient page failures inside the refresh are retried indefinitely
+//     (the slot self-heals via forceRefresh's displace-and-replace).
 //   - invalidate() bumps the entry's generation. A refresh whose result is
 //     ready after an invalidate sees a generation mismatch, discards its
 //     result from the cache, AND surfaces errPKRangeCacheInvalidatedDuringRefresh
@@ -55,30 +52,12 @@ type partitionKeyRangeCache struct {
 	entries map[string]*pkRangeCacheEntry // keyed by container ResourceID
 }
 
-// pkRangeBackgroundRefreshTimeout caps how long a detached refresh goroutine
-// is allowed to run. Beyond this the goroutine errors out, clears the
-// in-flight slot, and the next caller starts a fresh op. Defends against
-// hung transports / wedged regions.
-//
-// Exposed as a var (not a const) so tests can override it without sleeping
-// for the production default. The size must be large enough to cover a full
-// change-feed drain (up to maxChangeFeedIterations pages) on a container
-// undergoing a heavy split storm.
-var pkRangeBackgroundRefreshTimeout = 60 * time.Second
-
 // errPKRangeCacheInvalidatedDuringRefresh is returned to awaiters of a
 // refresh that was implicitly invalidated mid-flight via invalidate(). The
 // awaiter must NOT consume the routing map the refresh produced: by the
 // invalidate's definition that map is stale. Awaiters typically retry,
 // which starts a fresh post-invalidate refresh.
 var errPKRangeCacheInvalidatedDuringRefresh = errors.New("partition key range cache: invalidated during refresh")
-
-// errPKRangeCacheRefreshTimeout wraps a context.DeadlineExceeded that
-// originated from the detached refresh's own pkRangeBackgroundRefreshTimeout
-// (not from a caller's context). Wrapped so upstream code that uses
-// errors.Is(err, context.DeadlineExceeded) to decide "my own deadline fired"
-// does not misclassify a cache-refresh timeout as a caller-deadline timeout.
-var errPKRangeCacheRefreshTimeout = errors.New("partition key range cache: detached refresh timed out")
 
 // refreshOp represents an in-flight partition-key-range refresh for one
 // container. Awaiters receive the (rm, err) pair by reading the fields after
@@ -278,9 +257,12 @@ func (c *partitionKeyRangeCache) ensureInFlightLocked(
 // start a fresh post-invalidate refresh instead of routing against the stale
 // view they were waiting on.
 //
-// A context.DeadlineExceeded that originated from the detached refresh's own
-// timeout is wrapped with errPKRangeCacheRefreshTimeout so awaiters can
-// distinguish "the cache's own deadline fired" from "my own deadline fired."
+// The refresh runs on a non-cancellable context.Background() with no
+// deadline: transient failures inside fetchOneChangeFeedPageWithRetry are
+// retried indefinitely, and there is no detached timeout. The slot
+// self-heals on the forceRefresh path (it displaces a running op and spawns
+// a fresh forced op), so a wedged background fetch only affects cold-start
+// awaiters until the next forceRefresh.
 func (c *partitionKeyRangeCache) runRefresh(
 	entry *pkRangeCacheEntry,
 	containerLink string,
@@ -288,20 +270,11 @@ func (c *partitionKeyRangeCache) runRefresh(
 	op *refreshOp,
 	startGeneration uint64,
 ) {
-	ctx, cancel := newDetachedRefreshContext()
-	defer cancel()
+	ctx := context.Background()
 
 	start := time.Now()
 	rm, err := c.refreshEntryDetached(ctx, containerLink, entry, client)
 	elapsed := time.Since(start)
-
-	// Wrap detached-timeout DeadlineExceeded so upstream callers using
-	// errors.Is(err, context.DeadlineExceeded) don't misclassify it as
-	// their own deadline firing.
-	if err != nil && errors.Is(err, context.DeadlineExceeded) && ctx.Err() == context.DeadlineExceeded {
-		err = fmt.Errorf("%w (container %s, elapsed %s, timeout %s): %w",
-			errPKRangeCacheRefreshTimeout, containerLink, elapsed, pkRangeBackgroundRefreshTimeout, err)
-	}
 
 	entry.mu.Lock()
 	invalidated := entry.generation != startGeneration
@@ -334,16 +307,9 @@ func (c *partitionKeyRangeCache) runRefresh(
 		containerLink, elapsed, op.err, invalidated)
 }
 
-// newDetachedRefreshContext returns a context whose deadline is bounded by
-// pkRangeBackgroundRefreshTimeout. It does NOT inherit cancellation from any
-// caller — the caller's cancellation must not abort the shared refresh that
-// other waiters are observing.
-func newDetachedRefreshContext() (context.Context, context.CancelFunc) {
-	return context.WithTimeout(context.Background(), pkRangeBackgroundRefreshTimeout)
-}
-
 // awaitRefresh blocks the caller until either the refresh completes or the
 // caller's context is cancelled. The refresh continues running in the
+// background even when individual awaiters return early via ctx.Err().
 // background even when individual awaiters return early via ctx.Err().
 func awaitRefresh(ctx context.Context, op *refreshOp) (*collectionRoutingMap, error) {
 	select {
@@ -376,20 +342,10 @@ func (c *partitionKeyRangeCache) invalidate(containerRID string) {
 // to prevent runaway requests during large-scale splits.
 const maxChangeFeedIterations = 1000
 
-// changeFeedPageMaxAttempts bounds how many times we retry a single
-// change-feed page after a transient failure. The pipeline already does
-// per-request retry; this is an additional safety net that preserves
-// already-accumulated pages instead of restarting the entire change-feed
-// drain from page 1 on a single bad page. 6 attempts roughly matches the
-// total retry surface of .NET's MetadataRequestThrottleRetryPolicy /
-// ResourceThrottleRetryPolicy stack on a sustained 429 wave.
-//
-// Exposed as a var so tests can shrink it without slowing test runs.
-var changeFeedPageMaxAttempts = 6
-
 // changeFeedPageRetryBaseDelay is the base sleep before retrying a failed
-// change-feed page. Backoff is linear: base, 2*base, 3*base, ... with
-// per-attempt jitter to avoid synchronized retries across containers.
+// change-feed page. Backoff is linear: base, 2*base, ... capped at
+// changeFeedPageRetryMaxDelay, with per-attempt jitter to avoid
+// synchronized retries across containers.
 //
 // Exposed as a var so tests can shrink it without slowing test runs.
 var changeFeedPageRetryBaseDelay = 100 * time.Millisecond
@@ -401,10 +357,10 @@ var changeFeedPageRetryBaseDelay = 100 * time.Millisecond
 // Exposed as a var so tests can shrink it without slowing test runs.
 var changeFeedPageRetryJitter = 50 * time.Millisecond
 
-// changeFeedPageRetryMaxDelay caps the wait derived from a 429 Retry-After
-// header. The service can legitimately ask us to back off for seconds, but
-// blocking a refresh indefinitely on a single hostile header would wedge
-// callers; cap it.
+// changeFeedPageRetryMaxDelay caps the per-attempt wait so the linear
+// backoff doesn't grow unboundedly under a prolonged outage.
+//
+// Exposed as a var so tests can shrink it without slowing test runs.
 var changeFeedPageRetryMaxDelay = 5 * time.Second
 
 // changeFeedResult holds the result of draining all change-feed pages.
@@ -418,10 +374,12 @@ type changeFeedResult struct {
 // until 304 Not Modified or the iteration cap. Returns the accumulated ranges,
 // the final ETag, and whether the loop completed cleanly (304 received).
 //
-// Each individual page is retried up to changeFeedPageMaxAttempts times on
-// transient errors (5xx, 408, 429, network errors) with linear backoff so
-// a single bad page doesn't discard the pages already accumulated. Non-
-// transient errors (4xx other than 408/429, context errors) fail fast.
+// Each individual page is retried indefinitely on transient errors
+// (5xx, 408, 429, network errors) with capped linear backoff + jitter so a
+// single bad page doesn't discard the pages already accumulated. The
+// refresh is background-only and the ctx has no deadline, so retries
+// continue until either a non-transient error fires or the page succeeds.
+// Non-transient errors (4xx other than 408/429) fail fast.
 func fetchAllChangeFeedPages(
 	ctx context.Context,
 	containerLink string,
@@ -436,9 +394,10 @@ func fetchAllChangeFeedPages(
 		}
 		result, err := fetchOneChangeFeedPageWithRetry(ctx, containerLink, currentETag, client)
 		if err != nil {
-			// Even though we're surfacing the error to the caller, log how
-			// far we got so operators can correlate partial-drain failures
-			// with the next refresh re-starting from scratch.
+			// Surfaces only on non-transient errors (e.g. 4xx) — transient
+			// errors retry forever. Log how far we got so operators can
+			// correlate partial-drain failures with the next refresh
+			// restarting from scratch.
 			log.Writef(azlog.EventResponse, "partition key range change-feed page failed for container %s after %d successful pages (%d ranges accumulated): %v", containerLink, i, len(allRanges), err)
 			return changeFeedResult{}, err
 		}
@@ -461,23 +420,24 @@ func fetchAllChangeFeedPages(
 }
 
 // fetchOneChangeFeedPageWithRetry fetches a single change-feed page,
-// retrying on transient errors so a transient hiccup mid-pagination
-// doesn't discard the already-accumulated pages in the caller. Returns
-// the last error if all attempts fail or the caller's context fires.
+// retrying indefinitely on transient errors so a transient hiccup
+// mid-pagination doesn't discard the already-accumulated pages in the
+// caller. Returns only on success, on a non-transient error, or when the
+// caller's context is cancelled.
 //
-// The retry layer here is intentionally narrow: the azcore pipeline already
-// retries 5xx / 408 / 429 with backoff and Retry-After honoring. This loop
-// only handles the residual cases where the pipeline gave up (transport
-// errors, body-read timeouts, etc.) and where retrying the next page would
-// preserve the pages already accumulated.
+// The azcore pipeline already retries 5xx / 408 / 429 with backoff and
+// Retry-After honoring. This loop is additional safety: when the pipeline
+// gives up, we retry the next page (preserving accumulated pages) rather
+// than restarting the drain on the next refresh. Backoff here is therefore
+// kept simple (linear, capped) and does NOT honor Retry-After — that's the
+// pipeline's job, and re-parsing it would just compound the wait.
 func fetchOneChangeFeedPageWithRetry(
 	ctx context.Context,
 	containerLink string,
 	currentETag string,
 	client *Client,
 ) (fetchPartitionKeyRangesResult, error) {
-	var lastErr error
-	for attempt := 0; attempt < changeFeedPageMaxAttempts; attempt++ {
+	for attempt := 0; ; attempt++ {
 		if err := ctx.Err(); err != nil {
 			return fetchPartitionKeyRangesResult{}, err
 		}
@@ -485,19 +445,17 @@ func fetchOneChangeFeedPageWithRetry(
 		if err == nil {
 			return result, nil
 		}
-		lastErr = err
 		if !isTransientPKRangeFetchError(err) {
 			return fetchPartitionKeyRangesResult{}, err
 		}
-		// Last attempt — don't sleep, just return.
-		if attempt == changeFeedPageMaxAttempts-1 {
-			break
+		// Capped linear backoff with jitter so a fleet of clients retrying
+		// across many containers doesn't produce synchronized retry waves.
+		delay := time.Duration(attempt+1) * changeFeedPageRetryBaseDelay
+		if delay > changeFeedPageRetryMaxDelay {
+			delay = changeFeedPageRetryMaxDelay
 		}
-		// Linear backoff with jitter so a fleet of clients retrying across
-		// many containers doesn't produce synchronized retry waves. On 429
-		// with a Retry-After header, honor the service's hint (capped).
-		delay := computeChangeFeedRetryDelay(err, attempt)
-		log.Writef(azlog.EventResponse, "partition key range change-feed page transient failure for container %s (attempt %d/%d, retrying in %s): %v", containerLink, attempt+1, changeFeedPageMaxAttempts, delay, err)
+		delay += jitter(changeFeedPageRetryJitter)
+		log.Writef(azlog.EventResponse, "partition key range change-feed page transient failure for container %s (attempt %d, retrying in %s): %v", containerLink, attempt+1, delay, err)
 		timer := time.NewTimer(delay)
 		select {
 		case <-timer.C:
@@ -506,7 +464,6 @@ func fetchOneChangeFeedPageWithRetry(
 			return fetchPartitionKeyRangesResult{}, ctx.Err()
 		}
 	}
-	return fetchPartitionKeyRangesResult{}, lastErr
 }
 
 // jitter returns a uniform random duration in [0, max).
@@ -515,34 +472,6 @@ func jitter(maxJitter time.Duration) time.Duration {
 		return 0
 	}
 	return time.Duration(rand.Int63n(int64(maxJitter)))
-}
-
-// computeChangeFeedRetryDelay returns the next sleep duration before
-// retrying a change-feed page after err. For 429 responses with a
-// Retry-After header (delta-seconds form), the header value is honored up
-// to changeFeedPageRetryMaxDelay. All other transient errors use linear
-// backoff with jitter.
-func computeChangeFeedRetryDelay(err error, attempt int) time.Duration {
-	linear := time.Duration(attempt+1)*changeFeedPageRetryBaseDelay + jitter(changeFeedPageRetryJitter)
-	var respErr *azcore.ResponseError
-	if errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests && respErr.RawResponse != nil {
-		if ra := respErr.RawResponse.Header.Get("Retry-After"); ra != "" {
-			if secs, parseErr := strconv.Atoi(ra); parseErr == nil && secs >= 0 {
-				d := time.Duration(secs) * time.Second
-				if d > changeFeedPageRetryMaxDelay {
-					d = changeFeedPageRetryMaxDelay
-				}
-				// Pick the longer of the service hint and linear backoff so
-				// we never retry sooner than our own minimum, and add a
-				// small jitter so concurrent clients don't synchronize on
-				// the same Retry-After deadline.
-				if d > linear {
-					return d + jitter(changeFeedPageRetryJitter)
-				}
-			}
-		}
-	}
-	return linear
 }
 
 // isTransientPKRangeFetchError reports whether a /pkranges fetch error is

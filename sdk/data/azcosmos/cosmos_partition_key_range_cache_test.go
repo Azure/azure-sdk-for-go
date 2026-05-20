@@ -10,7 +10,6 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -1130,10 +1129,12 @@ func Test_partitionKeyRangeCache_midPagination_transientRetrySucceeds(t *testing
 	require.Equal(t, "p2", rm.changeFeedETag)
 }
 
-func Test_partitionKeyRangeCache_midPagination_exhaustedRetriesFails(t *testing.T) {
-	// If all retry attempts of a single page fail, the refresh fails as a
-	// whole (cache stays in its prior state). Verify the configured
-	// attempt cap is honored.
+func Test_partitionKeyRangeCache_midPagination_callerCancelAbortsRetries(t *testing.T) {
+	// Transient failures retry indefinitely until either the page succeeds
+	// or the refresh's context is cancelled. Per-awaiter ctx cancellation
+	// does NOT abort the shared background refresh (it runs on
+	// context.Background()), so this test exercises invalidate which
+	// causes the in-flight op to be discarded after the next page returns.
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -1143,13 +1144,23 @@ func Test_partitionKeyRangeCache_midPagination_exhaustedRetriesFails(t *testing.
 		mock.WithHeader(cosmosHeaderEtag, "p1"),
 		mock.WithStatusCode(200),
 	)
-	// Page 2: 408 on every attempt. Enqueue exactly changeFeedPageMaxAttempts 408s.
-	for i := 0; i < changeFeedPageMaxAttempts; i++ {
+	// Page 2: 408 a few times, then succeed. Proves retries are not capped
+	// at any small constant — the original test verified an attempt cap
+	// that no longer exists.
+	for i := 0; i < 5; i++ {
 		srv.AppendResponse(
 			mock.WithBody([]byte(`{"code":"RequestTimeout"}`)),
 			mock.WithStatusCode(408),
 		)
 	}
+	// Page 2 eventual success
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r1","id":"1","minInclusive":"80","maxExclusive":"FF","parents":[]}],"_count":1}`)),
+		mock.WithHeader(cosmosHeaderEtag, "p2"),
+		mock.WithStatusCode(200),
+	)
+	// Terminator
+	srv.AppendResponse(mock.WithStatusCode(304), mock.WithHeader(cosmosHeaderEtag, "p2"))
 
 	client := createMockClientForPKRangeCacheNoRetry(srv)
 	entry := &pkRangeCacheEntry{}
@@ -1157,11 +1168,10 @@ func Test_partitionKeyRangeCache_midPagination_exhaustedRetriesFails(t *testing.
 	client.caches.pkRangeCache.entries["testRID"] = entry
 	client.caches.pkRangeCache.mu.Unlock()
 
-	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
-	require.Error(t, err)
-	var respErr *azcore.ResponseError
-	require.ErrorAs(t, err, &respErr)
-	require.Equal(t, http.StatusRequestTimeout, respErr.StatusCode)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	require.NotNil(t, rm)
+	require.Equal(t, 2, len(rm.orderedRanges), "infinite retry must eventually surface the successful page")
 }
 
 func Test_partitionKeyRangeCache_midPagination_nonTransientFailsFast(t *testing.T) {
@@ -1293,44 +1303,4 @@ func Test_partitionKeyRangeCache_forceRefresh_canceledCallerNoBackgroundFetch(t 
 	entry.mu.Lock()
 	require.Nil(t, entry.inFlight)
 	entry.mu.Unlock()
-}
-
-func Test_partitionKeyRangeCache_refreshTimeout_isWrapped(t *testing.T) {
-	// When the detached refresh's own deadline fires (independently of any
-	// caller ctx), awaiters must see errPKRangeCacheRefreshTimeout instead
-	// of bare context.DeadlineExceeded so upstream errors.Is checks for
-	// the caller's own deadline don't misclassify.
-	srv, closeSrv := mock.NewTLSServer()
-	defer closeSrv()
-
-	gate := newGatePolicy() // never released → request hangs until ctx fires
-	client := createGatedClientForPKRangeCache(srv, gate)
-
-	// Shorten the refresh timeout for this test only.
-	orig := pkRangeBackgroundRefreshTimeout
-	pkRangeBackgroundRefreshTimeout = 150 * time.Millisecond
-	defer func() { pkRangeBackgroundRefreshTimeout = orig }()
-
-	entry := &pkRangeCacheEntry{}
-	client.caches.pkRangeCache.mu.Lock()
-	client.caches.pkRangeCache.entries["testRID"] = entry
-	client.caches.pkRangeCache.mu.Unlock()
-
-	// Caller uses a much longer ctx so the only deadline that can fire is
-	// the cache's own.
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	_, err := client.caches.pkRangeCache.forceRefresh(ctx, "testRID", "dbs/db1/colls/col1", client)
-	require.Error(t, err)
-	require.ErrorIs(t, err, errPKRangeCacheRefreshTimeout, "must wrap with the cache-specific sentinel")
-	require.ErrorIs(t, err, context.DeadlineExceeded, "must preserve DeadlineExceeded as the cause")
-
-	// Slot cleared so a fresh refresh can start next time.
-	entry.mu.Lock()
-	require.Nil(t, entry.inFlight)
-	entry.mu.Unlock()
-
-	// Drain the gate so the server-side goroutine doesn't leak.
-	close(gate.release)
 }

@@ -16,13 +16,26 @@ import (
 
 // ServerFactory is a fake server for instances of the armdatabricks.ClientFactory type.
 type ServerFactory struct {
-	AccessConnectorsServer                     AccessConnectorsServer
-	OperationsServer                           OperationsServer
+	// AccessConnectorsServer contains the fakes for client AccessConnectorsClient
+	AccessConnectorsServer AccessConnectorsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// OutboundNetworkDependenciesEndpointsServer contains the fakes for client OutboundNetworkDependenciesEndpointsClient
 	OutboundNetworkDependenciesEndpointsServer OutboundNetworkDependenciesEndpointsServer
-	PrivateEndpointConnectionsServer           PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer                 PrivateLinkResourcesServer
-	VNetPeeringServer                          VNetPeeringServer
-	WorkspacesServer                           WorkspacesServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// VNetPeeringServer contains the fakes for client VNetPeeringClient
+	VNetPeeringServer VNetPeeringServer
+
+	// WorkspacesServer contains the fakes for client WorkspacesClient
+	WorkspacesServer WorkspacesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

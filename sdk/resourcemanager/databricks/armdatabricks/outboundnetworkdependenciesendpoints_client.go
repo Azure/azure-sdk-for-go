@@ -25,9 +25,9 @@ type OutboundNetworkDependenciesEndpointsClient struct {
 }
 
 // NewOutboundNetworkDependenciesEndpointsClient creates a new instance of OutboundNetworkDependenciesEndpointsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OutboundNetworkDependenciesEndpointsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +45,7 @@ func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, creden
 // https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - OutboundNetworkDependenciesEndpointsClientListOptions contains the optional parameters for the OutboundNetworkDependenciesEndpointsClient.List
@@ -73,7 +73,7 @@ func (client *OutboundNetworkDependenciesEndpointsClient) List(ctx context.Conte
 }
 
 // listCreateRequest creates the List request.
-func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *OutboundNetworkDependenciesEndpointsClientListOptions) (*policy.Request, error) {
+func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *OutboundNetworkDependenciesEndpointsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/outboundNetworkDependenciesEndpoints"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -92,7 +92,7 @@ func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

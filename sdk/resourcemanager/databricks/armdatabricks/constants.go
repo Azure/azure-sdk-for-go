@@ -5,10 +5,52 @@
 
 package armdatabricks
 
+type AutomaticClusterUpdateValue string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks"
-	moduleVersion = "v1.1.0"
+	AutomaticClusterUpdateValueDisabled AutomaticClusterUpdateValue = "Disabled"
+	AutomaticClusterUpdateValueEnabled  AutomaticClusterUpdateValue = "Enabled"
 )
+
+// PossibleAutomaticClusterUpdateValueValues returns the possible values for the AutomaticClusterUpdateValue const type.
+func PossibleAutomaticClusterUpdateValueValues() []AutomaticClusterUpdateValue {
+	return []AutomaticClusterUpdateValue{
+		AutomaticClusterUpdateValueDisabled,
+		AutomaticClusterUpdateValueEnabled,
+	}
+}
+
+type ComplianceSecurityProfileValue string
+
+const (
+	ComplianceSecurityProfileValueDisabled ComplianceSecurityProfileValue = "Disabled"
+	ComplianceSecurityProfileValueEnabled  ComplianceSecurityProfileValue = "Enabled"
+)
+
+// PossibleComplianceSecurityProfileValueValues returns the possible values for the ComplianceSecurityProfileValue const type.
+func PossibleComplianceSecurityProfileValueValues() []ComplianceSecurityProfileValue {
+	return []ComplianceSecurityProfileValue{
+		ComplianceSecurityProfileValueDisabled,
+		ComplianceSecurityProfileValueEnabled,
+	}
+}
+
+// ComputeMode - The workspace compute mode. Required on create, cannot be changed. Possible values include: 'Serverless',
+// 'Hybrid'
+type ComputeMode string
+
+const (
+	ComputeModeHybrid     ComputeMode = "Hybrid"
+	ComputeModeServerless ComputeMode = "Serverless"
+)
+
+// PossibleComputeModeValues returns the possible values for the ComputeMode const type.
+func PossibleComputeModeValues() []ComputeMode {
+	return []ComputeMode{
+		ComputeModeHybrid,
+		ComputeModeServerless,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
@@ -30,7 +72,7 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// CustomParameterType - Provisioning status of the workspace.
+// CustomParameterType - The workspace's custom parameters.
 type CustomParameterType string
 
 const (
@@ -48,6 +90,23 @@ func PossibleCustomParameterTypeValues() []CustomParameterType {
 	}
 }
 
+// DefaultStorageFirewall - Gets or Sets Default Storage Firewall configuration information. Not allowed in Serverless ComputeMode
+// workspace.
+type DefaultStorageFirewall string
+
+const (
+	DefaultStorageFirewallDisabled DefaultStorageFirewall = "Disabled"
+	DefaultStorageFirewallEnabled  DefaultStorageFirewall = "Enabled"
+)
+
+// PossibleDefaultStorageFirewallValues returns the possible values for the DefaultStorageFirewall const type.
+func PossibleDefaultStorageFirewallValues() []DefaultStorageFirewall {
+	return []DefaultStorageFirewall{
+		DefaultStorageFirewallDisabled,
+		DefaultStorageFirewallEnabled,
+	}
+}
+
 // EncryptionKeySource - The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Keyvault
 type EncryptionKeySource string
 
@@ -59,6 +118,53 @@ const (
 func PossibleEncryptionKeySourceValues() []EncryptionKeySource {
 	return []EncryptionKeySource{
 		EncryptionKeySourceMicrosoftKeyvault,
+	}
+}
+
+type EnhancedSecurityMonitoringValue string
+
+const (
+	EnhancedSecurityMonitoringValueDisabled EnhancedSecurityMonitoringValue = "Disabled"
+	EnhancedSecurityMonitoringValueEnabled  EnhancedSecurityMonitoringValue = "Enabled"
+)
+
+// PossibleEnhancedSecurityMonitoringValueValues returns the possible values for the EnhancedSecurityMonitoringValue const type.
+func PossibleEnhancedSecurityMonitoringValueValues() []EnhancedSecurityMonitoringValue {
+	return []EnhancedSecurityMonitoringValue{
+		EnhancedSecurityMonitoringValueDisabled,
+		EnhancedSecurityMonitoringValueEnabled,
+	}
+}
+
+// IdentityType - The identity type of the Access Connector Resource.
+type IdentityType string
+
+const (
+	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
+)
+
+// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{
+		IdentityTypeSystemAssigned,
+		IdentityTypeUserAssigned,
+	}
+}
+
+// InitialType - Defines the initial type of the default catalog. Possible values (case-insensitive): HiveMetastore, UnityCatalog
+type InitialType string
+
+const (
+	InitialTypeHiveMetastore InitialType = "HiveMetastore"
+	InitialTypeUnityCatalog  InitialType = "UnityCatalog"
+)
+
+// PossibleInitialTypeValues returns the possible values for the InitialType const type.
+func PossibleInitialTypeValues() []InitialType {
+	return []InitialType{
+		InitialTypeHiveMetastore,
+		InitialTypeUnityCatalog,
 	}
 }
 
@@ -213,7 +319,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 
 // PublicNetworkAccess - The network access type for accessing workspace. Set value to disabled to access workspace only via
-// private link.
+// private link. Used to configure front-end only private link for Serverless ComputeMode workspace.
 type PublicNetworkAccess string
 
 const (
@@ -231,7 +337,7 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 
 // RequiredNsgRules - Gets or sets a value indicating whether data plane (clusters) to control plane communication happen
 // over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
-// 'NoAzureServiceRules' value is for internal use only.
+// 'NoAzureServiceRules' value is for internal use only. Not allowed in Serverless ComputeMode workspace.
 type RequiredNsgRules string
 
 const (

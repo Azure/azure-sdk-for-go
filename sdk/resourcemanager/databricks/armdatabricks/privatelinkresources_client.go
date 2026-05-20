@@ -25,9 +25,9 @@ type PrivateLinkResourcesClient struct {
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // Get - Get the specified private link resource for the given group id (sub-resource)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - groupID - The name of the private link resource
@@ -72,7 +72,7 @@ func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroup
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, groupID string, options *PrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, groupID string, _ *PrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateLinkResources/{groupId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -95,7 +95,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +112,7 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - List private link resources for a given workspace
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListPager
@@ -141,7 +141,7 @@ func (client *PrivateLinkResourcesClient) NewListPager(resourceGroupName string,
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *PrivateLinkResourcesClientListOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *PrivateLinkResourcesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateLinkResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -160,7 +160,7 @@ func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

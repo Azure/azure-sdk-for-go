@@ -7,7 +7,7 @@ package armdatabricks
 
 // AccessConnectorsClientCreateOrUpdateResponse contains the response from method AccessConnectorsClient.BeginCreateOrUpdate.
 type AccessConnectorsClientCreateOrUpdateResponse struct {
-	// Information about azure databricks accessConnector.
+	// Information about Azure Databricks Access Connector.
 	AccessConnector
 }
 
@@ -18,25 +18,25 @@ type AccessConnectorsClientDeleteResponse struct {
 
 // AccessConnectorsClientGetResponse contains the response from method AccessConnectorsClient.Get.
 type AccessConnectorsClientGetResponse struct {
-	// Information about azure databricks accessConnector.
+	// Information about Azure Databricks Access Connector.
 	AccessConnector
 }
 
 // AccessConnectorsClientListByResourceGroupResponse contains the response from method AccessConnectorsClient.NewListByResourceGroupPager.
 type AccessConnectorsClientListByResourceGroupResponse struct {
-	// List of azure databricks accessConnector.
+	// List of Azure Databricks Access Connector.
 	AccessConnectorListResult
 }
 
 // AccessConnectorsClientListBySubscriptionResponse contains the response from method AccessConnectorsClient.NewListBySubscriptionPager.
 type AccessConnectorsClientListBySubscriptionResponse struct {
-	// List of azure databricks accessConnector.
+	// List of Azure Databricks Access Connector.
 	AccessConnectorListResult
 }
 
 // AccessConnectorsClientUpdateResponse contains the response from method AccessConnectorsClient.BeginUpdate.
 type AccessConnectorsClientUpdateResponse struct {
-	// Information about azure databricks accessConnector.
+	// Information about Azure Databricks Access Connector.
 	AccessConnector
 }
 
@@ -55,7 +55,7 @@ type OutboundNetworkDependenciesEndpointsClientListResponse struct {
 
 // PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreate.
 type PrivateEndpointConnectionsClientCreateResponse struct {
-	// The private endpoint connection of a workspace
+	// The private endpoint connection of a workspace.
 	PrivateEndpointConnection
 }
 
@@ -66,7 +66,7 @@ type PrivateEndpointConnectionsClientDeleteResponse struct {
 
 // PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
 type PrivateEndpointConnectionsClientGetResponse struct {
-	// The private endpoint connection of a workspace
+	// The private endpoint connection of a workspace.
 	PrivateEndpointConnection
 }
 

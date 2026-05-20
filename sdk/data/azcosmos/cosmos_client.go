@@ -181,9 +181,7 @@ func NewClientFromConnectionString(connectionString string, o *ClientOptions) (*
 }
 
 func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *ClientOptions) (*azcore.Client, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
+	options = withDefaultTransport(options)
 	return azcore.NewClient(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),
@@ -207,9 +205,7 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 }
 
 func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
-	if options == nil {
-		options = &ClientOptions{}
-	}
+	options = withDefaultTransport(options)
 	return azruntime.NewPipeline(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),
@@ -218,6 +214,24 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 			},
 		},
 		&options.ClientOptions)
+}
+
+// withDefaultTransport returns a *ClientOptions whose Transport is set to the
+// Cosmos default HTTP client when the caller has not supplied one. The
+// returned value is always non-nil and is safe to mutate without affecting
+// the caller's struct.
+func withDefaultTransport(options *ClientOptions) *ClientOptions {
+	if options == nil {
+		return &ClientOptions{
+			ClientOptions: azcore.ClientOptions{Transport: defaultCosmosHTTPClient},
+		}
+	}
+	if options.Transport != nil {
+		return options
+	}
+	clone := *options
+	clone.ClientOptions.Transport = defaultCosmosHTTPClient
+	return &clone
 }
 
 func createScopeFromEndpoint(endpoint *url.URL) ([]string, error) {

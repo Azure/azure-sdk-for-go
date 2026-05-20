@@ -1088,8 +1088,8 @@ func createMockClientForPKRangeCacheNoRetry(srv *mock.Server) *Client {
 	}
 }
 
-func Test_partitionKeyRangeCache_midPagination_transientRetrySucceeds(t *testing.T) {
-	// The change-feed loop must survive a transient 408 between pages by
+func Test_partitionKeyRangeCache_midPagination_throttleRetrySucceeds(t *testing.T) {
+	// The change-feed loop must survive a transient 429 between pages by
 	// retrying the failing page, preserving the pages already accumulated.
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
@@ -1100,10 +1100,10 @@ func Test_partitionKeyRangeCache_midPagination_transientRetrySucceeds(t *testing
 		mock.WithHeader(cosmosHeaderEtag, "p1"),
 		mock.WithStatusCode(200),
 	)
-	// Page 2: 408 transient — must be retried
+	// Page 2: 429 throttling — must be retried
 	srv.AppendResponse(
-		mock.WithBody([]byte(`{"code":"RequestTimeout"}`)),
-		mock.WithStatusCode(408),
+		mock.WithBody([]byte(`{"code":"TooManyRequests"}`)),
+		mock.WithStatusCode(429),
 	)
 	// Page 2 retry: 200 with second range, etag "p2"
 	srv.AppendResponse(
@@ -1129,12 +1129,11 @@ func Test_partitionKeyRangeCache_midPagination_transientRetrySucceeds(t *testing
 	require.Equal(t, "p2", rm.changeFeedETag)
 }
 
-func Test_partitionKeyRangeCache_midPagination_callerCancelAbortsRetries(t *testing.T) {
-	// Transient failures retry indefinitely until either the page succeeds
+func Test_partitionKeyRangeCache_midPagination_throttleRetriesIndefinitely(t *testing.T) {
+	// 429 throttling retries indefinitely until either the page succeeds
 	// or the refresh's context is cancelled. Per-awaiter ctx cancellation
 	// does NOT abort the shared background refresh (it runs on
-	// context.Background()), so this test exercises invalidate which
-	// causes the in-flight op to be discarded after the next page returns.
+	// context.Background()).
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -1144,13 +1143,12 @@ func Test_partitionKeyRangeCache_midPagination_callerCancelAbortsRetries(t *test
 		mock.WithHeader(cosmosHeaderEtag, "p1"),
 		mock.WithStatusCode(200),
 	)
-	// Page 2: 408 a few times, then succeed. Proves retries are not capped
-	// at any small constant — the original test verified an attempt cap
-	// that no longer exists.
+	// Page 2: 429 a few times, then succeed. Proves 429 retries are not
+	// capped at any small constant.
 	for i := 0; i < 5; i++ {
 		srv.AppendResponse(
-			mock.WithBody([]byte(`{"code":"RequestTimeout"}`)),
-			mock.WithStatusCode(408),
+			mock.WithBody([]byte(`{"code":"TooManyRequests"}`)),
+			mock.WithStatusCode(429),
 		)
 	}
 	// Page 2 eventual success

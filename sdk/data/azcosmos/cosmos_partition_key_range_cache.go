@@ -8,12 +8,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"math/rand"
-	"net"
 	"net/http"
 	"sync"
-	"syscall"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -355,12 +352,13 @@ type changeFeedResult struct {
 // until 304 Not Modified or the iteration cap. Returns the accumulated ranges,
 // the final ETag, and whether the loop completed cleanly (304 received).
 //
-// Each individual page is retried indefinitely on transient errors
-// (5xx, 408, 429, network errors) with capped linear backoff + jitter so a
-// single bad page doesn't discard the pages already accumulated. The
-// refresh is background-only and the ctx has no deadline, so retries
-// continue until either a non-transient error fires or the page succeeds.
-// Non-transient errors (4xx other than 408/429) fail fast.
+// Each individual page is retried on 429 throttling so a transient throttle
+// mid-drain doesn't discard the pages already accumulated:
+//   - 429 throttling retries indefinitely (the service is asking us to slow
+//     down, not fail; eventually the throttle lifts).
+//   - All other errors (5xx, 408, transport, non-transient) fail fast and
+//     surface to the caller. The azcore pipeline already retries 5xx / 408
+//     / transport with backoff; re-retrying here would just double-retry.
 func fetchAllChangeFeedPages(
 	ctx context.Context,
 	containerLink string,
@@ -375,10 +373,10 @@ func fetchAllChangeFeedPages(
 		}
 		result, err := fetchOneChangeFeedPageWithRetry(ctx, containerLink, currentETag, client)
 		if err != nil {
-			// Surfaces only on non-transient errors (e.g. 4xx) — transient
-			// errors retry forever. Log how far we got so operators can
-			// correlate partial-drain failures with the next refresh
-			// restarting from scratch.
+			// Surfaces on any non-429 error (the pipeline already retried
+			// 5xx / 408 / transport; we only retry 429). Log how far we got
+			// so operators can correlate partial-drain failures with the
+			// next refresh restarting from scratch.
 			log.Writef(azlog.EventResponse, "partition key range change-feed page failed for container %s after %d successful pages (%d ranges accumulated): %v", containerLink, i, len(allRanges), err)
 			return changeFeedResult{}, err
 		}
@@ -401,17 +399,20 @@ func fetchAllChangeFeedPages(
 }
 
 // fetchOneChangeFeedPageWithRetry fetches a single change-feed page,
-// retrying indefinitely on transient errors so a transient hiccup
-// mid-pagination doesn't discard the already-accumulated pages in the
-// caller. Returns only on success, on a non-transient error, or when the
-// caller's context is cancelled.
+// retrying indefinitely on 429 throttling so a transient throttle mid-
+// pagination doesn't discard the already-accumulated pages in the caller.
 //
-// The azcore pipeline already retries 5xx / 408 / 429 with backoff and
-// Retry-After honoring. This loop is additional safety: when the pipeline
-// gives up, we retry the next page (preserving accumulated pages) rather
-// than restarting the drain on the next refresh. Backoff here is therefore
-// kept simple (linear, capped) and does NOT honor Retry-After — that's the
-// pipeline's job, and re-parsing it would just compound the wait.
+// 429 is the only error retried at this layer: the service is explicitly
+// asking us to slow down, and failing the whole refresh just to retry it
+// minutes later under the same throttle is wasted work. All other errors
+// — including 5xx, 408, and transport-level failures — are surfaced
+// immediately. The azcore pipeline already retries those classes with
+// backoff (and honors Retry-After); doing it again here would just
+// double-retry and obscure the underlying degradation from the caller.
+//
+// Returns on success, any non-429 error, or ctx cancellation. Backoff for
+// 429 is linear (capped) with jitter; Retry-After is NOT parsed here —
+// that's the pipeline's responsibility.
 func fetchOneChangeFeedPageWithRetry(
 	ctx context.Context,
 	containerLink string,
@@ -426,7 +427,7 @@ func fetchOneChangeFeedPageWithRetry(
 		if err == nil {
 			return result, nil
 		}
-		if !isTransientPKRangeFetchError(err) {
+		if !isThrottleError(err) {
 			return fetchPartitionKeyRangesResult{}, err
 		}
 		// Capped linear backoff with jitter so a fleet of clients retrying
@@ -436,7 +437,7 @@ func fetchOneChangeFeedPageWithRetry(
 			delay = changeFeedPageRetryMaxDelay
 		}
 		delay += jitter(changeFeedPageRetryJitter)
-		log.Writef(azlog.EventResponse, "partition key range change-feed page transient failure for container %s (attempt %d, retrying in %s): %v", containerLink, attempt+1, delay, err)
+		log.Writef(azlog.EventResponse, "partition key range change-feed page throttled for container %s (attempt %d, retrying in %s): %v", containerLink, attempt+1, delay, err)
 		timer := time.NewTimer(delay)
 		select {
 		case <-timer.C:
@@ -447,57 +448,18 @@ func fetchOneChangeFeedPageWithRetry(
 	}
 }
 
+// isThrottleError reports whether err is a 429 Too Many Requests response.
+func isThrottleError(err error) bool {
+	var respErr *azcore.ResponseError
+	return errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests
+}
+
 // jitter returns a uniform random duration in [0, max).
 func jitter(maxJitter time.Duration) time.Duration {
 	if maxJitter <= 0 {
 		return 0
 	}
 	return time.Duration(rand.Int63n(int64(maxJitter)))
-}
-
-// isTransientPKRangeFetchError reports whether a /pkranges fetch error is
-// worth retrying mid-pagination. The predicate matches the surface the
-// azcore pipeline already retries (5xx / 408 / 429) plus transport-level
-// network errors. This is intentional double-coverage: the per-page retry
-// here preserves accumulated pages instead of restarting the entire drain
-// from page 1, which matters on cold-start where there is no warm routing
-// map to fall back on. Returns false for:
-//   - context cancellation / deadline
-//   - 4xx responses other than 408/429 (genuine client errors)
-//   - body-read / JSON-decode / programming errors
-func isTransientPKRangeFetchError(err error) bool {
-	if err == nil {
-		return false
-	}
-	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
-		return false
-	}
-	// HTTP responses: retry on server errors, throttling, and request timeout.
-	// The pipeline may have already retried these, but the per-page retry here
-	// preserves accumulated pages instead of restarting the entire drain.
-	var respErr *azcore.ResponseError
-	if errors.As(err, &respErr) {
-		switch {
-		case respErr.StatusCode >= 500:
-			return true
-		case respErr.StatusCode == http.StatusTooManyRequests: // 429
-			return true
-		case respErr.StatusCode == http.StatusRequestTimeout: // 408
-			return true
-		}
-		return false
-	}
-	// Transport-class errors only: connection reset, unexpected EOF,
-	// net.Error timeouts. Body-read / JSON-decode errors are NOT
-	// transient and should not be retried.
-	var netErr net.Error
-	if errors.As(err, &netErr) {
-		return true
-	}
-	if errors.Is(err, io.ErrUnexpectedEOF) || errors.Is(err, syscall.ECONNRESET) || errors.Is(err, syscall.ETIMEDOUT) {
-		return true
-	}
-	return false
 }
 
 // refreshEntryDetached fetches PK ranges from the service and returns a fresh

@@ -9,7 +9,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"strconv"
 	"strings"
@@ -64,7 +63,7 @@ func (client *BlobClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 	}
 	req.Raw().Header["x-ms-expiry-option"] = []string{string(expiryOptions)}
 	if options != nil && options.ExpiresOn != nil {
-		req.Raw().Header["x-ms-expiry-time"] = []string{datetime.RFC1123(*options.ExpiresOn).String()}
+		req.Raw().Header["x-ms-expiry-time"] = []string{*options.ExpiresOn}
 	}
 	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil

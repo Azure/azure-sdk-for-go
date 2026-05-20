@@ -247,7 +247,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_success(t *testing.T) {
 	client.caches.pkRangeCache.mu.Unlock()
 
 	// forceRefresh should do incremental refresh
-	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(rm.orderedRanges))
 	require.Equal(t, "", rm.orderedRanges[0].MinInclusive)
@@ -282,7 +282,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_304_immediate(t *testing.T) 
 	client.caches.pkRangeCache.entries["testRID"] = entry
 	client.caches.pkRangeCache.mu.Unlock()
 
-	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 	// Ranges should be preserved
 	require.Equal(t, 2, len(rm.orderedRanges))
@@ -347,7 +347,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_mergeFailure_fullRefresh(t *
 	client.caches.pkRangeCache.entries["testRID"] = entry
 	client.caches.pkRangeCache.mu.Unlock()
 
-	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 	// Should have the 3 ranges from full refresh
 	require.Equal(t, 3, len(rm.orderedRanges))
@@ -383,7 +383,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_contextCancelled(t *testing.
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 
-	_, err := client.caches.pkRangeCache.forceRefresh(ctx, "testRID", "dbs/db1/colls/col1", client, nil)
+	_, err := client.caches.pkRangeCache.forceRefresh(ctx, "testRID", "dbs/db1/colls/col1", client)
 	require.Error(t, err)
 	require.ErrorIs(t, err, context.Canceled)
 
@@ -689,7 +689,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_emptyPagesBeforeData(t *test
 	require.Equal(t, 1, len(rm.orderedRanges))
 
 	// Trigger incremental refresh
-	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 
 	// Should have 2 ranges after split (parent "0" filtered)
@@ -766,7 +766,7 @@ func Test_partitionKeyRangeCache_incrementalRefresh_cascadingSplitAcrossPages(t 
 	require.Equal(t, "0", rm.orderedRanges[0].ID)
 
 	// Trigger incremental refresh via forceRefresh
-	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 
 	// Final state should have 2 ranges: "1" and "2" (parent "0" filtered)
@@ -869,7 +869,7 @@ func Test_partitionKeyRangeCache_getRoutingMap_returnsCachedDuringRefresh(t *tes
 	refreshDone := make(chan struct{})
 	go func() {
 		defer close(refreshDone)
-		_, _ = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, existing)
+		_, _ = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	}()
 
 	// Wait for the refresh goroutine to actually issue its HTTP request.
@@ -912,7 +912,7 @@ func Test_partitionKeyRangeCache_forceRefresh_concurrentCallersShareOneFetch(t *
 		i := i
 		go func() {
 			defer wg.Done()
-			results[i], errs[i] = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+			results[i], errs[i] = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 		}()
 	}
 
@@ -930,31 +930,8 @@ func Test_partitionKeyRangeCache_forceRefresh_concurrentCallersShareOneFetch(t *
 	require.Equal(t, int32(2), gate.count.Load())
 }
 
-func Test_partitionKeyRangeCache_forceRefresh_staleViewSuppressesNewFetch(t *testing.T) {
-	// When the entry already holds a fresher routing map than the caller's
-	// `previous` pointer, forceRefresh must return the fresher map without
-	// issuing a new fetch (pointer-identity dedup).
-	srv, closeSrv := mock.NewTLSServer()
-	defer closeSrv()
-
-	gate := newGatePolicy()
-	close(gate.release) // never block
-	client := createGatedClientForPKRangeCache(srv, gate)
-
-	stale := newCollectionRoutingMap([]partitionKeyRange{{ID: "0", MinInclusive: "", MaxExclusive: "FF"}}, "etagOld")
-	fresh := newCollectionRoutingMap([]partitionKeyRange{{ID: "0", MinInclusive: "", MaxExclusive: "FF"}}, "etagNew")
-
-	entry := &pkRangeCacheEntry{routingMap: fresh}
-	client.caches.pkRangeCache.mu.Lock()
-	client.caches.pkRangeCache.entries["testRID"] = entry
-	client.caches.pkRangeCache.mu.Unlock()
-
-	got, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, stale)
-	require.NoError(t, err)
-	require.Same(t, fresh, got)
-	// No HTTP request should have been issued.
-	require.Equal(t, int32(0), gate.count.Load())
-}
+// (stale-view pointer-identity dedup was dropped; the test exercising it has
+// been removed accordingly.)
 
 func Test_partitionKeyRangeCache_callerCancelDoesNotAbortSharedFetch(t *testing.T) {
 	// A caller whose context is cancelled while awaiting the in-flight refresh
@@ -1000,9 +977,12 @@ func Test_partitionKeyRangeCache_callerCancelDoesNotAbortSharedFetch(t *testing.
 	require.NotNil(t, <-rmB)
 }
 
-func Test_partitionKeyRangeCache_invalidateDuringRefresh_keepsNewResult(t *testing.T) {
-	// invalidate() during an in-flight refresh must NOT abort the refresh;
-	// when the refresh completes, its result becomes the cached map.
+func Test_partitionKeyRangeCache_invalidateDuringRefresh_discardsResult(t *testing.T) {
+	// invalidate() during an in-flight refresh must NOT abort the refresh
+	// (other awaiters still get the in-flight result), but the result must
+	// be discarded from the cache: an invalidate-during-refresh strictly
+	// means "what you're about to install is stale, do not use it". The
+	// next call observes routingMap=nil and starts a fresh refresh.
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -1022,7 +1002,7 @@ func Test_partitionKeyRangeCache_invalidateDuringRefresh_keepsNewResult(t *testi
 		err error
 	}, 1)
 	go func() {
-		rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+		rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 		done <- struct {
 			rm  *collectionRoutingMap
 			err error
@@ -1034,13 +1014,17 @@ func Test_partitionKeyRangeCache_invalidateDuringRefresh_keepsNewResult(t *testi
 	close(gate.release)
 
 	res := <-done
+	// The awaiter still sees the refresh result (it's a valid map; the
+	// awaiter has no way of knowing it was invalidated during the fetch).
 	require.NoError(t, res.err)
 	require.NotNil(t, res.rm)
 	require.Equal(t, "etagNew", res.rm.changeFeedETag)
 
-	// The cached map is the refresh result (not nil from the invalidate).
+	// But the CACHE must not silently retain that result — the invalidate
+	// said "drop what you have" and a fetch that pre-dates the invalidate
+	// is by definition stale relative to it.
 	entry.mu.Lock()
-	require.Same(t, res.rm, entry.routingMap)
+	require.Nil(t, entry.routingMap, "invalidate during refresh must cause the refresh result to be discarded from the cache")
 	entry.mu.Unlock()
 }
 
@@ -1062,7 +1046,7 @@ func Test_partitionKeyRangeCache_refreshError_clearsInFlightForRetry(t *testing.
 	client.caches.pkRangeCache.entries["testRID"] = entry
 	client.caches.pkRangeCache.mu.Unlock()
 
-	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.Error(t, err)
 
 	// in-flight slot cleared so next call kicks off another op.
@@ -1070,7 +1054,7 @@ func Test_partitionKeyRangeCache_refreshError_clearsInFlightForRetry(t *testing.
 	require.Nil(t, entry.inFlight)
 	entry.mu.Unlock()
 
-	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 	require.NotNil(t, rm)
 	require.Equal(t, "etag1", rm.changeFeedETag)
@@ -1100,7 +1084,7 @@ func createMockClientForPKRangeCacheNoRetry(srv *mock.Server) *Client {
 }
 
 func Test_partitionKeyRangeCache_midPagination_transientRetrySucceeds(t *testing.T) {
-	// The change-feed loop must survive a transient 503 between pages by
+	// The change-feed loop must survive a transient 408 between pages by
 	// retrying the failing page, preserving the pages already accumulated.
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
@@ -1111,10 +1095,10 @@ func Test_partitionKeyRangeCache_midPagination_transientRetrySucceeds(t *testing
 		mock.WithHeader(cosmosHeaderEtag, "p1"),
 		mock.WithStatusCode(200),
 	)
-	// Page 2: 503 transient — must be retried
+	// Page 2: 408 transient — must be retried
 	srv.AppendResponse(
-		mock.WithBody([]byte(`{"code":"ServiceUnavailable"}`)),
-		mock.WithStatusCode(503),
+		mock.WithBody([]byte(`{"code":"RequestTimeout"}`)),
+		mock.WithStatusCode(408),
 	)
 	// Page 2 retry: 200 with second range, etag "p2"
 	srv.AppendResponse(
@@ -1131,7 +1115,7 @@ func Test_partitionKeyRangeCache_midPagination_transientRetrySucceeds(t *testing
 	client.caches.pkRangeCache.entries["testRID"] = entry
 	client.caches.pkRangeCache.mu.Unlock()
 
-	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.NoError(t, err)
 	require.NotNil(t, rm)
 	require.Equal(t, 2, len(rm.orderedRanges), "both pages must be in the final routing map")
@@ -1153,11 +1137,11 @@ func Test_partitionKeyRangeCache_midPagination_exhaustedRetriesFails(t *testing.
 		mock.WithHeader(cosmosHeaderEtag, "p1"),
 		mock.WithStatusCode(200),
 	)
-	// Page 2: 503 on every attempt. Enqueue exactly changeFeedPageMaxAttempts 503s.
+	// Page 2: 408 on every attempt. Enqueue exactly changeFeedPageMaxAttempts 408s.
 	for i := 0; i < changeFeedPageMaxAttempts; i++ {
 		srv.AppendResponse(
-			mock.WithBody([]byte(`{"code":"ServiceUnavailable"}`)),
-			mock.WithStatusCode(503),
+			mock.WithBody([]byte(`{"code":"RequestTimeout"}`)),
+			mock.WithStatusCode(408),
 		)
 	}
 
@@ -1167,11 +1151,11 @@ func Test_partitionKeyRangeCache_midPagination_exhaustedRetriesFails(t *testing.
 	client.caches.pkRangeCache.entries["testRID"] = entry
 	client.caches.pkRangeCache.mu.Unlock()
 
-	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.Error(t, err)
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
-	require.Equal(t, http.StatusServiceUnavailable, respErr.StatusCode)
+	require.Equal(t, http.StatusRequestTimeout, respErr.StatusCode)
 }
 
 func Test_partitionKeyRangeCache_midPagination_nonTransientFailsFast(t *testing.T) {
@@ -1192,11 +1176,11 @@ func Test_partitionKeyRangeCache_midPagination_nonTransientFailsFast(t *testing.
 		mock.WithStatusCode(401),
 	)
 	// Sentinel: if we DID retry, the next response would be a 200, which
-	// would mask the bug. Make it a 503 instead so an unintended retry
+	// would mask the bug. Make it a 408 instead so an unintended retry
 	// also fails (test would still fail with the wrong status code).
 	srv.AppendResponse(
-		mock.WithBody([]byte(`{"code":"ServiceUnavailable"}`)),
-		mock.WithStatusCode(503),
+		mock.WithBody([]byte(`{"code":"RequestTimeout"}`)),
+		mock.WithStatusCode(408),
 	)
 
 	client := createMockClientForPKRangeCacheNoRetry(srv)
@@ -1205,9 +1189,102 @@ func Test_partitionKeyRangeCache_midPagination_nonTransientFailsFast(t *testing.
 	client.caches.pkRangeCache.entries["testRID"] = entry
 	client.caches.pkRangeCache.mu.Unlock()
 
-	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client, nil)
+	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
 	require.Error(t, err)
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
 	require.Equal(t, http.StatusUnauthorized, respErr.StatusCode, "non-transient 401 must fail fast without retry")
+}
+
+func Test_partitionKeyRangeCache_secondWaveAfterCompletion_noRedundantFetch(t *testing.T) {
+	// A caller that arrives AFTER a refresh has completed but already has a
+	// usable routing map (e.g. another caller just installed one) must NOT
+	// trigger a second redundant network fetch. The cached map is observable
+	// immediately via getRoutingMap.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body, "etagWave1")
+
+	gate := newGatePolicy()
+	close(gate.release) // never block — wave 1 completes immediately
+	client := createGatedClientForPKRangeCache(srv, gate)
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	// Wave 1: forceRefresh populates the cache.
+	rm1, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	require.NotNil(t, rm1)
+	wave1Count := gate.count.Load()
+	require.Equal(t, int32(2), wave1Count, "wave 1 should have made the full-refresh round-trip (200 + 304)")
+
+	// Wave 2: getRoutingMap arriving after wave 1 completed must return
+	// the cached map immediately, NOT trigger another fetch.
+	const N = 5
+	for i := 0; i < N; i++ {
+		got, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+		require.NoError(t, err)
+		require.Same(t, rm1, got, "wave 2 callers must see the wave-1 map")
+	}
+	require.Equal(t, wave1Count, gate.count.Load(), "wave 2 must not trigger additional network requests")
+}
+
+func Test_partitionKeyRangeCache_getRoutingMap_canceledCallerNoBackgroundFetch(t *testing.T) {
+	// When the caller's ctx is already canceled and no refresh is in flight,
+	// getRoutingMap must return ctx.Err() WITHOUT spawning a background
+	// fetch that nobody is waiting on.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	gate := newGatePolicy()
+	close(gate.release)
+	client := createGatedClientForPKRangeCache(srv, gate)
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	_, err := client.caches.pkRangeCache.getRoutingMap(ctx, "testRID", "dbs/db1/colls/col1", client)
+	require.ErrorIs(t, err, context.Canceled)
+	require.Equal(t, int32(0), gate.count.Load(), "canceled caller must not trigger background fetch")
+
+	// And no in-flight op was left behind.
+	entry.mu.Lock()
+	require.Nil(t, entry.inFlight)
+	entry.mu.Unlock()
+}
+
+func Test_partitionKeyRangeCache_forceRefresh_canceledCallerNoBackgroundFetch(t *testing.T) {
+	// Same as the getRoutingMap variant but for forceRefresh.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	gate := newGatePolicy()
+	close(gate.release)
+	client := createGatedClientForPKRangeCache(srv, gate)
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	_, err := client.caches.pkRangeCache.forceRefresh(ctx, "testRID", "dbs/db1/colls/col1", client)
+	require.ErrorIs(t, err, context.Canceled)
+	require.Equal(t, int32(0), gate.count.Load(), "canceled caller must not trigger background fetch")
+
+	entry.mu.Lock()
+	require.Nil(t, entry.inFlight)
+	entry.mu.Unlock()
 }

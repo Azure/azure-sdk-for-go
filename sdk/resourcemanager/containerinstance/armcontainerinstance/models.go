@@ -7,6 +7,27 @@ package armcontainerinstance
 
 import "time"
 
+// APIEntityReference - The API entity reference.
+type APIEntityReference struct {
+	// The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/…
+	ID *string
+}
+
+// ApplicationGateway - Application Gateway the CG profile will use to interact with CGs in a backend pool
+type ApplicationGateway struct {
+	// List of Application Gateway Backend Address Pools.
+	BackendAddressPools []*ApplicationGatewayBackendAddressPool
+
+	// The Application Gateway ARM resource Id.
+	Resource *string
+}
+
+// ApplicationGatewayBackendAddressPool - NGroups application gateway backend address pool
+type ApplicationGatewayBackendAddressPool struct {
+	// The application gateway backend address pool ARM resource Id.
+	Resource *string
+}
+
 // AzureFileVolume - The properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {
 	// REQUIRED; The name of the Azure File share to be mounted as a volume.
@@ -20,6 +41,9 @@ type AzureFileVolume struct {
 
 	// The storage account access key used to access the Azure File share.
 	StorageAccountKey *string
+
+	// The reference to the storage account access key used to access the Azure File share.
+	StorageAccountKeyReference *string
 }
 
 // CachedImages - The cached image and OS type.
@@ -203,16 +227,16 @@ type ContainerGroupListResult struct {
 	NextLink *string
 
 	// The list of container groups.
-	Value []*ContainerGroup
+	Value []*ListResultContainerGroup
 }
 
-// ContainerGroupProfile - A container group profile.
+// ContainerGroupProfile - A container group profile object
 type ContainerGroupProfile struct {
-	// REQUIRED; The container group profile properties
-	Properties *ContainerGroupProfilePropertiesProperties
-
 	// The resource location.
 	Location *string
+
+	// The container group profile properties
+	Properties *ContainerGroupProfileProperties
 
 	// The resource tags.
 	Tags map[string]*string
@@ -226,16 +250,19 @@ type ContainerGroupProfile struct {
 	// READ-ONLY; The resource name.
 	Name *string
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
 	// READ-ONLY; The resource type.
 	Type *string
 }
 
-// ContainerGroupProfileListResult - The container group profile list response that contains the container group profile properties.
+// ContainerGroupProfileListResult - The container group profile list response
 type ContainerGroupProfileListResult struct {
-	// The URI to fetch the next page of container group profiles.
+	// The URI to fetch the next page of Container Group Profiles.
 	NextLink *string
 
-	// The list of container group profiles.
+	// The list of ContainerGroupProfiles under a subscription or resource group.
 	Value []*ContainerGroupProfile
 }
 
@@ -247,12 +274,6 @@ type ContainerGroupProfilePatch struct {
 
 // ContainerGroupProfileProperties - The container group profile properties
 type ContainerGroupProfileProperties struct {
-	// REQUIRED; The container group profile properties
-	Properties *ContainerGroupProfilePropertiesProperties
-}
-
-// ContainerGroupProfilePropertiesProperties - The container group profile properties
-type ContainerGroupProfilePropertiesProperties struct {
 	// REQUIRED; The containers within the container group.
 	Containers []*Container
 
@@ -292,10 +313,25 @@ type ContainerGroupProfilePropertiesProperties struct {
 	// The SKU for a container group.
 	SKU *ContainerGroupSKU
 
+	// The container security properties.
+	SecurityContext *SecurityContextDefinition
+
+	// Shutdown grace period for containers in a container group.
+	ShutdownGracePeriod *time.Time
+
+	// Post completion time to live for containers of a CG
+	TimeToLive *time.Time
+
+	// Gets or sets Krypton use property.
+	UseKrypton *bool
+
 	// The list of volumes that can be mounted by containers in this container group.
 	Volumes []*Volume
 
-	// READ-ONLY; The container group profile current revision number. This only appears in the response.
+	// READ-ONLY; Registered revisions are calculated at request time based off the records in the table logs.
+	RegisteredRevisions []*int32
+
+	// READ-ONLY; Container group profile current revision number
 	Revision *int32
 }
 
@@ -307,6 +343,25 @@ type ContainerGroupProfileReferenceDefinition struct {
 
 	// The container group profile reference revision.
 	Revision *int32
+}
+
+// ContainerGroupProfileStub - The object that contains a reference to a Container Group Profile and it's other related properties.
+type ContainerGroupProfileStub struct {
+	// Container Group properties which can be set while creating or updating the NGroups.
+	ContainerGroupProperties *NGroupContainerGroupProperties
+
+	// A network profile for network settings of a ContainerGroupProfile.
+	NetworkProfile *NetworkProfile
+
+	// A reference to the container group profile ARM resource hosted in ACI RP.
+	Resource *APIEntityReference
+
+	// The revision of the CG profile is an optional property. If customer does not to provide a revision then NGroups will pickup
+	// the latest revision of CGProfile.
+	Revision *int32
+
+	// Storage profile for storage related settings of a container group profile.
+	StorageProfile *StorageProfile
 }
 
 // ContainerGroupProperties - The container group properties
@@ -353,6 +408,9 @@ type ContainerGroupPropertiesProperties struct {
 	// The IP address type of the container group.
 	IPAddress *IPAddress
 
+	// The access control levels of the identities.
+	IdentityACLs *IdentityACLs
+
 	// The image registry credentials by which the container group is created from.
 	ImageRegistryCredentials []*ImageRegistryCredential
 
@@ -374,6 +432,9 @@ type ContainerGroupPropertiesProperties struct {
 	// The SKU for a container group.
 	SKU *ContainerGroupSKU
 
+	// The secret references that will be referenced within the container group.
+	SecretReferences []*SecretReference
+
 	// The reference standby pool profile properties.
 	StandbyPoolProfile *StandbyPoolProfileDefinition
 
@@ -386,7 +447,7 @@ type ContainerGroupPropertiesProperties struct {
 	// READ-ONLY; The instance view of the container group. Only valid in response.
 	InstanceView *ContainerGroupPropertiesInstanceView
 
-	// READ-ONLY; The flag indicating whether the container group is created by standby pool.
+	// READ-ONLY; The flag to determine whether the container group is created from standby pool.
 	IsCreatedFromStandbyPool *bool
 
 	// READ-ONLY; The provisioning state of the container group. This only appears in the response.
@@ -555,6 +616,32 @@ type DeploymentExtensionSpecProperties struct {
 	Settings any
 }
 
+// ElasticProfile - Describes the elastic profile of the NGroup
+type ElasticProfile struct {
+	// Container Groups are named on a generic guid based naming scheme/policy. Customer can modify naming policy to add prefix
+	// to CG names during scale out operation.
+	ContainerGroupNamingPolicy *ElasticProfileContainerGroupNamingPolicy
+	DesiredCount               *int32
+
+	// Flag that indicates whether desiredCount should be maintained when customer deletes SPECIFIC container groups (CGs) from
+	// the NGroups. In this case, new CGs will be created by NGroup to compensate for
+	// the specific deleted ones.
+	MaintainDesiredCount *bool
+}
+
+// ElasticProfileContainerGroupNamingPolicy - Container Groups are named on a generic guid based naming scheme/policy. Customer
+// can modify naming policy to add prefix to CG names during scale out operation.
+type ElasticProfileContainerGroupNamingPolicy struct {
+	GUIDNamingPolicy *ElasticProfileContainerGroupNamingPolicyGUIDNamingPolicy
+}
+
+type ElasticProfileContainerGroupNamingPolicyGUIDNamingPolicy struct {
+	// The prefix can be used when there are tooling limitations (e.g. on the Azure portal where CGs from multiple NGroups exist
+	// in the same RG). The prefix with the suffixed resource name must still follow
+	// Azure resource naming guidelines.
+	Prefix *string
+}
+
 // EncryptionProperties - The container group encryption properties.
 type EncryptionProperties struct {
 	// REQUIRED; The encryption key name.
@@ -578,8 +665,45 @@ type EnvironmentVariable struct {
 	// The value of the secure environment variable.
 	SecureValue *string
 
+	// The reference of the secure environment variable.
+	SecureValueReference *string
+
 	// The value of the environment variable.
 	Value *string
+}
+
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
 }
 
 // Event - A container group or container instance event.
@@ -601,6 +725,25 @@ type Event struct {
 
 	// READ-ONLY; The event type.
 	Type *string
+}
+
+// FileShare - File shares that can be mounted on container groups.
+type FileShare struct {
+	Name               *string
+	Properties         *FileShareProperties
+	ResourceGroupName  *string
+	StorageAccountName *string
+}
+
+type FileShareProperties struct {
+	// Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage
+	// account can choose Premium. Learn more at:
+	// https://learn.microsoft.com/en-us/rest/api/storagerp/file-shares/create?tabs=HTTP#shareaccesstier
+	ShareAccessTier *AzureFileShareAccessTier
+
+	// Specifies how Container Groups can access the Azure file share i.e. all CG will share same Azure file share or going to
+	// have exclusive file share.
+	ShareAccessType *AzureFileShareAccessType
 }
 
 // GitRepoVolume - Represents a volume that is populated with the contents of a git repository
@@ -662,6 +805,24 @@ type IPAddress struct {
 	Fqdn *string
 }
 
+// IdentityACLs - The access control levels of the identities.
+type IdentityACLs struct {
+	// The access control levels for each identity.
+	ACLs []*IdentityAccessControl
+
+	// The default access level.
+	DefaultAccess *IdentityAccessLevel
+}
+
+// IdentityAccessControl - The access control for an identity
+type IdentityAccessControl struct {
+	// The access level of the identity.
+	Access *IdentityAccessLevel
+
+	// An identity.
+	Identity *string
+}
+
 // ImageRegistryCredential - Image registry credential.
 type ImageRegistryCredential struct {
 	// REQUIRED; The Docker image registry server without a protocol such as "http" and "https".
@@ -675,6 +836,9 @@ type ImageRegistryCredential struct {
 
 	// The password for the private registry.
 	Password *string
+
+	// The reference for the private registry password.
+	PasswordReference *string
 
 	// The username for the private registry.
 	Username *string
@@ -725,6 +889,123 @@ type InitContainerPropertiesDefinitionInstanceView struct {
 	RestartCount *int32
 }
 
+// ListResultContainerGroup - A container group part of the list result.
+type ListResultContainerGroup struct {
+	// REQUIRED; The container group properties
+	Properties *ListResultContainerGroupPropertiesProperties
+
+	// The identity of the container group, if configured.
+	Identity *ContainerGroupIdentity
+
+	// The resource location.
+	Location *string
+
+	// The resource tags.
+	Tags map[string]*string
+
+	// The zones for the container group.
+	Zones []*string
+
+	// READ-ONLY; The resource id.
+	ID *string
+
+	// READ-ONLY; The resource name.
+	Name *string
+
+	// READ-ONLY; The resource type.
+	Type *string
+}
+
+// ListResultContainerGroupProperties - Properties of container group part of list result
+type ListResultContainerGroupProperties struct {
+	// REQUIRED; The container group properties
+	Properties *ListResultContainerGroupPropertiesProperties
+
+	// The identity of the container group, if configured.
+	Identity *ContainerGroupIdentity
+}
+
+// ListResultContainerGroupPropertiesProperties - The container group properties
+type ListResultContainerGroupPropertiesProperties struct {
+	// REQUIRED; The containers within the container group.
+	Containers []*Container
+
+	// REQUIRED; The operating system type required by the containers in the container group.
+	OSType *OperatingSystemTypes
+
+	// The properties for confidential container group
+	ConfidentialComputeProperties *ConfidentialComputeProperties
+
+	// The reference container group profile properties.
+	ContainerGroupProfile *ContainerGroupProfileReferenceDefinition
+
+	// The DNS config information for a container group.
+	DNSConfig *DNSConfiguration
+
+	// The diagnostic information for a container group.
+	Diagnostics *ContainerGroupDiagnostics
+
+	// The encryption properties for a container group.
+	EncryptionProperties *EncryptionProperties
+
+	// extensions used by virtual kubelet
+	Extensions []*DeploymentExtensionSpec
+
+	// The IP address type of the container group.
+	IPAddress *IPAddress
+
+	// The access control levels of the identities.
+	IdentityACLs *IdentityACLs
+
+	// The image registry credentials by which the container group is created from.
+	ImageRegistryCredentials []*ImageRegistryCredential
+
+	// The init containers for a container group.
+	InitContainers []*InitContainerDefinition
+
+	// The priority of the container group.
+	Priority *ContainerGroupPriority
+
+	// Restart policy for all containers within the container group.
+	// * Always Always restart
+	// * OnFailure Restart on failure
+	// * Never Never restart
+	RestartPolicy *ContainerGroupRestartPolicy
+
+	// The SKU for a container group.
+	SKU *ContainerGroupSKU
+
+	// The secret references that will be referenced within the container group.
+	SecretReferences []*SecretReference
+
+	// The reference standby pool profile properties.
+	StandbyPoolProfile *StandbyPoolProfileDefinition
+
+	// The subnet resource IDs for a container group.
+	SubnetIDs []*ContainerGroupSubnetID
+
+	// The list of volumes that can be mounted by containers in this container group.
+	Volumes []*Volume
+
+	// READ-ONLY; The flag to determine whether the container group is created from standby pool.
+	IsCreatedFromStandbyPool *bool
+
+	// READ-ONLY; The provisioning state of the container group. This only appears in the response.
+	ProvisioningState *ContainerGroupProvisioningState
+}
+
+// LoadBalancer the CG profile will use to interact with CGs in a backend pool
+type LoadBalancer struct {
+	// List of Load Balancer Backend Address Pools.
+	BackendAddressPools []*LoadBalancerBackendAddressPool
+}
+
+// LoadBalancerBackendAddressPool - NGroups load balancer backend address pool
+type LoadBalancerBackendAddressPool struct {
+	// The Load Balancer backend address pool ARM resource Id.
+	Resource *string
+}
+
 // LogAnalytics - Container group log analytics information.
 type LogAnalytics struct {
 	// REQUIRED; The workspace id for log analytics
@@ -747,6 +1028,167 @@ type LogAnalytics struct {
 type Logs struct {
 	// The content of the log.
 	Content *string
+}
+
+// NGroup - Describes the NGroups resource.
+type NGroup struct {
+	// The identity of the NGroup, if configured.
+	Identity *NGroupIdentity
+
+	// The resource location.
+	Location *string
+
+	// Describes the properties of the NGroups resource.
+	Properties *NGroupProperties
+
+	// The resource tags.
+	Tags map[string]*string
+
+	// The zones for the container group.
+	Zones []*string
+
+	// READ-ONLY; The resource id.
+	ID *string
+
+	// READ-ONLY; The resource name.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The resource type.
+	Type *string
+}
+
+// NGroupCGPropertyContainer - Container properties that can be provided with NGroups object.
+type NGroupCGPropertyContainer struct {
+	// container name
+	Name *string
+
+	// container properties
+	Properties *NGroupCGPropertyContainerProperties
+}
+
+// NGroupCGPropertyContainerProperties - container properties
+type NGroupCGPropertyContainerProperties struct {
+	VolumeMounts []*VolumeMount
+}
+
+// NGroupCGPropertyVolume - Contains information about the volumes that can be mounted by Containers in the Container Groups.
+type NGroupCGPropertyVolume struct {
+	// REQUIRED; The name of the volume.
+	Name *string
+
+	// The Azure File volume.
+	AzureFile *AzureFileVolume
+}
+
+// NGroupContainerGroupProperties - Container Group properties which can be set while creating or updating the NGroups.
+type NGroupContainerGroupProperties struct {
+	// Contains information about Container which can be set while creating or updating the NGroups.
+	Containers []*NGroupCGPropertyContainer
+
+	// Contains information about Virtual Network Subnet ARM Resource
+	SubnetIDs []*ContainerGroupSubnetID
+
+	// Contains information about the volumes that can be mounted by Containers in the Container Groups.
+	Volumes []*NGroupCGPropertyVolume
+}
+
+// NGroupIdentity - Identity for the NGroup.
+type NGroupIdentity struct {
+	// The type of identity used for the NGroup. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
+	// and a set of user assigned identities. The type 'None' will remove any
+	// identities from the NGroup.
+	Type *ResourceIdentityType
+
+	// The list of user identities associated with the NGroup.
+	UserAssignedIdentities map[string]*UserAssignedIdentities
+
+	// READ-ONLY; The principal id of the NGroup identity. This property will only be provided for a system assigned identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant id associated with the NGroup. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
+// NGroupPatch - Describes the NGroups resource.
+type NGroupPatch struct {
+	// The identity of the NGroup, if configured.
+	Identity *NGroupIdentity
+
+	// Describes the properties of the NGroups resource.
+	Properties *NGroupProperties
+
+	// The resource tags.
+	Tags map[string]*string
+
+	// The zones for the NGroup.
+	Zones []*string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+}
+
+// NGroupProperties - Describes the properties of the NGroups resource.
+type NGroupProperties struct {
+	// The Container Group Profiles that could be used in the NGroups resource.
+	ContainerGroupProfiles []*ContainerGroupProfileStub
+
+	// The elastic profile.
+	ElasticProfile *ElasticProfile
+
+	// Provides options w.r.t allocation and management w.r.t certain placement policies. These utilize capabilities provided
+	// by the underlying Azure infrastructure. They are typically used for high
+	// availability scenarios. E.g., distributing CGs across fault domains.
+	PlacementProfile *PlacementProfile
+
+	// Used by the customer to specify the way to update the Container Groups in NGroup.
+	UpdateProfile *UpdateProfile
+
+	// READ-ONLY; The provisioning state, which only appears in the response.
+	ProvisioningState *NGroupProvisioningState
+}
+
+// NGroupSKUs - The container probe, for liveness or readiness.
+type NGroupSKUs struct {
+	// The type of resource the sku is applied to.
+	ResourceType *string
+
+	// The sku of the resource type
+	SKU *string
+
+	// The number of container groups of the NGroups.
+	SKUCapacity *string
+}
+
+// NGroupsListResult - The NGroups list response that contains the NGroups properties.
+type NGroupsListResult struct {
+	// The URI to fetch the next page of NGroups.
+	NextLink *string
+
+	// The list of NGroups.
+	Value []*NGroup
+}
+
+// NGroupsSKUsList - List of SKU definitions. NGroups offer a single sku
+type NGroupsSKUsList struct {
+	// The URI to fetch the next page of NGroups SKUs.
+	NextLink *string
+
+	// The list of NGroups SKUs.
+	Value []*NGroupSKUs
+}
+
+// NetworkProfile - A network profile for network settings of a ContainerGroupProfile. Used to manage load balancer and application
+// gateway backend pools, specifically updating the IP addresses of CGs within the backend
+// pool.
+type NetworkProfile struct {
+	// Application Gateway the CG profile will use to interact with CGs in a backend pool
+	ApplicationGateway *ApplicationGateway
+
+	// LoadBalancer the CG profile will use to interact with CGs in a backend pool
+	LoadBalancer *LoadBalancer
 }
 
 // Operation - An operation for Azure Container Instance service.
@@ -786,6 +1228,15 @@ type OperationListResult struct {
 
 	// The list of operations.
 	Value []*Operation
+}
+
+// PlacementProfile - Provides options w.r.t allocation and management w.r.t certain placement policies. These utilize capabilities
+// provided by the underlying Azure infrastructure. They are typically used for high
+// availability scenarios. E.g., distributing CGs across fault domains.
+type PlacementProfile struct {
+	// The number of fault domains to be used to spread CGs in the NGroups resource. This can only be specified during NGroup
+	// creation and is immutable after that.
+	FaultDomainCount *int32
 }
 
 // Port - The port exposed on the container group.
@@ -851,6 +1302,18 @@ type ResourceRequirements struct {
 	Limits *ResourceLimits
 }
 
+// SecretReference - A secret reference
+type SecretReference struct {
+	// REQUIRED; The ARM resource id of the managed identity that has access to the secret in the key vault
+	Identity *string
+
+	// REQUIRED; The identifier of the secret reference
+	Name *string
+
+	// REQUIRED; The URI to the secret in key vault
+	SecretReferenceURI *string
+}
+
 // SecurityContextCapabilitiesDefinition - The capabilities to add or drop from a container.
 type SecurityContextCapabilitiesDefinition struct {
 	// The capabilities to add to the container.
@@ -890,6 +1353,55 @@ type StandbyPoolProfileDefinition struct {
 	// The standby pool profile reference id.This will be an ARM resource id in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyPoolName}'.
 	ID *string
+}
+
+// StorageProfile - Storage profile for storage related settings of a container group profile.
+type StorageProfile struct {
+	FileShares []*FileShare
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
+}
+
+// UpdateProfile - Used by the customer to specify the way to update the Container Groups in NGroup.
+type UpdateProfile struct {
+	// This profile allows the customers to customize the rolling update.
+	RollingUpdateProfile *UpdateProfileRollingUpdateProfile
+	UpdateMode           *NGroupUpdateMode
+}
+
+// UpdateProfileRollingUpdateProfile - This profile allows the customers to customize the rolling update.
+type UpdateProfileRollingUpdateProfile struct {
+	// Default is false. If set to true, the CGs will be updated in-place instead of creating new CG and deleting old ones.
+	InPlaceUpdate *bool
+
+	// Maximum percentage of total Container Groups which can be updated simultaneously by rolling update in one batch.
+	MaxBatchPercent *int32
+
+	// Maximum percentage of the updated Container Groups which can be in unhealthy state after each batch is updated.
+	MaxUnhealthyPercent *int32
+
+	// The wait time between batches after completing the one batch of the rolling update and starting the next batch. The time
+	// duration should be specified in ISO 8601 format for duration.
+	PauseTimeBetweenBatches *string
 }
 
 // Usage - A single usage result
@@ -952,6 +1464,9 @@ type Volume struct {
 
 	// The secret volume.
 	Secret map[string]*string
+
+	// The secret reference volume.
+	SecretReference map[string]*string
 }
 
 // VolumeMount - The properties of the volume mount.

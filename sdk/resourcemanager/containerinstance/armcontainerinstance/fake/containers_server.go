@@ -12,7 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -55,25 +55,44 @@ func (c *ContainersServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return c.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ContainersClient.Attach":
-		resp, err = c.dispatchAttach(req)
-	case "ContainersClient.ExecuteCommand":
-		resp, err = c.dispatchExecuteCommand(req)
-	case "ContainersClient.ListLogs":
-		resp, err = c.dispatchListLogs(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (c *ContainersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if containersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = containersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ContainersClient.Attach":
+				res.resp, res.err = c.dispatchAttach(req)
+			case "ContainersClient.ExecuteCommand":
+				res.resp, res.err = c.dispatchExecuteCommand(req)
+			case "ContainersClient.ListLogs":
+				res.resp, res.err = c.dispatchListLogs(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (c *ContainersServerTransport) dispatchAttach(req *http.Request) (*http.Response, error) {
@@ -83,7 +102,7 @@ func (c *ContainersServerTransport) dispatchAttach(req *http.Request) (*http.Res
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attach`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -120,7 +139,7 @@ func (c *ContainersServerTransport) dispatchExecuteCommand(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exec`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armcontainerinstance.ContainerExecRequest](req)
@@ -161,7 +180,7 @@ func (c *ContainersServerTransport) dispatchListLogs(req *http.Request) (*http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerInstance/containerGroups/(?P<containerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logs`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -219,4 +238,10 @@ func (c *ContainersServerTransport) dispatchListLogs(req *http.Request) (*http.R
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ContainersServerTransport
+var containersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

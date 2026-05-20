@@ -27,7 +27,7 @@ type SubnetServiceAssociationLinkClient struct {
 // NewSubnetServiceAssociationLinkClient creates a new instance of SubnetServiceAssociationLinkClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSubnetServiceAssociationLinkClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubnetServiceAssociationLinkClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewSubnetServiceAssociationLinkClient(subscriptionID string, credential azc
 // by the user.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualNetworkName - The name of the virtual network.
 //   - subnetName - The name of the subnet.
@@ -71,7 +71,7 @@ func (client *SubnetServiceAssociationLinkClient) BeginDelete(ctx context.Contex
 // by the user.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 func (client *SubnetServiceAssociationLinkClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetServiceAssociationLinkClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SubnetServiceAssociationLinkClient.BeginDelete"
@@ -94,7 +94,7 @@ func (client *SubnetServiceAssociationLinkClient) deleteOperation(ctx context.Co
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SubnetServiceAssociationLinkClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetServiceAssociationLinkClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *SubnetServiceAssociationLinkClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, _ *SubnetServiceAssociationLinkClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/providers/Microsoft.ContainerInstance/serviceAssociationLinks/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,7 +117,7 @@ func (client *SubnetServiceAssociationLinkClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -27,7 +27,7 @@ type ContainerGroupsClient struct {
 // NewContainerGroupsClient creates a new instance of ContainerGroupsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContainerGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerGroupsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewContainerGroupsClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreateOrUpdate - Create or update container groups with specified configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - containerGroup - The properties of the container group to be created or updated.
@@ -69,7 +69,7 @@ func (client *ContainerGroupsClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - Create or update container groups with specified configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 func (client *ContainerGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContainerGroupsClient.BeginCreateOrUpdate"
@@ -92,7 +92,7 @@ func (client *ContainerGroupsClient) createOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ContainerGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, _ *ContainerGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -111,7 +111,7 @@ func (client *ContainerGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, containerGroup); err != nil {
@@ -124,7 +124,7 @@ func (client *ContainerGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 // not delete other resources provided by the user, such as volumes.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - options - ContainerGroupsClientBeginDeleteOptions contains the optional parameters for the ContainerGroupsClient.BeginDelete
@@ -150,7 +150,7 @@ func (client *ContainerGroupsClient) BeginDelete(ctx context.Context, resourceGr
 // delete other resources provided by the user, such as volumes.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 func (client *ContainerGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContainerGroupsClient.BeginDelete"
@@ -173,7 +173,7 @@ func (client *ContainerGroupsClient) deleteOperation(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -192,7 +192,7 @@ func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -203,7 +203,7 @@ func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, re
 // credentials, restart policy, IP address type, OS type, state, and volumes.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - options - ContainerGroupsClientGetOptions contains the optional parameters for the ContainerGroupsClient.Get method.
@@ -230,7 +230,7 @@ func (client *ContainerGroupsClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *ContainerGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientGetOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -249,7 +249,7 @@ func (client *ContainerGroupsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -268,7 +268,7 @@ func (client *ContainerGroupsClient) getHandleResponse(resp *http.Response) (Con
 // control of network setting and configuration. For container groups, this will always be an empty list.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - options - ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the
@@ -296,7 +296,7 @@ func (client *ContainerGroupsClient) GetOutboundNetworkDependenciesEndpoints(ctx
 }
 
 // getOutboundNetworkDependenciesEndpointsCreateRequest creates the GetOutboundNetworkDependenciesEndpoints request.
-func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/outboundNetworkDependenciesEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -315,7 +315,7 @@ func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -334,7 +334,7 @@ func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsHand
 // container group including containers, image registry credentials, restart policy, IP address
 // type, OS type, state, and volumes.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - options - ContainerGroupsClientListOptions contains the optional parameters for the ContainerGroupsClient.NewListPager
 //     method.
 func (client *ContainerGroupsClient) NewListPager(options *ContainerGroupsClientListOptions) *runtime.Pager[ContainerGroupsClientListResponse] {
@@ -361,7 +361,7 @@ func (client *ContainerGroupsClient) NewListPager(options *ContainerGroupsClient
 }
 
 // listCreateRequest creates the List request.
-func (client *ContainerGroupsClient) listCreateRequest(ctx context.Context, options *ContainerGroupsClientListOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) listCreateRequest(ctx context.Context, _ *ContainerGroupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -372,7 +372,7 @@ func (client *ContainerGroupsClient) listCreateRequest(ctx context.Context, opti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -391,7 +391,7 @@ func (client *ContainerGroupsClient) listHandleResponse(resp *http.Response) (Co
 // returns properties of each container group including containers, image registry credentials, restart
 // policy, IP address type, OS type, state, and volumes.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ContainerGroupsClientListByResourceGroupOptions contains the optional parameters for the ContainerGroupsClient.NewListByResourceGroupPager
 //     method.
@@ -419,7 +419,7 @@ func (client *ContainerGroupsClient) NewListByResourceGroupPager(resourceGroupNa
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ContainerGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ContainerGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ContainerGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -434,7 +434,7 @@ func (client *ContainerGroupsClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -453,7 +453,7 @@ func (client *ContainerGroupsClient) listByResourceGroupHandleResponse(resp *htt
 // downloaded.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - options - ContainerGroupsClientBeginRestartOptions contains the optional parameters for the ContainerGroupsClient.BeginRestart
@@ -478,7 +478,7 @@ func (client *ContainerGroupsClient) BeginRestart(ctx context.Context, resourceG
 // Restart - Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 func (client *ContainerGroupsClient) restart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContainerGroupsClient.BeginRestart"
@@ -501,7 +501,7 @@ func (client *ContainerGroupsClient) restart(ctx context.Context, resourceGroupN
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/restart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -520,7 +520,7 @@ func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -529,7 +529,7 @@ func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, r
 // BeginStart - Starts all containers in a container group. Compute resources will be allocated and billing will start.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - options - ContainerGroupsClientBeginStartOptions contains the optional parameters for the ContainerGroupsClient.BeginStart
@@ -554,7 +554,7 @@ func (client *ContainerGroupsClient) BeginStart(ctx context.Context, resourceGro
 // Start - Starts all containers in a container group. Compute resources will be allocated and billing will start.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 func (client *ContainerGroupsClient) start(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContainerGroupsClient.BeginStart"
@@ -577,7 +577,7 @@ func (client *ContainerGroupsClient) start(ctx context.Context, resourceGroupNam
 }
 
 // startCreateRequest creates the Start request.
-func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -596,7 +596,7 @@ func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -605,7 +605,7 @@ func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, res
 // Stop - Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - options - ContainerGroupsClientStopOptions contains the optional parameters for the ContainerGroupsClient.Stop method.
@@ -631,7 +631,7 @@ func (client *ContainerGroupsClient) Stop(ctx context.Context, resourceGroupName
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *ContainerGroupsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientStopOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -650,7 +650,7 @@ func (client *ContainerGroupsClient) stopCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -659,7 +659,7 @@ func (client *ContainerGroupsClient) stopCreateRequest(ctx context.Context, reso
 // Update - Updates container group tags with specified values.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - resource - The container group resource with just the tags to be updated.
@@ -687,7 +687,7 @@ func (client *ContainerGroupsClient) Update(ctx context.Context, resourceGroupNa
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ContainerGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, resource Resource, options *ContainerGroupsClientUpdateOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, resource Resource, _ *ContainerGroupsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -706,7 +706,7 @@ func (client *ContainerGroupsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {

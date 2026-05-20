@@ -85,6 +85,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
+	o = withDefaultTransport(o)
 
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
@@ -132,6 +133,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
+	o = withDefaultTransport(o)
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
 		return nil, err
@@ -181,7 +183,9 @@ func NewClientFromConnectionString(connectionString string, o *ClientOptions) (*
 }
 
 func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *ClientOptions) (*azcore.Client, error) {
-	options = withDefaultTransport(options)
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	return azcore.NewClient(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),
@@ -205,7 +209,9 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 }
 
 func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
-	options = withDefaultTransport(options)
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	return azruntime.NewPipeline(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
 			AllowedHeaders: getAllowedHeaders(),
@@ -217,9 +223,12 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 }
 
 // withDefaultTransport returns a *ClientOptions whose Transport is set to the
-// Cosmos default HTTP client when the caller has not supplied one. The
-// returned value is always non-nil and is safe to mutate without affecting
-// the caller's struct.
+// Cosmos default HTTP client when the caller has not supplied one. Callers
+// of NewClient*/NewClientFromConnectionString invoke this exactly once and
+// reuse the result for both the user-facing and the global-endpoint-manager
+// pipelines so options are normalized in a single place. The returned value
+// is always non-nil and is safe to mutate without affecting the caller's
+// struct.
 func withDefaultTransport(options *ClientOptions) *ClientOptions {
 	if options == nil {
 		return &ClientOptions{

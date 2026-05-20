@@ -15,11 +15,11 @@ import (
 
 func TestDefaultCosmosHTTPClient_Timeouts(t *testing.T) {
 	require.Equal(t, 5*time.Second, defaultConnectTimeout)
-	require.Equal(t, 65*time.Second, defaultRequestTimeout)
+	require.Equal(t, 65*time.Second, defaultHTTPRoundTripTimeout)
 
 	c := newDefaultCosmosHTTPClient()
 	require.NotNil(t, c)
-	require.Equal(t, defaultRequestTimeout, c.Timeout)
+	require.Equal(t, defaultHTTPRoundTripTimeout, c.Timeout)
 
 	transport, ok := c.Transport.(*http.Transport)
 	require.True(t, ok, "expected *http.Transport, got %T", c.Transport)

@@ -10,7 +10,11 @@
 
 ### Other Changes
 
-* Set the default HTTP client connect (dial) timeout to 5 seconds (down from the azcore default of 30 seconds) and the default request timeout to 65 seconds (the azcore default was unbounded). The 65-second timeout applies to the entire HTTP round-trip, including response-body streaming. Increased the default idle connection pool size to 1000 total / 1000 per host (up from the azcore defaults of 100 / 10) to better support high-concurrency workloads against the Cosmos gateway. Callers that supply a custom `Transport` via `azcore.ClientOptions` are unaffected. See [PR 26856](https://github.com/Azure/azure-sdk-for-go/pull/26856).
+* Tightened the default HTTP client used by the Cosmos SDK to fail fast on dead endpoints and to backstop runaway requests. Idle-connection pool sizing is unchanged from the azcore defaults. Callers that supply a custom `Transport` via `azcore.ClientOptions` are unaffected.
+    * **Connect (dial) timeout:** 5 seconds (down from the azcore default of 30 seconds). Cosmos accounts in the preferred region are expected to be reachable in well under a second, so failing fast lets the global endpoint manager move on to the next preferred region instead of blocking for 30 seconds on a dead endpoint.
+    * **HTTP round-trip timeout (`http.Client.Timeout`):** 65 seconds (the azcore default was unbounded). This is a wall-clock cap on a single HTTP attempt - dial, request write, header read, and body read - chosen to slightly exceed the Cosmos gateway's own server-side request budget (~60 seconds) so the server has a chance to return a structured error before the client gives up. A caller-supplied `context.WithTimeout` *shorter* than 65 seconds still wins; a caller-supplied deadline *longer* than 65 seconds will be truncated by the HTTP client. The azcore retry policy is layered above the transport so it can still issue additional retries when one attempt is capped. Callers that legitimately need to drain very large query/change-feed pages in a single attempt should supply their own `Transport`.
+    * **HTTP/2 health check:** `ReadIdleTimeout = 2s`, `PingTimeout = 1s` to detect dead HTTP/2 connections quickly.
+    See [PR 26856](https://github.com/Azure/azure-sdk-for-go/pull/26856).
 
 ## 1.5.0-beta.6 (2026-05-15)
 

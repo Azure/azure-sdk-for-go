@@ -69,38 +69,30 @@ func ResetExpectContinueEnvCacheForTest() (restore func()) {
 // NewExpectContinuePolicy returns a per-retry policy that applies the "Expect: 100-continue" HTTP
 // header to outgoing requests according to the provided options.
 //
-// When opts is nil the default behavior is ExpectContinueModeApplyOnThrottle, equivalent to
-// passing &exported.ExpectContinueOptions{}.
+// The zero value of opts selects ExpectContinueModeApplyOnThrottle with a one-minute window.
 //
 // When the environment variable AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER is set to a truthy
 // value, the returned policy is nil regardless of the supplied options.
 //
 // Returns nil when no policy should be added to the pipeline (mode is Off or env disables it).
-func NewExpectContinuePolicy(opts *exported.ExpectContinueOptions) policy.Policy {
+func NewExpectContinuePolicy(opts exported.ExpectContinueOptions) policy.Policy {
 	if envCheckExpectContinueDisabled() {
 		return nil
-	}
-	if opts == nil {
-		opts = &exported.ExpectContinueOptions{}
-	}
-	var threshold int64
-	if opts.ContentLengthThreshold != nil {
-		threshold = *opts.ContentLengthThreshold
 	}
 	switch opts.Mode {
 	case exported.ExpectContinueModeOff:
 		return nil
 	case exported.ExpectContinueModeOn:
-		return &expectContinuePolicy{contentLengthThreshold: threshold}
+		return &expectContinuePolicy{contentLengthThreshold: opts.ContentLengthThreshold}
 	case exported.ExpectContinueModeApplyOnThrottle:
 		fallthrough
 	default:
-		interval := defaultThrottleInterval
-		if opts.ThrottleInterval != nil {
-			interval = *opts.ThrottleInterval
+		interval := opts.ThrottleInterval
+		if interval == 0 {
+			interval = defaultThrottleInterval
 		}
 		return &expectContinueOnThrottlePolicy{
-			contentLengthThreshold: threshold,
+			contentLengthThreshold: opts.ContentLengthThreshold,
 			throttleInterval:       interval,
 		}
 	}
@@ -134,6 +126,8 @@ func (p *expectContinueOnThrottlePolicy) Do(req *policy.Request) (*http.Response
 		last := p.lastThrottleUnixNanos.Load()
 		if last != 0 && time.Now().UnixNano()-last < p.throttleInterval.Nanoseconds() {
 			req.Raw().Header.Set(expectContinueHeader, expectContinueHeaderValue)
+		} else {
+			req.Raw().Header.Del(expectContinueHeader)
 		}
 	}
 	resp, err := req.Next()

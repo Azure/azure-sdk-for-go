@@ -7065,7 +7065,7 @@ func TestUploadExpectContinue(t *testing.T) {
 	fbb := &fakeBlockBlob{}
 	observer := &expectHeaderObserver{}
 	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
-		ExpectContinueBehavior: &azblob.ExpectContinueOptions{Mode: azblob.ExpectContinueModeOn},
+		ExpectContinueBehavior: azblob.ExpectContinueOptions{Mode: azblob.ExpectContinueModeOn},
 		ClientOptions: policy.ClientOptions{
 			Transport:        fbb,
 			PerRetryPolicies: []policy.Policy{observer},
@@ -7089,7 +7089,7 @@ func TestUploadExpectContinueOff(t *testing.T) {
 	fbb := &fakeBlockBlob{}
 	observer := &expectHeaderObserver{}
 	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
-		ExpectContinueBehavior: &azblob.ExpectContinueOptions{Mode: azblob.ExpectContinueModeOff},
+		ExpectContinueBehavior: azblob.ExpectContinueOptions{Mode: azblob.ExpectContinueModeOff},
 		ClientOptions: policy.ClientOptions{
 			Transport:        fbb,
 			PerRetryPolicies: []policy.Policy{observer},

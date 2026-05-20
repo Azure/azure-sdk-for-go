@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/stretchr/testify/require"
 )
@@ -75,7 +74,7 @@ func TestExpectContinuePolicyAddsHeaderOnContentBody(t *testing.T) {
 	for _, hasBody := range []bool{true, false} {
 		t.Run("", func(t *testing.T) {
 			rt := &recordingTransport{}
-			p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeOn})
+			p := NewExpectContinuePolicy(exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeOn})
 			require.NotNil(t, p)
 			pl := newPipelineForPolicy(p, rt)
 
@@ -112,9 +111,9 @@ func TestExpectContinuePolicyRespectsThreshold(t *testing.T) {
 	for _, tc := range cases {
 		t.Run("", func(t *testing.T) {
 			rt := &recordingTransport{}
-			p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{
+			p := NewExpectContinuePolicy(exported.ExpectContinueOptions{
 				Mode:                   exported.ExpectContinueModeOn,
-				ContentLengthThreshold: to.Ptr(tc.threshold),
+				ContentLengthThreshold: tc.threshold,
 			})
 			require.NotNil(t, p)
 			pl := newPipelineForPolicy(p, rt)
@@ -139,7 +138,7 @@ func TestExpectContinueOnThrottlePolicyAddsHeaderOnlyAfterError(t *testing.T) {
 	for _, status := range []int{http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable} {
 		t.Run("", func(t *testing.T) {
 			rt := &recordingTransport{statuses: []int{http.StatusAccepted, status, http.StatusOK}}
-			p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeApplyOnThrottle})
+			p := NewExpectContinuePolicy(exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeApplyOnThrottle})
 			require.NotNil(t, p)
 			pl := newPipelineForPolicy(p, rt)
 
@@ -177,9 +176,9 @@ func TestExpectContinueOnThrottlePolicyRespectsThreshold(t *testing.T) {
 	for _, tc := range cases {
 		t.Run("", func(t *testing.T) {
 			rt := &recordingTransport{statuses: []int{http.StatusTooManyRequests, http.StatusOK}}
-			p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{
+			p := NewExpectContinuePolicy(exported.ExpectContinueOptions{
 				Mode:                   exported.ExpectContinueModeApplyOnThrottle,
-				ContentLengthThreshold: to.Ptr(tc.threshold),
+				ContentLengthThreshold: tc.threshold,
 			})
 			require.NotNil(t, p)
 			pl := newPipelineForPolicy(p, rt)
@@ -233,14 +232,14 @@ func TestExpectContinueOnThrottlePolicyRevertsAfterBackoff(t *testing.T) {
 
 // TestNewExpectContinuePolicyOffReturnsNil verifies that mode Off causes no policy to be added.
 func TestNewExpectContinuePolicyOffReturnsNil(t *testing.T) {
-	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeOff})
+	p := NewExpectContinuePolicy(exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeOff})
 	require.Nil(t, p)
 }
 
-// TestNewExpectContinuePolicyDefaultsToApplyOnThrottle verifies that nil options produces the
+// TestNewExpectContinuePolicyDefaultsToApplyOnThrottle verifies that the zero value produces the
 // ApplyOnThrottle policy.
 func TestNewExpectContinuePolicyDefaultsToApplyOnThrottle(t *testing.T) {
-	p := NewExpectContinuePolicy(nil)
+	p := NewExpectContinuePolicy(exported.ExpectContinueOptions{})
 	require.NotNil(t, p)
 	_, ok := p.(*expectContinueOnThrottlePolicy)
 	require.True(t, ok, "expected *expectContinueOnThrottlePolicy, got %T", p)
@@ -254,9 +253,9 @@ func TestNewExpectContinuePolicyEnvVarDisables(t *testing.T) {
 		t.Run(v, func(t *testing.T) {
 			t.Setenv(DisableExpectContinueHeaderEnvVar, v)
 			resetExpectContinueEnvCacheForTest(t)
-			require.Nil(t, NewExpectContinuePolicy(nil))
-			require.Nil(t, NewExpectContinuePolicy(&exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeOn}))
-			require.Nil(t, NewExpectContinuePolicy(&exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeApplyOnThrottle}))
+			require.Nil(t, NewExpectContinuePolicy(exported.ExpectContinueOptions{}))
+			require.Nil(t, NewExpectContinuePolicy(exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeOn}))
+			require.Nil(t, NewExpectContinuePolicy(exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeApplyOnThrottle}))
 		})
 	}
 }
@@ -269,7 +268,7 @@ func TestNewExpectContinuePolicyEnvVarFalsyValuesEnable(t *testing.T) {
 		t.Run(v, func(t *testing.T) {
 			t.Setenv(DisableExpectContinueHeaderEnvVar, v)
 			resetExpectContinueEnvCacheForTest(t)
-			require.NotNil(t, NewExpectContinuePolicy(nil))
+			require.NotNil(t, NewExpectContinuePolicy(exported.ExpectContinueOptions{}))
 		})
 	}
 }
@@ -290,22 +289,22 @@ func TestExpectContinueEnvCacheIsMemoized(t *testing.T) {
 
 	t.Setenv(DisableExpectContinueHeaderEnvVar, "true")
 	// Prime the cache while the variable is "true" - the policy must be disabled.
-	require.Nil(t, NewExpectContinuePolicy(nil))
+	require.Nil(t, NewExpectContinuePolicy(exported.ExpectContinueOptions{}))
 
 	// Change the env variable. The cache should not pick up the new value.
 	t.Setenv(DisableExpectContinueHeaderEnvVar, "false")
-	require.Nil(t, NewExpectContinuePolicy(nil), "cache should still report disabled until reset")
+	require.Nil(t, NewExpectContinuePolicy(exported.ExpectContinueOptions{}), "cache should still report disabled until reset")
 
 	// Resetting the cache forces a re-read.
 	resetExpectContinueEnvCacheForTest(t)
-	require.NotNil(t, NewExpectContinuePolicy(nil))
+	require.NotNil(t, NewExpectContinuePolicy(exported.ExpectContinueOptions{}))
 }
 
 // TestExpectContinuePolicyIgnoresUnknownContentLength verifies the header is not added when
 // content length is unknown (e.g. -1 from chunked encoding).
 func TestExpectContinuePolicyIgnoresUnknownContentLength(t *testing.T) {
 	rt := &recordingTransport{}
-	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeOn})
+	p := NewExpectContinuePolicy(exported.ExpectContinueOptions{Mode: exported.ExpectContinueModeOn})
 	require.NotNil(t, p)
 	pl := newPipelineForPolicy(p, rt)
 
@@ -321,7 +320,7 @@ func TestExpectContinuePolicyIgnoresUnknownContentLength(t *testing.T) {
 // TestNewExpectContinuePolicyDefaultThrottleIntervalIsOneMinute verifies that the default
 // throttle interval is one minute.
 func TestNewExpectContinuePolicyDefaultThrottleIntervalIsOneMinute(t *testing.T) {
-	p := NewExpectContinuePolicy(nil)
+	p := NewExpectContinuePolicy(exported.ExpectContinueOptions{})
 	require.NotNil(t, p)
 	tp, ok := p.(*expectContinueOnThrottlePolicy)
 	require.True(t, ok, "expected *expectContinueOnThrottlePolicy, got %T", p)
@@ -332,7 +331,7 @@ func TestNewExpectContinuePolicyDefaultThrottleIntervalIsOneMinute(t *testing.T)
 // ThrottleInterval overrides the default throttle interval.
 func TestNewExpectContinuePolicyHonorsThrottleInterval(t *testing.T) {
 	custom := 250 * time.Millisecond
-	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{ThrottleInterval: &custom})
+	p := NewExpectContinuePolicy(exported.ExpectContinueOptions{ThrottleInterval: custom})
 	require.NotNil(t, p)
 	tp, ok := p.(*expectContinueOnThrottlePolicy)
 	require.True(t, ok, "expected *expectContinueOnThrottlePolicy, got %T", p)
@@ -346,7 +345,7 @@ func TestExpectContinueOnThrottlePolicyThrottleIntervalEndToEnd(t *testing.T) {
 	rt := &recordingTransport{statuses: []int{http.StatusTooManyRequests, http.StatusOK, http.StatusOK}}
 
 	backoff := 10 * time.Millisecond
-	p := NewExpectContinuePolicy(&exported.ExpectContinueOptions{ThrottleInterval: &backoff})
+	p := NewExpectContinuePolicy(exported.ExpectContinueOptions{ThrottleInterval: backoff})
 	require.NotNil(t, p)
 	pl := newPipelineForPolicy(p, rt)
 

@@ -22,13 +22,13 @@ type ClientOptions struct {
 	Audience string
 
 	// ExpectContinueBehavior configures the application of the HTTP "Expect: 100-continue"
-	// header on operations that include a request body. If nil, the default behavior is used,
-	// which conditionally applies the header for a short window after the service responds
-	// with a throttle/server-error status (429, 500, or 503).
+	// header on operations that include a request body. The default zero-value behavior
+	// conditionally applies the header for a short window after the service responds with a
+	// throttle/server-error status (429, 500, or 503).
 	//
 	// Setting the environment variable AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER to a
 	// truthy value disables this behavior entirely, regardless of this setting.
-	ExpectContinueBehavior *exported.ExpectContinueOptions
+	ExpectContinueBehavior exported.ExpectContinueOptions
 }
 
 type Client[T any] struct {

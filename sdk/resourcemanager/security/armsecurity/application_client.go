@@ -27,7 +27,7 @@ type ApplicationClient struct {
 // NewApplicationClient creates a new instance of ApplicationClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *ApplicationClient) CreateOrUpdate(ctx context.Context, application
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ApplicationClient) createOrUpdateCreateRequest(ctx context.Context, applicationID string, application Application, options *ApplicationClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationClient) createOrUpdateCreateRequest(ctx context.Context, applicationID string, application Application, _ *ApplicationClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -132,7 +132,7 @@ func (client *ApplicationClient) Delete(ctx context.Context, applicationID strin
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, applicationID string, options *ApplicationClientDeleteOptions) (*policy.Request, error) {
+func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, applicationID string, _ *ApplicationClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -181,7 +181,7 @@ func (client *ApplicationClient) Get(ctx context.Context, applicationID string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplicationClient) getCreateRequest(ctx context.Context, applicationID string, options *ApplicationClientGetOptions) (*policy.Request, error) {
+func (client *ApplicationClient) getCreateRequest(ctx context.Context, applicationID string, _ *ApplicationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

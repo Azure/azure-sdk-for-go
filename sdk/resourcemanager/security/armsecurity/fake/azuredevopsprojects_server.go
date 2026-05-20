@@ -67,27 +67,46 @@ func (a *AzureDevOpsProjectsServerTransport) Do(req *http.Request) (*http.Respon
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AzureDevOpsProjectsClient.BeginCreateOrUpdate":
-		resp, err = a.dispatchBeginCreateOrUpdate(req)
-	case "AzureDevOpsProjectsClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "AzureDevOpsProjectsClient.NewListPager":
-		resp, err = a.dispatchNewListPager(req)
-	case "AzureDevOpsProjectsClient.BeginUpdate":
-		resp, err = a.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AzureDevOpsProjectsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if azureDevOpsProjectsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = azureDevOpsProjectsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AzureDevOpsProjectsClient.BeginCreateOrUpdate":
+				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
+			case "AzureDevOpsProjectsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AzureDevOpsProjectsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
+			case "AzureDevOpsProjectsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AzureDevOpsProjectsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -99,7 +118,7 @@ func (a *AzureDevOpsProjectsServerTransport) dispatchBeginCreateOrUpdate(req *ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/azureDevOpsOrgs/(?P<orgName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsecurity.AzureDevOpsProject](req)
@@ -153,7 +172,7 @@ func (a *AzureDevOpsProjectsServerTransport) dispatchGet(req *http.Request) (*ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/azureDevOpsOrgs/(?P<orgName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -196,7 +215,7 @@ func (a *AzureDevOpsProjectsServerTransport) dispatchNewListPager(req *http.Requ
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/azureDevOpsOrgs/(?P<orgName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -241,7 +260,7 @@ func (a *AzureDevOpsProjectsServerTransport) dispatchBeginUpdate(req *http.Reque
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/azureDevOpsOrgs/(?P<orgName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsecurity.AzureDevOpsProject](req)
@@ -286,4 +305,10 @@ func (a *AzureDevOpsProjectsServerTransport) dispatchBeginUpdate(req *http.Reque
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AzureDevOpsProjectsServerTransport
+var azureDevOpsProjectsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

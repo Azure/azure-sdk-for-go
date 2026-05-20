@@ -25,7 +25,7 @@ type CompliancesClient struct {
 
 // NewCompliancesClient creates a new instance of CompliancesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCompliancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CompliancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,7 +68,7 @@ func (client *CompliancesClient) Get(ctx context.Context, scope string, complian
 }
 
 // getCreateRequest creates the Get request.
-func (client *CompliancesClient) getCreateRequest(ctx context.Context, scope string, complianceName string, options *CompliancesClientGetOptions) (*policy.Request, error) {
+func (client *CompliancesClient) getCreateRequest(ctx context.Context, scope string, complianceName string, _ *CompliancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/compliances/{complianceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if complianceName == "" {
@@ -125,7 +125,7 @@ func (client *CompliancesClient) NewListPager(scope string, options *Compliances
 }
 
 // listCreateRequest creates the List request.
-func (client *CompliancesClient) listCreateRequest(ctx context.Context, scope string, options *CompliancesClientListOptions) (*policy.Request, error) {
+func (client *CompliancesClient) listCreateRequest(ctx context.Context, scope string, _ *CompliancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/compliances"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

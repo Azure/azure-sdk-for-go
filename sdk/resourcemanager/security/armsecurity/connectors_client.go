@@ -27,7 +27,7 @@ type ConnectorsClient struct {
 // NewConnectorsClient creates a new instance of ConnectorsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredentia
 // is issued for the same security connector id, then it will be updated.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-08-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - securityConnector - The security connector resource
@@ -73,7 +73,7 @@ func (client *ConnectorsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector, options *ConnectorsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector, _ *ConnectorsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -92,7 +92,7 @@ func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, securityConnector); err != nil {
@@ -113,7 +113,7 @@ func (client *ConnectorsClient) createOrUpdateHandleResponse(resp *http.Response
 // Delete - Deletes a security connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-08-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - ConnectorsClientDeleteOptions contains the optional parameters for the ConnectorsClient.Delete method.
@@ -139,7 +139,7 @@ func (client *ConnectorsClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, options *ConnectorsClientDeleteOptions) (*policy.Request, error) {
+func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *ConnectorsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -158,7 +158,7 @@ func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -167,7 +167,7 @@ func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Retrieves details of a specific security connector
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-08-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - ConnectorsClientGetOptions contains the optional parameters for the ConnectorsClient.Get method.
@@ -194,7 +194,7 @@ func (client *ConnectorsClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, options *ConnectorsClientGetOptions) (*policy.Request, error) {
+func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *ConnectorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -213,7 +213,7 @@ func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -231,7 +231,7 @@ func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (Connecto
 // NewListPager - Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response
 // to get the next page of security connectors for the specified subscription.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-08-01-preview
 //   - options - ConnectorsClientListOptions contains the optional parameters for the ConnectorsClient.NewListPager method.
 func (client *ConnectorsClient) NewListPager(options *ConnectorsClientListOptions) *runtime.Pager[ConnectorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConnectorsClientListResponse]{
@@ -257,7 +257,7 @@ func (client *ConnectorsClient) NewListPager(options *ConnectorsClientListOption
 }
 
 // listCreateRequest creates the List request.
-func (client *ConnectorsClient) listCreateRequest(ctx context.Context, options *ConnectorsClientListOptions) (*policy.Request, error) {
+func (client *ConnectorsClient) listCreateRequest(ctx context.Context, _ *ConnectorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityConnectors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -268,7 +268,7 @@ func (client *ConnectorsClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,7 +286,7 @@ func (client *ConnectorsClient) listHandleResponse(resp *http.Response) (Connect
 // NewListByResourceGroupPager - Lists all the security connectors in the specified resource group. Use the 'nextLink' property
 // in the response to get the next page of security connectors for the specified resource group.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-08-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - options - ConnectorsClientListByResourceGroupOptions contains the optional parameters for the ConnectorsClient.NewListByResourceGroupPager
 //     method.
@@ -314,7 +314,7 @@ func (client *ConnectorsClient) NewListByResourceGroupPager(resourceGroupName st
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ConnectorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ConnectorsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ConnectorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ConnectorsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -329,7 +329,7 @@ func (client *ConnectorsClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -347,7 +347,7 @@ func (client *ConnectorsClient) listByResourceGroupHandleResponse(resp *http.Res
 // Update - Updates a security connector
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-08-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - securityConnector - The security connector resource
@@ -375,7 +375,7 @@ func (client *ConnectorsClient) Update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector, options *ConnectorsClientUpdateOptions) (*policy.Request, error) {
+func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector, _ *ConnectorsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -394,7 +394,7 @@ func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, securityConnector); err != nil {

@@ -27,7 +27,7 @@ type JitNetworkAccessPoliciesClient struct {
 // NewJitNetworkAccessPoliciesClient creates a new instance of JitNetworkAccessPoliciesClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewJitNetworkAccessPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JitNetworkAccessPoliciesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *JitNetworkAccessPoliciesClient) CreateOrUpdate(ctx context.Context
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JitNetworkAccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicy, options *JitNetworkAccessPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicy, _ *JitNetworkAccessPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -144,7 +144,7 @@ func (client *JitNetworkAccessPoliciesClient) Delete(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JitNetworkAccessPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, options *JitNetworkAccessPoliciesClientDeleteOptions) (*policy.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, _ *JitNetworkAccessPoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -205,7 +205,7 @@ func (client *JitNetworkAccessPoliciesClient) Get(ctx context.Context, resourceG
 }
 
 // getCreateRequest creates the Get request.
-func (client *JitNetworkAccessPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, options *JitNetworkAccessPoliciesClientGetOptions) (*policy.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, _ *JitNetworkAccessPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -275,7 +275,7 @@ func (client *JitNetworkAccessPoliciesClient) Initiate(ctx context.Context, reso
 }
 
 // initiateCreateRequest creates the Initiate request.
-func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicyInitiateRequest, options *JitNetworkAccessPoliciesClientInitiateOptions) (*policy.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicyInitiateRequest, _ *JitNetworkAccessPoliciesClientInitiateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}/{jitNetworkAccessPolicyInitiateType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -346,7 +346,7 @@ func (client *JitNetworkAccessPoliciesClient) NewListPager(options *JitNetworkAc
 }
 
 // listCreateRequest creates the List request.
-func (client *JitNetworkAccessPoliciesClient) listCreateRequest(ctx context.Context, options *JitNetworkAccessPoliciesClientListOptions) (*policy.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) listCreateRequest(ctx context.Context, _ *JitNetworkAccessPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/jitNetworkAccessPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -402,7 +402,7 @@ func (client *JitNetworkAccessPoliciesClient) NewListByRegionPager(ascLocation s
 }
 
 // listByRegionCreateRequest creates the ListByRegion request.
-func (client *JitNetworkAccessPoliciesClient) listByRegionCreateRequest(ctx context.Context, ascLocation string, options *JitNetworkAccessPoliciesClientListByRegionOptions) (*policy.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) listByRegionCreateRequest(ctx context.Context, ascLocation string, _ *JitNetworkAccessPoliciesClientListByRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -463,7 +463,7 @@ func (client *JitNetworkAccessPoliciesClient) NewListByResourceGroupPager(resour
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *JitNetworkAccessPoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *JitNetworkAccessPoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/jitNetworkAccessPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -525,7 +525,7 @@ func (client *JitNetworkAccessPoliciesClient) NewListByResourceGroupAndRegionPag
 }
 
 // listByResourceGroupAndRegionCreateRequest creates the ListByResourceGroupAndRegion request.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, options *JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions) (*policy.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, _ *JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

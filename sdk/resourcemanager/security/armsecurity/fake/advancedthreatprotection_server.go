@@ -50,23 +50,42 @@ func (a *AdvancedThreatProtectionServerTransport) Do(req *http.Request) (*http.R
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AdvancedThreatProtectionClient.Create":
-		resp, err = a.dispatchCreate(req)
-	case "AdvancedThreatProtectionClient.Get":
-		resp, err = a.dispatchGet(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AdvancedThreatProtectionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if advancedThreatProtectionServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = advancedThreatProtectionServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AdvancedThreatProtectionClient.Create":
+				res.resp, res.err = a.dispatchCreate(req)
+			case "AdvancedThreatProtectionClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AdvancedThreatProtectionServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
@@ -76,7 +95,7 @@ func (a *AdvancedThreatProtectionServerTransport) dispatchCreate(req *http.Reque
 	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/advancedThreatProtectionSettings/(?P<settingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurity.AdvancedThreatProtectionSetting](req)
@@ -109,7 +128,7 @@ func (a *AdvancedThreatProtectionServerTransport) dispatchGet(req *http.Request)
 	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/advancedThreatProtectionSettings/(?P<settingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
@@ -129,4 +148,10 @@ func (a *AdvancedThreatProtectionServerTransport) dispatchGet(req *http.Request)
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AdvancedThreatProtectionServerTransport
+var advancedThreatProtectionServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

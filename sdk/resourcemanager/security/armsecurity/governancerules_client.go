@@ -25,7 +25,7 @@ type GovernanceRulesClient struct {
 
 // NewGovernanceRulesClient creates a new instance of GovernanceRulesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGovernanceRulesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GovernanceRulesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *GovernanceRulesClient) CreateOrUpdate(ctx context.Context, scope s
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GovernanceRulesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, ruleID string, governanceRule GovernanceRule, options *GovernanceRulesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *GovernanceRulesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, ruleID string, governanceRule GovernanceRule, _ *GovernanceRulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -160,7 +160,7 @@ func (client *GovernanceRulesClient) deleteOperation(ctx context.Context, scope 
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GovernanceRulesClient) deleteCreateRequest(ctx context.Context, scope string, ruleID string, options *GovernanceRulesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *GovernanceRulesClient) deleteCreateRequest(ctx context.Context, scope string, ruleID string, _ *GovernanceRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -295,7 +295,7 @@ func (client *GovernanceRulesClient) Get(ctx context.Context, scope string, rule
 }
 
 // getCreateRequest creates the Get request.
-func (client *GovernanceRulesClient) getCreateRequest(ctx context.Context, scope string, ruleID string, options *GovernanceRulesClientGetOptions) (*policy.Request, error) {
+func (client *GovernanceRulesClient) getCreateRequest(ctx context.Context, scope string, ruleID string, _ *GovernanceRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -358,7 +358,7 @@ func (client *GovernanceRulesClient) NewListPager(scope string, options *Governa
 }
 
 // listCreateRequest creates the List request.
-func (client *GovernanceRulesClient) listCreateRequest(ctx context.Context, scope string, options *GovernanceRulesClientListOptions) (*policy.Request, error) {
+func (client *GovernanceRulesClient) listCreateRequest(ctx context.Context, scope string, _ *GovernanceRulesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/governanceRules"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -419,7 +419,7 @@ func (client *GovernanceRulesClient) OperationResults(ctx context.Context, scope
 }
 
 // operationResultsCreateRequest creates the OperationResults request.
-func (client *GovernanceRulesClient) operationResultsCreateRequest(ctx context.Context, scope string, ruleID string, operationID string, options *GovernanceRulesClientOperationResultsOptions) (*policy.Request, error) {
+func (client *GovernanceRulesClient) operationResultsCreateRequest(ctx context.Context, scope string, ruleID string, operationID string, _ *GovernanceRulesClientOperationResultsOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}/operationResults/{operationId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")

@@ -27,7 +27,7 @@ type AutomationsClient struct {
 // NewAutomationsClient creates a new instance of AutomationsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutomationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -73,7 +73,7 @@ func (client *AutomationsClient) CreateOrUpdate(ctx context.Context, resourceGro
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, _ *AutomationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +139,7 @@ func (client *AutomationsClient) Delete(ctx context.Context, resourceGroupName s
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AutomationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsClientDeleteOptions) (*policy.Request, error) {
+func (client *AutomationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationName string, _ *AutomationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -194,7 +194,7 @@ func (client *AutomationsClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsClientGetOptions) (*policy.Request, error) {
+func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationName string, _ *AutomationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -257,7 +257,7 @@ func (client *AutomationsClient) NewListPager(options *AutomationsClientListOpti
 }
 
 // listCreateRequest creates the List request.
-func (client *AutomationsClient) listCreateRequest(ctx context.Context, options *AutomationsClientListOptions) (*policy.Request, error) {
+func (client *AutomationsClient) listCreateRequest(ctx context.Context, _ *AutomationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -314,7 +314,7 @@ func (client *AutomationsClient) NewListByResourceGroupPager(resourceGroupName s
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AutomationsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AutomationsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -375,7 +375,7 @@ func (client *AutomationsClient) Update(ctx context.Context, resourceGroupName s
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AutomationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation AutomationUpdateModel, options *AutomationsClientUpdateOptions) (*policy.Request, error) {
+func (client *AutomationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation AutomationUpdateModel, _ *AutomationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -443,7 +443,7 @@ func (client *AutomationsClient) Validate(ctx context.Context, resourceGroupName
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *AutomationsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsClientValidateOptions) (*policy.Request, error) {
+func (client *AutomationsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, _ *AutomationsClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}/validate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

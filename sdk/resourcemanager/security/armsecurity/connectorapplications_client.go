@@ -27,7 +27,7 @@ type ConnectorApplicationsClient struct {
 // NewConnectorApplicationsClient creates a new instance of ConnectorApplicationsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectorApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorApplicationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *ConnectorApplicationsClient) NewListPager(resourceGroupName string
 }
 
 // listCreateRequest creates the List request.
-func (client *ConnectorApplicationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, options *ConnectorApplicationsClientListOptions) (*policy.Request, error) {
+func (client *ConnectorApplicationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *ConnectorApplicationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

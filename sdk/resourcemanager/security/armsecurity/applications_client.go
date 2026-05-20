@@ -27,7 +27,7 @@ type ApplicationsClient struct {
 // NewApplicationsClient creates a new instance of ApplicationsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,7 +68,7 @@ func (client *ApplicationsClient) NewListPager(options *ApplicationsClientListOp
 }
 
 // listCreateRequest creates the List request.
-func (client *ApplicationsClient) listCreateRequest(ctx context.Context, options *ApplicationsClientListOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) listCreateRequest(ctx context.Context, _ *ApplicationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

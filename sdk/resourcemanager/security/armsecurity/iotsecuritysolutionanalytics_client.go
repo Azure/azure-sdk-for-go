@@ -27,7 +27,7 @@ type IotSecuritySolutionAnalyticsClient struct {
 // NewIotSecuritySolutionAnalyticsClient creates a new instance of IotSecuritySolutionAnalyticsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionAnalyticsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *IotSecuritySolutionAnalyticsClient) Get(ctx context.Context, resou
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionAnalyticsClientGetOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, _ *IotSecuritySolutionAnalyticsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -136,7 +136,7 @@ func (client *IotSecuritySolutionAnalyticsClient) List(ctx context.Context, reso
 }
 
 // listCreateRequest creates the List request.
-func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionAnalyticsClientListOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, _ *IotSecuritySolutionAnalyticsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

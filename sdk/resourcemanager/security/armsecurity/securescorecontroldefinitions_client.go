@@ -27,7 +27,7 @@ type SecureScoreControlDefinitionsClient struct {
 // NewSecureScoreControlDefinitionsClient creates a new instance of SecureScoreControlDefinitionsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecureScoreControlDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecureScoreControlDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +69,7 @@ func (client *SecureScoreControlDefinitionsClient) NewListPager(options *SecureS
 }
 
 // listCreateRequest creates the List request.
-func (client *SecureScoreControlDefinitionsClient) listCreateRequest(ctx context.Context, options *SecureScoreControlDefinitionsClientListOptions) (*policy.Request, error) {
+func (client *SecureScoreControlDefinitionsClient) listCreateRequest(ctx context.Context, _ *SecureScoreControlDefinitionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Security/secureScoreControlDefinitions"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -121,7 +121,7 @@ func (client *SecureScoreControlDefinitionsClient) NewListBySubscriptionPager(op
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SecureScoreControlDefinitionsClient) listBySubscriptionCreateRequest(ctx context.Context, options *SecureScoreControlDefinitionsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *SecureScoreControlDefinitionsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *SecureScoreControlDefinitionsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScoreControlDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

@@ -99,7 +99,7 @@ func unmarshalAllowlistCustomAlertRuleClassificationArray(rawMsg json.RawMessage
 	return fArray, nil
 }
 
-func unmarshalAuthenticationDetailsPropertiesClassification(rawMsg json.RawMessage) (AuthenticationDetailsPropertiesClassification, error) {
+func unmarshalAuthenticationClassification(rawMsg json.RawMessage) (AuthenticationClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
@@ -107,16 +107,12 @@ func unmarshalAuthenticationDetailsPropertiesClassification(rawMsg json.RawMessa
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b AuthenticationDetailsPropertiesClassification
+	var b AuthenticationClassification
 	switch m["authenticationType"] {
-	case string(AuthenticationTypeAwsAssumeRole):
-		b = &AwAssumeRoleAuthenticationDetailsProperties{}
-	case string(AuthenticationTypeAwsCreds):
-		b = &AwsCredsAuthenticationDetailsProperties{}
-	case string(AuthenticationTypeGcpCredentials):
-		b = &GcpCredentialsDetailsProperties{}
+	case string(AuthenticationTypeAccessToken):
+		b = &AccessTokenAuthentication{}
 	default:
-		b = &AuthenticationDetailsProperties{}
+		b = &Authentication{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
@@ -205,20 +201,32 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 		b = &CspmMonitorAwsOffering{}
 	case string(OfferingTypeCspmMonitorAzureDevOps):
 		b = &CspmMonitorAzureDevOpsOffering{}
+	case string(OfferingTypeCspmMonitorDockerHub):
+		b = &CspmMonitorDockerHubOffering{}
 	case string(OfferingTypeCspmMonitorGcp):
 		b = &CspmMonitorGcpOffering{}
 	case string(OfferingTypeCspmMonitorGitLab):
 		b = &CspmMonitorGitLabOffering{}
 	case string(OfferingTypeCspmMonitorGithub):
 		b = &CspmMonitorGithubOffering{}
+	case string(OfferingTypeCspmMonitorJFrog):
+		b = &CspmMonitorJFrogOffering{}
 	case string(OfferingTypeDefenderCspmAws):
 		b = &DefenderCspmAwsOffering{}
+	case string(OfferingTypeDefenderCspmDockerHub):
+		b = &DefenderCspmDockerHubOffering{}
 	case string(OfferingTypeDefenderCspmGcp):
 		b = &DefenderCspmGcpOffering{}
+	case string(OfferingTypeDefenderCspmJFrog):
+		b = &DefenderCspmJFrogOffering{}
 	case string(OfferingTypeDefenderForContainersAws):
 		b = &DefenderForContainersAwsOffering{}
+	case string(OfferingTypeDefenderForContainersDockerHub):
+		b = &DefenderForContainersDockerHubOffering{}
 	case string(OfferingTypeDefenderForContainersGcp):
 		b = &DefenderForContainersGcpOffering{}
+	case string(OfferingTypeDefenderForContainersJFrog):
+		b = &DefenderForContainersJFrogOffering{}
 	case string(OfferingTypeDefenderForDatabasesAws):
 		b = &DefenderFoDatabasesAwsOffering{}
 	case string(OfferingTypeDefenderForDatabasesGcp):
@@ -269,12 +277,16 @@ func unmarshalEnvironmentDataClassification(rawMsg json.RawMessage) (Environment
 		b = &AwsEnvironmentData{}
 	case string(EnvironmentTypeAzureDevOpsScope):
 		b = &AzureDevOpsScopeEnvironmentData{}
+	case string(EnvironmentTypeDockerHubOrganization):
+		b = &DockerHubEnvironmentData{}
 	case string(EnvironmentTypeGcpProject):
 		b = &GcpProjectEnvironmentData{}
 	case string(EnvironmentTypeGithubScope):
 		b = &GithubScopeEnvironmentData{}
 	case string(EnvironmentTypeGitlabScope):
 		b = &GitlabScopeEnvironmentData{}
+	case string(EnvironmentTypeJFrogArtifactory):
+		b = &JFrogEnvironmentData{}
 	default:
 		b = &EnvironmentData{}
 	}
@@ -349,48 +361,6 @@ func unmarshalGcpOrganizationalDataClassification(rawMsg json.RawMessage) (GcpOr
 		return nil, err
 	}
 	return b, nil
-}
-
-func unmarshalNotificationsSourceClassification(rawMsg json.RawMessage) (NotificationsSourceClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b NotificationsSourceClassification
-	switch m["sourceType"] {
-	case string(SourceTypeAlert):
-		b = &NotificationsSourceAlert{}
-	case string(SourceTypeAttackPath):
-		b = &NotificationsSourceAttackPath{}
-	default:
-		b = &NotificationsSource{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
-func unmarshalNotificationsSourceClassificationArray(rawMsg json.RawMessage) ([]NotificationsSourceClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]NotificationsSourceClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalNotificationsSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
 }
 
 func unmarshalResourceDetailsClassification(rawMsg json.RawMessage) (ResourceDetailsClassification, error) {

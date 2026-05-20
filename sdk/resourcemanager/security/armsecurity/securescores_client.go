@@ -27,7 +27,7 @@ type SecureScoresClient struct {
 // NewSecureScoresClient creates a new instance of SecureScoresClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecureScoresClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *SecureScoresClient) Get(ctx context.Context, secureScoreName strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureScoreName string, options *SecureScoresClientGetOptions) (*policy.Request, error) {
+func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureScoreName string, _ *SecureScoresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores/{secureScoreName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -128,7 +128,7 @@ func (client *SecureScoresClient) NewListPager(options *SecureScoresClientListOp
 }
 
 // listCreateRequest creates the List request.
-func (client *SecureScoresClient) listCreateRequest(ctx context.Context, options *SecureScoresClientListOptions) (*policy.Request, error) {
+func (client *SecureScoresClient) listCreateRequest(ctx context.Context, _ *SecureScoresClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

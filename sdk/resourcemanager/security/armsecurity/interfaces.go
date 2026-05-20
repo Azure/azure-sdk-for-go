@@ -33,14 +33,13 @@ type AllowlistCustomAlertRuleClassification interface {
 	GetAllowlistCustomAlertRule() *AllowlistCustomAlertRule
 }
 
-// AuthenticationDetailsPropertiesClassification provides polymorphic access to related types.
-// Call the interface's GetAuthenticationDetailsProperties() method to access the common type.
+// AuthenticationClassification provides polymorphic access to related types.
+// Call the interface's GetAuthentication() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AuthenticationDetailsProperties, *AwAssumeRoleAuthenticationDetailsProperties, *AwsCredsAuthenticationDetailsProperties,
-// - *GcpCredentialsDetailsProperties
-type AuthenticationDetailsPropertiesClassification interface {
-	// GetAuthenticationDetailsProperties returns the AuthenticationDetailsProperties content of the underlying type.
-	GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties
+// - *AccessTokenAuthentication, *Authentication
+type AuthenticationClassification interface {
+	// GetAuthentication returns the Authentication content of the underlying type.
+	GetAuthentication() *Authentication
 }
 
 // AutomationActionClassification provides polymorphic access to related types.
@@ -64,9 +63,11 @@ type AwsOrganizationalDataClassification interface {
 // CloudOfferingClassification provides polymorphic access to related types.
 // Call the interface's GetCloudOffering() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *CloudOffering, *CspmMonitorAwsOffering, *CspmMonitorAzureDevOpsOffering, *CspmMonitorGcpOffering, *CspmMonitorGitLabOffering,
-// - *CspmMonitorGithubOffering, *DefenderCspmAwsOffering, *DefenderCspmGcpOffering, *DefenderFoDatabasesAwsOffering, *DefenderForContainersAwsOffering,
-// - *DefenderForContainersGcpOffering, *DefenderForDatabasesGcpOffering, *DefenderForServersAwsOffering, *DefenderForServersGcpOffering
+// - *CloudOffering, *CspmMonitorAwsOffering, *CspmMonitorAzureDevOpsOffering, *CspmMonitorDockerHubOffering, *CspmMonitorGcpOffering,
+// - *CspmMonitorGitLabOffering, *CspmMonitorGithubOffering, *CspmMonitorJFrogOffering, *DefenderCspmAwsOffering, *DefenderCspmDockerHubOffering,
+// - *DefenderCspmGcpOffering, *DefenderCspmJFrogOffering, *DefenderFoDatabasesAwsOffering, *DefenderForContainersAwsOffering,
+// - *DefenderForContainersDockerHubOffering, *DefenderForContainersGcpOffering, *DefenderForContainersJFrogOffering, *DefenderForDatabasesGcpOffering,
+// - *DefenderForServersAwsOffering, *DefenderForServersGcpOffering
 type CloudOfferingClassification interface {
 	// GetCloudOffering returns the CloudOffering content of the underlying type.
 	GetCloudOffering() *CloudOffering
@@ -90,8 +91,8 @@ type CustomAlertRuleClassification interface {
 // EnvironmentDataClassification provides polymorphic access to related types.
 // Call the interface's GetEnvironmentData() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AwsEnvironmentData, *AzureDevOpsScopeEnvironmentData, *EnvironmentData, *GcpProjectEnvironmentData, *GithubScopeEnvironmentData,
-// - *GitlabScopeEnvironmentData
+// - *AwsEnvironmentData, *AzureDevOpsScopeEnvironmentData, *DockerHubEnvironmentData, *EnvironmentData, *GcpProjectEnvironmentData,
+// - *GithubScopeEnvironmentData, *GitlabScopeEnvironmentData, *JFrogEnvironmentData
 type EnvironmentDataClassification interface {
 	// GetEnvironmentData returns the EnvironmentData content of the underlying type.
 	GetEnvironmentData() *EnvironmentData
@@ -124,15 +125,6 @@ type ListCustomAlertRuleClassification interface {
 	CustomAlertRuleClassification
 	// GetListCustomAlertRule returns the ListCustomAlertRule content of the underlying type.
 	GetListCustomAlertRule() *ListCustomAlertRule
-}
-
-// NotificationsSourceClassification provides polymorphic access to related types.
-// Call the interface's GetNotificationsSource() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *NotificationsSource, *NotificationsSourceAlert, *NotificationsSourceAttackPath
-type NotificationsSourceClassification interface {
-	// GetNotificationsSource returns the NotificationsSource content of the underlying type.
-	GetNotificationsSource() *NotificationsSource
 }
 
 // OnPremiseResourceDetailsClassification provides polymorphic access to related types.

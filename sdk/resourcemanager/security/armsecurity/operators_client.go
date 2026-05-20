@@ -27,7 +27,7 @@ type OperatorsClient struct {
 // NewOperatorsClient creates a new instance of OperatorsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperatorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *OperatorsClient) CreateOrUpdate(ctx context.Context, pricingName s
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *OperatorsClient) createOrUpdateCreateRequest(ctx context.Context, pricingName string, securityOperatorName string, options *OperatorsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *OperatorsClient) createOrUpdateCreateRequest(ctx context.Context, pricingName string, securityOperatorName string, _ *OperatorsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -134,7 +134,7 @@ func (client *OperatorsClient) Delete(ctx context.Context, pricingName string, s
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OperatorsClient) deleteCreateRequest(ctx context.Context, pricingName string, securityOperatorName string, options *OperatorsClientDeleteOptions) (*policy.Request, error) {
+func (client *OperatorsClient) deleteCreateRequest(ctx context.Context, pricingName string, securityOperatorName string, _ *OperatorsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -189,7 +189,7 @@ func (client *OperatorsClient) Get(ctx context.Context, pricingName string, secu
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperatorsClient) getCreateRequest(ctx context.Context, pricingName string, securityOperatorName string, options *OperatorsClientGetOptions) (*policy.Request, error) {
+func (client *OperatorsClient) getCreateRequest(ctx context.Context, pricingName string, securityOperatorName string, _ *OperatorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -252,7 +252,7 @@ func (client *OperatorsClient) List(ctx context.Context, pricingName string, opt
 }
 
 // listCreateRequest creates the List request.
-func (client *OperatorsClient) listCreateRequest(ctx context.Context, pricingName string, options *OperatorsClientListOptions) (*policy.Request, error) {
+func (client *OperatorsClient) listCreateRequest(ctx context.Context, pricingName string, _ *OperatorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

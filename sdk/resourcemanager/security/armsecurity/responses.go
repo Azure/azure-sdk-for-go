@@ -40,67 +40,6 @@ type APICollectionsClientOnboardAzureAPIManagementAPIResponse struct {
 	APICollection
 }
 
-// AccountConnectorsClientCreateOrUpdateResponse contains the response from method AccountConnectorsClient.CreateOrUpdate.
-type AccountConnectorsClientCreateOrUpdateResponse struct {
-	// The connector setting
-	ConnectorSetting
-}
-
-// AccountConnectorsClientDeleteResponse contains the response from method AccountConnectorsClient.Delete.
-type AccountConnectorsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// AccountConnectorsClientGetResponse contains the response from method AccountConnectorsClient.Get.
-type AccountConnectorsClientGetResponse struct {
-	// The connector setting
-	ConnectorSetting
-}
-
-// AccountConnectorsClientListResponse contains the response from method AccountConnectorsClient.NewListPager.
-type AccountConnectorsClientListResponse struct {
-	// For a subscription, list of all cloud account connectors and their settings
-	ConnectorSettingList
-}
-
-// AdaptiveApplicationControlsClientDeleteResponse contains the response from method AdaptiveApplicationControlsClient.Delete.
-type AdaptiveApplicationControlsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// AdaptiveApplicationControlsClientGetResponse contains the response from method AdaptiveApplicationControlsClient.Get.
-type AdaptiveApplicationControlsClientGetResponse struct {
-	AdaptiveApplicationControlGroup
-}
-
-// AdaptiveApplicationControlsClientListResponse contains the response from method AdaptiveApplicationControlsClient.List.
-type AdaptiveApplicationControlsClientListResponse struct {
-	// Represents a list of VM/server groups and set of rules that are Recommended by Microsoft Defender for Cloud to be allowed
-	AdaptiveApplicationControlGroups
-}
-
-// AdaptiveApplicationControlsClientPutResponse contains the response from method AdaptiveApplicationControlsClient.Put.
-type AdaptiveApplicationControlsClientPutResponse struct {
-	AdaptiveApplicationControlGroup
-}
-
-// AdaptiveNetworkHardeningsClientEnforceResponse contains the response from method AdaptiveNetworkHardeningsClient.BeginEnforce.
-type AdaptiveNetworkHardeningsClientEnforceResponse struct {
-	// placeholder for future response values
-}
-
-// AdaptiveNetworkHardeningsClientGetResponse contains the response from method AdaptiveNetworkHardeningsClient.Get.
-type AdaptiveNetworkHardeningsClientGetResponse struct {
-	// The resource whose properties describes the Adaptive Network Hardening settings for some Azure resource
-	AdaptiveNetworkHardening
-}
-
-// AdaptiveNetworkHardeningsClientListByExtendedResourceResponse contains the response from method AdaptiveNetworkHardeningsClient.NewListByExtendedResourcePager.
-type AdaptiveNetworkHardeningsClientListByExtendedResourceResponse struct {
-	// Response for ListAdaptiveNetworkHardenings API service call
-	AdaptiveNetworkHardeningsList
-}
-
 // AdvancedThreatProtectionClientCreateResponse contains the response from method AdvancedThreatProtectionClient.Create.
 type AdvancedThreatProtectionClientCreateResponse struct {
 	// The Advanced Threat Protection resource.
@@ -258,6 +197,58 @@ type ApplicationsClientListResponse struct {
 	ApplicationsList
 }
 
+// ArmSecurityStandardsClientCreateOrUpdateResponse contains the response from method ArmSecurityStandardsClient.CreateOrUpdate.
+type ArmSecurityStandardsClientCreateOrUpdateResponse struct {
+	// Security Standard on a resource
+	ArmSecurityStandard
+}
+
+// ArmSecurityStandardsClientDeleteResponse contains the response from method ArmSecurityStandardsClient.Delete.
+type ArmSecurityStandardsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ArmSecurityStandardsClientGetResponse contains the response from method ArmSecurityStandardsClient.Get.
+type ArmSecurityStandardsClientGetResponse struct {
+	// Security Standard on a resource
+	ArmSecurityStandard
+}
+
+// ArmSecurityStandardsClientListResponse contains the response from method ArmSecurityStandardsClient.NewListPager.
+type ArmSecurityStandardsClientListResponse struct {
+	// Page of a Standard list
+	ArmSecurityStandardList
+}
+
+// ArmStandardsClientCreateOrUpdateResponse contains the response from method ArmStandardsClient.CreateOrUpdate.
+type ArmStandardsClientCreateOrUpdateResponse struct {
+	// Security Standard on a resource
+	Standard
+}
+
+// ArmStandardsClientDeleteResponse contains the response from method ArmStandardsClient.Delete.
+type ArmStandardsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ArmStandardsClientGetResponse contains the response from method ArmStandardsClient.Get.
+type ArmStandardsClientGetResponse struct {
+	// Security Standard on a resource
+	Standard
+}
+
+// ArmStandardsClientListBySubscriptionResponse contains the response from method ArmStandardsClient.NewListBySubscriptionPager.
+type ArmStandardsClientListBySubscriptionResponse struct {
+	// Page of a Standard list
+	StandardList
+}
+
+// ArmStandardsClientListResponse contains the response from method ArmStandardsClient.NewListPager.
+type ArmStandardsClientListResponse struct {
+	// Page of a Standard list
+	StandardList
+}
+
 // AssessmentsClientCreateOrUpdateResponse contains the response from method AssessmentsClient.CreateOrUpdate.
 type AssessmentsClientCreateOrUpdateResponse struct {
 	// Security assessment on a resource - response format
@@ -314,6 +305,35 @@ type AssessmentsMetadataClientListBySubscriptionResponse struct {
 type AssessmentsMetadataClientListResponse struct {
 	// List of security assessment metadata
 	AssessmentMetadataResponseList
+}
+
+// AssignmentsClientCreateOrUpdateResponse contains the response from method AssignmentsClient.CreateOrUpdate.
+type AssignmentsClientCreateOrUpdateResponse struct {
+	// Security Assignment on a resource group over a given scope
+	Assignment
+}
+
+// AssignmentsClientDeleteResponse contains the response from method AssignmentsClient.Delete.
+type AssignmentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AssignmentsClientGetResponse contains the response from method AssignmentsClient.Get.
+type AssignmentsClientGetResponse struct {
+	// Security Assignment on a resource group over a given scope
+	Assignment
+}
+
+// AssignmentsClientListBySubscriptionResponse contains the response from method AssignmentsClient.NewListBySubscriptionPager.
+type AssignmentsClientListBySubscriptionResponse struct {
+	// Page of a standard assignment list
+	AssignmentList
+}
+
+// AssignmentsClientListResponse contains the response from method AssignmentsClient.NewListPager.
+type AssignmentsClientListResponse struct {
+	// Page of a standard assignment list
+	AssignmentList
 }
 
 // AutoProvisioningSettingsClientCreateResponse contains the response from method AutoProvisioningSettingsClient.Create.
@@ -535,85 +555,33 @@ type ConnectorsClientUpdateResponse struct {
 	Connector
 }
 
-// ContactsClientCreateResponse contains the response from method ContactsClient.Create.
-type ContactsClientCreateResponse struct {
-	// Contact details and configurations for notifications coming from Microsoft Defender for Cloud.
-	Contact
+// CustomRecommendationsClientCreateOrUpdateResponse contains the response from method CustomRecommendationsClient.CreateOrUpdate.
+type CustomRecommendationsClientCreateOrUpdateResponse struct {
+	// Custom Recommendation
+	CustomRecommendation
 }
 
-// ContactsClientDeleteResponse contains the response from method ContactsClient.Delete.
-type ContactsClientDeleteResponse struct {
+// CustomRecommendationsClientDeleteResponse contains the response from method CustomRecommendationsClient.Delete.
+type CustomRecommendationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ContactsClientGetResponse contains the response from method ContactsClient.Get.
-type ContactsClientGetResponse struct {
-	// Contact details and configurations for notifications coming from Microsoft Defender for Cloud.
-	Contact
+// CustomRecommendationsClientGetResponse contains the response from method CustomRecommendationsClient.Get.
+type CustomRecommendationsClientGetResponse struct {
+	// Custom Recommendation
+	CustomRecommendation
 }
 
-// ContactsClientListResponse contains the response from method ContactsClient.NewListPager.
-type ContactsClientListResponse struct {
-	// List of security contacts response
-	ContactList
+// CustomRecommendationsClientListResponse contains the response from method CustomRecommendationsClient.NewListPager.
+type CustomRecommendationsClientListResponse struct {
+	// A list of Custom Recommendations
+	CustomRecommendationsList
 }
 
-// CustomAssessmentAutomationsClientCreateResponse contains the response from method CustomAssessmentAutomationsClient.Create.
-type CustomAssessmentAutomationsClientCreateResponse struct {
-	// Custom Assessment Automation
-	CustomAssessmentAutomation
-}
-
-// CustomAssessmentAutomationsClientDeleteResponse contains the response from method CustomAssessmentAutomationsClient.Delete.
-type CustomAssessmentAutomationsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// CustomAssessmentAutomationsClientGetResponse contains the response from method CustomAssessmentAutomationsClient.Get.
-type CustomAssessmentAutomationsClientGetResponse struct {
-	// Custom Assessment Automation
-	CustomAssessmentAutomation
-}
-
-// CustomAssessmentAutomationsClientListByResourceGroupResponse contains the response from method CustomAssessmentAutomationsClient.NewListByResourceGroupPager.
-type CustomAssessmentAutomationsClientListByResourceGroupResponse struct {
-	// A list of Custom Assessment Automations
-	CustomAssessmentAutomationsListResult
-}
-
-// CustomAssessmentAutomationsClientListBySubscriptionResponse contains the response from method CustomAssessmentAutomationsClient.NewListBySubscriptionPager.
-type CustomAssessmentAutomationsClientListBySubscriptionResponse struct {
-	// A list of Custom Assessment Automations
-	CustomAssessmentAutomationsListResult
-}
-
-// CustomEntityStoreAssignmentsClientCreateResponse contains the response from method CustomEntityStoreAssignmentsClient.Create.
-type CustomEntityStoreAssignmentsClientCreateResponse struct {
-	// Custom entity store assignment
-	CustomEntityStoreAssignment
-}
-
-// CustomEntityStoreAssignmentsClientDeleteResponse contains the response from method CustomEntityStoreAssignmentsClient.Delete.
-type CustomEntityStoreAssignmentsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// CustomEntityStoreAssignmentsClientGetResponse contains the response from method CustomEntityStoreAssignmentsClient.Get.
-type CustomEntityStoreAssignmentsClientGetResponse struct {
-	// Custom entity store assignment
-	CustomEntityStoreAssignment
-}
-
-// CustomEntityStoreAssignmentsClientListByResourceGroupResponse contains the response from method CustomEntityStoreAssignmentsClient.NewListByResourceGroupPager.
-type CustomEntityStoreAssignmentsClientListByResourceGroupResponse struct {
-	// A list of custom entity store assignments
-	CustomEntityStoreAssignmentsListResult
-}
-
-// CustomEntityStoreAssignmentsClientListBySubscriptionResponse contains the response from method CustomEntityStoreAssignmentsClient.NewListBySubscriptionPager.
-type CustomEntityStoreAssignmentsClientListBySubscriptionResponse struct {
-	// A list of custom entity store assignments
-	CustomEntityStoreAssignmentsListResult
+// DefenderForStorageClientCancelMalwareScanResponse contains the response from method DefenderForStorageClient.CancelMalwareScan.
+type DefenderForStorageClientCancelMalwareScanResponse struct {
+	// Describes the state of a malware scan operation.
+	MalwareScan
 }
 
 // DefenderForStorageClientCreateResponse contains the response from method DefenderForStorageClient.Create.
@@ -622,10 +590,28 @@ type DefenderForStorageClientCreateResponse struct {
 	DefenderForStorageSetting
 }
 
+// DefenderForStorageClientGetMalwareScanResponse contains the response from method DefenderForStorageClient.GetMalwareScan.
+type DefenderForStorageClientGetMalwareScanResponse struct {
+	// Describes the state of a malware scan operation.
+	MalwareScan
+}
+
 // DefenderForStorageClientGetResponse contains the response from method DefenderForStorageClient.Get.
 type DefenderForStorageClientGetResponse struct {
 	// The Defender for Storage resource.
 	DefenderForStorageSetting
+}
+
+// DefenderForStorageClientListResponse contains the response from method DefenderForStorageClient.NewListPager.
+type DefenderForStorageClientListResponse struct {
+	// List of Defender for Storage settings.
+	DefenderForStorageSettingList
+}
+
+// DefenderForStorageClientStartMalwareScanResponse contains the response from method DefenderForStorageClient.StartMalwareScan.
+type DefenderForStorageClientStartMalwareScanResponse struct {
+	// Describes the state of a malware scan operation.
+	MalwareScan
 }
 
 // DevOpsConfigurationsClientCreateOrUpdateResponse contains the response from method DevOpsConfigurationsClient.BeginCreateOrUpdate.
@@ -708,16 +694,6 @@ type ExternalSecuritySolutionsClientGetResponse struct {
 	ExternalSecuritySolutionClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExternalSecuritySolutionsClientGetResponse.
-func (e *ExternalSecuritySolutionsClientGetResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalExternalSecuritySolutionClassification(data)
-	if err != nil {
-		return err
-	}
-	e.ExternalSecuritySolutionClassification = res
-	return nil
-}
-
 // ExternalSecuritySolutionsClientListByHomeRegionResponse contains the response from method ExternalSecuritySolutionsClient.NewListByHomeRegionPager.
 type ExternalSecuritySolutionsClientListByHomeRegionResponse struct {
 	ExternalSecuritySolutionList
@@ -726,6 +702,11 @@ type ExternalSecuritySolutionsClientListByHomeRegionResponse struct {
 // ExternalSecuritySolutionsClientListResponse contains the response from method ExternalSecuritySolutionsClient.NewListPager.
 type ExternalSecuritySolutionsClientListResponse struct {
 	ExternalSecuritySolutionList
+}
+
+// GitHubIssuesClientCreateResponse contains the response from method GitHubIssuesClient.BeginCreate.
+type GitHubIssuesClientCreateResponse struct {
+	// placeholder for future response values
 }
 
 // GitHubOwnersClientGetResponse contains the response from method GitHubOwnersClient.Get.
@@ -1024,10 +1005,25 @@ type MdeOnboardingsClientListResponse struct {
 	MdeOnboardingDataList
 }
 
+// OperationResultsClientGetResponse contains the response from method OperationResultsClient.Get.
+type OperationResultsClientGetResponse struct {
+	// Location contains the information returned from the Location header response.
+	Location *string
+
+	// RetryAfter contains the information returned from the Retry-After header response.
+	RetryAfter *int32
+}
+
+// OperationStatusesClientGetResponse contains the response from method OperationStatusesClient.Get.
+type OperationStatusesClientGetResponse struct {
+	// The current status of an async operation.
+	OperationStatusResultAutoGenerated
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// List of possible operations for Microsoft.Security resource provider
-	OperationList
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+	OperationListResult
 }
 
 // OperatorsClientCreateOrUpdateResponse contains the response from method OperatorsClient.CreateOrUpdate.
@@ -1076,6 +1072,85 @@ type PricingsClientUpdateResponse struct {
 	// Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The standard tier offers advanced security
 	// capabilities, while the free tier offers basic security features.
 	Pricing
+}
+
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
+	// The private endpoint connection resource.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	// The private endpoint connection resource.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
+type PrivateEndpointConnectionsClientListResponse struct {
+	// List of private endpoint connections associated with the specified resource.
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	// A private link resource.
+	PrivateLinkResourceAutoGenerated
+}
+
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.NewListPager.
+type PrivateLinkResourcesClientListResponse struct {
+	// A list of private link resources.
+	PrivateLinkResourceListResult
+}
+
+// PrivateLinksClientCreateResponse contains the response from method PrivateLinksClient.BeginCreate.
+type PrivateLinksClientCreateResponse struct {
+	// A private link resource that enables secure, private connectivity to Microsoft Defender for Cloud services. This resource
+	// manages the lifecycle of private endpoint connections and provides the necessary infrastructure for private connectivity.
+	PrivateLinkResource
+}
+
+// PrivateLinksClientDeleteResponse contains the response from method PrivateLinksClient.BeginDelete.
+type PrivateLinksClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateLinksClientGetResponse contains the response from method PrivateLinksClient.Get.
+type PrivateLinksClientGetResponse struct {
+	// A private link resource that enables secure, private connectivity to Microsoft Defender for Cloud services. This resource
+	// manages the lifecycle of private endpoint connections and provides the necessary infrastructure for private connectivity.
+	PrivateLinkResource
+}
+
+// PrivateLinksClientHeadResponse contains the response from method PrivateLinksClient.Head.
+type PrivateLinksClientHeadResponse struct {
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// PrivateLinksClientListBySubscriptionResponse contains the response from method PrivateLinksClient.NewListBySubscriptionPager.
+type PrivateLinksClientListBySubscriptionResponse struct {
+	// Paginated list of private link resources. Contains an array of private links and optional pagination information.
+	PrivateLinksList
+}
+
+// PrivateLinksClientListResponse contains the response from method PrivateLinksClient.NewListPager.
+type PrivateLinksClientListResponse struct {
+	// Paginated list of private link resources. Contains an array of private links and optional pagination information.
+	PrivateLinksList
+}
+
+// PrivateLinksClientUpdateResponse contains the response from method PrivateLinksClient.Update.
+type PrivateLinksClientUpdateResponse struct {
+	// A private link resource that enables secure, private connectivity to Microsoft Defender for Cloud services. This resource
+	// manages the lifecycle of private endpoint connections and provides the necessary infrastructure for private connectivity.
+	PrivateLinkResource
 }
 
 // RegulatoryComplianceAssessmentsClientGetResponse contains the response from method RegulatoryComplianceAssessmentsClient.Get.
@@ -1137,7 +1212,7 @@ type SQLVulnerabilityAssessmentBaselineRulesClientGetResponse struct {
 	RuleResults
 }
 
-// SQLVulnerabilityAssessmentBaselineRulesClientListResponse contains the response from method SQLVulnerabilityAssessmentBaselineRulesClient.List.
+// SQLVulnerabilityAssessmentBaselineRulesClientListResponse contains the response from method SQLVulnerabilityAssessmentBaselineRulesClient.NewListPager.
 type SQLVulnerabilityAssessmentBaselineRulesClientListResponse struct {
 	// A list of rules results.
 	RulesResults
@@ -1149,7 +1224,7 @@ type SQLVulnerabilityAssessmentScanResultsClientGetResponse struct {
 	ScanResult
 }
 
-// SQLVulnerabilityAssessmentScanResultsClientListResponse contains the response from method SQLVulnerabilityAssessmentScanResultsClient.List.
+// SQLVulnerabilityAssessmentScanResultsClientListResponse contains the response from method SQLVulnerabilityAssessmentScanResultsClient.NewListPager.
 type SQLVulnerabilityAssessmentScanResultsClientListResponse struct {
 	// A list of vulnerability assessment scan results.
 	ScanResults
@@ -1158,13 +1233,42 @@ type SQLVulnerabilityAssessmentScanResultsClientListResponse struct {
 // SQLVulnerabilityAssessmentScansClientGetResponse contains the response from method SQLVulnerabilityAssessmentScansClient.Get.
 type SQLVulnerabilityAssessmentScansClientGetResponse struct {
 	// A vulnerability assessment scan record.
-	Scan
+	ScanV2
 }
 
-// SQLVulnerabilityAssessmentScansClientListResponse contains the response from method SQLVulnerabilityAssessmentScansClient.List.
+// SQLVulnerabilityAssessmentScansClientGetScanOperationResultResponse contains the response from method SQLVulnerabilityAssessmentScansClient.GetScanOperationResult.
+type SQLVulnerabilityAssessmentScansClientGetScanOperationResultResponse struct {
+	// Represents the result of a SQL Vulnerability Assessment scan operation, wrapped in the ARM resource envelope.
+	SQLVulnerabilityAssessmentScanOperationResult
+}
+
+// SQLVulnerabilityAssessmentScansClientInitiateScanResponse contains the response from method SQLVulnerabilityAssessmentScansClient.BeginInitiateScan.
+type SQLVulnerabilityAssessmentScansClientInitiateScanResponse struct {
+	// Represents the result of a SQL Vulnerability Assessment scan operation, wrapped in the ARM resource envelope.
+	SQLVulnerabilityAssessmentScanOperationResult
+}
+
+// SQLVulnerabilityAssessmentScansClientListResponse contains the response from method SQLVulnerabilityAssessmentScansClient.NewListPager.
 type SQLVulnerabilityAssessmentScansClientListResponse struct {
 	// A list of vulnerability assessment scan records.
-	Scans
+	ScansV2
+}
+
+// SQLVulnerabilityAssessmentSettingsClientCreateOrUpdateResponse contains the response from method SQLVulnerabilityAssessmentSettingsClient.CreateOrUpdate.
+type SQLVulnerabilityAssessmentSettingsClientCreateOrUpdateResponse struct {
+	// SQL Vulnerability Assessment settings resource.
+	SQLVulnerabilityAssessmentSettings
+}
+
+// SQLVulnerabilityAssessmentSettingsClientDeleteResponse contains the response from method SQLVulnerabilityAssessmentSettingsClient.Delete.
+type SQLVulnerabilityAssessmentSettingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SQLVulnerabilityAssessmentSettingsClientGetResponse contains the response from method SQLVulnerabilityAssessmentSettingsClient.Get.
+type SQLVulnerabilityAssessmentSettingsClientGetResponse struct {
+	// SQL Vulnerability Assessment settings resource.
+	SQLVulnerabilityAssessmentSettings
 }
 
 // SecureScoreControlDefinitionsClientListBySubscriptionResponse contains the response from method SecureScoreControlDefinitionsClient.NewListBySubscriptionPager.
@@ -1250,16 +1354,6 @@ type ServerVulnerabilityAssessmentsSettingsClientCreateOrUpdateResponse struct {
 	ServerVulnerabilityAssessmentsSettingClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServerVulnerabilityAssessmentsSettingsClientCreateOrUpdateResponse.
-func (s *ServerVulnerabilityAssessmentsSettingsClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalServerVulnerabilityAssessmentsSettingClassification(data)
-	if err != nil {
-		return err
-	}
-	s.ServerVulnerabilityAssessmentsSettingClassification = res
-	return nil
-}
-
 // ServerVulnerabilityAssessmentsSettingsClientDeleteResponse contains the response from method ServerVulnerabilityAssessmentsSettingsClient.Delete.
 type ServerVulnerabilityAssessmentsSettingsClientDeleteResponse struct {
 	// placeholder for future response values
@@ -1269,16 +1363,6 @@ type ServerVulnerabilityAssessmentsSettingsClientDeleteResponse struct {
 type ServerVulnerabilityAssessmentsSettingsClientGetResponse struct {
 	// A base vulnerability assessments setting on servers in the defined scope.
 	ServerVulnerabilityAssessmentsSettingClassification
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServerVulnerabilityAssessmentsSettingsClientGetResponse.
-func (s *ServerVulnerabilityAssessmentsSettingsClientGetResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalServerVulnerabilityAssessmentsSettingClassification(data)
-	if err != nil {
-		return err
-	}
-	s.ServerVulnerabilityAssessmentsSettingClassification = res
-	return nil
 }
 
 // ServerVulnerabilityAssessmentsSettingsClientListBySubscriptionResponse contains the response from method ServerVulnerabilityAssessmentsSettingsClient.NewListBySubscriptionPager.
@@ -1293,16 +1377,6 @@ type SettingsClientGetResponse struct {
 	SettingClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SettingsClientGetResponse.
-func (s *SettingsClientGetResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalSettingClassification(data)
-	if err != nil {
-		return err
-	}
-	s.SettingClassification = res
-	return nil
-}
-
 // SettingsClientListResponse contains the response from method SettingsClient.NewListPager.
 type SettingsClientListResponse struct {
 	// Subscription settings list.
@@ -1313,34 +1387,6 @@ type SettingsClientListResponse struct {
 type SettingsClientUpdateResponse struct {
 	// The kind of the security setting
 	SettingClassification
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SettingsClientUpdateResponse.
-func (s *SettingsClientUpdateResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalSettingClassification(data)
-	if err != nil {
-		return err
-	}
-	s.SettingClassification = res
-	return nil
-}
-
-// SoftwareInventoriesClientGetResponse contains the response from method SoftwareInventoriesClient.Get.
-type SoftwareInventoriesClientGetResponse struct {
-	// Represents a software data
-	Software
-}
-
-// SoftwareInventoriesClientListByExtendedResourceResponse contains the response from method SoftwareInventoriesClient.NewListByExtendedResourcePager.
-type SoftwareInventoriesClientListByExtendedResourceResponse struct {
-	// Represents the software inventory of the virtual machine.
-	SoftwaresList
-}
-
-// SoftwareInventoriesClientListBySubscriptionResponse contains the response from method SoftwareInventoriesClient.NewListBySubscriptionPager.
-type SoftwareInventoriesClientListBySubscriptionResponse struct {
-	// Represents the software inventory of the virtual machine.
-	SoftwaresList
 }
 
 // SolutionsClientGetResponse contains the response from method SolutionsClient.Get.
@@ -1361,6 +1407,29 @@ type SolutionsReferenceDataClientListByHomeRegionResponse struct {
 // SolutionsReferenceDataClientListResponse contains the response from method SolutionsReferenceDataClient.List.
 type SolutionsReferenceDataClientListResponse struct {
 	SolutionsReferenceDataList
+}
+
+// StandardAssignmentsClientCreateResponse contains the response from method StandardAssignmentsClient.Create.
+type StandardAssignmentsClientCreateResponse struct {
+	// Security Assignment on a resource group over a given scope
+	StandardAssignment
+}
+
+// StandardAssignmentsClientDeleteResponse contains the response from method StandardAssignmentsClient.Delete.
+type StandardAssignmentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// StandardAssignmentsClientGetResponse contains the response from method StandardAssignmentsClient.Get.
+type StandardAssignmentsClientGetResponse struct {
+	// Security Assignment on a resource group over a given scope
+	StandardAssignment
+}
+
+// StandardAssignmentsClientListResponse contains the response from method StandardAssignmentsClient.NewListPager.
+type StandardAssignmentsClientListResponse struct {
+	// Page of a standard assignment list
+	StandardAssignmentsList
 }
 
 // SubAssessmentsClientGetResponse contains the response from method SubAssessmentsClient.Get.

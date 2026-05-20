@@ -27,7 +27,7 @@ type GitLabProjectsClient struct {
 // NewGitLabProjectsClient creates a new instance of GitLabProjectsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGitLabProjectsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GitLabProjectsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewGitLabProjectsClient(subscriptionID string, credential azcore.TokenCrede
 // Get - Returns a monitored GitLab Project resource for a given fully-qualified group name and project name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - groupFQName - The GitLab group fully-qualified name.
@@ -72,7 +72,7 @@ func (client *GitLabProjectsClient) Get(ctx context.Context, resourceGroupName s
 }
 
 // getCreateRequest creates the Get request.
-func (client *GitLabProjectsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, groupFQName string, projectName string, options *GitLabProjectsClientGetOptions) (*policy.Request, error) {
+func (client *GitLabProjectsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, groupFQName string, projectName string, _ *GitLabProjectsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitLabGroups/{groupFQName}/projects/{projectName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -99,7 +99,7 @@ func (client *GitLabProjectsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +116,7 @@ func (client *GitLabProjectsClient) getHandleResponse(resp *http.Response) (GitL
 
 // NewListPager - Gets a list of GitLab projects that are directly owned by given group and onboarded to the connector.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - groupFQName - The GitLab group fully-qualified name.
@@ -145,7 +145,7 @@ func (client *GitLabProjectsClient) NewListPager(resourceGroupName string, secur
 }
 
 // listCreateRequest creates the List request.
-func (client *GitLabProjectsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, groupFQName string, options *GitLabProjectsClientListOptions) (*policy.Request, error) {
+func (client *GitLabProjectsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, groupFQName string, _ *GitLabProjectsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitLabGroups/{groupFQName}/projects"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -168,7 +168,7 @@ func (client *GitLabProjectsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

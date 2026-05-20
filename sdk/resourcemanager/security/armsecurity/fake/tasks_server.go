@@ -79,33 +79,52 @@ func (t *TasksServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return t.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "TasksClient.GetResourceGroupLevelTask":
-		resp, err = t.dispatchGetResourceGroupLevelTask(req)
-	case "TasksClient.GetSubscriptionLevelTask":
-		resp, err = t.dispatchGetSubscriptionLevelTask(req)
-	case "TasksClient.NewListPager":
-		resp, err = t.dispatchNewListPager(req)
-	case "TasksClient.NewListByHomeRegionPager":
-		resp, err = t.dispatchNewListByHomeRegionPager(req)
-	case "TasksClient.NewListByResourceGroupPager":
-		resp, err = t.dispatchNewListByResourceGroupPager(req)
-	case "TasksClient.UpdateResourceGroupLevelTaskState":
-		resp, err = t.dispatchUpdateResourceGroupLevelTaskState(req)
-	case "TasksClient.UpdateSubscriptionLevelTaskState":
-		resp, err = t.dispatchUpdateSubscriptionLevelTaskState(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (t *TasksServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if tasksServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = tasksServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "TasksClient.GetResourceGroupLevelTask":
+				res.resp, res.err = t.dispatchGetResourceGroupLevelTask(req)
+			case "TasksClient.GetSubscriptionLevelTask":
+				res.resp, res.err = t.dispatchGetSubscriptionLevelTask(req)
+			case "TasksClient.NewListPager":
+				res.resp, res.err = t.dispatchNewListPager(req)
+			case "TasksClient.NewListByHomeRegionPager":
+				res.resp, res.err = t.dispatchNewListByHomeRegionPager(req)
+			case "TasksClient.NewListByResourceGroupPager":
+				res.resp, res.err = t.dispatchNewListByResourceGroupPager(req)
+			case "TasksClient.UpdateResourceGroupLevelTaskState":
+				res.resp, res.err = t.dispatchUpdateResourceGroupLevelTaskState(req)
+			case "TasksClient.UpdateSubscriptionLevelTaskState":
+				res.resp, res.err = t.dispatchUpdateSubscriptionLevelTaskState(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (t *TasksServerTransport) dispatchGetResourceGroupLevelTask(req *http.Request) (*http.Response, error) {
@@ -115,7 +134,7 @@ func (t *TasksServerTransport) dispatchGetResourceGroupLevelTask(req *http.Reque
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -152,7 +171,7 @@ func (t *TasksServerTransport) dispatchGetSubscriptionLevelTask(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	ascLocationParam, err := url.PathUnescape(matches[regex.SubexpIndex("ascLocation")])
@@ -187,7 +206,7 @@ func (t *TasksServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/tasks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -232,7 +251,7 @@ func (t *TasksServerTransport) dispatchNewListByHomeRegionPager(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -281,7 +300,7 @@ func (t *TasksServerTransport) dispatchNewListByResourceGroupPager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -332,7 +351,7 @@ func (t *TasksServerTransport) dispatchUpdateResourceGroupLevelTaskState(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<taskUpdateActionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -379,7 +398,7 @@ func (t *TasksServerTransport) dispatchUpdateSubscriptionLevelTaskState(req *htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<taskUpdateActionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	ascLocationParam, err := url.PathUnescape(matches[regex.SubexpIndex("ascLocation")])
@@ -413,4 +432,10 @@ func (t *TasksServerTransport) dispatchUpdateSubscriptionLevelTaskState(req *htt
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to TasksServerTransport
+var tasksServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

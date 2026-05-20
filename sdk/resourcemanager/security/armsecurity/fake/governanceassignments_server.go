@@ -63,27 +63,46 @@ func (g *GovernanceAssignmentsServerTransport) Do(req *http.Request) (*http.Resp
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return g.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "GovernanceAssignmentsClient.CreateOrUpdate":
-		resp, err = g.dispatchCreateOrUpdate(req)
-	case "GovernanceAssignmentsClient.Delete":
-		resp, err = g.dispatchDelete(req)
-	case "GovernanceAssignmentsClient.Get":
-		resp, err = g.dispatchGet(req)
-	case "GovernanceAssignmentsClient.NewListPager":
-		resp, err = g.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (g *GovernanceAssignmentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if governanceAssignmentsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = governanceAssignmentsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "GovernanceAssignmentsClient.CreateOrUpdate":
+				res.resp, res.err = g.dispatchCreateOrUpdate(req)
+			case "GovernanceAssignmentsClient.Delete":
+				res.resp, res.err = g.dispatchDelete(req)
+			case "GovernanceAssignmentsClient.Get":
+				res.resp, res.err = g.dispatchGet(req)
+			case "GovernanceAssignmentsClient.NewListPager":
+				res.resp, res.err = g.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (g *GovernanceAssignmentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -93,7 +112,7 @@ func (g *GovernanceAssignmentsServerTransport) dispatchCreateOrUpdate(req *http.
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/governanceAssignments/(?P<assignmentKey>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurity.GovernanceAssignment](req)
@@ -134,7 +153,7 @@ func (g *GovernanceAssignmentsServerTransport) dispatchDelete(req *http.Request)
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/governanceAssignments/(?P<assignmentKey>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -171,7 +190,7 @@ func (g *GovernanceAssignmentsServerTransport) dispatchGet(req *http.Request) (*
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/governanceAssignments/(?P<assignmentKey>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -210,7 +229,7 @@ func (g *GovernanceAssignmentsServerTransport) dispatchNewListPager(req *http.Re
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/governanceAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -240,4 +259,10 @@ func (g *GovernanceAssignmentsServerTransport) dispatchNewListPager(req *http.Re
 		g.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to GovernanceAssignmentsServerTransport
+var governanceAssignmentsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

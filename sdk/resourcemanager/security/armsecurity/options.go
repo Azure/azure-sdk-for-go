@@ -8,7 +8,7 @@ package armsecurity
 // APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions contains the optional parameters for the APICollectionsClient.BeginOnboardAzureAPIManagementAPI
 // method.
 type APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -42,74 +42,6 @@ type APICollectionsClientOffboardAzureAPIManagementAPIOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountConnectorsClientCreateOrUpdateOptions contains the optional parameters for the AccountConnectorsClient.CreateOrUpdate
-// method.
-type AccountConnectorsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccountConnectorsClientDeleteOptions contains the optional parameters for the AccountConnectorsClient.Delete method.
-type AccountConnectorsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccountConnectorsClientGetOptions contains the optional parameters for the AccountConnectorsClient.Get method.
-type AccountConnectorsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccountConnectorsClientListOptions contains the optional parameters for the AccountConnectorsClient.NewListPager method.
-type AccountConnectorsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AdaptiveApplicationControlsClientDeleteOptions contains the optional parameters for the AdaptiveApplicationControlsClient.Delete
-// method.
-type AdaptiveApplicationControlsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AdaptiveApplicationControlsClientGetOptions contains the optional parameters for the AdaptiveApplicationControlsClient.Get
-// method.
-type AdaptiveApplicationControlsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AdaptiveApplicationControlsClientListOptions contains the optional parameters for the AdaptiveApplicationControlsClient.List
-// method.
-type AdaptiveApplicationControlsClientListOptions struct {
-	// Include the policy rules
-	IncludePathRecommendations *bool
-
-	// Return output in a summarized form
-	Summary *bool
-}
-
-// AdaptiveApplicationControlsClientPutOptions contains the optional parameters for the AdaptiveApplicationControlsClient.Put
-// method.
-type AdaptiveApplicationControlsClientPutOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AdaptiveNetworkHardeningsClientBeginEnforceOptions contains the optional parameters for the AdaptiveNetworkHardeningsClient.BeginEnforce
-// method.
-type AdaptiveNetworkHardeningsClientBeginEnforceOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// AdaptiveNetworkHardeningsClientGetOptions contains the optional parameters for the AdaptiveNetworkHardeningsClient.Get
-// method.
-type AdaptiveNetworkHardeningsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AdaptiveNetworkHardeningsClientListByExtendedResourceOptions contains the optional parameters for the AdaptiveNetworkHardeningsClient.NewListByExtendedResourcePager
-// method.
-type AdaptiveNetworkHardeningsClientListByExtendedResourceOptions struct {
-	// placeholder for future optional parameters
-}
-
 // AdvancedThreatProtectionClientCreateOptions contains the optional parameters for the AdvancedThreatProtectionClient.Create
 // method.
 type AdvancedThreatProtectionClientCreateOptions struct {
@@ -123,7 +55,7 @@ type AdvancedThreatProtectionClientGetOptions struct {
 
 // AlertsClientBeginSimulateOptions contains the optional parameters for the AlertsClient.BeginSimulate method.
 type AlertsClientBeginSimulateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -268,6 +200,54 @@ type ApplicationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ArmSecurityStandardsClientCreateOrUpdateOptions contains the optional parameters for the ArmSecurityStandardsClient.CreateOrUpdate
+// method.
+type ArmSecurityStandardsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmSecurityStandardsClientDeleteOptions contains the optional parameters for the ArmSecurityStandardsClient.Delete method.
+type ArmSecurityStandardsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmSecurityStandardsClientGetOptions contains the optional parameters for the ArmSecurityStandardsClient.Get method.
+type ArmSecurityStandardsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmSecurityStandardsClientListOptions contains the optional parameters for the ArmSecurityStandardsClient.NewListPager
+// method.
+type ArmSecurityStandardsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmStandardsClientCreateOrUpdateOptions contains the optional parameters for the ArmStandardsClient.CreateOrUpdate method.
+type ArmStandardsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmStandardsClientDeleteOptions contains the optional parameters for the ArmStandardsClient.Delete method.
+type ArmStandardsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmStandardsClientGetOptions contains the optional parameters for the ArmStandardsClient.Get method.
+type ArmStandardsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmStandardsClientListBySubscriptionOptions contains the optional parameters for the ArmStandardsClient.NewListBySubscriptionPager
+// method.
+type ArmStandardsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArmStandardsClientListOptions contains the optional parameters for the ArmStandardsClient.NewListPager method.
+type ArmStandardsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AssessmentsClientCreateOrUpdateOptions contains the optional parameters for the AssessmentsClient.CreateOrUpdate method.
 type AssessmentsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -320,6 +300,32 @@ type AssessmentsMetadataClientListBySubscriptionOptions struct {
 
 // AssessmentsMetadataClientListOptions contains the optional parameters for the AssessmentsMetadataClient.NewListPager method.
 type AssessmentsMetadataClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientCreateOrUpdateOptions contains the optional parameters for the AssignmentsClient.CreateOrUpdate method.
+type AssignmentsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
+type AssignmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
+type AssignmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientListBySubscriptionOptions contains the optional parameters for the AssignmentsClient.NewListBySubscriptionPager
+// method.
+type AssignmentsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.NewListPager method.
+type AssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -379,13 +385,13 @@ type AutomationsClientValidateOptions struct {
 // AzureDevOpsOrgsClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureDevOpsOrgsClient.BeginCreateOrUpdate
 // method.
 type AzureDevOpsOrgsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AzureDevOpsOrgsClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsOrgsClient.BeginUpdate method.
 type AzureDevOpsOrgsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -408,14 +414,14 @@ type AzureDevOpsOrgsClientListOptions struct {
 // AzureDevOpsProjectsClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureDevOpsProjectsClient.BeginCreateOrUpdate
 // method.
 type AzureDevOpsProjectsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AzureDevOpsProjectsClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsProjectsClient.BeginUpdate
 // method.
 type AzureDevOpsProjectsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -432,13 +438,13 @@ type AzureDevOpsProjectsClientListOptions struct {
 // AzureDevOpsReposClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureDevOpsReposClient.BeginCreateOrUpdate
 // method.
 type AzureDevOpsReposClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AzureDevOpsReposClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsReposClient.BeginUpdate method.
 type AzureDevOpsReposClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -525,83 +531,31 @@ type ConnectorsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContactsClientCreateOptions contains the optional parameters for the ContactsClient.Create method.
-type ContactsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContactsClientDeleteOptions contains the optional parameters for the ContactsClient.Delete method.
-type ContactsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContactsClientGetOptions contains the optional parameters for the ContactsClient.Get method.
-type ContactsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContactsClientListOptions contains the optional parameters for the ContactsClient.NewListPager method.
-type ContactsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CustomAssessmentAutomationsClientCreateOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Create
+// CustomRecommendationsClientCreateOrUpdateOptions contains the optional parameters for the CustomRecommendationsClient.CreateOrUpdate
 // method.
-type CustomAssessmentAutomationsClientCreateOptions struct {
+type CustomRecommendationsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomAssessmentAutomationsClientDeleteOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Delete
-// method.
-type CustomAssessmentAutomationsClientDeleteOptions struct {
+// CustomRecommendationsClientDeleteOptions contains the optional parameters for the CustomRecommendationsClient.Delete method.
+type CustomRecommendationsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomAssessmentAutomationsClientGetOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Get
-// method.
-type CustomAssessmentAutomationsClientGetOptions struct {
+// CustomRecommendationsClientGetOptions contains the optional parameters for the CustomRecommendationsClient.Get method.
+type CustomRecommendationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomAssessmentAutomationsClientListByResourceGroupOptions contains the optional parameters for the CustomAssessmentAutomationsClient.NewListByResourceGroupPager
+// CustomRecommendationsClientListOptions contains the optional parameters for the CustomRecommendationsClient.NewListPager
 // method.
-type CustomAssessmentAutomationsClientListByResourceGroupOptions struct {
+type CustomRecommendationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomAssessmentAutomationsClientListBySubscriptionOptions contains the optional parameters for the CustomAssessmentAutomationsClient.NewListBySubscriptionPager
+// DefenderForStorageClientCancelMalwareScanOptions contains the optional parameters for the DefenderForStorageClient.CancelMalwareScan
 // method.
-type CustomAssessmentAutomationsClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CustomEntityStoreAssignmentsClientCreateOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.Create
-// method.
-type CustomEntityStoreAssignmentsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CustomEntityStoreAssignmentsClientDeleteOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.Delete
-// method.
-type CustomEntityStoreAssignmentsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CustomEntityStoreAssignmentsClientGetOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.Get
-// method.
-type CustomEntityStoreAssignmentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CustomEntityStoreAssignmentsClientListByResourceGroupOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.NewListByResourceGroupPager
-// method.
-type CustomEntityStoreAssignmentsClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CustomEntityStoreAssignmentsClientListBySubscriptionOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.NewListBySubscriptionPager
-// method.
-type CustomEntityStoreAssignmentsClientListBySubscriptionOptions struct {
+type DefenderForStorageClientCancelMalwareScanOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -610,29 +564,46 @@ type DefenderForStorageClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DefenderForStorageClientGetMalwareScanOptions contains the optional parameters for the DefenderForStorageClient.GetMalwareScan
+// method.
+type DefenderForStorageClientGetMalwareScanOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DefenderForStorageClientGetOptions contains the optional parameters for the DefenderForStorageClient.Get method.
 type DefenderForStorageClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefenderForStorageClientListOptions contains the optional parameters for the DefenderForStorageClient.NewListPager method.
+type DefenderForStorageClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefenderForStorageClientStartMalwareScanOptions contains the optional parameters for the DefenderForStorageClient.StartMalwareScan
+// method.
+type DefenderForStorageClientStartMalwareScanOptions struct {
 	// placeholder for future optional parameters
 }
 
 // DevOpsConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevOpsConfigurationsClient.BeginCreateOrUpdate
 // method.
 type DevOpsConfigurationsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DevOpsConfigurationsClientBeginDeleteOptions contains the optional parameters for the DevOpsConfigurationsClient.BeginDelete
 // method.
 type DevOpsConfigurationsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DevOpsConfigurationsClientBeginUpdateOptions contains the optional parameters for the DevOpsConfigurationsClient.BeginUpdate
 // method.
 type DevOpsConfigurationsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -708,6 +679,15 @@ type ExternalSecuritySolutionsClientListByHomeRegionOptions struct {
 // method.
 type ExternalSecuritySolutionsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// GitHubIssuesClientBeginCreateOptions contains the optional parameters for the GitHubIssuesClient.BeginCreate method.
+type GitHubIssuesClientBeginCreateOptions struct {
+	// The request model containing details for creating the GitHub issue.
+	CreateIssueRequest *IssueCreationRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // GitHubOwnersClientGetOptions contains the optional parameters for the GitHubOwnersClient.Get method.
@@ -789,7 +769,7 @@ type GovernanceAssignmentsClientListOptions struct {
 
 // GovernanceRulesClientBeginDeleteOptions contains the optional parameters for the GovernanceRulesClient.BeginDelete method.
 type GovernanceRulesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -798,7 +778,7 @@ type GovernanceRulesClientBeginExecuteOptions struct {
 	// Execute governance rule over a given scope
 	ExecuteGovernanceRuleParams *ExecuteGovernanceRuleParams
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -998,6 +978,16 @@ type MdeOnboardingsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
+type OperationResultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
+type OperationStatusesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1041,6 +1031,87 @@ type PricingsClientListOptions struct {
 
 // PricingsClientUpdateOptions contains the optional parameters for the PricingsClient.Update method.
 type PricingsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkParameters contains a group of parameters for the PrivateLinksClient.Get method.
+type PrivateLinkParameters struct {
+	// The name of the private link resource. Must be unique within the resource group and follow Azure naming conventions.
+	PrivateLinkName string
+}
+
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListPager
+// method.
+type PrivateLinkResourcesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinksClientBeginCreateOptions contains the optional parameters for the PrivateLinksClient.BeginCreate method.
+type PrivateLinksClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinksClientBeginDeleteOptions contains the optional parameters for the PrivateLinksClient.BeginDelete method.
+type PrivateLinksClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinksClientGetOptions contains the optional parameters for the PrivateLinksClient.Get method.
+type PrivateLinksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinksClientHeadOptions contains the optional parameters for the PrivateLinksClient.Head method.
+type PrivateLinksClientHeadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinksClientListBySubscriptionOptions contains the optional parameters for the PrivateLinksClient.NewListBySubscriptionPager
+// method.
+type PrivateLinksClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinksClientListOptions contains the optional parameters for the PrivateLinksClient.NewListPager method.
+type PrivateLinksClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinksClientUpdateOptions contains the optional parameters for the PrivateLinksClient.Update method.
+type PrivateLinksClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1088,6 +1159,12 @@ type RegulatoryComplianceStandardsClientListOptions struct {
 type SQLVulnerabilityAssessmentBaselineRulesClientAddOptions struct {
 	// The baseline rules.
 	Body *RulesResultsInput
+
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
 }
 
 // SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateOptions contains the optional parameters for the SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdate
@@ -1095,47 +1172,123 @@ type SQLVulnerabilityAssessmentBaselineRulesClientAddOptions struct {
 type SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateOptions struct {
 	// The baseline results for this rule.
 	Body *RuleResultsInput
+
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
 }
 
 // SQLVulnerabilityAssessmentBaselineRulesClientDeleteOptions contains the optional parameters for the SQLVulnerabilityAssessmentBaselineRulesClient.Delete
 // method.
 type SQLVulnerabilityAssessmentBaselineRulesClientDeleteOptions struct {
-	// placeholder for future optional parameters
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
 }
 
 // SQLVulnerabilityAssessmentBaselineRulesClientGetOptions contains the optional parameters for the SQLVulnerabilityAssessmentBaselineRulesClient.Get
 // method.
 type SQLVulnerabilityAssessmentBaselineRulesClientGetOptions struct {
-	// placeholder for future optional parameters
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
 }
 
-// SQLVulnerabilityAssessmentBaselineRulesClientListOptions contains the optional parameters for the SQLVulnerabilityAssessmentBaselineRulesClient.List
+// SQLVulnerabilityAssessmentBaselineRulesClientListOptions contains the optional parameters for the SQLVulnerabilityAssessmentBaselineRulesClient.NewListPager
 // method.
 type SQLVulnerabilityAssessmentBaselineRulesClientListOptions struct {
-	// placeholder for future optional parameters
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
 }
 
 // SQLVulnerabilityAssessmentScanResultsClientGetOptions contains the optional parameters for the SQLVulnerabilityAssessmentScanResultsClient.Get
 // method.
 type SQLVulnerabilityAssessmentScanResultsClientGetOptions struct {
-	// placeholder for future optional parameters
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
 }
 
-// SQLVulnerabilityAssessmentScanResultsClientListOptions contains the optional parameters for the SQLVulnerabilityAssessmentScanResultsClient.List
+// SQLVulnerabilityAssessmentScanResultsClientListOptions contains the optional parameters for the SQLVulnerabilityAssessmentScanResultsClient.NewListPager
 // method.
 type SQLVulnerabilityAssessmentScanResultsClientListOptions struct {
-	// placeholder for future optional parameters
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
+}
+
+// SQLVulnerabilityAssessmentScansClientBeginInitiateScanOptions contains the optional parameters for the SQLVulnerabilityAssessmentScansClient.BeginInitiateScan
+// method.
+type SQLVulnerabilityAssessmentScansClientBeginInitiateScanOptions struct {
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SQLVulnerabilityAssessmentScansClientGetOptions contains the optional parameters for the SQLVulnerabilityAssessmentScansClient.Get
 // method.
 type SQLVulnerabilityAssessmentScansClientGetOptions struct {
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
+}
+
+// SQLVulnerabilityAssessmentScansClientGetScanOperationResultOptions contains the optional parameters for the SQLVulnerabilityAssessmentScansClient.GetScanOperationResult
+// method.
+type SQLVulnerabilityAssessmentScansClientGetScanOperationResultOptions struct {
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
+}
+
+// SQLVulnerabilityAssessmentScansClientListOptions contains the optional parameters for the SQLVulnerabilityAssessmentScansClient.NewListPager
+// method.
+type SQLVulnerabilityAssessmentScansClientListOptions struct {
+	// The name of the database to assess. Required when the API is called on the parent resource (e.g., server level) rather
+	// than on a specific database resource, since the database name is not part of the
+	// resource URI. This is the only way to assess system databases (e.g., master), which cannot be referenced directly in the
+	// resource URI.
+	DatabaseName *string
+}
+
+// SQLVulnerabilityAssessmentSettingsClientCreateOrUpdateOptions contains the optional parameters for the SQLVulnerabilityAssessmentSettingsClient.CreateOrUpdate
+// method.
+type SQLVulnerabilityAssessmentSettingsClientCreateOrUpdateOptions struct {
+	// The SQL Vulnerability Assessment settings.
+	Body *SQLVulnerabilityAssessmentSettings
+}
+
+// SQLVulnerabilityAssessmentSettingsClientDeleteOptions contains the optional parameters for the SQLVulnerabilityAssessmentSettingsClient.Delete
+// method.
+type SQLVulnerabilityAssessmentSettingsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLVulnerabilityAssessmentScansClientListOptions contains the optional parameters for the SQLVulnerabilityAssessmentScansClient.List
+// SQLVulnerabilityAssessmentSettingsClientGetOptions contains the optional parameters for the SQLVulnerabilityAssessmentSettingsClient.Get
 // method.
-type SQLVulnerabilityAssessmentScansClientListOptions struct {
+type SQLVulnerabilityAssessmentSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1193,7 +1346,7 @@ type SensitivitySettingsClientListOptions struct {
 // ServerVulnerabilityAssessmentClientBeginDeleteOptions contains the optional parameters for the ServerVulnerabilityAssessmentClient.BeginDelete
 // method.
 type ServerVulnerabilityAssessmentClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -1254,23 +1407,6 @@ type SettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SoftwareInventoriesClientGetOptions contains the optional parameters for the SoftwareInventoriesClient.Get method.
-type SoftwareInventoriesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SoftwareInventoriesClientListByExtendedResourceOptions contains the optional parameters for the SoftwareInventoriesClient.NewListByExtendedResourcePager
-// method.
-type SoftwareInventoriesClientListByExtendedResourceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SoftwareInventoriesClientListBySubscriptionOptions contains the optional parameters for the SoftwareInventoriesClient.NewListBySubscriptionPager
-// method.
-type SoftwareInventoriesClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
 // SolutionsClientGetOptions contains the optional parameters for the SolutionsClient.Get method.
 type SolutionsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -1289,6 +1425,26 @@ type SolutionsReferenceDataClientListByHomeRegionOptions struct {
 
 // SolutionsReferenceDataClientListOptions contains the optional parameters for the SolutionsReferenceDataClient.List method.
 type SolutionsReferenceDataClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StandardAssignmentsClientCreateOptions contains the optional parameters for the StandardAssignmentsClient.Create method.
+type StandardAssignmentsClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StandardAssignmentsClientDeleteOptions contains the optional parameters for the StandardAssignmentsClient.Delete method.
+type StandardAssignmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StandardAssignmentsClientGetOptions contains the optional parameters for the StandardAssignmentsClient.Get method.
+type StandardAssignmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StandardAssignmentsClientListOptions contains the optional parameters for the StandardAssignmentsClient.NewListPager method.
+type StandardAssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

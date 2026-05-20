@@ -27,7 +27,7 @@ type DevOpsOperationResultsClient struct {
 // NewDevOpsOperationResultsClient creates a new instance of DevOpsOperationResultsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDevOpsOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DevOpsOperationResultsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewDevOpsOperationResultsClient(subscriptionID string, credential azcore.To
 // Get - Get devops long running operation result.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - operationResultID - The operation result Id.
@@ -72,7 +72,7 @@ func (client *DevOpsOperationResultsClient) Get(ctx context.Context, resourceGro
 }
 
 // getCreateRequest creates the Get request.
-func (client *DevOpsOperationResultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, operationResultID string, options *DevOpsOperationResultsClientGetOptions) (*policy.Request, error) {
+func (client *DevOpsOperationResultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, operationResultID string, _ *DevOpsOperationResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/operationResults/{operationResultId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +95,7 @@ func (client *DevOpsOperationResultsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

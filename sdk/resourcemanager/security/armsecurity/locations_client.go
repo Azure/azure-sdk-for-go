@@ -27,7 +27,7 @@ type LocationsClient struct {
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +69,7 @@ func (client *LocationsClient) Get(ctx context.Context, ascLocation string, opti
 }
 
 // getCreateRequest creates the Get request.
-func (client *LocationsClient) getCreateRequest(ctx context.Context, ascLocation string, options *LocationsClientGetOptions) (*policy.Request, error) {
+func (client *LocationsClient) getCreateRequest(ctx context.Context, ascLocation string, _ *LocationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -129,7 +129,7 @@ func (client *LocationsClient) NewListPager(options *LocationsClientListOptions)
 }
 
 // listCreateRequest creates the List request.
-func (client *LocationsClient) listCreateRequest(ctx context.Context, options *LocationsClientListOptions) (*policy.Request, error) {
+func (client *LocationsClient) listCreateRequest(ctx context.Context, _ *LocationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

@@ -58,27 +58,46 @@ func (o *OperatorsServerTransport) Do(req *http.Request) (*http.Response, error)
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return o.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "OperatorsClient.CreateOrUpdate":
-		resp, err = o.dispatchCreateOrUpdate(req)
-	case "OperatorsClient.Delete":
-		resp, err = o.dispatchDelete(req)
-	case "OperatorsClient.Get":
-		resp, err = o.dispatchGet(req)
-	case "OperatorsClient.List":
-		resp, err = o.dispatchList(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (o *OperatorsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if operatorsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = operatorsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "OperatorsClient.CreateOrUpdate":
+				res.resp, res.err = o.dispatchCreateOrUpdate(req)
+			case "OperatorsClient.Delete":
+				res.resp, res.err = o.dispatchDelete(req)
+			case "OperatorsClient.Get":
+				res.resp, res.err = o.dispatchGet(req)
+			case "OperatorsClient.List":
+				res.resp, res.err = o.dispatchList(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (o *OperatorsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -88,7 +107,7 @@ func (o *OperatorsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityOperators/(?P<securityOperatorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	pricingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("pricingName")])
@@ -121,7 +140,7 @@ func (o *OperatorsServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityOperators/(?P<securityOperatorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	pricingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("pricingName")])
@@ -154,7 +173,7 @@ func (o *OperatorsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityOperators/(?P<securityOperatorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	pricingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("pricingName")])
@@ -187,7 +206,7 @@ func (o *OperatorsServerTransport) dispatchList(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityOperators`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	pricingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("pricingName")])
@@ -207,4 +226,10 @@ func (o *OperatorsServerTransport) dispatchList(req *http.Request) (*http.Respon
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to OperatorsServerTransport
+var operatorsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

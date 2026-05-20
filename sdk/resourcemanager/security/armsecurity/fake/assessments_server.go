@@ -63,27 +63,46 @@ func (a *AssessmentsServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AssessmentsClient.CreateOrUpdate":
-		resp, err = a.dispatchCreateOrUpdate(req)
-	case "AssessmentsClient.Delete":
-		resp, err = a.dispatchDelete(req)
-	case "AssessmentsClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "AssessmentsClient.NewListPager":
-		resp, err = a.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AssessmentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if assessmentsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = assessmentsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AssessmentsClient.CreateOrUpdate":
+				res.resp, res.err = a.dispatchCreateOrUpdate(req)
+			case "AssessmentsClient.Delete":
+				res.resp, res.err = a.dispatchDelete(req)
+			case "AssessmentsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AssessmentsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AssessmentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -93,7 +112,7 @@ func (a *AssessmentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurity.Assessment](req)
@@ -130,7 +149,7 @@ func (a *AssessmentsServerTransport) dispatchDelete(req *http.Request) (*http.Re
 	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
@@ -163,7 +182,7 @@ func (a *AssessmentsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -210,7 +229,7 @@ func (a *AssessmentsServerTransport) dispatchNewListPager(req *http.Request) (*h
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -236,4 +255,10 @@ func (a *AssessmentsServerTransport) dispatchNewListPager(req *http.Request) (*h
 		a.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AssessmentsServerTransport
+var assessmentsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

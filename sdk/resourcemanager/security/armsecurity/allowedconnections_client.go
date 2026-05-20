@@ -27,7 +27,7 @@ type AllowedConnectionsClient struct {
 // NewAllowedConnectionsClient creates a new instance of AllowedConnectionsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAllowedConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AllowedConnectionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *AllowedConnectionsClient) Get(ctx context.Context, resourceGroupNa
 }
 
 // getCreateRequest creates the Get request.
-func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, connectionType ConnectionType, options *AllowedConnectionsClientGetOptions) (*policy.Request, error) {
+func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, connectionType ConnectionType, _ *AllowedConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections/{connectionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,7 +138,7 @@ func (client *AllowedConnectionsClient) NewListPager(options *AllowedConnections
 }
 
 // listCreateRequest creates the List request.
-func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, options *AllowedConnectionsClientListOptions) (*policy.Request, error) {
+func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, _ *AllowedConnectionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/allowedConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -194,7 +194,7 @@ func (client *AllowedConnectionsClient) NewListByHomeRegionPager(ascLocation str
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, options *AllowedConnectionsClientListByHomeRegionOptions) (*policy.Request, error) {
+func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, _ *AllowedConnectionsClientListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

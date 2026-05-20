@@ -27,7 +27,7 @@ type SolutionsReferenceDataClient struct {
 // NewSolutionsReferenceDataClient creates a new instance of SolutionsReferenceDataClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSolutionsReferenceDataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionsReferenceDataClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +69,7 @@ func (client *SolutionsReferenceDataClient) List(ctx context.Context, options *S
 }
 
 // listCreateRequest creates the List request.
-func (client *SolutionsReferenceDataClient) listCreateRequest(ctx context.Context, options *SolutionsReferenceDataClientListOptions) (*policy.Request, error) {
+func (client *SolutionsReferenceDataClient) listCreateRequest(ctx context.Context, _ *SolutionsReferenceDataClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securitySolutionsReferenceData"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -125,7 +125,7 @@ func (client *SolutionsReferenceDataClient) ListByHomeRegion(ctx context.Context
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *SolutionsReferenceDataClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, options *SolutionsReferenceDataClientListByHomeRegionOptions) (*policy.Request, error) {
+func (client *SolutionsReferenceDataClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, _ *SolutionsReferenceDataClientListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/securitySolutionsReferenceData"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

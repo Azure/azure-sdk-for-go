@@ -25,7 +25,7 @@ type InformationProtectionPoliciesClient struct {
 
 // NewInformationProtectionPoliciesClient creates a new instance of InformationProtectionPoliciesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*InformationProtectionPoliciesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Co
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName InformationProtectionPolicyName, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName InformationProtectionPolicyName, informationProtectionPolicy InformationProtectionPolicy, _ *InformationProtectionPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if informationProtectionPolicyName == "" {
@@ -132,7 +132,7 @@ func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scop
 }
 
 // getCreateRequest creates the Get request.
-func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName InformationProtectionPolicyName, options *InformationProtectionPoliciesClientGetOptions) (*policy.Request, error) {
+func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName InformationProtectionPolicyName, _ *InformationProtectionPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if informationProtectionPolicyName == "" {
@@ -190,7 +190,7 @@ func (client *InformationProtectionPoliciesClient) NewListPager(scope string, op
 }
 
 // listCreateRequest creates the List request.
-func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context.Context, scope string, options *InformationProtectionPoliciesClientListOptions) (*policy.Request, error) {
+func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context.Context, scope string, _ *InformationProtectionPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

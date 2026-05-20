@@ -25,7 +25,7 @@ type SubAssessmentsClient struct {
 
 // NewSubAssessmentsClient creates a new instance of SubAssessmentsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSubAssessmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SubAssessmentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +69,7 @@ func (client *SubAssessmentsClient) Get(ctx context.Context, scope string, asses
 }
 
 // getCreateRequest creates the Get request.
-func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope string, assessmentName string, subAssessmentName string, options *SubAssessmentsClientGetOptions) (*policy.Request, error) {
+func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope string, assessmentName string, subAssessmentName string, _ *SubAssessmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/subAssessments/{subAssessmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if assessmentName == "" {
@@ -131,7 +131,7 @@ func (client *SubAssessmentsClient) NewListPager(scope string, assessmentName st
 }
 
 // listCreateRequest creates the List request.
-func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, options *SubAssessmentsClientListOptions) (*policy.Request, error) {
+func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, _ *SubAssessmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/subAssessments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if assessmentName == "" {
@@ -189,7 +189,7 @@ func (client *SubAssessmentsClient) NewListAllPager(scope string, options *SubAs
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, scope string, options *SubAssessmentsClientListAllOptions) (*policy.Request, error) {
+func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, scope string, _ *SubAssessmentsClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/subAssessments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

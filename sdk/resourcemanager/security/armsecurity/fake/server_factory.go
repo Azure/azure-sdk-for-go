@@ -16,76 +16,230 @@ import (
 
 // ServerFactory is a fake server for instances of the armsecurity.ClientFactory type.
 type ServerFactory struct {
-	APICollectionsServer                               APICollectionsServer
-	AccountConnectorsServer                            AccountConnectorsServer
-	AdaptiveApplicationControlsServer                  AdaptiveApplicationControlsServer
-	AdaptiveNetworkHardeningsServer                    AdaptiveNetworkHardeningsServer
-	AdvancedThreatProtectionServer                     AdvancedThreatProtectionServer
-	AlertsServer                                       AlertsServer
-	AlertsSuppressionRulesServer                       AlertsSuppressionRulesServer
-	AllowedConnectionsServer                           AllowedConnectionsServer
-	ApplicationServer                                  ApplicationServer
-	ApplicationsServer                                 ApplicationsServer
-	AssessmentsServer                                  AssessmentsServer
-	AssessmentsMetadataServer                          AssessmentsMetadataServer
-	AutoProvisioningSettingsServer                     AutoProvisioningSettingsServer
-	AutomationsServer                                  AutomationsServer
-	AzureDevOpsOrgsServer                              AzureDevOpsOrgsServer
-	AzureDevOpsProjectsServer                          AzureDevOpsProjectsServer
-	AzureDevOpsReposServer                             AzureDevOpsReposServer
-	ComplianceResultsServer                            ComplianceResultsServer
-	CompliancesServer                                  CompliancesServer
-	ConnectorApplicationServer                         ConnectorApplicationServer
-	ConnectorApplicationsServer                        ConnectorApplicationsServer
-	ConnectorsServer                                   ConnectorsServer
-	ContactsServer                                     ContactsServer
-	CustomAssessmentAutomationsServer                  CustomAssessmentAutomationsServer
-	CustomEntityStoreAssignmentsServer                 CustomEntityStoreAssignmentsServer
-	DefenderForStorageServer                           DefenderForStorageServer
-	DevOpsConfigurationsServer                         DevOpsConfigurationsServer
-	DevOpsOperationResultsServer                       DevOpsOperationResultsServer
-	DeviceSecurityGroupsServer                         DeviceSecurityGroupsServer
-	DiscoveredSecuritySolutionsServer                  DiscoveredSecuritySolutionsServer
-	ExternalSecuritySolutionsServer                    ExternalSecuritySolutionsServer
-	GitHubOwnersServer                                 GitHubOwnersServer
-	GitHubReposServer                                  GitHubReposServer
-	GitLabGroupsServer                                 GitLabGroupsServer
-	GitLabProjectsServer                               GitLabProjectsServer
-	GitLabSubgroupsServer                              GitLabSubgroupsServer
-	GovernanceAssignmentsServer                        GovernanceAssignmentsServer
-	GovernanceRulesServer                              GovernanceRulesServer
-	HealthReportsServer                                HealthReportsServer
-	InformationProtectionPoliciesServer                InformationProtectionPoliciesServer
-	IotSecuritySolutionAnalyticsServer                 IotSecuritySolutionAnalyticsServer
-	IotSecuritySolutionServer                          IotSecuritySolutionServer
+	// APICollectionsServer contains the fakes for client APICollectionsClient
+	APICollectionsServer APICollectionsServer
+
+	// AdvancedThreatProtectionServer contains the fakes for client AdvancedThreatProtectionClient
+	AdvancedThreatProtectionServer AdvancedThreatProtectionServer
+
+	// AlertsServer contains the fakes for client AlertsClient
+	AlertsServer AlertsServer
+
+	// AlertsSuppressionRulesServer contains the fakes for client AlertsSuppressionRulesClient
+	AlertsSuppressionRulesServer AlertsSuppressionRulesServer
+
+	// AllowedConnectionsServer contains the fakes for client AllowedConnectionsClient
+	AllowedConnectionsServer AllowedConnectionsServer
+
+	// ApplicationServer contains the fakes for client ApplicationClient
+	ApplicationServer ApplicationServer
+
+	// ApplicationsServer contains the fakes for client ApplicationsClient
+	ApplicationsServer ApplicationsServer
+
+	// ArmSecurityStandardsServer contains the fakes for client ArmSecurityStandardsClient
+	ArmSecurityStandardsServer ArmSecurityStandardsServer
+
+	// ArmStandardsServer contains the fakes for client ArmStandardsClient
+	ArmStandardsServer ArmStandardsServer
+
+	// AssessmentsServer contains the fakes for client AssessmentsClient
+	AssessmentsServer AssessmentsServer
+
+	// AssessmentsMetadataServer contains the fakes for client AssessmentsMetadataClient
+	AssessmentsMetadataServer AssessmentsMetadataServer
+
+	// AssignmentsServer contains the fakes for client AssignmentsClient
+	AssignmentsServer AssignmentsServer
+
+	// AutoProvisioningSettingsServer contains the fakes for client AutoProvisioningSettingsClient
+	AutoProvisioningSettingsServer AutoProvisioningSettingsServer
+
+	// AutomationsServer contains the fakes for client AutomationsClient
+	AutomationsServer AutomationsServer
+
+	// AzureDevOpsOrgsServer contains the fakes for client AzureDevOpsOrgsClient
+	AzureDevOpsOrgsServer AzureDevOpsOrgsServer
+
+	// AzureDevOpsProjectsServer contains the fakes for client AzureDevOpsProjectsClient
+	AzureDevOpsProjectsServer AzureDevOpsProjectsServer
+
+	// AzureDevOpsReposServer contains the fakes for client AzureDevOpsReposClient
+	AzureDevOpsReposServer AzureDevOpsReposServer
+
+	// ComplianceResultsServer contains the fakes for client ComplianceResultsClient
+	ComplianceResultsServer ComplianceResultsServer
+
+	// CompliancesServer contains the fakes for client CompliancesClient
+	CompliancesServer CompliancesServer
+
+	// ConnectorApplicationServer contains the fakes for client ConnectorApplicationClient
+	ConnectorApplicationServer ConnectorApplicationServer
+
+	// ConnectorApplicationsServer contains the fakes for client ConnectorApplicationsClient
+	ConnectorApplicationsServer ConnectorApplicationsServer
+
+	// ConnectorsServer contains the fakes for client ConnectorsClient
+	ConnectorsServer ConnectorsServer
+
+	// CustomRecommendationsServer contains the fakes for client CustomRecommendationsClient
+	CustomRecommendationsServer CustomRecommendationsServer
+
+	// DefenderForStorageServer contains the fakes for client DefenderForStorageClient
+	DefenderForStorageServer DefenderForStorageServer
+
+	// DevOpsConfigurationsServer contains the fakes for client DevOpsConfigurationsClient
+	DevOpsConfigurationsServer DevOpsConfigurationsServer
+
+	// DevOpsOperationResultsServer contains the fakes for client DevOpsOperationResultsClient
+	DevOpsOperationResultsServer DevOpsOperationResultsServer
+
+	// DeviceSecurityGroupsServer contains the fakes for client DeviceSecurityGroupsClient
+	DeviceSecurityGroupsServer DeviceSecurityGroupsServer
+
+	// DiscoveredSecuritySolutionsServer contains the fakes for client DiscoveredSecuritySolutionsClient
+	DiscoveredSecuritySolutionsServer DiscoveredSecuritySolutionsServer
+
+	// ExternalSecuritySolutionsServer contains the fakes for client ExternalSecuritySolutionsClient
+	ExternalSecuritySolutionsServer ExternalSecuritySolutionsServer
+
+	// GitHubIssuesServer contains the fakes for client GitHubIssuesClient
+	GitHubIssuesServer GitHubIssuesServer
+
+	// GitHubOwnersServer contains the fakes for client GitHubOwnersClient
+	GitHubOwnersServer GitHubOwnersServer
+
+	// GitHubReposServer contains the fakes for client GitHubReposClient
+	GitHubReposServer GitHubReposServer
+
+	// GitLabGroupsServer contains the fakes for client GitLabGroupsClient
+	GitLabGroupsServer GitLabGroupsServer
+
+	// GitLabProjectsServer contains the fakes for client GitLabProjectsClient
+	GitLabProjectsServer GitLabProjectsServer
+
+	// GitLabSubgroupsServer contains the fakes for client GitLabSubgroupsClient
+	GitLabSubgroupsServer GitLabSubgroupsServer
+
+	// GovernanceAssignmentsServer contains the fakes for client GovernanceAssignmentsClient
+	GovernanceAssignmentsServer GovernanceAssignmentsServer
+
+	// GovernanceRulesServer contains the fakes for client GovernanceRulesClient
+	GovernanceRulesServer GovernanceRulesServer
+
+	// HealthReportsServer contains the fakes for client HealthReportsClient
+	HealthReportsServer HealthReportsServer
+
+	// InformationProtectionPoliciesServer contains the fakes for client InformationProtectionPoliciesClient
+	InformationProtectionPoliciesServer InformationProtectionPoliciesServer
+
+	// IotSecuritySolutionAnalyticsServer contains the fakes for client IotSecuritySolutionAnalyticsClient
+	IotSecuritySolutionAnalyticsServer IotSecuritySolutionAnalyticsServer
+
+	// IotSecuritySolutionServer contains the fakes for client IotSecuritySolutionClient
+	IotSecuritySolutionServer IotSecuritySolutionServer
+
+	// IotSecuritySolutionsAnalyticsAggregatedAlertServer contains the fakes for client IotSecuritySolutionsAnalyticsAggregatedAlertClient
 	IotSecuritySolutionsAnalyticsAggregatedAlertServer IotSecuritySolutionsAnalyticsAggregatedAlertServer
-	IotSecuritySolutionsAnalyticsRecommendationServer  IotSecuritySolutionsAnalyticsRecommendationServer
-	JitNetworkAccessPoliciesServer                     JitNetworkAccessPoliciesServer
-	LocationsServer                                    LocationsServer
-	MdeOnboardingsServer                               MdeOnboardingsServer
-	OperationsServer                                   OperationsServer
-	OperatorsServer                                    OperatorsServer
-	PricingsServer                                     PricingsServer
-	RegulatoryComplianceAssessmentsServer              RegulatoryComplianceAssessmentsServer
-	RegulatoryComplianceControlsServer                 RegulatoryComplianceControlsServer
-	RegulatoryComplianceStandardsServer                RegulatoryComplianceStandardsServer
-	SQLVulnerabilityAssessmentBaselineRulesServer      SQLVulnerabilityAssessmentBaselineRulesServer
-	SQLVulnerabilityAssessmentScanResultsServer        SQLVulnerabilityAssessmentScanResultsServer
-	SQLVulnerabilityAssessmentScansServer              SQLVulnerabilityAssessmentScansServer
-	SecureScoreControlDefinitionsServer                SecureScoreControlDefinitionsServer
-	SecureScoreControlsServer                          SecureScoreControlsServer
-	SecureScoresServer                                 SecureScoresServer
-	SensitivitySettingsServer                          SensitivitySettingsServer
-	ServerVulnerabilityAssessmentServer                ServerVulnerabilityAssessmentServer
-	ServerVulnerabilityAssessmentsSettingsServer       ServerVulnerabilityAssessmentsSettingsServer
-	SettingsServer                                     SettingsServer
-	SoftwareInventoriesServer                          SoftwareInventoriesServer
-	SolutionsServer                                    SolutionsServer
-	SolutionsReferenceDataServer                       SolutionsReferenceDataServer
-	SubAssessmentsServer                               SubAssessmentsServer
-	TasksServer                                        TasksServer
-	TopologyServer                                     TopologyServer
-	WorkspaceSettingsServer                            WorkspaceSettingsServer
+
+	// IotSecuritySolutionsAnalyticsRecommendationServer contains the fakes for client IotSecuritySolutionsAnalyticsRecommendationClient
+	IotSecuritySolutionsAnalyticsRecommendationServer IotSecuritySolutionsAnalyticsRecommendationServer
+
+	// JitNetworkAccessPoliciesServer contains the fakes for client JitNetworkAccessPoliciesClient
+	JitNetworkAccessPoliciesServer JitNetworkAccessPoliciesServer
+
+	// LocationsServer contains the fakes for client LocationsClient
+	LocationsServer LocationsServer
+
+	// MdeOnboardingsServer contains the fakes for client MdeOnboardingsClient
+	MdeOnboardingsServer MdeOnboardingsServer
+
+	// OperationResultsServer contains the fakes for client OperationResultsClient
+	OperationResultsServer OperationResultsServer
+
+	// OperationStatusesServer contains the fakes for client OperationStatusesClient
+	OperationStatusesServer OperationStatusesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// OperatorsServer contains the fakes for client OperatorsClient
+	OperatorsServer OperatorsServer
+
+	// PricingsServer contains the fakes for client PricingsClient
+	PricingsServer PricingsServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// PrivateLinksServer contains the fakes for client PrivateLinksClient
+	PrivateLinksServer PrivateLinksServer
+
+	// RegulatoryComplianceAssessmentsServer contains the fakes for client RegulatoryComplianceAssessmentsClient
+	RegulatoryComplianceAssessmentsServer RegulatoryComplianceAssessmentsServer
+
+	// RegulatoryComplianceControlsServer contains the fakes for client RegulatoryComplianceControlsClient
+	RegulatoryComplianceControlsServer RegulatoryComplianceControlsServer
+
+	// RegulatoryComplianceStandardsServer contains the fakes for client RegulatoryComplianceStandardsClient
+	RegulatoryComplianceStandardsServer RegulatoryComplianceStandardsServer
+
+	// SQLVulnerabilityAssessmentBaselineRulesServer contains the fakes for client SQLVulnerabilityAssessmentBaselineRulesClient
+	SQLVulnerabilityAssessmentBaselineRulesServer SQLVulnerabilityAssessmentBaselineRulesServer
+
+	// SQLVulnerabilityAssessmentScanResultsServer contains the fakes for client SQLVulnerabilityAssessmentScanResultsClient
+	SQLVulnerabilityAssessmentScanResultsServer SQLVulnerabilityAssessmentScanResultsServer
+
+	// SQLVulnerabilityAssessmentScansServer contains the fakes for client SQLVulnerabilityAssessmentScansClient
+	SQLVulnerabilityAssessmentScansServer SQLVulnerabilityAssessmentScansServer
+
+	// SQLVulnerabilityAssessmentSettingsServer contains the fakes for client SQLVulnerabilityAssessmentSettingsClient
+	SQLVulnerabilityAssessmentSettingsServer SQLVulnerabilityAssessmentSettingsServer
+
+	// SecureScoreControlDefinitionsServer contains the fakes for client SecureScoreControlDefinitionsClient
+	SecureScoreControlDefinitionsServer SecureScoreControlDefinitionsServer
+
+	// SecureScoreControlsServer contains the fakes for client SecureScoreControlsClient
+	SecureScoreControlsServer SecureScoreControlsServer
+
+	// SecureScoresServer contains the fakes for client SecureScoresClient
+	SecureScoresServer SecureScoresServer
+
+	// SensitivitySettingsServer contains the fakes for client SensitivitySettingsClient
+	SensitivitySettingsServer SensitivitySettingsServer
+
+	// ServerVulnerabilityAssessmentServer contains the fakes for client ServerVulnerabilityAssessmentClient
+	ServerVulnerabilityAssessmentServer ServerVulnerabilityAssessmentServer
+
+	// ServerVulnerabilityAssessmentsSettingsServer contains the fakes for client ServerVulnerabilityAssessmentsSettingsClient
+	ServerVulnerabilityAssessmentsSettingsServer ServerVulnerabilityAssessmentsSettingsServer
+
+	// SettingsServer contains the fakes for client SettingsClient
+	SettingsServer SettingsServer
+
+	// SolutionsServer contains the fakes for client SolutionsClient
+	SolutionsServer SolutionsServer
+
+	// SolutionsReferenceDataServer contains the fakes for client SolutionsReferenceDataClient
+	SolutionsReferenceDataServer SolutionsReferenceDataServer
+
+	// StandardAssignmentsServer contains the fakes for client StandardAssignmentsClient
+	StandardAssignmentsServer StandardAssignmentsServer
+
+	// SubAssessmentsServer contains the fakes for client SubAssessmentsClient
+	SubAssessmentsServer SubAssessmentsServer
+
+	// TasksServer contains the fakes for client TasksClient
+	TasksServer TasksServer
+
+	// TopologyServer contains the fakes for client TopologyClient
+	TopologyServer TopologyServer
+
+	// WorkspaceSettingsServer contains the fakes for client WorkspaceSettingsClient
+	WorkspaceSettingsServer WorkspaceSettingsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -103,17 +257,17 @@ type ServerFactoryTransport struct {
 	srv                                                  *ServerFactory
 	trMu                                                 sync.Mutex
 	trAPICollectionsServer                               *APICollectionsServerTransport
-	trAccountConnectorsServer                            *AccountConnectorsServerTransport
-	trAdaptiveApplicationControlsServer                  *AdaptiveApplicationControlsServerTransport
-	trAdaptiveNetworkHardeningsServer                    *AdaptiveNetworkHardeningsServerTransport
 	trAdvancedThreatProtectionServer                     *AdvancedThreatProtectionServerTransport
 	trAlertsServer                                       *AlertsServerTransport
 	trAlertsSuppressionRulesServer                       *AlertsSuppressionRulesServerTransport
 	trAllowedConnectionsServer                           *AllowedConnectionsServerTransport
 	trApplicationServer                                  *ApplicationServerTransport
 	trApplicationsServer                                 *ApplicationsServerTransport
+	trArmSecurityStandardsServer                         *ArmSecurityStandardsServerTransport
+	trArmStandardsServer                                 *ArmStandardsServerTransport
 	trAssessmentsServer                                  *AssessmentsServerTransport
 	trAssessmentsMetadataServer                          *AssessmentsMetadataServerTransport
+	trAssignmentsServer                                  *AssignmentsServerTransport
 	trAutoProvisioningSettingsServer                     *AutoProvisioningSettingsServerTransport
 	trAutomationsServer                                  *AutomationsServerTransport
 	trAzureDevOpsOrgsServer                              *AzureDevOpsOrgsServerTransport
@@ -124,15 +278,14 @@ type ServerFactoryTransport struct {
 	trConnectorApplicationServer                         *ConnectorApplicationServerTransport
 	trConnectorApplicationsServer                        *ConnectorApplicationsServerTransport
 	trConnectorsServer                                   *ConnectorsServerTransport
-	trContactsServer                                     *ContactsServerTransport
-	trCustomAssessmentAutomationsServer                  *CustomAssessmentAutomationsServerTransport
-	trCustomEntityStoreAssignmentsServer                 *CustomEntityStoreAssignmentsServerTransport
+	trCustomRecommendationsServer                        *CustomRecommendationsServerTransport
 	trDefenderForStorageServer                           *DefenderForStorageServerTransport
 	trDevOpsConfigurationsServer                         *DevOpsConfigurationsServerTransport
 	trDevOpsOperationResultsServer                       *DevOpsOperationResultsServerTransport
 	trDeviceSecurityGroupsServer                         *DeviceSecurityGroupsServerTransport
 	trDiscoveredSecuritySolutionsServer                  *DiscoveredSecuritySolutionsServerTransport
 	trExternalSecuritySolutionsServer                    *ExternalSecuritySolutionsServerTransport
+	trGitHubIssuesServer                                 *GitHubIssuesServerTransport
 	trGitHubOwnersServer                                 *GitHubOwnersServerTransport
 	trGitHubReposServer                                  *GitHubReposServerTransport
 	trGitLabGroupsServer                                 *GitLabGroupsServerTransport
@@ -149,15 +302,21 @@ type ServerFactoryTransport struct {
 	trJitNetworkAccessPoliciesServer                     *JitNetworkAccessPoliciesServerTransport
 	trLocationsServer                                    *LocationsServerTransport
 	trMdeOnboardingsServer                               *MdeOnboardingsServerTransport
+	trOperationResultsServer                             *OperationResultsServerTransport
+	trOperationStatusesServer                            *OperationStatusesServerTransport
 	trOperationsServer                                   *OperationsServerTransport
 	trOperatorsServer                                    *OperatorsServerTransport
 	trPricingsServer                                     *PricingsServerTransport
+	trPrivateEndpointConnectionsServer                   *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer                         *PrivateLinkResourcesServerTransport
+	trPrivateLinksServer                                 *PrivateLinksServerTransport
 	trRegulatoryComplianceAssessmentsServer              *RegulatoryComplianceAssessmentsServerTransport
 	trRegulatoryComplianceControlsServer                 *RegulatoryComplianceControlsServerTransport
 	trRegulatoryComplianceStandardsServer                *RegulatoryComplianceStandardsServerTransport
 	trSQLVulnerabilityAssessmentBaselineRulesServer      *SQLVulnerabilityAssessmentBaselineRulesServerTransport
 	trSQLVulnerabilityAssessmentScanResultsServer        *SQLVulnerabilityAssessmentScanResultsServerTransport
 	trSQLVulnerabilityAssessmentScansServer              *SQLVulnerabilityAssessmentScansServerTransport
+	trSQLVulnerabilityAssessmentSettingsServer           *SQLVulnerabilityAssessmentSettingsServerTransport
 	trSecureScoreControlDefinitionsServer                *SecureScoreControlDefinitionsServerTransport
 	trSecureScoreControlsServer                          *SecureScoreControlsServerTransport
 	trSecureScoresServer                                 *SecureScoresServerTransport
@@ -165,9 +324,9 @@ type ServerFactoryTransport struct {
 	trServerVulnerabilityAssessmentServer                *ServerVulnerabilityAssessmentServerTransport
 	trServerVulnerabilityAssessmentsSettingsServer       *ServerVulnerabilityAssessmentsSettingsServerTransport
 	trSettingsServer                                     *SettingsServerTransport
-	trSoftwareInventoriesServer                          *SoftwareInventoriesServerTransport
 	trSolutionsServer                                    *SolutionsServerTransport
 	trSolutionsReferenceDataServer                       *SolutionsReferenceDataServerTransport
+	trStandardAssignmentsServer                          *StandardAssignmentsServerTransport
 	trSubAssessmentsServer                               *SubAssessmentsServerTransport
 	trTasksServer                                        *TasksServerTransport
 	trTopologyServer                                     *TopologyServerTransport
@@ -192,21 +351,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAPICollectionsServerTransport(&s.srv.APICollectionsServer)
 		})
 		resp, err = s.trAPICollectionsServer.Do(req)
-	case "AccountConnectorsClient":
-		initServer(s, &s.trAccountConnectorsServer, func() *AccountConnectorsServerTransport {
-			return NewAccountConnectorsServerTransport(&s.srv.AccountConnectorsServer)
-		})
-		resp, err = s.trAccountConnectorsServer.Do(req)
-	case "AdaptiveApplicationControlsClient":
-		initServer(s, &s.trAdaptiveApplicationControlsServer, func() *AdaptiveApplicationControlsServerTransport {
-			return NewAdaptiveApplicationControlsServerTransport(&s.srv.AdaptiveApplicationControlsServer)
-		})
-		resp, err = s.trAdaptiveApplicationControlsServer.Do(req)
-	case "AdaptiveNetworkHardeningsClient":
-		initServer(s, &s.trAdaptiveNetworkHardeningsServer, func() *AdaptiveNetworkHardeningsServerTransport {
-			return NewAdaptiveNetworkHardeningsServerTransport(&s.srv.AdaptiveNetworkHardeningsServer)
-		})
-		resp, err = s.trAdaptiveNetworkHardeningsServer.Do(req)
 	case "AdvancedThreatProtectionClient":
 		initServer(s, &s.trAdvancedThreatProtectionServer, func() *AdvancedThreatProtectionServerTransport {
 			return NewAdvancedThreatProtectionServerTransport(&s.srv.AdvancedThreatProtectionServer)
@@ -231,6 +375,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ApplicationsClient":
 		initServer(s, &s.trApplicationsServer, func() *ApplicationsServerTransport { return NewApplicationsServerTransport(&s.srv.ApplicationsServer) })
 		resp, err = s.trApplicationsServer.Do(req)
+	case "ArmSecurityStandardsClient":
+		initServer(s, &s.trArmSecurityStandardsServer, func() *ArmSecurityStandardsServerTransport {
+			return NewArmSecurityStandardsServerTransport(&s.srv.ArmSecurityStandardsServer)
+		})
+		resp, err = s.trArmSecurityStandardsServer.Do(req)
+	case "ArmStandardsClient":
+		initServer(s, &s.trArmStandardsServer, func() *ArmStandardsServerTransport { return NewArmStandardsServerTransport(&s.srv.ArmStandardsServer) })
+		resp, err = s.trArmStandardsServer.Do(req)
 	case "AssessmentsClient":
 		initServer(s, &s.trAssessmentsServer, func() *AssessmentsServerTransport { return NewAssessmentsServerTransport(&s.srv.AssessmentsServer) })
 		resp, err = s.trAssessmentsServer.Do(req)
@@ -239,6 +391,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAssessmentsMetadataServerTransport(&s.srv.AssessmentsMetadataServer)
 		})
 		resp, err = s.trAssessmentsMetadataServer.Do(req)
+	case "AssignmentsClient":
+		initServer(s, &s.trAssignmentsServer, func() *AssignmentsServerTransport { return NewAssignmentsServerTransport(&s.srv.AssignmentsServer) })
+		resp, err = s.trAssignmentsServer.Do(req)
 	case "AutoProvisioningSettingsClient":
 		initServer(s, &s.trAutoProvisioningSettingsServer, func() *AutoProvisioningSettingsServerTransport {
 			return NewAutoProvisioningSettingsServerTransport(&s.srv.AutoProvisioningSettingsServer)
@@ -283,19 +438,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ConnectorsClient":
 		initServer(s, &s.trConnectorsServer, func() *ConnectorsServerTransport { return NewConnectorsServerTransport(&s.srv.ConnectorsServer) })
 		resp, err = s.trConnectorsServer.Do(req)
-	case "ContactsClient":
-		initServer(s, &s.trContactsServer, func() *ContactsServerTransport { return NewContactsServerTransport(&s.srv.ContactsServer) })
-		resp, err = s.trContactsServer.Do(req)
-	case "CustomAssessmentAutomationsClient":
-		initServer(s, &s.trCustomAssessmentAutomationsServer, func() *CustomAssessmentAutomationsServerTransport {
-			return NewCustomAssessmentAutomationsServerTransport(&s.srv.CustomAssessmentAutomationsServer)
+	case "CustomRecommendationsClient":
+		initServer(s, &s.trCustomRecommendationsServer, func() *CustomRecommendationsServerTransport {
+			return NewCustomRecommendationsServerTransport(&s.srv.CustomRecommendationsServer)
 		})
-		resp, err = s.trCustomAssessmentAutomationsServer.Do(req)
-	case "CustomEntityStoreAssignmentsClient":
-		initServer(s, &s.trCustomEntityStoreAssignmentsServer, func() *CustomEntityStoreAssignmentsServerTransport {
-			return NewCustomEntityStoreAssignmentsServerTransport(&s.srv.CustomEntityStoreAssignmentsServer)
-		})
-		resp, err = s.trCustomEntityStoreAssignmentsServer.Do(req)
+		resp, err = s.trCustomRecommendationsServer.Do(req)
 	case "DefenderForStorageClient":
 		initServer(s, &s.trDefenderForStorageServer, func() *DefenderForStorageServerTransport {
 			return NewDefenderForStorageServerTransport(&s.srv.DefenderForStorageServer)
@@ -326,6 +473,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewExternalSecuritySolutionsServerTransport(&s.srv.ExternalSecuritySolutionsServer)
 		})
 		resp, err = s.trExternalSecuritySolutionsServer.Do(req)
+	case "GitHubIssuesClient":
+		initServer(s, &s.trGitHubIssuesServer, func() *GitHubIssuesServerTransport { return NewGitHubIssuesServerTransport(&s.srv.GitHubIssuesServer) })
+		resp, err = s.trGitHubIssuesServer.Do(req)
 	case "GitHubOwnersClient":
 		initServer(s, &s.trGitHubOwnersServer, func() *GitHubOwnersServerTransport { return NewGitHubOwnersServerTransport(&s.srv.GitHubOwnersServer) })
 		resp, err = s.trGitHubOwnersServer.Do(req)
@@ -398,6 +548,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMdeOnboardingsServerTransport(&s.srv.MdeOnboardingsServer)
 		})
 		resp, err = s.trMdeOnboardingsServer.Do(req)
+	case "OperationResultsClient":
+		initServer(s, &s.trOperationResultsServer, func() *OperationResultsServerTransport {
+			return NewOperationResultsServerTransport(&s.srv.OperationResultsServer)
+		})
+		resp, err = s.trOperationResultsServer.Do(req)
+	case "OperationStatusesClient":
+		initServer(s, &s.trOperationStatusesServer, func() *OperationStatusesServerTransport {
+			return NewOperationStatusesServerTransport(&s.srv.OperationStatusesServer)
+		})
+		resp, err = s.trOperationStatusesServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -407,6 +567,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "PricingsClient":
 		initServer(s, &s.trPricingsServer, func() *PricingsServerTransport { return NewPricingsServerTransport(&s.srv.PricingsServer) })
 		resp, err = s.trPricingsServer.Do(req)
+	case "PrivateEndpointConnectionsClient":
+		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
+		})
+		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
+	case "PrivateLinkResourcesClient":
+		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
+		})
+		resp, err = s.trPrivateLinkResourcesServer.Do(req)
+	case "PrivateLinksClient":
+		initServer(s, &s.trPrivateLinksServer, func() *PrivateLinksServerTransport { return NewPrivateLinksServerTransport(&s.srv.PrivateLinksServer) })
+		resp, err = s.trPrivateLinksServer.Do(req)
 	case "RegulatoryComplianceAssessmentsClient":
 		initServer(s, &s.trRegulatoryComplianceAssessmentsServer, func() *RegulatoryComplianceAssessmentsServerTransport {
 			return NewRegulatoryComplianceAssessmentsServerTransport(&s.srv.RegulatoryComplianceAssessmentsServer)
@@ -437,6 +610,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSQLVulnerabilityAssessmentScansServerTransport(&s.srv.SQLVulnerabilityAssessmentScansServer)
 		})
 		resp, err = s.trSQLVulnerabilityAssessmentScansServer.Do(req)
+	case "SQLVulnerabilityAssessmentSettingsClient":
+		initServer(s, &s.trSQLVulnerabilityAssessmentSettingsServer, func() *SQLVulnerabilityAssessmentSettingsServerTransport {
+			return NewSQLVulnerabilityAssessmentSettingsServerTransport(&s.srv.SQLVulnerabilityAssessmentSettingsServer)
+		})
+		resp, err = s.trSQLVulnerabilityAssessmentSettingsServer.Do(req)
 	case "SecureScoreControlDefinitionsClient":
 		initServer(s, &s.trSecureScoreControlDefinitionsServer, func() *SecureScoreControlDefinitionsServerTransport {
 			return NewSecureScoreControlDefinitionsServerTransport(&s.srv.SecureScoreControlDefinitionsServer)
@@ -468,11 +646,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "SettingsClient":
 		initServer(s, &s.trSettingsServer, func() *SettingsServerTransport { return NewSettingsServerTransport(&s.srv.SettingsServer) })
 		resp, err = s.trSettingsServer.Do(req)
-	case "SoftwareInventoriesClient":
-		initServer(s, &s.trSoftwareInventoriesServer, func() *SoftwareInventoriesServerTransport {
-			return NewSoftwareInventoriesServerTransport(&s.srv.SoftwareInventoriesServer)
-		})
-		resp, err = s.trSoftwareInventoriesServer.Do(req)
 	case "SolutionsClient":
 		initServer(s, &s.trSolutionsServer, func() *SolutionsServerTransport { return NewSolutionsServerTransport(&s.srv.SolutionsServer) })
 		resp, err = s.trSolutionsServer.Do(req)
@@ -481,6 +654,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSolutionsReferenceDataServerTransport(&s.srv.SolutionsReferenceDataServer)
 		})
 		resp, err = s.trSolutionsReferenceDataServer.Do(req)
+	case "StandardAssignmentsClient":
+		initServer(s, &s.trStandardAssignmentsServer, func() *StandardAssignmentsServerTransport {
+			return NewStandardAssignmentsServerTransport(&s.srv.StandardAssignmentsServer)
+		})
+		resp, err = s.trStandardAssignmentsServer.Do(req)
 	case "SubAssessmentsClient":
 		initServer(s, &s.trSubAssessmentsServer, func() *SubAssessmentsServerTransport {
 			return NewSubAssessmentsServerTransport(&s.srv.SubAssessmentsServer)

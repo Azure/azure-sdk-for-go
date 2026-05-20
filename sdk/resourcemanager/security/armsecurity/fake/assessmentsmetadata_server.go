@@ -73,31 +73,50 @@ func (a *AssessmentsMetadataServerTransport) Do(req *http.Request) (*http.Respon
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AssessmentsMetadataClient.CreateInSubscription":
-		resp, err = a.dispatchCreateInSubscription(req)
-	case "AssessmentsMetadataClient.DeleteInSubscription":
-		resp, err = a.dispatchDeleteInSubscription(req)
-	case "AssessmentsMetadataClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "AssessmentsMetadataClient.GetInSubscription":
-		resp, err = a.dispatchGetInSubscription(req)
-	case "AssessmentsMetadataClient.NewListPager":
-		resp, err = a.dispatchNewListPager(req)
-	case "AssessmentsMetadataClient.NewListBySubscriptionPager":
-		resp, err = a.dispatchNewListBySubscriptionPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AssessmentsMetadataServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if assessmentsMetadataServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = assessmentsMetadataServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AssessmentsMetadataClient.CreateInSubscription":
+				res.resp, res.err = a.dispatchCreateInSubscription(req)
+			case "AssessmentsMetadataClient.DeleteInSubscription":
+				res.resp, res.err = a.dispatchDeleteInSubscription(req)
+			case "AssessmentsMetadataClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AssessmentsMetadataClient.GetInSubscription":
+				res.resp, res.err = a.dispatchGetInSubscription(req)
+			case "AssessmentsMetadataClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
+			case "AssessmentsMetadataClient.NewListBySubscriptionPager":
+				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AssessmentsMetadataServerTransport) dispatchCreateInSubscription(req *http.Request) (*http.Response, error) {
@@ -107,7 +126,7 @@ func (a *AssessmentsMetadataServerTransport) dispatchCreateInSubscription(req *h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurity.AssessmentMetadataResponse](req)
@@ -140,7 +159,7 @@ func (a *AssessmentsMetadataServerTransport) dispatchDeleteInSubscription(req *h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	assessmentMetadataNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assessmentMetadataName")])
@@ -169,7 +188,7 @@ func (a *AssessmentsMetadataServerTransport) dispatchGet(req *http.Request) (*ht
 	const regexStr = `/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	assessmentMetadataNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assessmentMetadataName")])
@@ -198,7 +217,7 @@ func (a *AssessmentsMetadataServerTransport) dispatchGetInSubscription(req *http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	assessmentMetadataNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assessmentMetadataName")])
@@ -256,7 +275,7 @@ func (a *AssessmentsMetadataServerTransport) dispatchNewListBySubscriptionPager(
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessmentMetadata`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListBySubscriptionPager(nil)
@@ -278,4 +297,10 @@ func (a *AssessmentsMetadataServerTransport) dispatchNewListBySubscriptionPager(
 		a.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AssessmentsMetadataServerTransport
+var assessmentsMetadataServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -73,31 +73,50 @@ func (c *ConnectorsServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return c.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ConnectorsClient.CreateOrUpdate":
-		resp, err = c.dispatchCreateOrUpdate(req)
-	case "ConnectorsClient.Delete":
-		resp, err = c.dispatchDelete(req)
-	case "ConnectorsClient.Get":
-		resp, err = c.dispatchGet(req)
-	case "ConnectorsClient.NewListPager":
-		resp, err = c.dispatchNewListPager(req)
-	case "ConnectorsClient.NewListByResourceGroupPager":
-		resp, err = c.dispatchNewListByResourceGroupPager(req)
-	case "ConnectorsClient.Update":
-		resp, err = c.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (c *ConnectorsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if connectorsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = connectorsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ConnectorsClient.CreateOrUpdate":
+				res.resp, res.err = c.dispatchCreateOrUpdate(req)
+			case "ConnectorsClient.Delete":
+				res.resp, res.err = c.dispatchDelete(req)
+			case "ConnectorsClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "ConnectorsClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
+			case "ConnectorsClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "ConnectorsClient.Update":
+				res.resp, res.err = c.dispatchUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (c *ConnectorsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -107,7 +126,7 @@ func (c *ConnectorsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurity.Connector](req)
@@ -144,7 +163,7 @@ func (c *ConnectorsServerTransport) dispatchDelete(req *http.Request) (*http.Res
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -177,7 +196,7 @@ func (c *ConnectorsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -212,7 +231,7 @@ func (c *ConnectorsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := c.srv.NewListPager(nil)
@@ -245,7 +264,7 @@ func (c *ConnectorsServerTransport) dispatchNewListByResourceGroupPager(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -280,7 +299,7 @@ func (c *ConnectorsServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurity.Connector](req)
@@ -308,4 +327,10 @@ func (c *ConnectorsServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ConnectorsServerTransport
+var connectorsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

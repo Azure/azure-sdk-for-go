@@ -58,27 +58,46 @@ func (p *PricingsServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "PricingsClient.Delete":
-		resp, err = p.dispatchDelete(req)
-	case "PricingsClient.Get":
-		resp, err = p.dispatchGet(req)
-	case "PricingsClient.List":
-		resp, err = p.dispatchList(req)
-	case "PricingsClient.Update":
-		resp, err = p.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *PricingsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if pricingsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = pricingsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "PricingsClient.Delete":
+				res.resp, res.err = p.dispatchDelete(req)
+			case "PricingsClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "PricingsClient.List":
+				res.resp, res.err = p.dispatchList(req)
+			case "PricingsClient.Update":
+				res.resp, res.err = p.dispatchUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *PricingsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
@@ -88,7 +107,7 @@ func (p *PricingsServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 	const regexStr = `/(?P<scopeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeId")])
@@ -121,7 +140,7 @@ func (p *PricingsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	const regexStr = `/(?P<scopeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeId")])
@@ -154,7 +173,7 @@ func (p *PricingsServerTransport) dispatchList(req *http.Request) (*http.Respons
 	const regexStr = `/(?P<scopeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -195,7 +214,7 @@ func (p *PricingsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	const regexStr = `/(?P<scopeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurity.Pricing](req)
@@ -223,4 +242,10 @@ func (p *PricingsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to PricingsServerTransport
+var pricingsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

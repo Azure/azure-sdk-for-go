@@ -27,7 +27,7 @@ type ExternalSecuritySolutionsClient struct {
 // NewExternalSecuritySolutionsClient creates a new instance of ExternalSecuritySolutionsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExternalSecuritySolutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalSecuritySolutionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *ExternalSecuritySolutionsClient) Get(ctx context.Context, resource
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, externalSecuritySolutionsName string, options *ExternalSecuritySolutionsClientGetOptions) (*policy.Request, error) {
+func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, externalSecuritySolutionsName string, _ *ExternalSecuritySolutionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/ExternalSecuritySolutions/{externalSecuritySolutionsName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +139,7 @@ func (client *ExternalSecuritySolutionsClient) NewListPager(options *ExternalSec
 }
 
 // listCreateRequest creates the List request.
-func (client *ExternalSecuritySolutionsClient) listCreateRequest(ctx context.Context, options *ExternalSecuritySolutionsClientListOptions) (*policy.Request, error) {
+func (client *ExternalSecuritySolutionsClient) listCreateRequest(ctx context.Context, _ *ExternalSecuritySolutionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/externalSecuritySolutions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +195,7 @@ func (client *ExternalSecuritySolutionsClient) NewListByHomeRegionPager(ascLocat
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, options *ExternalSecuritySolutionsClientListByHomeRegionOptions) (*policy.Request, error) {
+func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, _ *ExternalSecuritySolutionsClientListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/ExternalSecuritySolutions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

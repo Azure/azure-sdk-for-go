@@ -117,6 +117,25 @@ type APICollectionProperties struct {
 	SensitivityLabel *string
 }
 
+// AccessTokenAuthentication - The environment authentication details
+type AccessTokenAuthentication struct {
+	// REQUIRED; The authentication type
+	AuthenticationType *AuthenticationType
+
+	// The access token that will be used while authenticating with the onboarded environment
+	AccessToken *string
+
+	// The user name that will be used while authenticating with the onboarded environment
+	Username *string
+}
+
+// GetAuthentication implements the AuthenticationClassification interface for type AccessTokenAuthentication.
+func (a *AccessTokenAuthentication) GetAuthentication() *Authentication {
+	return &Authentication{
+		AuthenticationType: a.AuthenticationType,
+	}
+}
+
 // ActionableRemediation - Configuration payload for PR Annotations.
 type ActionableRemediation struct {
 	// Repository branch configuration for PR Annotations.
@@ -194,107 +213,6 @@ func (a *ActiveConnectionsNotInAllowedRange) GetTimeWindowCustomAlertRule() *Tim
 	}
 }
 
-type AdaptiveApplicationControlGroup struct {
-	// REQUIRED; Represents a machines group and set of rules to be allowed running on a machine
-	Properties *AdaptiveApplicationControlGroupData
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Location where the resource is stored
-	Location *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// AdaptiveApplicationControlGroupData - Represents a machines group and set of rules to be allowed running on a machine
-type AdaptiveApplicationControlGroupData struct {
-	// The application control policy enforcement/protection mode of the machine group
-	EnforcementMode     *EnforcementMode
-	PathRecommendations []*PathRecommendation
-
-	// The protection mode of the collection/file types. Exe/Msi/Script are used for Windows, Executable is used for Linux.
-	ProtectionMode    *ProtectionMode
-	VMRecommendations []*VMRecommendation
-
-	// READ-ONLY; The configuration status of the machines group or machine or rule
-	ConfigurationStatus *ConfigurationStatus
-
-	// READ-ONLY
-	Issues []*AdaptiveApplicationControlIssueSummary
-
-	// READ-ONLY; The initial recommendation status of the machine group or machine
-	RecommendationStatus *RecommendationStatus
-
-	// READ-ONLY; The source type of the machine group
-	SourceSystem *SourceSystem
-}
-
-// AdaptiveApplicationControlGroups - Represents a list of VM/server groups and set of rules that are Recommended by Microsoft
-// Defender for Cloud to be allowed
-type AdaptiveApplicationControlGroups struct {
-	Value []*AdaptiveApplicationControlGroup
-}
-
-// AdaptiveApplicationControlIssueSummary - Represents a summary of the alerts of the machine group
-type AdaptiveApplicationControlIssueSummary struct {
-	// An alert that machines within a group can have
-	Issue *AdaptiveApplicationControlIssue
-
-	// The number of machines in the group that have this alert
-	NumberOfVMs *float32
-}
-
-// AdaptiveNetworkHardening - The resource whose properties describes the Adaptive Network Hardening settings for some Azure
-// resource
-type AdaptiveNetworkHardening struct {
-	// Properties of the Adaptive Network Hardening resource
-	Properties *AdaptiveNetworkHardeningProperties
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-type AdaptiveNetworkHardeningEnforceRequest struct {
-	// REQUIRED; The Azure resource IDs of the effective network security groups that will be updated with the created security
-	// rules from the Adaptive Network Hardening rules
-	NetworkSecurityGroups []*string
-
-	// REQUIRED; The rules to enforce
-	Rules []*Rule
-}
-
-// AdaptiveNetworkHardeningProperties - Adaptive Network Hardening resource properties
-type AdaptiveNetworkHardeningProperties struct {
-	// The Network Security Groups effective on the network interfaces of the protected resource
-	EffectiveNetworkSecurityGroups []*EffectiveNetworkSecurityGroups
-
-	// The security rules which are recommended to be effective on the VM
-	Rules []*Rule
-
-	// The UTC time on which the rules were calculated
-	RulesCalculationTime *time.Time
-}
-
-// AdaptiveNetworkHardeningsList - Response for ListAdaptiveNetworkHardenings API service call
-type AdaptiveNetworkHardeningsList struct {
-	// The URL to get the next set of results
-	NextLink *string
-
-	// A list of Adaptive Network Hardenings resources
-	Value []*AdaptiveNetworkHardening
-}
-
 // AdditionalData - Details of the sub-assessment
 type AdditionalData struct {
 	// REQUIRED; Sub-assessment resource type
@@ -335,6 +253,25 @@ type AdvancedThreatProtectionSetting struct {
 
 	// READ-ONLY; Resource type
 	Type *string
+}
+
+// AgentlessConfiguration - Details about Agentless configuration.
+type AgentlessConfiguration struct {
+	// AutoDiscovery states.
+	AgentlessAutoDiscovery *AutoDiscovery
+
+	// Agentless Enablement states.
+	AgentlessEnabled *AgentlessEnablement
+
+	// Gets or sets the inventory list for inclusion or exclusion from Agentless. Will be ignored if agentless auto-discovery
+	// is enabled.
+	InventoryList []*InventoryList
+
+	// Types for inventory list.
+	InventoryListType *InventoryListKind
+
+	// Gets or sets the scanners for the connector.
+	Scanners []*string
 }
 
 // Alert - Security alert
@@ -939,6 +876,30 @@ type ArcAutoProvisioningGcp struct {
 	Enabled *bool
 }
 
+// ArmSecurityStandard - Security Standard on a resource
+type ArmSecurityStandard struct {
+	// Properties of a security standard
+	Properties *StandardProperties
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// ArmSecurityStandardList - Page of a Standard list
+type ArmSecurityStandardList struct {
+	// READ-ONLY; Collection of standards in this page
+	Value []*ArmSecurityStandard
+
+	// READ-ONLY; The URI to fetch the next page
+	NextLink *string
+}
+
 // AscLocation - The ASC location of the subscription is in the "name" field
 type AscLocation struct {
 	// An empty set of properties
@@ -1152,6 +1113,9 @@ type AssessmentProperties struct {
 	// Data regarding 3rd party partner integration
 	PartnersData *AssessmentPartnerData
 
+	// External model of risk result
+	Risk *AssessmentPropertiesBaseRisk
+
 	// READ-ONLY; User friendly display name of the assessment
 	DisplayName *string
 
@@ -1173,11 +1137,47 @@ type AssessmentPropertiesBase struct {
 	// Data regarding 3rd party partner integration
 	PartnersData *AssessmentPartnerData
 
+	// External model of risk result
+	Risk *AssessmentPropertiesBaseRisk
+
 	// READ-ONLY; User friendly display name of the assessment
 	DisplayName *string
 
 	// READ-ONLY; Links relevant to the assessment
 	Links *AssessmentLinks
+}
+
+// AssessmentPropertiesBaseRisk - External model of risk result
+type AssessmentPropertiesBaseRisk struct {
+	// The attack paths references of the risk
+	AttackPathsReferences []*string
+
+	// Indicates if the risk is contextual or static
+	IsContextualRisk *bool
+
+	// The risk level
+	Level *RiskLevel
+	Paths []*AssessmentPropertiesBaseRiskPathsItem
+
+	// The factors of the risk adding base factor
+	RiskFactors []*string
+}
+
+type AssessmentPropertiesBaseRiskPathsItem struct {
+	// Connections between nodes
+	Edges []*Components1Uu4J47SchemasSecurityassessmentpropertiesbasePropertiesRiskPropertiesPathsItemsPropertiesEdgesItems
+
+	// Unique identifier for the path
+	ID    *string
+	Nodes []*AssessmentPropertiesBaseRiskPathsPropertiesItemsItem
+}
+
+type AssessmentPropertiesBaseRiskPathsPropertiesItemsItem struct {
+	// Node identifier
+	ID *string
+
+	// Properties associated with the node
+	NodePropertiesLabel []*string
 }
 
 // AssessmentPropertiesResponse - Describes properties of an assessment.
@@ -1196,6 +1196,9 @@ type AssessmentPropertiesResponse struct {
 
 	// Data regarding 3rd party partner integration
 	PartnersData *AssessmentPartnerData
+
+	// External model of risk result
+	Risk *AssessmentPropertiesBaseRisk
 
 	// READ-ONLY; User friendly display name of the assessment
 	DisplayName *string
@@ -1249,6 +1252,105 @@ type AssessmentStatusResponse struct {
 	StatusChangeDate *time.Time
 }
 
+// AssignedAssessmentItem - Describe the properties of a security assessment object reference (by key)
+type AssignedAssessmentItem struct {
+	// Unique key to a security assessment object
+	AssessmentKey *string
+}
+
+// AssignedComponentItem - describe the properties of a security assessment object reference (by key)
+type AssignedComponentItem struct {
+	// unique key to a security assessment object
+	Key *string
+}
+
+// AssignedStandardItem - Describe the properties of a of a standard assignments object reference
+type AssignedStandardItem struct {
+	// Full resourceId of the Microsoft.Security/standard object
+	ID *string
+}
+
+// AssignedStandardItemAutoGenerated - describe the properties of a of a security standard object reference
+type AssignedStandardItemAutoGenerated struct {
+	// full resourceId of the Microsoft.Security/standard object
+	ID *string
+}
+
+// Assignment - Security Assignment on a resource group over a given scope
+type Assignment struct {
+	// Entity tag is used for comparing two or more entities from the same requested resource.
+	Etag *string
+
+	// Kind of the resource
+	Kind *string
+
+	// Location where the resource is stored
+	Location *string
+
+	// Properties of a security assignment
+	Properties *AssignmentProperties
+
+	// A list of key value pairs that describe the resource.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// AssignmentList - Page of a standard assignment list
+type AssignmentList struct {
+	// READ-ONLY; The URI to fetch the next page
+	NextLink *string
+
+	// READ-ONLY; Collection of standardAssignments in this page
+	Value []*Assignment
+}
+
+// AssignmentProperties - Describes the properties of a standardAssignment
+type AssignmentProperties struct {
+	// Additional data about the assignment
+	AdditionalData *AssignmentPropertiesAdditionalData
+
+	// Component item with key as applied to this standard assignment over the given scope
+	AssignedComponent *AssignedComponentItem
+
+	// Standard item with key as applied to this standard assignment over the given scope
+	AssignedStandard *AssignedStandardItemAutoGenerated
+
+	// description of the standardAssignment
+	Description *string
+
+	// display name of the standardAssignment
+	DisplayName *string
+
+	// expected effect of this assignment (Disable/Exempt/etc)
+	Effect *string
+
+	// Expiration date of this assignment as a full ISO date
+	ExpiresOn *time.Time
+
+	// The assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.
+	Metadata any
+
+	// Scope to which the standardAssignment applies - can be a subscription path or a resource group under that subscription
+	Scope *string
+}
+
+// AssignmentPropertiesAdditionalData - Additional data about the assignment
+type AssignmentPropertiesAdditionalData struct {
+	// Exemption category of this assignment
+	ExemptionCategory *string
+}
+
 // AtaExternalSecuritySolution - Represents an ATA security solution which sends logs to an OMS workspace
 type AtaExternalSecuritySolution struct {
 	// REQUIRED; The kind of the external solution
@@ -1293,23 +1395,23 @@ type AtaSolutionProperties struct {
 	Workspace *ConnectedWorkspace
 }
 
-// AuthenticationDetailsProperties - Settings for cloud authentication management
-type AuthenticationDetailsProperties struct {
-	// REQUIRED; Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use
-	// account organization credentials.
+// AttestationEvidence - Describe the properties of a assignment attestation
+type AttestationEvidence struct {
+	// The description of the evidence
+	Description *string
+
+	// The source url of the evidence
+	SourceURL *string
+}
+
+// Authentication - The environment authentication details
+type Authentication struct {
+	// REQUIRED; The authentication type
 	AuthenticationType *AuthenticationType
-
-	// READ-ONLY; State of the multi-cloud connector
-	AuthenticationProvisioningState *AuthenticationProvisioningState
-
-	// READ-ONLY; The permissions detected in the cloud account.
-	GrantedPermissions []*PermissionProperty
 }
 
-// GetAuthenticationDetailsProperties implements the AuthenticationDetailsPropertiesClassification interface for type AuthenticationDetailsProperties.
-func (a *AuthenticationDetailsProperties) GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties {
-	return a
-}
+// GetAuthentication implements the AuthenticationClassification interface for type Authentication.
+func (a *Authentication) GetAuthentication() *Authentication { return a }
 
 // Authorization payload.
 type Authorization struct {
@@ -1431,7 +1533,7 @@ func (a *AutomationActionLogicApp) GetAutomationAction() *AutomationAction {
 	}
 }
 
-// AutomationActionWorkspace - The�Log�Analytics�Workspace�to�which�event data will be exported. Security alerts data will
+// AutomationActionWorkspace - The Log Analytics Workspace to which event data will be exported. Security alerts data will
 // reside in the 'SecurityAlert' table and the assessments data will reside in the 'SecurityRecommendation'
 // table (under the 'Security'/'SecurityCenterFree' solutions). Note that in order to view the data in the workspace, the
 // Security Center Log Analytics free/standard solution needs to be enabled on that
@@ -1545,72 +1647,6 @@ type AutomationValidationStatus struct {
 	Message *string
 }
 
-// AwAssumeRoleAuthenticationDetailsProperties - AWS cloud account connector based assume role, the role enables delegating
-// access to your AWS resources. The role is composed of role Amazon Resource Name (ARN) and external ID. For more details,
-// refer to Creating a Role to Delegate Permissions to an IAM User (write only) [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html]
-type AwAssumeRoleAuthenticationDetailsProperties struct {
-	// REQUIRED; Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use
-	// account organization credentials.
-	AuthenticationType *AuthenticationType
-
-	// REQUIRED; Assumed role ID is an identifier that you can use to create temporary security credentials.
-	AwsAssumeRoleArn *string
-
-	// REQUIRED; A unique identifier that is required when you assume a role in another account.
-	AwsExternalID *string
-
-	// READ-ONLY; The ID of the cloud account
-	AccountID *string
-
-	// READ-ONLY; State of the multi-cloud connector
-	AuthenticationProvisioningState *AuthenticationProvisioningState
-
-	// READ-ONLY; The permissions detected in the cloud account.
-	GrantedPermissions []*PermissionProperty
-}
-
-// GetAuthenticationDetailsProperties implements the AuthenticationDetailsPropertiesClassification interface for type AwAssumeRoleAuthenticationDetailsProperties.
-func (a *AwAssumeRoleAuthenticationDetailsProperties) GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties {
-	return &AuthenticationDetailsProperties{
-		AuthenticationProvisioningState: a.AuthenticationProvisioningState,
-		AuthenticationType:              a.AuthenticationType,
-		GrantedPermissions:              a.GrantedPermissions,
-	}
-}
-
-// AwsCredsAuthenticationDetailsProperties - AWS cloud account connector based credentials, the credentials is composed of
-// access key ID and secret key, for more details, refer to Creating an IAM User in Your AWS Account (write only)
-// [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html]
-type AwsCredsAuthenticationDetailsProperties struct {
-	// REQUIRED; Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use
-	// account organization credentials.
-	AuthenticationType *AuthenticationType
-
-	// REQUIRED; Public key element of the AWS credential object (write only)
-	AwsAccessKeyID *string
-
-	// REQUIRED; Secret key element of the AWS credential object (write only)
-	AwsSecretAccessKey *string
-
-	// READ-ONLY; The ID of the cloud account
-	AccountID *string
-
-	// READ-ONLY; State of the multi-cloud connector
-	AuthenticationProvisioningState *AuthenticationProvisioningState
-
-	// READ-ONLY; The permissions detected in the cloud account.
-	GrantedPermissions []*PermissionProperty
-}
-
-// GetAuthenticationDetailsProperties implements the AuthenticationDetailsPropertiesClassification interface for type AwsCredsAuthenticationDetailsProperties.
-func (a *AwsCredsAuthenticationDetailsProperties) GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties {
-	return &AuthenticationDetailsProperties{
-		AuthenticationProvisioningState: a.AuthenticationProvisioningState,
-		AuthenticationType:              a.AuthenticationType,
-		GrantedPermissions:              a.GrantedPermissions,
-	}
-}
-
 // AwsEnvironmentData - The AWS connector environment data
 type AwsEnvironmentData struct {
 	// REQUIRED; The type of the environment data.
@@ -1719,16 +1755,16 @@ type AzureDevOpsOrgProperties struct {
 	// state is not applicable to the current endpoint.
 	OnboardingState *OnboardingState
 
-	// The provisioning state of the resource.
+	// READ-ONLY; The provisioning state of the resource.
 	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
 	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
 	// successful. DeletionFailure - Deletion failure.
 	ProvisioningState *DevOpsProvisioningState
 
-	// READ-ONLY; Gets or sets resource status message.
+	// READ-ONLY; Gets the resource status message.
 	ProvisioningStatusMessage *string
 
-	// READ-ONLY; Gets or sets time when resource was last checked.
+	// READ-ONLY; Gets the time when resource was last checked.
 	ProvisioningStatusUpdateTimeUTC *time.Time
 }
 
@@ -1794,19 +1830,19 @@ type AzureDevOpsProjectProperties struct {
 	// Gets or sets parent Azure DevOps Organization name.
 	ParentOrgName *string
 
-	// The provisioning state of the resource.
+	// READ-ONLY; Gets or sets Azure DevOps Project id.
+	ProjectID *string
+
+	// READ-ONLY; The provisioning state of the resource.
 	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
 	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
 	// successful. DeletionFailure - Deletion failure.
 	ProvisioningState *DevOpsProvisioningState
 
-	// READ-ONLY; Gets or sets Azure DevOps Project id.
-	ProjectID *string
-
-	// READ-ONLY; Gets or sets resource status message.
+	// READ-ONLY; Gets the resource status message.
 	ProvisioningStatusMessage *string
 
-	// READ-ONLY; Gets or sets time when resource was last checked.
+	// READ-ONLY; Gets the time when resource was last checked.
 	ProvisioningStatusUpdateTimeUTC *time.Time
 }
 
@@ -1855,16 +1891,16 @@ type AzureDevOpsRepositoryProperties struct {
 	// Gets or sets parent Azure DevOps Project name.
 	ParentProjectName *string
 
-	// The provisioning state of the resource.
+	// READ-ONLY; The provisioning state of the resource.
 	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
 	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
 	// successful. DeletionFailure - Deletion failure.
 	ProvisioningState *DevOpsProvisioningState
 
-	// READ-ONLY; Gets or sets resource status message.
+	// READ-ONLY; Gets the resource status message.
 	ProvisioningStatusMessage *string
 
-	// READ-ONLY; Gets or sets time when resource was last checked.
+	// READ-ONLY; Gets the time when resource was last checked.
 	ProvisioningStatusUpdateTimeUTC *time.Time
 
 	// READ-ONLY; Gets or sets Azure DevOps Repository id.
@@ -1987,10 +2023,10 @@ type BaselineAdjustedResult struct {
 	// Baseline details.
 	Baseline *Baseline
 
-	// Results the are not in baseline.
+	// Results that are not in the baseline.
 	ResultsNotInBaseline [][]*string
 
-	// Results the are in baseline.
+	// Results that are in the baseline.
 	ResultsOnlyInBaseline [][]*string
 
 	// The rule result status.
@@ -2004,6 +2040,24 @@ type BenchmarkReference struct {
 
 	// The benchmark reference.
 	Reference *string
+}
+
+// BlobsScanSummary - A summary of the scan results of the blobs that were scanned.
+type BlobsScanSummary struct {
+	// The number of failed blob scans.
+	FailedBlobsCount *int64
+
+	// The number of malicious blobs that were detected during the scan.
+	MaliciousBlobsCount *int64
+
+	// The number of gigabytes of data that were scanned.
+	ScannedBlobsInGB *float64
+
+	// The number of blobs that were skipped.
+	SkippedBlobsCount *int64
+
+	// The total number of blobs that were scanned.
+	TotalBlobsScanned *int64
 }
 
 // BuiltInInfoType - Pre-configured sensitive information type
@@ -2177,6 +2231,17 @@ type ComplianceSegment struct {
 
 	// READ-ONLY; The segment type, e.g. compliant, non-compliance, insufficient coverage, N/A, etc.
 	SegmentType *string
+}
+
+type Components1Uu4J47SchemasSecurityassessmentpropertiesbasePropertiesRiskPropertiesPathsItemsPropertiesEdgesItems struct {
+	// REQUIRED; Edge identifier
+	ID *string
+
+	// REQUIRED; Source node identifier
+	SourceID *string
+
+	// REQUIRED; Target node identifier
+	TargetID *string
 }
 
 // Condition - Governance rule's condition
@@ -2380,39 +2445,6 @@ type ConnectorProperties struct {
 	HierarchyIdentifierTrialEndDate *time.Time
 }
 
-// ConnectorSetting - The connector setting
-type ConnectorSetting struct {
-	// Connector setting data
-	Properties *ConnectorSettingProperties
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// ConnectorSettingList - For a subscription, list of all cloud account connectors and their settings
-type ConnectorSettingList struct {
-	// List of all the cloud account connector settings
-	Value []*ConnectorSetting
-
-	// READ-ONLY; The URI to fetch the next page.
-	NextLink *string
-}
-
-// ConnectorSettingProperties - Describes properties of a connector setting
-type ConnectorSettingProperties struct {
-	// Settings for authentication management, these settings are relevant only for the cloud connector.
-	AuthenticationDetails AuthenticationDetailsPropertiesClassification
-
-	// Settings for hybrid compute management. These settings are relevant only for Arc autoProvision (Hybrid Compute).
-	HybridComputeSettings *HybridComputeSettingsProperties
-}
-
 // ConnectorsList - List of security connectors response.
 type ConnectorsList struct {
 	// REQUIRED; The list of security connectors under the given scope.
@@ -2420,61 +2452,6 @@ type ConnectorsList struct {
 
 	// READ-ONLY; The URI to fetch the next page.
 	NextLink *string
-}
-
-// Contact details and configurations for notifications coming from Microsoft Defender for Cloud.
-type Contact struct {
-	// Security contact data
-	Properties *ContactProperties
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// ContactList - List of security contacts response
-type ContactList struct {
-	// REQUIRED; List of security contacts
-	Value []*Contact
-
-	// READ-ONLY; The URI to fetch the next page.
-	NextLink *string
-}
-
-// ContactProperties - Describes security contact properties
-type ContactProperties struct {
-	// List of email addresses which will get notifications from Microsoft Defender for Cloud by the configurations defined in
-	// this security contact.
-	Emails *string
-
-	// Indicates whether the security contact is enabled.
-	IsEnabled *bool
-
-	// Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC roles on the
-	// subscription.
-	NotificationsByRole *ContactPropertiesNotificationsByRole
-
-	// A collection of sources types which evaluate the email notification.
-	NotificationsSources []NotificationsSourceClassification
-
-	// The security contact's phone number
-	Phone *string
-}
-
-// ContactPropertiesNotificationsByRole - Defines whether to send email notifications from Microsoft Defender for Cloud to
-// persons with specific RBAC roles on the subscription.
-type ContactPropertiesNotificationsByRole struct {
-	// Defines which RBAC roles will get email notifications from Microsoft Defender for Cloud. List of allowed RBAC roles:
-	Roles []*SecurityContactRole
-
-	// Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons with specific RBAC roles on the
-	// subscription.
-	State *State
 }
 
 // ContainerRegistryVulnerabilityProperties - Additional context fields for container registry Vulnerability assessment
@@ -2557,6 +2534,23 @@ func (c *CspmMonitorAzureDevOpsOffering) GetCloudOffering() *CloudOffering {
 	}
 }
 
+// CspmMonitorDockerHubOffering - The CSPM (Cloud security posture management) monitoring for Docker Hub offering
+type CspmMonitorDockerHubOffering struct {
+	// REQUIRED; The type of the security offering.
+	OfferingType *OfferingType
+
+	// READ-ONLY; The offering description.
+	Description *string
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type CspmMonitorDockerHubOffering.
+func (c *CspmMonitorDockerHubOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		Description:  c.Description,
+		OfferingType: c.OfferingType,
+	}
+}
+
 // CspmMonitorGcpOffering - The CSPM monitoring for GCP offering
 type CspmMonitorGcpOffering struct {
 	// REQUIRED; The type of the security offering.
@@ -2620,6 +2614,23 @@ func (c *CspmMonitorGithubOffering) GetCloudOffering() *CloudOffering {
 	}
 }
 
+// CspmMonitorJFrogOffering - The CSPM (Cloud security posture management) monitoring for JFrog Artifactory offering
+type CspmMonitorJFrogOffering struct {
+	// REQUIRED; The type of the security offering.
+	OfferingType *OfferingType
+
+	// READ-ONLY; The offering description.
+	Description *string
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type CspmMonitorJFrogOffering.
+func (c *CspmMonitorJFrogOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		Description:  c.Description,
+		OfferingType: c.OfferingType,
+	}
+}
+
 // CustomAlertRule - A custom alert rule.
 type CustomAlertRule struct {
 	// REQUIRED; Status of the custom alert.
@@ -2638,10 +2649,10 @@ type CustomAlertRule struct {
 // GetCustomAlertRule implements the CustomAlertRuleClassification interface for type CustomAlertRule.
 func (c *CustomAlertRule) GetCustomAlertRule() *CustomAlertRule { return c }
 
-// CustomAssessmentAutomation - Custom Assessment Automation
-type CustomAssessmentAutomation struct {
-	// describes Custom Assessment Automation properties.
-	Properties *CustomAssessmentAutomationProperties
+// CustomRecommendation - Custom Recommendation
+type CustomRecommendation struct {
+	// describes Custom Recommendation properties.
+	Properties *CustomRecommendationProperties
 
 	// READ-ONLY; Resource Id
 	ID *string
@@ -2656,121 +2667,40 @@ type CustomAssessmentAutomation struct {
 	Type *string
 }
 
-// CustomAssessmentAutomationProperties - describes the Custom Assessment Automation properties
-type CustomAssessmentAutomationProperties struct {
-	// The assessment metadata key used when an assessment is generated for this assessment automation.
+// CustomRecommendationProperties - describes the Custom Recommendation properties
+type CustomRecommendationProperties struct {
+	// List of all standard supported clouds.
+	CloudProviders []*RecommendationSupportedClouds
+
+	// The description to relate to the assessments generated by this Recommendation.
+	Description *string
+
+	// The display name of the assessments generated by this Recommendation.
+	DisplayName *string
+
+	// KQL query representing the Recommendation results required.
+	Query *string
+
+	// The remediation description to relate to the assessments generated by this Recommendation.
+	RemediationDescription *string
+
+	// The severity to relate to the assessments generated by this Recommendation.
+	SecurityIssue *SecurityIssue
+
+	// The severity to relate to the assessments generated by this Recommendation.
+	Severity *SeverityEnum
+
+	// READ-ONLY; The assessment metadata key used when an assessment is generated for this Recommendation.
 	AssessmentKey *string
-
-	// GZip encoded KQL query representing the assessment automation results required.
-	CompressedQuery *string
-
-	// The description to relate to the assessments generated by this assessment automation.
-	Description *string
-
-	// The display name of the assessments generated by this assessment automation.
-	DisplayName *string
-
-	// The remediation description to relate to the assessments generated by this assessment automation.
-	RemediationDescription *string
-
-	// The severity to relate to the assessments generated by this assessment automation.
-	Severity *SeverityEnum
-
-	// Relevant cloud for the custom assessment automation.
-	SupportedCloud *SupportedCloudEnum
 }
 
-// CustomAssessmentAutomationRequest - Custom Assessment Automation request
-type CustomAssessmentAutomationRequest struct {
-	// describes Custom Assessment Automation request properties.
-	Properties *CustomAssessmentAutomationRequestProperties
+// CustomRecommendationsList - A list of Custom Recommendations
+type CustomRecommendationsList struct {
+	// READ-ONLY; Collection of Custom Recommendations
+	Value []*CustomRecommendation
 
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// CustomAssessmentAutomationRequestProperties - describes the Custom Assessment Automation properties
-type CustomAssessmentAutomationRequestProperties struct {
-	// Base 64 encoded KQL query representing the assessment automation results required.
-	CompressedQuery *string
-
-	// The description to relate to the assessments generated by this assessment automation.
-	Description *string
-
-	// The display name of the assessments generated by this assessment automation.
-	DisplayName *string
-
-	// The remediation description to relate to the assessments generated by this assessment automation.
-	RemediationDescription *string
-
-	// The severity to relate to the assessments generated by this assessment automation.
-	Severity *SeverityEnum
-
-	// Relevant cloud for the custom assessment automation.
-	SupportedCloud *SupportedCloudEnum
-}
-
-// CustomAssessmentAutomationsListResult - A list of Custom Assessment Automations
-type CustomAssessmentAutomationsListResult struct {
 	// The link used to get the next page of operations.
 	NextLink *string
-
-	// READ-ONLY; Collection of Custom Assessment Automations
-	Value []*CustomAssessmentAutomation
-}
-
-// CustomEntityStoreAssignment - Custom entity store assignment
-type CustomEntityStoreAssignment struct {
-	// describes custom entity store assignment properties.
-	Properties *CustomEntityStoreAssignmentProperties
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// CustomEntityStoreAssignmentProperties - describes the custom entity store assignment properties
-type CustomEntityStoreAssignmentProperties struct {
-	// The link to entity store database.
-	EntityStoreDatabaseLink *string
-
-	// The principal assigned with entity store. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId]
-	Principal *string
-}
-
-// CustomEntityStoreAssignmentRequest - describes the custom entity store assignment request
-type CustomEntityStoreAssignmentRequest struct {
-	// describes properties of custom entity store assignment request
-	Properties *CustomEntityStoreAssignmentRequestProperties
-}
-
-// CustomEntityStoreAssignmentRequestProperties - describes properties of custom entity store assignment request
-type CustomEntityStoreAssignmentRequestProperties struct {
-	// The principal assigned with entity store. If not provided, will use caller principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId]
-	Principal *string
-}
-
-// CustomEntityStoreAssignmentsListResult - A list of custom entity store assignments
-type CustomEntityStoreAssignmentsListResult struct {
-	// The link used to get the next page of operations.
-	NextLink *string
-
-	// READ-ONLY; Collection of custom entity store assignments
-	Value []*CustomEntityStoreAssignment
 }
 
 // DataExportSettingProperties - The data export setting properties
@@ -2914,6 +2844,23 @@ type DefenderCspmAwsOfferingVMScanners struct {
 	Enabled *bool
 }
 
+// DefenderCspmDockerHubOffering - The Defender for CSPM Docker Hub offering configurations
+type DefenderCspmDockerHubOffering struct {
+	// REQUIRED; The type of the security offering.
+	OfferingType *OfferingType
+
+	// READ-ONLY; The offering description.
+	Description *string
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type DefenderCspmDockerHubOffering.
+func (d *DefenderCspmDockerHubOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		Description:  d.Description,
+		OfferingType: d.OfferingType,
+	}
+}
+
 // DefenderCspmGcpOffering - The CSPM P1 for GCP offering
 type DefenderCspmGcpOffering struct {
 	// REQUIRED; The type of the security offering.
@@ -3000,6 +2947,32 @@ type DefenderCspmGcpOfferingVMScanners struct {
 	Configuration *VMScannersBaseConfiguration
 
 	// Is VM scanning enabled
+	Enabled *bool
+}
+
+// DefenderCspmJFrogOffering - The CSPM P1 for JFrog Artifactory offering
+type DefenderCspmJFrogOffering struct {
+	// REQUIRED; The type of the security offering.
+	OfferingType *OfferingType
+
+	// The Microsoft Defender Container image assessment configuration
+	MdcContainersImageAssessment *DefenderCspmJFrogOfferingMdcContainersImageAssessment
+
+	// READ-ONLY; The offering description.
+	Description *string
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type DefenderCspmJFrogOffering.
+func (d *DefenderCspmJFrogOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		Description:  d.Description,
+		OfferingType: d.OfferingType,
+	}
+}
+
+// DefenderCspmJFrogOfferingMdcContainersImageAssessment - The Microsoft Defender Container image assessment configuration
+type DefenderCspmJFrogOfferingMdcContainersImageAssessment struct {
+	// Is Microsoft Defender container image assessment enabled
 	Enabled *bool
 }
 
@@ -3167,6 +3140,23 @@ type DefenderForContainersAwsOfferingVMScanners struct {
 	Enabled *bool
 }
 
+// DefenderForContainersDockerHubOffering - The Defender for containers Docker Hub offering configurations
+type DefenderForContainersDockerHubOffering struct {
+	// REQUIRED; The type of the security offering.
+	OfferingType *OfferingType
+
+	// READ-ONLY; The offering description.
+	Description *string
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type DefenderForContainersDockerHubOffering.
+func (d *DefenderForContainersDockerHubOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		Description:  d.Description,
+		OfferingType: d.OfferingType,
+	}
+}
+
 // DefenderForContainersGcpOffering - The containers GCP offering
 type DefenderForContainersGcpOffering struct {
 	// REQUIRED; The type of the security offering.
@@ -3258,6 +3248,23 @@ type DefenderForContainersGcpOfferingVMScanners struct {
 
 	// Is VM scanning enabled
 	Enabled *bool
+}
+
+// DefenderForContainersJFrogOffering - The Defender for Containers for JFrog Artifactory offering
+type DefenderForContainersJFrogOffering struct {
+	// REQUIRED; The type of the security offering.
+	OfferingType *OfferingType
+
+	// READ-ONLY; The offering description.
+	Description *string
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type DefenderForContainersJFrogOffering.
+func (d *DefenderForContainersJFrogOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		Description:  d.Description,
+		OfferingType: d.OfferingType,
+	}
 }
 
 // DefenderForDatabasesGcpOffering - The Defender for Databases GCP offering configurations
@@ -3503,6 +3510,15 @@ type DefenderForStorageSetting struct {
 	Type *string
 }
 
+// DefenderForStorageSettingList - List of Defender for Storage settings.
+type DefenderForStorageSettingList struct {
+	// READ-ONLY; The URI to fetch the next page.
+	NextLink *string
+
+	// READ-ONLY; List of Defender for Storage settings.
+	Value []*DefenderForStorageSetting
+}
+
 // DefenderForStorageSettingProperties - Defender for Storage resource properties.
 type DefenderForStorageSettingProperties struct {
 	// Indicates whether Defender for Storage is enabled on this storage account.
@@ -3560,6 +3576,15 @@ func (d *DenylistCustomAlertRule) GetListCustomAlertRule() *ListCustomAlertRule 
 	}
 }
 
+// DevOpsCapability - Details about DevOps capability.
+type DevOpsCapability struct {
+	// READ-ONLY; Gets the name of the DevOps capability.
+	Name *string
+
+	// READ-ONLY; Gets the value of the DevOps capability.
+	Value *string
+}
+
 // DevOpsConfiguration - DevOps Configuration resource.
 type DevOpsConfiguration struct {
 	// DevOps Configuration properties.
@@ -3589,25 +3614,31 @@ type DevOpsConfigurationListResponse struct {
 
 // DevOpsConfigurationProperties - DevOps Configuration properties.
 type DevOpsConfigurationProperties struct {
+	// Details about Agentless configuration.
+	AgentlessConfiguration *AgentlessConfiguration
+
 	// Authorization payload.
 	Authorization *Authorization
 
 	// AutoDiscovery states.
 	AutoDiscovery *AutoDiscovery
 
-	// The provisioning state of the resource.
+	// List of top-level inventory to select when AutoDiscovery is disabled. This field is ignored when AutoDiscovery is enabled.
+	TopLevelInventoryList []*string
+
+	// READ-ONLY; List of capabilities assigned to the DevOps configuration during the discovery process.
+	Capabilities []*DevOpsCapability
+
+	// READ-ONLY; The provisioning state of the resource.
 	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
 	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
 	// successful. DeletionFailure - Deletion failure.
 	ProvisioningState *DevOpsProvisioningState
 
-	// List of top-level inventory to select when AutoDiscovery is disabled. This field is ignored when AutoDiscovery is enabled.
-	TopLevelInventoryList []*string
-
-	// READ-ONLY; Gets or sets resource status message.
+	// READ-ONLY; Gets the resource status message.
 	ProvisioningStatusMessage *string
 
-	// READ-ONLY; Gets or sets time when resource was last checked.
+	// READ-ONLY; Gets the time when resource was last checked.
 	ProvisioningStatusUpdateTimeUTC *time.Time
 }
 
@@ -3747,19 +3778,41 @@ type DiscoveredSecuritySolutionProperties struct {
 	SecurityFamily *SecurityFamily
 }
 
+// DockerHubEnvironmentData - The Docker Hub connector environment data
+type DockerHubEnvironmentData struct {
+	// REQUIRED; The type of the environment data.
+	EnvironmentType *EnvironmentType
+
+	// The Docker Hub organization authentication details
+	Authentication AuthenticationClassification
+
+	// Scan interval in hours (value should be between 1-hour to 24-hours)
+	ScanInterval *int64
+}
+
+// GetEnvironmentData implements the EnvironmentDataClassification interface for type DockerHubEnvironmentData.
+func (d *DockerHubEnvironmentData) GetEnvironmentData() *EnvironmentData {
+	return &EnvironmentData{
+		EnvironmentType: d.EnvironmentType,
+	}
+}
+
 // ETag - Entity tag is used for comparing two or more entities from the same requested resource.
 type ETag struct {
 	// Entity tag is used for comparing two or more entities from the same requested resource.
 	Etag *string
 }
 
-// EffectiveNetworkSecurityGroups - Describes the Network Security Groups effective on a network interface
-type EffectiveNetworkSecurityGroups struct {
-	// The Azure resource ID of the network interface
-	NetworkInterface *string
+// EdgeIdentifiers - Represents an edge in the path
+type EdgeIdentifiers struct {
+	// REQUIRED; The source node of the edge
+	Source *string
 
-	// The Network Security Groups effective on the network interface
-	NetworkSecurityGroups []*string
+	// REQUIRED; The target node of the edge
+	Target *string
+
+	// REQUIRED; The type of the edge
+	Type *string
 }
 
 // EnvironmentData - The security connector environment data.
@@ -3835,6 +3888,24 @@ type ErrorDetailAutoGenerated struct {
 	Target *string
 }
 
+// ErrorDetailAutoGenerated2 - The error detail.
+type ErrorDetailAutoGenerated2 struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetailAutoGenerated2
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
@@ -3849,6 +3920,13 @@ type ErrorResponseAutoGenerated struct {
 	Error *ErrorDetailAutoGenerated
 }
 
+// ErrorResponseAutoGenerated2 - Common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
+type ErrorResponseAutoGenerated2 struct {
+	// The error object.
+	Error *ErrorDetailAutoGenerated2
+}
+
 // ExecuteGovernanceRuleParams - Governance rule execution parameters
 type ExecuteGovernanceRuleParams struct {
 	// Describe if governance rule should be override
@@ -3861,25 +3939,55 @@ type Extension struct {
 	IsEnabled *IsEnabled
 
 	// REQUIRED; The extension name. Supported values are:
-	// AgentlessDiscoveryForKubernetes - API-based discovery of information about Kubernetes cluster architecture, workload objects,
-	// and setup. Required for Kubernetes inventory, identity and network
-	// exposure detection, attack path analysis and risk hunting as part of the cloud security explorer. Available for CloudPosture
-	// plan.
+	// AgentlessDiscoveryForKubernetes - Provides zero footprint, API-based discovery of Kubernetes clusters, their configurations
+	// and deployments. The collected data is used to create a contextualized
+	// security graph for Kubernetes clusters, provide risk hunting capabilities, and visualize risks and threats to Kubernetes
+	// environments and workloads.
+	// Available for CloudPosture plan and Containers plan.
 	// OnUploadMalwareScanning - Limits the GB to be scanned per month for each storage account within the subscription. Once
 	// this limit reached on a given storage account, Blobs won't be scanned during
-	// current calendar month. Available for StorageAccounts plan.
+	// current calendar month.
+	// Available for StorageAccounts plan (DefenderForStorageV2 sub plans).
 	// SensitiveDataDiscovery - Sensitive data discovery identifies Blob storage container with sensitive data such as credentials,
 	// credit cards, and more, to help prioritize and investigate security events.
-	// Available for StorageAccounts and CloudPosture plans.
+	// Available for StorageAccounts plan (DefenderForStorageV2 sub plan) and CloudPosture plan.
 	// ContainerRegistriesVulnerabilityAssessments - Provides vulnerability management for images stored in your container registries.
-	// Available for CloudPosture and Containers plans.
+	// Available for CloudPosture plan and Containers plan.
+	// MdeDesignatedSubscription - Direct onboarding is a seamless integration between Defender for Endpoint and Defender for
+	// Cloud that doesn’t require extra software deployment on your servers. The
+	// onboarded resources will be presented under a designated Azure Subscription you configure
+	// Available for VirtualMachines plan (P1 and P2 sub plans).
+	// AgentlessVmScanning - Scans your machines for installed software, vulnerabilities, malware and secret scanning without
+	// relying on agents or impacting machine performance. Learn more here
+	// https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-agentless-data-collection.
+	// Available for CloudPosture plan, VirtualMachines plan (P2 sub plan) and Containers plan.
+	// EntraPermissionsManagement - Permissions Management provides Cloud Infrastructure Entitlement Management (CIEM) capabilities
+	// that helps organizations to manage and control user access and entitlements
+	// in their cloud infrastructure - important attack vector for cloud environments.
+	// Permissions Management analyzes all permissions and active usage, and suggests recommendations to reduce permissions to
+	// enforce the principle of least privilege. Learn more here
+	// https://learn.microsoft.com/en-us/azure/defender-for-cloud/permissions-management.
+	// Available for CloudPosture plan.
+	// FileIntegrityMonitoring - File integrity monitoring (FIM), examines operating system files.
+	// Windows registries, Linux system files, in real time, for changes that might indicate an attack.
+	// Available for VirtualMachines plan (P2 sub plan).
+	// ContainerSensor - The sensor is based on IG and provides a rich threat detection suite for Kubernetes clusters, nodes,
+	// and workloads, powered by Microsoft leading threat intelligence, provides mapping
+	// to MITRE ATT&CK framework.
+	// Available for Containers plan.
+	// AIPromptEvidence - Exposes the prompts passed between the user and the AI model as alert evidence. This helps classify
+	// and triage the alerts with relevant user context. The prompt snippets will
+	// include only segments of the user prompt or model response that were deemed suspicious and relevant for security classifications.
+	// The prompt evidence will be available through Defender portal as part
+	// of each alert.
+	// Available for AI plan.
 	Name *string
 
 	// Property values associated with the extension.
 	AdditionalExtensionProperties map[string]any
 
 	// READ-ONLY; Optional. A status describing the success/failure of the extension's enablement/disablement operation.
-	OperationStatus *OperationStatusAutoGenerated
+	OperationStatus *OperationStatus
 }
 
 // ExternalSecuritySolution - Represents a security solution external to Microsoft Defender for Cloud which sends information
@@ -4040,60 +4148,22 @@ func (f *FileUploadsNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindo
 	}
 }
 
-// GcpCredentialsDetailsProperties - GCP cloud account connector based service to service credentials, the credentials are
-// composed of the organization ID and a JSON API key (write only)
-type GcpCredentialsDetailsProperties struct {
-	// REQUIRED; Auth provider x509 certificate URL field of the API key (write only)
-	AuthProviderX509CertURL *string
+// FilesScanSummary - A summary of the scan results of the files that were scanned.
+type FilesScanSummary struct {
+	// The number of failed file scans.
+	FailedFilesCount *int64
 
-	// REQUIRED; Auth URI field of the API key (write only)
-	AuthURI *string
+	// The number of malicious files that were detected during the scan.
+	MaliciousFilesCount *int64
 
-	// REQUIRED; Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use
-	// account organization credentials.
-	AuthenticationType *AuthenticationType
+	// The number of gigabytes of data that were scanned.
+	ScannedFilesInGB *float64
 
-	// REQUIRED; Client email field of the API key (write only)
-	ClientEmail *string
+	// The number of files that were skipped.
+	SkippedFilesCount *int64
 
-	// REQUIRED; Client ID field of the API key (write only)
-	ClientID *string
-
-	// REQUIRED; Client x509 certificate URL field of the API key (write only)
-	ClientX509CertURL *string
-
-	// REQUIRED; The organization ID of the GCP cloud account
-	OrganizationID *string
-
-	// REQUIRED; Private key field of the API key (write only)
-	PrivateKey *string
-
-	// REQUIRED; Private key ID field of the API key (write only)
-	PrivateKeyID *string
-
-	// REQUIRED; Project ID field of the API key (write only)
-	ProjectID *string
-
-	// REQUIRED; Token URI field of the API key (write only)
-	TokenURI *string
-
-	// REQUIRED; Type field of the API key (write only)
-	Type *string
-
-	// READ-ONLY; State of the multi-cloud connector
-	AuthenticationProvisioningState *AuthenticationProvisioningState
-
-	// READ-ONLY; The permissions detected in the cloud account.
-	GrantedPermissions []*PermissionProperty
-}
-
-// GetAuthenticationDetailsProperties implements the AuthenticationDetailsPropertiesClassification interface for type GcpCredentialsDetailsProperties.
-func (g *GcpCredentialsDetailsProperties) GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties {
-	return &AuthenticationDetailsProperties{
-		AuthenticationProvisioningState: g.AuthenticationProvisioningState,
-		AuthenticationType:              g.AuthenticationType,
-		GrantedPermissions:              g.GrantedPermissions,
-	}
+	// The total number of files that were scanned.
+	TotalFilesScanned *int64
 }
 
 // GcpOrganizationalData - The gcpOrganization data
@@ -4284,22 +4354,22 @@ type GitHubOwnerProperties struct {
 	// state is not applicable to the current endpoint.
 	OnboardingState *OnboardingState
 
-	// The provisioning state of the resource.
-	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
-	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
-	// successful. DeletionFailure - Deletion failure.
-	ProvisioningState *DevOpsProvisioningState
-
 	// READ-ONLY; Gets or sets internal GitHub id.
 	GitHubInternalID *string
 
 	// READ-ONLY; Gets or sets GitHub Owner url.
 	OwnerURL *string
 
-	// READ-ONLY; Gets or sets resource status message.
+	// READ-ONLY; The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// READ-ONLY; Gets the resource status message.
 	ProvisioningStatusMessage *string
 
-	// READ-ONLY; Gets or sets time when resource was last checked.
+	// READ-ONLY; Gets the time when resource was last checked.
 	ProvisioningStatusUpdateTimeUTC *time.Time
 }
 
@@ -4342,16 +4412,16 @@ type GitHubRepositoryProperties struct {
 	// Gets or sets parent GitHub Owner name.
 	ParentOwnerName *string
 
-	// The provisioning state of the resource.
+	// READ-ONLY; The provisioning state of the resource.
 	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
 	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
 	// successful. DeletionFailure - Deletion failure.
 	ProvisioningState *DevOpsProvisioningState
 
-	// READ-ONLY; Gets or sets resource status message.
+	// READ-ONLY; Gets the resource status message.
 	ProvisioningStatusMessage *string
 
-	// READ-ONLY; Gets or sets time when resource was last checked.
+	// READ-ONLY; Gets the time when resource was last checked.
 	ProvisioningStatusUpdateTimeUTC *time.Time
 
 	// READ-ONLY; Gets or sets GitHub Full Name. Repository name, prefixed with Owner name. Eg: "my-org/new-repo-1".
@@ -4414,12 +4484,6 @@ type GitLabGroupProperties struct {
 	// state is not applicable to the current endpoint.
 	OnboardingState *OnboardingState
 
-	// The provisioning state of the resource.
-	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
-	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
-	// successful. DeletionFailure - Deletion failure.
-	ProvisioningState *DevOpsProvisioningState
-
 	// READ-ONLY; Gets or sets the human readable fully-qualified name of the Group object.
 	// This contains the entire namespace hierarchy as seen on GitLab UI where namespaces are separated by the '/' character.
 	FullyQualifiedFriendlyName *string
@@ -4428,10 +4492,16 @@ type GitLabGroupProperties struct {
 	// This contains the entire namespace hierarchy where namespaces are separated by the '$' character.
 	FullyQualifiedName *string
 
-	// READ-ONLY; Gets or sets resource status message.
+	// READ-ONLY; The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// READ-ONLY; Gets the resource status message.
 	ProvisioningStatusMessage *string
 
-	// READ-ONLY; Gets or sets time when resource was last checked.
+	// READ-ONLY; Gets the time when resource was last checked.
 	ProvisioningStatusUpdateTimeUTC *time.Time
 
 	// READ-ONLY; Gets or sets the url of the GitLab Group.
@@ -4474,12 +4544,6 @@ type GitLabProjectProperties struct {
 	// state is not applicable to the current endpoint.
 	OnboardingState *OnboardingState
 
-	// The provisioning state of the resource.
-	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
-	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
-	// successful. DeletionFailure - Deletion failure.
-	ProvisioningState *DevOpsProvisioningState
-
 	// READ-ONLY; Gets or sets the human readable fully-qualified name of the Project object.
 	// This contains the entire namespace hierarchy as seen on GitLab UI where entities are separated by the '/' character.
 	FullyQualifiedFriendlyName *string
@@ -4492,10 +4556,16 @@ type GitLabProjectProperties struct {
 	// This contains the entire hierarchy where namespaces are separated by the '$' character.
 	FullyQualifiedParentGroupName *string
 
-	// READ-ONLY; Gets or sets resource status message.
+	// READ-ONLY; The provisioning state of the resource.
+	// Pending - Provisioning pending. Failed - Provisioning failed. Succeeded - Successful provisioning. Canceled - Provisioning
+	// canceled. PendingDeletion - Deletion pending. DeletionSuccess - Deletion
+	// successful. DeletionFailure - Deletion failure.
+	ProvisioningState *DevOpsProvisioningState
+
+	// READ-ONLY; Gets the resource status message.
 	ProvisioningStatusMessage *string
 
-	// READ-ONLY; Gets or sets time when resource was last checked.
+	// READ-ONLY; Gets the time when resource was last checked.
 	ProvisioningStatusUpdateTimeUTC *time.Time
 
 	// READ-ONLY; Gets or sets the url of the GitLab Project.
@@ -4943,31 +5013,10 @@ type HealthReportsList struct {
 	Value []*HealthReport
 }
 
-// HybridComputeSettingsProperties - Settings for hybrid compute management
-type HybridComputeSettingsProperties struct {
-	// REQUIRED; Whether or not to automatically install Azure Arc (hybrid compute) agents on machines
-	AutoProvision *AutoProvision
-
-	// For a non-Azure machine that is not connected directly to the internet, specify a proxy server that the non-Azure machine
-	// can use.
-	ProxyServer *ProxyServerProperties
-
-	// The location where the metadata of machines will be stored
-	Region *string
-
-	// The name of the resource group where Arc (Hybrid Compute) connectors are connected.
-	ResourceGroupName *string
-
-	// An object to access resources that are secured by an Azure AD tenant.
-	ServicePrincipal *ServicePrincipalProperties
-
-	// READ-ONLY; State of the service principal and its secret
-	HybridComputeProvisioningState *HybridComputeProvisioningState
-}
-
 // Identity for the resource.
 type Identity struct {
-	// The identity type.
+	// CONSTANT; The identity type.
+	// Field has constant value "SystemAssigned", any specified value is ignored.
 	Type *string
 
 	// READ-ONLY; The principal ID of resource identity.
@@ -5065,6 +5114,15 @@ type InformationType struct {
 
 	// The recommended label id to be associated with this information type.
 	RecommendedLabelID *string
+}
+
+// InventoryList - Model for inventory to be included or excluded from Agentless.
+type InventoryList struct {
+	// Types for inventory kind.
+	InventoryKind *InventoryKind
+
+	// Gets or sets the value for inventory type.
+	Value *string
 }
 
 // IoTSecurityAggregatedAlert - Security Solution Aggregated Alert information
@@ -5400,6 +5458,28 @@ type Issue struct {
 	SecurityValues []*string
 }
 
+// IssueCreationRequest - The issue creation request model
+type IssueCreationRequest struct {
+	// The security assessment resource id that the issue will be opened based on.
+	SecurityAssessmentResourceID *string
+}
+
+// JFrogEnvironmentData - The JFrog Artifactory connector environment data
+type JFrogEnvironmentData struct {
+	// REQUIRED; The type of the environment data.
+	EnvironmentType *EnvironmentType
+
+	// Scan interval in hours (value should be between 1-hour to 24-hours)
+	ScanInterval *int32
+}
+
+// GetEnvironmentData implements the EnvironmentDataClassification interface for type JFrogEnvironmentData.
+func (j *JFrogEnvironmentData) GetEnvironmentData() *EnvironmentData {
+	return &EnvironmentData{
+		EnvironmentType: j.EnvironmentType,
+	}
+}
+
 type JitNetworkAccessPoliciesList struct {
 	Value []*JitNetworkAccessPolicy
 
@@ -5672,8 +5752,39 @@ func (l *LogAnalyticsIdentifier) GetResourceIdentifier() *ResourceIdentifier {
 	}
 }
 
+// MalwareScan - Describes the state of a malware scan operation.
+type MalwareScan struct {
+	Properties *MalwareScanProperties
+}
+
+type MalwareScanProperties struct {
+	// The time at which the scan has ended. Only available for a scan which has terminated.
+	ScanEndTime *string
+
+	// The identifier of the scan.
+	ScanID *string
+
+	// The time at which the scan had been initiated.
+	ScanStartTime *string
+
+	// A status code of the scan operation.
+	ScanStatus *string
+
+	// A description of the status of the scan.
+	ScanStatusMessage *string
+
+	// A summary of the scan results.
+	ScanSummary *ScanSummary
+}
+
 // MalwareScanningProperties - Properties of Malware Scanning.
 type MalwareScanningProperties struct {
+	// Optional. Specifies the automated response action to take when malware is detected.
+	AutomatedResponse *AutomatedResponseType
+
+	// Optional. Write scan result on BlobIndexTags by default.
+	BlobScanResultsOptions *BlobScanResultsOptions
+
 	// Properties of On Upload malware scanning.
 	OnUpload *OnUploadProperties
 
@@ -5681,7 +5792,7 @@ type MalwareScanningProperties struct {
 	ScanResultsEventGridTopicResourceID *string
 
 	// READ-ONLY; Upon failure or partial success. Additional data describing Malware Scanning enable/disable operation.
-	OperationStatus *OperationStatus
+	OperationStatus *OperationStatusAutoGenerated
 }
 
 // MdeOnboardingData - The resource of the configuration or data needed to onboard the machine to MDE
@@ -5894,45 +6005,13 @@ func (m *MqttD2CMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeW
 	}
 }
 
-// NotificationsSource - A valid notification source type
-type NotificationsSource struct {
-	// REQUIRED; The source type that will trigger the notification
-	SourceType *SourceType
-}
+// NodeIdentifier - Represents a node in the path
+type NodeIdentifier struct {
+	// REQUIRED; The unique identifier of the node
+	ID *string
 
-// GetNotificationsSource implements the NotificationsSourceClassification interface for type NotificationsSource.
-func (n *NotificationsSource) GetNotificationsSource() *NotificationsSource { return n }
-
-// NotificationsSourceAlert - Alert notification source
-type NotificationsSourceAlert struct {
-	// REQUIRED; The source type that will trigger the notification
-	SourceType *SourceType
-
-	// Defines the minimal alert severity which will be sent as email notifications
-	MinimalSeverity *MinimalSeverity
-}
-
-// GetNotificationsSource implements the NotificationsSourceClassification interface for type NotificationsSourceAlert.
-func (n *NotificationsSourceAlert) GetNotificationsSource() *NotificationsSource {
-	return &NotificationsSource{
-		SourceType: n.SourceType,
-	}
-}
-
-// NotificationsSourceAttackPath - Attack path notification source
-type NotificationsSourceAttackPath struct {
-	// REQUIRED; The source type that will trigger the notification
-	SourceType *SourceType
-
-	// Defines the minimal attach path risk level which will be sent as email notifications
-	MinimalRiskLevel *MinimalRiskLevel
-}
-
-// GetNotificationsSource implements the NotificationsSourceClassification interface for type NotificationsSourceAttackPath.
-func (n *NotificationsSourceAttackPath) GetNotificationsSource() *NotificationsSource {
-	return &NotificationsSource{
-		SourceType: n.SourceType,
-	}
+	// REQUIRED; The type of the node
+	Type *string
 }
 
 // OnPremiseResourceDetails - Details of the On Premise resource that was assessed
@@ -6005,49 +6084,85 @@ func (o *OnPremiseSQLResourceDetails) GetResourceDetails() *ResourceDetails {
 	}
 }
 
+// OnUploadFilters - Optional. Determine which blobs get scanned by On Upload malware scanning. An Or operation is performed
+// between each filter type.
+type OnUploadFilters struct {
+	// Optional. Specifies the maximum size in bytes for blobs to be scanned. This parameter accepts a single positive integer
+	// value. Blobs larger than this value will be excluded from scanning.
+	ExcludeBlobsLargerThan any
+
+	// Optional. A list of prefixes to exclude from on-upload malware scanning. Format: container-name/blob-name (start with the
+	// container name; do not include the storage account name). Exclude entire
+	// containers: Use prefix of container names you want to exclude without a trailing /. Exclude a single container: Add a trailing
+	// slash / after the container name to avoid excluding other containers with
+	// similar prefixes.
+	ExcludeBlobsWithPrefix []*string
+
+	// Optional. A list of suffixes to exclude from on-upload malware scanning. Suffixes match only the end of blob names, and
+	// should be used for file extensions or blob name endings only.
+	ExcludeBlobsWithSuffix []*string
+}
+
 // OnUploadProperties - Properties of On Upload malware scanning.
 type OnUploadProperties struct {
-	// Defines the max GB to be scanned per Month. Set to -1 if no capping is needed.
+	// Defines the max GB to be scanned per Month. Set to -1 if no capping is needed. If not specified, the default value is -1.
 	CapGBPerMonth *int32
+
+	// Optional. Determine which blobs get scanned by On Upload malware scanning. An Or operation is performed between each filter
+	// type.
+	Filters *OnUploadFilters
 
 	// Indicates whether On Upload malware scanning should be enabled.
 	IsEnabled *bool
 }
 
-// Operation - Possible operation in the REST API of Microsoft.Security
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Security operation display
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
 
-	// READ-ONLY; Name of the operation
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
+	IsDataAction *bool
+
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
-	// READ-ONLY; Where the operation is originated
-	Origin *string
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
-// OperationDisplay - Security operation display
+// OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
-	// READ-ONLY; The description of the operation.
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-	// READ-ONLY; The display name of the security operation.
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-	// READ-ONLY; The resource provider for the operation.
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-	// READ-ONLY; The display name of the resource the operation applies to.
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
-// OperationList - List of possible operations for Microsoft.Security resource provider
-type OperationList struct {
-	// List of Security operations
-	Value []*Operation
-
-	// READ-ONLY; The URI to fetch the next page.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
+type OperationListResult struct {
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string
+
+	// READ-ONLY; List of operations supported by the resource provider
+	Value []*Operation
 }
 
 // OperationResultAutoGenerated - Long run operation status of governance rule over a given scope
@@ -6056,19 +6171,19 @@ type OperationResultAutoGenerated struct {
 	Status *OperationResult
 }
 
-// OperationStatus - A status describing the success/failure of the enablement/disablement operation.
+// OperationStatus - A status describing the success/failure of the extension's enablement/disablement operation.
 type OperationStatus struct {
 	// The operation status code.
-	Code *string
+	Code *Code
 
 	// Additional information regarding the success/failure of the operation.
 	Message *string
 }
 
-// OperationStatusAutoGenerated - A status describing the success/failure of the extension's enablement/disablement operation.
+// OperationStatusAutoGenerated - A status describing the success/failure of the enablement/disablement operation.
 type OperationStatusAutoGenerated struct {
 	// The operation status code.
-	Code *Code
+	Code *string
 
 	// Additional information regarding the success/failure of the operation.
 	Message *string
@@ -6101,6 +6216,36 @@ type OperationStatusResult struct {
 	StartTime *time.Time
 }
 
+// OperationStatusResultAutoGenerated - The current status of an async operation.
+type OperationStatusResultAutoGenerated struct {
+	// REQUIRED; Operation status.
+	Status *string
+
+	// The end time of the operation.
+	EndTime *time.Time
+
+	// If present, details of the operation error.
+	Error *ErrorDetailAutoGenerated2
+
+	// Fully qualified ID for the async operation.
+	ID *string
+
+	// Name of the async operation.
+	Name *string
+
+	// The operations list.
+	Operations []*OperationStatusResultAutoGenerated
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32
+
+	// The start time of the operation.
+	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
+}
+
 // OperatorList - List of SecurityOperator response.
 type OperatorList struct {
 	// REQUIRED; List of SecurityOperator configurations
@@ -6122,30 +6267,22 @@ type OperatorResource struct {
 	Type *string
 }
 
-// PathRecommendation - Represents a path that is recommended to be allowed and its properties
-type PathRecommendation struct {
-	// The recommendation action of the machine or rule
-	Action *RecommendationAction
+// PartialAssessmentProperties - Describes properties of an assessment as related to the standard
+type PartialAssessmentProperties struct {
+	// The assessment key
+	AssessmentKey *string
+}
 
-	// Whether the application is commonly run on the machine
-	Common *bool
+// Path - Represents a path that composes the risk
+type Path struct {
+	// REQUIRED; Path Edges
+	Edges []*EdgeIdentifiers
 
-	// The configuration status of the machines group or machine or rule
-	ConfigurationStatus *ConfigurationStatus
+	// REQUIRED; Path ID
+	ID *string
 
-	// The type of the file (for Linux files - Executable is used)
-	FileType *FileType
-
-	// The full path of the file, or an identifier of the application
-	Path *string
-
-	// Represents the publisher information of a process/rule
-	PublisherInfo *PublisherInfo
-
-	// The type of IoT Security recommendation.
-	Type      *RecommendationType
-	UserSids  []*string
-	Usernames []*UserRecommendation
+	// REQUIRED; Path Nodes
+	Nodes []*NodeIdentifier
 }
 
 // Pricing - Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The standard tier offers advanced
@@ -6223,6 +6360,168 @@ type PricingProperties struct {
 	ResourcesCoverageStatus *ResourcesCoverageStatus
 }
 
+// PrivateEndpoint - The private endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The ARM identifier for private endpoint.
+	ID *string
+}
+
+// PrivateEndpointConnection - The private endpoint connection resource.
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionListResult - List of private endpoint connections associated with the specified resource.
+type PrivateEndpointConnectionListResult struct {
+	// Array of private endpoint connections.
+	Value []*PrivateEndpointConnection
+
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+
+	// The private endpoint resource.
+	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
+}
+
+// PrivateLinkProperties - Properties of a private link resource. These properties control the behavior and configuration
+// of private endpoint connectivity to Defender services.
+type PrivateLinkProperties struct {
+	// This determines if traffic is allowed over public network. By default it is disabled.
+	PublicNetworkAccess *PublicNetworkAccess
+
+	// READ-ONLY; List of private endpoint connections associated with this private link. Each connection represents a private
+	// endpoint from a customer's virtual network.
+	PrivateEndpointConnections []*PrivateEndpointConnection
+
+	// READ-ONLY; List of private link resources available for connection. For Defender services, this typically includes the
+	// 'containers' group with 'api' and regional data endpoints.
+	PrivateLinkResources []*PrivateLinkResourceAutoGenerated
+
+	// READ-ONLY; The current provisioning state of the private link resource. Indicates whether the resource is being created,
+	// updated, deleted, or has completed successfully.
+	ProvisioningState *ProvisioningState
+}
+
+// PrivateLinkResource - A private link resource that enables secure, private connectivity to Microsoft Defender for Cloud
+// services. This resource manages the lifecycle of private endpoint connections and provides the
+// necessary infrastructure for private connectivity.
+type PrivateLinkResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Properties specific to the private link resource
+	Properties *PrivateLinkProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceAutoGenerated - A private link resource.
+type PrivateLinkResourceAutoGenerated struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceListResult - A list of private link resources.
+type PrivateLinkResourceListResult struct {
+	// Array of private link resources
+	Value []*PrivateLinkResourceAutoGenerated
+
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string
+
+	// The reason for approval/rejection of the connection.
+	Description *string
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
+// PrivateLinkUpdate - Request payload for updating a private link resource. Used in PATCH operations to update specific mutable
+// properties without affecting the entire resource configuration.
+type PrivateLinkUpdate struct {
+	// Resource tags
+	Tags map[string]*string
+}
+
+// PrivateLinksList - Paginated list of private link resources. Contains an array of private links and optional pagination
+// information.
+type PrivateLinksList struct {
+	// READ-ONLY; Collection of private links in this page
+	Value []*PrivateLinkResource
+
+	// READ-ONLY; The URI to fetch the next page of private links. Present only when there are additional results available.
+	NextLink *string
+}
+
 // ProcessNotAllowed - Execution of a process that isn't allowed. Allow list consists of process names to allow.
 type ProcessNotAllowed struct {
 	// REQUIRED; The values to allow. The format of the values depends on the rule type.
@@ -6277,22 +6576,6 @@ func (p *ProcessNotAllowed) GetListCustomAlertRule() *ListCustomAlertRule {
 	}
 }
 
-// ProtectionMode - The protection mode of the collection/file types. Exe/Msi/Script are used for Windows, Executable is used
-// for Linux.
-type ProtectionMode struct {
-	// The application control policy enforcement/protection mode of the machine group
-	Exe *EnforcementMode
-
-	// The application control policy enforcement/protection mode of the machine group
-	Executable *EnforcementMode
-
-	// The application control policy enforcement/protection mode of the machine group
-	Msi *EnforcementMode
-
-	// The application control policy enforcement/protection mode of the machine group
-	Script *EnforcementMode
-}
-
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
@@ -6304,32 +6587,6 @@ type ProxyResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// ProxyServerProperties - For a non-Azure machine that is not connected directly to the internet, specify a proxy server
-// that the non-Azure machine can use.
-type ProxyServerProperties struct {
-	// Proxy server IP
-	IP *string
-
-	// Proxy server port
-	Port *string
-}
-
-// PublisherInfo - Represents the publisher information of a process/rule
-type PublisherInfo struct {
-	// The "OriginalName" field taken from the file's version resource
-	BinaryName *string
-
-	// The product name taken from the file's version resource
-	ProductName *string
-
-	// The Subject field of the x.509 certificate used to sign the code, using the following fields - O = Organization, L = Locality,
-	// S = State or Province, and C = Country
-	PublisherName *string
-
-	// The binary file version taken from the file's version resource
-	Version *string
 }
 
 // QueryCheck - The rule query details.
@@ -6613,6 +6870,21 @@ type ResourceAutoGenerated2 struct {
 	Type *string
 }
 
+// ResourceAutoGenerated3 - Common fields that are returned in the response for all Azure Resource Manager resources
+type ResourceAutoGenerated3 struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // ResourceDetails - Details of the resource that was assessed
 type ResourceDetails struct {
 	// REQUIRED; The platform where the assessed resource resides
@@ -6644,25 +6916,6 @@ type ResourceIdentifier struct {
 // GetResourceIdentifier implements the ResourceIdentifierClassification interface for type ResourceIdentifier.
 func (r *ResourceIdentifier) GetResourceIdentifier() *ResourceIdentifier { return r }
 
-// Rule - Describes remote addresses that is recommended to communicate with the Azure resource on some (Protocol, Port, Direction).
-// All other remote addresses are recommended to be blocked
-type Rule struct {
-	// The rule's destination port
-	DestinationPort *int32
-
-	// The rule's direction
-	Direction *Direction
-
-	// The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination port and protocol
-	IPAddresses []*string
-
-	// The name of the rule
-	Name *string
-
-	// The rule's transport protocols
-	Protocols []*TransportProtocol
-}
-
 // RuleResults - Rule results.
 type RuleResults struct {
 	// Rule results properties.
@@ -6683,12 +6936,15 @@ type RuleResultsInput struct {
 	// Take results from latest scan.
 	LatestScan *bool
 
-	// Expected results to be inserted into the baseline. Leave this field empty it LatestScan == true.
+	// Expected results to be inserted into the baseline. Leave this field empty if latestScan == true.
 	Results [][]*string
 }
 
 // RuleResultsProperties - Rule results properties.
 type RuleResultsProperties struct {
+	// Take results from latest scan.
+	LatestScan *bool
+
 	// Expected results in the baseline.
 	Results [][]*string
 }
@@ -6704,7 +6960,7 @@ type RulesResultsInput struct {
 	// Take results from latest scan.
 	LatestScan *bool
 
-	// Expected results to be inserted into the baseline. Leave this field empty it LatestScan == true.
+	// Expected results to be inserted into the baseline. Leave this field empty if latestScan == true.
 	Results map[string][][]*string
 }
 
@@ -6727,10 +6983,11 @@ func (s *SQLServerVulnerabilityProperties) GetAdditionalData() *AdditionalData {
 	}
 }
 
-// Scan - A vulnerability assessment scan record.
-type Scan struct {
-	// A vulnerability assessment scan record properties.
-	Properties *ScanProperties
+// SQLVulnerabilityAssessmentScanOperationResult - Represents the result of a SQL Vulnerability Assessment scan operation,
+// wrapped in the ARM resource envelope.
+type SQLVulnerabilityAssessmentScanOperationResult struct {
+	// Represents the properties of a SQL Vulnerability Assessment scan operation result.
+	Properties *SQLVulnerabilityAssessmentScanOperationResultProperties
 
 	// READ-ONLY; Resource Id
 	ID *string
@@ -6742,8 +6999,42 @@ type Scan struct {
 	Type *string
 }
 
-// ScanProperties - A vulnerability assessment scan record properties.
-type ScanProperties struct {
+// SQLVulnerabilityAssessmentScanOperationResultProperties - Represents the properties of a SQL Vulnerability Assessment scan
+// operation result.
+type SQLVulnerabilityAssessmentScanOperationResultProperties struct {
+	// Gets or sets the operation id.
+	OperationID *string
+
+	// The scan operation status.
+	ScanStatus *ScanOperationStatus
+}
+
+// SQLVulnerabilityAssessmentSettings - SQL Vulnerability Assessment settings resource.
+type SQLVulnerabilityAssessmentSettings struct {
+	// SQL Vulnerability Assessment settings properties.
+	Properties *SQLVulnerabilityAssessmentSettingsProperties
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// SQLVulnerabilityAssessmentSettingsProperties - SQL Vulnerability Assessment settings properties.
+type SQLVulnerabilityAssessmentSettingsProperties struct {
+	// Represents the state of a SQL Vulnerability Assessment.
+	State *SQLVulnerabilityAssessmentState
+
+	// READ-ONLY; The creation time of the SQL Vulnerability Assessment settings.
+	CreationTime *time.Time
+}
+
+// ScanPropertiesV2 - A vulnerability assessment scan record properties.
+type ScanPropertiesV2 struct {
 	// The database name.
 	Database *string
 
@@ -6810,7 +7101,7 @@ type ScanResultProperties struct {
 	// The rule result adjusted with baseline.
 	BaselineAdjustedResult *BaselineAdjustedResult
 
-	// Indicated whether the results specified here are trimmed.
+	// Indicates whether the results specified here are trimmed.
 	IsTrimmed *bool
 
 	// The results of the query that was run.
@@ -6835,10 +7126,37 @@ type ScanResults struct {
 	Value []*ScanResult
 }
 
-// Scans - A list of vulnerability assessment scan records.
-type Scans struct {
+// ScanSummary - A summary of the scan results.
+type ScanSummary struct {
+	// A summary of the scan results of the blobs that were scanned.
+	Blobs *BlobsScanSummary
+
+	// The estimated cost of the scan. Only available for a scan which has terminated.
+	EstimatedScanCostUSD *float64
+
+	// A summary of the scan results of the files that were scanned.
+	Files *FilesScanSummary
+}
+
+// ScanV2 - A vulnerability assessment scan record.
+type ScanV2 struct {
+	// A vulnerability assessment scan record properties.
+	Properties *ScanPropertiesV2
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// ScansV2 - A list of vulnerability assessment scan records.
+type ScansV2 struct {
 	// List of vulnerability assessment scan records.
-	Value []*Scan
+	Value []*ScanV2
 }
 
 // ScopeElement - A more specific scope used to identify the alerts to suppress.
@@ -7014,7 +7332,7 @@ type SensitiveDataDiscoveryProperties struct {
 	IsEnabled *bool
 
 	// READ-ONLY; Upon failure or partial success. Additional data describing Sensitive Data Discovery enable/disable operation.
-	OperationStatus *OperationStatus
+	OperationStatus *OperationStatusAutoGenerated
 }
 
 // SensitivityLabel - The sensitivity label.
@@ -7135,16 +7453,6 @@ func (s *ServerVulnerabilityProperties) GetAdditionalData() *AdditionalData {
 	}
 }
 
-// ServicePrincipalProperties - Details of the service principal.
-type ServicePrincipalProperties struct {
-	// Application ID of service principal.
-	ApplicationID *string
-
-	// A secret string that the application uses to prove its identity, also can be referred to as application password (write
-	// only).
-	Secret *string
-}
-
 // Setting - The kind of the security setting
 type Setting struct {
 	// REQUIRED; the kind of the settings string
@@ -7167,59 +7475,6 @@ func (s *Setting) GetSetting() *Setting { return s }
 type SettingsList struct {
 	// The settings list.
 	Value []SettingClassification
-
-	// READ-ONLY; The URI to fetch the next page.
-	NextLink *string
-}
-
-// Software - Represents a software data
-type Software struct {
-	// REQUIRED; Properties of the Software Inventory resource
-	Properties *SoftwareProperties
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// SoftwareProperties - Software Inventory resource properties
-type SoftwareProperties struct {
-	// Unique identifier for the virtual machine in the service.
-	DeviceID *string
-
-	// The end of support date in case the product is upcoming end of support.
-	EndOfSupportDate *string
-
-	// End of support status.
-	EndOfSupportStatus *EndOfSupportStatus
-
-	// First time that the software was seen in the device.
-	FirstSeenAt *string
-
-	// Number of weaknesses.
-	NumberOfKnownVulnerabilities *int32
-
-	// Platform of the operating system running on the device.
-	OSPlatform *string
-
-	// Name of the software product.
-	SoftwareName *string
-
-	// Name of the software vendor.
-	Vendor *string
-
-	// Version number of the software product.
-	Version *string
-}
-
-// SoftwaresList - Represents the software inventory of the virtual machine.
-type SoftwaresList struct {
-	Value []*Software
 
 	// READ-ONLY; The URI to fetch the next page.
 	NextLink *string
@@ -7304,6 +7559,205 @@ type SolutionsReferenceDataProperties struct {
 
 	// REQUIRED; The security solutions' template
 	Template *string
+}
+
+// Standard - Security Standard on a resource
+type Standard struct {
+	// Entity tag is used for comparing two or more entities from the same requested resource.
+	Etag *string
+
+	// Kind of the resource
+	Kind *string
+
+	// Location where the resource is stored
+	Location *string
+
+	// Properties of a security standard
+	Properties *StandardPropertiesAutoGenerated
+
+	// A list of key value pairs that describe the resource.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// StandardAssignment - Security Assignment on a resource group over a given scope
+type StandardAssignment struct {
+	// Properties of a standard assignments assignment
+	Properties *StandardAssignmentProperties
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// StandardAssignmentMetadata - The standard assignment metadata
+type StandardAssignmentMetadata struct {
+	// READ-ONLY; Standard assignment Created by object id (GUID)
+	CreatedBy *string
+
+	// READ-ONLY; Standard assignment creation date
+	CreatedOn *time.Time
+
+	// READ-ONLY; Standard assignment last updated by object id (GUID)
+	LastUpdatedBy *string
+
+	// READ-ONLY; Standard assignment last update date
+	LastUpdatedOn *time.Time
+}
+
+// StandardAssignmentProperties - Describes the properties of a standardAssignment
+type StandardAssignmentProperties struct {
+	// Standard item with key as applied to this standard assignment over the given scope
+	AssignedStandard *AssignedStandardItem
+
+	// Additional data about assignment that has Attest effect
+	AttestationData *StandardAssignmentPropertiesAttestationData
+
+	// Description of the standardAssignment
+	Description *string
+
+	// Display name of the standardAssignment
+	DisplayName *string
+
+	// Expected effect of this assignment (Audit/Exempt/Attest)
+	Effect *Effect
+
+	// Excluded scopes, filter out the descendants of the scope (on management scopes)
+	ExcludedScopes []*string
+
+	// Additional data about assignment that has Exempt effect
+	ExemptionData *StandardAssignmentPropertiesExemptionData
+
+	// Expiration date of this assignment as a full ISO date
+	ExpiresOn *time.Time
+
+	// The standard assignment metadata.
+	Metadata *StandardAssignmentMetadata
+}
+
+// StandardAssignmentPropertiesAttestationData - Additional data about assignment that has Attest effect
+type StandardAssignmentPropertiesAttestationData struct {
+	// Component item with key as applied to this standard assignment over the given scope
+	AssignedAssessment *AssignedAssessmentItem
+
+	// Attest category of this assignment
+	ComplianceState *AttestationComplianceState
+
+	// Array of links to attestation evidence
+	Evidence []*AttestationEvidence
+
+	// READ-ONLY; Attestation compliance date
+	ComplianceDate *time.Time
+}
+
+// StandardAssignmentPropertiesExemptionData - Additional data about assignment that has Exempt effect
+type StandardAssignmentPropertiesExemptionData struct {
+	// Component item with key as applied to this standard assignment over the given scope
+	AssignedAssessment *AssignedAssessmentItem
+
+	// Exemption category of this assignment
+	ExemptionCategory *ExemptionCategory
+}
+
+// StandardAssignmentsList - Page of a standard assignment list
+type StandardAssignmentsList struct {
+	// READ-ONLY; Collection of standardAssignments in this page
+	Value []*StandardAssignment
+
+	// READ-ONLY; The URI to fetch the next page
+	NextLink *string
+}
+
+// StandardComponentProperties - Describes properties of an component as related to the standard
+type StandardComponentProperties struct {
+	// Component Key matching componentMetadata
+	Key *string
+}
+
+// StandardList - Page of a Standard list
+type StandardList struct {
+	// READ-ONLY; The URI to fetch the next page
+	NextLink *string
+
+	// READ-ONLY; Collection of standards in this page
+	Value []*Standard
+}
+
+// StandardMetadata - The standard metadata
+type StandardMetadata struct {
+	// READ-ONLY; Standard Created by object id (GUID)
+	CreatedBy *string
+
+	// READ-ONLY; Standard creation date
+	CreatedOn *time.Time
+
+	// READ-ONLY; Standard last updated by object id (GUID)
+	LastUpdatedBy *string
+
+	// READ-ONLY; Standard last update date
+	LastUpdatedOn *time.Time
+}
+
+// StandardProperties - Describes properties of a standard.
+type StandardProperties struct {
+	// List of assessment keys to apply to standard scope.
+	Assessments []*PartialAssessmentProperties
+
+	// List of all standard supported clouds.
+	CloudProviders []*StandardSupportedCloud
+
+	// Description of the standard
+	Description *string
+
+	// Display name of the standard, equivalent to the standardId
+	DisplayName *string
+
+	// The security standard metadata.
+	Metadata *StandardMetadata
+
+	// The policy set definition id associated with the standard.
+	PolicySetDefinitionID *string
+
+	// READ-ONLY; Standard type (Custom or Default or Compliance only currently)
+	StandardType *StandardType
+}
+
+// StandardPropertiesAutoGenerated - Describes properties of a standard.
+type StandardPropertiesAutoGenerated struct {
+	// category of the standard provided
+	Category *string
+
+	// List of component objects containing component unique keys (such as assessment keys) to apply to standard scope. Currently
+	// only supports assessment keys.
+	Components []*StandardComponentProperties
+
+	// description of the standard
+	Description *string
+
+	// display name of the standard, equivalent to the standardId
+	DisplayName *string
+
+	// List of all standard supported clouds.
+	SupportedClouds []*StandardSupportedClouds
+
+	// READ-ONLY; standard type (Custom or BuiltIn only currently)
+	StandardType *string
 }
 
 // StatusAutoGenerated - The status of the health report
@@ -7676,6 +8130,28 @@ type TrackedResource struct {
 	Type *string
 }
 
+// TrackedResourceAutoGenerated - The resource model definition for an Azure Resource Manager tracked top level resource which
+// has 'tags' and a 'location'
+type TrackedResourceAutoGenerated struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // TwinUpdatesNotInAllowedRange - Number of twin updates is not in allowed range.
 type TwinUpdatesNotInAllowedRange struct {
 	// REQUIRED; Status of the custom alert.
@@ -7832,30 +8308,6 @@ type UserDefinedResourcesProperties struct {
 
 	// REQUIRED; List of Azure subscription ids on which the user defined resources query should be executed.
 	QuerySubscriptions []*string
-}
-
-// UserRecommendation - Represents a user that is recommended to be allowed for a certain rule
-type UserRecommendation struct {
-	// The recommendation action of the machine or rule
-	RecommendationAction *RecommendationAction
-
-	// Represents a user that is recommended to be allowed for a certain rule
-	Username *string
-}
-
-// VMRecommendation - Represents a machine that is part of a machine group
-type VMRecommendation struct {
-	// The configuration status of the machines group or machine or rule
-	ConfigurationStatus *ConfigurationStatus
-
-	// The machine supportability of Enforce feature
-	EnforcementSupport *EnforcementSupport
-
-	// The recommendation action of the machine or rule
-	RecommendationAction *RecommendationAction
-
-	// The full resource id of the machine
-	ResourceID *string
 }
 
 // VMScannersAws - A VM scanning configuration for a security offering of a Aws environment

@@ -27,7 +27,7 @@ type AlertsClient struct {
 // NewAlertsClient creates a new instance of AlertsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,7 +72,7 @@ func (client *AlertsClient) GetResourceGroupLevel(ctx context.Context, resourceG
 }
 
 // getResourceGroupLevelCreateRequest creates the GetResourceGroupLevel request.
-func (client *AlertsClient) getResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, options *AlertsClientGetResourceGroupLevelOptions) (*policy.Request, error) {
+func (client *AlertsClient) getResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, _ *AlertsClientGetResourceGroupLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -141,7 +141,7 @@ func (client *AlertsClient) GetSubscriptionLevel(ctx context.Context, ascLocatio
 }
 
 // getSubscriptionLevelCreateRequest creates the GetSubscriptionLevel request.
-func (client *AlertsClient) getSubscriptionLevelCreateRequest(ctx context.Context, ascLocation string, alertName string, options *AlertsClientGetSubscriptionLevelOptions) (*policy.Request, error) {
+func (client *AlertsClient) getSubscriptionLevelCreateRequest(ctx context.Context, ascLocation string, alertName string, _ *AlertsClientGetSubscriptionLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -203,7 +203,7 @@ func (client *AlertsClient) NewListPager(options *AlertsClientListOptions) *runt
 }
 
 // listCreateRequest creates the List request.
-func (client *AlertsClient) listCreateRequest(ctx context.Context, options *AlertsClientListOptions) (*policy.Request, error) {
+func (client *AlertsClient) listCreateRequest(ctx context.Context, _ *AlertsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -259,7 +259,7 @@ func (client *AlertsClient) NewListByResourceGroupPager(resourceGroupName string
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AlertsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AlertsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/alerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -321,7 +321,7 @@ func (client *AlertsClient) NewListResourceGroupLevelByRegionPager(ascLocation s
 }
 
 // listResourceGroupLevelByRegionCreateRequest creates the ListResourceGroupLevelByRegion request.
-func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx context.Context, ascLocation string, resourceGroupName string, options *AlertsClientListResourceGroupLevelByRegionOptions) (*policy.Request, error) {
+func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx context.Context, ascLocation string, resourceGroupName string, _ *AlertsClientListResourceGroupLevelByRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -386,7 +386,7 @@ func (client *AlertsClient) NewListSubscriptionLevelByRegionPager(ascLocation st
 }
 
 // listSubscriptionLevelByRegionCreateRequest creates the ListSubscriptionLevelByRegion request.
-func (client *AlertsClient) listSubscriptionLevelByRegionCreateRequest(ctx context.Context, ascLocation string, options *AlertsClientListSubscriptionLevelByRegionOptions) (*policy.Request, error) {
+func (client *AlertsClient) listSubscriptionLevelByRegionCreateRequest(ctx context.Context, ascLocation string, _ *AlertsClientListSubscriptionLevelByRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -467,7 +467,7 @@ func (client *AlertsClient) simulate(ctx context.Context, ascLocation string, al
 }
 
 // simulateCreateRequest creates the Simulate request.
-func (client *AlertsClient) simulateCreateRequest(ctx context.Context, ascLocation string, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsClientBeginSimulateOptions) (*policy.Request, error) {
+func (client *AlertsClient) simulateCreateRequest(ctx context.Context, ascLocation string, alertSimulatorRequestBody AlertSimulatorRequestBody, _ *AlertsClientBeginSimulateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/default/simulate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -522,7 +522,7 @@ func (client *AlertsClient) UpdateResourceGroupLevelStateToActivate(ctx context.
 }
 
 // updateResourceGroupLevelStateToActivateCreateRequest creates the UpdateResourceGroupLevelStateToActivate request.
-func (client *AlertsClient) updateResourceGroupLevelStateToActivateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, options *AlertsClientUpdateResourceGroupLevelStateToActivateOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateResourceGroupLevelStateToActivateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, _ *AlertsClientUpdateResourceGroupLevelStateToActivateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/activate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -582,7 +582,7 @@ func (client *AlertsClient) UpdateResourceGroupLevelStateToDismiss(ctx context.C
 }
 
 // updateResourceGroupLevelStateToDismissCreateRequest creates the UpdateResourceGroupLevelStateToDismiss request.
-func (client *AlertsClient) updateResourceGroupLevelStateToDismissCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, options *AlertsClientUpdateResourceGroupLevelStateToDismissOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateResourceGroupLevelStateToDismissCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, _ *AlertsClientUpdateResourceGroupLevelStateToDismissOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/dismiss"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -642,7 +642,7 @@ func (client *AlertsClient) UpdateResourceGroupLevelStateToInProgress(ctx contex
 }
 
 // updateResourceGroupLevelStateToInProgressCreateRequest creates the UpdateResourceGroupLevelStateToInProgress request.
-func (client *AlertsClient) updateResourceGroupLevelStateToInProgressCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, options *AlertsClientUpdateResourceGroupLevelStateToInProgressOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateResourceGroupLevelStateToInProgressCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, _ *AlertsClientUpdateResourceGroupLevelStateToInProgressOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/inProgress"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -702,7 +702,7 @@ func (client *AlertsClient) UpdateResourceGroupLevelStateToResolve(ctx context.C
 }
 
 // updateResourceGroupLevelStateToResolveCreateRequest creates the UpdateResourceGroupLevelStateToResolve request.
-func (client *AlertsClient) updateResourceGroupLevelStateToResolveCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, options *AlertsClientUpdateResourceGroupLevelStateToResolveOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateResourceGroupLevelStateToResolveCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, _ *AlertsClientUpdateResourceGroupLevelStateToResolveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/resolve"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -761,7 +761,7 @@ func (client *AlertsClient) UpdateSubscriptionLevelStateToActivate(ctx context.C
 }
 
 // updateSubscriptionLevelStateToActivateCreateRequest creates the UpdateSubscriptionLevelStateToActivate request.
-func (client *AlertsClient) updateSubscriptionLevelStateToActivateCreateRequest(ctx context.Context, ascLocation string, alertName string, options *AlertsClientUpdateSubscriptionLevelStateToActivateOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateSubscriptionLevelStateToActivateCreateRequest(ctx context.Context, ascLocation string, alertName string, _ *AlertsClientUpdateSubscriptionLevelStateToActivateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/activate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -816,7 +816,7 @@ func (client *AlertsClient) UpdateSubscriptionLevelStateToDismiss(ctx context.Co
 }
 
 // updateSubscriptionLevelStateToDismissCreateRequest creates the UpdateSubscriptionLevelStateToDismiss request.
-func (client *AlertsClient) updateSubscriptionLevelStateToDismissCreateRequest(ctx context.Context, ascLocation string, alertName string, options *AlertsClientUpdateSubscriptionLevelStateToDismissOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateSubscriptionLevelStateToDismissCreateRequest(ctx context.Context, ascLocation string, alertName string, _ *AlertsClientUpdateSubscriptionLevelStateToDismissOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/dismiss"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -871,7 +871,7 @@ func (client *AlertsClient) UpdateSubscriptionLevelStateToInProgress(ctx context
 }
 
 // updateSubscriptionLevelStateToInProgressCreateRequest creates the UpdateSubscriptionLevelStateToInProgress request.
-func (client *AlertsClient) updateSubscriptionLevelStateToInProgressCreateRequest(ctx context.Context, ascLocation string, alertName string, options *AlertsClientUpdateSubscriptionLevelStateToInProgressOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateSubscriptionLevelStateToInProgressCreateRequest(ctx context.Context, ascLocation string, alertName string, _ *AlertsClientUpdateSubscriptionLevelStateToInProgressOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/inProgress"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -926,7 +926,7 @@ func (client *AlertsClient) UpdateSubscriptionLevelStateToResolve(ctx context.Co
 }
 
 // updateSubscriptionLevelStateToResolveCreateRequest creates the UpdateSubscriptionLevelStateToResolve request.
-func (client *AlertsClient) updateSubscriptionLevelStateToResolveCreateRequest(ctx context.Context, ascLocation string, alertName string, options *AlertsClientUpdateSubscriptionLevelStateToResolveOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateSubscriptionLevelStateToResolveCreateRequest(ctx context.Context, ascLocation string, alertName string, _ *AlertsClientUpdateSubscriptionLevelStateToResolveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/resolve"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

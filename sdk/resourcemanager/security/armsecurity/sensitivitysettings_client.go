@@ -22,7 +22,7 @@ type SensitivitySettingsClient struct {
 
 // NewSensitivitySettingsClient creates a new instance of SensitivitySettingsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSensitivitySettingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SensitivitySettingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -64,7 +64,7 @@ func (client *SensitivitySettingsClient) CreateOrUpdate(ctx context.Context, sen
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SensitivitySettingsClient) createOrUpdateCreateRequest(ctx context.Context, sensitivitySettings UpdateSensitivitySettingsRequest, options *SensitivitySettingsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SensitivitySettingsClient) createOrUpdateCreateRequest(ctx context.Context, sensitivitySettings UpdateSensitivitySettingsRequest, _ *SensitivitySettingsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Security/sensitivitySettings/current"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -117,7 +117,7 @@ func (client *SensitivitySettingsClient) Get(ctx context.Context, options *Sensi
 }
 
 // getCreateRequest creates the Get request.
-func (client *SensitivitySettingsClient) getCreateRequest(ctx context.Context, options *SensitivitySettingsClientGetOptions) (*policy.Request, error) {
+func (client *SensitivitySettingsClient) getCreateRequest(ctx context.Context, _ *SensitivitySettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Security/sensitivitySettings/current"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -168,7 +168,7 @@ func (client *SensitivitySettingsClient) List(ctx context.Context, options *Sens
 }
 
 // listCreateRequest creates the List request.
-func (client *SensitivitySettingsClient) listCreateRequest(ctx context.Context, options *SensitivitySettingsClientListOptions) (*policy.Request, error) {
+func (client *SensitivitySettingsClient) listCreateRequest(ctx context.Context, _ *SensitivitySettingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Security/sensitivitySettings"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

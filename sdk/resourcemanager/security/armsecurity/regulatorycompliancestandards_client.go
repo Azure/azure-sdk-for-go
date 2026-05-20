@@ -27,7 +27,7 @@ type RegulatoryComplianceStandardsClient struct {
 // NewRegulatoryComplianceStandardsClient creates a new instance of RegulatoryComplianceStandardsClient with the specified values.
 //   - subscriptionID - Azure subscription ID
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRegulatoryComplianceStandardsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegulatoryComplianceStandardsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *RegulatoryComplianceStandardsClient) Get(ctx context.Context, regu
 }
 
 // getCreateRequest creates the Get request.
-func (client *RegulatoryComplianceStandardsClient) getCreateRequest(ctx context.Context, regulatoryComplianceStandardName string, options *RegulatoryComplianceStandardsClientGetOptions) (*policy.Request, error) {
+func (client *RegulatoryComplianceStandardsClient) getCreateRequest(ctx context.Context, regulatoryComplianceStandardName string, _ *RegulatoryComplianceStandardsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

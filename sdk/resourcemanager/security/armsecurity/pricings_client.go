@@ -25,7 +25,7 @@ type PricingsClient struct {
 
 // NewPricingsClient creates a new instance of PricingsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPricingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PricingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -38,7 +38,8 @@ func NewPricingsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 }
 
 // Delete - Deletes a provided Microsoft Defender for Cloud pricing configuration in a specific resource. Valid only for resource
-// scope (Supported resources are: 'VirtualMachines, VMSS and ARC MachinesS').
+// scope (Supported resources are: 'VirtualMachines, VMSS, ARC Machines, and
+// Containers').
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-01-01
@@ -67,7 +68,7 @@ func (client *PricingsClient) Delete(ctx context.Context, scopeID string, pricin
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PricingsClient) deleteCreateRequest(ctx context.Context, scopeID string, pricingName string, options *PricingsClientDeleteOptions) (*policy.Request, error) {
+func (client *PricingsClient) deleteCreateRequest(ctx context.Context, scopeID string, pricingName string, _ *PricingsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scopeId}/providers/Microsoft.Security/pricings/{pricingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scopeId}", scopeID)
 	if pricingName == "" {
@@ -120,7 +121,7 @@ func (client *PricingsClient) Get(ctx context.Context, scopeID string, pricingNa
 }
 
 // getCreateRequest creates the Get request.
-func (client *PricingsClient) getCreateRequest(ctx context.Context, scopeID string, pricingName string, options *PricingsClientGetOptions) (*policy.Request, error) {
+func (client *PricingsClient) getCreateRequest(ctx context.Context, scopeID string, pricingName string, _ *PricingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scopeId}/providers/Microsoft.Security/pricings/{pricingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scopeId}", scopeID)
 	if pricingName == "" {
@@ -245,7 +246,7 @@ func (client *PricingsClient) Update(ctx context.Context, scopeID string, pricin
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PricingsClient) updateCreateRequest(ctx context.Context, scopeID string, pricingName string, pricing Pricing, options *PricingsClientUpdateOptions) (*policy.Request, error) {
+func (client *PricingsClient) updateCreateRequest(ctx context.Context, scopeID string, pricingName string, pricing Pricing, _ *PricingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scopeId}/providers/Microsoft.Security/pricings/{pricingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scopeId}", scopeID)
 	if pricingName == "" {

@@ -5,11 +5,6 @@
 
 package armsecurity
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
-	moduleVersion = "v0.14.0"
-)
-
 // AADConnectivityState - The connectivity state of the external AAD solution
 type AADConnectivityState string
 
@@ -28,11 +23,12 @@ func PossibleAADConnectivityStateValues() []AADConnectivityState {
 	}
 }
 
-// ActionType - The type of the action that will be triggered by the Automation
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
 const (
 	ActionTypeEventHub  ActionType = "EventHub"
+	ActionTypeInternal  ActionType = "Internal"
 	ActionTypeLogicApp  ActionType = "LogicApp"
 	ActionTypeWorkspace ActionType = "Workspace"
 )
@@ -41,6 +37,7 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeEventHub,
+		ActionTypeInternal,
 		ActionTypeLogicApp,
 		ActionTypeWorkspace,
 	}
@@ -62,30 +59,6 @@ func PossibleActionableRemediationStateValues() []ActionableRemediationState {
 		ActionableRemediationStateDisabled,
 		ActionableRemediationStateEnabled,
 		ActionableRemediationStateNone,
-	}
-}
-
-// AdaptiveApplicationControlIssue - An alert that machines within a group can have
-type AdaptiveApplicationControlIssue string
-
-const (
-	AdaptiveApplicationControlIssueExecutableViolationsAudited   AdaptiveApplicationControlIssue = "ExecutableViolationsAudited"
-	AdaptiveApplicationControlIssueMsiAndScriptViolationsAudited AdaptiveApplicationControlIssue = "MsiAndScriptViolationsAudited"
-	AdaptiveApplicationControlIssueMsiAndScriptViolationsBlocked AdaptiveApplicationControlIssue = "MsiAndScriptViolationsBlocked"
-	AdaptiveApplicationControlIssueRulesViolatedManually         AdaptiveApplicationControlIssue = "RulesViolatedManually"
-	AdaptiveApplicationControlIssueViolationsAudited             AdaptiveApplicationControlIssue = "ViolationsAudited"
-	AdaptiveApplicationControlIssueViolationsBlocked             AdaptiveApplicationControlIssue = "ViolationsBlocked"
-)
-
-// PossibleAdaptiveApplicationControlIssueValues returns the possible values for the AdaptiveApplicationControlIssue const type.
-func PossibleAdaptiveApplicationControlIssueValues() []AdaptiveApplicationControlIssue {
-	return []AdaptiveApplicationControlIssue{
-		AdaptiveApplicationControlIssueExecutableViolationsAudited,
-		AdaptiveApplicationControlIssueMsiAndScriptViolationsAudited,
-		AdaptiveApplicationControlIssueMsiAndScriptViolationsBlocked,
-		AdaptiveApplicationControlIssueRulesViolatedManually,
-		AdaptiveApplicationControlIssueViolationsAudited,
-		AdaptiveApplicationControlIssueViolationsBlocked,
 	}
 }
 
@@ -116,6 +89,24 @@ const (
 func PossibleAdditionalWorkspaceTypeValues() []AdditionalWorkspaceType {
 	return []AdditionalWorkspaceType{
 		AdditionalWorkspaceTypeSentinel,
+	}
+}
+
+// AgentlessEnablement - Agentless Enablement states.
+type AgentlessEnablement string
+
+const (
+	AgentlessEnablementDisabled      AgentlessEnablement = "Disabled"
+	AgentlessEnablementEnabled       AgentlessEnablement = "Enabled"
+	AgentlessEnablementNotApplicable AgentlessEnablement = "NotApplicable"
+)
+
+// PossibleAgentlessEnablementValues returns the possible values for the AgentlessEnablement const type.
+func PossibleAgentlessEnablementValues() []AgentlessEnablement {
+	return []AgentlessEnablement{
+		AgentlessEnablementDisabled,
+		AgentlessEnablementEnabled,
+		AgentlessEnablementNotApplicable,
 	}
 }
 
@@ -270,13 +261,27 @@ type AssessmentType string
 const (
 	// AssessmentTypeBuiltIn - Microsoft Defender for Cloud managed assessments
 	AssessmentTypeBuiltIn AssessmentType = "BuiltIn"
+	// AssessmentTypeBuiltInPolicy - Microsoft Defender for Cloud managed policies
+	AssessmentTypeBuiltInPolicy AssessmentType = "BuiltInPolicy"
+	// AssessmentTypeCustom - User defined custom assessments
+	AssessmentTypeCustom AssessmentType = "Custom"
 	// AssessmentTypeCustomPolicy - User defined policies that are automatically ingested from Azure Policy to Microsoft Defender
 	// for Cloud
 	AssessmentTypeCustomPolicy AssessmentType = "CustomPolicy"
 	// AssessmentTypeCustomerManaged - User assessments pushed directly by the user or other third party to Microsoft Defender
 	// for Cloud
 	AssessmentTypeCustomerManaged AssessmentType = "CustomerManaged"
-	// AssessmentTypeVerifiedPartner - An assessment that was created by a verified 3rd party if the user connected it to ASC
+	// AssessmentTypeDynamicBuiltIn - Microsoft Defender for Cloud managed assessments that are dynamically created by the system
+	AssessmentTypeDynamicBuiltIn AssessmentType = "DynamicBuiltIn"
+	// AssessmentTypeManualBuiltIn - Microsoft Defender for Cloud managed assessments that are manually created by the user
+	AssessmentTypeManualBuiltIn AssessmentType = "ManualBuiltIn"
+	// AssessmentTypeManualBuiltInPolicy - Microsoft Defender for Cloud managed policies that are manually created by the user
+	AssessmentTypeManualBuiltInPolicy AssessmentType = "ManualBuiltInPolicy"
+	// AssessmentTypeManualCustomPolicy - User defined policies that are manually created by the user
+	AssessmentTypeManualCustomPolicy AssessmentType = "ManualCustomPolicy"
+	// AssessmentTypeUnknown - Unknown assessment type
+	AssessmentTypeUnknown AssessmentType = "Unknown"
+	// AssessmentTypeVerifiedPartner - Third party assessments that are verified by Microsoft Defender for Cloud
 	AssessmentTypeVerifiedPartner AssessmentType = "VerifiedPartner"
 )
 
@@ -284,55 +289,48 @@ const (
 func PossibleAssessmentTypeValues() []AssessmentType {
 	return []AssessmentType{
 		AssessmentTypeBuiltIn,
+		AssessmentTypeBuiltInPolicy,
+		AssessmentTypeCustom,
 		AssessmentTypeCustomPolicy,
 		AssessmentTypeCustomerManaged,
+		AssessmentTypeDynamicBuiltIn,
+		AssessmentTypeManualBuiltIn,
+		AssessmentTypeManualBuiltInPolicy,
+		AssessmentTypeManualCustomPolicy,
+		AssessmentTypeUnknown,
 		AssessmentTypeVerifiedPartner,
 	}
 }
 
-// AuthenticationProvisioningState - State of the multi-cloud connector
-type AuthenticationProvisioningState string
+// AttestationComplianceState - Attest category of this assignment
+type AttestationComplianceState string
 
 const (
-	// AuthenticationProvisioningStateExpired - the connection has expired
-	AuthenticationProvisioningStateExpired AuthenticationProvisioningState = "Expired"
-	// AuthenticationProvisioningStateIncorrectPolicy - Incorrect policy of the connector
-	AuthenticationProvisioningStateIncorrectPolicy AuthenticationProvisioningState = "IncorrectPolicy"
-	// AuthenticationProvisioningStateInvalid - Invalid connector
-	AuthenticationProvisioningStateInvalid AuthenticationProvisioningState = "Invalid"
-	// AuthenticationProvisioningStateValid - Valid connector
-	AuthenticationProvisioningStateValid AuthenticationProvisioningState = "Valid"
+	AttestationComplianceStateCompliant    AttestationComplianceState = "compliant"
+	AttestationComplianceStateNonCompliant AttestationComplianceState = "nonCompliant"
+	AttestationComplianceStateUnknown      AttestationComplianceState = "unknown"
 )
 
-// PossibleAuthenticationProvisioningStateValues returns the possible values for the AuthenticationProvisioningState const type.
-func PossibleAuthenticationProvisioningStateValues() []AuthenticationProvisioningState {
-	return []AuthenticationProvisioningState{
-		AuthenticationProvisioningStateExpired,
-		AuthenticationProvisioningStateIncorrectPolicy,
-		AuthenticationProvisioningStateInvalid,
-		AuthenticationProvisioningStateValid,
+// PossibleAttestationComplianceStateValues returns the possible values for the AttestationComplianceState const type.
+func PossibleAttestationComplianceStateValues() []AttestationComplianceState {
+	return []AttestationComplianceState{
+		AttestationComplianceStateCompliant,
+		AttestationComplianceStateNonCompliant,
+		AttestationComplianceStateUnknown,
 	}
 }
 
-// AuthenticationType - Connect to your cloud account, for AWS use either account credentials or role-based authentication.
-// For GCP use account organization credentials.
+// AuthenticationType - The authentication type
 type AuthenticationType string
 
 const (
-	// AuthenticationTypeAwsAssumeRole - AWS account connector assume role authentication
-	AuthenticationTypeAwsAssumeRole AuthenticationType = "awsAssumeRole"
-	// AuthenticationTypeAwsCreds - AWS cloud account connector user credentials authentication
-	AuthenticationTypeAwsCreds AuthenticationType = "awsCreds"
-	// AuthenticationTypeGcpCredentials - GCP account connector service to service authentication
-	AuthenticationTypeGcpCredentials AuthenticationType = "gcpCredentials"
+	AuthenticationTypeAccessToken AuthenticationType = "AccessToken"
 )
 
 // PossibleAuthenticationTypeValues returns the possible values for the AuthenticationType const type.
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return []AuthenticationType{
-		AuthenticationTypeAwsAssumeRole,
-		AuthenticationTypeAwsCreds,
-		AuthenticationTypeGcpCredentials,
+		AuthenticationTypeAccessToken,
 	}
 }
 
@@ -372,6 +370,42 @@ func PossibleAutoProvisionValues() []AutoProvision {
 	}
 }
 
+// AutomatedResponseType - Optional. Specifies the automated response action to take when malware is detected.
+type AutomatedResponseType string
+
+const (
+	// AutomatedResponseTypeBlobSoftDelete - The blob will be soft deleted when malware is detected.
+	AutomatedResponseTypeBlobSoftDelete AutomatedResponseType = "BlobSoftDelete"
+	// AutomatedResponseTypeNone - No automated response will be taken when malware is detected.
+	AutomatedResponseTypeNone AutomatedResponseType = "None"
+)
+
+// PossibleAutomatedResponseTypeValues returns the possible values for the AutomatedResponseType const type.
+func PossibleAutomatedResponseTypeValues() []AutomatedResponseType {
+	return []AutomatedResponseType{
+		AutomatedResponseTypeBlobSoftDelete,
+		AutomatedResponseTypeNone,
+	}
+}
+
+// BlobScanResultsOptions - Optional. Write scan result on BlobIndexTags by default.
+type BlobScanResultsOptions string
+
+const (
+	// BlobScanResultsOptionsBlobIndexTags - Write scan results on the blobs index tags.
+	BlobScanResultsOptionsBlobIndexTags BlobScanResultsOptions = "BlobIndexTags"
+	// BlobScanResultsOptionsNone - Do not write scan results on the blobs index tags.
+	BlobScanResultsOptionsNone BlobScanResultsOptions = "None"
+)
+
+// PossibleBlobScanResultsOptionsValues returns the possible values for the BlobScanResultsOptions const type.
+func PossibleBlobScanResultsOptionsValues() []BlobScanResultsOptions {
+	return []BlobScanResultsOptions{
+		BlobScanResultsOptionsBlobIndexTags,
+		BlobScanResultsOptionsNone,
+	}
+}
+
 // BundleType - Alert Simulator supported bundles.
 type BundleType string
 
@@ -406,7 +440,9 @@ func PossibleBundleTypeValues() []BundleType {
 type Categories string
 
 const (
+	CategoriesAppServices       Categories = "AppServices"
 	CategoriesCompute           Categories = "Compute"
+	CategoriesContainer         Categories = "Container"
 	CategoriesData              Categories = "Data"
 	CategoriesIdentityAndAccess Categories = "IdentityAndAccess"
 	CategoriesIoT               Categories = "IoT"
@@ -416,7 +452,9 @@ const (
 // PossibleCategoriesValues returns the possible values for the Categories const type.
 func PossibleCategoriesValues() []Categories {
 	return []Categories{
+		CategoriesAppServices,
 		CategoriesCompute,
+		CategoriesContainer,
 		CategoriesData,
 		CategoriesIdentityAndAccess,
 		CategoriesIoT,
@@ -431,9 +469,11 @@ const (
 	CloudNameAWS         CloudName = "AWS"
 	CloudNameAzure       CloudName = "Azure"
 	CloudNameAzureDevOps CloudName = "AzureDevOps"
+	CloudNameDockerHub   CloudName = "DockerHub"
 	CloudNameGCP         CloudName = "GCP"
 	CloudNameGitLab      CloudName = "GitLab"
 	CloudNameGithub      CloudName = "Github"
+	CloudNameJFrog       CloudName = "JFrog"
 )
 
 // PossibleCloudNameValues returns the possible values for the CloudName const type.
@@ -442,9 +482,11 @@ func PossibleCloudNameValues() []CloudName {
 		CloudNameAWS,
 		CloudNameAzure,
 		CloudNameAzureDevOps,
+		CloudNameDockerHub,
 		CloudNameGCP,
 		CloudNameGitLab,
 		CloudNameGithub,
+		CloudNameJFrog,
 	}
 }
 
@@ -463,28 +505,6 @@ func PossibleCodeValues() []Code {
 	return []Code{
 		CodeFailed,
 		CodeSucceeded,
-	}
-}
-
-// ConfigurationStatus - The configuration status of the machines group or machine or rule
-type ConfigurationStatus string
-
-const (
-	ConfigurationStatusConfigured    ConfigurationStatus = "Configured"
-	ConfigurationStatusFailed        ConfigurationStatus = "Failed"
-	ConfigurationStatusInProgress    ConfigurationStatus = "InProgress"
-	ConfigurationStatusNoStatus      ConfigurationStatus = "NoStatus"
-	ConfigurationStatusNotConfigured ConfigurationStatus = "NotConfigured"
-)
-
-// PossibleConfigurationStatusValues returns the possible values for the ConfigurationStatus const type.
-func PossibleConfigurationStatusValues() []ConfigurationStatus {
-	return []ConfigurationStatus{
-		ConfigurationStatusConfigured,
-		ConfigurationStatusFailed,
-		ConfigurationStatusInProgress,
-		ConfigurationStatusNoStatus,
-		ConfigurationStatusNotConfigured,
 	}
 }
 
@@ -600,41 +620,21 @@ func PossibleDevOpsProvisioningStateValues() []DevOpsProvisioningState {
 	}
 }
 
-// Direction - The rule's direction
-type Direction string
+// Effect - Expected effect of this assignment (Audit/Exempt/Attest)
+type Effect string
 
 const (
-	DirectionInbound  Direction = "Inbound"
-	DirectionOutbound Direction = "Outbound"
+	EffectAttest Effect = "Attest"
+	EffectAudit  Effect = "Audit"
+	EffectExempt Effect = "Exempt"
 )
 
-// PossibleDirectionValues returns the possible values for the Direction const type.
-func PossibleDirectionValues() []Direction {
-	return []Direction{
-		DirectionInbound,
-		DirectionOutbound,
-	}
-}
-
-// EndOfSupportStatus - End of support status.
-type EndOfSupportStatus string
-
-const (
-	EndOfSupportStatusNoLongerSupported                EndOfSupportStatus = "noLongerSupported"
-	EndOfSupportStatusNone                             EndOfSupportStatus = "None"
-	EndOfSupportStatusUpcomingNoLongerSupported        EndOfSupportStatus = "upcomingNoLongerSupported"
-	EndOfSupportStatusUpcomingVersionNoLongerSupported EndOfSupportStatus = "upcomingVersionNoLongerSupported"
-	EndOfSupportStatusVersionNoLongerSupported         EndOfSupportStatus = "versionNoLongerSupported"
-)
-
-// PossibleEndOfSupportStatusValues returns the possible values for the EndOfSupportStatus const type.
-func PossibleEndOfSupportStatusValues() []EndOfSupportStatus {
-	return []EndOfSupportStatus{
-		EndOfSupportStatusNoLongerSupported,
-		EndOfSupportStatusNone,
-		EndOfSupportStatusUpcomingNoLongerSupported,
-		EndOfSupportStatusUpcomingVersionNoLongerSupported,
-		EndOfSupportStatusVersionNoLongerSupported,
+// PossibleEffectValues returns the possible values for the Effect const type.
+func PossibleEffectValues() []Effect {
+	return []Effect{
+		EffectAttest,
+		EffectAudit,
+		EffectExempt,
 	}
 }
 
@@ -660,51 +660,17 @@ func PossibleEnforceValues() []Enforce {
 	}
 }
 
-// EnforcementMode - The application control policy enforcement/protection mode of the machine group
-type EnforcementMode string
-
-const (
-	EnforcementModeAudit   EnforcementMode = "Audit"
-	EnforcementModeEnforce EnforcementMode = "Enforce"
-	EnforcementModeNone    EnforcementMode = "None"
-)
-
-// PossibleEnforcementModeValues returns the possible values for the EnforcementMode const type.
-func PossibleEnforcementModeValues() []EnforcementMode {
-	return []EnforcementMode{
-		EnforcementModeAudit,
-		EnforcementModeEnforce,
-		EnforcementModeNone,
-	}
-}
-
-// EnforcementSupport - The machine supportability of Enforce feature
-type EnforcementSupport string
-
-const (
-	EnforcementSupportNotSupported EnforcementSupport = "NotSupported"
-	EnforcementSupportSupported    EnforcementSupport = "Supported"
-	EnforcementSupportUnknown      EnforcementSupport = "Unknown"
-)
-
-// PossibleEnforcementSupportValues returns the possible values for the EnforcementSupport const type.
-func PossibleEnforcementSupportValues() []EnforcementSupport {
-	return []EnforcementSupport{
-		EnforcementSupportNotSupported,
-		EnforcementSupportSupported,
-		EnforcementSupportUnknown,
-	}
-}
-
 // EnvironmentType - The type of the environment data.
 type EnvironmentType string
 
 const (
-	EnvironmentTypeAwsAccount       EnvironmentType = "AwsAccount"
-	EnvironmentTypeAzureDevOpsScope EnvironmentType = "AzureDevOpsScope"
-	EnvironmentTypeGcpProject       EnvironmentType = "GcpProject"
-	EnvironmentTypeGithubScope      EnvironmentType = "GithubScope"
-	EnvironmentTypeGitlabScope      EnvironmentType = "GitlabScope"
+	EnvironmentTypeAwsAccount            EnvironmentType = "AwsAccount"
+	EnvironmentTypeAzureDevOpsScope      EnvironmentType = "AzureDevOpsScope"
+	EnvironmentTypeDockerHubOrganization EnvironmentType = "DockerHubOrganization"
+	EnvironmentTypeGcpProject            EnvironmentType = "GcpProject"
+	EnvironmentTypeGithubScope           EnvironmentType = "GithubScope"
+	EnvironmentTypeGitlabScope           EnvironmentType = "GitlabScope"
+	EnvironmentTypeJFrogArtifactory      EnvironmentType = "JFrogArtifactory"
 )
 
 // PossibleEnvironmentTypeValues returns the possible values for the EnvironmentType const type.
@@ -712,9 +678,11 @@ func PossibleEnvironmentTypeValues() []EnvironmentType {
 	return []EnvironmentType{
 		EnvironmentTypeAwsAccount,
 		EnvironmentTypeAzureDevOpsScope,
+		EnvironmentTypeDockerHubOrganization,
 		EnvironmentTypeGcpProject,
 		EnvironmentTypeGithubScope,
 		EnvironmentTypeGitlabScope,
+		EnvironmentTypeJFrogArtifactory,
 	}
 }
 
@@ -753,6 +721,22 @@ func PossibleEventSourceValues() []EventSource {
 		EventSourceSecureScoresSnapshot,
 		EventSourceSubAssessments,
 		EventSourceSubAssessmentsSnapshot,
+	}
+}
+
+// ExemptionCategory - Exemption category of this assignment
+type ExemptionCategory string
+
+const (
+	ExemptionCategoryMitigated ExemptionCategory = "mitigated"
+	ExemptionCategoryWaiver    ExemptionCategory = "waiver"
+)
+
+// PossibleExemptionCategoryValues returns the possible values for the ExemptionCategory const type.
+func PossibleExemptionCategoryValues() []ExemptionCategory {
+	return []ExemptionCategory{
+		ExemptionCategoryMitigated,
+		ExemptionCategoryWaiver,
 	}
 }
 
@@ -816,30 +800,6 @@ func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind
 		ExternalSecuritySolutionKindAAD,
 		ExternalSecuritySolutionKindATA,
 		ExternalSecuritySolutionKindCEF,
-	}
-}
-
-// FileType - The type of the file (for Linux files - Executable is used)
-type FileType string
-
-const (
-	FileTypeDll        FileType = "Dll"
-	FileTypeExe        FileType = "Exe"
-	FileTypeExecutable FileType = "Executable"
-	FileTypeMsi        FileType = "Msi"
-	FileTypeScript     FileType = "Script"
-	FileTypeUnknown    FileType = "Unknown"
-)
-
-// PossibleFileTypeValues returns the possible values for the FileType const type.
-func PossibleFileTypeValues() []FileType {
-	return []FileType{
-		FileTypeDll,
-		FileTypeExe,
-		FileTypeExecutable,
-		FileTypeMsi,
-		FileTypeScript,
-		FileTypeUnknown,
 	}
 }
 
@@ -912,27 +872,6 @@ func PossibleGovernanceRuleTypeValues() []GovernanceRuleType {
 	return []GovernanceRuleType{
 		GovernanceRuleTypeIntegrated,
 		GovernanceRuleTypeServiceNow,
-	}
-}
-
-// HybridComputeProvisioningState - State of the service principal and its secret
-type HybridComputeProvisioningState string
-
-const (
-	// HybridComputeProvisioningStateExpired - the service principal details are expired
-	HybridComputeProvisioningStateExpired HybridComputeProvisioningState = "Expired"
-	// HybridComputeProvisioningStateInvalid - Invalid service principal details.
-	HybridComputeProvisioningStateInvalid HybridComputeProvisioningState = "Invalid"
-	// HybridComputeProvisioningStateValid - Valid service principal details.
-	HybridComputeProvisioningStateValid HybridComputeProvisioningState = "Valid"
-)
-
-// PossibleHybridComputeProvisioningStateValues returns the possible values for the HybridComputeProvisioningState const type.
-func PossibleHybridComputeProvisioningStateValues() []HybridComputeProvisioningState {
-	return []HybridComputeProvisioningState{
-		HybridComputeProvisioningStateExpired,
-		HybridComputeProvisioningStateInvalid,
-		HybridComputeProvisioningStateValid,
 	}
 }
 
@@ -1085,6 +1024,44 @@ func PossibleIntentValues() []Intent {
 	}
 }
 
+// InventoryKind - Types for inventory kind.
+type InventoryKind string
+
+const (
+	InventoryKindAzureDevOpsOrganization InventoryKind = "AzureDevOpsOrganization"
+	InventoryKindAzureDevOpsProject      InventoryKind = "AzureDevOpsProject"
+	InventoryKindAzureDevOpsRepository   InventoryKind = "AzureDevOpsRepository"
+	InventoryKindGitHubOwner             InventoryKind = "GitHubOwner"
+	InventoryKindGitHubRepository        InventoryKind = "GitHubRepository"
+)
+
+// PossibleInventoryKindValues returns the possible values for the InventoryKind const type.
+func PossibleInventoryKindValues() []InventoryKind {
+	return []InventoryKind{
+		InventoryKindAzureDevOpsOrganization,
+		InventoryKindAzureDevOpsProject,
+		InventoryKindAzureDevOpsRepository,
+		InventoryKindGitHubOwner,
+		InventoryKindGitHubRepository,
+	}
+}
+
+// InventoryListKind - Types for inventory list.
+type InventoryListKind string
+
+const (
+	InventoryListKindExclusion InventoryListKind = "Exclusion"
+	InventoryListKindInclusion InventoryListKind = "Inclusion"
+)
+
+// PossibleInventoryListKindValues returns the possible values for the InventoryListKind const type.
+func PossibleInventoryListKindValues() []InventoryListKind {
+	return []InventoryListKind{
+		InventoryListKindExclusion,
+		InventoryListKindInclusion,
+	}
+}
+
 // IsEnabled - Indicates whether the extension is enabled.
 type IsEnabled string
 
@@ -1118,51 +1095,6 @@ func PossibleKindValues() []Kind {
 	}
 }
 
-// MinimalRiskLevel - Defines the minimal attack path risk level which will be sent as email notifications
-type MinimalRiskLevel string
-
-const (
-	// MinimalRiskLevelCritical - Get notifications on new attack paths with Critical risk level
-	MinimalRiskLevelCritical MinimalRiskLevel = "Critical"
-	// MinimalRiskLevelHigh - Get notifications on new attack paths with High or Critical risk level
-	MinimalRiskLevelHigh MinimalRiskLevel = "High"
-	// MinimalRiskLevelLow - Get notifications on new attach paths with Low, Medium, High or Critical risk level
-	MinimalRiskLevelLow MinimalRiskLevel = "Low"
-	// MinimalRiskLevelMedium - Get notifications on new attach paths with Medium, High or Critical risk level
-	MinimalRiskLevelMedium MinimalRiskLevel = "Medium"
-)
-
-// PossibleMinimalRiskLevelValues returns the possible values for the MinimalRiskLevel const type.
-func PossibleMinimalRiskLevelValues() []MinimalRiskLevel {
-	return []MinimalRiskLevel{
-		MinimalRiskLevelCritical,
-		MinimalRiskLevelHigh,
-		MinimalRiskLevelLow,
-		MinimalRiskLevelMedium,
-	}
-}
-
-// MinimalSeverity - Defines the minimal alert severity which will be sent as email notifications
-type MinimalSeverity string
-
-const (
-	// MinimalSeverityHigh - Get notifications on new alerts with High severity
-	MinimalSeverityHigh MinimalSeverity = "High"
-	// MinimalSeverityLow - Get notifications on new alerts with Low, Medium or High severity
-	MinimalSeverityLow MinimalSeverity = "Low"
-	// MinimalSeverityMedium - Get notifications on new alerts with Medium or High severity
-	MinimalSeverityMedium MinimalSeverity = "Medium"
-)
-
-// PossibleMinimalSeverityValues returns the possible values for the MinimalSeverity const type.
-func PossibleMinimalSeverityValues() []MinimalSeverity {
-	return []MinimalSeverity{
-		MinimalSeverityHigh,
-		MinimalSeverityLow,
-		MinimalSeverityMedium,
-	}
-}
-
 // MipIntegrationStatus - Microsoft information protection integration status
 type MipIntegrationStatus string
 
@@ -1187,19 +1119,25 @@ func PossibleMipIntegrationStatusValues() []MipIntegrationStatus {
 type OfferingType string
 
 const (
-	OfferingTypeCspmMonitorAws           OfferingType = "CspmMonitorAws"
-	OfferingTypeCspmMonitorAzureDevOps   OfferingType = "CspmMonitorAzureDevOps"
-	OfferingTypeCspmMonitorGcp           OfferingType = "CspmMonitorGcp"
-	OfferingTypeCspmMonitorGitLab        OfferingType = "CspmMonitorGitLab"
-	OfferingTypeCspmMonitorGithub        OfferingType = "CspmMonitorGithub"
-	OfferingTypeDefenderCspmAws          OfferingType = "DefenderCspmAws"
-	OfferingTypeDefenderCspmGcp          OfferingType = "DefenderCspmGcp"
-	OfferingTypeDefenderForContainersAws OfferingType = "DefenderForContainersAws"
-	OfferingTypeDefenderForContainersGcp OfferingType = "DefenderForContainersGcp"
-	OfferingTypeDefenderForDatabasesAws  OfferingType = "DefenderForDatabasesAws"
-	OfferingTypeDefenderForDatabasesGcp  OfferingType = "DefenderForDatabasesGcp"
-	OfferingTypeDefenderForServersAws    OfferingType = "DefenderForServersAws"
-	OfferingTypeDefenderForServersGcp    OfferingType = "DefenderForServersGcp"
+	OfferingTypeCspmMonitorAws                 OfferingType = "CspmMonitorAws"
+	OfferingTypeCspmMonitorAzureDevOps         OfferingType = "CspmMonitorAzureDevOps"
+	OfferingTypeCspmMonitorDockerHub           OfferingType = "CspmMonitorDockerHub"
+	OfferingTypeCspmMonitorGcp                 OfferingType = "CspmMonitorGcp"
+	OfferingTypeCspmMonitorGitLab              OfferingType = "CspmMonitorGitLab"
+	OfferingTypeCspmMonitorGithub              OfferingType = "CspmMonitorGithub"
+	OfferingTypeCspmMonitorJFrog               OfferingType = "CspmMonitorJFrog"
+	OfferingTypeDefenderCspmAws                OfferingType = "DefenderCspmAws"
+	OfferingTypeDefenderCspmDockerHub          OfferingType = "DefenderCspmDockerHub"
+	OfferingTypeDefenderCspmGcp                OfferingType = "DefenderCspmGcp"
+	OfferingTypeDefenderCspmJFrog              OfferingType = "DefenderCspmJFrog"
+	OfferingTypeDefenderForContainersAws       OfferingType = "DefenderForContainersAws"
+	OfferingTypeDefenderForContainersDockerHub OfferingType = "DefenderForContainersDockerHub"
+	OfferingTypeDefenderForContainersGcp       OfferingType = "DefenderForContainersGcp"
+	OfferingTypeDefenderForContainersJFrog     OfferingType = "DefenderForContainersJFrog"
+	OfferingTypeDefenderForDatabasesAws        OfferingType = "DefenderForDatabasesAws"
+	OfferingTypeDefenderForDatabasesGcp        OfferingType = "DefenderForDatabasesGcp"
+	OfferingTypeDefenderForServersAws          OfferingType = "DefenderForServersAws"
+	OfferingTypeDefenderForServersGcp          OfferingType = "DefenderForServersGcp"
 )
 
 // PossibleOfferingTypeValues returns the possible values for the OfferingType const type.
@@ -1207,13 +1145,19 @@ func PossibleOfferingTypeValues() []OfferingType {
 	return []OfferingType{
 		OfferingTypeCspmMonitorAws,
 		OfferingTypeCspmMonitorAzureDevOps,
+		OfferingTypeCspmMonitorDockerHub,
 		OfferingTypeCspmMonitorGcp,
 		OfferingTypeCspmMonitorGitLab,
 		OfferingTypeCspmMonitorGithub,
+		OfferingTypeCspmMonitorJFrog,
 		OfferingTypeDefenderCspmAws,
+		OfferingTypeDefenderCspmDockerHub,
 		OfferingTypeDefenderCspmGcp,
+		OfferingTypeDefenderCspmJFrog,
 		OfferingTypeDefenderForContainersAws,
+		OfferingTypeDefenderForContainersDockerHub,
 		OfferingTypeDefenderForContainersGcp,
+		OfferingTypeDefenderForContainersJFrog,
 		OfferingTypeDefenderForDatabasesAws,
 		OfferingTypeDefenderForDatabasesGcp,
 		OfferingTypeDefenderForServersAws,
@@ -1321,28 +1265,22 @@ func PossibleOrganizationMembershipTypeValues() []OrganizationMembershipType {
 	}
 }
 
-// PermissionProperty - A permission detected in the cloud account.
-type PermissionProperty string
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
 
 const (
-	// PermissionPropertyAWSAWSSecurityHubReadOnlyAccess - This permission provides read only access to AWS Security Hub resources.
-	PermissionPropertyAWSAWSSecurityHubReadOnlyAccess PermissionProperty = "AWS::AWSSecurityHubReadOnlyAccess"
-	// PermissionPropertyAWSAmazonSSMAutomationRole - The permission provides for EC2 Automation service to execute activities
-	// defined within Automation documents.
-	PermissionPropertyAWSAmazonSSMAutomationRole PermissionProperty = "AWS::AmazonSSMAutomationRole"
-	// PermissionPropertyAWSSecurityAudit - This permission grants access to read security configuration metadata.
-	PermissionPropertyAWSSecurityAudit PermissionProperty = "AWS::SecurityAudit"
-	// PermissionPropertyGCPSecurityCenterAdminViewer - This permission provides read only access to GCP Security Command Center.
-	PermissionPropertyGCPSecurityCenterAdminViewer PermissionProperty = "GCP::Security Center Admin Viewer"
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
+	OriginUserSystem Origin = "user,system"
 )
 
-// PossiblePermissionPropertyValues returns the possible values for the PermissionProperty const type.
-func PossiblePermissionPropertyValues() []PermissionProperty {
-	return []PermissionProperty{
-		PermissionPropertyAWSAWSSecurityHubReadOnlyAccess,
-		PermissionPropertyAWSAmazonSSMAutomationRole,
-		PermissionPropertyAWSSecurityAudit,
-		PermissionPropertyGCPSecurityCenterAdminViewer,
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
 	}
 }
 
@@ -1363,6 +1301,44 @@ func PossiblePricingTierValues() []PricingTier {
 	return []PricingTier{
 		PricingTierFree,
 		PricingTierStandard,
+	}
+}
+
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCreating,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
 	}
 }
 
@@ -1421,6 +1397,22 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
+// PublicNetworkAccess - This determines if traffic is allowed over public network. By default it is disabled.
+type PublicNetworkAccess string
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
+	}
+}
+
 // Rank - The rank of the sensitivity label.
 type Rank string
 
@@ -1443,24 +1435,6 @@ func PossibleRankValues() []Rank {
 	}
 }
 
-// RecommendationAction - The recommendation action of the machine or rule
-type RecommendationAction string
-
-const (
-	RecommendationActionAdd         RecommendationAction = "Add"
-	RecommendationActionRecommended RecommendationAction = "Recommended"
-	RecommendationActionRemove      RecommendationAction = "Remove"
-)
-
-// PossibleRecommendationActionValues returns the possible values for the RecommendationAction const type.
-func PossibleRecommendationActionValues() []RecommendationAction {
-	return []RecommendationAction{
-		RecommendationActionAdd,
-		RecommendationActionRecommended,
-		RecommendationActionRemove,
-	}
-}
-
 // RecommendationConfigStatus - Recommendation status. When the recommendation status is disabled recommendations are not
 // generated.
 type RecommendationConfigStatus string
@@ -1478,23 +1452,21 @@ func PossibleRecommendationConfigStatusValues() []RecommendationConfigStatus {
 	}
 }
 
-// RecommendationStatus - The initial recommendation status of the machine group or machine
-type RecommendationStatus string
+// RecommendationSupportedClouds - The cloud that the recommendation is supported on.
+type RecommendationSupportedClouds string
 
 const (
-	RecommendationStatusNoStatus       RecommendationStatus = "NoStatus"
-	RecommendationStatusNotAvailable   RecommendationStatus = "NotAvailable"
-	RecommendationStatusNotRecommended RecommendationStatus = "NotRecommended"
-	RecommendationStatusRecommended    RecommendationStatus = "Recommended"
+	RecommendationSupportedCloudsAWS   RecommendationSupportedClouds = "AWS"
+	RecommendationSupportedCloudsAzure RecommendationSupportedClouds = "Azure"
+	RecommendationSupportedCloudsGCP   RecommendationSupportedClouds = "GCP"
 )
 
-// PossibleRecommendationStatusValues returns the possible values for the RecommendationStatus const type.
-func PossibleRecommendationStatusValues() []RecommendationStatus {
-	return []RecommendationStatus{
-		RecommendationStatusNoStatus,
-		RecommendationStatusNotAvailable,
-		RecommendationStatusNotRecommended,
-		RecommendationStatusRecommended,
+// PossibleRecommendationSupportedCloudsValues returns the possible values for the RecommendationSupportedClouds const type.
+func PossibleRecommendationSupportedCloudsValues() []RecommendationSupportedClouds {
+	return []RecommendationSupportedClouds{
+		RecommendationSupportedCloudsAWS,
+		RecommendationSupportedCloudsAzure,
+		RecommendationSupportedCloudsGCP,
 	}
 }
 
@@ -1659,6 +1631,28 @@ func PossibleResourcesCoverageStatusValues() []ResourcesCoverageStatus {
 	}
 }
 
+// RiskLevel - The risk level
+type RiskLevel string
+
+const (
+	RiskLevelCritical RiskLevel = "Critical"
+	RiskLevelHigh     RiskLevel = "High"
+	RiskLevelLow      RiskLevel = "Low"
+	RiskLevelMedium   RiskLevel = "Medium"
+	RiskLevelNone     RiskLevel = "None"
+)
+
+// PossibleRiskLevelValues returns the possible values for the RiskLevel const type.
+func PossibleRiskLevelValues() []RiskLevel {
+	return []RiskLevel{
+		RiskLevelCritical,
+		RiskLevelHigh,
+		RiskLevelLow,
+		RiskLevelMedium,
+		RiskLevelNone,
+	}
+}
+
 // RuleCategory - Rule categories. Code - code scanning results. Artifact scanning results. Dependencies scanning results.
 // IaC results. Secrets scanning results. Container scanning results.
 type RuleCategory string
@@ -1688,15 +1682,15 @@ func PossibleRuleCategoryValues() []RuleCategory {
 type RuleSeverity string
 
 const (
-	// RuleSeverityHigh - High
+	// RuleSeverityHigh - High severity vulnerability requiring immediate attention.
 	RuleSeverityHigh RuleSeverity = "High"
-	// RuleSeverityInformational - Informational
+	// RuleSeverityInformational - Informational finding that does not indicate a vulnerability.
 	RuleSeverityInformational RuleSeverity = "Informational"
-	// RuleSeverityLow - Low
+	// RuleSeverityLow - Low severity vulnerability with minimal risk.
 	RuleSeverityLow RuleSeverity = "Low"
-	// RuleSeverityMedium - Medium
+	// RuleSeverityMedium - Medium severity vulnerability that should be addressed.
 	RuleSeverityMedium RuleSeverity = "Medium"
-	// RuleSeverityObsolete - Obsolete
+	// RuleSeverityObsolete - The rule is obsolete and no longer applicable.
 	RuleSeverityObsolete RuleSeverity = "Obsolete"
 )
 
@@ -1733,12 +1727,14 @@ func PossibleRuleStateValues() []RuleState {
 type RuleStatus string
 
 const (
-	// RuleStatusFinding - Finding
+	// RuleStatusFinding - A vulnerability was found for this rule.
 	RuleStatusFinding RuleStatus = "Finding"
-	// RuleStatusInternalError - InternalError
+	// RuleStatusInternalError - An internal error occurred while evaluating this rule.
 	RuleStatusInternalError RuleStatus = "InternalError"
-	// RuleStatusNonFinding - NonFinding
+	// RuleStatusNonFinding - No vulnerability was found for this rule.
 	RuleStatusNonFinding RuleStatus = "NonFinding"
+	// RuleStatusNotApplicable - The rule is not applicable to the assessed resource.
+	RuleStatusNotApplicable RuleStatus = "NotApplicable"
 )
 
 // PossibleRuleStatusValues returns the possible values for the RuleStatus const type.
@@ -1747,6 +1743,7 @@ func PossibleRuleStatusValues() []RuleStatus {
 		RuleStatusFinding,
 		RuleStatusInternalError,
 		RuleStatusNonFinding,
+		RuleStatusNotApplicable,
 	}
 }
 
@@ -1771,6 +1768,48 @@ func PossibleRuleTypeValues() []RuleType {
 		RuleTypeBinary,
 		RuleTypeNegativeList,
 		RuleTypePositiveList,
+	}
+}
+
+// SQLVulnerabilityAssessmentState - Represents the state of a SQL Vulnerability Assessment.
+type SQLVulnerabilityAssessmentState string
+
+const (
+	// SQLVulnerabilityAssessmentStateDisabled - Disabled
+	SQLVulnerabilityAssessmentStateDisabled SQLVulnerabilityAssessmentState = "Disabled"
+	// SQLVulnerabilityAssessmentStateEnabled - Enabled
+	SQLVulnerabilityAssessmentStateEnabled SQLVulnerabilityAssessmentState = "Enabled"
+)
+
+// PossibleSQLVulnerabilityAssessmentStateValues returns the possible values for the SQLVulnerabilityAssessmentState const type.
+func PossibleSQLVulnerabilityAssessmentStateValues() []SQLVulnerabilityAssessmentState {
+	return []SQLVulnerabilityAssessmentState{
+		SQLVulnerabilityAssessmentStateDisabled,
+		SQLVulnerabilityAssessmentStateEnabled,
+	}
+}
+
+// ScanOperationStatus - The scan operation status.
+type ScanOperationStatus string
+
+const (
+	// ScanOperationStatusFailed - The scan completed but found vulnerabilities.
+	ScanOperationStatusFailed ScanOperationStatus = "Failed"
+	// ScanOperationStatusFailedToRun - The scan failed to execute.
+	ScanOperationStatusFailedToRun ScanOperationStatus = "FailedToRun"
+	// ScanOperationStatusInProgress - The scan is currently running.
+	ScanOperationStatusInProgress ScanOperationStatus = "InProgress"
+	// ScanOperationStatusPassed - The scan completed successfully with no vulnerabilities found.
+	ScanOperationStatusPassed ScanOperationStatus = "Passed"
+)
+
+// PossibleScanOperationStatusValues returns the possible values for the ScanOperationStatus const type.
+func PossibleScanOperationStatusValues() []ScanOperationStatus {
+	return []ScanOperationStatus{
+		ScanOperationStatusFailed,
+		ScanOperationStatusFailedToRun,
+		ScanOperationStatusInProgress,
+		ScanOperationStatusPassed,
 	}
 }
 
@@ -1830,44 +1869,6 @@ func PossibleScanningModeValues() []ScanningMode {
 	}
 }
 
-type SecurityContactName string
-
-const (
-	// SecurityContactNameDefault - The single applicable name of the security contact object
-	SecurityContactNameDefault SecurityContactName = "default"
-)
-
-// PossibleSecurityContactNameValues returns the possible values for the SecurityContactName const type.
-func PossibleSecurityContactNameValues() []SecurityContactName {
-	return []SecurityContactName{
-		SecurityContactNameDefault,
-	}
-}
-
-// SecurityContactRole - A possible role to configure sending security notification alerts to
-type SecurityContactRole string
-
-const (
-	// SecurityContactRoleAccountAdmin - If enabled, send notification on new alerts to the account admins
-	SecurityContactRoleAccountAdmin SecurityContactRole = "AccountAdmin"
-	// SecurityContactRoleContributor - If enabled, send notification on new alerts to the subscription contributors
-	SecurityContactRoleContributor SecurityContactRole = "Contributor"
-	// SecurityContactRoleOwner - If enabled, send notification on new alerts to the subscription owners
-	SecurityContactRoleOwner SecurityContactRole = "Owner"
-	// SecurityContactRoleServiceAdmin - If enabled, send notification on new alerts to the service admins
-	SecurityContactRoleServiceAdmin SecurityContactRole = "ServiceAdmin"
-)
-
-// PossibleSecurityContactRoleValues returns the possible values for the SecurityContactRole const type.
-func PossibleSecurityContactRoleValues() []SecurityContactRole {
-	return []SecurityContactRole{
-		SecurityContactRoleAccountAdmin,
-		SecurityContactRoleContributor,
-		SecurityContactRoleOwner,
-		SecurityContactRoleServiceAdmin,
-	}
-}
-
 // SecurityFamily - The security family of the discovered solution
 type SecurityFamily string
 
@@ -1885,6 +1886,30 @@ func PossibleSecurityFamilyValues() []SecurityFamily {
 		SecurityFamilySaasWaf,
 		SecurityFamilyVa,
 		SecurityFamilyWaf,
+	}
+}
+
+// SecurityIssue - The severity to relate to the assessments generated by this Recommendation.
+type SecurityIssue string
+
+const (
+	SecurityIssueAnonymousAccess      SecurityIssue = "AnonymousAccess"
+	SecurityIssueBestPractices        SecurityIssue = "BestPractices"
+	SecurityIssueExcessivePermissions SecurityIssue = "ExcessivePermissions"
+	SecurityIssueNetworkExposure      SecurityIssue = "NetworkExposure"
+	SecurityIssueTrafficEncryption    SecurityIssue = "TrafficEncryption"
+	SecurityIssueVulnerability        SecurityIssue = "Vulnerability"
+)
+
+// PossibleSecurityIssueValues returns the possible values for the SecurityIssue const type.
+func PossibleSecurityIssueValues() []SecurityIssue {
+	return []SecurityIssue{
+		SecurityIssueAnonymousAccess,
+		SecurityIssueBestPractices,
+		SecurityIssueExcessivePermissions,
+		SecurityIssueNetworkExposure,
+		SecurityIssueTrafficEncryption,
+		SecurityIssueVulnerability,
 	}
 }
 
@@ -1992,35 +2017,35 @@ func PossibleSettingKindValues() []SettingKind {
 type SettingName string
 
 const (
-	// SettingNameCurrent - Name of the Defender for Storage Settings name.
-	SettingNameCurrent SettingName = "current"
+	SettingNameMCAS                           SettingName = "MCAS"
+	SettingNameSentinel                       SettingName = "Sentinel"
+	SettingNameWDATP                          SettingName = "WDATP"
+	SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW SettingName = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
+	SettingNameWDATPUNIFIEDSOLUTION           SettingName = "WDATP_UNIFIED_SOLUTION"
 )
 
 // PossibleSettingNameValues returns the possible values for the SettingName const type.
 func PossibleSettingNameValues() []SettingName {
 	return []SettingName{
-		SettingNameCurrent,
+		SettingNameMCAS,
+		SettingNameSentinel,
+		SettingNameWDATP,
+		SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW,
+		SettingNameWDATPUNIFIEDSOLUTION,
 	}
 }
 
 type SettingNameAutoGenerated string
 
 const (
-	SettingNameAutoGeneratedMCAS                           SettingNameAutoGenerated = "MCAS"
-	SettingNameAutoGeneratedSentinel                       SettingNameAutoGenerated = "Sentinel"
-	SettingNameAutoGeneratedWDATP                          SettingNameAutoGenerated = "WDATP"
-	SettingNameAutoGeneratedWDATPEXCLUDELINUXPUBLICPREVIEW SettingNameAutoGenerated = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
-	SettingNameAutoGeneratedWDATPUNIFIEDSOLUTION           SettingNameAutoGenerated = "WDATP_UNIFIED_SOLUTION"
+	// SettingNameAutoGeneratedCurrent - Name of the Defender for Storage Settings name.
+	SettingNameAutoGeneratedCurrent SettingNameAutoGenerated = "current"
 )
 
 // PossibleSettingNameAutoGeneratedValues returns the possible values for the SettingNameAutoGenerated const type.
 func PossibleSettingNameAutoGeneratedValues() []SettingNameAutoGenerated {
 	return []SettingNameAutoGenerated{
-		SettingNameAutoGeneratedMCAS,
-		SettingNameAutoGeneratedSentinel,
-		SettingNameAutoGeneratedWDATP,
-		SettingNameAutoGeneratedWDATPEXCLUDELINUXPUBLICPREVIEW,
-		SettingNameAutoGeneratedWDATPUNIFIEDSOLUTION,
+		SettingNameAutoGeneratedCurrent,
 	}
 }
 
@@ -2042,7 +2067,7 @@ func PossibleSeverityValues() []Severity {
 	}
 }
 
-// SeverityEnum - The severity to relate to the assessments generated by this assessment automation.
+// SeverityEnum - The severity to relate to the assessments generated by this Recommendation.
 type SeverityEnum string
 
 const (
@@ -2081,41 +2106,55 @@ func PossibleSourceValues() []Source {
 	}
 }
 
-// SourceSystem - The source type of the machine group
-type SourceSystem string
+// StandardSupportedCloud - The cloud that the standard is supported on.
+type StandardSupportedCloud string
 
 const (
-	SourceSystemAzureAppLocker    SourceSystem = "Azure_AppLocker"
-	SourceSystemAzureAuditD       SourceSystem = "Azure_AuditD"
-	SourceSystemNonAzureAppLocker SourceSystem = "NonAzure_AppLocker"
-	SourceSystemNonAzureAuditD    SourceSystem = "NonAzure_AuditD"
-	SourceSystemNone              SourceSystem = "None"
+	StandardSupportedCloudAWS   StandardSupportedCloud = "AWS"
+	StandardSupportedCloudAzure StandardSupportedCloud = "Azure"
+	StandardSupportedCloudGCP   StandardSupportedCloud = "GCP"
 )
 
-// PossibleSourceSystemValues returns the possible values for the SourceSystem const type.
-func PossibleSourceSystemValues() []SourceSystem {
-	return []SourceSystem{
-		SourceSystemAzureAppLocker,
-		SourceSystemAzureAuditD,
-		SourceSystemNonAzureAppLocker,
-		SourceSystemNonAzureAuditD,
-		SourceSystemNone,
+// PossibleStandardSupportedCloudValues returns the possible values for the StandardSupportedCloud const type.
+func PossibleStandardSupportedCloudValues() []StandardSupportedCloud {
+	return []StandardSupportedCloud{
+		StandardSupportedCloudAWS,
+		StandardSupportedCloudAzure,
+		StandardSupportedCloudGCP,
 	}
 }
 
-// SourceType - The source type that will trigger the notification
-type SourceType string
+// StandardSupportedClouds - The cloud that the standard is supported on.
+type StandardSupportedClouds string
 
 const (
-	SourceTypeAlert      SourceType = "Alert"
-	SourceTypeAttackPath SourceType = "AttackPath"
+	StandardSupportedCloudsAWS StandardSupportedClouds = "AWS"
+	StandardSupportedCloudsGCP StandardSupportedClouds = "GCP"
 )
 
-// PossibleSourceTypeValues returns the possible values for the SourceType const type.
-func PossibleSourceTypeValues() []SourceType {
-	return []SourceType{
-		SourceTypeAlert,
-		SourceTypeAttackPath,
+// PossibleStandardSupportedCloudsValues returns the possible values for the StandardSupportedClouds const type.
+func PossibleStandardSupportedCloudsValues() []StandardSupportedClouds {
+	return []StandardSupportedClouds{
+		StandardSupportedCloudsAWS,
+		StandardSupportedCloudsGCP,
+	}
+}
+
+// StandardType - Standard type (Custom or Default or Compliance only currently)
+type StandardType string
+
+const (
+	StandardTypeCompliance StandardType = "Compliance"
+	StandardTypeCustom     StandardType = "Custom"
+	StandardTypeDefault    StandardType = "Default"
+)
+
+// PossibleStandardTypeValues returns the possible values for the StandardType const type.
+func PossibleStandardTypeValues() []StandardType {
+	return []StandardType{
+		StandardTypeCompliance,
+		StandardTypeCustom,
+		StandardTypeDefault,
 	}
 }
 
@@ -2229,22 +2268,6 @@ func PossibleSubPlanValues() []SubPlan {
 	return []SubPlan{
 		SubPlanP1,
 		SubPlanP2,
-	}
-}
-
-// SupportedCloudEnum - Relevant cloud for the custom assessment automation.
-type SupportedCloudEnum string
-
-const (
-	SupportedCloudEnumAWS SupportedCloudEnum = "AWS"
-	SupportedCloudEnumGCP SupportedCloudEnum = "GCP"
-)
-
-// PossibleSupportedCloudEnumValues returns the possible values for the SupportedCloudEnum const type.
-func PossibleSupportedCloudEnumValues() []SupportedCloudEnum {
-	return []SupportedCloudEnum{
-		SupportedCloudEnumAWS,
-		SupportedCloudEnumGCP,
 	}
 }
 
@@ -2554,21 +2577,6 @@ func PossibleThreatsValues() []Threats {
 		ThreatsMaliciousInsider,
 		ThreatsMissingCoverage,
 		ThreatsThreatResistance,
-	}
-}
-
-type TransportProtocol string
-
-const (
-	TransportProtocolTCP TransportProtocol = "TCP"
-	TransportProtocolUDP TransportProtocol = "UDP"
-)
-
-// PossibleTransportProtocolValues returns the possible values for the TransportProtocol const type.
-func PossibleTransportProtocolValues() []TransportProtocol {
-	return []TransportProtocol{
-		TransportProtocolTCP,
-		TransportProtocolUDP,
 	}
 }
 

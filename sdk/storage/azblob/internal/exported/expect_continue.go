@@ -35,10 +35,10 @@ type ExpectContinueOptions struct {
 	// ContentLengthThreshold is the minimum value of HTTP request Content-Length for applying
 	// the Expect: 100-continue header. The default is zero, meaning any request that has a
 	// non-empty body and a computable content length is eligible.
-	ContentLengthThreshold *int64
+	ContentLengthThreshold int64
 
 	// ThrottleInterval is used in ExpectContinueModeApplyOnThrottle mode to set the time window
 	// during which the Expect: 100-continue header is applied after a triggering error response
-	// (429, 500, or 503) is observed. When nil, the default of one minute is used.
-	ThrottleInterval *time.Duration
+	// (429, 500, or 503) is observed. A zero value uses the default of one minute.
+	ThrottleInterval time.Duration
 }

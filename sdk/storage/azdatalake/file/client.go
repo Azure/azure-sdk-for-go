@@ -182,11 +182,6 @@ func (f *Client) generatedFileClientWithBlob() *generated_blob.BlobClient {
 	return dirClientWithBlob
 }
 
-func (f *Client) generatedFileClientWithPath() *generated.PathClient {
-	dirClientWithPath, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
-	return dirClientWithPath
-}
-
 func (f *Client) blobClient() *blockblob.Client {
 	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
 	return blobClient

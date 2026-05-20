@@ -25,10 +25,12 @@ type retryContext struct {
 	retryCount             int
 	sessionRetryCount      int
 	preferredLocationIndex int
+	serverErrorRetryCount  int
 }
 
 const maxRetryCount = 120
 const defaultBackoff = 1
+const maxServerErrorRetryCount = 2
 
 func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	o := pipelineRequestOptions{}
@@ -73,6 +75,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 		subStatus := response.Header.Get(cosmosHeaderSubstatus)
 		if p.shouldRetryStatus(response.StatusCode, subStatus) {
 			retryContext.useWriteEndpoint = false
+			advanceLocation := true
 			switch response.StatusCode {
 			case http.StatusForbidden:
 				shouldRetry, err := p.attemptRetryOnEndpointFailure(req, o.isWriteOperation, &retryContext)
@@ -90,12 +93,22 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				if !p.attemptRetryOnServiceUnavailable(o.isWriteOperation, &retryContext) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
+			case http.StatusInternalServerError, http.StatusBadGateway, http.StatusGatewayTimeout:
+				shouldRetry, inRegion := p.attemptRetryOnServerError(o.isWriteOperation, &retryContext)
+				if !shouldRetry {
+					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
+				}
+				if inRegion {
+					advanceLocation = false
+				}
 			}
 			err = req.RewindBody()
 			if err != nil {
 				return response, err
 			}
-			retryContext.retryCount += 1
+			if advanceLocation {
+				retryContext.retryCount += 1
+			}
 			continue
 		}
 
@@ -107,7 +120,10 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (shouldRetry bool) {
 	if (status == http.StatusForbidden && (subStatus == subStatusWriteForbidden || subStatus == subStatusDatabaseAccountNotFound)) ||
 		(status == http.StatusNotFound && subStatus == subStatusReadSessionNotAvailable) ||
-		(status == http.StatusServiceUnavailable) {
+		(status == http.StatusServiceUnavailable) ||
+		(status == http.StatusInternalServerError) ||
+		(status == http.StatusBadGateway) ||
+		(status == http.StatusGatewayTimeout) {
 		return true
 	}
 	return false
@@ -188,6 +204,33 @@ func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(isWriteOperation bo
 	}
 	retryContext.preferredLocationIndex += 1
 	return true
+}
+
+// attemptRetryOnServerError applies the 5xx retry policy for transient server errors
+// (500 Internal Server Error, 502 Bad Gateway, 504 Gateway Timeout). Consistent with
+// the other Cosmos SDKs (.NET, Python, Java), only read operations are retried. The
+// retry budget is one in-region retry followed by one cross-region retry, after which
+// the error is surfaced to the caller. The cross-region retry is only attempted when
+// cross-region retries are enabled and a preferred location is available to fail over
+// to. The returned inRegion flag tells the caller whether to keep targeting the current
+// endpoint (true) or to advance to the next preferred region (false).
+func (p *clientRetryPolicy) attemptRetryOnServerError(isWriteOperation bool, retryContext *retryContext) (shouldRetry bool, inRegion bool) {
+	if isWriteOperation {
+		return false, false
+	}
+	if retryContext.serverErrorRetryCount >= maxServerErrorRetryCount {
+		return false, false
+	}
+	if retryContext.serverErrorRetryCount == 0 {
+		retryContext.serverErrorRetryCount += 1
+		return true, true
+	}
+	if !p.gem.locationCache.enableCrossRegionRetries || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
+		return false, false
+	}
+	retryContext.serverErrorRetryCount += 1
+	retryContext.preferredLocationIndex += 1
+	return true, false
 }
 
 // isNetworkConnectionError checks if the error is related to failure to connect / resolve DNS

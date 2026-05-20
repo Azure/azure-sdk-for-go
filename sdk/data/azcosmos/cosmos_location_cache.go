@@ -242,19 +242,26 @@ func (lc *locationCache) canUseMultipleWriteLocs() bool {
 	return lc.enableMultipleWriteLocations
 }
 
-func (lc *locationCache) markEndpointUnavailableForRead(endpoint url.URL) error {
+func (lc *locationCache) markEndpointUnavailableForRead(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
 	return lc.markEndpointUnavailable(endpoint, read)
 }
 
-func (lc *locationCache) markEndpointUnavailableForWrite(endpoint url.URL) error {
+func (lc *locationCache) markEndpointUnavailableForWrite(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
 	return lc.markEndpointUnavailable(endpoint, write)
 }
 
-func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedOperations) error {
+// markEndpointUnavailable atomically samples whether the endpoint was already
+// unavailable for `op` and records the unavailability. Returning the prior
+// state from inside the same critical section that performs the mark
+// eliminates the check-then-act race exploited by concurrent callers (see
+// issue #25468 followup: bound on concurrent same-endpoint marks).
+func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedOperations) (wasAlreadyUnavailable bool, err error) {
 	now := time.Now()
 	lc.mapMutex.Lock()
 	defer lc.mapMutex.Unlock()
 	if info, ok := lc.locationUnavailabilityInfoMap[endpoint]; ok {
+		wasAlreadyUnavailable = op&info.unavailableOps == op &&
+			time.Since(info.lastCheckTime) < lc.unavailableLocationExpirationTime
 		info.lastCheckTime = now
 		info.unavailableOps |= op
 		lc.locationUnavailabilityInfoMap[endpoint] = info
@@ -264,7 +271,7 @@ func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedO
 			unavailableOps: op,
 		}
 	}
-	return lc.updateLocked(nil, nil, nil, nil)
+	return wasAlreadyUnavailable, lc.updateLocked(nil, nil, nil, nil)
 }
 
 func (lc *locationCache) databaseAccountRead(dbAcct accountProperties) error {

@@ -87,28 +87,32 @@ func (gem *globalEndpointManager) GetReadEndpoints() ([]url.URL, error) {
 }
 
 func (gem *globalEndpointManager) MarkEndpointUnavailableForWrite(endpoint url.URL) error {
-	// Snapshot the unavailability state before marking so we can decide
-	// whether this is a "newly unavailable" event. A new event invalidates
-	// the GEM cache so the next Update(false) actually fires -- the first
-	// 403/WriteForbidden or network error for an endpoint may indicate a
-	// failover and we want to learn about new write regions promptly.
-	// Subsequent retries within the unavailability window do not invalidate.
-	wasUnavailable := gem.locationCache.isEndpointUnavailable(endpoint, write)
-	if err := gem.locationCache.markEndpointUnavailableForWrite(endpoint); err != nil {
+	// markEndpointUnavailableForWrite atomically reports whether the
+	// endpoint was already unavailable for write in the same critical
+	// section that performs the mark. This eliminates the check-then-act
+	// race that would otherwise let concurrent markers all observe
+	// "wasn't unavailable" and each invalidate the GEM. A new event
+	// invalidates the GEM cache so the next Update(false) actually fires
+	// -- the first 403/WriteForbidden or network error for an endpoint
+	// may indicate a failover and we want to learn about new write
+	// regions promptly. Subsequent retries within the unavailability
+	// window do not invalidate.
+	wasAlreadyUnavailable, err := gem.locationCache.markEndpointUnavailableForWrite(endpoint)
+	if err != nil {
 		return err
 	}
-	if !wasUnavailable {
+	if !wasAlreadyUnavailable {
 		gem.invalidate()
 	}
 	return nil
 }
 
 func (gem *globalEndpointManager) MarkEndpointUnavailableForRead(endpoint url.URL) error {
-	wasUnavailable := gem.locationCache.isEndpointUnavailable(endpoint, read)
-	if err := gem.locationCache.markEndpointUnavailableForRead(endpoint); err != nil {
+	wasAlreadyUnavailable, err := gem.locationCache.markEndpointUnavailableForRead(endpoint)
+	if err != nil {
 		return err
 	}
-	if !wasUnavailable {
+	if !wasAlreadyUnavailable {
 		gem.invalidate()
 	}
 	return nil
@@ -217,25 +221,41 @@ func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool)
 	genAtStart := gem.invalidationGen
 	gem.gemMutex.Unlock()
 
-	err := gem.refreshOnce(ctx)
-
-	gem.gemMutex.Lock()
-	flight.err = err
-	gem.lastUpdateErr = err
-	if gem.invalidationGen == genAtStart {
-		// No invalidation occurred during the flight, so commit the
-		// timestamps and let the throttle take effect.
-		gem.lastAttemptTime = time.Now()
-		if err == nil {
-			gem.lastUpdateTime = gem.lastAttemptTime
-		}
-	}
-	// If invalidationGen changed, leave the timestamps untouched so the
-	// next caller observes shouldRefresh()==true and performs a fresh
-	// refresh that reflects the post-invalidation state.
-	gem.inflight = nil
-	gem.gemMutex.Unlock()
-	close(flight.done)
+	// Panic-safe cleanup: if refreshOnce (or anything it transitively calls
+	// -- the pipeline, JSON unmarshal, locationCache.update) panics, we
+	// MUST still clear gem.inflight and close flight.done, otherwise every
+	// subsequent Update caller blocks forever on <-flight.done. We capture
+	// any panic, record it as the flight error, and re-panic after cleanup.
+	var err error
+	func() {
+		defer func() {
+			r := recover()
+			gem.gemMutex.Lock()
+			if r != nil && err == nil {
+				err = fmt.Errorf("panic in GEM refresh: %v", r)
+			}
+			flight.err = err
+			gem.lastUpdateErr = err
+			if gem.invalidationGen == genAtStart {
+				// No invalidation occurred during the flight, so commit the
+				// timestamps and let the throttle take effect.
+				gem.lastAttemptTime = time.Now()
+				if err == nil {
+					gem.lastUpdateTime = gem.lastAttemptTime
+				}
+			}
+			// If invalidationGen changed, leave the timestamps untouched so
+			// the next caller observes shouldRefresh()==true and performs a
+			// fresh refresh that reflects the post-invalidation state.
+			gem.inflight = nil
+			gem.gemMutex.Unlock()
+			close(flight.done)
+			if r != nil {
+				panic(r)
+			}
+		}()
+		err = gem.refreshOnce(ctx)
+	}()
 	return err
 }
 

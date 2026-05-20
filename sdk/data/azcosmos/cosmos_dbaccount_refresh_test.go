@@ -267,12 +267,14 @@ func TestFix3c_ConcurrentSameEndpointMarksAreBounded(t *testing.T) {
 	// Give any spawned refresh time to drain.
 	time.Sleep(200 * time.Millisecond)
 
-	// The exact number depends on timing (some MARK calls may race with the
-	// in-flight refresh and invalidate it once more), but it MUST be bounded
-	// to a small constant -- not proportional to concurrency.
+	// With the atomic check-and-mark in markEndpointUnavailable, only the
+	// FIRST goroutine to win the mapMutex Lock observes wasAlreadyUnavailable
+	// == false and triggers invalidate(). All other markers see true and
+	// skip the invalidation. The leader's refresh + at most one
+	// post-invalidation refresh therefore bounds the total to 2.
 	calls := transport.count.Load()
-	require.LessOrEqual(t, calls, int64(3),
-		"concurrent same-endpoint marks must produce a bounded number of GEM calls (got %d for concurrency=%d)", calls, concurrency)
+	require.LessOrEqual(t, calls, int64(2),
+		"concurrent same-endpoint marks must produce a tightly-bounded number of GEM calls (got %d for concurrency=%d)", calls, concurrency)
 }
 
 // to every request while the GEM has never been successfully populated, not
@@ -327,11 +329,17 @@ func TestFix4_InitialBootstrapFailureIsRetriedAndThrottled(t *testing.T) {
 	// GetDatabaseAccount call. Bootstrap is retried on the next request but
 	// throttled by lastAttemptTime; subsequent requests inside the throttle
 	// window see ShouldRefresh()==false and skip the async refresh too.
+	// Capture the error from each follow-up to confirm the bootstrap path
+	// is actually entered (returning the cached error) -- this prevents a
+	// regression where populated() accidentally returned true and the
+	// bootstrap was silently skipped.
 	const followUp = 20
 	for i := 0; i < followUp; i++ {
 		r, _ := azruntime.NewRequest(context.Background(), http.MethodGet, "https://fake.documents.azure.com/")
 		r.SetOperationValue(pipelineRequestOptions{resourceType: resourceTypeDocument})
-		_, _ = pl.Do(r)
+		_, err := pl.Do(r)
+		require.Error(t, err,
+			"follow-up request %d must surface the cached bootstrap error -- if it doesn't, populated() is incorrectly returning true and we're silently routing to an unpopulated GEM", i)
 	}
 	// Drain any goroutines that the policy may have spawned.
 	time.Sleep(200 * time.Millisecond)
@@ -601,28 +609,28 @@ func TestDefaultEndpointElim_CrossRegionRetriesDisabledStillRoutesRegional(t *te
 // an advertised read region rather than the customer endpoint. Only the
 // write request in this scenario is allowed to fall through to default.
 func TestDefaultEndpointElim_ZeroWriteRegionsReadGoesToReadRegion(t *testing.T) {
-defaultEndpoint, _ := url.Parse("https://customer-endpoint.documents.azure.com:443/")
-lc := &locationCache{
-defaultEndpoint:                   *defaultEndpoint,
-locationUnavailabilityInfoMap:     map[url.URL]locationUnavailabilityInfo{},
-unavailableLocationExpirationTime: defaultExpirationTime,
-enableCrossRegionRetries:          true,
-enableMultipleWriteLocations:      false,
-}
-readRegions := []accountRegion{
-{Name: "East US", Endpoint: "https://east-us.documents.azure.com:443/"},
-{Name: "Central US", Endpoint: "https://central-us.documents.azure.com:443/"},
-}
-multi := false
-require.NoError(t, lc.update([]accountRegion{}, readRegions, []string{}, &multi))
-gem := &globalEndpointManager{
-clientEndpoint: defaultEndpoint.String(), locationCache: lc,
-refreshTimeInterval: defaultExpirationTime, lastUpdateTime: time.Now(),
-}
+	defaultEndpoint, _ := url.Parse("https://customer-endpoint.documents.azure.com:443/")
+	lc := &locationCache{
+		defaultEndpoint:                   *defaultEndpoint,
+		locationUnavailabilityInfoMap:     map[url.URL]locationUnavailabilityInfo{},
+		unavailableLocationExpirationTime: defaultExpirationTime,
+		enableCrossRegionRetries:          true,
+		enableMultipleWriteLocations:      false,
+	}
+	readRegions := []accountRegion{
+		{Name: "East US", Endpoint: "https://east-us.documents.azure.com:443/"},
+		{Name: "Central US", Endpoint: "https://central-us.documents.azure.com:443/"},
+	}
+	multi := false
+	require.NoError(t, lc.update([]accountRegion{}, readRegions, []string{}, &multi))
+	gem := &globalEndpointManager{
+		clientEndpoint: defaultEndpoint.String(), locationCache: lc,
+		refreshTimeInterval: defaultExpirationTime, lastUpdateTime: time.Now(),
+	}
 
-for idx := 0; idx < 10; idx++ {
-ep := gem.ResolveServiceEndpoint(idx, resourceTypeDocument, false /*isWrite*/, false)
-require.NotEqual(t, defaultEndpoint.Host, ep.Host,
-"reads must route to a read region even when there are zero write regions; got default at idx=%d", idx)
-}
+	for idx := 0; idx < 10; idx++ {
+		ep := gem.ResolveServiceEndpoint(idx, resourceTypeDocument, false /*isWrite*/, false)
+		require.NotEqual(t, defaultEndpoint.Host, ep.Host,
+			"reads must route to a read region even when there are zero write regions; got default at idx=%d", idx)
+	}
 }

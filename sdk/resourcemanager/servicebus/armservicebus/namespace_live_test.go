@@ -259,15 +259,13 @@ func (testsuite *NamespaceTestSuite) TestNamespaces() {
 
 	// From step Namespaces_Update
 	fmt.Println("Call operation: Namespaces_Update")
-	namespacesClientUpdateResponsePoller, err := namespacesClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.SBNamespaceUpdateParameters{
+	_, err = namespacesClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.SBNamespaceUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags: map[string]*string{
 			"tag3": to.Ptr("value3"),
 			"tag4": to.Ptr("value4"),
 		},
 	}, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientUpdateResponsePoller)
 	testsuite.Require().NoError(err)
 }
 

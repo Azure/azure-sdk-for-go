@@ -64,16 +64,10 @@ var errPKRangeCacheInvalidatedDuringRefresh = errors.New("partition key range ca
 // done is closed. The writes to rm/err happen-before close(op.done), which
 // happens-before the receive from op.done — so awaiters reading the fields
 // after the select observe a fully-published result (Go memory model).
-//
-// forced marks ops spawned by forceRefresh. A subsequent forceRefresh joins
-// an already-forced op (single-flight under forceRefresh contention) but
-// displaces a non-forced op so that "force refresh" never returns the
-// result of a fetch that started before the call. See forceRefresh.
 type refreshOp struct {
-	done   chan struct{}
-	rm     *collectionRoutingMap
-	err    error
-	forced bool
+	done chan struct{}
+	rm   *collectionRoutingMap
+	err  error
 }
 
 type pkRangeCacheEntry struct {
@@ -155,7 +149,7 @@ func (c *partitionKeyRangeCache) getRoutingMap(
 				return nil, err
 			}
 		}
-		op := c.ensureInFlightLocked(entry, containerLink, client, false)
+		op := c.ensureInFlightLocked(entry, containerLink, client)
 		entry.mu.Unlock()
 
 		rm, err := awaitRefresh(ctx, op)
@@ -168,10 +162,20 @@ func (c *partitionKeyRangeCache) getRoutingMap(
 	return nil, lastErr
 }
 
-// forceRefresh starts a refresh whose result horizon is guaranteed to be
-// AFTER the call (any in-flight non-forced op is displaced and its result
-// discarded). Concurrent forceRefresh callers share a single in-flight
-// forced op.
+// forceRefresh starts or joins a refresh for the given container.
+//
+// Joining semantics: forceRefresh deliberately joins any in-flight refresh
+// rather than displacing it. The trigger that prompts forceRefresh (typically
+// a 410/PartitionKeyRangeGone) is read-from-cache evidence that the local
+// view is stale; the very act of running a /pkranges change-feed drain
+// produces a fresh enough snapshot from the service. If the in-flight fetch
+// somehow misses a server-side event that happened after the caller's
+// trigger, the next 410 will retrigger another forceRefresh — eventually
+// consistent. Sharing the single fetch saves a network round-trip per
+// concurrent caller and avoids leaking the displaced goroutine. Callers
+// that need strict post-call freshness MUST call invalidate() first; the
+// generation counter then guarantees the in-flight op's result is
+// discarded and a fresh post-invalidate fetch runs.
 //
 // errPKRangeCacheInvalidatedDuringRefresh is handled internally — see
 // getRoutingMap.
@@ -193,20 +197,7 @@ func (c *partitionKeyRangeCache) forceRefresh(
 				return nil, err
 			}
 		}
-		// forceRefresh contract: the returned map must reflect a fetch that
-		// started AFTER this call. An in-flight non-forced op (spawned by an
-		// earlier getRoutingMap) may have started before any server-side
-		// condition that triggered this forceRefresh (e.g. a split), so
-		// joining it could return a stale-against-server view. Displace it:
-		// bump generation so its result is discarded on completion, and
-		// clear the slot so we spawn a fresh forced op below. The displaced
-		// goroutine continues running on its detached context but its
-		// install will be rejected by the generation check.
-		if entry.inFlight != nil && !entry.inFlight.forced {
-			entry.generation++
-			entry.inFlight = nil
-		}
-		op := c.ensureInFlightLocked(entry, containerLink, client, true)
+		op := c.ensureInFlightLocked(entry, containerLink, client)
 		entry.mu.Unlock()
 
 		rm, err := awaitRefresh(ctx, op)
@@ -221,20 +212,15 @@ func (c *partitionKeyRangeCache) forceRefresh(
 
 // ensureInFlightLocked returns the entry's in-flight refresh op, creating
 // (and spawning) one if none is already running. Caller MUST hold entry.mu.
-// If a new op is spawned, its forced flag is set from the forced argument.
-// If an existing op is joined, the existing op's forced flag is retained
-// (callers that need forced semantics must displace non-forced ops before
-// calling).
 func (c *partitionKeyRangeCache) ensureInFlightLocked(
 	entry *pkRangeCacheEntry,
 	containerLink string,
 	client *Client,
-	forced bool,
 ) *refreshOp {
 	if entry.inFlight != nil {
 		return entry.inFlight
 	}
-	op := &refreshOp{done: make(chan struct{}), forced: forced}
+	op := &refreshOp{done: make(chan struct{})}
 	entry.inFlight = op
 	startGeneration := entry.generation
 	go c.runRefresh(entry, containerLink, client, op, startGeneration)
@@ -290,12 +276,7 @@ func (c *partitionKeyRangeCache) runRefresh(
 		op.rm = rm
 		op.err = err
 	}
-	// Only clear the slot if it still points to us. forceRefresh may have
-	// displaced us by clearing the slot and spawning a new op; in that case
-	// the slot now points to the new op and we must NOT clobber it.
-	if entry.inFlight == op {
-		entry.inFlight = nil
-	}
+	entry.inFlight = nil
 	close(op.done)
 	entry.mu.Unlock()
 

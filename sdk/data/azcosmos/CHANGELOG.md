@@ -10,7 +10,6 @@
 
 * Partition key range cache now serves concurrent callers from a single in-flight refresh per container, and the cached routing map remains readable while a refresh is in progress. The refresh runs on a detached background `context.Background()` so a caller's cancellation no longer aborts the shared fetch for other waiters; each caller continues to honor its own context deadline. See [PR 26855](https://github.com/Azure/azure-sdk-for-go/pull/26855).
 * Partition key range cache change-feed pagination is now resilient to transient failures mid-drain (network errors, 408, 429, 5xx). The failing page is retried indefinitely with capped linear backoff + jitter, preserving the pages already accumulated instead of restarting the entire drain from page 1 on the next refresh. Retry-After / 429 backoff is delegated to the azcore pipeline. See [PR 26855](https://github.com/Azure/azure-sdk-for-go/pull/26855).
-* `forceRefresh` on the partition key range cache no longer joins a non-forced in-flight refresh (which could return a routing map fetched before the caller's stale-view trigger). Concurrent `forceRefresh` callers still share a single fetch. `errPKRangeCacheInvalidatedDuringRefresh` is handled internally and never leaks to callers. See [PR 26855](https://github.com/Azure/azure-sdk-for-go/pull/26855).
 
 ### Other Changes
 

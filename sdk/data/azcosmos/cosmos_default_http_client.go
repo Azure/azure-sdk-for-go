@@ -66,10 +66,10 @@ func init() {
 func newDefaultCosmosHTTPClient() *http.Client {
 	transport := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
-		DialContext: (&net.Dialer{
+		DialContext: defaultCosmosTransportDialContext(&net.Dialer{
 			Timeout:   defaultConnectTimeout,
 			KeepAlive: 30 * time.Second,
-		}).DialContext,
+		}),
 		ForceAttemptHTTP2:     true,
 		MaxIdleConns:          100,
 		MaxIdleConnsPerHost:   10,

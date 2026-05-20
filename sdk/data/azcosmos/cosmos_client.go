@@ -227,8 +227,10 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 // of NewClient*/NewClientFromConnectionString invoke this exactly once and
 // reuse the result for both the user-facing and the global-endpoint-manager
 // pipelines so options are normalized in a single place. The returned value
-// is always non-nil and is safe to mutate without affecting the caller's
-// struct.
+// is always non-nil; only the top-level Transport field is set on the clone,
+// so the caller's *ClientOptions struct is never mutated, but slice fields
+// such as PreferredRegions or PerCallPolicies still share backing arrays
+// with the caller's struct and should not be mutated in place.
 func withDefaultTransport(options *ClientOptions) *ClientOptions {
 	if options == nil {
 		return &ClientOptions{
@@ -239,7 +241,7 @@ func withDefaultTransport(options *ClientOptions) *ClientOptions {
 		return options
 	}
 	clone := *options
-	clone.ClientOptions.Transport = defaultCosmosHTTPClient
+	clone.Transport = defaultCosmosHTTPClient
 	return &clone
 }
 

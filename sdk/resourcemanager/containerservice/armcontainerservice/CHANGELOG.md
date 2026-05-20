@@ -1,5 +1,9 @@
 # Release History
 
+## 9.3.0-beta.2 (2026-05-20)
+### Other Changes
+
+
 ## 9.3.0-beta.1 (2026-05-18)
 ### Features Added
 

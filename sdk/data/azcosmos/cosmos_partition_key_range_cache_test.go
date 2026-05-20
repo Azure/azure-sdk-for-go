@@ -983,12 +983,18 @@ func Test_partitionKeyRangeCache_invalidateDuringRefresh_discardsResult(t *testi
 	// (other awaiters still get the in-flight result), but the result must
 	// be discarded from the cache: an invalidate-during-refresh strictly
 	// means "what you're about to install is stale, do not use it". The
-	// next call observes routingMap=nil and starts a fresh refresh.
+	// awaiter must NOT receive the discarded map; instead the cache
+	// internally retries and the awaiter ultimately receives the result of
+	// a fresh post-invalidate refresh.
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
-	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
-	appendPKRangesAndTerminator(srv, body, "etagNew")
+	// First refresh body — will be discarded after invalidate.
+	body1 := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body1, "etagOld")
+	// Second refresh body — what the post-invalidate retry should pick up.
+	body2 := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body2, "etagPost")
 
 	gate := newGatePolicy()
 	client := createGatedClientForPKRangeCache(srv, gate)
@@ -1015,16 +1021,16 @@ func Test_partitionKeyRangeCache_invalidateDuringRefresh_discardsResult(t *testi
 	close(gate.release)
 
 	res := <-done
-	// The awaiter must NOT receive the refresh result: by the invalidate's
-	// definition that map is stale. Instead the awaiter sees the sentinel
-	// errPKRangeCacheInvalidatedDuringRefresh and is expected to retry,
-	// which starts a fresh post-invalidate refresh.
-	require.ErrorIs(t, res.err, errPKRangeCacheInvalidatedDuringRefresh)
-	require.Nil(t, res.rm)
+	// Internal retry swallowed the sentinel; the caller observes the
+	// post-invalidate fresh refresh's result.
+	require.NoError(t, res.err)
+	require.NotNil(t, res.rm)
+	require.Equal(t, "etagPost", res.rm.changeFeedETag, "caller must see post-invalidate refresh, not the discarded one")
 
-	// And the CACHE must not silently retain that result.
+	// And the cache must hold the fresh map.
 	entry.mu.Lock()
-	require.Nil(t, entry.routingMap, "invalidate during refresh must cause the refresh result to be discarded from the cache")
+	require.NotNil(t, entry.routingMap)
+	require.Equal(t, "etagPost", entry.routingMap.changeFeedETag)
 	entry.mu.Unlock()
 }
 

@@ -12,6 +12,7 @@ import (
 	"math/rand"
 	"net"
 	"net/http"
+	"strconv"
 	"sync"
 	"syscall"
 	"time"
@@ -84,10 +85,16 @@ var errPKRangeCacheRefreshTimeout = errors.New("partition key range cache: detac
 // done is closed. The writes to rm/err happen-before close(op.done), which
 // happens-before the receive from op.done — so awaiters reading the fields
 // after the select observe a fully-published result (Go memory model).
+//
+// forced marks ops spawned by forceRefresh. A subsequent forceRefresh joins
+// an already-forced op (single-flight under forceRefresh contention) but
+// displaces a non-forced op so that "force refresh" never returns the
+// result of a fetch that started before the call. See forceRefresh.
 type refreshOp struct {
-	done chan struct{}
-	rm   *collectionRoutingMap
-	err  error
+	done   chan struct{}
+	rm     *collectionRoutingMap
+	err    error
+	forced bool
 }
 
 type pkRangeCacheEntry struct {
@@ -129,10 +136,23 @@ func (c *partitionKeyRangeCache) getOrCreateEntry(containerRID string) *pkRangeC
 	return entry
 }
 
+// pkRangeCacheSentinelMaxAttempts bounds how many times getRoutingMap /
+// forceRefresh will internally re-enter when an in-flight op completes with
+// errPKRangeCacheInvalidatedDuringRefresh. Two attempts is enough in
+// practice: the first op was invalidated, the second runs against a fresh
+// post-invalidate horizon. The cap exists only to prevent a pathological
+// invalidate-on-every-refresh storm from looping forever.
+const pkRangeCacheSentinelMaxAttempts = 3
+
 // getRoutingMap returns the cached routing map for the given container RID.
 // If a routing map is already cached it is returned immediately, even when a
 // refresh is in flight. Otherwise the caller joins or starts a shared
 // in-flight refresh and waits on its own context.
+//
+// errPKRangeCacheInvalidatedDuringRefresh is handled internally: if the
+// in-flight op was discarded due to a concurrent invalidate, getRoutingMap
+// re-enters and waits on a fresh post-invalidate refresh rather than
+// surfacing the sentinel to callers.
 func (c *partitionKeyRangeCache) getRoutingMap(
 	ctx context.Context,
 	containerRID string,
@@ -140,29 +160,42 @@ func (c *partitionKeyRangeCache) getRoutingMap(
 	client *Client,
 ) (*collectionRoutingMap, error) {
 	entry := c.getOrCreateEntry(containerRID)
-
-	entry.mu.Lock()
-	if entry.routingMap != nil {
-		rm := entry.routingMap
-		entry.mu.Unlock()
-		return rm, nil
-	}
-	// If the caller is already canceled and nobody else is fetching, don't
-	// spawn a detached refresh just to immediately abandon it.
-	if entry.inFlight == nil {
-		if err := ctx.Err(); err != nil {
+	var lastErr error
+	for attempt := 0; attempt < pkRangeCacheSentinelMaxAttempts; attempt++ {
+		entry.mu.Lock()
+		if entry.routingMap != nil {
+			rm := entry.routingMap
 			entry.mu.Unlock()
-			return nil, err
+			return rm, nil
 		}
-	}
-	op := c.ensureInFlightLocked(entry, containerLink, client)
-	entry.mu.Unlock()
+		// If the caller is already canceled and nobody else is fetching, don't
+		// spawn a detached refresh just to immediately abandon it.
+		if entry.inFlight == nil {
+			if err := ctx.Err(); err != nil {
+				entry.mu.Unlock()
+				return nil, err
+			}
+		}
+		op := c.ensureInFlightLocked(entry, containerLink, client, false)
+		entry.mu.Unlock()
 
-	return awaitRefresh(ctx, op)
+		rm, err := awaitRefresh(ctx, op)
+		if errors.Is(err, errPKRangeCacheInvalidatedDuringRefresh) {
+			lastErr = err
+			continue
+		}
+		return rm, err
+	}
+	return nil, lastErr
 }
 
-// forceRefresh starts (or joins) a refresh for the given container and
-// returns the resulting routing map.
+// forceRefresh starts a refresh whose result horizon is guaranteed to be
+// AFTER the call (any in-flight non-forced op is displaced and its result
+// discarded). Concurrent forceRefresh callers share a single in-flight
+// forced op.
+//
+// errPKRangeCacheInvalidatedDuringRefresh is handled internally — see
+// getRoutingMap.
 func (c *partitionKeyRangeCache) forceRefresh(
 	ctx context.Context,
 	containerRID string,
@@ -170,33 +203,59 @@ func (c *partitionKeyRangeCache) forceRefresh(
 	client *Client,
 ) (*collectionRoutingMap, error) {
 	entry := c.getOrCreateEntry(containerRID)
-
-	entry.mu.Lock()
-	// If the caller is already canceled and nobody else is fetching, don't
-	// spawn a detached refresh just to immediately abandon it.
-	if entry.inFlight == nil {
-		if err := ctx.Err(); err != nil {
-			entry.mu.Unlock()
-			return nil, err
+	var lastErr error
+	for attempt := 0; attempt < pkRangeCacheSentinelMaxAttempts; attempt++ {
+		entry.mu.Lock()
+		// If the caller is already canceled and nobody else is fetching, don't
+		// spawn a detached refresh just to immediately abandon it.
+		if entry.inFlight == nil {
+			if err := ctx.Err(); err != nil {
+				entry.mu.Unlock()
+				return nil, err
+			}
 		}
-	}
-	op := c.ensureInFlightLocked(entry, containerLink, client)
-	entry.mu.Unlock()
+		// forceRefresh contract: the returned map must reflect a fetch that
+		// started AFTER this call. An in-flight non-forced op (spawned by an
+		// earlier getRoutingMap) may have started before any server-side
+		// condition that triggered this forceRefresh (e.g. a split), so
+		// joining it could return a stale-against-server view. Displace it:
+		// bump generation so its result is discarded on completion, and
+		// clear the slot so we spawn a fresh forced op below. The displaced
+		// goroutine continues running on its detached context but its
+		// install will be rejected by the generation check.
+		if entry.inFlight != nil && !entry.inFlight.forced {
+			entry.generation++
+			entry.inFlight = nil
+		}
+		op := c.ensureInFlightLocked(entry, containerLink, client, true)
+		entry.mu.Unlock()
 
-	return awaitRefresh(ctx, op)
+		rm, err := awaitRefresh(ctx, op)
+		if errors.Is(err, errPKRangeCacheInvalidatedDuringRefresh) {
+			lastErr = err
+			continue
+		}
+		return rm, err
+	}
+	return nil, lastErr
 }
 
 // ensureInFlightLocked returns the entry's in-flight refresh op, creating
 // (and spawning) one if none is already running. Caller MUST hold entry.mu.
+// If a new op is spawned, its forced flag is set from the forced argument.
+// If an existing op is joined, the existing op's forced flag is retained
+// (callers that need forced semantics must displace non-forced ops before
+// calling).
 func (c *partitionKeyRangeCache) ensureInFlightLocked(
 	entry *pkRangeCacheEntry,
 	containerLink string,
 	client *Client,
+	forced bool,
 ) *refreshOp {
 	if entry.inFlight != nil {
 		return entry.inFlight
 	}
-	op := &refreshOp{done: make(chan struct{})}
+	op := &refreshOp{done: make(chan struct{}), forced: forced}
 	entry.inFlight = op
 	startGeneration := entry.generation
 	go c.runRefresh(entry, containerLink, client, op, startGeneration)
@@ -258,7 +317,12 @@ func (c *partitionKeyRangeCache) runRefresh(
 		op.rm = rm
 		op.err = err
 	}
-	entry.inFlight = nil
+	// Only clear the slot if it still points to us. forceRefresh may have
+	// displaced us by clearing the slot and spawning a new op; in that case
+	// the slot now points to the new op and we must NOT clobber it.
+	if entry.inFlight == op {
+		entry.inFlight = nil
+	}
 	close(op.done)
 	entry.mu.Unlock()
 
@@ -316,18 +380,32 @@ const maxChangeFeedIterations = 1000
 // change-feed page after a transient failure. The pipeline already does
 // per-request retry; this is an additional safety net that preserves
 // already-accumulated pages instead of restarting the entire change-feed
-// drain from page 1 on a single bad page.
-const changeFeedPageMaxAttempts = 3
+// drain from page 1 on a single bad page. 6 attempts roughly matches the
+// total retry surface of .NET's MetadataRequestThrottleRetryPolicy /
+// ResourceThrottleRetryPolicy stack on a sustained 429 wave.
+//
+// Exposed as a var so tests can shrink it without slowing test runs.
+var changeFeedPageMaxAttempts = 6
 
 // changeFeedPageRetryBaseDelay is the base sleep before retrying a failed
 // change-feed page. Backoff is linear: base, 2*base, 3*base, ... with
 // per-attempt jitter to avoid synchronized retries across containers.
-const changeFeedPageRetryBaseDelay = 100 * time.Millisecond
+//
+// Exposed as a var so tests can shrink it without slowing test runs.
+var changeFeedPageRetryBaseDelay = 100 * time.Millisecond
 
 // changeFeedPageRetryJitter caps the random jitter added to each retry
 // delay. Keeps the worst-case extra latency small while breaking up
 // synchronized retry storms across containers.
-const changeFeedPageRetryJitter = 50 * time.Millisecond
+//
+// Exposed as a var so tests can shrink it without slowing test runs.
+var changeFeedPageRetryJitter = 50 * time.Millisecond
+
+// changeFeedPageRetryMaxDelay caps the wait derived from a 429 Retry-After
+// header. The service can legitimately ask us to back off for seconds, but
+// blocking a refresh indefinitely on a single hostile header would wedge
+// callers; cap it.
+var changeFeedPageRetryMaxDelay = 5 * time.Second
 
 // changeFeedResult holds the result of draining all change-feed pages.
 type changeFeedResult struct {
@@ -416,8 +494,9 @@ func fetchOneChangeFeedPageWithRetry(
 			break
 		}
 		// Linear backoff with jitter so a fleet of clients retrying across
-		// many containers doesn't produce synchronized retry waves.
-		delay := time.Duration(attempt+1)*changeFeedPageRetryBaseDelay + jitter(changeFeedPageRetryJitter)
+		// many containers doesn't produce synchronized retry waves. On 429
+		// with a Retry-After header, honor the service's hint (capped).
+		delay := computeChangeFeedRetryDelay(err, attempt)
 		log.Writef(azlog.EventResponse, "partition key range change-feed page transient failure for container %s (attempt %d/%d, retrying in %s): %v", containerLink, attempt+1, changeFeedPageMaxAttempts, delay, err)
 		timer := time.NewTimer(delay)
 		select {
@@ -438,14 +517,43 @@ func jitter(maxJitter time.Duration) time.Duration {
 	return time.Duration(rand.Int63n(int64(maxJitter)))
 }
 
+// computeChangeFeedRetryDelay returns the next sleep duration before
+// retrying a change-feed page after err. For 429 responses with a
+// Retry-After header (delta-seconds form), the header value is honored up
+// to changeFeedPageRetryMaxDelay. All other transient errors use linear
+// backoff with jitter.
+func computeChangeFeedRetryDelay(err error, attempt int) time.Duration {
+	linear := time.Duration(attempt+1)*changeFeedPageRetryBaseDelay + jitter(changeFeedPageRetryJitter)
+	var respErr *azcore.ResponseError
+	if errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests && respErr.RawResponse != nil {
+		if ra := respErr.RawResponse.Header.Get("Retry-After"); ra != "" {
+			if secs, parseErr := strconv.Atoi(ra); parseErr == nil && secs >= 0 {
+				d := time.Duration(secs) * time.Second
+				if d > changeFeedPageRetryMaxDelay {
+					d = changeFeedPageRetryMaxDelay
+				}
+				// Pick the longer of the service hint and linear backoff so
+				// we never retry sooner than our own minimum, and add a
+				// small jitter so concurrent clients don't synchronize on
+				// the same Retry-After deadline.
+				if d > linear {
+					return d + jitter(changeFeedPageRetryJitter)
+				}
+			}
+		}
+	}
+	return linear
+}
+
 // isTransientPKRangeFetchError reports whether a /pkranges fetch error is
-// worth retrying mid-pagination. Scope is intentionally narrow: the azcore
-// pipeline already retries 5xx / 408 / 429 (with Retry-After honoring) on
-// its own. This predicate handles only the residual transport-level cases
-// the pipeline does not retry — actual network errors and bare 408s that
-// slipped through. Returns false for:
+// worth retrying mid-pagination. The predicate matches the surface the
+// azcore pipeline already retries (5xx / 408 / 429) plus transport-level
+// network errors. This is intentional double-coverage: the per-page retry
+// here preserves accumulated pages instead of restarting the entire drain
+// from page 1, which matters on cold-start where there is no warm routing
+// map to fall back on. Returns false for:
 //   - context cancellation / deadline
-//   - any HTTP response error (including 5xx, 429, and 4xx)
+//   - 4xx responses other than 408/429 (genuine client errors)
 //   - body-read / JSON-decode / programming errors
 func isTransientPKRangeFetchError(err error) bool {
 	if err == nil {

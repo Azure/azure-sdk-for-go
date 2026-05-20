@@ -63,6 +63,15 @@ func TestMain(m *testing.M) {
 
 	prefLocs = make([]string, 0)
 
+	// Shrink pkrange cache retry delays so tests that exercise the
+	// per-page retry path don't sleep for seconds. Production defaults are
+	// preserved at process exit (tests share the process; this is a
+	// global mutation but safe because all tests in this package see the
+	// shrunken values).
+	changeFeedPageRetryBaseDelay = 1 * time.Millisecond
+	changeFeedPageRetryJitter = 1 * time.Millisecond
+	changeFeedPageRetryMaxDelay = 5 * time.Millisecond
+
 	status := m.Run()
 	os.Exit(status)
 }

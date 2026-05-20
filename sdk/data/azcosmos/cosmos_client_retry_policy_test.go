@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net"
 	"net/http"
 	"net/url"
@@ -608,6 +609,244 @@ func TestWriteServerErrorNotRetried(t *testing.T) {
 			assert.True(t, verifier.requests[0].retryContext.serverErrorRetryCount == 0)
 		})
 	}
+}
+
+func TestReadServerError_InRegionRetrySucceeds(t *testing.T) {
+	for _, statusCode := range []int{
+		http.StatusInternalServerError,
+		http.StatusBadGateway,
+		http.StatusGatewayTimeout,
+	} {
+		t.Run(http.StatusText(statusCode), func(t *testing.T) {
+			srv, closeFunc := mock.NewTLSServer()
+			defer closeFunc()
+
+			defaultEndpoint, err := url.Parse(srv.URL())
+			assert.NoError(t, err)
+
+			gemServer, gemClose := mock.NewTLSServer()
+			defer gemClose()
+			gemServer.SetResponse(mock.WithStatusCode(200))
+
+			internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+			gem := &globalEndpointManager{
+				clientEndpoint:      gemServer.URL(),
+				pipeline:            internalPipeline,
+				preferredLocations:  []string{"East US", "Central US"},
+				locationCache:       CreateMockLC(*defaultEndpoint, false),
+				refreshTimeInterval: defaultExpirationTime,
+				lastUpdateTime:      time.Time{},
+			}
+
+			retryPolicy := &clientRetryPolicy{gem: gem}
+			verifier := clientRetryPolicyVerifier{}
+
+			internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+			client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+			db, _ := client.NewDatabase("database_id")
+			container, _ := db.NewContainer("container_id")
+
+			// In-region retry should be enough; no cross-region failover required.
+			srv.AppendResponse(mock.WithStatusCode(statusCode))
+			srv.AppendResponse(mock.WithStatusCode(200))
+			_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+			assert.NoError(t, err)
+			assert.True(t, verifier.requests[0].retryContext.serverErrorRetryCount == 1)
+			assert.True(t, verifier.requests[0].retryContext.retryCount == 0)
+			assert.True(t, verifier.requests[0].retryContext.preferredLocationIndex == 0)
+		})
+	}
+}
+
+func TestReadServerError_CrossRegionRetriesDisabled(t *testing.T) {
+	for _, statusCode := range []int{
+		http.StatusInternalServerError,
+		http.StatusBadGateway,
+		http.StatusGatewayTimeout,
+	} {
+		t.Run(http.StatusText(statusCode), func(t *testing.T) {
+			srv, closeFunc := mock.NewTLSServer()
+			defer closeFunc()
+
+			defaultEndpoint, err := url.Parse(srv.URL())
+			assert.NoError(t, err)
+
+			gemServer, gemClose := mock.NewTLSServer()
+			defer gemClose()
+			gemServer.SetResponse(mock.WithStatusCode(200))
+
+			internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+			lc := CreateMockLC(*defaultEndpoint, false)
+			lc.enableCrossRegionRetries = false
+
+			gem := &globalEndpointManager{
+				clientEndpoint:      gemServer.URL(),
+				pipeline:            internalPipeline,
+				preferredLocations:  []string{"East US", "Central US"},
+				locationCache:       lc,
+				refreshTimeInterval: defaultExpirationTime,
+				lastUpdateTime:      time.Time{},
+			}
+
+			retryPolicy := &clientRetryPolicy{gem: gem}
+			verifier := clientRetryPolicyVerifier{}
+
+			internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+			client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+			db, _ := client.NewDatabase("database_id")
+			container, _ := db.NewContainer("container_id")
+
+			// With cross-region disabled only the in-region retry should be attempted.
+			srv.AppendResponse(mock.WithStatusCode(statusCode))
+			srv.AppendResponse(mock.WithStatusCode(statusCode))
+			srv.AppendResponse(mock.WithStatusCode(200))
+			_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+			assert.Error(t, err)
+			assert.True(t, verifier.requests[0].retryContext.serverErrorRetryCount == 1)
+			assert.True(t, verifier.requests[0].retryContext.retryCount == 0)
+			assert.True(t, verifier.requests[0].retryContext.preferredLocationIndex == 0)
+		})
+	}
+}
+
+func TestReadServerError_ErrorIsResponseError(t *testing.T) {
+	for _, statusCode := range []int{
+		http.StatusInternalServerError,
+		http.StatusBadGateway,
+		http.StatusGatewayTimeout,
+	} {
+		t.Run(http.StatusText(statusCode), func(t *testing.T) {
+			srv, closeFunc := mock.NewTLSServer()
+			defer closeFunc()
+
+			defaultEndpoint, err := url.Parse(srv.URL())
+			assert.NoError(t, err)
+
+			gemServer, gemClose := mock.NewTLSServer()
+			defer gemClose()
+			gemServer.SetResponse(mock.WithStatusCode(200))
+
+			internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+			gem := &globalEndpointManager{
+				clientEndpoint:      gemServer.URL(),
+				pipeline:            internalPipeline,
+				preferredLocations:  []string{"East US", "Central US"},
+				locationCache:       CreateMockLC(*defaultEndpoint, false),
+				refreshTimeInterval: defaultExpirationTime,
+				lastUpdateTime:      time.Time{},
+			}
+
+			retryPolicy := &clientRetryPolicy{gem: gem}
+			verifier := clientRetryPolicyVerifier{}
+
+			internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+			client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+			db, _ := client.NewDatabase("database_id")
+			container, _ := db.NewContainer("container_id")
+
+			// Exhaust both retries and verify the surfaced error preserves the response.
+			srv.AppendResponse(mock.WithStatusCode(statusCode))
+			srv.AppendResponse(mock.WithStatusCode(statusCode))
+			srv.AppendResponse(mock.WithStatusCode(statusCode))
+			_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+			assert.Error(t, err)
+			var responseErr *azcore.ResponseError
+			assert.True(t, errors.As(err, &responseErr))
+			assert.Equal(t, statusCode, responseErr.StatusCode)
+		})
+	}
+}
+
+func TestReadServerError_NonRetriable5xxNotRetried(t *testing.T) {
+	// 501 Not Implemented is a 5xx status that should NOT be retried.
+	srv, closeFunc := mock.NewTLSServer()
+	defer closeFunc()
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	assert.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{"East US", "Central US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := clientRetryPolicyVerifier{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+
+	srv.AppendResponse(mock.WithStatusCode(http.StatusNotImplemented))
+	srv.AppendResponse(mock.WithStatusCode(200))
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	assert.Error(t, err)
+	assert.True(t, verifier.requests[0].retryContext.serverErrorRetryCount == 0)
+	assert.True(t, verifier.requests[0].retryContext.retryCount == 0)
+}
+
+func TestReadServerError_MixedWith503(t *testing.T) {
+	srv, closeFunc := mock.NewTLSServer()
+	defer closeFunc()
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	assert.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{"East US", "Central US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := clientRetryPolicyVerifier{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+
+	// Sequence: 500 (in-region retry) -> 503 (cross-region via preferredLocationIndex) ->
+	// 500 (cross-region 5xx retry; consumes the last preferred location) -> 200.
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusServiceUnavailable))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	srv.AppendResponse(mock.WithStatusCode(200))
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	assert.NoError(t, err)
+	assert.True(t, verifier.requests[0].retryContext.serverErrorRetryCount == 2)
+	// 503 advances preferredLocationIndex by 1 and retryCount by 1;
+	// the cross-region 5xx retry advances both by 1 again.
+	assert.True(t, verifier.requests[0].retryContext.preferredLocationIndex == 2)
+	assert.True(t, verifier.requests[0].retryContext.retryCount == 2)
 }
 
 func TestDnsErrorRetry(t *testing.T) {

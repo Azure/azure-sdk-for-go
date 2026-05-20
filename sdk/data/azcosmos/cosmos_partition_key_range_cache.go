@@ -454,14 +454,20 @@ func isTransientPKRangeFetchError(err error) bool {
 	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 		return false
 	}
-	// HTTP responses are handled by the pipeline's retry policy. Anything
-	// that reaches us with a ResponseError has already exhausted those
-	// retries; doing it again here would just double-retry.
+	// HTTP responses: retry on server errors, throttling, and request timeout.
+	// The pipeline may have already retried these, but the per-page retry here
+	// preserves accumulated pages instead of restarting the entire drain.
 	var respErr *azcore.ResponseError
 	if errors.As(err, &respErr) {
-		// 408 is the one exception: some pipelines do not retry it, and
-		// the change-feed loop is well-suited to retry the next page.
-		return respErr.StatusCode == http.StatusRequestTimeout
+		switch {
+		case respErr.StatusCode >= 500:
+			return true
+		case respErr.StatusCode == http.StatusTooManyRequests: // 429
+			return true
+		case respErr.StatusCode == http.StatusRequestTimeout: // 408
+			return true
+		}
+		return false
 	}
 	// Transport-class errors only: connection reset, unexpected EOF,
 	// net.Error timeouts. Body-read / JSON-decode errors are NOT

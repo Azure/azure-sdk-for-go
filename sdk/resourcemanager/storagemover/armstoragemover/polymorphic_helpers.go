@@ -20,6 +20,8 @@ func unmarshalEndpointBasePropertiesClassification(rawMsg json.RawMessage) (Endp
 		b = &AzureStorageBlobContainerEndpointProperties{}
 	case string(EndpointTypeNfsMount):
 		b = &NfsMountEndpointProperties{}
+	case string(EndpointTypeS3WithHmac):
+		b = &S3WithHmacEndpointProperties{}
 	case string(EndpointTypeAzureStorageSmbFileShare):
 		b = &AzureStorageSmbFileShareEndpointProperties{}
 	case string(EndpointTypeSmbMount):
@@ -49,6 +51,8 @@ func unmarshalEndpointBaseUpdatePropertiesClassification(rawMsg json.RawMessage)
 	switch m["endpointType"] {
 	case string(EndpointTypeAzureStorageBlobContainer):
 		b = &AzureStorageBlobContainerEndpointUpdateProperties{}
+	case string(EndpointTypeS3WithHmac):
+		b = &S3WithHmacEndpointUpdateProperties{}
 	case string(EndpointTypeNfsMount):
 		b = &NfsMountEndpointUpdateProperties{}
 	case string(EndpointTypeAzureStorageSmbFileShare):

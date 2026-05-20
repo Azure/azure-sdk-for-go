@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/WebhookCreate.json
+// Generated from example definition: 2026-01-01-preview/WebhookCreate.json
 func ExampleWebhooksClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleWebhooksClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/WebhookDelete.json
+// Generated from example definition: 2026-01-01-preview/WebhookDelete.json
 func ExampleWebhooksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleWebhooksClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/WebhookGet.json
+// Generated from example definition: 2026-01-01-preview/WebhookGet.json
 func ExampleWebhooksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleWebhooksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/WebhookGetCallbackConfig.json
+// Generated from example definition: 2026-01-01-preview/WebhookGetCallbackConfig.json
 func ExampleWebhooksClient_GetCallbackConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleWebhooksClient_GetCallbackConfig() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/WebhookList.json
+// Generated from example definition: 2026-01-01-preview/WebhookList.json
 func ExampleWebhooksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleWebhooksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/WebhookListEvents.json
+// Generated from example definition: 2026-01-01-preview/WebhookListEvents.json
 func ExampleWebhooksClient_NewListEventsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +290,7 @@ func ExampleWebhooksClient_NewListEventsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/WebhookPing.json
+// Generated from example definition: 2026-01-01-preview/WebhookPing.json
 func ExampleWebhooksClient_Ping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +315,7 @@ func ExampleWebhooksClient_Ping() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/WebhookUpdate.json
+// Generated from example definition: 2026-01-01-preview/WebhookUpdate.json
 func ExampleWebhooksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

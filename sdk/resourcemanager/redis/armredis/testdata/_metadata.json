@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Cache": "2024-11-01"
+  },
+  "emitterVersion": "0.10.2"
+}

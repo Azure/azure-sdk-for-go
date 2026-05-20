@@ -7,11 +7,11 @@ package armnginx_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/ApiKeys_CreateOrUpdate.json
+// Generated from example definition: 2025-11-01/ApiKeys_CreateOrUpdate.json
 func ExampleAPIKeysClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleAPIKeysClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/ApiKeys_Delete.json
+// Generated from example definition: 2025-11-01/ApiKeys_Delete.json
 func ExampleAPIKeysClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleAPIKeysClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/ApiKeys_Get.json
+// Generated from example definition: 2025-11-01/ApiKeys_Get.json
 func ExampleAPIKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleAPIKeysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/ApiKeys_List.json
+// Generated from example definition: 2025-11-01/ApiKeys_List.json
 func ExampleAPIKeysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

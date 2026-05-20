@@ -6,6 +6,7 @@ package version
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/changelog"
@@ -120,7 +121,7 @@ func TestCalculateNewVersion(t *testing.T) {
 	// breaking with beta
 	newVersion, prl, err = CalculateNewVersion(breakingChange, "1.2.0-beta.1", true)
 	assert.NoError(t, err)
-	assert.Equal(t, newVersion.String(), "1.2.0-beta.2")
+	assert.Equal(t, newVersion.String(), "2.0.0-beta.1")
 	assert.Equal(t, utils.BetaBreakingChangeLabel, prl)
 
 	// additive with stable
@@ -130,8 +131,28 @@ func TestCalculateNewVersion(t *testing.T) {
 	// additive with beta
 	newVersion, prl, err = CalculateNewVersion(additiveChange, "1.2.0-beta.1", true)
 	assert.NoError(t, err)
-	assert.Equal(t, newVersion.String(), "1.2.0-beta.2")
+	assert.Equal(t, "1.2.0-beta.2", newVersion.String())
 	assert.Equal(t, utils.BetaLabel, prl)
+
+	// previous 2.0.0-beta.1 (new major beta: minor=0, patch=0)
+	// breaking with beta - should NOT bump major since 2.0.0 hasn't been released yet
+	newVersion, prl, err = CalculateNewVersion(breakingChange, "2.0.0-beta.1", true)
+	assert.NoError(t, err)
+	assert.Equal(t, "2.0.0-beta.2", newVersion.String())
+	assert.Equal(t, utils.BetaBreakingChangeLabel, prl)
+
+	// fix with beta - should increment beta number
+	newVersion, prl, err = CalculateNewVersion(fixChange, "2.0.0-beta.1", true)
+	assert.NoError(t, err)
+	assert.Equal(t, "2.0.0-beta.2", newVersion.String())
+	assert.Equal(t, utils.BetaLabel, prl)
+
+	// previous 2.0.0 (stable release exists, then generate preview with breaking change)
+	// breaking with beta - should bump major since 2.0.0 was already released
+	newVersion, prl, err = CalculateNewVersion(breakingChange, "2.0.0", true)
+	assert.NoError(t, err)
+	assert.Equal(t, "3.0.0-beta.1", newVersion.String())
+	assert.Equal(t, utils.BetaBreakingChangeLabel, prl)
 }
 
 func TestContainsPreviewAPIVersion(t *testing.T) {
@@ -161,6 +182,50 @@ func NewClient() *Client {
 		hasPreview, err := containsPreviewAPIVersion(packageDir)
 		assert.NoError(t, err)
 		assert.True(t, hasPreview)
+	})
+
+	t.Run("Package with const preview API version", func(t *testing.T) {
+		packageDir := filepath.Join(tempDir, "constpreview")
+		err = os.MkdirAll(packageDir, 0755)
+		require.NoError(t, err)
+
+		goFile := filepath.Join(packageDir, "client.go")
+		goContent := `package constpreview
+
+const defaultClientVersion string = "2023-01-01-preview"
+
+func NewClient() *Client {
+	return &Client{}
+}
+`
+		err = os.WriteFile(goFile, []byte(goContent), 0644)
+		require.NoError(t, err)
+
+		hasPreview, err := containsPreviewAPIVersion(packageDir)
+		assert.NoError(t, err)
+		assert.True(t, hasPreview)
+	})
+
+	t.Run("Package with const stable API version", func(t *testing.T) {
+		packageDir := filepath.Join(tempDir, "conststable")
+		err = os.MkdirAll(packageDir, 0755)
+		require.NoError(t, err)
+
+		goFile := filepath.Join(packageDir, "client.go")
+		goContent := `package conststable
+
+const defaultClientVersion string = "2023-01-01"
+
+func NewClient() *Client {
+	return &Client{}
+}
+`
+		err = os.WriteFile(goFile, []byte(goContent), 0644)
+		require.NoError(t, err)
+
+		hasPreview, err := containsPreviewAPIVersion(packageDir)
+		assert.NoError(t, err)
+		assert.False(t, hasPreview)
 	})
 
 	t.Run("Package without preview API", func(t *testing.T) {
@@ -515,4 +580,134 @@ func (m *mockSDKRepo) CreateRemote(c *config.RemoteConfig) (*git.Remote, error) 
 
 func (m *mockSDKRepo) Fetch(o *git.FetchOptions) error {
 	return nil
+}
+
+func TestRemoveRetractStatements(t *testing.T) {
+	t.Run("Single retract line", func(t *testing.T) {
+		lines := []string{
+			"module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2",
+			"",
+			"go 1.25.0",
+			"",
+			"require (",
+			"\tgithub.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.0",
+			")",
+			"",
+			"retract v2.0.0 // contains Unreferenced Types",
+		}
+		result := removeRetractStatements(lines)
+		for _, line := range result {
+			require.False(t, strings.HasPrefix(strings.TrimSpace(line), "retract"), "retract line should have been removed")
+		}
+		require.Contains(t, result, "module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2")
+	})
+
+	t.Run("Block retract", func(t *testing.T) {
+		lines := []string{
+			"module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2",
+			"",
+			"go 1.25.0",
+			"",
+			"retract (",
+			"\tv2.0.0 // bad release",
+			"\tv2.1.0 // also bad",
+			")",
+			"",
+		}
+		result := removeRetractStatements(lines)
+		expected := []string{
+			"module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2",
+			"",
+			"go 1.25.0",
+			"",
+			"",
+		}
+		require.Equal(t, expected, result)
+	})
+
+	t.Run("No retract lines", func(t *testing.T) {
+		lines := []string{
+			"module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2",
+			"",
+			"go 1.25.0",
+		}
+		result := removeRetractStatements(lines)
+		require.Equal(t, lines, result)
+	})
+
+	t.Run("Multiple retract statements", func(t *testing.T) {
+		lines := []string{
+			"module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2",
+			"",
+			"retract v2.0.0",
+			"retract v2.1.0 // bad",
+			"",
+		}
+		result := removeRetractStatements(lines)
+		for _, line := range result {
+			require.False(t, strings.HasPrefix(strings.TrimSpace(line), "retract"))
+		}
+	})
+}
+
+func TestUpdateModuleDefinitionRemovesRetract(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "test-update-module-def")
+	require.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	// Create the module directory structure so GetRelativePath works
+	modulePath := filepath.Join(tempDir, "sdk", "resourcemanager", "foo", "armfoo")
+	err = os.MkdirAll(modulePath, 0755)
+	require.NoError(t, err)
+
+	mockRepo := &mockSDKRepo{root: tempDir}
+
+	t.Run("Retract removed on major version change", func(t *testing.T) {
+		goModContent := `module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2
+
+go 1.25.0
+
+require (
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.0
+)
+
+retract v2.0.0 // contains Unreferenced Types
+`
+		err = os.WriteFile(filepath.Join(modulePath, "go.mod"), []byte(goModContent), 0644)
+		require.NoError(t, err)
+
+		version, err := semver.NewVersion("3.0.0")
+		require.NoError(t, err)
+
+		err = UpdateModuleDefinition(modulePath, version, mockRepo)
+		require.NoError(t, err)
+
+		updatedContent, err := os.ReadFile(filepath.Join(modulePath, "go.mod"))
+		require.NoError(t, err)
+
+		require.Contains(t, string(updatedContent), "module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v3")
+		require.NotContains(t, string(updatedContent), "retract")
+	})
+
+	t.Run("Retract kept when major version does not change", func(t *testing.T) {
+		goModContent := `module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2
+
+go 1.25.0
+
+retract v2.0.0 // bad release
+`
+		err = os.WriteFile(filepath.Join(modulePath, "go.mod"), []byte(goModContent), 0644)
+		require.NoError(t, err)
+
+		version, err := semver.NewVersion("2.1.0")
+		require.NoError(t, err)
+
+		err = UpdateModuleDefinition(modulePath, version, mockRepo)
+		require.NoError(t, err)
+
+		updatedContent, err := os.ReadFile(filepath.Join(modulePath, "go.mod"))
+		require.NoError(t, err)
+
+		require.Contains(t, string(updatedContent), "retract v2.0.0")
+	})
 }

@@ -898,6 +898,21 @@ type UpdateGroup struct {
 
 	// A list of Gates that will be created before this Group is executed.
 	BeforeGates []*GateConfiguration
+
+	// The max number of upgrades that can run concurrently in this specific group.
+	// Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate at a time.
+	// Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
+	// Group maxConcurrency has a min value of "1". The max value is min(number of clusters in the group, the stage maxConcurrency).
+	// If no value is provided, defaults to 1.
+	// Accepts either:
+	// • A fixed count, e.g. "3"
+	// • A percentage, e.g. "25%" (range 1–100). Percentage is of the number of clusters in the group.
+	// Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+	// Examples:
+	// • "3" --> up to 3 members from this group upgrade at once.
+	// • "100%" --> “all at once”, up to all members for this group upgrade at the same time.
+	// • "25%" --> up to 25% of the members in the group will be upgraded at the same time.
+	MaxConcurrency *string
 }
 
 // UpdateGroupStatus - The status of a UpdateGroup.
@@ -907,6 +922,10 @@ type UpdateGroupStatus struct {
 
 	// READ-ONLY; The list of Gates that will run before this UpdateGroup.
 	BeforeGates []*UpdateRunGateStatus
+
+	// READ-ONLY; The max number of upgrades that can run concurrently in this group, resolved from the UpdateStrategy.UpdateGroup.maxConcurrency
+	// value. If no value was provided, this value defaults to "1".
+	MaxConcurrency *int32
 
 	// READ-ONLY; The list of member this UpdateGroup updates.
 	Members []*MemberUpdateStatus
@@ -1053,6 +1072,20 @@ type UpdateStage struct {
 
 	// Defines the groups to be executed in parallel in this stage. Duplicate groups are not allowed. Min size: 1.
 	Groups []*UpdateGroup
+
+	// The max number of upgrades that can run concurrently across all groups in this stage.
+	// Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate at a time.
+	// Actual concurrency may be lower depending on group-level concurrency limits or individual member conditions.
+	// Stage maxConcurrency has a min value of "1".
+	// Accepts either:
+	// • A fixed count, e.g., "3"
+	// • A percentage, e.g., "25%" (range 1–100). Percentage is of the total number of clusters across all groups in the stage.
+	// Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+	// Examples:
+	// • "3" --> up to 3 clusters from this stage upgrade at once (across all groups).
+	// • "100%" --> “all at once”; up to all clusters in this stage upgrade at the same time.
+	// • "25%" --> up to 25% of the stage’s total clusters upgrade at the same time.
+	MaxConcurrency *string
 }
 
 // UpdateStageStatus - The status of a UpdateStage.
@@ -1068,6 +1101,10 @@ type UpdateStageStatus struct {
 
 	// READ-ONLY; The list of groups to be updated as part of this UpdateStage.
 	Groups []*UpdateGroupStatus
+
+	// READ-ONLY; The max number of upgrades that can run concurrently across all groups in this stage, resolved from the UpdateStrategy.UpdateStage.maxConcurrency
+	// value.
+	MaxConcurrency *int32
 
 	// READ-ONLY; The name of the UpdateStage.
 	Name *string

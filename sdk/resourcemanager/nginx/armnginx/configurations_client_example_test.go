@@ -7,11 +7,11 @@ package armnginx_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/Configurations_Analysis.json
+// Generated from example definition: 2025-11-01/Configurations_Analysis.json
 func ExampleConfigurationsClient_Analysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleConfigurationsClient_Analysis() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Configurations_CreateOrUpdate.json
+// Generated from example definition: 2025-11-01/Configurations_CreateOrUpdate.json
 func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,11 +72,11 @@ func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.ConfigurationsClientCreateOrUpdateResponse{
-	// 	ConfigurationResponse: &armnginx.ConfigurationResponse{
+	// 	Configuration: &armnginx.Configuration{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("nginx.nginxplus/nginxDeployments/configurations"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/configurations/default"),
-	// 		Properties: &armnginx.ConfigurationResponseProperties{
+	// 		Properties: &armnginx.ConfigurationProperties{
 	// 			Files: []*armnginx.ConfigurationFile{
 	// 				{
 	// 					Content: to.Ptr("ABCDEF=="),
@@ -92,7 +92,7 @@ func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Configurations_Delete.json
+// Generated from example definition: 2025-11-01/Configurations_Delete.json
 func ExampleConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleConfigurationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/Configurations_Get.json
+// Generated from example definition: 2025-11-01/Configurations_Get.json
 func ExampleConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,11 +132,11 @@ func ExampleConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.ConfigurationsClientGetResponse{
-	// 	ConfigurationResponse: &armnginx.ConfigurationResponse{
+	// 	Configuration: &armnginx.Configuration{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("nginx.nginxplus/nginxDeployments/configurations"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/configurations/default"),
-	// 		Properties: &armnginx.ConfigurationResponseProperties{
+	// 		Properties: &armnginx.ConfigurationProperties{
 	// 			Files: []*armnginx.ConfigurationFile{
 	// 				{
 	// 					Content: to.Ptr("ABCDEF=="),
@@ -158,7 +158,7 @@ func ExampleConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Configurations_List.json
+// Generated from example definition: 2025-11-01/Configurations_List.json
 func ExampleConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,12 +182,12 @@ func ExampleConfigurationsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armnginx.ConfigurationsClientListResponse{
 		// 	ConfigurationListResponse: armnginx.ConfigurationListResponse{
-		// 		Value: []*armnginx.ConfigurationResponse{
+		// 		Value: []*armnginx.Configuration{
 		// 			{
 		// 				Name: to.Ptr("default"),
 		// 				Type: to.Ptr("nginx.nginxplus/nginxDeployments/configurations"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/configurations/default"),
-		// 				Properties: &armnginx.ConfigurationResponseProperties{
+		// 				Properties: &armnginx.ConfigurationProperties{
 		// 					Files: []*armnginx.ConfigurationFile{
 		// 						{
 		// 							Content: to.Ptr("ABCDEF=="),

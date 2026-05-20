@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/ManagedHsm_checkMhsmNameAvailability.json
+// Generated from example definition: 2026-02-01/ManagedHsm_checkMhsmNameAvailability.json
 func ExampleManagedHsmsClient_CheckMhsmNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleManagedHsmsClient_CheckMhsmNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/ManagedHsm_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01/ManagedHsm_CreateOrUpdate.json
 func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/ManagedHsm_Delete.json
+// Generated from example definition: 2026-02-01/ManagedHsm_Delete.json
 func ExampleManagedHsmsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleManagedHsmsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/ManagedHsm_Get.json
+// Generated from example definition: 2026-02-01/ManagedHsm_Get.json
 func ExampleManagedHsmsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleManagedHsmsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/DeletedManagedHsm_Get.json
+// Generated from example definition: 2026-02-01/DeletedManagedHsm_Get.json
 func ExampleManagedHsmsClient_GetDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleManagedHsmsClient_GetDeleted() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/ManagedHsm_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01/ManagedHsm_ListByResourceGroup.json
 func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armkeyvault.ManagedHsmsClientListByResourceGroupResponse{
 		// 	ManagedHsmListResult: armkeyvault.ManagedHsmListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs?api-version=2025-05-01&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng=="),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs?api-version=2026-02-01&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng=="),
 		// 		Value: []*armkeyvault.ManagedHsm{
 		// 			{
 		// 				Name: to.Ptr("hsm1"),
@@ -306,7 +306,7 @@ func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/ManagedHsm_ListBySubscription.json
+// Generated from example definition: 2026-02-01/ManagedHsm_ListBySubscription.json
 func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,7 +330,7 @@ func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armkeyvault.ManagedHsmsClientListBySubscriptionResponse{
 		// 	ManagedHsmListResult: armkeyvault.ManagedHsmListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/managedHSMs?api-version=2025-05-01&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng=="),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/managedHSMs?api-version=2026-02-01&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng=="),
 		// 		Value: []*armkeyvault.ManagedHsm{
 		// 			{
 		// 				Name: to.Ptr("hsm1"),
@@ -390,7 +390,7 @@ func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/DeletedManagedHsm_List.json
+// Generated from example definition: 2026-02-01/DeletedManagedHsm_List.json
 func ExampleManagedHsmsClient_NewListDeletedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -414,7 +414,7 @@ func ExampleManagedHsmsClient_NewListDeletedPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armkeyvault.ManagedHsmsClientListDeletedResponse{
 		// 	DeletedManagedHsmListResult: armkeyvault.DeletedManagedHsmListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/deletedManagedHSMs?api-version=2025-05-01&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng=="),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/deletedManagedHSMs?api-version=2026-02-01&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng=="),
 		// 		Value: []*armkeyvault.DeletedManagedHsm{
 		// 			{
 		// 				Name: to.Ptr("vault-agile-drawer-6404"),
@@ -454,7 +454,7 @@ func ExampleManagedHsmsClient_NewListDeletedPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/DeletedManagedHsm_Purge.json
+// Generated from example definition: 2026-02-01/DeletedManagedHsm_Purge.json
 func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -475,7 +475,7 @@ func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/ManagedHsm_Update.json
+// Generated from example definition: 2026-02-01/ManagedHsm_Update.json
 func ExampleManagedHsmsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

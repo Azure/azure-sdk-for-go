@@ -76,7 +76,7 @@
 /sdk/security/keyvault/                                            @Azure/azure-sdk-write-keyvault
 
 # ServiceLabel: %KeyVault
-# ServiceOwners:                                                   @Azure/azure-sdk-write-keyvault @chen-karen
+# ServiceOwners:                                                   @Azure/azure-sdk-write-keyvault
 
 # PRLabel: %Monitor
 /sdk/monitor/                                                      @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-sdk-write-monitor-query-logs @chlowell @gracewilcox @jhendrixMSFT
@@ -118,7 +118,7 @@
 # ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft
 
 # PRLabel: %Storage
-/sdk/storage/                                                      @gapra-msft @jhendrixMSFT @souravgupta-msft @tanyasethi-msft @vibhansa-msft
+/sdk/storage/                                                      @gapra-msft @jhendrixMSFT @souravgupta-msft @tanyasethi-msft
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Storage
@@ -328,7 +328,7 @@
 # ServiceOwners:                                                   @TiagoCrewGitHubIssues
 
 # ServiceLabel: %Custom Providers
-# ServiceOwners:                                                   @manoharp @MSEvanhi
+# ServiceOwners:                                                   @manoharp
 
 # ServiceLabel: %Customer Insights
 # ServiceOwners:                                                   @shefymk

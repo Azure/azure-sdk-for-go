@@ -1,5 +1,22 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-03-16)
+### Breaking Changes
+
+- Type of `SystemData.CreatedByType` has been changed from `*IdentityType` to `*CreatedByType`
+- Type of `SystemData.LastModifiedByType` has been changed from `*IdentityType` to `*CreatedByType`
+- Enum `IdentityType` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ErrorResponseError` has been removed
+- Struct `Resource` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New field `NextLink` in struct `AutoScaleVCoreListResult`
+- New field `NextLink` in struct `DedicatedCapacities`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

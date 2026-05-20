@@ -98,6 +98,120 @@ func TestFindSDKRoot_DeepNesting(t *testing.T) {
 	require.Equal(t, tmpDir, root)
 }
 
+func TestValidatePackagePath(t *testing.T) {
+	t.Run("NonExistentPath", func(t *testing.T) {
+		err := ValidatePackagePath("/nonexistent/path")
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "does not exist or is not a directory")
+	})
+
+	t.Run("PathWithoutGoMod", func(t *testing.T) {
+		tmpDir := t.TempDir()
+		err := ValidatePackagePath(tmpDir)
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "does not contain a go.mod file")
+	})
+
+	t.Run("ValidPath", func(t *testing.T) {
+		tmpDir := t.TempDir()
+		err := os.WriteFile(filepath.Join(tmpDir, "go.mod"), []byte("module test"), 0644)
+		require.NoError(t, err)
+		err = ValidatePackagePath(tmpDir)
+		require.NoError(t, err)
+	})
+}
+
+func TestIsMgmtPlanePackage(t *testing.T) {
+	tests := []struct {
+		name        string
+		packagePath string
+		sdkRoot     string
+		expected    bool
+	}{
+		{
+			name:        "MgmtPlanePackage",
+			packagePath: "/root/sdk/resourcemanager/compute/armcompute",
+			sdkRoot:     "/root",
+			expected:    true,
+		},
+		{
+			name:        "DataPlanePackage",
+			packagePath: "/root/sdk/storage/azblob",
+			sdkRoot:     "/root",
+			expected:    false,
+		},
+		{
+			name:        "DataPlaneNestedPackage",
+			packagePath: "/root/sdk/security/keyvault/azkeys",
+			sdkRoot:     "/root",
+			expected:    false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := IsMgmtPlanePackage(tt.packagePath, tt.sdkRoot)
+			require.Equal(t, tt.expected, result)
+		})
+	}
+}
+
+func TestGetModuleRelativePath(t *testing.T) {
+	tests := []struct {
+		name        string
+		packagePath string
+		sdkRoot     string
+		expected    string
+	}{
+		{
+			name:        "MgmtPackage",
+			packagePath: "/root/sdk/resourcemanager/compute/armcompute",
+			sdkRoot:     "/root",
+			expected:    "sdk/resourcemanager/compute/armcompute",
+		},
+		{
+			name:        "DataPlanePackage",
+			packagePath: "/root/sdk/storage/azblob",
+			sdkRoot:     "/root",
+			expected:    "sdk/storage/azblob",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := GetModuleRelativePath(tt.packagePath, tt.sdkRoot)
+			require.NoError(t, err)
+			require.Equal(t, tt.expected, result)
+		})
+	}
+}
+
+func TestGetServiceDir(t *testing.T) {
+	tests := []struct {
+		name               string
+		moduleRelativePath string
+		expected           string
+	}{
+		{
+			name:               "MgmtPackage",
+			moduleRelativePath: "sdk/resourcemanager/compute/armcompute",
+			expected:           "resourcemanager/compute/armcompute",
+		},
+		{
+			name:               "DataPlanePackage",
+			moduleRelativePath: "sdk/storage/azblob",
+			expected:           "storage/azblob",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := GetServiceDir(tt.moduleRelativePath)
+			require.Equal(t, tt.expected, result)
+		})
+	}
+}
+
 func TestFindSDKRoot_MaxLevelExceeded(t *testing.T) {
 	// Create a temporary directory with nesting exceeding maxLevel
 	tmpDir := t.TempDir()

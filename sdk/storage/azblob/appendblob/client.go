@@ -173,7 +173,11 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 	if o != nil && o.TransactionalValidation != nil {
 		body, err = o.TransactionalValidation.Apply(body, appendOptions)
 		if err != nil {
-			return AppendBlockResponse{}, nil
+			return AppendBlockResponse{}, err
+		}
+		count, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+		if err != nil {
+			return AppendBlockResponse{}, err
 		}
 	}
 
@@ -199,7 +203,8 @@ func (ab *Client) AppendBlockFromURL(ctx context.Context, source string, o *Appe
 		leaseAccessConditions,
 		appendPositionAccessConditions,
 		modifiedAccessConditions,
-		sourceModifiedAccessConditions := o.format()
+		sourceModifiedAccessConditions,
+		sourceCPKInfo := o.format()
 
 	// content length should be 0 on * from URL. always. It's a 400 if it isn't.
 	resp, err := ab.generated().AppendBlockFromURL(ctx,
@@ -211,7 +216,8 @@ func (ab *Client) AppendBlockFromURL(ctx context.Context, source string, o *Appe
 		leaseAccessConditions,
 		appendPositionAccessConditions,
 		modifiedAccessConditions,
-		sourceModifiedAccessConditions)
+		sourceModifiedAccessConditions,
+		sourceCPKInfo)
 	return resp, err
 }
 

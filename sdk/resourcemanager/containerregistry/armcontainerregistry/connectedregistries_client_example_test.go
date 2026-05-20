@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/ConnectedRegistryCreate.json
+// Generated from example definition: 2026-01-01-preview/ConnectedRegistryCreate.json
 func ExampleConnectedRegistriesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleConnectedRegistriesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ConnectedRegistryDeactivate.json
+// Generated from example definition: 2026-01-01-preview/ConnectedRegistryDeactivate.json
 func ExampleConnectedRegistriesClient_BeginDeactivate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleConnectedRegistriesClient_BeginDeactivate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ConnectedRegistryDelete.json
+// Generated from example definition: 2026-01-01-preview/ConnectedRegistryDelete.json
 func ExampleConnectedRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleConnectedRegistriesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ConnectedRegistryGet.json
+// Generated from example definition: 2026-01-01-preview/ConnectedRegistryGet.json
 func ExampleConnectedRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,12 +198,19 @@ func ExampleConnectedRegistriesClient_Get() {
 	// 				Enabled: to.Ptr(true),
 	// 				Schedule: to.Ptr("0 5 * * *"),
 	// 			},
+	// 			RegistrySyncResult: &armcontainerregistry.RegistrySyncResult{
+	// 				SyncTrigger: to.Ptr(armcontainerregistry.SyncTriggerInitialSync),
+	// 				SyncState: to.Ptr(armcontainerregistry.SyncStateSucceeded),
+	// 				LastSyncStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:00:00.0000000-01:00"); return t}()),
+	// 				LastSyncEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:01:00.0000000-01:00"); return t}()),
+	// 				LastSuccessfulSyncEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:01:00.0000000-01:00"); return t}()),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ConnectedRegistryList.json
+// Generated from example definition: 2026-01-01-preview/ConnectedRegistryList.json
 func ExampleConnectedRegistriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,6 +267,13 @@ func ExampleConnectedRegistriesClient_NewListPager() {
 		// 						Enabled: to.Ptr(true),
 		// 						Schedule: to.Ptr("0 5 * * *"),
 		// 					},
+		// 					RegistrySyncResult: &armcontainerregistry.RegistrySyncResult{
+		// 						SyncTrigger: to.Ptr(armcontainerregistry.SyncTriggerInitialSync),
+		// 						SyncState: to.Ptr(armcontainerregistry.SyncStateSucceeded),
+		// 						LastSyncStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:00:00.0000000-01:00"); return t}()),
+		// 						LastSyncEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:01:00.0000000-01:00"); return t}()),
+		// 						LastSuccessfulSyncEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:01:00.0000000-01:00"); return t}()),
+		// 					},
 		// 				},
 		// 			},
 		// 		},
@@ -268,7 +282,68 @@ func ExampleConnectedRegistriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/ConnectedRegistryUpdate.json
+// Generated from example definition: 2026-01-01-preview/ConnectedRegistryResync.json
+func ExampleConnectedRegistriesClient_Resync() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewConnectedRegistriesClient().Resync(ctx, "myResourceGroup", "myRegistry", "myConnectedRegistry", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.ConnectedRegistriesClientResyncResponse{
+	// 	ConnectedRegistry: &armcontainerregistry.ConnectedRegistry{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/connectedRegistries/myConnectedRegistry"),
+	// 		Name: to.Ptr("myConnectedRegistry"),
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/connectedRegistries"),
+	// 		Properties: &armcontainerregistry.ConnectedRegistryProperties{
+	// 			Mode: to.Ptr(armcontainerregistry.ConnectedRegistryModeReadWrite),
+	// 			Parent: &armcontainerregistry.ParentProperties{
+	// 				SyncProperties: &armcontainerregistry.SyncProperties{
+	// 					TokenID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/syncToken"),
+	// 					Schedule: to.Ptr("0 0 */10 * *"),
+	// 					MessageTTL: to.Ptr("P30D"),
+	// 					SyncWindow: to.Ptr("P2D"),
+	// 				},
+	// 			},
+	// 			ClientTokenIDs: []*string{
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client1Token"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client2Token"),
+	// 			},
+	// 			Logging: &armcontainerregistry.LoggingProperties{
+	// 				LogLevel: to.Ptr(armcontainerregistry.LogLevelDebug),
+	// 				AuditLogStatus: to.Ptr(armcontainerregistry.AuditLogStatusEnabled),
+	// 			},
+	// 			NotificationsList: []*string{
+	// 				to.Ptr("hello-world:*:*"),
+	// 				to.Ptr("sample/repo/*:1.0:*"),
+	// 			},
+	// 			GarbageCollection: &armcontainerregistry.GarbageCollectionProperties{
+	// 				Enabled: to.Ptr(true),
+	// 				Schedule: to.Ptr("0 5 * * *"),
+	// 			},
+	// 			RegistrySyncResult: &armcontainerregistry.RegistrySyncResult{
+	// 				SyncTrigger: to.Ptr(armcontainerregistry.SyncTriggerInitialSync),
+	// 				SyncState: to.Ptr(armcontainerregistry.SyncStateSucceeded),
+	// 				LastSyncStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:00:00.0000000-01:00"); return t}()),
+	// 				LastSyncEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:01:00.0000000-01:00"); return t}()),
+	// 				LastSuccessfulSyncEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:01:00.0000000-01:00"); return t}()),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01-preview/ConnectedRegistryUpdate.json
 func ExampleConnectedRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,6 +419,13 @@ func ExampleConnectedRegistriesClient_BeginUpdate() {
 	// 			GarbageCollection: &armcontainerregistry.GarbageCollectionProperties{
 	// 				Enabled: to.Ptr(true),
 	// 				Schedule: to.Ptr("0 5 * * *"),
+	// 			},
+	// 			RegistrySyncResult: &armcontainerregistry.RegistrySyncResult{
+	// 				SyncTrigger: to.Ptr(armcontainerregistry.SyncTriggerInitialSync),
+	// 				SyncState: to.Ptr(armcontainerregistry.SyncStateSucceeded),
+	// 				LastSyncStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:00:00.0000000-01:00"); return t}()),
+	// 				LastSyncEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:01:00.0000000-01:00"); return t}()),
+	// 				LastSuccessfulSyncEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-01T00:01:00.0000000-01:00"); return t}()),
 	// 			},
 	// 		},
 	// 	},

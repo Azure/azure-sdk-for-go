@@ -27,7 +27,7 @@ type AscOperationsClient struct {
 // NewAscOperationsClient creates a new instance of AscOperationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAscOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AscOperationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAscOperationsClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Gets the status of an asynchronous operation for the Azure HPC Cache
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-01-01
 //   - location - The name of Azure region.
 //   - operationID - The ID of an ongoing async operation.
 //   - options - AscOperationsClientGetOptions contains the optional parameters for the AscOperationsClient.Get method.
@@ -89,7 +89,7 @@ func (client *AscOperationsClient) getCreateRequest(ctx context.Context, locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

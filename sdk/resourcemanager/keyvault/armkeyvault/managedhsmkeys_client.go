@@ -44,7 +44,7 @@ func NewManagedHsmKeysClient(subscriptionID string, credential azcore.TokenCrede
 // update existing keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the Managed HSM Pool within the specified resource group.
 //   - keyName - The name of the key to be created. The value you provide may be copied globally for the purpose of running the
@@ -98,7 +98,7 @@ func (client *ManagedHsmKeysClient) createIfNotExistCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -120,7 +120,7 @@ func (client *ManagedHsmKeysClient) createIfNotExistHandleResponse(resp *http.Re
 // Get - Gets the current version of the specified key from the specified managed HSM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the Managed HSM Pool within the specified resource group.
 //   - keyName - The name of the key to be created. The value you provide may be copied globally for the purpose of running the
@@ -172,7 +172,7 @@ func (client *ManagedHsmKeysClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -190,7 +190,7 @@ func (client *ManagedHsmKeysClient) getHandleResponse(resp *http.Response) (Mana
 // GetVersion - Gets the specified version of the specified key in the specified managed HSM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the Managed HSM Pool within the specified resource group.
 //   - keyName - The name of the key to be created. The value you provide may be copied globally for the purpose of running the
@@ -248,7 +248,7 @@ func (client *ManagedHsmKeysClient) getVersionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *ManagedHsmKeysClient) getVersionHandleResponse(resp *http.Response
 
 // NewListPager - Lists the keys in the specified managed HSM.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the Managed HSM Pool within the specified resource group.
 //   - options - ManagedHsmKeysClientListOptions contains the optional parameters for the ManagedHsmKeysClient.NewListPager method.
@@ -312,7 +312,7 @@ func (client *ManagedHsmKeysClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -329,7 +329,7 @@ func (client *ManagedHsmKeysClient) listHandleResponse(resp *http.Response) (Man
 
 // NewListVersionsPager - Lists the keys in the specified managed HSM.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the Managed HSM Pool within the specified resource group.
 //   - keyName - The name of the key to be created. The value you provide may be copied globally for the purpose of running the
@@ -383,7 +383,7 @@ func (client *ManagedHsmKeysClient) listVersionsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", "2026-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

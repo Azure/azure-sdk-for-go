@@ -187,6 +187,22 @@ type AuthorizeRequest struct {
 	RemoteVolumeResourceID *string
 }
 
+// AzureKeyVaultDetails - Specifies the Azure Key Vault settings. These are used when
+// a) retrieving the bucket server certificate, and
+// b) storing the bucket credentials
+// Notes:
+// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+// 2. These properties are mutually exclusive with the server.certificateObject property.
+type AzureKeyVaultDetails struct {
+	// Specifies the Azure Key Vault settings for retrieving the bucket server certificate.
+	CertificateAkvDetails *CertificateAkvDetails
+
+	// Specifies the Azure Key Vault settings for storing the bucket credentials.
+	CredentialsAkvDetails *CredentialsAkvDetails
+}
+
 // Backup under a Backup Vault
 type Backup struct {
 	// REQUIRED; Backup Properties
@@ -468,6 +484,353 @@ type BreakReplicationRequest struct {
 	ForceBreakReplication *bool
 }
 
+// Bucket resource
+type Bucket struct {
+	// Bucket properties
+	Properties *BucketProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BucketCredentialsExpiry - The bucket's Access and Secret key pair Expiry Time expressed as the number of days from now.
+type BucketCredentialsExpiry struct {
+	// The number of days from now until the newly generated Access and Secret key pair will expire.
+	KeyPairExpiryDays *int32
+}
+
+// BucketGenerateCredentials - Bucket Access Key, Secret Key, and Expiry date and time of the key pair
+type BucketGenerateCredentials struct {
+	// READ-ONLY; The Access Key that is required along with the Secret Key to access the bucket.
+	AccessKey *string
+
+	// READ-ONLY; The bucket's Access and Secret key pair expiry date and time (in UTC).
+	KeyPairExpiry *time.Time
+
+	// READ-ONLY; The Secret Key that is required along with the Access Key to access the bucket.
+	SecretKey *string
+}
+
+// BucketList - List of volume bucket resources
+type BucketList struct {
+	// REQUIRED; The Bucket items on this page
+	Value []*Bucket
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// BucketPatch - Bucket resource
+type BucketPatch struct {
+	// Bucket properties
+	Properties *BucketPatchProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BucketPatchProperties - Bucket resource properties for a Patch operation
+type BucketPatchProperties struct {
+	// Specifies the Azure Key Vault settings. These are used when
+	// a) retrieving the bucket server certificate, and
+	// b) storing the bucket credentials
+	// Notes:
+	// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+	// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+	// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+	// 2. These properties are mutually exclusive with the server.certificateObject property.
+	AkvDetails *AzureKeyVaultDetails
+
+	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
+	// username. Note that the Unix and Windows user details are mutually exclusive, meaning one or other must be supplied, but
+	// not both.
+	FileSystemUser *FileSystemUser
+
+	// Access permissions for the bucket. Either ReadOnly or ReadWrite.
+	Permissions *BucketPatchPermissions
+
+	// Properties of the server managing the lifecycle of volume buckets
+	Server *BucketServerPatchProperties
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *ProvisioningState
+}
+
+// BucketProperties - Bucket resource properties
+type BucketProperties struct {
+	// Specifies the Azure Key Vault settings. These are used when
+	// a) retrieving the bucket server certificate, and
+	// b) storing the bucket credentials
+	// Notes:
+	// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+	// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+	// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+	// 2. These properties are mutually exclusive with the server.certificateObject property.
+	AkvDetails *AzureKeyVaultDetails
+
+	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
+	// username. Note that the Unix and Windows user details are mutually exclusive, meaning one or other must be supplied, but
+	// not both.
+	FileSystemUser *FileSystemUser
+
+	// The volume path mounted inside the bucket. The default is the root path '/' if no value is provided when the bucket is
+	// created.
+	Path *string
+
+	// Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is ReadOnly if no value is provided during
+	// bucket creation.
+	Permissions *BucketPermissions
+
+	// Properties of the server managing the lifecycle of volume buckets
+	Server *BucketServerProperties
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The bucket credentials status. There states:
+	// "NoCredentialsSet": Access and Secret key pair have not been generated.
+	// "CredentialsExpired": Access and Secret key pair have expired.
+	// "Active": The certificate has been installed and credentials are unexpired.
+	Status *CredentialsStatus
+}
+
+// BucketServerPatchProperties - Properties of the server managing the lifecycle of volume buckets
+type BucketServerPatchProperties struct {
+	// The base64-encoded contents of a PEM file, which includes both the bucket server's certificate and private key. It is generated
+	// by the end user and allows the user to access volume data in a read-only manner.
+	// Note: This is only used when Azure Key Vault is not configured. This property is mutually exclusive with the Azure Key
+	// Vault 'akv' properties.
+	CertificateObject *string
+
+	// The host part of the bucket URL, resolving to the bucket IP address and allowed by the server certificate.
+	Fqdn *string
+
+	// Action to take when there is a certificate conflict.
+	// Possible values include: 'Update', 'Fail'
+	OnCertificateConflictAction *OnCertificateConflictAction
+}
+
+// BucketServerProperties - Properties of the server managing the lifecycle of volume buckets
+type BucketServerProperties struct {
+	// The base64-encoded contents of a PEM file, which includes both the bucket server's certificate and private key. It is generated
+	// by the end user and allows the user to access volume data in a read-only manner.
+	// Note: This is only used when Azure Key Vault is not configured. This property is mutually exclusive with the Azure Key
+	// Vault 'akv' properties.
+	CertificateObject *string
+
+	// The host part of the bucket URL, resolving to the bucket IP address and allowed by the server certificate.
+	Fqdn *string
+
+	// Action to take when there is a certificate conflict.
+	// Possible values include: 'Update', 'Fail'
+	OnCertificateConflictAction *OnCertificateConflictAction
+
+	// READ-ONLY; Certificate Common Name taken from the certificate installed on the bucket server
+	CertificateCommonName *string
+
+	// READ-ONLY; The bucket server's certificate expiry date.
+	CertificateExpiryDate *time.Time
+
+	// READ-ONLY; The bucket server's IPv4 address
+	IPAddress *string
+}
+
+// Cache resource
+type Cache struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Cache properties
+	Properties *CacheProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+
+	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.")
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CacheList - List of Cache resources
+type CacheList struct {
+	// REQUIRED; The Cache items on this page
+	Value []*Cache
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// CacheMountTargetProperties - Contains all the information needed to mount a cache
+type CacheMountTargetProperties struct {
+	// READ-ONLY; The mount target's IPv4 address, used to mount the cache.
+	IPAddress *string
+
+	// READ-ONLY; UUID v4 used to identify the MountTarget
+	MountTargetID *string
+
+	// READ-ONLY; The SMB server's Fully Qualified Domain Name, FQDN
+	SmbServerFqdn *string
+}
+
+// CacheProperties - Cache resource properties
+type CacheProperties struct {
+	// REQUIRED; The Azure Resource URI for a delegated cache subnet that will be used to allocate data IPs.
+	CacheSubnetResourceID *string
+
+	// REQUIRED; Source of key used to encrypt data in the cache. Applicable if NetApp account has encryption.keySource = 'Microsoft.KeyVault'.
+	// Possible values (case-insensitive) are: 'Microsoft.NetApp, Microsoft.KeyVault'
+	EncryptionKeySource *EncryptionKeySource
+
+	// REQUIRED; The file path of the Cache.
+	FilePath *string
+
+	// REQUIRED; Origin cluster information
+	OriginClusterInformation *OriginClusterInformation
+
+	// REQUIRED; The Azure Resource URI for a delegated subnet that will be used for ANF Intercluster Interface IP addresses.
+	PeeringSubnetResourceID *string
+
+	// REQUIRED; Maximum storage quota allowed for a file system in bytes. Valid values are in the range 50GiB to 1PiB. Values
+	// expressed in bytes as multiples of 1GiB.
+	Size *int64
+
+	// Flag indicating whether a CIFS change notification is enabled for the cache.
+	CifsChangeNotifications *CifsChangeNotifyState
+
+	// Set of export policy rules
+	ExportPolicy *CachePropertiesExportPolicy
+
+	// Flag indicating whether the global file lock is enabled for the cache.
+	GlobalFileLocking *GlobalFileLockingState
+
+	// Describe if a cache is Kerberos enabled.
+	Kerberos *KerberosState
+
+	// The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable if encryptionKeySource
+	// = 'Microsoft.KeyVault'.
+	KeyVaultPrivateEndpointResourceID *string
+
+	// Specifies whether LDAP is enabled or not for flexcache volume.
+	Ldap *LdapState
+
+	// Specifies the type of LDAP server for flexcache volume.
+	LdapServerType *LdapServerType
+
+	// Set of supported protocol types, which include NFSv3, NFSv4 and SMB protocol
+	ProtocolTypes []*ProtocolTypes
+
+	// SMB information for the cache
+	SmbSettings *SmbSettings
+
+	// Maximum throughput in MiB/s that can be achieved by this cache volume and this will be accepted as input only for manual
+	// qosType cache
+	ThroughputMibps *float32
+
+	// Flag indicating whether writeback is enabled for the cache.
+	WriteBack *EnableWriteBackState
+
+	// READ-ONLY; Actual throughput in MiB/s for auto qosType volumes calculated based on size and serviceLevel
+	ActualThroughputMibps *float32
+
+	// READ-ONLY; Azure NetApp Files Cache lifecycle management
+	CacheState *CacheLifeCycleState
+
+	// READ-ONLY; Specifies if the cache is encryption or not.
+	Encryption *EncryptionState
+
+	// READ-ONLY; Language supported for volume.
+	Language *VolumeLanguage
+
+	// READ-ONLY; Maximum number of files allowed.
+	MaximumNumberOfFiles *int64
+
+	// READ-ONLY; List of mount targets that can be used to mount this cache
+	MountTargets []*CacheMountTargetProperties
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *CacheProvisioningState
+}
+
+// CachePropertiesExportPolicy - Set of export policy rules
+type CachePropertiesExportPolicy struct {
+	// Export policy rule
+	Rules []*ExportPolicyRule
+}
+
+// CacheUpdate - The type used for update operations of the Cache.
+type CacheUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *CacheUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// CacheUpdateProperties - The updatable properties of the Cache.
+type CacheUpdateProperties struct {
+	// Flag indicating whether a CIFS change notification is enabled for the cache.
+	CifsChangeNotifications *CifsChangeNotifyState
+
+	// Set of export policy rules
+	ExportPolicy *CachePropertiesExportPolicy
+
+	// The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable if encryptionKeySource
+	// = 'Microsoft.KeyVault'.
+	KeyVaultPrivateEndpointResourceID *string
+
+	// Set of supported protocol types, which include NFSv3, NFSv4 and SMB protocol
+	ProtocolTypes []*ProtocolTypes
+
+	// Maximum storage quota allowed for a file system in bytes. Valid values are in the range 50GiB to 1PiB. Values expressed
+	// in bytes as multiples of 1GiB.
+	Size *int64
+
+	// SMB information for the cache
+	SmbSettings *SmbSettings
+
+	// Maximum throughput in MiB/s that can be achieved by this cache volume and this will be accepted as input only for manual
+	// qosType cache
+	ThroughputMibps *float32
+
+	// Flag indicating whether writeback is enabled for the cache.
+	WriteBack *EnableWriteBackState
+}
+
 // CapacityPool - Capacity pool resource
 type CapacityPool struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -528,6 +891,15 @@ type CapacityPoolPatch struct {
 	Type *string
 }
 
+// CertificateAkvDetails - Specifies the Azure Key Vault settings for retrieving the bucket server certificate.
+type CertificateAkvDetails struct {
+	// The base URI of the Azure Key Vault that is used when retrieving the bucket certificate.
+	CertificateKeyVaultURI *string
+
+	// The name of the bucket server certificate stored in the Azure Key Vault.
+	CertificateName *string
+}
+
 // ChangeKeyVault - Change key vault request
 type ChangeKeyVault struct {
 	// REQUIRED; The name of the key that should be used for encryption.
@@ -560,11 +932,38 @@ type CheckAvailabilityResponse struct {
 	Reason *InAvailabilityReasonType
 }
 
+// CifsUser - The effective CIFS username when accessing the volume data.
+type CifsUser struct {
+	// The CIFS user's username
+	Username *string
+}
+
 // ClusterPeerCommandResponse - Information about cluster peering process
 type ClusterPeerCommandResponse struct {
-	// A command that needs to be run on the external ONTAP to accept cluster peering. Will only be present if <code>clusterPeeringStatus</code>
-	// is <code>pending</code>
-	PeerAcceptCommand *string
+	// Represents the properties of the cluster peer command response.
+	Properties *ClusterPeerCommandResponseProperties
+}
+
+// ClusterPeerCommandResponseProperties - Properties of the cluster peer command response.
+type ClusterPeerCommandResponseProperties struct {
+	// ClusterPeeringCommand to run to accept cluster peer. Will only be present if <code>clusterPeeringStatus</code> is <code>pending</code>.
+	ClusterPeeringCommand *string
+
+	// Passphrase for use with cluster peer command
+	Passphrase *string
+}
+
+// CredentialsAkvDetails - Specifies the Azure Key Vault settings for storing the bucket credentials.
+type CredentialsAkvDetails struct {
+	// The base URI of the Azure Key Vault that is used when storing the bucket credentials.
+	CredentialsKeyVaultURI *string
+
+	// The name of the secret stored in Azure Key Vault. The associated key pair has the following structure:
+	// {
+	// "access_key_id": "<REDACTED>",
+	// "secret_access_key": "<REDACTED>"
+	// }
+	SecretName *string
 }
 
 // DailySchedule - Daily Schedule properties
@@ -688,6 +1087,17 @@ type FilePathAvailabilityRequest struct {
 	// The Azure Resource logical availability zone which is used within zone mapping lookup for the subscription and region.
 	// The lookup will retrieve the physical zone where volume is placed.
 	AvailabilityZone *string
+}
+
+// FileSystemUser - File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows,
+// this is the user's username. Note that the Unix and Windows user details are mutually exclusive, meaning one or other must
+// be supplied, but not both.
+type FileSystemUser struct {
+	// The effective CIFS username when accessing the volume data.
+	CifsUser *CifsUser
+
+	// The effective NFS User ID and Group ID when accessing the volume data.
+	NfsUser *NfsUser
 }
 
 // GetGroupIDListForLDAPUserRequest - Get group Id list for LDAP User request
@@ -934,6 +1344,15 @@ type NetworkSiblingSet struct {
 	ProvisioningState *NetworkSiblingSetProvisioningState
 }
 
+// NfsUser - The effective NFS User ID and Group ID when accessing the volume data.
+type NfsUser struct {
+	// The NFS user's GID
+	GroupID *int64
+
+	// The NFS user's UID
+	UserID *int64
+}
+
 // NicInfo - NIC information and list of volumes for which the NIC has the primary mount IP Address.
 type NicInfo struct {
 	// Volume resource Ids
@@ -989,10 +1408,40 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification
 }
 
+// OriginClusterInformation - Stores the origin cluster information associated to a cache.
+type OriginClusterInformation struct {
+	// REQUIRED; ONTAP Intercluster LIF IP addresses. One IP address per cluster node is required
+	PeerAddresses []*string
+
+	// REQUIRED; ONTAP cluster name of external cluster hosting the origin volume. Must match the exact cluster name.
+	PeerClusterName *string
+
+	// REQUIRED; External origin volume name associated to this cache
+	PeerVolumeName *string
+
+	// REQUIRED; External Vserver (SVM) name name of the SVM hosting the origin volume
+	PeerVserverName *string
+}
+
 // PeerClusterForVolumeMigrationRequest - Source Cluster properties for a cluster peer request
 type PeerClusterForVolumeMigrationRequest struct {
 	// REQUIRED; A list of IC-LIF IPs that can be used to connect to the On-prem cluster
 	PeerIPAddresses []*string
+}
+
+// PeeringPassphrases - The response containing peering passphrases and commands for cluster and vserver peering.
+type PeeringPassphrases struct {
+	// REQUIRED; The cluster peering command.
+	ClusterPeeringCommand *string
+
+	// REQUIRED; The cluster peering passphrase.
+	ClusterPeeringPassphrase *string
+
+	// REQUIRED; The vserver peering command.
+	VserverPeeringCommand *string
+
+	// READ-ONLY; Warnings that are critical for the cluster peering and vserver peering processes.
+	CriticalWarning *string
 }
 
 // PlacementKeyValuePairs - Application specific parameters for the placement of volumes in the volume group
@@ -1340,6 +1789,20 @@ type ReplicationObject struct {
 	// READ-ONLY; Indicates whether the local volume is the source or destination for the Volume Replication
 	EndpointType *EndpointType
 
+	// READ-ONLY; Contains human-readable instructions on what the next step is to finish the external replication setup.
+	ExternalReplicationSetupInfo *string
+
+	// READ-ONLY; Property that only applies to external replications. Provides a machine-readable value for the status of the
+	// external replication setup.
+	ExternalReplicationSetupStatus *ExternalReplicationSetupStatus
+
+	// READ-ONLY; The mirror state property describes the current status of data replication for a replication. It provides insight
+	// into whether the data is actively being mirrored, if the replication process has been paused, or if it has yet to be initialized.
+	MirrorState *MirrorState
+
+	// READ-ONLY; The status of the Volume Replication
+	RelationshipStatus *VolumeReplicationRelationshipStatus
+
 	// READ-ONLY; Id
 	ReplicationID *string
 }
@@ -1402,6 +1865,18 @@ type ServiceSpecification struct {
 
 	// Metric specifications of operation.
 	MetricSpecifications []*MetricSpecification
+}
+
+// SmbSettings - SMB settings for the cache
+type SmbSettings struct {
+	// Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
+	SmbAccessBasedEnumeration *SmbAccessBasedEnumeration
+
+	// Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol cache.
+	SmbEncryption *SmbEncryptionState
+
+	// Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
+	SmbNonBrowsable *SmbNonBrowsable
 }
 
 // Snapshot of a Volume
@@ -1704,6 +2179,12 @@ type SuspectFile struct {
 
 // SvmPeerCommandResponse - Information about svm peering process
 type SvmPeerCommandResponse struct {
+	// Represents the properties of the SVM peer command response.
+	Properties *SvmPeerCommandResponseProperties
+}
+
+// SvmPeerCommandResponseProperties - Properties of the SVM peer command response.
+type SvmPeerCommandResponseProperties struct {
 	// A command that needs to be run on the external ONTAP to accept svm peering. Will only be present if <code>svmPeeringStatus</code>
 	// is <code>pending</code>
 	SvmPeeringCommand *string

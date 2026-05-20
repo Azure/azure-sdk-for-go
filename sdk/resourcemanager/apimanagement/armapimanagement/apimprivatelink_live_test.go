@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -214,17 +214,17 @@ func (testsuite *ApimprivatelinkTestSuite) Prepare() {
 		},
 		"variables": map[string]interface{}{},
 	}
-	params := map[string]interface{}{
-		"apimId":                        map[string]interface{}{"value": testsuite.apimId},
-		"location":                      map[string]interface{}{"value": testsuite.location},
-		"privateEndpointConnectionName": map[string]interface{}{"value": testsuite.privateEndpointConnectionName},
-		"virtualNetworksName":           map[string]interface{}{"value": testsuite.virtualNetworksName},
+	params := map[string]*armdeployments.DeploymentParameter{
+		"apimId":                        {Value: testsuite.apimId},
+		"location":                      {Value: testsuite.location},
+		"privateEndpointConnectionName": {Value: testsuite.privateEndpointConnectionName},
+		"virtualNetworksName":           {Value: testsuite.virtualNetworksName},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "PrivateEndpoint_Create", &deployment)

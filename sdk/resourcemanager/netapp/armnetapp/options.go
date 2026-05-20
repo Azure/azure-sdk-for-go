@@ -190,6 +190,99 @@ type BackupsUnderVolumeClientBeginMigrateBackupsOptions struct {
 	ResumeToken string
 }
 
+// BucketsClientBeginCreateOrUpdateOptions contains the optional parameters for the BucketsClient.BeginCreateOrUpdate method.
+type BucketsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BucketsClientBeginDeleteOptions contains the optional parameters for the BucketsClient.BeginDelete method.
+type BucketsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BucketsClientBeginGenerateAkvCredentialsOptions contains the optional parameters for the BucketsClient.BeginGenerateAkvCredentials
+// method.
+type BucketsClientBeginGenerateAkvCredentialsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BucketsClientBeginRefreshCertificateOptions contains the optional parameters for the BucketsClient.BeginRefreshCertificate
+// method.
+type BucketsClientBeginRefreshCertificateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BucketsClientBeginUpdateOptions contains the optional parameters for the BucketsClient.BeginUpdate method.
+type BucketsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BucketsClientGenerateCredentialsOptions contains the optional parameters for the BucketsClient.GenerateCredentials method.
+type BucketsClientGenerateCredentialsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BucketsClientGetOptions contains the optional parameters for the BucketsClient.Get method.
+type BucketsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BucketsClientListOptions contains the optional parameters for the BucketsClient.NewListPager method.
+type BucketsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CachesClientBeginCreateOrUpdateOptions contains the optional parameters for the CachesClient.BeginCreateOrUpdate method.
+type CachesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CachesClientBeginDeleteOptions contains the optional parameters for the CachesClient.BeginDelete method.
+type CachesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CachesClientBeginPoolChangeOptions contains the optional parameters for the CachesClient.BeginPoolChange method.
+type CachesClientBeginPoolChangeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CachesClientBeginResetSmbPasswordOptions contains the optional parameters for the CachesClient.BeginResetSmbPassword method.
+type CachesClientBeginResetSmbPasswordOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CachesClientBeginUpdateOptions contains the optional parameters for the CachesClient.BeginUpdate method.
+type CachesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CachesClientGetOptions contains the optional parameters for the CachesClient.Get method.
+type CachesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CachesClientListOptions contains the optional parameters for the CachesClient.NewListPager method.
+type CachesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CachesClientListPeeringPassphrasesOptions contains the optional parameters for the CachesClient.ListPeeringPassphrases
+// method.
+type CachesClientListPeeringPassphrasesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters

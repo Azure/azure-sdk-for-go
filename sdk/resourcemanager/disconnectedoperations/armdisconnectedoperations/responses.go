@@ -63,6 +63,29 @@ type ClientUpdateResponse struct {
 	DisconnectedOperation
 }
 
+// HardwareSettingsClientCreateOrUpdateResponse contains the response from method HardwareSettingsClient.BeginCreateOrUpdate.
+type HardwareSettingsClientCreateOrUpdateResponse struct {
+	// Hardware settings resource.
+	HardwareSetting
+}
+
+// HardwareSettingsClientDeleteResponse contains the response from method HardwareSettingsClient.BeginDelete.
+type HardwareSettingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// HardwareSettingsClientGetResponse contains the response from method HardwareSettingsClient.Get.
+type HardwareSettingsClientGetResponse struct {
+	// Hardware settings resource.
+	HardwareSetting
+}
+
+// HardwareSettingsClientListByParentResponse contains the response from method HardwareSettingsClient.NewListByParentPager.
+type HardwareSettingsClientListByParentResponse struct {
+	// The response of a HardwareSetting list operation.
+	HardwareSettingListResult
+}
+
 // ImagesClientGetResponse contains the response from method ImagesClient.Get.
 type ImagesClientGetResponse struct {
 	// Holds the release information of a disconnected operations image.

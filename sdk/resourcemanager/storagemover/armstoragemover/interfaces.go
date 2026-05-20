@@ -7,7 +7,7 @@ package armstoragemover
 // CredentialsClassification provides polymorphic access to related types.
 // Call the interface's GetCredentials() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureKeyVaultSmbCredentials, *Credentials
+// - *AzureKeyVaultS3WithHmacCredentials, *AzureKeyVaultSmbCredentials, *Credentials
 type CredentialsClassification interface {
 	// GetCredentials returns the Credentials content of the underlying type.
 	GetCredentials() *Credentials
@@ -17,7 +17,8 @@ type CredentialsClassification interface {
 // Call the interface's GetEndpointBaseProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureMultiCloudConnectorEndpointProperties, *AzureStorageBlobContainerEndpointProperties, *AzureStorageNfsFileShareEndpointProperties,
-// - *AzureStorageSmbFileShareEndpointProperties, *EndpointBaseProperties, *NfsMountEndpointProperties, *SmbMountEndpointProperties
+// - *AzureStorageSmbFileShareEndpointProperties, *EndpointBaseProperties, *NfsMountEndpointProperties, *S3WithHmacEndpointProperties,
+// - *SmbMountEndpointProperties
 type EndpointBasePropertiesClassification interface {
 	// GetEndpointBaseProperties returns the EndpointBaseProperties content of the underlying type.
 	GetEndpointBaseProperties() *EndpointBaseProperties
@@ -28,7 +29,7 @@ type EndpointBasePropertiesClassification interface {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureMultiCloudConnectorEndpointUpdateProperties, *AzureStorageBlobContainerEndpointUpdateProperties, *AzureStorageNfsFileShareEndpointUpdateProperties,
 // - *AzureStorageSmbFileShareEndpointUpdateProperties, *EndpointBaseUpdateProperties, *NfsMountEndpointUpdateProperties,
-// - *SmbMountEndpointUpdateProperties
+// - *S3WithHmacEndpointUpdateProperties, *SmbMountEndpointUpdateProperties
 type EndpointBaseUpdatePropertiesClassification interface {
 	// GetEndpointBaseUpdateProperties returns the EndpointBaseUpdateProperties content of the underlying type.
 	GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties

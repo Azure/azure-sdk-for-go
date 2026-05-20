@@ -88,10 +88,6 @@ type BackupsLongTermRetentionClientListByServerResponse struct {
 type BackupsLongTermRetentionClientStartResponse struct {
 	// Response for the LTR backup API call
 	BackupsLongTermRetentionResponse
-
-	// A unique ID for the current operation, service generated. All the resource providers must return this value in the response
-	// headers to facilitate debugging.
-	XMSRequestID *string
 }
 
 // CapabilitiesByLocationClientListResponse contains the response from method CapabilitiesByLocationClient.NewListPager.
@@ -327,10 +323,6 @@ type ServersClientListBySubscriptionResponse struct {
 type ServersClientMigrateNetworkModeResponse struct {
 	// The status of a network migration operation.
 	MigrateNetworkStatus
-
-	// A unique ID for the current operation, service generated. All the resource providers must return this value in the response
-	// headers to facilitate debugging.
-	XMSRequestID *string
 }
 
 // ServersClientRestartResponse contains the response from method ServersClient.BeginRestart.

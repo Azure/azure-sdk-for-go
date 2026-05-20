@@ -1,15 +1,46 @@
 # Release History
 
-## 1.5.0-beta.5 (Unreleased)
+## 1.5.0-beta.7 (Unreleased)
 
 ### Features Added
-
-* Adds support for float 16 datatype for vector embedding policy. See [PR 25707](https://github.com/Azure/azure-sdk-for-go/pull/25707)
-* Improved the performance of the built-in ReadMany implementation (when no QueryEngine is present). See [PR 26007](https://github.com/Azure/azure-sdk-for-go/pull/26007)
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+* Tightened the default HTTP client: 5s dial timeout (down from azcore's 30s), 65s `http.Client.Timeout` wall-clock cap per HTTP attempt (was unbounded), larger idle connection pool (1000 total / 100 per host, up from azcore's 100 / 10), and faster HTTP/2 health checks. Caller-supplied `Transport` and shorter `context` deadlines are unaffected. See [PR 26856](https://github.com/Azure/azure-sdk-for-go/pull/26856).
+
+## 1.5.0-beta.6 (2026-05-15)
+
+### Features Added
+
+* Adds `PriorityLevel` and `ThroughputBucket` options at the client and per-request level for item, query, change-feed, batch, and read-many operations. See [PR 26750](https://github.com/Azure/azure-sdk-for-go/pull/26750)
+* Added client-level partition key range cache and container properties cache, reducing redundant metadata round-trips for ReadMany and query operations. See [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)
+* Added operation diagnostics on responses and `DiagnosticsFromError` for retrieving diagnostics from failed operations. See [PR 26548](https://github.com/Azure/azure-sdk-for-go/pull/26548)
+
+### Breaking Changes
+
+* Removed `ChangeFeedResponse.PopulateCompositeContinuationToken()`. The method is no longer needed: `GetChangeFeed` now populates `ChangeFeedResponse.ContinuationToken` directly with the multi-range composite token. Callers who built single-range tokens manually can use `GetCompositeContinuationToken()` instead. See [PR 26792](https://github.com/Azure/azure-sdk-for-go/pull/26792).
+
+### Bugs Fixed
+
+* Fixed `GetChangeFeed` to survive partition splits: customer-supplied `FeedRange`s are now overlap-matched against the routing map, `410/Gone` triggers a cache refresh and bounded retry, split parents expand into per-child queue entries (inheriting the parent's ETag), and the continuation token persists multi-range state across calls. Continuation tokens are guarded against cross-container reuse. See [PR 26768](https://github.com/Azure/azure-sdk-for-go/pull/26768).
+* Fixed V2 partition key routing: the top 2 bits of the first EPK byte are now masked to stay within the partition key range space [0x00, 0x3F]. Previously, items whose V2 hash started with a byte >= 0x40 could fail routing in ReadMany because the EPK lexicographically exceeded the "FF" range sentinel. See [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)
+* Fixed error handling for partition key range calls which would previously cause panics on any error. See [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)
+* Fixed partition key range cache to use change-feed pagination when fetching ranges, preventing incomplete range sets on containers with many partitions. The incremental refresh path now accumulates all pages before merging, correctly handling cascading splits across multiple change-feed pages. See [PR 26777](https://github.com/Azure/azure-sdk-for-go/pull/26777)
+
+## 1.5.0-beta.5 (2026-03-09)
+
+### Features Added
+
+* Adds support for float 16 datatype for vector embedding policy. See [PR 25707](https://github.com/Azure/azure-sdk-for-go/pull/25707)
+* Improved the performance of the built-in ReadMany implementation. See [PR 26007](https://github.com/Azure/azure-sdk-for-go/pull/26007)
+
+### Breaking Changes
+
+* Removed `QueryEngine` field from `ReadManyOptions`. ReadMany now always uses the built-in Go-native implementation.
 
 ### Other Changes
 

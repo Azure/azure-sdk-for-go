@@ -81,6 +81,13 @@ type DefaultWafPolicyClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DeploymentWafPoliciesClientAnalysisOptions contains the optional parameters for the DeploymentWafPoliciesClient.Analysis
+// method.
+type DeploymentWafPoliciesClientAnalysisOptions struct {
+	// The content of the action request
+	Body *DeploymentWafPolicyAnalysisCreateRequest
+}
+
 // DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
 // method.
 type DeploymentsClientBeginCreateOrUpdateOptions struct {

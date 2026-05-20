@@ -1,5 +1,19 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-03-16)
+### Breaking Changes
+
+- Struct `ConnectionDetails` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `GroupConnectivityInformation` has been removed
+- Struct `PrivateLinkServiceConnection` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+
+
 ## 2.0.0-beta.1 (2024-03-22)
 ### Breaking Changes
 

@@ -15,11 +15,20 @@ import (
 
 // ServerFactory is a fake server for instances of the armchaos.ClientFactory type.
 type ServerFactory struct {
+	// ActionVersionsServer contains the fakes for client ActionVersionsClient
+	ActionVersionsServer ActionVersionsServer
+
+	// ActionsServer contains the fakes for client ActionsClient
+	ActionsServer ActionsServer
+
 	// CapabilitiesServer contains the fakes for client CapabilitiesClient
 	CapabilitiesServer CapabilitiesServer
 
 	// CapabilityTypesServer contains the fakes for client CapabilityTypesClient
 	CapabilityTypesServer CapabilityTypesServer
+
+	// DiscoveredResourcesServer contains the fakes for client DiscoveredResourcesClient
+	DiscoveredResourcesServer DiscoveredResourcesServer
 
 	// ExperimentsServer contains the fakes for client ExperimentsClient
 	ExperimentsServer ExperimentsServer
@@ -30,11 +39,26 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// PrivateAccessesServer contains the fakes for client PrivateAccessesClient
+	PrivateAccessesServer PrivateAccessesServer
+
+	// ScenarioConfigurationsServer contains the fakes for client ScenarioConfigurationsClient
+	ScenarioConfigurationsServer ScenarioConfigurationsServer
+
+	// ScenarioRunsServer contains the fakes for client ScenarioRunsClient
+	ScenarioRunsServer ScenarioRunsServer
+
+	// ScenariosServer contains the fakes for client ScenariosClient
+	ScenariosServer ScenariosServer
+
 	// TargetTypesServer contains the fakes for client TargetTypesClient
 	TargetTypesServer TargetTypesServer
 
 	// TargetsServer contains the fakes for client TargetsClient
 	TargetsServer TargetsServer
+
+	// WorkspacesServer contains the fakes for client WorkspacesClient
+	WorkspacesServer WorkspacesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -49,15 +73,23 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armchaos.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                       *ServerFactory
-	trMu                      sync.Mutex
-	trCapabilitiesServer      *CapabilitiesServerTransport
-	trCapabilityTypesServer   *CapabilityTypesServerTransport
-	trExperimentsServer       *ExperimentsServerTransport
-	trOperationStatusesServer *OperationStatusesServerTransport
-	trOperationsServer        *OperationsServerTransport
-	trTargetTypesServer       *TargetTypesServerTransport
-	trTargetsServer           *TargetsServerTransport
+	srv                            *ServerFactory
+	trMu                           sync.Mutex
+	trActionVersionsServer         *ActionVersionsServerTransport
+	trActionsServer                *ActionsServerTransport
+	trCapabilitiesServer           *CapabilitiesServerTransport
+	trCapabilityTypesServer        *CapabilityTypesServerTransport
+	trDiscoveredResourcesServer    *DiscoveredResourcesServerTransport
+	trExperimentsServer            *ExperimentsServerTransport
+	trOperationStatusesServer      *OperationStatusesServerTransport
+	trOperationsServer             *OperationsServerTransport
+	trPrivateAccessesServer        *PrivateAccessesServerTransport
+	trScenarioConfigurationsServer *ScenarioConfigurationsServerTransport
+	trScenarioRunsServer           *ScenarioRunsServerTransport
+	trScenariosServer              *ScenariosServerTransport
+	trTargetTypesServer            *TargetTypesServerTransport
+	trTargetsServer                *TargetsServerTransport
+	trWorkspacesServer             *WorkspacesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -73,31 +105,63 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ActionVersionsClient":
+		initServer(&s.trMu, &s.trActionVersionsServer, func() *ActionVersionsServerTransport {
+			return NewActionVersionsServerTransport(&s.srv.ActionVersionsServer)
+		})
+		resp, err = s.trActionVersionsServer.Do(req)
+	case "ActionsClient":
+		initServer(&s.trMu, &s.trActionsServer, func() *ActionsServerTransport { return NewActionsServerTransport(&s.srv.ActionsServer) })
+		resp, err = s.trActionsServer.Do(req)
 	case "CapabilitiesClient":
-		initServer(s, &s.trCapabilitiesServer, func() *CapabilitiesServerTransport { return NewCapabilitiesServerTransport(&s.srv.CapabilitiesServer) })
+		initServer(&s.trMu, &s.trCapabilitiesServer, func() *CapabilitiesServerTransport { return NewCapabilitiesServerTransport(&s.srv.CapabilitiesServer) })
 		resp, err = s.trCapabilitiesServer.Do(req)
 	case "CapabilityTypesClient":
-		initServer(s, &s.trCapabilityTypesServer, func() *CapabilityTypesServerTransport {
+		initServer(&s.trMu, &s.trCapabilityTypesServer, func() *CapabilityTypesServerTransport {
 			return NewCapabilityTypesServerTransport(&s.srv.CapabilityTypesServer)
 		})
 		resp, err = s.trCapabilityTypesServer.Do(req)
+	case "DiscoveredResourcesClient":
+		initServer(&s.trMu, &s.trDiscoveredResourcesServer, func() *DiscoveredResourcesServerTransport {
+			return NewDiscoveredResourcesServerTransport(&s.srv.DiscoveredResourcesServer)
+		})
+		resp, err = s.trDiscoveredResourcesServer.Do(req)
 	case "ExperimentsClient":
-		initServer(s, &s.trExperimentsServer, func() *ExperimentsServerTransport { return NewExperimentsServerTransport(&s.srv.ExperimentsServer) })
+		initServer(&s.trMu, &s.trExperimentsServer, func() *ExperimentsServerTransport { return NewExperimentsServerTransport(&s.srv.ExperimentsServer) })
 		resp, err = s.trExperimentsServer.Do(req)
 	case "OperationStatusesClient":
-		initServer(s, &s.trOperationStatusesServer, func() *OperationStatusesServerTransport {
+		initServer(&s.trMu, &s.trOperationStatusesServer, func() *OperationStatusesServerTransport {
 			return NewOperationStatusesServerTransport(&s.srv.OperationStatusesServer)
 		})
 		resp, err = s.trOperationStatusesServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PrivateAccessesClient":
+		initServer(&s.trMu, &s.trPrivateAccessesServer, func() *PrivateAccessesServerTransport {
+			return NewPrivateAccessesServerTransport(&s.srv.PrivateAccessesServer)
+		})
+		resp, err = s.trPrivateAccessesServer.Do(req)
+	case "ScenarioConfigurationsClient":
+		initServer(&s.trMu, &s.trScenarioConfigurationsServer, func() *ScenarioConfigurationsServerTransport {
+			return NewScenarioConfigurationsServerTransport(&s.srv.ScenarioConfigurationsServer)
+		})
+		resp, err = s.trScenarioConfigurationsServer.Do(req)
+	case "ScenarioRunsClient":
+		initServer(&s.trMu, &s.trScenarioRunsServer, func() *ScenarioRunsServerTransport { return NewScenarioRunsServerTransport(&s.srv.ScenarioRunsServer) })
+		resp, err = s.trScenarioRunsServer.Do(req)
+	case "ScenariosClient":
+		initServer(&s.trMu, &s.trScenariosServer, func() *ScenariosServerTransport { return NewScenariosServerTransport(&s.srv.ScenariosServer) })
+		resp, err = s.trScenariosServer.Do(req)
 	case "TargetTypesClient":
-		initServer(s, &s.trTargetTypesServer, func() *TargetTypesServerTransport { return NewTargetTypesServerTransport(&s.srv.TargetTypesServer) })
+		initServer(&s.trMu, &s.trTargetTypesServer, func() *TargetTypesServerTransport { return NewTargetTypesServerTransport(&s.srv.TargetTypesServer) })
 		resp, err = s.trTargetTypesServer.Do(req)
 	case "TargetsClient":
-		initServer(s, &s.trTargetsServer, func() *TargetsServerTransport { return NewTargetsServerTransport(&s.srv.TargetsServer) })
+		initServer(&s.trMu, &s.trTargetsServer, func() *TargetsServerTransport { return NewTargetsServerTransport(&s.srv.TargetsServer) })
 		resp, err = s.trTargetsServer.Do(req)
+	case "WorkspacesClient":
+		initServer(&s.trMu, &s.trWorkspacesServer, func() *WorkspacesServerTransport { return NewWorkspacesServerTransport(&s.srv.WorkspacesServer) })
+		resp, err = s.trWorkspacesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}
@@ -107,12 +171,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

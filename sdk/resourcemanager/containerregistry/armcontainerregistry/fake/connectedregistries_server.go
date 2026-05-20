@@ -40,6 +40,10 @@ type ConnectedRegistriesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.ConnectedRegistriesClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.ConnectedRegistriesClientListResponse])
 
+	// Resync is the fake for method ConnectedRegistriesClient.Resync
+	// HTTP status codes to indicate success: http.StatusOK
+	Resync func(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, options *armcontainerregistry.ConnectedRegistriesClientResyncOptions) (resp azfake.Responder[armcontainerregistry.ConnectedRegistriesClientResyncResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method ConnectedRegistriesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, connectedRegistryUpdateParameters armcontainerregistry.ConnectedRegistryUpdateParameters, options *armcontainerregistry.ConnectedRegistriesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.ConnectedRegistriesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -103,6 +107,8 @@ func (c *ConnectedRegistriesServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConnectedRegistriesClient.NewListPager":
 				res.resp, res.err = c.dispatchNewListPager(req)
+			case "ConnectedRegistriesClient.Resync":
+				res.resp, res.err = c.dispatchResync(req)
 			case "ConnectedRegistriesClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
@@ -358,6 +364,43 @@ func (c *ConnectedRegistriesServerTransport) dispatchNewListPager(req *http.Requ
 	}
 	if !server.PagerResponderMore(newListPager) {
 		c.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *ConnectedRegistriesServerTransport) dispatchResync(req *http.Request) (*http.Response, error) {
+	if c.srv.Resync == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Resync not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resync`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	connectedRegistryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Resync(req.Context(), resourceGroupNameParam, registryNameParam, connectedRegistryNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectedRegistry, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

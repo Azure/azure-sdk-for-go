@@ -64,6 +64,14 @@ func (c *ClientFactory) NewDefaultWafPolicyClient() *DefaultWafPolicyClient {
 	}
 }
 
+// NewDeploymentWafPoliciesClient creates a new instance of DeploymentWafPoliciesClient.
+func (c *ClientFactory) NewDeploymentWafPoliciesClient() *DeploymentWafPoliciesClient {
+	return &DeploymentWafPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDeploymentsClient creates a new instance of DeploymentsClient.
 func (c *ClientFactory) NewDeploymentsClient() *DeploymentsClient {
 	return &DeploymentsClient{

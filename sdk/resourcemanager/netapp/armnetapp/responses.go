@@ -174,6 +174,96 @@ type BackupsUnderVolumeClientMigrateBackupsResponse struct {
 	// placeholder for future response values
 }
 
+// BucketsClientCreateOrUpdateResponse contains the response from method BucketsClient.BeginCreateOrUpdate.
+type BucketsClientCreateOrUpdateResponse struct {
+	// Bucket resource
+	Bucket
+}
+
+// BucketsClientDeleteResponse contains the response from method BucketsClient.BeginDelete.
+type BucketsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BucketsClientGenerateAkvCredentialsResponse contains the response from method BucketsClient.BeginGenerateAkvCredentials.
+type BucketsClientGenerateAkvCredentialsResponse struct {
+	// placeholder for future response values
+}
+
+// BucketsClientGenerateCredentialsResponse contains the response from method BucketsClient.GenerateCredentials.
+type BucketsClientGenerateCredentialsResponse struct {
+	// Bucket Access Key, Secret Key, and Expiry date and time of the key pair
+	BucketGenerateCredentials
+}
+
+// BucketsClientGetResponse contains the response from method BucketsClient.Get.
+type BucketsClientGetResponse struct {
+	// Bucket resource
+	Bucket
+}
+
+// BucketsClientListResponse contains the response from method BucketsClient.NewListPager.
+type BucketsClientListResponse struct {
+	// List of volume bucket resources
+	BucketList
+}
+
+// BucketsClientRefreshCertificateResponse contains the response from method BucketsClient.BeginRefreshCertificate.
+type BucketsClientRefreshCertificateResponse struct {
+	// placeholder for future response values
+}
+
+// BucketsClientUpdateResponse contains the response from method BucketsClient.BeginUpdate.
+type BucketsClientUpdateResponse struct {
+	// Bucket resource
+	Bucket
+}
+
+// CachesClientCreateOrUpdateResponse contains the response from method CachesClient.BeginCreateOrUpdate.
+type CachesClientCreateOrUpdateResponse struct {
+	// Cache resource
+	Cache
+}
+
+// CachesClientDeleteResponse contains the response from method CachesClient.BeginDelete.
+type CachesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CachesClientGetResponse contains the response from method CachesClient.Get.
+type CachesClientGetResponse struct {
+	// Cache resource
+	Cache
+}
+
+// CachesClientListPeeringPassphrasesResponse contains the response from method CachesClient.ListPeeringPassphrases.
+type CachesClientListPeeringPassphrasesResponse struct {
+	// The response containing peering passphrases and commands for cluster and vserver peering.
+	PeeringPassphrases
+}
+
+// CachesClientListResponse contains the response from method CachesClient.NewListPager.
+type CachesClientListResponse struct {
+	// List of Cache resources
+	CacheList
+}
+
+// CachesClientPoolChangeResponse contains the response from method CachesClient.BeginPoolChange.
+type CachesClientPoolChangeResponse struct {
+	// placeholder for future response values
+}
+
+// CachesClientResetSmbPasswordResponse contains the response from method CachesClient.BeginResetSmbPassword.
+type CachesClientResetSmbPasswordResponse struct {
+	// placeholder for future response values
+}
+
+// CachesClientUpdateResponse contains the response from method CachesClient.BeginUpdate.
+type CachesClientUpdateResponse struct {
+	// Cache resource
+	Cache
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.

@@ -21,6 +21,9 @@ type ServerFactory struct {
 	// Server contains the fakes for client Client
 	Server Server
 
+	// HardwareSettingsServer contains the fakes for client HardwareSettingsClient
+	HardwareSettingsServer HardwareSettingsServer
+
 	// ImagesServer contains the fakes for client ImagesClient
 	ImagesServer ImagesServer
 }
@@ -37,11 +40,12 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdisconnectedoperations.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv               *ServerFactory
-	trMu              sync.Mutex
-	trArtifactsServer *ArtifactsServerTransport
-	trServer          *ServerTransport
-	trImagesServer    *ImagesServerTransport
+	srv                      *ServerFactory
+	trMu                     sync.Mutex
+	trArtifactsServer        *ArtifactsServerTransport
+	trServer                 *ServerTransport
+	trHardwareSettingsServer *HardwareSettingsServerTransport
+	trImagesServer           *ImagesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -63,6 +67,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
+	case "HardwareSettingsClient":
+		initServer(s, &s.trHardwareSettingsServer, func() *HardwareSettingsServerTransport {
+			return NewHardwareSettingsServerTransport(&s.srv.HardwareSettingsServer)
+		})
+		resp, err = s.trHardwareSettingsServer.Do(req)
 	case "ImagesClient":
 		initServer(s, &s.trImagesServer, func() *ImagesServerTransport { return NewImagesServerTransport(&s.srv.ImagesServer) })
 		resp, err = s.trImagesServer.Do(req)

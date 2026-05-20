@@ -669,7 +669,7 @@ func (s *RecordedTestSuite) TestEnqueueMessageWithTimeToLiveExpired() {
 	_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, &opts)
 	_require.NoError(err)
 
-	time.Sleep(time.Second * 2)
+	recording.Sleep(time.Second * 2)
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(0, len(resp.Messages))
@@ -1286,7 +1286,7 @@ func (s *RecordedTestSuite) TestUpdateMessageWithVisibilityTimeout() {
 	opts := &azqueue.UpdateMessageOptions{VisibilityTimeout: to.Ptr(int32(1))}
 	_, err = queueClient.UpdateMessage(context.Background(), messageID, popReceipt, "new content", opts)
 	_require.NoError(err)
-	time.Sleep(time.Second * 2)
+	recording.Sleep(time.Second * 2)
 	resp1, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.NoError(err)
 	content := *resp1.Messages[0].MessageText
@@ -1404,7 +1404,7 @@ func (s *UnrecordedTestSuite) TestQueueGetSASURL2() {
 	testcommon.ValidateQueueErrorCode(_require, err, queueerror.AuthorizationFailure)
 }
 
-func (s *UnrecordedTestSuite) TestQueueUserDelegationSAS_WithSduoid() {
+func (s *UnrecordedTestSuite) TestQueueUserDelegationSASWithSduoid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1440,6 +1440,46 @@ func (s *UnrecordedTestSuite) TestQueueUserDelegationSAS_WithSduoid() {
 	_require.NoError(err)
 	enc := qp.Encode()
 	_require.Contains(enc, "sduoid=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
+}
+
+func (s *UnrecordedTestSuite) TestUserDelegationSASWithDelegatedUserTenantID() {
+	_require := require.New(s.T())
+
+	testName := s.T().Name()
+	now := time.Now().UTC().Add(-time.Minute)
+	expiry := now.Add(30 * time.Minute)
+	serviceCode := "q"
+	version := sas.Version
+	oid := "00000000-0000-0000-0000-000000000000"
+	tid := "11111111-1111-1111-1111-111111111111"
+	skdutid := "22222222-2222-2222-2222-222222222222"
+	val := to.Ptr("AAAAAAAAAAAAAAAAAAAAAA==")
+
+	udk := exported.UserDelegationKey{
+		SignedStart:                 &now,
+		SignedExpiry:                &expiry,
+		SignedService:               &serviceCode,
+		SignedVersion:               &version,
+		SignedOID:                   &oid,
+		SignedTID:                   &tid,
+		SignedDelegatedUserTenantID: &skdutid,
+		Value:                       val,
+	}
+	udc := exported.NewUserDelegationCredential("testaccount", udk)
+
+	queueName := testcommon.GenerateQueueName(testName)
+	sv := sas.QueueSignatureValues{
+		Protocol:    sas.ProtocolHTTPS,
+		StartTime:   now,
+		ExpiryTime:  expiry,
+		Permissions: (&sas.QueuePermissions{Read: true, Add: true}).String(),
+		QueueName:   queueName,
+		// SignedDelegatedUserObjectID: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee", // Optional
+	}
+	qp, err := sv.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	enc := qp.Encode()
+	_require.Contains(enc, "skdutid="+skdutid)
 }
 
 func (s *UnrecordedTestSuite) TestServiceSASEnqueueMessage() {
@@ -1574,7 +1614,7 @@ func (s *UnrecordedTestSuite) TestQueueSASUsingAccessPolicy() {
 	_require.NoError(err)
 	_require.Len(gResp.SignedIdentifiers, 1)
 
-	time.Sleep(30 * time.Second)
+	recording.Sleep(30 * time.Second)
 
 	sasQueryParams, err := sas.QueueSignatureValues{
 		Protocol:   sas.ProtocolHTTPS,
@@ -1634,7 +1674,7 @@ func (s *UnrecordedTestSuite) TestQueueClientGetPropertiesApproximateMessagesCou
 		_, err = queueClient.EnqueueMessage(context.Background(), fmt.Sprintf("msg-%d", i), nil)
 		_require.NoError(err)
 	}
-	time.Sleep(3 * time.Second)
+	recording.Sleep(3 * time.Second)
 	propsResp, err := queueClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 

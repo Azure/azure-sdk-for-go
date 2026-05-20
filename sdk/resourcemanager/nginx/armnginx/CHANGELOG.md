@@ -1,5 +1,97 @@
 # Release History
 
+## 4.0.0 (2026-03-13)
+### Breaking Changes
+
+- Function `*CertificatesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, body Certificate, options *CertificatesClientBeginCreateOrUpdateOptions)`
+- Function `*ConfigurationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, options *ConfigurationsClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, body ConfigurationRequest, options *ConfigurationsClientBeginCreateOrUpdateOptions)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, deploymentName string, body Deployment, options *DeploymentsClientBeginCreateOrUpdateOptions)`
+- Function `*DeploymentsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, deploymentName string, body DeploymentUpdateParameters, options *DeploymentsClientBeginUpdateOptions)`
+- Type of `ConfigurationProperties.ProtectedFiles` has been changed from `[]*ConfigurationFile` to `[]*ConfigurationProtectedFileResponse`
+- Type of `OperationListResult.Value` has been changed from `[]*OperationResult` to `[]*Operation`
+- Struct `ErrorResponseBody` has been removed
+- Struct `OperationResult` has been removed
+- Struct `ResourceProviderDefaultErrorResponse` has been removed
+- Field `Body` of struct `CertificatesClientBeginCreateOrUpdateOptions` has been removed
+- Field `Location` of struct `Configuration` has been removed
+- Field `Body` of struct `ConfigurationsClientBeginCreateOrUpdateOptions` has been removed
+- Field `ManagedResourceGroup` of struct `DeploymentProperties` has been removed
+- Field `Body` of struct `DeploymentsClientBeginCreateOrUpdateOptions` has been removed
+- Field `Body` of struct `DeploymentsClientBeginUpdateOptions` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `ActivationState` with values `ActivationStateDisabled`, `ActivationStateEnabled`
+- New enum type `Level` with values `LevelInfo`, `LevelWarning`
+- New enum type `NginxDeploymentWafPolicyApplyingStatusCode` with values `NginxDeploymentWafPolicyApplyingStatusCodeApplying`, `NginxDeploymentWafPolicyApplyingStatusCodeFailed`, `NginxDeploymentWafPolicyApplyingStatusCodeNotApplied`, `NginxDeploymentWafPolicyApplyingStatusCodeRemoving`, `NginxDeploymentWafPolicyApplyingStatusCodeSucceeded`
+- New enum type `NginxDeploymentWafPolicyCompilingStatusCode` with values `NginxDeploymentWafPolicyCompilingStatusCodeFailed`, `NginxDeploymentWafPolicyCompilingStatusCodeInProgress`, `NginxDeploymentWafPolicyCompilingStatusCodeNotStarted`, `NginxDeploymentWafPolicyCompilingStatusCodeSucceeded`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New function `NewAPIKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIKeysClient, error)`
+- New function `*APIKeysClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, apiKeyName string, body DeploymentAPIKeyRequest, options *APIKeysClientCreateOrUpdateOptions) (APIKeysClientCreateOrUpdateResponse, error)`
+- New function `*APIKeysClient.Delete(ctx context.Context, resourceGroupName string, deploymentName string, apiKeyName string, options *APIKeysClientDeleteOptions) (APIKeysClientDeleteResponse, error)`
+- New function `*APIKeysClient.Get(ctx context.Context, resourceGroupName string, deploymentName string, apiKeyName string, options *APIKeysClientGetOptions) (APIKeysClientGetResponse, error)`
+- New function `*APIKeysClient.NewListPager(resourceGroupName string, deploymentName string, options *APIKeysClientListOptions) *runtime.Pager[APIKeysClientListResponse]`
+- New function `*ClientFactory.NewAPIKeysClient() *APIKeysClient`
+- New function `*ClientFactory.NewDefaultWafPolicyClient() *DefaultWafPolicyClient`
+- New function `*ClientFactory.NewDeploymentWafPoliciesClient() *DeploymentWafPoliciesClient`
+- New function `*ClientFactory.NewWafPolicyClient() *WafPolicyClient`
+- New function `*ConfigurationsClient.Analysis(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, options *ConfigurationsClientAnalysisOptions) (ConfigurationsClientAnalysisResponse, error)`
+- New function `NewDefaultWafPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefaultWafPolicyClient, error)`
+- New function `*DefaultWafPolicyClient.List(ctx context.Context, resourceGroupName string, deploymentName string, options *DefaultWafPolicyClientListOptions) (DefaultWafPolicyClientListResponse, error)`
+- New function `NewDeploymentWafPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentWafPoliciesClient, error)`
+- New function `*DeploymentWafPoliciesClient.Analysis(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *DeploymentWafPoliciesClientAnalysisOptions) (DeploymentWafPoliciesClientAnalysisResponse, error)`
+- New function `NewWafPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WafPolicyClient, error)`
+- New function `*WafPolicyClient.BeginCreate(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, body DeploymentWafPolicy, options *WafPolicyClientBeginCreateOptions) (*runtime.Poller[WafPolicyClientCreateResponse], error)`
+- New function `*WafPolicyClient.BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *WafPolicyClientBeginDeleteOptions) (*runtime.Poller[WafPolicyClientDeleteResponse], error)`
+- New function `*WafPolicyClient.Get(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *WafPolicyClientGetOptions) (WafPolicyClientGetResponse, error)`
+- New function `*WafPolicyClient.NewListPager(resourceGroupName string, deploymentName string, options *WafPolicyClientListOptions) *runtime.Pager[WafPolicyClientListResponse]`
+- New struct `AnalysisCreate`
+- New struct `AnalysisCreateConfig`
+- New struct `AnalysisDiagnostic`
+- New struct `AnalysisResult`
+- New struct `AnalysisResultData`
+- New struct `AutoUpgradeProfile`
+- New struct `CertificateErrorResponseBody`
+- New struct `ConfigurationProtectedFileRequest`
+- New struct `ConfigurationProtectedFileResponse`
+- New struct `ConfigurationRequest`
+- New struct `ConfigurationRequestProperties`
+- New struct `DeploymentAPIKeyListResponse`
+- New struct `DeploymentAPIKeyRequest`
+- New struct `DeploymentAPIKeyRequestProperties`
+- New struct `DeploymentAPIKeyResponse`
+- New struct `DeploymentAPIKeyResponseProperties`
+- New struct `DeploymentDefaultWafPolicyListResponse`
+- New struct `DeploymentDefaultWafPolicyProperties`
+- New struct `DeploymentPropertiesNginxAppProtect`
+- New struct `DeploymentScalingPropertiesAutoScaleSettings`
+- New struct `DeploymentUpdatePropertiesNginxAppProtect`
+- New struct `DeploymentWafPolicy`
+- New struct `DeploymentWafPolicyAnalysisCreateRequest`
+- New struct `DeploymentWafPolicyAnalysisData`
+- New struct `DeploymentWafPolicyAnalysisResponse`
+- New struct `DeploymentWafPolicyApplyingStatus`
+- New struct `DeploymentWafPolicyCompilingStatus`
+- New struct `DeploymentWafPolicyError`
+- New struct `DeploymentWafPolicyListResponse`
+- New struct `DeploymentWafPolicyMetadata`
+- New struct `DeploymentWafPolicyMetadataProperties`
+- New struct `DeploymentWafPolicyProperties`
+- New struct `DiagnosticItem`
+- New struct `Operation`
+- New struct `ScaleProfile`
+- New struct `ScaleProfileCapacity`
+- New struct `WebApplicationFirewallComponentVersions`
+- New struct `WebApplicationFirewallPackage`
+- New struct `WebApplicationFirewallSettings`
+- New struct `WebApplicationFirewallStatus`
+- New field `CertificateError`, `KeyVaultSecretCreated`, `KeyVaultSecretVersion`, `SHA1Thumbprint` in struct `CertificateProperties`
+- New field `AutoUpgradeProfile`, `DataplaneAPIEndpoint`, `NginxAppProtect` in struct `DeploymentProperties`
+- New field `AutoScaleSettings` in struct `DeploymentScalingProperties`
+- New field `AutoUpgradeProfile`, `NetworkProfile`, `NginxAppProtect` in struct `DeploymentUpdateProperties`
+
+
 ## 3.1.0-beta.3 (2025-10-09)
 ### Breaking Changes
 

@@ -1,5 +1,48 @@
 # Release History
 
+## 2.1.0-beta.1 (2026-03-27)
+### Features Added
+
+- New enum type `BringYourOwnRootStatus` with values `BringYourOwnRootStatusActive`, `BringYourOwnRootStatusActiveButPendingRenewal`, `BringYourOwnRootStatusPendingActivation`
+- New enum type `SupportedKeyType` with values `SupportedKeyTypeECC`
+- New function `*ClientFactory.NewCredentialsClient() *CredentialsClient`
+- New function `*ClientFactory.NewPoliciesClient() *PoliciesClient`
+- New function `NewCredentialsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CredentialsClient, error)`
+- New function `*CredentialsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, resource Credential, options *CredentialsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CredentialsClientCreateOrUpdateResponse], error)`
+- New function `*CredentialsClient.BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginDeleteOptions) (*runtime.Poller[CredentialsClientDeleteResponse], error)`
+- New function `*CredentialsClient.Get(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientGetOptions) (CredentialsClientGetResponse, error)`
+- New function `*CredentialsClient.NewListByResourceGroupPager(resourceGroupName string, namespaceName string, options *CredentialsClientListByResourceGroupOptions) *runtime.Pager[CredentialsClientListByResourceGroupResponse]`
+- New function `*CredentialsClient.BeginSynchronize(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginSynchronizeOptions) (*runtime.Poller[CredentialsClientSynchronizeResponse], error)`
+- New function `*CredentialsClient.BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, options *CredentialsClientBeginUpdateOptions) (*runtime.Poller[CredentialsClientUpdateResponse], error)`
+- New function `NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoliciesClient, error)`
+- New function `*PoliciesClient.BeginActivateBringYourOwnRoot(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, body ActivateBringYourOwnRootRequest, options *PoliciesClientBeginActivateBringYourOwnRootOptions) (*runtime.Poller[PoliciesClientActivateBringYourOwnRootResponse], error)`
+- New function `*PoliciesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, resource Policy, options *PoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PoliciesClientCreateOrUpdateResponse], error)`
+- New function `*PoliciesClient.BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginDeleteOptions) (*runtime.Poller[PoliciesClientDeleteResponse], error)`
+- New function `*PoliciesClient.Get(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientGetOptions) (PoliciesClientGetResponse, error)`
+- New function `*PoliciesClient.NewListByResourceGroupPager(resourceGroupName string, namespaceName string, options *PoliciesClientListByResourceGroupOptions) *runtime.Pager[PoliciesClientListByResourceGroupResponse]`
+- New function `*PoliciesClient.BeginRevokeIssuer(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginRevokeIssuerOptions) (*runtime.Poller[PoliciesClientRevokeIssuerResponse], error)`
+- New function `*PoliciesClient.BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, properties PolicyUpdate, options *PoliciesClientBeginUpdateOptions) (*runtime.Poller[PoliciesClientUpdateResponse], error)`
+- New function `*NamespaceDevicesClient.BeginRevoke(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, body DeviceCredentialsRevokeRequest, options *NamespaceDevicesClientBeginRevokeOptions) (*runtime.Poller[NamespaceDevicesClientRevokeResponse], error)`
+- New struct `ActivateBringYourOwnRootRequest`
+- New struct `BringYourOwnRoot`
+- New struct `CertificateAuthorityConfiguration`
+- New struct `CertificateConfiguration`
+- New struct `Credential`
+- New struct `CredentialListResult`
+- New struct `CredentialProperties`
+- New struct `CredentialUpdate`
+- New struct `DeviceCredentialPolicy`
+- New struct `DeviceCredentialsRevokeRequest`
+- New struct `LeafCertificateConfiguration`
+- New struct `Policy`
+- New struct `PolicyListResult`
+- New struct `PolicyProperties`
+- New struct `PolicyUpdate`
+- New struct `PolicyUpdateProperties`
+- New field `Policy` in struct `NamespaceDeviceProperties`
+- New field `Policy` in struct `NamespaceDeviceUpdateProperties`
+
+
 ## 2.0.0 (2025-10-23)
 ### Breaking Changes
 

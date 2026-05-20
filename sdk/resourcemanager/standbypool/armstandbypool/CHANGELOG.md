@@ -1,5 +1,13 @@
 # Release History
 
+## 2.1.0 (2026-03-10)
+### Features Added
+
+- New struct `DynamicSizing`
+- New field `DynamicSizing` in struct `StandbyContainerGroupPoolElasticityProfile`
+- New field `DynamicSizing`, `PostProvisioningDelay` in struct `StandbyVirtualMachinePoolElasticityProfile`
+
+
 ## 2.0.0 (2025-04-07)
 ### Breaking Changes
 

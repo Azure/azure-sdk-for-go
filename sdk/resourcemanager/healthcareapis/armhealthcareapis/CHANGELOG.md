@@ -1,5 +1,12 @@
 # Release History
 
+## 2.2.0-beta.1 (2026-05-20)
+### Features Added
+
+- New struct `StorageIndexingConfiguration`
+- New field `StorageIndexingConfiguration` in struct `StorageConfiguration`
+
+
 ## 2.1.0 (2024-04-26)
 ### Features Added
 

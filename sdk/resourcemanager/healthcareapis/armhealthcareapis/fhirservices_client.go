@@ -27,7 +27,7 @@ type FhirServicesClient struct {
 // NewFhirServicesClient creates a new instance of FhirServicesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFhirServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FhirServicesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewFhirServicesClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreateOrUpdate - Creates or updates a FHIR Service resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - fhirServiceName - The name of FHIR Service resource.
@@ -70,7 +70,7 @@ func (client *FhirServicesClient) BeginCreateOrUpdate(ctx context.Context, resou
 // CreateOrUpdate - Creates or updates a FHIR Service resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *FhirServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservice FhirService, options *FhirServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FhirServicesClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *FhirServicesClient) createOrUpdate(ctx context.Context, resourceGr
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FhirServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservice FhirService, options *FhirServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *FhirServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservice FhirService, _ *FhirServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -116,7 +116,7 @@ func (client *FhirServicesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fhirservice); err != nil {
@@ -128,7 +128,7 @@ func (client *FhirServicesClient) createOrUpdateCreateRequest(ctx context.Contex
 // BeginDelete - Deletes a FHIR Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - fhirServiceName - The name of FHIR Service resource.
 //   - workspaceName - The name of workspace resource.
@@ -154,7 +154,7 @@ func (client *FhirServicesClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes a FHIR Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *FhirServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *FhirServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FhirServicesClient.BeginDelete"
@@ -177,7 +177,7 @@ func (client *FhirServicesClient) deleteOperation(ctx context.Context, resourceG
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FhirServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *FhirServicesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *FhirServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, _ *FhirServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -200,7 +200,7 @@ func (client *FhirServicesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *FhirServicesClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Gets the properties of the specified FHIR Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - fhirServiceName - The name of FHIR Service resource.
@@ -237,7 +237,7 @@ func (client *FhirServicesClient) Get(ctx context.Context, resourceGroupName str
 }
 
 // getCreateRequest creates the Get request.
-func (client *FhirServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, options *FhirServicesClientGetOptions) (*policy.Request, error) {
+func (client *FhirServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, _ *FhirServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -260,7 +260,7 @@ func (client *FhirServicesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *FhirServicesClient) getHandleResponse(resp *http.Response) (FhirSe
 
 // NewListByWorkspacePager - Lists all FHIR Services for the given workspace
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - options - FhirServicesClientListByWorkspaceOptions contains the optional parameters for the FhirServicesClient.NewListByWorkspacePager
@@ -306,7 +306,7 @@ func (client *FhirServicesClient) NewListByWorkspacePager(resourceGroupName stri
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *FhirServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *FhirServicesClientListByWorkspaceOptions) (*policy.Request, error) {
+func (client *FhirServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *FhirServicesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -325,7 +325,7 @@ func (client *FhirServicesClient) listByWorkspaceCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -343,7 +343,7 @@ func (client *FhirServicesClient) listByWorkspaceHandleResponse(resp *http.Respo
 // BeginUpdate - Patch FHIR Service details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - fhirServiceName - The name of FHIR Service resource.
 //   - workspaceName - The name of workspace resource.
@@ -370,7 +370,7 @@ func (client *FhirServicesClient) BeginUpdate(ctx context.Context, resourceGroup
 // Update - Patch FHIR Service details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 func (client *FhirServicesClient) update(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FhirServicesClient.BeginUpdate"
@@ -393,7 +393,7 @@ func (client *FhirServicesClient) update(ctx context.Context, resourceGroupName 
 }
 
 // updateCreateRequest creates the Update request.
-func (client *FhirServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *FhirServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, _ *FhirServicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -416,7 +416,7 @@ func (client *FhirServicesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fhirservicePatchResource); err != nil {

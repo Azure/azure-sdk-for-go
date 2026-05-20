@@ -27,7 +27,7 @@ type FhirDestinationsClient struct {
 // NewFhirDestinationsClient creates a new instance of FhirDestinationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFhirDestinationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FhirDestinationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewFhirDestinationsClient(subscriptionID string, credential azcore.TokenCre
 
 // NewListByIotConnectorPager - Lists all FHIR destinations for the given IoT Connector
 //
-// Generated from API version 2024-03-31
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - iotConnectorName - The name of IoT Connector resource.
@@ -72,7 +72,7 @@ func (client *FhirDestinationsClient) NewListByIotConnectorPager(resourceGroupNa
 }
 
 // listByIotConnectorCreateRequest creates the ListByIotConnector request.
-func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, options *FhirDestinationsClientListByIotConnectorOptions) (*policy.Request, error) {
+func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, _ *FhirDestinationsClientListByIotConnectorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -95,7 +95,7 @@ func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-31")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

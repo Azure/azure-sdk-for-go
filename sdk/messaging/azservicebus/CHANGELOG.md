@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `Client.ListSessionsForQueue()` and `Client.ListSessionsForSubscription()` to list session IDs for entities with active messages, with support for filtering by session-state update timestamp. (PR#26688)
+
 ### Breaking Changes
 
 ### Bugs Fixed

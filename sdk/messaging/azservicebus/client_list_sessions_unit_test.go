@@ -49,8 +49,8 @@ func (l *scriptedRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap
 // management address.
 type pathCapturingNS struct {
 	*internal.FakeNS
-	mu             sync.Mutex
-	capturedPaths  []string
+	mu            sync.Mutex
+	capturedPaths []string
 }
 
 func (ns *pathCapturingNS) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error) {

@@ -425,6 +425,12 @@ func (client *Client) listSessionsForEntity(ctx context.Context, entityPath stri
 		allSessionIDs = nil
 		var skip int32
 
+		cancelAuth, _, claimErr := client.namespace.NegotiateClaim(ctx, managementPath)
+		if claimErr != nil {
+			return claimErr
+		}
+		defer cancelAuth()
+
 		rpcLink, err := client.namespace.NewRPCLink(ctx, managementPath)
 		if err != nil {
 			return err

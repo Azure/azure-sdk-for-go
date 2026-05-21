@@ -27,7 +27,7 @@ type ReplicasClient struct {
 // NewReplicasClient creates a new instance of ReplicasClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicasClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create or update a replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - replicaName - The name of the replica.
@@ -71,7 +71,7 @@ func (client *ReplicasClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create or update a replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *ReplicasClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, parameters Replica, options *ReplicasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicasClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *ReplicasClient) createOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ReplicasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, parameters Replica, options *ReplicasClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ReplicasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, parameters Replica, _ *ReplicasClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/replicas/{replicaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,7 +117,7 @@ func (client *ReplicasClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -129,7 +129,7 @@ func (client *ReplicasClient) createOrUpdateCreateRequest(ctx context.Context, r
 // Delete - Operation to delete a replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - replicaName - The name of the replica.
@@ -156,7 +156,7 @@ func (client *ReplicasClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ReplicasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *ReplicasClientDeleteOptions) (*policy.Request, error) {
+func (client *ReplicasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, _ *ReplicasClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/replicas/{replicaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -179,7 +179,7 @@ func (client *ReplicasClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *ReplicasClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get the replica and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - replicaName - The name of the replica.
@@ -216,7 +216,7 @@ func (client *ReplicasClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicasClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *ReplicasClientGetOptions) (*policy.Request, error) {
+func (client *ReplicasClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, _ *ReplicasClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/replicas/{replicaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -239,7 +239,7 @@ func (client *ReplicasClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -256,7 +256,7 @@ func (client *ReplicasClient) getHandleResponse(resp *http.Response) (ReplicasCl
 
 // NewListPager - List all replicas belong to this resource
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - ReplicasClientListOptions contains the optional parameters for the ReplicasClient.NewListPager method.
@@ -284,7 +284,7 @@ func (client *ReplicasClient) NewListPager(resourceGroupName string, resourceNam
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicasClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ReplicasClientListOptions) (*policy.Request, error) {
+func (client *ReplicasClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ReplicasClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/replicas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -303,7 +303,7 @@ func (client *ReplicasClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *ReplicasClient) listHandleResponse(resp *http.Response) (ReplicasC
 // BeginRestart - Operation to restart a replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - replicaName - The name of the replica.
@@ -347,7 +347,7 @@ func (client *ReplicasClient) BeginRestart(ctx context.Context, resourceGroupNam
 // Restart - Operation to restart a replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *ReplicasClient) restart(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *ReplicasClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicasClient.BeginRestart"
@@ -370,7 +370,7 @@ func (client *ReplicasClient) restart(ctx context.Context, resourceGroupName str
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *ReplicasClient) restartCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *ReplicasClientBeginRestartOptions) (*policy.Request, error) {
+func (client *ReplicasClient) restartCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, _ *ReplicasClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/replicas/{replicaName}/restart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -393,7 +393,7 @@ func (client *ReplicasClient) restartCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -402,7 +402,7 @@ func (client *ReplicasClient) restartCreateRequest(ctx context.Context, resource
 // BeginUpdate - Operation to update an exiting replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - replicaName - The name of the replica.
@@ -429,7 +429,7 @@ func (client *ReplicasClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - Operation to update an exiting replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *ReplicasClient) update(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, parameters Replica, options *ReplicasClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicasClient.BeginUpdate"
@@ -452,7 +452,7 @@ func (client *ReplicasClient) update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ReplicasClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, parameters Replica, options *ReplicasClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ReplicasClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, parameters Replica, _ *ReplicasClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/replicas/{replicaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -475,7 +475,7 @@ func (client *ReplicasClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

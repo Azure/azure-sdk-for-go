@@ -62,7 +62,7 @@ type Server struct {
 	BeginRegenerateKey func(ctx context.Context, resourceGroupName string, resourceName string, parameters armsignalr.RegenerateKeyParameters, options *armsignalr.ClientBeginRegenerateKeyOptions) (resp azfake.PollerResponder[armsignalr.ClientRegenerateKeyResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestart is the fake for method Client.BeginRestart
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRestart func(ctx context.Context, resourceGroupName string, resourceName string, options *armsignalr.ClientBeginRestartOptions) (resp azfake.PollerResponder[armsignalr.ClientRestartResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method Client.BeginUpdate
@@ -107,43 +107,62 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "Client.CheckNameAvailability":
-		resp, err = s.dispatchCheckNameAvailability(req)
-	case "Client.BeginCreateOrUpdate":
-		resp, err = s.dispatchBeginCreateOrUpdate(req)
-	case "Client.BeginDelete":
-		resp, err = s.dispatchBeginDelete(req)
-	case "Client.Get":
-		resp, err = s.dispatchGet(req)
-	case "Client.NewListByResourceGroupPager":
-		resp, err = s.dispatchNewListByResourceGroupPager(req)
-	case "Client.NewListBySubscriptionPager":
-		resp, err = s.dispatchNewListBySubscriptionPager(req)
-	case "Client.ListKeys":
-		resp, err = s.dispatchListKeys(req)
-	case "Client.ListReplicaSKUs":
-		resp, err = s.dispatchListReplicaSKUs(req)
-	case "Client.ListSKUs":
-		resp, err = s.dispatchListSKUs(req)
-	case "Client.BeginRegenerateKey":
-		resp, err = s.dispatchBeginRegenerateKey(req)
-	case "Client.BeginRestart":
-		resp, err = s.dispatchBeginRestart(req)
-	case "Client.BeginUpdate":
-		resp, err = s.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if serverTransportInterceptor != nil {
+			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "Client.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
+			case "Client.BeginCreateOrUpdate":
+				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
+			case "Client.BeginDelete":
+				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "Client.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "Client.NewListByResourceGroupPager":
+				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "Client.NewListBySubscriptionPager":
+				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
+			case "Client.ListKeys":
+				res.resp, res.err = s.dispatchListKeys(req)
+			case "Client.ListReplicaSKUs":
+				res.resp, res.err = s.dispatchListReplicaSKUs(req)
+			case "Client.ListSKUs":
+				res.resp, res.err = s.dispatchListSKUs(req)
+			case "Client.BeginRegenerateKey":
+				res.resp, res.err = s.dispatchBeginRegenerateKey(req)
+			case "Client.BeginRestart":
+				res.resp, res.err = s.dispatchBeginRestart(req)
+			case "Client.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *ServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
@@ -153,7 +172,7 @@ func (s *ServerTransport) dispatchCheckNameAvailability(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsignalr.NameAvailabilityParameters](req)
@@ -188,7 +207,7 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsignalr.ResourceInfo](req)
@@ -236,7 +255,7 @@ func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -278,7 +297,7 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -313,7 +332,7 @@ func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -350,7 +369,7 @@ func (s *ServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := s.srv.NewListBySubscriptionPager(nil)
@@ -381,7 +400,7 @@ func (s *ServerTransport) dispatchListKeys(req *http.Request) (*http.Response, e
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -414,7 +433,7 @@ func (s *ServerTransport) dispatchListReplicaSKUs(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicas/(?P<replicaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -451,7 +470,7 @@ func (s *ServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, e
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -486,7 +505,7 @@ func (s *ServerTransport) dispatchBeginRegenerateKey(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateKey`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsignalr.RegenerateKeyParameters](req)
@@ -534,7 +553,7 @@ func (s *ServerTransport) dispatchBeginRestart(req *http.Request) (*http.Respons
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -558,9 +577,9 @@ func (s *ServerTransport) dispatchBeginRestart(req *http.Request) (*http.Respons
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginRestart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRestart) {
 		s.beginRestart.remove(req)
@@ -578,7 +597,7 @@ func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsignalr.ResourceInfo](req)
@@ -615,4 +634,10 @@ func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ServerTransport
+var serverTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

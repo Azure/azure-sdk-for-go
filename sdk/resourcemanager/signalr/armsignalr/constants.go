@@ -5,11 +5,6 @@
 
 package armsignalr
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
-	moduleVersion = "v1.3.0-beta.1"
-)
-
 // ACLAction - Azure Networking ACL Action.
 type ACLAction string
 
@@ -23,6 +18,40 @@ func PossibleACLActionValues() []ACLAction {
 	return []ACLAction{
 		ACLActionAllow,
 		ACLActionDeny,
+	}
+}
+
+type ClientConnectionCountRuleDiscriminator string
+
+const (
+	ClientConnectionCountRuleDiscriminatorThrottleByJwtCustomClaimRule ClientConnectionCountRuleDiscriminator = "ThrottleByJwtCustomClaimRule"
+	ClientConnectionCountRuleDiscriminatorThrottleByJwtSignatureRule   ClientConnectionCountRuleDiscriminator = "ThrottleByJwtSignatureRule"
+	ClientConnectionCountRuleDiscriminatorThrottleByUserIDRule         ClientConnectionCountRuleDiscriminator = "ThrottleByUserIdRule"
+)
+
+// PossibleClientConnectionCountRuleDiscriminatorValues returns the possible values for the ClientConnectionCountRuleDiscriminator const type.
+func PossibleClientConnectionCountRuleDiscriminatorValues() []ClientConnectionCountRuleDiscriminator {
+	return []ClientConnectionCountRuleDiscriminator{
+		ClientConnectionCountRuleDiscriminatorThrottleByJwtCustomClaimRule,
+		ClientConnectionCountRuleDiscriminatorThrottleByJwtSignatureRule,
+		ClientConnectionCountRuleDiscriminatorThrottleByUserIDRule,
+	}
+}
+
+type ClientTrafficControlRuleDiscriminator string
+
+const (
+	ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule ClientTrafficControlRuleDiscriminator = "TrafficThrottleByJwtCustomClaimRule"
+	ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule   ClientTrafficControlRuleDiscriminator = "TrafficThrottleByJwtSignatureRule"
+	ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule         ClientTrafficControlRuleDiscriminator = "TrafficThrottleByUserIdRule"
+)
+
+// PossibleClientTrafficControlRuleDiscriminatorValues returns the possible values for the ClientTrafficControlRuleDiscriminator const type.
+func PossibleClientTrafficControlRuleDiscriminatorValues() []ClientTrafficControlRuleDiscriminator {
+	return []ClientTrafficControlRuleDiscriminator{
+		ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule,
+		ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule,
+		ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule,
 	}
 }
 

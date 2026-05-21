@@ -65,27 +65,46 @@ func (c *CustomCertificatesServerTransport) Do(req *http.Request) (*http.Respons
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return c.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "CustomCertificatesClient.BeginCreateOrUpdate":
-		resp, err = c.dispatchBeginCreateOrUpdate(req)
-	case "CustomCertificatesClient.Delete":
-		resp, err = c.dispatchDelete(req)
-	case "CustomCertificatesClient.Get":
-		resp, err = c.dispatchGet(req)
-	case "CustomCertificatesClient.NewListPager":
-		resp, err = c.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (c *CustomCertificatesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if customCertificatesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = customCertificatesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "CustomCertificatesClient.BeginCreateOrUpdate":
+				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
+			case "CustomCertificatesClient.Delete":
+				res.resp, res.err = c.dispatchDelete(req)
+			case "CustomCertificatesClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "CustomCertificatesClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (c *CustomCertificatesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -97,7 +116,7 @@ func (c *CustomCertificatesServerTransport) dispatchBeginCreateOrUpdate(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customCertificates/(?P<certificateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsignalr.CustomCertificate](req)
@@ -147,7 +166,7 @@ func (c *CustomCertificatesServerTransport) dispatchDelete(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customCertificates/(?P<certificateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -184,7 +203,7 @@ func (c *CustomCertificatesServerTransport) dispatchGet(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customCertificates/(?P<certificateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -223,7 +242,7 @@ func (c *CustomCertificatesServerTransport) dispatchNewListPager(req *http.Reque
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customCertificates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -253,4 +272,10 @@ func (c *CustomCertificatesServerTransport) dispatchNewListPager(req *http.Reque
 		c.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to CustomCertificatesServerTransport
+var customCertificatesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

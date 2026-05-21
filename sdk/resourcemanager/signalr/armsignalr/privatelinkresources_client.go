@@ -27,7 +27,7 @@ type PrivateLinkResourcesClient struct {
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // NewListPager - Get the private link resources that need to be created for a resource.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListPager
@@ -71,7 +71,7 @@ func (client *PrivateLinkResourcesClient) NewListPager(resourceGroupName string,
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *PrivateLinkResourcesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,7 +90,7 @@ func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

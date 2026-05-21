@@ -27,7 +27,7 @@ type SharedPrivateLinkResourcesClient struct {
 // NewSharedPrivateLinkResourcesClient creates a new instance of SharedPrivateLinkResourcesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSharedPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharedPrivateLinkResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,8 +43,8 @@ func NewSharedPrivateLinkResourcesClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Create or update a shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
-//   - sharedPrivateLinkResourceName - The name of the shared private link resource
+// Generated from API version 2025-01-01-preview
+//   - sharedPrivateLinkResourceName - The name of the shared private link resource.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - parameters - The shared private link resource
@@ -71,7 +71,7 @@ func (client *SharedPrivateLinkResourcesClient) BeginCreateOrUpdate(ctx context.
 // CreateOrUpdate - Create or update a shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *SharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, parameters SharedPrivateLinkResource, options *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SharedPrivateLinkResourcesClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Conte
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, parameters SharedPrivateLinkResource, options *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, parameters SharedPrivateLinkResource, _ *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}"
 	if sharedPrivateLinkResourceName == "" {
 		return nil, errors.New("parameter sharedPrivateLinkResourceName cannot be empty")
@@ -117,7 +117,7 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -129,8 +129,8 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 // BeginDelete - Delete the specified shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
-//   - sharedPrivateLinkResourceName - The name of the shared private link resource
+// Generated from API version 2025-01-01-preview
+//   - sharedPrivateLinkResourceName - The name of the shared private link resource.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - SharedPrivateLinkResourcesClientBeginDeleteOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.BeginDelete
@@ -156,7 +156,7 @@ func (client *SharedPrivateLinkResourcesClient) BeginDelete(ctx context.Context,
 // Delete - Delete the specified shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, options *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SharedPrivateLinkResourcesClient.BeginDelete"
@@ -179,7 +179,7 @@ func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Cont
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, options *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, _ *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}"
 	if sharedPrivateLinkResourceName == "" {
 		return nil, errors.New("parameter sharedPrivateLinkResourceName cannot be empty")
@@ -202,7 +202,7 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,8 +211,8 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 // Get - Get the specified shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
-//   - sharedPrivateLinkResourceName - The name of the shared private link resource
+// Generated from API version 2025-01-01-preview
+//   - sharedPrivateLinkResourceName - The name of the shared private link resource.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - SharedPrivateLinkResourcesClientGetOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.Get
@@ -240,7 +240,7 @@ func (client *SharedPrivateLinkResourcesClient) Get(ctx context.Context, sharedP
 }
 
 // getCreateRequest creates the Get request.
-func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, options *SharedPrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
+func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, _ *SharedPrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}"
 	if sharedPrivateLinkResourceName == "" {
 		return nil, errors.New("parameter sharedPrivateLinkResourceName cannot be empty")
@@ -263,7 +263,7 @@ func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *SharedPrivateLinkResourcesClient) getHandleResponse(resp *http.Res
 
 // NewListPager - List shared private link resources
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - SharedPrivateLinkResourcesClientListOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.NewListPager
@@ -309,7 +309,7 @@ func (client *SharedPrivateLinkResourcesClient) NewListPager(resourceGroupName s
 }
 
 // listCreateRequest creates the List request.
-func (client *SharedPrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *SharedPrivateLinkResourcesClientListOptions) (*policy.Request, error) {
+func (client *SharedPrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *SharedPrivateLinkResourcesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -328,7 +328,7 @@ func (client *SharedPrivateLinkResourcesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

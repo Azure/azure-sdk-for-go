@@ -7,6 +7,38 @@ package armsignalr
 
 import "time"
 
+// ApplicationFirewallSettings - Application firewall settings for the resource
+type ApplicationFirewallSettings struct {
+	// Rules to control the client connection count
+	ClientConnectionCountRules []ClientConnectionCountRuleClassification
+
+	// Rules to control the client traffic
+	ClientTrafficControlRules []ClientTrafficControlRuleClassification
+
+	// Config to control the client connection lifetime in seconds, can be set to 0 to disable the config
+	MaxClientConnectionLifetimeInSeconds *int64
+}
+
+// ClientConnectionCountRule - A base class for client connection count rules
+type ClientConnectionCountRule struct {
+	// REQUIRED
+	Type *ClientConnectionCountRuleDiscriminator
+}
+
+// GetClientConnectionCountRule implements the ClientConnectionCountRuleClassification interface for type ClientConnectionCountRule.
+func (c *ClientConnectionCountRule) GetClientConnectionCountRule() *ClientConnectionCountRule {
+	return c
+}
+
+// ClientTrafficControlRule - A base class for client traffic control rules
+type ClientTrafficControlRule struct {
+	// REQUIRED
+	Type *ClientTrafficControlRuleDiscriminator
+}
+
+// GetClientTrafficControlRule implements the ClientTrafficControlRuleClassification interface for type ClientTrafficControlRule.
+func (c *ClientTrafficControlRule) GetClientTrafficControlRule() *ClientTrafficControlRule { return c }
+
 // CorsSettings - Cross-Origin Resource Sharing (CORS) settings.
 type CorsSettings struct {
 	// Gets or sets the list of origins that should be allowed to make cross-origin calls (for example: http://example.com:12345).
@@ -450,6 +482,9 @@ type PrivateLinkServiceConnectionState struct {
 
 // Properties - A class that describes the properties of the resource
 type Properties struct {
+	// Application firewall settings for the resource
+	ApplicationFirewall *ApplicationFirewallSettings
+
 	// Cross-Origin Resource Sharing (CORS) settings.
 	Cors *CorsSettings
 
@@ -488,6 +523,9 @@ type Properties struct {
 	// Stop or start the resource. Default to "False". When it's true, the data plane of the resource is shutdown. When it's false,
 	// the data plane of the resource is started.
 	ResourceStopped *string
+
+	// Route settings for the resource
+	RouteSettings *RouteSettings
 
 	// Serverless settings.
 	Serverless *ServerlessSettings
@@ -644,12 +682,13 @@ type ResourceReference struct {
 // ResourceSKU - The billing information of the resource.
 type ResourceSKU struct {
 	// REQUIRED; The name of the SKU. Required.
-	// Allowed values: StandardS1, FreeF1, Premium_P1
+	// Allowed values: StandardS1, FreeF1, PremiumP1, PremiumP2
 	Name *string
 
-	// Optional, integer. The unit count of the resource. 1 by default.
-	// If present, following values are allowed: Free: 1; Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100; Premium:
-	// 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+	// Optional, integer. The unit count of the resource. 1 for FreeF1/StandardS1/PremiumP1, 100 for PremiumP2 by default.
+	// If present, following values are allowed: FreeF1: 1; StandardS1: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100; PremiumP1:
+	// 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100; PremiumP2:
+	// 100,200,300,400,500,600,700,800,900,1000;
 	Capacity *int32
 
 	// Optional tier of this particular SKU. 'Standard' or 'Free'.
@@ -661,6 +700,24 @@ type ResourceSKU struct {
 
 	// READ-ONLY; Not used. Retained for future use.
 	Size *string
+}
+
+// RouteSettings - Route settings for the resource
+type RouteSettings struct {
+	// Gets or sets the connection balance weight. A higher value means a greater balance of client connections across different
+	// server connections. A value of 0 distributes connections randomly, while a
+	// value of 255 ensures maximum balancing. The default value is 255. Recommended 255 for all of the cases.
+	ConnectionBalanceWeight *int32
+
+	// Gets or sets the weight for latency-based routing. A higher value increases the influence of latency-based routing. A value
+	// of 0 disables latency-based routing entirely, while a value of 255 enables
+	// it fully. The default value is 0. Recommended 255 for replicas or app servers in different regions for disaster recovery.
+	LatencyWeight *int32
+
+	// Gets or sets the server balance weight. A higher value means a greater balance of client connections across different app
+	// server instances. A value of 0 distributes connections randomly, while a value
+	// of 255 ensures maximum balancing. The default value is 255. Recommended 255 for multiple app servers in same size.
+	ServerBalanceWeight *int32
 }
 
 // SKU - Describes an available sku."
@@ -712,6 +769,15 @@ type ServerlessSettings struct {
 	// and they want to keep the same client connection alive during this session. The service considers the client disconnected
 	// if it hasn't received a message (including keep-alive) in this interval.
 	ConnectionTimeoutInSeconds *int32
+
+	// Gets or sets the Keep-Alive Interval. Optional to set. Value is in seconds. The default value is 15 seconds. Customers
+	// should set this value to a shorter period if they want the service to send
+	// keep-alive messages more frequently, ensuring timely checks of the connection status. Conversely, customers can set this
+	// value to a longer period if they want the service to send keep-alive messages
+	// less frequently, reducing network traffic, but note that it may take longer to detect a disconnection. This interval ensures
+	// that the connection is maintained by sending periodic keep-alive messages
+	// to the client.
+	KeepAliveIntervalInSeconds *int32
 }
 
 // ServerlessUpstreamSettings - The settings for the Upstream when the service is in server-less mode.
@@ -787,6 +853,9 @@ type SharedPrivateLinkResourceProperties struct {
 	// REQUIRED; The resource id of the resource the shared private link resource is for
 	PrivateLinkResourceID *string
 
+	// A list of FQDNs for third party private link service
+	Fqdns []*string
+
 	// The request message for requesting approval of the shared private link resource
 	RequestMessage *string
 
@@ -823,6 +892,131 @@ type TLSSettings struct {
 	// Request client certificate during TLS handshake if enabled. Not supported for free tier. Any input will be ignored for
 	// free tier.
 	ClientCertEnabled *bool
+}
+
+// ThrottleByJwtCustomClaimRule - Throttle the client connection by a custom JWT claim
+type ThrottleByJwtCustomClaimRule struct {
+	// REQUIRED; The name of the claim in the JWT token. The client connection with the same claim value will be aggregated. If
+	// the claim is not found in the token, the connection will be allowed.
+	ClaimName *string
+
+	// REQUIRED
+	Type *ClientConnectionCountRuleDiscriminator
+
+	// Maximum connection count allowed for the same Jwt claim value. Clients with the same Jwt claim will get rejected if the
+	// connection count exceeds this value. Default value is 20.
+	MaxCount *int32
+}
+
+// GetClientConnectionCountRule implements the ClientConnectionCountRuleClassification interface for type ThrottleByJwtCustomClaimRule.
+func (t *ThrottleByJwtCustomClaimRule) GetClientConnectionCountRule() *ClientConnectionCountRule {
+	return &ClientConnectionCountRule{
+		Type: t.Type,
+	}
+}
+
+// ThrottleByJwtSignatureRule - Throttle the client connection by the JWT signature
+type ThrottleByJwtSignatureRule struct {
+	// REQUIRED
+	Type *ClientConnectionCountRuleDiscriminator
+
+	// Maximum connection count allowed for the same JWT signature. Clients with the same JWT signature will get rejected if the
+	// connection count exceeds this value. Default value is 20.
+	MaxCount *int32
+}
+
+// GetClientConnectionCountRule implements the ClientConnectionCountRuleClassification interface for type ThrottleByJwtSignatureRule.
+func (t *ThrottleByJwtSignatureRule) GetClientConnectionCountRule() *ClientConnectionCountRule {
+	return &ClientConnectionCountRule{
+		Type: t.Type,
+	}
+}
+
+// ThrottleByUserIDRule - Throttle the client connection by the user ID
+type ThrottleByUserIDRule struct {
+	// REQUIRED
+	Type *ClientConnectionCountRuleDiscriminator
+
+	// Maximum connection count allowed for the same user ID. Clients with the same user ID will get rejected if the connection
+	// count exceeds this value. Default value is 20.
+	MaxCount *int32
+}
+
+// GetClientConnectionCountRule implements the ClientConnectionCountRuleClassification interface for type ThrottleByUserIDRule.
+func (t *ThrottleByUserIDRule) GetClientConnectionCountRule() *ClientConnectionCountRule {
+	return &ClientConnectionCountRule{
+		Type: t.Type,
+	}
+}
+
+// TrafficThrottleByJwtCustomClaimRule - Throttle the client traffic by a custom JWT claim
+type TrafficThrottleByJwtCustomClaimRule struct {
+	// REQUIRED; The name of the claim in the JWT token. The message bytes with the same claim value will be aggregated. If the
+	// claim is not found in the token, the rule will be skipped.
+	ClaimName *string
+
+	// REQUIRED
+	Type *ClientTrafficControlRuleDiscriminator
+
+	// The aggregation window for the message bytes. The message bytes will be aggregated in this window and be reset after the
+	// window. Default value is 60 seconds.
+	AggregationWindowInSeconds *int32
+
+	// Maximum accumulated inbound message bytes allowed for the same JWT signature within a time window. Clients with the same
+	// JWT claim will get disconnected if the message bytes exceeds this value.
+	// Default value is 1GB.
+	MaxInboundMessageBytes *int64
+}
+
+// GetClientTrafficControlRule implements the ClientTrafficControlRuleClassification interface for type TrafficThrottleByJwtCustomClaimRule.
+func (t *TrafficThrottleByJwtCustomClaimRule) GetClientTrafficControlRule() *ClientTrafficControlRule {
+	return &ClientTrafficControlRule{
+		Type: t.Type,
+	}
+}
+
+// TrafficThrottleByJwtSignatureRule - Throttle the client traffic by the JWT signature
+type TrafficThrottleByJwtSignatureRule struct {
+	// REQUIRED
+	Type *ClientTrafficControlRuleDiscriminator
+
+	// The aggregation window for the message bytes. The message bytes will be aggregated in this window and be reset after the
+	// window. Default value is 60 seconds.
+	AggregationWindowInSeconds *int32
+
+	// Maximum accumulated inbound message bytes allowed for the same JWT signature within a time window. Clients with the same
+	// JWT signature will get disconnected if the message bytes exceeds this value.
+	// Default value is 1GB.
+	MaxInboundMessageBytes *int64
+}
+
+// GetClientTrafficControlRule implements the ClientTrafficControlRuleClassification interface for type TrafficThrottleByJwtSignatureRule.
+func (t *TrafficThrottleByJwtSignatureRule) GetClientTrafficControlRule() *ClientTrafficControlRule {
+	return &ClientTrafficControlRule{
+		Type: t.Type,
+	}
+}
+
+// TrafficThrottleByUserIDRule - Throttle the client traffic by the user ID
+type TrafficThrottleByUserIDRule struct {
+	// REQUIRED
+	Type *ClientTrafficControlRuleDiscriminator
+
+	// The aggregation window for the message bytes. The message bytes will be aggregated in this window and be reset after the
+	// window. Default value is 60 seconds.
+	AggregationWindowInSeconds *int32
+
+	// Maximum accumulated inbound message bytes allowed for the same user ID within a time window. Clients with the same user
+	// ID will get disconnected if the message bytes exceeds this value. Default value
+	// is 1GB.
+	MaxInboundMessageBytes *int64
+}
+
+// GetClientTrafficControlRule implements the ClientTrafficControlRuleClassification interface for type TrafficThrottleByUserIDRule.
+func (t *TrafficThrottleByUserIDRule) GetClientTrafficControlRule() *ClientTrafficControlRule {
+	return &ClientTrafficControlRule{
+		Type: t.Type,
+	}
 }
 
 // UpstreamAuthSettings - Upstream auth settings. If not set, no auth is used for upstream messages.

@@ -27,7 +27,7 @@ type Client struct {
 // NewClient creates a new instance of Client with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,8 +43,8 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // CheckNameAvailability - Checks that the resource name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
-//   - location - the region
+// Generated from API version 2025-01-01-preview
+//   - location - The region
 //   - parameters - Parameters supplied to the operation.
 //   - options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
 func (client *Client) CheckNameAvailability(ctx context.Context, location string, parameters NameAvailabilityParameters, options *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error) {
@@ -70,7 +70,7 @@ func (client *Client) CheckNameAvailability(ctx context.Context, location string
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, location string, parameters NameAvailabilityParameters, options *ClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, location string, parameters NameAvailabilityParameters, _ *ClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/locations/{location}/checkNameAvailability"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -85,7 +85,7 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -106,7 +106,7 @@ func (client *Client) checkNameAvailabilityHandleResponse(resp *http.Response) (
 // BeginCreateOrUpdate - Create or update a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - parameters - Parameters for the create or update operation
@@ -132,7 +132,7 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName
 // CreateOrUpdate - Create or update a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceInfo, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdate"
@@ -155,7 +155,7 @@ func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName stri
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceInfo, options *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceInfo, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -174,7 +174,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -186,7 +186,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 // BeginDelete - Operation to delete a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
@@ -211,7 +211,7 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 // Delete - Operation to delete a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDelete"
@@ -234,7 +234,7 @@ func (client *Client) deleteOperation(ctx context.Context, resourceGroupName str
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -253,7 +253,7 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +262,7 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 // Get - Get the resource and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -289,7 +289,7 @@ func (client *Client) Get(ctx context.Context, resourceGroupName string, resourc
 }
 
 // getCreateRequest creates the Get request.
-func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ClientGetOptions) (*policy.Request, error) {
+func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -308,7 +308,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -325,7 +325,7 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // NewListByResourceGroupPager - Handles requests to list all resources in a resource group.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager
 //     method.
@@ -353,7 +353,7 @@ func (client *Client) NewListByResourceGroupPager(resourceGroupName string, opti
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -368,7 +368,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -385,7 +385,7 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 
 // NewListBySubscriptionPager - Handles requests to list all resources in a subscription.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - options - ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListBySubscriptionResponse]{
@@ -411,7 +411,7 @@ func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscripti
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, options *ClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, _ *ClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/signalR"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -422,7 +422,7 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, optio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -440,7 +440,7 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (Cli
 // ListKeys - Get the access keys of the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
@@ -467,7 +467,7 @@ func (client *Client) ListKeys(ctx context.Context, resourceGroupName string, re
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ClientListKeysOptions) (*policy.Request, error) {
+func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/listKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -486,7 +486,7 @@ func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -504,7 +504,7 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ClientListKey
 // ListReplicaSKUs - List all available skus of the replica resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - replicaName - The name of the replica.
@@ -532,7 +532,7 @@ func (client *Client) ListReplicaSKUs(ctx context.Context, resourceGroupName str
 }
 
 // listReplicaSKUsCreateRequest creates the ListReplicaSKUs request.
-func (client *Client) listReplicaSKUsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *ClientListReplicaSKUsOptions) (*policy.Request, error) {
+func (client *Client) listReplicaSKUsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, _ *ClientListReplicaSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/replicas/{replicaName}/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -555,7 +555,7 @@ func (client *Client) listReplicaSKUsCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -573,7 +573,7 @@ func (client *Client) listReplicaSKUsHandleResponse(resp *http.Response) (Client
 // ListSKUs - List all available skus of the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - ClientListSKUsOptions contains the optional parameters for the Client.ListSKUs method.
@@ -600,7 +600,7 @@ func (client *Client) ListSKUs(ctx context.Context, resourceGroupName string, re
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
-func (client *Client) listSKUsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ClientListSKUsOptions) (*policy.Request, error) {
+func (client *Client) listSKUsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ClientListSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -619,7 +619,7 @@ func (client *Client) listSKUsCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -638,7 +638,7 @@ func (client *Client) listSKUsHandleResponse(resp *http.Response) (ClientListSKU
 // same time.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - parameters - Parameter that describes the Regenerate Key Operation.
@@ -665,7 +665,7 @@ func (client *Client) BeginRegenerateKey(ctx context.Context, resourceGroupName 
 // time.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *Client) regenerateKey(ctx context.Context, resourceGroupName string, resourceName string, parameters RegenerateKeyParameters, options *ClientBeginRegenerateKeyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginRegenerateKey"
@@ -688,7 +688,7 @@ func (client *Client) regenerateKey(ctx context.Context, resourceGroupName strin
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.
-func (client *Client) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters RegenerateKeyParameters, options *ClientBeginRegenerateKeyOptions) (*policy.Request, error) {
+func (client *Client) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters RegenerateKeyParameters, _ *ClientBeginRegenerateKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/regenerateKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -707,7 +707,7 @@ func (client *Client) regenerateKeyCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -719,7 +719,7 @@ func (client *Client) regenerateKeyCreateRequest(ctx context.Context, resourceGr
 // BeginRestart - Operation to restart a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - ClientBeginRestartOptions contains the optional parameters for the Client.BeginRestart method.
@@ -744,7 +744,7 @@ func (client *Client) BeginRestart(ctx context.Context, resourceGroupName string
 // Restart - Operation to restart a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *Client) restart(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginRestart"
@@ -767,7 +767,7 @@ func (client *Client) restart(ctx context.Context, resourceGroupName string, res
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *Client) restartCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginRestartOptions) (*policy.Request, error) {
+func (client *Client) restartCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/restart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -786,7 +786,7 @@ func (client *Client) restartCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -795,7 +795,7 @@ func (client *Client) restartCreateRequest(ctx context.Context, resourceGroupNam
 // BeginUpdate - Operation to update an exiting resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - parameters - Parameters for the update operation
@@ -821,7 +821,7 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string,
 // Update - Operation to update an exiting resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *Client) update(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceInfo, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginUpdate"
@@ -844,7 +844,7 @@ func (client *Client) update(ctx context.Context, resourceGroupName string, reso
 }
 
 // updateCreateRequest creates the Update request.
-func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceInfo, options *ClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceInfo, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -863,7 +863,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

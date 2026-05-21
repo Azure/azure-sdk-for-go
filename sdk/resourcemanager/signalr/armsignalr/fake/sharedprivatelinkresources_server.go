@@ -67,27 +67,46 @@ func (s *SharedPrivateLinkResourcesServerTransport) Do(req *http.Request) (*http
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "SharedPrivateLinkResourcesClient.BeginCreateOrUpdate":
-		resp, err = s.dispatchBeginCreateOrUpdate(req)
-	case "SharedPrivateLinkResourcesClient.BeginDelete":
-		resp, err = s.dispatchBeginDelete(req)
-	case "SharedPrivateLinkResourcesClient.Get":
-		resp, err = s.dispatchGet(req)
-	case "SharedPrivateLinkResourcesClient.NewListPager":
-		resp, err = s.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *SharedPrivateLinkResourcesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if sharedPrivateLinkResourcesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = sharedPrivateLinkResourcesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "SharedPrivateLinkResourcesClient.BeginCreateOrUpdate":
+				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
+			case "SharedPrivateLinkResourcesClient.BeginDelete":
+				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SharedPrivateLinkResourcesClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SharedPrivateLinkResourcesClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *SharedPrivateLinkResourcesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -99,7 +118,7 @@ func (s *SharedPrivateLinkResourcesServerTransport) dispatchBeginCreateOrUpdate(
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedPrivateLinkResources/(?P<sharedPrivateLinkResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsignalr.SharedPrivateLinkResource](req)
@@ -151,7 +170,7 @@ func (s *SharedPrivateLinkResourcesServerTransport) dispatchBeginDelete(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedPrivateLinkResources/(?P<sharedPrivateLinkResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		sharedPrivateLinkResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sharedPrivateLinkResourceName")])
@@ -197,7 +216,7 @@ func (s *SharedPrivateLinkResourcesServerTransport) dispatchGet(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedPrivateLinkResources/(?P<sharedPrivateLinkResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	sharedPrivateLinkResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sharedPrivateLinkResourceName")])
@@ -236,7 +255,7 @@ func (s *SharedPrivateLinkResourcesServerTransport) dispatchNewListPager(req *ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedPrivateLinkResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -266,4 +285,10 @@ func (s *SharedPrivateLinkResourcesServerTransport) dispatchNewListPager(req *ht
 		s.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to SharedPrivateLinkResourcesServerTransport
+var sharedPrivateLinkResourcesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

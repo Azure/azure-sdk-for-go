@@ -27,7 +27,7 @@ type PrivateEndpointConnectionsClient struct {
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 // BeginDelete - Delete the specified private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
@@ -70,7 +70,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 // Delete - Delete the specified private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -93,7 +93,7 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string, _ *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if privateEndpointConnectionName == "" {
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
@@ -116,7 +116,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -125,7 +125,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 // Get - Get the specified private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
@@ -154,7 +154,7 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, private
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsClientGetOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string, _ *PrivateEndpointConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if privateEndpointConnectionName == "" {
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
@@ -177,7 +177,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -194,7 +194,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 
 // NewListPager - List private endpoint connections
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
@@ -223,7 +223,7 @@ func (client *PrivateEndpointConnectionsClient) NewListPager(resourceGroupName s
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsClientListOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *PrivateEndpointConnectionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -242,7 +242,7 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,7 +260,7 @@ func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Re
 // Update - Update the state of specified private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
@@ -290,7 +290,7 @@ func (client *PrivateEndpointConnectionsClient) Update(ctx context.Context, priv
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PrivateEndpointConnectionsClient) updateCreateRequest(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionsClientUpdateOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) updateCreateRequest(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string, parameters PrivateEndpointConnection, _ *PrivateEndpointConnectionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if privateEndpointConnectionName == "" {
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
@@ -313,7 +313,7 @@ func (client *PrivateEndpointConnectionsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

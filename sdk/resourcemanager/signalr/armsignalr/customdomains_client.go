@@ -27,7 +27,7 @@ type CustomDomainsClient struct {
 // NewCustomDomainsClient creates a new instance of CustomDomainsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomDomainsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Create or update a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - name - Custom domain name.
@@ -70,7 +70,7 @@ func (client *CustomDomainsClient) BeginCreateOrUpdate(ctx context.Context, reso
 // CreateOrUpdate - Create or update a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *CustomDomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters CustomDomain, options *CustomDomainsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CustomDomainsClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *CustomDomainsClient) createOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CustomDomainsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters CustomDomain, options *CustomDomainsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters CustomDomain, _ *CustomDomainsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customDomains/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,7 +116,7 @@ func (client *CustomDomainsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,7 +128,7 @@ func (client *CustomDomainsClient) createOrUpdateCreateRequest(ctx context.Conte
 // BeginDelete - Delete a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - name - Custom domain name.
@@ -155,7 +155,7 @@ func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Delete a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, name string, options *CustomDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CustomDomainsClient.BeginDelete"
@@ -178,7 +178,7 @@ func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, options *CustomDomainsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, _ *CustomDomainsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customDomains/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -201,7 +201,7 @@ func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,7 +210,7 @@ func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Get a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - name - Custom domain name.
@@ -238,7 +238,7 @@ func (client *CustomDomainsClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, options *CustomDomainsClientGetOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, _ *CustomDomainsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customDomains/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -261,7 +261,7 @@ func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +278,7 @@ func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (Custo
 
 // NewListPager - List all custom domains.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.NewListPager method.
@@ -306,7 +306,7 @@ func (client *CustomDomainsClient) NewListPager(resourceGroupName string, resour
 }
 
 // listCreateRequest creates the List request.
-func (client *CustomDomainsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *CustomDomainsClientListOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *CustomDomainsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customDomains"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -325,7 +325,7 @@ func (client *CustomDomainsClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

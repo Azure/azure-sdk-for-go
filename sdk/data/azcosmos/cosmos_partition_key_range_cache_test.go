@@ -978,13 +978,10 @@ func Test_partitionKeyRangeCache_callerCancelDoesNotAbortSharedFetch(t *testing.
 }
 
 func Test_partitionKeyRangeCache_invalidateDuringRefresh_discardsResult(t *testing.T) {
-	// invalidate() during an in-flight refresh must NOT abort the refresh
-	// (other awaiters still get the in-flight result), but the result must
-	// be discarded from the cache: an invalidate-during-refresh strictly
-	// means "what you're about to install is stale, do not use it". The
-	// awaiter must NOT receive the discarded map; instead the cache
-	// internally retries and the awaiter ultimately receives the result of
-	// a fresh post-invalidate refresh.
+	// invalidate() during an in-flight refresh must not abort the refresh
+	// (other awaiters still get the result), but the result must be discarded
+	// from the cache and not handed to awaiters. The cache internally retries
+	// so the awaiter receives a fresh post-invalidate refresh.
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -1130,10 +1127,9 @@ func Test_partitionKeyRangeCache_midPagination_throttleRetrySucceeds(t *testing.
 }
 
 func Test_partitionKeyRangeCache_midPagination_throttleRetriesIndefinitely(t *testing.T) {
-	// 429 throttling retries indefinitely until either the page succeeds
-	// or the refresh's context is cancelled. Per-awaiter ctx cancellation
-	// does NOT abort the shared background refresh (it runs on
-	// context.Background()).
+	// 429 retries indefinitely until the page succeeds or the refresh's ctx
+	// is cancelled. Per-awaiter ctx cancellation does NOT abort the shared
+	// refresh (it runs on context.Background()).
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -1189,9 +1185,8 @@ func Test_partitionKeyRangeCache_midPagination_nonTransientFailsFast(t *testing.
 		mock.WithBody([]byte(`{"code":"Unauthorized"}`)),
 		mock.WithStatusCode(401),
 	)
-	// Sentinel: if we DID retry, the next response would be a 200, which
-	// would mask the bug. Make it a 408 instead so an unintended retry
-	// also fails (test would still fail with the wrong status code).
+	// Sentinel: if a retry were attempted, the next response (408) would
+	// also fail, exposing the bug.
 	srv.AppendResponse(
 		mock.WithBody([]byte(`{"code":"RequestTimeout"}`)),
 		mock.WithStatusCode(408),
@@ -1211,10 +1206,8 @@ func Test_partitionKeyRangeCache_midPagination_nonTransientFailsFast(t *testing.
 }
 
 func Test_partitionKeyRangeCache_secondWaveAfterCompletion_noRedundantFetch(t *testing.T) {
-	// A caller that arrives AFTER a refresh has completed but already has a
-	// usable routing map (e.g. another caller just installed one) must NOT
-	// trigger a second redundant network fetch. The cached map is observable
-	// immediately via getRoutingMap.
+	// A caller that arrives after a refresh completes (with a usable cached
+	// map) must NOT trigger a second network fetch.
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -1250,8 +1243,7 @@ func Test_partitionKeyRangeCache_secondWaveAfterCompletion_noRedundantFetch(t *t
 
 func Test_partitionKeyRangeCache_getRoutingMap_canceledCallerNoBackgroundFetch(t *testing.T) {
 	// When the caller's ctx is already canceled and no refresh is in flight,
-	// getRoutingMap must return ctx.Err() WITHOUT spawning a background
-	// fetch that nobody is waiting on.
+	// getRoutingMap must return ctx.Err() without spawning a background fetch.
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 

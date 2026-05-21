@@ -27,40 +27,28 @@ import (
 // container renames and matches the service's partition key range addressing.
 //
 // Concurrency model (single-pending-I/O per container):
-//
-//   - At most one refresh runs per container at any time. Concurrent callers
-//     that arrive while a refresh is in flight share its result.
-//   - The cached routing map remains readable while a refresh is in flight;
-//     getRoutingMap returns immediately whenever the entry already has a
-//     non-nil routingMap and does not wait for the in-flight refresh.
-//   - The refresh goroutine runs on a detached context.Background() (no
-//     deadline), so a single caller's ctx cancellation does not abort the
-//     shared fetch for other waiters. Each waiter still honors its own ctx
-//     and returns ctx.Err() if it fires before the shared refresh completes.
-//   - Transient page failures inside the refresh are retried indefinitely
-//     (the slot self-heals via forceRefresh's displace-and-replace).
-//   - invalidate() bumps the entry's generation. A refresh whose result is
-//     ready after an invalidate sees a generation mismatch, discards its
-//     result from the cache, AND surfaces errPKRangeCacheInvalidatedDuringRefresh
-//     to its awaiters so they re-enter and start a fresh post-invalidate op
-//     rather than routing against the stale view they were waiting on.
+//   - At most one refresh runs per container; concurrent callers share its result.
+//   - Cached routing maps remain readable while a refresh is in flight.
+//   - The refresh runs on context.Background(), so one caller's cancellation
+//     doesn't abort the shared fetch. Each waiter honors its own ctx.
+//   - 429 page failures retry indefinitely; all other errors fail fast.
+//   - invalidate() bumps entry.generation. A refresh that completes against a
+//     stale generation discards its result and surfaces
+//     errPKRangeCacheInvalidatedDuringRefresh so awaiters retry against a
+//     fresh post-invalidate refresh.
 type partitionKeyRangeCache struct {
 	mu      sync.RWMutex
 	entries map[string]*pkRangeCacheEntry // keyed by container ResourceID
 }
 
-// errPKRangeCacheInvalidatedDuringRefresh is returned to awaiters of a
-// refresh that was implicitly invalidated mid-flight via invalidate(). The
-// awaiter must NOT consume the routing map the refresh produced: by the
-// invalidate's definition that map is stale. Awaiters typically retry,
-// which starts a fresh post-invalidate refresh.
+// errPKRangeCacheInvalidatedDuringRefresh signals that an in-flight refresh
+// was invalidated mid-flight via invalidate(); its result is stale and must
+// not be consumed. Awaiters re-enter to start a fresh post-invalidate refresh.
 var errPKRangeCacheInvalidatedDuringRefresh = errors.New("partition key range cache: invalidated during refresh")
 
-// refreshOp represents an in-flight partition-key-range refresh for one
-// container. Awaiters receive the (rm, err) pair by reading the fields after
-// done is closed. The writes to rm/err happen-before close(op.done), which
-// happens-before the receive from op.done — so awaiters reading the fields
-// after the select observe a fully-published result (Go memory model).
+// refreshOp represents an in-flight refresh. Awaiters read rm/err after
+// op.done is closed; writes happen-before the close, so the receive observes
+// a fully-published result.
 type refreshOp struct {
 	done chan struct{}
 	rm   *collectionRoutingMap
@@ -68,13 +56,11 @@ type refreshOp struct {
 }
 
 type pkRangeCacheEntry struct {
-	mu         sync.Mutex // protects routingMap, inFlight, and generation
+	mu         sync.Mutex
 	routingMap *collectionRoutingMap
 	inFlight   *refreshOp
-	// generation is bumped by every invalidate() call. A refresh that
-	// completes with a stale generation discards its result rather than
-	// installing it, so invalidate cannot be silently overwritten by a
-	// refresh that was already in flight when the invalidate happened.
+	// generation is bumped by invalidate(). A refresh that completes with a
+	// stale generation discards its result rather than installing it.
 	generation uint64
 }
 
@@ -106,23 +92,15 @@ func (c *partitionKeyRangeCache) getOrCreateEntry(containerRID string) *pkRangeC
 	return entry
 }
 
-// pkRangeCacheSentinelMaxAttempts bounds how many times getRoutingMap /
-// forceRefresh will internally re-enter when an in-flight op completes with
-// errPKRangeCacheInvalidatedDuringRefresh. Two attempts is enough in
-// practice: the first op was invalidated, the second runs against a fresh
-// post-invalidate horizon. The cap exists only to prevent a pathological
-// invalidate-on-every-refresh storm from looping forever.
+// pkRangeCacheSentinelMaxAttempts caps how many times getRoutingMap /
+// forceRefresh re-enter on errPKRangeCacheInvalidatedDuringRefresh. The cap
+// only guards against a pathological invalidate-on-every-refresh storm.
 const pkRangeCacheSentinelMaxAttempts = 3
 
 // getRoutingMap returns the cached routing map for the given container RID.
-// If a routing map is already cached it is returned immediately, even when a
-// refresh is in flight. Otherwise the caller joins or starts a shared
-// in-flight refresh and waits on its own context.
-//
-// errPKRangeCacheInvalidatedDuringRefresh is handled internally: if the
-// in-flight op was discarded due to a concurrent invalidate, getRoutingMap
-// re-enters and waits on a fresh post-invalidate refresh rather than
-// surfacing the sentinel to callers.
+// Cached maps are returned immediately even while a refresh is in flight;
+// otherwise the caller joins or starts a shared refresh and waits on its
+// own context. errPKRangeCacheInvalidatedDuringRefresh is handled internally.
 func (c *partitionKeyRangeCache) getRoutingMap(
 	ctx context.Context,
 	containerRID string,
@@ -138,8 +116,8 @@ func (c *partitionKeyRangeCache) getRoutingMap(
 			entry.mu.Unlock()
 			return rm, nil
 		}
-		// If the caller is already canceled and nobody else is fetching, don't
-		// spawn a detached refresh just to immediately abandon it.
+		// Don't spawn a detached refresh just to abandon it if the caller
+		// is already canceled and nobody else is fetching.
 		if entry.inFlight == nil {
 			if err := ctx.Err(); err != nil {
 				entry.mu.Unlock()
@@ -161,18 +139,12 @@ func (c *partitionKeyRangeCache) getRoutingMap(
 
 // forceRefresh starts or joins a refresh for the given container.
 //
-// Joining semantics: forceRefresh deliberately joins any in-flight refresh
-// rather than displacing it. The trigger that prompts forceRefresh (typically
-// a 410/PartitionKeyRangeGone) is read-from-cache evidence that the local
-// view is stale; the very act of running a /pkranges change-feed drain
-// produces a fresh enough snapshot from the service. If the in-flight fetch
-// somehow misses a server-side event that happened after the caller's
-// trigger, the next 410 will retrigger another forceRefresh — eventually
-// consistent. Sharing the single fetch saves a network round-trip per
-// concurrent caller and avoids leaking the displaced goroutine. Callers
-// that need strict post-call freshness MUST call invalidate() first; the
-// generation counter then guarantees the in-flight op's result is
-// discarded and a fresh post-invalidate fetch runs.
+// forceRefresh joins any in-flight refresh rather than displacing it: a
+// running /pkranges drain already pulls a fresh snapshot from the service,
+// and a later 410 will retrigger another forceRefresh if needed (eventually
+// consistent). Callers needing strict post-call freshness MUST call
+// invalidate() first; the generation counter then guarantees the in-flight
+// op's result is discarded and a fresh fetch runs.
 //
 // errPKRangeCacheInvalidatedDuringRefresh is handled internally — see
 // getRoutingMap.
@@ -186,8 +158,8 @@ func (c *partitionKeyRangeCache) forceRefresh(
 	var lastErr error
 	for attempt := 0; attempt < pkRangeCacheSentinelMaxAttempts; attempt++ {
 		entry.mu.Lock()
-		// If the caller is already canceled and nobody else is fetching, don't
-		// spawn a detached refresh just to immediately abandon it.
+		// Don't spawn a detached refresh just to abandon it if the caller
+		// is already canceled and nobody else is fetching.
 		if entry.inFlight == nil {
 			if err := ctx.Err(); err != nil {
 				entry.mu.Unlock()
@@ -224,28 +196,19 @@ func (c *partitionKeyRangeCache) ensureInFlightLocked(
 	return op
 }
 
-// runRefresh executes the change-feed refresh on a detached context bounded
-// by pkRangeBackgroundRefreshTimeout. Caller cancellations do not abort the
-// shared fetch. On completion the entry is updated under entry.mu, the
-// in-flight slot is cleared, and awaiters are signaled by closing op.done.
+// runRefresh executes the change-feed refresh on context.Background() so
+// caller cancellations don't abort the shared fetch. On completion the
+// entry is updated and op.done is closed under entry.mu so a racing caller
+// either joins the in-flight slot or observes the cleared slot AND a
+// closed op.done — never a state that lets it start a duplicate refresh.
 //
-// IMPORTANT: close(op.done) is performed while holding entry.mu so that any
-// caller racing the completion edge observes either (a) the in-flight slot
-// still set and joins, or (b) the slot cleared AND op.done already closed —
-// never a state that would let it start a duplicate refresh in between.
+// If entry.generation changed during the refresh, the result is discarded
+// and awaiters receive errPKRangeCacheInvalidatedDuringRefresh so they
+// re-enter against a fresh post-invalidate refresh.
 //
-// If entry.generation changed during the refresh (i.e., invalidate() was
-// called), the result is discarded from the cache AND the awaiters of this
-// op receive errPKRangeCacheInvalidatedDuringRefresh so they re-enter and
-// start a fresh post-invalidate refresh instead of routing against the stale
-// view they were waiting on.
-//
-// The refresh runs on a non-cancellable context.Background() with no
-// deadline: transient failures inside fetchOneChangeFeedPageWithRetry are
-// retried indefinitely, and there is no detached timeout. The slot
-// self-heals on the forceRefresh path (it displaces a running op and spawns
-// a fresh forced op), so a wedged background fetch only affects cold-start
-// awaiters until the next forceRefresh.
+// 429 page failures retry indefinitely; there is no detached timeout. A
+// wedged background fetch only affects cold-start awaiters until the next
+// invalidate() bumps the generation.
 func (c *partitionKeyRangeCache) runRefresh(
 	entry *pkRangeCacheEntry,
 	containerLink string,
@@ -265,8 +228,7 @@ func (c *partitionKeyRangeCache) runRefresh(
 		entry.routingMap = rm
 	}
 	if invalidated {
-		// Don't hand awaiters a routing map we just refused to install.
-		// They must re-enter and start a post-invalidate refresh.
+		// Don't hand awaiters a routing map we refused to install.
 		op.rm = nil
 		op.err = errPKRangeCacheInvalidatedDuringRefresh
 	} else {
@@ -277,18 +239,14 @@ func (c *partitionKeyRangeCache) runRefresh(
 	close(op.done)
 	entry.mu.Unlock()
 
-	// Single log line per refresh on the result side. Operators correlate the
-	// detached HTTP spans by container link + elapsed; logging on start as
-	// well would double the log volume on busy clients with frequent 410s.
 	log.Writef(azlog.EventResponse,
 		"partition key range cache refresh for container %s finished in %s (err=%v, invalidated=%t)",
 		containerLink, elapsed, op.err, invalidated)
 }
 
-// awaitRefresh blocks the caller until either the refresh completes or the
-// caller's context is cancelled. The refresh continues running in the
-// background even when individual awaiters return early via ctx.Err().
-// background even when individual awaiters return early via ctx.Err().
+// awaitRefresh blocks until the refresh completes or the caller's context
+// is cancelled. The refresh continues in the background even when individual
+// awaiters return early via ctx.Err().
 func awaitRefresh(ctx context.Context, op *refreshOp) (*collectionRoutingMap, error) {
 	select {
 	case <-op.done:
@@ -298,11 +256,10 @@ func awaitRefresh(ctx context.Context, op *refreshOp) (*collectionRoutingMap, er
 	}
 }
 
-// invalidate clears the cached routing map for the given container RID,
-// forcing the next access to fetch fresh data. An in-flight refresh continues
-// running but its result will be discarded (via the generation check in
-// runRefresh) so the cached value cannot be silently replaced by data that
-// pre-dates the invalidation.
+// invalidate clears the cached routing map and bumps the entry's generation.
+// An in-flight refresh continues but its result is discarded (via the
+// generation check in runRefresh) so a pre-invalidate fetch cannot silently
+// overwrite the cache.
 func (c *partitionKeyRangeCache) invalidate(containerRID string) {
 	c.mu.RLock()
 	entry, exists := c.entries[containerRID]
@@ -320,26 +277,13 @@ func (c *partitionKeyRangeCache) invalidate(containerRID string) {
 // to prevent runaway requests during large-scale splits.
 const maxChangeFeedIterations = 1000
 
-// changeFeedPageRetryBaseDelay is the base sleep before retrying a failed
-// change-feed page. Backoff is linear: base, 2*base, ... capped at
-// changeFeedPageRetryMaxDelay, with per-attempt jitter to avoid
-// synchronized retries across containers.
-//
-// Exposed as a var so tests can shrink it without slowing test runs.
-var changeFeedPageRetryBaseDelay = 100 * time.Millisecond
-
-// changeFeedPageRetryJitter caps the random jitter added to each retry
-// delay. Keeps the worst-case extra latency small while breaking up
-// synchronized retry storms across containers.
-//
-// Exposed as a var so tests can shrink it without slowing test runs.
-var changeFeedPageRetryJitter = 50 * time.Millisecond
-
-// changeFeedPageRetryMaxDelay caps the per-attempt wait so the linear
-// backoff doesn't grow unboundedly under a prolonged outage.
-//
-// Exposed as a var so tests can shrink it without slowing test runs.
-var changeFeedPageRetryMaxDelay = 5 * time.Second
+// Linear backoff with jitter for 429 retries: base, 2*base, ... capped at
+// changeFeedPageRetryMaxDelay. Exposed as vars so tests can shrink them.
+var (
+	changeFeedPageRetryBaseDelay = 100 * time.Millisecond
+	changeFeedPageRetryJitter    = 50 * time.Millisecond
+	changeFeedPageRetryMaxDelay  = 5 * time.Second
+)
 
 // changeFeedResult holds the result of draining all change-feed pages.
 type changeFeedResult struct {
@@ -348,17 +292,11 @@ type changeFeedResult struct {
 	completed bool // true only if loop terminated via 304 Not Modified
 }
 
-// fetchAllChangeFeedPages fetches change-feed pages starting from startETag
-// until 304 Not Modified or the iteration cap. Returns the accumulated ranges,
-// the final ETag, and whether the loop completed cleanly (304 received).
-//
-// Each individual page is retried on 429 throttling so a transient throttle
-// mid-drain doesn't discard the pages already accumulated:
-//   - 429 throttling retries indefinitely (the service is asking us to slow
-//     down, not fail; eventually the throttle lifts).
-//   - All other errors (5xx, 408, transport, non-transient) fail fast and
-//     surface to the caller. The azcore pipeline already retries 5xx / 408
-//     / transport with backoff; re-retrying here would just double-retry.
+// fetchAllChangeFeedPages drains change-feed pages from startETag until 304
+// Not Modified or the iteration cap. 429 page failures retry indefinitely
+// (with capped linear backoff + jitter) so accumulated pages aren't
+// discarded under throttling; all other errors fail fast and the azcore
+// pipeline owns retry for those classes.
 func fetchAllChangeFeedPages(
 	ctx context.Context,
 	containerLink string,
@@ -373,16 +311,13 @@ func fetchAllChangeFeedPages(
 		}
 		result, err := fetchOneChangeFeedPageWithRetry(ctx, containerLink, currentETag, client)
 		if err != nil {
-			// Surfaces on any non-429 error (the pipeline already retried
-			// 5xx / 408 / transport; we only retry 429). Log how far we got
-			// so operators can correlate partial-drain failures with the
-			// next refresh restarting from scratch.
+			// Log how far we got so operators can correlate partial-drain
+			// failures with the next refresh restarting from scratch.
 			log.Writef(azlog.EventResponse, "partition key range change-feed page failed for container %s after %d successful pages (%d ranges accumulated): %v", containerLink, i, len(allRanges), err)
 			return changeFeedResult{}, err
 		}
 
 		if result.notModified {
-			// 304 Not Modified — change feed fully drained
 			if result.etag != "" {
 				currentETag = result.etag
 			}
@@ -393,26 +328,15 @@ func fetchAllChangeFeedPages(
 			currentETag = result.etag
 		}
 	}
-	// Loop cap reached without 304
 	log.Writef(azlog.EventResponse, "partition key range change-feed loop exited without reaching 304 Not Modified after %d iterations for container %s (accumulated %d ranges)", maxChangeFeedIterations, containerLink, len(allRanges))
 	return changeFeedResult{ranges: allRanges, finalETag: currentETag, completed: false}, nil
 }
 
-// fetchOneChangeFeedPageWithRetry fetches a single change-feed page,
-// retrying indefinitely on 429 throttling so a transient throttle mid-
-// pagination doesn't discard the already-accumulated pages in the caller.
-//
-// 429 is the only error retried at this layer: the service is explicitly
-// asking us to slow down, and failing the whole refresh just to retry it
-// minutes later under the same throttle is wasted work. All other errors
-// — including 5xx, 408, and transport-level failures — are surfaced
-// immediately. The azcore pipeline already retries those classes with
-// backoff (and honors Retry-After); doing it again here would just
-// double-retry and obscure the underlying degradation from the caller.
-//
-// Returns on success, any non-429 error, or ctx cancellation. Backoff for
-// 429 is linear (capped) with jitter; Retry-After is NOT parsed here —
-// that's the pipeline's responsibility.
+// fetchOneChangeFeedPageWithRetry fetches one change-feed page, retrying
+// indefinitely on 429 so a mid-drain throttle doesn't discard accumulated
+// pages. All other errors are surfaced immediately: the azcore pipeline
+// already retries 5xx / 408 / transport with backoff and Retry-After
+// honoring, and re-retrying here would double-retry.
 func fetchOneChangeFeedPageWithRetry(
 	ctx context.Context,
 	containerLink string,
@@ -430,8 +354,8 @@ func fetchOneChangeFeedPageWithRetry(
 		if !isThrottleError(err) {
 			return fetchPartitionKeyRangesResult{}, err
 		}
-		// Capped linear backoff with jitter so a fleet of clients retrying
-		// across many containers doesn't produce synchronized retry waves.
+		// Linear backoff (capped) with jitter to avoid synchronized retry
+		// waves across containers.
 		delay := time.Duration(attempt+1) * changeFeedPageRetryBaseDelay
 		if delay > changeFeedPageRetryMaxDelay {
 			delay = changeFeedPageRetryMaxDelay
@@ -462,13 +386,10 @@ func jitter(maxJitter time.Duration) time.Duration {
 	return time.Duration(rand.Int63n(int64(maxJitter)))
 }
 
-// refreshEntryDetached fetches PK ranges from the service and returns a fresh
-// routing map. It snapshots the entry's previous routing map under entry.mu
-// (briefly), then performs all network I/O without holding any lock. The
-// caller is responsible for installing the returned map onto the entry.
-//
-// ctx is the detached, timeout-bounded refresh context created by
-// runRefresh — it must NOT be a caller-scoped context.
+// refreshEntryDetached fetches PK ranges and returns a fresh routing map.
+// All network I/O runs without holding any lock; the caller installs the
+// returned map on the entry. ctx is the detached refresh context created
+// by runRefresh — never a caller-scoped context.
 func (c *partitionKeyRangeCache) refreshEntryDetached(
 	ctx context.Context,
 	containerLink string,

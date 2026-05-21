@@ -435,8 +435,9 @@ type NameAvailabilityRequest struct {
 	// REQUIRED; Cluster name to verify.
 	Name *string
 
-	// REQUIRED; Resource type used for verification.
-	Type *CheckNameAvailabilityResourceType
+	// CONSTANT; Resource type used for verification.
+	// Field has constant value "Microsoft.DBforPostgreSQL/serverGroupsv2", any specified value is ignored.
+	Type *string
 }
 
 // Operation - REST API Operation

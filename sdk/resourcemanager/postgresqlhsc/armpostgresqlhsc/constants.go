@@ -50,20 +50,6 @@ func PossibleActiveDirectoryAuthValues() []ActiveDirectoryAuth {
 	}
 }
 
-// CheckNameAvailabilityResourceType - Resource type used for name availability verification.
-type CheckNameAvailabilityResourceType string
-
-const (
-	CheckNameAvailabilityResourceTypeMICROSOFTDBFORPOSTGRESQLSERVERGROUPSV2 CheckNameAvailabilityResourceType = "Microsoft.DBforPostgreSQL/serverGroupsv2"
-)
-
-// PossibleCheckNameAvailabilityResourceTypeValues returns the possible values for the CheckNameAvailabilityResourceType const type.
-func PossibleCheckNameAvailabilityResourceTypeValues() []CheckNameAvailabilityResourceType {
-	return []CheckNameAvailabilityResourceType{
-		CheckNameAvailabilityResourceTypeMICROSOFTDBFORPOSTGRESQLSERVERGROUPSV2,
-	}
-}
-
 // ConfigurationDataType - Data type of the configuration.
 type ConfigurationDataType string
 

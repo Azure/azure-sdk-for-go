@@ -26,7 +26,7 @@ func ExampleClustersClient_CheckNameAvailability() {
 	}
 	res, err := clientFactory.NewClustersClient().CheckNameAvailability(ctx, armpostgresqlhsc.NameAvailabilityRequest{
 		Name: to.Ptr("name1"),
-		Type: to.Ptr(armpostgresqlhsc.CheckNameAvailabilityResourceTypeMICROSOFTDBFORPOSTGRESQLSERVERGROUPSV2),
+		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

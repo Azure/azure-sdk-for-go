@@ -1,6 +1,6 @@
 # Release History
 
-## 0.7.0 (2026-05-08)
+## 0.7.0 (2026-05-21)
 ### Breaking Changes
 
 - Function `*ConfigurationsClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, options *ConfigurationsClientGetOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, options *ConfigurationsClientGetOptions)`
@@ -11,7 +11,6 @@
 - Function `*RolesClient.BeginCreate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, parameters Role, options *RolesClientBeginCreateOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, roleName string, parameters Role, options *RolesClientBeginCreateOptions)`
 - Function `*RolesClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, options *RolesClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, roleName string, options *RolesClientBeginDeleteOptions)`
 - Function `*ServersClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverGroupName string, serverName string, options *ServersClientGetOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, serverName string, options *ServersClientGetOptions)`
-- Type of `NameAvailabilityRequest.Type` has been changed from `*string` to `*CheckNameAvailabilityResourceType`
 - Type of `Operation.Origin` has been changed from `*OperationOrigin` to `*Origin`
 - Enum `CitusVersion` has been removed
 - Enum `CreateMode` has been removed
@@ -26,6 +25,17 @@
 - Function `*ConfigurationsClient.BeginUpdate` has been removed
 - Function `*FirewallRulesClient.NewListByServerGroupPager` has been removed
 - Function `*RolesClient.NewListByServerGroupPager` has been removed
+- Function `NewServerGroupsClient` has been removed
+- Function `*ServerGroupsClient.CheckNameAvailability` has been removed
+- Function `*ServerGroupsClient.BeginCreateOrUpdate` has been removed
+- Function `*ServerGroupsClient.BeginDelete` has been removed
+- Function `*ServerGroupsClient.Get` has been removed
+- Function `*ServerGroupsClient.NewListByResourceGroupPager` has been removed
+- Function `*ServerGroupsClient.NewListPager` has been removed
+- Function `*ServerGroupsClient.BeginRestart` has been removed
+- Function `*ServerGroupsClient.BeginStart` has been removed
+- Function `*ServerGroupsClient.BeginStop` has been removed
+- Function `*ServerGroupsClient.BeginUpdate` has been removed
 - Function `*ServersClient.NewListByServerGroupPager` has been removed
 - Struct `ProxyResource` has been removed
 - Struct `Resource` has been removed
@@ -42,26 +52,6 @@
 - Struct `ServerGroupServer` has been removed
 - Struct `ServerGroupServerListResult` has been removed
 - Struct `ServerGroupServerProperties` has been removed
-- Struct `ServerGroupsClientBeginCreateOrUpdateOptions` has been removed
-- Struct `ServerGroupsClientBeginDeleteOptions` has been removed
-- Struct `ServerGroupsClientBeginRestartOptions` has been removed
-- Struct `ServerGroupsClientBeginStartOptions` has been removed
-- Struct `ServerGroupsClientBeginStopOptions` has been removed
-- Struct `ServerGroupsClientBeginUpdateOptions` has been removed
-- Struct `ServerGroupsClientCheckNameAvailabilityOptions` has been removed
-- Struct `ServerGroupsClientCheckNameAvailabilityResponse` has been removed
-- Struct `ServerGroupsClientCreateOrUpdateResponse` has been removed
-- Struct `ServerGroupsClientDeleteResponse` has been removed
-- Struct `ServerGroupsClientGetOptions` has been removed
-- Struct `ServerGroupsClientGetResponse` has been removed
-- Struct `ServerGroupsClientListByResourceGroupOptions` has been removed
-- Struct `ServerGroupsClientListByResourceGroupResponse` has been removed
-- Struct `ServerGroupsClientListOptions` has been removed
-- Struct `ServerGroupsClientListResponse` has been removed
-- Struct `ServerGroupsClientRestartResponse` has been removed
-- Struct `ServerGroupsClientStartResponse` has been removed
-- Struct `ServerGroupsClientStopResponse` has been removed
-- Struct `ServerGroupsClientUpdateResponse` has been removed
 - Struct `ServerProperties` has been removed
 - Struct `ServerRoleGroup` has been removed
 - Struct `TrackedResource` has been removed
@@ -74,7 +64,6 @@
 - New enum type `AADEnabledEnum` with values `AADEnabledEnumDisabled`, `AADEnabledEnumEnabled`
 - New enum type `ActionType` with values `ActionTypeInternal`
 - New enum type `ActiveDirectoryAuth` with values `ActiveDirectoryAuthDisabled`, `ActiveDirectoryAuthEnabled`
-- New enum type `CheckNameAvailabilityResourceType` with values `CheckNameAvailabilityResourceTypeMICROSOFTDBFORPOSTGRESQLSERVERGROUPSV2`
 - New enum type `DataEncryptionType` with values `DataEncryptionTypeAzureKeyVault`, `DataEncryptionTypeSystemAssigned`
 - New enum type `IdentityType` with values `IdentityTypeSystemAssigned`, `IdentityTypeUserAssigned`
 - New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`

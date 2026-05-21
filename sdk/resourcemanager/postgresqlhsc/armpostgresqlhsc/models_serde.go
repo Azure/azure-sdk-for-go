@@ -934,7 +934,7 @@ func (n *NameAvailability) UnmarshalJSON(data []byte) error {
 func (n NameAvailabilityRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "name", n.Name)
-	populate(objectMap, "type", n.Type)
+	objectMap["type"] = "Microsoft.DBforPostgreSQL/serverGroupsv2"
 	return json.Marshal(objectMap)
 }
 

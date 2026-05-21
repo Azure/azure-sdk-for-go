@@ -1,0 +1,81 @@
+===== PR #26855 =====
+Title: azcosmos: single-pending-I/O pkrange cache and mid-pagination retry
+Author: tvaron3
+Status: OPEN
+Branch: tvaron3/background-pkrange-cache -> main
+Head SHA: 3d774f2a8b71378dd028fc7c9d29bc10c762e395
+URL: https://github.com/Azure/azure-sdk-for-go/pull/26855
+
+--- Description ---
+Today `partitionKeyRangeCache.getRoutingMap` / `forceRefresh` hold the per-entry mutex across the entire change-feed pagination. Two consequences hurt under load: a caller that already has a usable cached routing map can block behind an unrelated refresh, and concurrent 410-triggered forced refreshes serialize instead of sharing one network fetch. Also, any HTTP failure mid-pagination discards all already-accumulated pages and forces the next refresh to start from page 1.
+
+This PR adopts a single-pending-I/O model for the cache and makes the change-feed loop resilient to transient mid-pagination errors.
+
+## Cache contract
+
+- At most one refresh per container at any time. Concurrent first-fetch callers (`getRoutingMap` with no cached map) and concurrent `forceRefresh` callers all share one in-flight op.
+- While a refresh is in flight, callers that already see a usable routing map return immediately. Only first-fetch and `forceRefresh` paths await.
+- The refresh goroutine runs on a detached `context.Background()` with no deadline, so a single caller's `ctx` cancellation does not abort the shared fetch. Each waiter still honors its own `ctx.Done()` via `select`. There is no global wall-clock timeout on the background refresh — see "Slot wedge" below.
+- `forceRefresh` joins any in-flight refresh rather than displacing it. The `/pkranges` drain is already pulling fresh change-feed pages, so the in-flight op is very likely to include the post-trigger server state. If it somehow misses, the next 410 retriggers another refresh — eventually consistent. Callers that need strict post-call freshness must call `invalidate()` first; the generation counter then guarantees the in-flight op's result is discarded and a fresh post-invalidate fetch runs.
+- `invalidate` bumps a per-entry generation counter. A refresh whose result is ready after an invalidate is discarded from the cache (generation mismatch). Awaiters of the discarded op are internally retried; the sentinel `errPKRangeCacheInvalidatedDuringRefresh` never leaks to callers.
+
+## Mid-pagination retry
+
+`fetchAllChangeFeedPages` now delegates each page to `fetchOneChangeFeedPageWithRetry`, which retries on transient errors so a single bad page doesn't discard the pages already accumulated:
+
+- **429 throttling** retries **indefinitely** with capped linear backoff + jitter. The service is explicitly asking the client to slow down, not fail — exhausting the refresh and retriggering it under the same throttle would just be wasted work.
+- **5xx, 408, and transport errors** retry up to `changeFeedPageMaxAttempts` (currently 6) attempts before the awaiters see the error.
+- **Other 4xx responses and `context.Canceled` / `DeadlineExceeded`** fail fast.
+
+Backoff here is deliberately simple (linear, capped) and does NOT honor `Retry-After`. The azcore pipeline already retries 5xx / 408 / 429 with backoff and `Retry-After` parsing; this loop is a second tier that preserves accumulated pages when the pipeline gives up. Re-parsing `Retry-After` here would just compound the wait.
+
+## Slot wedge
+
+Removing the background-refresh wall-clock timeout means a wedged transport can hold the `inFlight` slot until process restart. Practically:
+
+- Cached map readers are unaffected (`getRoutingMap` fast-paths on `entry.routingMap != nil`).
+- Cold-start awaiters bail via their own ctx and never hang at the API surface.
+- The goroutine leak is bounded by `forceRefresh`-during-wedge call rate; the cache is not in the critical path for already-warm containers.
+
+## Out of scope
+
+ReadMany retry behaviour is unchanged (still full-restart on 410). The query engine path and `GetFeedRanges` are untouched. Metadata-cache-aware multi-region failover (matching .NET's `MetadataRequestThrottleRetryPolicy` holding an `IGlobalEndpointManager` reference) is intentionally deferred — region rotation continues to be handled by `clientRetryPolicy.attemptRetryOnEndpointFailure` one level below.
+
+## Notes
+
+- No new public API surface.
+- New tests cover: cached-during-refresh fast path, concurrent shared fetch, caller-cancel-doesn't-abort-shared-fetch, invalidate-during-refresh (with internal-retry assertion), error-clears-inflight-slot, transient-retry-eventually-succeeds, non-transient-fails-fast, canceled-caller-no-background-fetch, second-wave-after-completion-no-redundant-fetch.
+- `go test -count=1 -short -race ./sdk/data/azcosmos/...` passes.
+- CHANGELOG updated under `1.5.0-beta.7 (Unreleased)`.
+
+## Checklist
+
+- [x] The purpose of this PR is explained in this or a referenced issue.
+- [x] The PR does not update generated files.
+- [x] Tests are included and/or updated for code changes.
+- [x] Updates to module CHANGELOG.md are included.
+- [x] MIT license headers are included in each file.
+
+--- End Description ---
+
+===== Commits in PR =====
+b2025bd azcosmos: single-pending-I/O pkrange cache and mid-pagination retry
+1aa5d57 azcosmos: add PR links to CHANGELOG entries
+4d0e310 azcosmos: point CHANGELOG entries at upstream PR
+3f9dd39 azcosmos: address PR + deep-review feedback
+1c3e47a azcosmos: address re-review feedback
+81803f2 azcosmos: retry CI (transient go1.26.1 download flake)
+b7a7203 Broaden isTransientPKRangeFetchError to retry 429, 5xx, and 408
+bfe69d3 Address kushagraThapar follow-ups: retry budget, forceRefresh isolati…
+d53c2a3 Remove detached refresh timeout; retry transient page failures indefi…
+91dd7ce Revert forceRefresh displacement; concurrent callers share in-flight …
+2e0b666 Simplify PK range cache retry: 429-only, delegate others to pipeline
+3d774f2 Condense PK range cache comments
+
+===== Files Changed =====
+  sdk/data/azcosmos/CHANGELOG.md  (+3 -0)
+  sdk/data/azcosmos/cosmos_location_cache_test.go  (+9 -0)
+  sdk/data/azcosmos/cosmos_partition_key_range_cache.go  (+279 -63)
+  sdk/data/azcosmos/cosmos_partition_key_range_cache_test.go  (+512 -0)
+
+

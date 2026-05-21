@@ -10,6 +10,7 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -792,9 +793,17 @@ type gatePolicy struct {
 	count   atomic.Int32
 }
 
+// gateStartedBuffer caps how many concurrent in-flight gated requests a test
+// can observe before "started" signals start being silently dropped. Tests
+// that need more than this should grow it explicitly. The drop is non-fatal
+// (a stale earlier signal still wakes a <-gate.started consumer), but it
+// can cause flaky asserts on exact request counts, so keep the bound high
+// enough for the test fixtures here.
+const gateStartedBuffer = 64
+
 func newGatePolicy() *gatePolicy {
 	return &gatePolicy{
-		started: make(chan struct{}, 16),
+		started: make(chan struct{}, gateStartedBuffer),
 		release: make(chan struct{}),
 	}
 }
@@ -978,19 +987,16 @@ func Test_partitionKeyRangeCache_callerCancelDoesNotAbortSharedFetch(t *testing.
 }
 
 func Test_partitionKeyRangeCache_invalidateDuringRefresh_discardsResult(t *testing.T) {
-	// invalidate() during an in-flight refresh must not abort the refresh
-	// (other awaiters still get the result), but the result must be discarded
-	// from the cache and not handed to awaiters. The cache internally retries
-	// so the awaiter receives a fresh post-invalidate refresh.
+	// invalidate() during an in-flight refresh cancels the refresh's ctx and
+	// bumps the generation, so the in-flight result (if any) is discarded.
+	// The caller's internal retry then runs a fresh post-invalidate refresh.
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
-	// First refresh body — will be discarded after invalidate.
-	body1 := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
-	appendPKRangesAndTerminator(srv, body1, "etagOld")
-	// Second refresh body — what the post-invalidate retry should pick up.
-	body2 := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
-	appendPKRangesAndTerminator(srv, body2, "etagPost")
+	// Only the post-invalidate retry will reach the mock; the first request
+	// is cancelled by invalidate() before it consumes any response.
+	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body, "etagPost")
 
 	gate := newGatePolicy()
 	client := createGatedClientForPKRangeCache(srv, gate)
@@ -1017,13 +1023,10 @@ func Test_partitionKeyRangeCache_invalidateDuringRefresh_discardsResult(t *testi
 	close(gate.release)
 
 	res := <-done
-	// Internal retry swallowed the sentinel; the caller observes the
-	// post-invalidate fresh refresh's result.
 	require.NoError(t, res.err)
 	require.NotNil(t, res.rm)
 	require.Equal(t, "etagPost", res.rm.changeFeedETag, "caller must see post-invalidate refresh, not the discarded one")
 
-	// And the cache must hold the fresh map.
 	entry.mu.Lock()
 	require.NotNil(t, entry.routingMap)
 	require.Equal(t, "etagPost", entry.routingMap.changeFeedETag)
@@ -1293,4 +1296,164 @@ func Test_partitionKeyRangeCache_forceRefresh_canceledCallerNoBackgroundFetch(t 
 	entry.mu.Lock()
 	require.Nil(t, entry.inFlight)
 	entry.mu.Unlock()
+}
+
+// panicTransport panics on the first request, then delegates to the inner
+// transport for subsequent requests. Used to verify runRefresh's deferred
+// cleanup recovers from a panic without wedging the entry.
+type panicTransport struct {
+inner policy.Transporter
+fired atomic.Bool
+}
+
+func (p *panicTransport) Do(req *http.Request) (*http.Response, error) {
+if !p.fired.Swap(true) {
+panic("simulated panic in transport")
+}
+return p.inner.Do(req)
+}
+
+func Test_partitionKeyRangeCache_panicInRefresh_recoversAndAllowsRetry(t *testing.T) {
+// A panic in the refresh goroutine must not leak: the deferred cleanup
+// recovers, surfaces an error to the current awaiter, clears inFlight,
+// and closes op.done — so the next caller starts a fresh refresh.
+srv, closeSrv := mock.NewTLSServer()
+defer closeSrv()
+
+body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+appendPKRangesAndTerminator(srv, body, "etag1")
+
+defaultEndpoint, _ := url.Parse(srv.URL())
+panicTr := &panicTransport{inner: srv}
+internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{
+Transport: panicTr,
+Retry:     policy.RetryOptions{MaxRetries: -1},
+})
+gem := &globalEndpointManager{preferredLocations: []string{}}
+client := &Client{
+endpoint:    srv.URL(),
+endpointUrl: defaultEndpoint,
+internal:    internalClient,
+gem:         gem,
+}
+client.caches = &sharedCacheSet{
+		pkRangeCache:   newPartitionKeyRangeCache(),
+		containerCache: newContainerPropertiesCache(),
+	}
+
+entry := &pkRangeCacheEntry{}
+client.caches.pkRangeCache.mu.Lock()
+client.caches.pkRangeCache.entries["testRID"] = entry
+client.caches.pkRangeCache.mu.Unlock()
+
+_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+require.Error(t, err, "first call must surface the panic, not block forever")
+require.ErrorIs(t, err, errPKRangeCacheRefreshPanic)
+
+// The slot must be cleared so the next caller starts a fresh op.
+entry.mu.Lock()
+require.Nil(t, entry.inFlight, "panic must not leak the in-flight slot")
+entry.mu.Unlock()
+
+rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+require.NoError(t, err, "next caller must be able to refresh after panic recovery")
+require.NotNil(t, rm)
+require.Equal(t, "etag1", rm.changeFeedETag)
+}
+
+func Test_partitionKeyRangeCache_invalidateDuringThrottleStorm_unwedges(t *testing.T) {
+// Under a 429 storm the per-page retry loop runs forever; invalidate()
+// must cancel the in-flight refresh so the next caller is freed from
+// the wedged op rather than joining it.
+srv, closeSrv := mock.NewTLSServer()
+defer closeSrv()
+
+// Queue many 429s — enough that the first call will still be retrying
+// when invalidate fires. After invalidate cancels the in-flight op, the
+// retry path consumes the success body below.
+for i := 0; i < 500; i++ {
+srv.AppendResponse(mock.WithBody([]byte(`{"code":"TooManyRequests"}`)), mock.WithStatusCode(429))
+}
+body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+appendPKRangesAndTerminator(srv, body, "etagFresh")
+
+client := createMockClientForPKRangeCacheNoRetry(srv)
+entry := &pkRangeCacheEntry{}
+client.caches.pkRangeCache.mu.Lock()
+client.caches.pkRangeCache.entries["testRID"] = entry
+client.caches.pkRangeCache.mu.Unlock()
+
+done := make(chan struct {
+rm  *collectionRoutingMap
+err error
+}, 1)
+go func() {
+rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+done <- struct {
+rm  *collectionRoutingMap
+err error
+}{rm, err}
+}()
+
+// Spin briefly until we know the throttle storm is in progress.
+require.Eventually(t, func() bool {
+entry.mu.Lock()
+inFlight := entry.inFlight != nil
+entry.mu.Unlock()
+return inFlight
+}, 2*time.Second, 5*time.Millisecond, "refresh must be in-flight before invalidate")
+
+client.caches.pkRangeCache.invalidate("testRID")
+
+select {
+case res := <-done:
+// Caller should either surface ctx-cancel-class error from the
+// cancelled in-flight op (via the sentinel retry) and pick up the
+// fresh body, or just get the fresh body directly.
+require.NoError(t, res.err, "post-invalidate retry must surface a fresh result")
+require.NotNil(t, res.rm)
+require.Equal(t, "etagFresh", res.rm.changeFeedETag)
+case <-time.After(5 * time.Second):
+t.Fatal("invalidate() failed to unwedge the throttled refresh")
+}
+}
+
+func Test_partitionKeyRangeCache_forceRefreshAfterInvalidate_doesNotJoinPreInvalidateOp(t *testing.T) {
+// Invariant: a caller that calls invalidate() then forceRefresh() must
+// NOT receive the result of an in-flight op that started before the
+// invalidate. This is the contract the 410-driven path relies on.
+srv, closeSrv := mock.NewTLSServer()
+defer closeSrv()
+
+// The fresh post-invalidate op consumes these responses.
+body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+appendPKRangesAndTerminator(srv, body, "etagPostInvalidate")
+
+gate := newGatePolicy()
+client := createGatedClientForPKRangeCache(srv, gate)
+
+entry := &pkRangeCacheEntry{}
+client.caches.pkRangeCache.mu.Lock()
+client.caches.pkRangeCache.entries["testRID"] = entry
+client.caches.pkRangeCache.mu.Unlock()
+
+// Caller A: starts a refresh that we gate.
+doneA := make(chan struct{}, 1)
+go func() {
+_, _ = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+doneA <- struct{}{}
+}()
+<-gate.started
+
+// Caller B: invalidates first, then forceRefresh. Must see the fresh
+// post-invalidate result, not whatever the pre-invalidate op produces.
+client.caches.pkRangeCache.invalidate("testRID")
+close(gate.release)
+
+rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+require.NoError(t, err)
+require.NotNil(t, rm)
+require.Equal(t, "etagPostInvalidate", rm.changeFeedETag, "caller must observe the post-invalidate refresh")
+
+<-doneA
 }

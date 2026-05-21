@@ -1099,7 +1099,7 @@ type AssessmentPartnerData struct {
 // AssessmentProperties - Describes properties of an assessment.
 type AssessmentProperties struct {
 	// REQUIRED; Details of the resource that was assessed
-	ResourceDetails CommonResourceDetailsClassification
+	ResourceDetails ResourceDetailsClassification
 
 	// REQUIRED; The result of the assessment
 	Status *AssessmentStatus
@@ -1170,7 +1170,7 @@ type AssessmentPropertiesBaseRiskPathsItemNodesItem struct {
 // AssessmentPropertiesResponse - Describes properties of an assessment.
 type AssessmentPropertiesResponse struct {
 	// REQUIRED; Details of the resource that was assessed
-	ResourceDetails CommonResourceDetailsClassification
+	ResourceDetails ResourceDetailsClassification
 
 	// REQUIRED; The result of the assessment
 	Status *AssessmentStatusResponse
@@ -1929,9 +1929,9 @@ type AzureResourceDetails struct {
 	ID *string
 }
 
-// GetCommonResourceDetails implements the CommonResourceDetailsClassification interface for type AzureResourceDetails.
-func (a *AzureResourceDetails) GetCommonResourceDetails() *CommonResourceDetails {
-	return &CommonResourceDetails{
+// GetResourceDetails implements the ResourceDetailsClassification interface for type AzureResourceDetails.
+func (a *AzureResourceDetails) GetResourceDetails() *ResourceDetails {
+	return &ResourceDetails{
 		Source: a.Source,
 	}
 }
@@ -2146,15 +2146,6 @@ type CloudOffering struct {
 
 // GetCloudOffering implements the CloudOfferingClassification interface for type CloudOffering.
 func (c *CloudOffering) GetCloudOffering() *CloudOffering { return c }
-
-// CommonResourceDetails - Details of the resource that was assessed
-type CommonResourceDetails struct {
-	// REQUIRED; The platform where the assessed resource resides
-	Source *Source
-}
-
-// GetCommonResourceDetails implements the CommonResourceDetailsClassification interface for type CommonResourceDetails.
-func (c *CommonResourceDetails) GetCommonResourceDetails() *CommonResourceDetails { return c }
 
 // Compliance of a scope
 type Compliance struct {
@@ -5010,7 +5001,7 @@ type HealthReportProperties struct {
 	Issues []*Issue
 
 	// The resource details of the health report
-	ResourceDetails *ResourceDetails
+	ResourceDetails *HealthReportResourceDetails
 
 	// The status of the health report
 	Status *HealthReportStatus
@@ -5018,6 +5009,18 @@ type HealthReportProperties struct {
 	// READ-ONLY; Additional data for the given health report, this field can include more details on the resource and the health
 	// scenario.
 	ReportAdditionalData map[string]*string
+}
+
+// HealthReportResourceDetails - The resource details of the health report
+type HealthReportResourceDetails struct {
+	// The status of the health report
+	Source *Source
+
+	// READ-ONLY; The id of the connector
+	ConnectorID *string
+
+	// READ-ONLY; The azure id of the resource
+	ID *string
 }
 
 // HealthReportStatus - The status of the health report
@@ -6110,15 +6113,15 @@ type OnPremiseResourceDetails struct {
 	WorkspaceID *string
 }
 
-// GetCommonResourceDetails implements the CommonResourceDetailsClassification interface for type OnPremiseResourceDetails.
-func (o *OnPremiseResourceDetails) GetCommonResourceDetails() *CommonResourceDetails {
-	return &CommonResourceDetails{
+// GetOnPremiseResourceDetails implements the OnPremiseResourceDetailsClassification interface for type OnPremiseResourceDetails.
+func (o *OnPremiseResourceDetails) GetOnPremiseResourceDetails() *OnPremiseResourceDetails { return o }
+
+// GetResourceDetails implements the ResourceDetailsClassification interface for type OnPremiseResourceDetails.
+func (o *OnPremiseResourceDetails) GetResourceDetails() *ResourceDetails {
+	return &ResourceDetails{
 		Source: o.Source,
 	}
 }
-
-// GetOnPremiseResourceDetails implements the OnPremiseResourceDetailsClassification interface for type OnPremiseResourceDetails.
-func (o *OnPremiseResourceDetails) GetOnPremiseResourceDetails() *OnPremiseResourceDetails { return o }
 
 // OnPremiseSQLResourceDetails - Details of the On Premise Sql resource that was assessed
 type OnPremiseSQLResourceDetails struct {
@@ -6145,13 +6148,6 @@ type OnPremiseSQLResourceDetails struct {
 	WorkspaceID *string
 }
 
-// GetCommonResourceDetails implements the CommonResourceDetailsClassification interface for type OnPremiseSQLResourceDetails.
-func (o *OnPremiseSQLResourceDetails) GetCommonResourceDetails() *CommonResourceDetails {
-	return &CommonResourceDetails{
-		Source: o.Source,
-	}
-}
-
 // GetOnPremiseResourceDetails implements the OnPremiseResourceDetailsClassification interface for type OnPremiseSQLResourceDetails.
 func (o *OnPremiseSQLResourceDetails) GetOnPremiseResourceDetails() *OnPremiseResourceDetails {
 	return &OnPremiseResourceDetails{
@@ -6160,6 +6156,13 @@ func (o *OnPremiseSQLResourceDetails) GetOnPremiseResourceDetails() *OnPremiseRe
 		SourceComputerID: o.SourceComputerID,
 		Vmuuid:           o.Vmuuid,
 		WorkspaceID:      o.WorkspaceID,
+	}
+}
+
+// GetResourceDetails implements the ResourceDetailsClassification interface for type OnPremiseSQLResourceDetails.
+func (o *OnPremiseSQLResourceDetails) GetResourceDetails() *ResourceDetails {
+	return &ResourceDetails{
+		Source: o.Source,
 	}
 }
 
@@ -6864,17 +6867,14 @@ type RemediationEta struct {
 	Justification *string
 }
 
-// ResourceDetails - The resource details of the health report
+// ResourceDetails - Details of the resource that was assessed
 type ResourceDetails struct {
-	// The status of the health report
+	// REQUIRED; The platform where the assessed resource resides
 	Source *Source
-
-	// READ-ONLY; The id of the connector
-	ConnectorID *string
-
-	// READ-ONLY; The azure id of the resource
-	ID *string
 }
+
+// GetResourceDetails implements the ResourceDetailsClassification interface for type ResourceDetails.
+func (r *ResourceDetails) GetResourceDetails() *ResourceDetails { return r }
 
 // ResourceIdentifier - A resource identifier for an alert which can be used to direct the alert to the right product exposure
 // group (tenant, workspace, subscription etc.).
@@ -7773,7 +7773,7 @@ type SubAssessmentProperties struct {
 	AdditionalData AdditionalDataClassification
 
 	// Details of the resource that was assessed
-	ResourceDetails CommonResourceDetailsClassification
+	ResourceDetails ResourceDetailsClassification
 
 	// Status of the sub-assessment
 	Status *SubAssessmentStatus

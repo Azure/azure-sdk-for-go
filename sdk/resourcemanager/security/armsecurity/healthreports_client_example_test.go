@@ -63,7 +63,7 @@ func ExampleHealthReportsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ResourceDetails: &armsecurity.ResourceDetails{
+	// 			ResourceDetails: &armsecurity.HealthReportResourceDetails{
 	// 				ConnectorID: to.Ptr("bb7ad9cc-26b6-48ec-a5b4-23fc23be2733"),
 	// 				ID: to.Ptr("/subscriptions/a1efb6ca-fbc5-4782-9aaa-5c7daded1ce2/resourcegroups/E2E-IBB0WX/providers/Microsoft.Security/securityconnectors/AwsConnectorAllOfferings"),
 	// 				Source: to.Ptr(armsecurity.SourceAws),
@@ -126,7 +126,7 @@ func ExampleHealthReportsClient_NewListPager() {
 		// 					},
 		// 					Issues: []*armsecurity.Issue{
 		// 					},
-		// 					ResourceDetails: &armsecurity.ResourceDetails{
+		// 					ResourceDetails: &armsecurity.HealthReportResourceDetails{
 		// 						ID: to.Ptr("/subscriptions/a1efb6ca-fbc5-4782-9aaa-5c7daded1ce2/resourcegroups/ascdemorg/providers/microsoft.compute/virtualmachines/vm3"),
 		// 						Source: to.Ptr(armsecurity.SourceAzure),
 		// 					},

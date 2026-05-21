@@ -2280,7 +2280,7 @@ func (a *AssessmentProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "PartnersData", &a.PartnersData)
 			delete(rawMsg, key)
 		case "resourceDetails":
-			a.ResourceDetails, err = unmarshalCommonResourceDetailsClassification(val)
+			a.ResourceDetails, err = unmarshalResourceDetailsClassification(val)
 			delete(rawMsg, key)
 		case "risk":
 			err = unpopulate(val, "Risk", &a.Risk)
@@ -2479,7 +2479,7 @@ func (a *AssessmentPropertiesResponse) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "PartnersData", &a.PartnersData)
 			delete(rawMsg, key)
 		case "resourceDetails":
-			a.ResourceDetails, err = unmarshalCommonResourceDetailsClassification(val)
+			a.ResourceDetails, err = unmarshalResourceDetailsClassification(val)
 			delete(rawMsg, key)
 		case "risk":
 			err = unpopulate(val, "Risk", &a.Risk)
@@ -4704,33 +4704,6 @@ func (c *CloudOffering) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "offeringType":
 			err = unpopulate(val, "OfferingType", &c.OfferingType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", c, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CommonResourceDetails.
-func (c CommonResourceDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "source", c.Source)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CommonResourceDetails.
-func (c *CommonResourceDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", c, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "source":
-			err = unpopulate(val, "Source", &c.Source)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10697,6 +10670,41 @@ func (h *HealthReportProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type HealthReportResourceDetails.
+func (h HealthReportResourceDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "connectorId", h.ConnectorID)
+	populate(objectMap, "id", h.ID)
+	populate(objectMap, "source", h.Source)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type HealthReportResourceDetails.
+func (h *HealthReportResourceDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", h, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "connectorId":
+			err = unpopulate(val, "ConnectorID", &h.ConnectorID)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &h.ID)
+			delete(rawMsg, key)
+		case "source":
+			err = unpopulate(val, "Source", &h.Source)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", h, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type HealthReportStatus.
 func (h HealthReportStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -14665,8 +14673,6 @@ func (r *RemediationEta) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ResourceDetails.
 func (r ResourceDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectorId", r.ConnectorID)
-	populate(objectMap, "id", r.ID)
 	populate(objectMap, "source", r.Source)
 	return json.Marshal(objectMap)
 }
@@ -14680,12 +14686,6 @@ func (r *ResourceDetails) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "connectorId":
-			err = unpopulate(val, "ConnectorID", &r.ConnectorID)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &r.ID)
-			delete(rawMsg, key)
 		case "source":
 			err = unpopulate(val, "Source", &r.Source)
 			delete(rawMsg, key)
@@ -17055,7 +17055,7 @@ func (s *SubAssessmentProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Remediation", &s.Remediation)
 			delete(rawMsg, key)
 		case "resourceDetails":
-			s.ResourceDetails, err = unmarshalCommonResourceDetailsClassification(val)
+			s.ResourceDetails, err = unmarshalResourceDetailsClassification(val)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &s.Status)

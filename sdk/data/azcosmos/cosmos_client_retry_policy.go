@@ -48,6 +48,21 @@ type retryContext struct {
 const maxRetryCount = 120
 const defaultBackoff = 1
 
+// sleepWithContext sleeps for d, but returns early with the context's error
+// if ctx is cancelled or its deadline expires. Use this in retry paths so
+// the policy honors caller-set context deadlines instead of consuming the
+// caller's e2e timeout budget asleep.
+func sleepWithContext(ctx context.Context, d time.Duration) error {
+	t := time.NewTimer(d)
+	defer t.Stop()
+	select {
+	case <-t.C:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+}
+
 // maxSameRegionConnectionRetries is the number of times a connection-level
 // failure is retried against the current region before considering a
 // cross-region failover.
@@ -94,9 +109,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			}
 			// Honor the caller's context: if their deadline expired or
 			// they cancelled the request, do not consume their budget
-			// with our retries.
+			// with our retries. Preserve both the cancellation reason
+			// (so errors.Is(returned, context.DeadlineExceeded) works)
+			// and the underlying transport error for diagnostics.
 			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
-				return nil, errorinfo.NonRetriableError(err)
+				return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", ctxErr, err))
 			}
 			kind := classifyNetworkError(err)
 			if kind != connectionErrorNone {
@@ -177,27 +194,40 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 }
 
 // attemptRetryOnNetworkError decides how to respond to a transport-level
-// failure. The first maxSameRegionConnectionRetries attempts always retry
-// against the same region (the currently-resolved endpoint), without
-// touching the location cache. Once that budget is exhausted, exactly one
-// cross-region failover is attempted, subject to write-safety rules:
+// failure. While the policy is enabled (enableCrossRegionRetries), the
+// first maxSameRegionConnectionRetries attempts retry against the same
+// region (the currently-resolved endpoint) without touching the location
+// cache. Once that budget is exhausted, exactly one cross-region failover
+// is attempted, subject to write-safety rules:
 //   - reads always fail over;
 //   - writes only fail over when the error is classified as
 //     connectionErrorNotSent (i.e. we are sure the request never reached
 //     the service). Writes on ambiguous errors stop retrying to avoid
-//     duplicate side-effects.
+//     duplicate side-effects, and mark the endpoint unavailable so
+//     concurrent requests learn about the regional outage.
 //
 // After the single cross-region failover, any further connection error
 // stops retrying — the policy does not chain failovers across regions.
+//
+// When enableCrossRegionRetries is false the policy performs no retries
+// at all; the caller has explicitly opted into a "fail fast" mode.
 func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind connectionErrorKind, isWriteOperation bool, retryContext *retryContext) (bool, error) {
 	if retryContext.retryCount > maxRetryCount {
+		return false, nil
+	}
+	// If the caller disabled cross-region retries we treat that as a
+	// blanket opt-out from any retries performed by this policy,
+	// preserving the pre-existing "fail fast" semantics.
+	if !p.gem.locationCache.enableCrossRegionRetries {
 		return false, nil
 	}
 
 	// While still on the original region, allow the same-region budget.
 	if !retryContext.crossRegionFailoverDone && retryContext.sameRegionRetryCount < maxSameRegionConnectionRetries {
 		retryContext.sameRegionRetryCount += 1
-		time.Sleep(defaultBackoff * time.Second)
+		if err := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); err != nil {
+			return false, nil
+		}
 		return true, nil
 	}
 
@@ -208,17 +238,32 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 	if retryContext.crossRegionFailoverDone {
 		return false, nil
 	}
-	if !p.gem.locationCache.enableCrossRegionRetries {
-		return false, nil
-	}
-	if isWriteOperation && kind != connectionErrorNotSent {
-		// Ambiguous failure for a write: we cannot safely retry on
-		// another region without risking a duplicate.
+
+	// Decide whether a cross-region failover is even possible for this
+	// operation before mutating any shared state. Writes on a
+	// single-master account cannot meaningfully fail over (there is only
+	// one write region), so don't bother marking the endpoint
+	// unavailable — that would just degrade the cache for everyone
+	// without producing a different endpoint.
+	canCrossRegionWrite := !isWriteOperation || p.gem.CanUseMultipleWriteLocations()
+	if isWriteOperation && (kind != connectionErrorNotSent || !canCrossRegionWrite) {
+		// Ambiguous failure, or single-master write: we cannot safely
+		// retry on another region. Mark the endpoint unavailable for
+		// reads so concurrent requests learn about the outage, but do
+		// not mark it unavailable for writes on a single-master
+		// account (we have nowhere else to send writes).
+		if err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
+			return false, err
+		}
+		if canCrossRegionWrite {
+			if err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL); err != nil {
+				return false, err
+			}
+		}
 		return false, nil
 	}
 
-	err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
-	if err != nil {
+	if err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
 		return false, err
 	}
 	if isWriteOperation {
@@ -226,14 +271,19 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 			return false, err
 		}
 	}
-	if err := p.gem.Update(req.Raw().Context(), false); err != nil {
+	// Force a refresh so the new unavailability is reflected in
+	// readEndpoints / writeEndpoints for both this request and any
+	// concurrent requests racing through resolveServiceEndpoint.
+	if err := p.gem.Update(req.Raw().Context(), true); err != nil {
 		return false, err
 	}
 
 	retryContext.sameRegionRetryCount = 0
 	retryContext.retryCount += 1
 	retryContext.crossRegionFailoverDone = true
-	time.Sleep(defaultBackoff * time.Second)
+	if err := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); err != nil {
+		return false, nil
+	}
 	return true, nil
 }
 
@@ -312,10 +362,15 @@ func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, is
 	if err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
 		return false, err
 	}
-	if err := p.gem.Update(req.Raw().Context(), false); err != nil {
+	// Force a refresh so the unavailability is reflected in
+	// readEndpoints for this and concurrent requests.
+	if err := p.gem.Update(req.Raw().Context(), true); err != nil {
 		return false, err
 	}
 	retryContext.requestTimeoutRetryDone = true
+	if err := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); err != nil {
+		return false, nil
+	}
 	return true, nil
 }
 
@@ -329,6 +384,10 @@ func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, is
 //     after the request was placed on the wire (EOF, connection reset,
 //     broken pipe, transport-level timeouts).
 //   - connectionErrorNone     : not a transport-level connection error.
+//
+// The syscall constants (ECONNREFUSED, ECONNRESET, etc.) used below are
+// normalized by the Go runtime across Unix and Windows, so this
+// classifier is portable without per-OS build tags.
 func classifyNetworkError(err error) connectionErrorKind {
 	if err == nil {
 		return connectionErrorNone
@@ -341,15 +400,6 @@ func classifyNetworkError(err error) connectionErrorKind {
 		return connectionErrorNotSent
 	}
 
-	// Failures during dial / TCP connect mean the request bytes were
-	// never put on the wire.
-	var opErr *net.OpError
-	if errors.As(err, &opErr) {
-		if opErr.Op == "dial" {
-			return connectionErrorNotSent
-		}
-	}
-
 	// TLS handshake failures happen before any request bytes are flushed.
 	var tlsRecordErr tls.RecordHeaderError
 	if errors.As(err, &tlsRecordErr) {
@@ -360,12 +410,15 @@ func classifyNetworkError(err error) connectionErrorKind {
 		return connectionErrorNotSent
 	}
 
-	// OS-level "connection could not be established" signals.
+	// OS-level "connection could not be established" signals. ETIMEDOUT
+	// here covers TCP connect timeouts (kernel SYN timeout) — we treat
+	// those as not-sent because no application bytes were ever written.
 	switch {
 	case errors.Is(err, syscall.ECONNREFUSED),
 		errors.Is(err, syscall.EHOSTUNREACH),
 		errors.Is(err, syscall.ENETUNREACH),
-		errors.Is(err, syscall.ENETDOWN):
+		errors.Is(err, syscall.ENETDOWN),
+		errors.Is(err, syscall.ETIMEDOUT):
 		return connectionErrorNotSent
 	}
 
@@ -386,12 +439,21 @@ func classifyNetworkError(err error) connectionErrorKind {
 		return connectionErrorAmbiguous
 	}
 
-	// Other net.Error timeouts / generic OpErrors are ambiguous.
-	var netErr net.Error
-	if errors.As(err, &netErr) && netErr.Timeout() {
+	// net.OpError covers dial / read / write / accept failures. A "dial"
+	// failure proves the request never left this host. Any other
+	// OpError happened after the connection was established and is
+	// therefore ambiguous.
+	var opErr *net.OpError
+	if errors.As(err, &opErr) {
+		if opErr.Op == "dial" {
+			return connectionErrorNotSent
+		}
 		return connectionErrorAmbiguous
 	}
-	if opErr != nil {
+
+	// Other net.Error timeouts (e.g. http.Client.Timeout) are ambiguous.
+	var netErr net.Error
+	if errors.As(err, &netErr) && netErr.Timeout() {
 		return connectionErrorAmbiguous
 	}
 

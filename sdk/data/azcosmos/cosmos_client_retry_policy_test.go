@@ -20,6 +20,7 @@ import (
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSessionNotAvailableSingleMaster(t *testing.T) {
@@ -537,6 +538,10 @@ func TestDnsErrorRetry(t *testing.T) {
 // server with the client retry policy under test. Tests can append responses
 // (or errors) to `srv` to drive the retry behavior.
 func setupRetryPolicyTestClient(t *testing.T) (*Client, *mock.Server, *clientRetryPolicyVerifier, func()) {
+	return setupRetryPolicyTestClientOpts(t, true /*multiMaster*/, true /*enableCrossRegion*/)
+}
+
+func setupRetryPolicyTestClientOpts(t *testing.T, multiMaster, enableCrossRegion bool) (*Client, *mock.Server, *clientRetryPolicyVerifier, func()) {
 	t.Helper()
 	srv, srvClose := mock.NewTLSServer()
 
@@ -548,11 +553,14 @@ func setupRetryPolicyTestClient(t *testing.T) (*Client, *mock.Server, *clientRet
 
 	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
 
+	lc := CreateMockLC(*defaultEndpoint, multiMaster)
+	lc.enableCrossRegionRetries = enableCrossRegion
+
 	gem := &globalEndpointManager{
 		clientEndpoint:      gemServer.URL(),
 		pipeline:            internalPipeline,
 		preferredLocations:  []string{},
-		locationCache:       CreateMockLC(*defaultEndpoint, true),
+		locationCache:       lc,
 		refreshTimeInterval: defaultExpirationTime,
 		lastUpdateTime:      time.Time{},
 	}
@@ -594,7 +602,9 @@ func TestConnectionErrorReadFailsOverAfterThreeSameRegionAttempts(t *testing.T) 
 }
 
 func TestNotSentConnectionErrorWriteFailsOver(t *testing.T) {
-	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	// Multi-master account: writes can fail over to another write region
+	// when the failure is classified as not-sent (DNS in this case).
+	client, srv, verifier, cleanup := setupRetryPolicyTestClientOpts(t, true /*multiMaster*/, true)
 	defer cleanup()
 
 	dnsErr := &net.DNSError{}
@@ -606,7 +616,8 @@ func TestNotSentConnectionErrorWriteFailsOver(t *testing.T) {
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	item := map[string]interface{}{"id": "1", "value": "2"}
-	marshalled, _ := json.Marshal(item)
+	marshalled, mErr := json.Marshal(item)
+	require.NoError(t, mErr)
 	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
 
 	assert.NoError(t, err)
@@ -615,19 +626,22 @@ func TestNotSentConnectionErrorWriteFailsOver(t *testing.T) {
 	assert.Equal(t, 1, rc.retryCount)
 }
 
-// fakeNetOpError satisfies net.Error to drive ambiguous classification.
-type fakeNetOpError struct{ msg string }
+// fakeAmbiguousNetError satisfies net.Error and wraps syscall.ECONNRESET
+// so classifyNetworkError categorizes it as connectionErrorAmbiguous. It
+// does NOT implement *net.OpError; tests that want to exercise the
+// real OpError code path should use &net.OpError{Op: "read", ...} directly.
+type fakeAmbiguousNetError struct{ msg string }
 
-func (e *fakeNetOpError) Error() string   { return e.msg }
-func (e *fakeNetOpError) Timeout() bool   { return false }
-func (e *fakeNetOpError) Temporary() bool { return false }
-func (e *fakeNetOpError) Unwrap() error   { return syscall.ECONNRESET }
+func (e *fakeAmbiguousNetError) Error() string   { return e.msg }
+func (e *fakeAmbiguousNetError) Timeout() bool   { return false }
+func (e *fakeAmbiguousNetError) Temporary() bool { return false }
+func (e *fakeAmbiguousNetError) Unwrap() error   { return syscall.ECONNRESET }
 
 func TestAmbiguousConnectionErrorWriteDoesNotFailOver(t *testing.T) {
 	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
 	defer cleanup()
 
-	ambErr := &fakeNetOpError{msg: "connection reset by peer"}
+	ambErr := &fakeAmbiguousNetError{msg: "connection reset by peer"}
 	// More errors than we should ever consume.
 	for i := 0; i < 6; i++ {
 		srv.AppendError(ambErr)
@@ -636,7 +650,8 @@ func TestAmbiguousConnectionErrorWriteDoesNotFailOver(t *testing.T) {
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	item := map[string]interface{}{"id": "1", "value": "2"}
-	marshalled, _ := json.Marshal(item)
+	marshalled, mErr := json.Marshal(item)
+	require.NoError(t, mErr)
 	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
 
 	assert.Error(t, err)
@@ -650,7 +665,7 @@ func TestAmbiguousConnectionErrorReadFailsOver(t *testing.T) {
 	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
 	defer cleanup()
 
-	ambErr := &fakeNetOpError{msg: "connection reset by peer"}
+	ambErr := &fakeAmbiguousNetError{msg: "connection reset by peer"}
 	for i := 0; i < 4; i++ {
 		srv.AppendError(ambErr)
 	}
@@ -702,7 +717,8 @@ func TestNotSentConnectionErrorMultiMasterWriteFailsOver(t *testing.T) {
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	item := map[string]interface{}{"id": "1", "value": "2"}
-	marshalled, _ := json.Marshal(item)
+	marshalled, mErr := json.Marshal(item)
+	require.NoError(t, mErr)
 	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
 
 	assert.NoError(t, err)
@@ -791,7 +807,8 @@ func TestRequestTimeoutWriteDoesNotRetry(t *testing.T) {
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	item := map[string]interface{}{"id": "1", "value": "2"}
-	marshalled, _ := json.Marshal(item)
+	marshalled, mErr := json.Marshal(item)
+	require.NoError(t, mErr)
 	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
 
 	assert.Error(t, err)
@@ -799,6 +816,124 @@ func TestRequestTimeoutWriteDoesNotRetry(t *testing.T) {
 	assert.False(t, rc.requestTimeoutRetryDone)
 	assert.Equal(t, 0, rc.retryCount)
 	assert.Equal(t, 1, srv.Requests())
+}
+
+func TestSingleMasterWriteDoesNotFailoverOnConnectionError(t *testing.T) {
+	// Single-master: writes have only one possible write region, so a
+	// "cross-region failover" would just route back to the same region.
+	// The policy should give up after 3 same-region attempts without
+	// performing a wasted cross-region attempt and without marking the
+	// only write endpoint unavailable for write.
+	client, srv, verifier, cleanup := setupRetryPolicyTestClientOpts(t, false /*multiMaster*/, true)
+	defer cleanup()
+
+	dnsErr := &net.DNSError{}
+	for i := 0; i < 6; i++ {
+		srv.AppendError(dnsErr)
+	}
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	item := map[string]interface{}{"id": "1", "value": "2"}
+	marshalled, err := json.Marshal(item)
+	require.NoError(t, err)
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+
+	require.Error(t, err)
+	rc := verifier.requests[0].retryContext
+	// 1 initial + 3 same-region retries = 4 total; no cross-region attempt.
+	assert.Equal(t, 4, srv.Requests())
+	assert.False(t, rc.crossRegionFailoverDone)
+	// No endpoint should be marked unavailable for write on a single-master
+	// account — there is nowhere else to send writes.
+	for _, info := range client.gem.locationCache.locationUnavailabilityInfoMap {
+		assert.NotEqual(t, write, info.unavailableOps, "single-master write endpoint should not be marked write-unavailable")
+		assert.NotEqual(t, all, info.unavailableOps, "single-master write endpoint should not be marked all-unavailable")
+	}
+}
+
+func TestAmbiguousWriteMarksEndpointUnavailableForRead(t *testing.T) {
+	// Multi-master write that gives up on an ambiguous transport error
+	// should still mark the endpoint unavailable for read so concurrent
+	// requests learn about the regional outage.
+	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	ambErr := &fakeAmbiguousNetError{msg: "connection reset by peer"}
+	for i := 0; i < 6; i++ {
+		srv.AppendError(ambErr)
+	}
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	item := map[string]interface{}{"id": "1", "value": "2"}
+	marshalled, err := json.Marshal(item)
+	require.NoError(t, err)
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+
+	// At least one endpoint must have been marked unavailable for write
+	// (single-master would NOT do this; we use multi-master here).
+	require.Error(t, err)
+	rc := verifier.requests[0].retryContext
+	assert.False(t, rc.crossRegionFailoverDone)
+	// Marked unavailable for read for at least one endpoint.
+	var markedForRead bool
+	for _, info := range client.gem.locationCache.locationUnavailabilityInfoMap {
+		if info.unavailableOps == read || info.unavailableOps == all {
+			markedForRead = true
+			break
+		}
+	}
+	assert.True(t, markedForRead, "expected at least one endpoint marked unavailable for read")
+}
+
+func TestConnectionErrorWithCrossRegionRetriesDisabledFailsFast(t *testing.T) {
+	// With enableCrossRegionRetries=false the policy must not retry at
+	// all — neither same-region nor cross-region — preserving the
+	// pre-existing "fail fast" semantics.
+	client, srv, _, cleanup := setupRetryPolicyTestClientOpts(t, true, false /*disable cross region*/)
+	defer cleanup()
+
+	for i := 0; i < 4; i++ {
+		srv.AppendError(&net.DNSError{})
+	}
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+
+	require.Error(t, err)
+	assert.Equal(t, 1, srv.Requests(), "no retries should be performed when cross-region retries are disabled")
+}
+
+func TestCallerDeadlineDuringBackoffShortCircuits(t *testing.T) {
+	// While the policy is sleeping between same-region retries, if the
+	// caller's context expires the sleep must return early and the
+	// policy must give up.
+	client, srv, _, cleanup := setupRetryPolicyTestClient(t)
+	defer cleanup()
+
+	for i := 0; i < 6; i++ {
+		srv.AppendError(&net.DNSError{})
+	}
+
+	// Deadline shorter than defaultBackoff so the first backoff is
+	// guaranteed to be interrupted by ctx cancellation.
+	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
+	defer cancel()
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	start := time.Now()
+	_, err := container.ReadItem(ctx, NewPartitionKeyString("1"), "doc1", nil)
+	elapsed := time.Since(start)
+
+	require.Error(t, err)
+	// We should give up before the full 3-second same-region budget.
+	assert.Less(t, elapsed, defaultBackoff*time.Second, "policy should not sleep through caller deadline")
+	// At most 2 requests: the initial attempt and possibly one more
+	// before the deadline fires during backoff.
+	assert.LessOrEqual(t, srv.Requests(), 2)
 }
 
 func TestClassifyNetworkError(t *testing.T) {
@@ -812,6 +947,8 @@ func TestClassifyNetworkError(t *testing.T) {
 		{"dial op", &net.OpError{Op: "dial", Err: errors.New("boom")}, connectionErrorNotSent},
 		{"connection refused", syscall.ECONNREFUSED, connectionErrorNotSent},
 		{"host unreachable", syscall.EHOSTUNREACH, connectionErrorNotSent},
+		{"etimedout", syscall.ETIMEDOUT, connectionErrorNotSent},
+		{"real opError read wrapping econnreset", &net.OpError{Op: "read", Err: syscall.ECONNRESET}, connectionErrorAmbiguous},
 		{"eof", io.EOF, connectionErrorAmbiguous},
 		{"unexpected eof", io.ErrUnexpectedEOF, connectionErrorAmbiguous},
 		{"connection reset", syscall.ECONNRESET, connectionErrorAmbiguous},

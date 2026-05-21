@@ -5,6 +5,7 @@
 
 - New struct `PlatformManaged`
 - New field `PlatformManaged` in struct `CertificatePolicy`
+- New function `NewPlatformManaged`
 
 
 ## 1.5.0-beta.1 (2026-04-08)

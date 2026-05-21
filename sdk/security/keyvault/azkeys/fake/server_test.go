@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -272,6 +273,30 @@ func getServer() fake.Server {
 			resp.SetResponse(http.StatusOK, kvResp, nil)
 			return
 		},
+		SecureUnwrapKey: func(ctx context.Context, name string, version string, parameters azkeys.SecureKeyUnWrapOperationParameters, options *azkeys.SecureUnwrapKeyOptions) (resp azfake.Responder[azkeys.SecureUnwrapKeyResponse], errResp azfake.ErrorResponder) {
+			version = strings.TrimRight(version, "/")
+			kvResp := azkeys.SecureUnwrapKeyResponse{
+				SecureKeyOperationResult: azkeys.SecureKeyOperationResult{
+					Algorithm: parameters.Algorithm,
+					Kid:       to.Ptr(fmt.Sprintf("%s/%s/%s", vault, name, version)),
+					Value:     []byte("unwrapped"),
+				},
+			}
+			resp.SetResponse(http.StatusOK, kvResp, nil)
+			return
+		},
+		SecureWrapKey: func(ctx context.Context, name string, version string, parameters azkeys.SecureKeyWrapOperationParameters, options *azkeys.SecureWrapKeyOptions) (resp azfake.Responder[azkeys.SecureWrapKeyResponse], errResp azfake.ErrorResponder) {
+			version = strings.TrimRight(version, "/")
+			kvResp := azkeys.SecureWrapKeyResponse{
+				SecureKeyOperationResult: azkeys.SecureKeyOperationResult{
+					Algorithm: parameters.Algorithm,
+					Kid:       to.Ptr(fmt.Sprintf("%s/%s/%s", vault, name, version)),
+					Value:     []byte("wrapped"),
+				},
+			}
+			resp.SetResponse(http.StatusOK, kvResp, nil)
+			return
+		},
 		Sign: func(ctx context.Context, name string, version string, parameters azkeys.SignParameters, options *azkeys.SignOptions) (resp azfake.Responder[azkeys.SignResponse], errResp azfake.ErrorResponder) {
 			kvResp := azkeys.SignResponse{
 				KeyOperationResult: azkeys.KeyOperationResult{
@@ -437,6 +462,16 @@ func TestServer(t *testing.T) {
 	rotateResp, err := client.RotateKey(context.Background(), keyName, nil)
 	require.NoError(t, err)
 	require.Equal(t, keyName, rotateResp.Key.KID.Name())
+
+	secureWrapResp, err := client.SecureWrapKey(context.Background(), keyName, keyVersion, azkeys.NewSecureWrapKeyParameters(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256), nil)
+	require.NoError(t, err)
+	require.Equal(t, fmt.Sprintf("%s/%s/%s", vault, keyName, keyVersion), strings.TrimRight(*secureWrapResp.Kid, "/"))
+	require.Equal(t, []byte("wrapped"), secureWrapResp.Value)
+
+	secureUnwrapResp, err := client.SecureUnwrapKey(context.Background(), keyName, keyVersion, azkeys.NewSecureUnwrapKeyParameters(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256, secureWrapResp.Value, "attestation"), nil)
+	require.NoError(t, err)
+	require.Equal(t, fmt.Sprintf("%s/%s/%s", vault, keyName, keyVersion), strings.TrimRight(*secureUnwrapResp.Kid, "/"))
+	require.Equal(t, []byte("unwrapped"), secureUnwrapResp.Value)
 
 	signResp, err := client.Sign(context.Background(), keyName, keyVersion, azkeys.SignParameters{}, nil)
 	require.NoError(t, err)

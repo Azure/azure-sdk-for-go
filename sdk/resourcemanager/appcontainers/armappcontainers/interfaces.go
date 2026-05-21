@@ -8,7 +8,8 @@ package armappcontainers
 // JavaComponentPropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetJavaComponentProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *JavaComponentProperties, *SpringBootAdminComponent, *SpringCloudConfigComponent, *SpringCloudEurekaComponent
+// - *JavaComponentProperties, *NacosComponent, *SpringBootAdminComponent, *SpringCloudConfigComponent, *SpringCloudEurekaComponent,
+// - *SpringCloudGatewayComponent
 type JavaComponentPropertiesClassification interface {
 	// GetJavaComponentProperties returns the JavaComponentProperties content of the underlying type.
 	GetJavaComponentProperties() *JavaComponentProperties

@@ -411,6 +411,61 @@ func TestAPIVersion(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestDefaultServiceVersion(t *testing.T) {
+	var requireVersion = func(req *http.Request) bool {
+		version := req.URL.Query().Get("api-version")
+		require.Equal(t, string(azsecrets.ServiceVersionLatest), version)
+		require.Equal(t, string(azsecrets.ServiceVersion20260301Preview), version)
+		return true
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	opts := &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: srv,
+		},
+	}
+	client, err := azsecrets.NewClient(vaultURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	_, err = client.GetSecret(context.Background(), "name", "", nil)
+	require.NoError(t, err)
+}
+
+func TestServiceVersion(t *testing.T) {
+	var requireVersion = func(req *http.Request) bool {
+		version := req.URL.Query().Get("api-version")
+		require.Equal(t, string(azsecrets.ServiceVersion20260301Preview), version)
+		return true
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	opts := &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			APIVersion: "2025-07-01",
+			Transport:  srv,
+		},
+		ServiceVersion: azsecrets.ServiceVersion20260301Preview,
+	}
+	client, err := azsecrets.NewClient(vaultURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	_, err = client.GetSecret(context.Background(), "name", "", nil)
+	require.NoError(t, err)
+}
+
 func TestPreviousVersion(t *testing.T) {
 	tests := []struct {
 		name     string

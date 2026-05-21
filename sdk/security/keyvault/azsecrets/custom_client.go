@@ -16,17 +16,35 @@ import (
 type ClientOptions struct {
 	azcore.ClientOptions
 
+	// ServiceVersion specifies the version of the service to use. The default is ServiceVersionLatest.
+	ServiceVersion ServiceVersion
+
 	// DisableChallengeResourceVerification controls whether the policy requires the
 	// authentication challenge resource to match the Key Vault or Managed HSM domain.
 	// See https://aka.ms/azsdk/blog/vault-uri for more information.
 	DisableChallengeResourceVerification bool
 }
 
+// ServiceVersion identifies the version of the Key Vault Secrets service.
+type ServiceVersion string
+
+const (
+	// ServiceVersion20260301Preview is the 2026-03-01-preview service version.
+	ServiceVersion20260301Preview ServiceVersion = ServiceVersion(version20260301Preview)
+
+	// ServiceVersionLatest is the latest service version supported by this client.
+	ServiceVersionLatest ServiceVersion = ServiceVersion20260301Preview
+)
+
 // NewClient creates a client that accesses a Key Vault's secrets. You should validate that
 // vaultURL references a valid Key Vault. See https://aka.ms/azsdk/blog/vault-uri for details.
 func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
+	}
+	clientOptions := options.ClientOptions
+	if options.ServiceVersion != "" {
+		clientOptions.APIVersion = string(options.ServiceVersion)
 	}
 	authPolicy := internal.NewKeyVaultChallengePolicy(
 		credential,
@@ -43,7 +61,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 		Tracing: runtime.TracingOptions{
 			Namespace: "Microsoft.KeyVault",
 		},
-	}, &options.ClientOptions)
+	}, &clientOptions)
 	if err != nil {
 		return nil, err
 	}

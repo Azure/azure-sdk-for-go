@@ -69,22 +69,22 @@ type ApplicationResource struct {
 	// The application resource properties.
 	Properties *ApplicationResourceProperties
 
-	// Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
 	// Azure resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Azure resource etag.
 	Etag *string
 
-	// READ-ONLY; Azure resource identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Azure resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -200,22 +200,22 @@ type ApplicationTypeResource struct {
 	// The application type name properties
 	Properties *ApplicationTypeResourceProperties
 
-	// Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
 	// Azure resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Azure resource etag.
 	Etag *string
 
-	// READ-ONLY; Azure resource identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Azure resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -242,22 +242,22 @@ type ApplicationTypeVersionResource struct {
 	// The properties of the application type version resource.
 	Properties *ApplicationTypeVersionResourceProperties
 
-	// Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
 	// Azure resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Azure resource etag.
 	Etag *string
 
-	// READ-ONLY; Azure resource identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Azure resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1094,22 +1094,22 @@ type ServiceResource struct {
 	// The service resource properties.
 	Properties ServiceResourcePropertiesClassification
 
-	// Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
 	// Azure resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Azure resource etag.
 	Etag *string
 
-	// READ-ONLY; Azure resource identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Azure resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 

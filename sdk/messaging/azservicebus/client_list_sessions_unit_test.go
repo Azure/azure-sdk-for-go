@@ -179,9 +179,9 @@ func TestClient_ListSessionsForQueue_StopsOnEmptyFirstPage(t *testing.T) {
 }
 
 func TestClient_ListSessionsForQueue_ActiveModeSendsSentinel(t *testing.T) {
-	// Active-messages mode (UpdatedAfter nil) must send the 9999-12-31 sentinel
-	// so the service switches modes. The service compares against
-	// DateTime.MaxValue (ms precision: 253402300799999).
+	// Active-messages mode (UpdatedAfter nil) must send the 10000-01-01 sentinel
+	// (253402300800000 ms on the AMQP wire) so the service's .NET AMQP decoder
+	// clamps it to DateTime.MaxValue, triggering active-messages mode.
 	link := &scriptedRPCLink{
 		t: t,
 		responses: []*amqpwrap.RPCResponse{
@@ -197,7 +197,7 @@ func TestClient_ListSessionsForQueue_ActiveModeSendsSentinel(t *testing.T) {
 	body := link.calls[0].Value.(map[string]any)
 	ts, ok := body["last-updated-time"].(time.Time)
 	require.True(t, ok)
-	require.Equal(t, 9999, ts.Year())
+	require.Equal(t, 10000, ts.Year())
 }
 
 func TestClient_ListSessionsForQueue_UpdatedAfterIsPropagated(t *testing.T) {

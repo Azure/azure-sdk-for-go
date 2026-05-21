@@ -62,18 +62,19 @@ func TestGetMessageSessions_ActiveSessionsMode(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	// The sentinel for "active messages" mode: 9999-12-31T23:59:59.999999999.
-	// On the AMQP wire this becomes 253402300799999 ms (DateTime.MaxValue at ms precision).
-	sentinel := time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC)
+	// The sentinel for "active messages" mode: 10000-01-01T00:00:00Z.
+	// On the AMQP wire this becomes 253402300800000 ms, which the service's .NET
+	// AMQP decoder clamps to DateTime.MaxValue, triggering active-messages mode.
+	sentinel := time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC)
 
 	rpcLink := mock.NewMockRPCLink(ctrl)
 	rpcLink.EXPECT().RPC(gomock.Any(), gomock.Any()).DoAndReturn(
 		func(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
 			body := msg.Value.(map[string]any)
 			ts := body["last-updated-time"].(time.Time)
-			require.Equal(t, 9999, ts.Year())
-			require.Equal(t, time.December, ts.Month())
-			require.Equal(t, 31, ts.Day())
+			require.Equal(t, 10000, ts.Year())
+			require.Equal(t, time.January, ts.Month())
+			require.Equal(t, 1, ts.Day())
 
 			return &amqpwrap.RPCResponse{
 				Code: 200,
@@ -103,7 +104,7 @@ func TestGetMessageSessions_Returns204NoContent(t *testing.T) {
 		}, nil)
 
 	result, err := GetMessageSessions(context.Background(), rpcLink,
-		time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC), 0, 100)
+		time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC), 0, 100)
 
 	require.NoError(t, err)
 	require.Nil(t, result)
@@ -125,7 +126,7 @@ func TestGetMessageSessions_ReturnsEmptySessionsIds(t *testing.T) {
 		}, nil)
 
 	result, err := GetMessageSessions(context.Background(), rpcLink,
-		time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC), 0, 100)
+		time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC), 0, 100)
 
 	require.NoError(t, err)
 	require.Nil(t, result)
@@ -179,7 +180,7 @@ func TestGetMessageSessions_404SessionNotFoundReturnsEmpty(t *testing.T) {
 				}, nil)
 
 			result, err := GetMessageSessions(context.Background(), rpcLink,
-				time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC), 0, 100)
+				time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC), 0, 100)
 
 			require.NoError(t, err)
 			require.Nil(t, result)
@@ -203,7 +204,7 @@ func TestGetMessageSessions_404OtherSurfacesError(t *testing.T) {
 		}, nil)
 
 	result, err := GetMessageSessions(context.Background(), rpcLink,
-		time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC), 0, 100)
+		time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC), 0, 100)
 
 	require.Error(t, err)
 	require.Nil(t, result)

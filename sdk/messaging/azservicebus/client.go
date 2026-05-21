@@ -406,11 +406,13 @@ func (client *Client) ListSessionsForSubscription(ctx context.Context, topicName
 }
 
 func (client *Client) listSessionsForEntity(ctx context.Context, entityPath string, options *ListSessionsOptions) ([]string, error) {
-	// The service checks for DateTime.MaxValue (C# 9999-12-31T23:59:59.9999999) to switch
-	// between "active messages" mode and "updated since" mode. On the AMQP wire, timestamps
-	// have ms precision, so DateTime.MaxValue becomes 253402300799999 ms. This time.Time
-	// value (9999-12-31T23:59:59.999999999) truncates to that same ms value via go-amqp.
-	lastUpdatedTime := time.Date(9999, 12, 31, 23, 59, 59, 999999999, time.UTC)
+	// The service checks `lastUpdatedTime != DateTime.MaxValue` (exact equality) to switch
+	// between "active messages" mode and "updated since" mode. The .NET AMQP library encodes
+	// DateTime.MaxValue as 253402300800000 ms (10000-01-01T00:00:00Z) due to double→long
+	// rounding in TimeSpan.TotalMilliseconds, and its decoder clamps values beyond
+	// DateTime.MaxValue.Ticks back to DateTime.MaxValue. This matches Track 1 Java's
+	// SessionBrowser.MAXDATE = new Date(253402300800000L).
+	lastUpdatedTime := time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC)
 	if options != nil && options.UpdatedAfter != nil {
 		lastUpdatedTime = *options.UpdatedAfter
 	}

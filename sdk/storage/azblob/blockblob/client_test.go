@@ -7166,6 +7166,77 @@ func TestUploadExpectContinueApplyOnThrottle(t *testing.T) {
 	require.Equal(t, "100-continue", observer.seen[1], "request after throttle must carry Expect: 100-continue")
 }
 
+// TestUploadExpectContinueApplyOnThrottleTinyInterval verifies that default mode
+// (ApplyOnThrottle) with a very small interval effectively expires before the
+// next request.
+func TestUploadExpectContinueApplyOnThrottleTinyInterval(t *testing.T) {
+	transport := &throttlingBlockBlob{statuses: []int{http.StatusTooManyRequests, http.StatusCreated}}
+	observer := &expectHeaderObserver{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		ExpectContinueBehavior: azblob.ExpectContinueOptions{ThrottleInterval: time.Nanosecond},
+		ClientOptions: policy.ClientOptions{
+			Transport:        transport,
+			PerRetryPolicies: []policy.Policy{observer},
+			Retry:            policy.RetryOptions{MaxRetries: -1},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	buffer := bytes.Repeat([]byte{1}, 4*1024)
+
+	// 1st upload: transport returns 429. Policy records the throttle timestamp.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.Error(t, err)
+
+	// Ensure the tiny throttle window has elapsed.
+	time.Sleep(time.Millisecond)
+
+	// 2nd upload: tiny window should be expired, so header must not be set.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+
+	require.Len(t, observer.seen, 2)
+	require.Empty(t, observer.seen[0], "first request must not carry Expect header (no prior throttle)")
+	require.Empty(t, observer.seen[1], "tiny throttle interval should expire before next request")
+}
+
+// TestUploadExpectContinueApplyOnThrottleLargeInterval verifies that default mode
+// (ApplyOnThrottle) with a very large interval keeps the header enabled for
+// subsequent requests after a throttle response.
+func TestUploadExpectContinueApplyOnThrottleLargeInterval(t *testing.T) {
+	transport := &throttlingBlockBlob{statuses: []int{http.StatusTooManyRequests, http.StatusCreated, http.StatusCreated}}
+	observer := &expectHeaderObserver{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		ExpectContinueBehavior: azblob.ExpectContinueOptions{ThrottleInterval: 24 * time.Hour},
+		ClientOptions: policy.ClientOptions{
+			Transport:        transport,
+			PerRetryPolicies: []policy.Policy{observer},
+			Retry:            policy.RetryOptions{MaxRetries: -1},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	buffer := bytes.Repeat([]byte{1}, 4*1024)
+
+	// 1st upload: transport returns 429. Policy records the throttle timestamp.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.Error(t, err)
+
+	// 2nd and 3rd uploads: still inside a large throttle window, so both should
+	// carry Expect: 100-continue.
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+	_, err = client.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(buffer)), nil)
+	require.NoError(t, err)
+
+	require.Len(t, observer.seen, 3)
+	require.Empty(t, observer.seen[0], "first request must not carry Expect header (no prior throttle)")
+	require.Equal(t, "100-continue", observer.seen[1], "request after throttle must carry Expect: 100-continue")
+	require.Equal(t, "100-continue", observer.seen[2], "large throttle interval should keep Expect enabled")
+}
+
 // TestUploadExpectContinueDisabledByEnv verifies end-to-end through an actual blockblob client
 // that the AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER environment variable suppresses the
 // Expect: 100-continue policy entirely, even when the response sequence would normally trigger

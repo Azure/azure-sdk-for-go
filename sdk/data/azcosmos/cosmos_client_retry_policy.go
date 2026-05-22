@@ -151,7 +151,7 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 		}
 	}
 
-	err := p.gem.Update(req.Raw().Context(), isWriteOperation)
+	err := p.gem.Update(req.Raw().Context(), true)
 	if err != nil {
 		return false, err
 	}

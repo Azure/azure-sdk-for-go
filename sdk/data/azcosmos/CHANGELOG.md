@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 
+* Fixed excessive `GetDatabaseAccount` HTTP calls when using preferred regions, and stopped data-plane retries from trailing into the customer-supplied (default) endpoint once account topology is populated. See [PR 26815](https://github.com/Azure/azure-sdk-for-go/pull/26815).
 * Partition key range cache now serves concurrent callers from a single in-flight refresh per container, and the cached routing map remains readable while a refresh is in progress. The refresh runs on a detached background `context.Background()` so a caller's cancellation no longer aborts the shared fetch for other waiters; each caller continues to honor its own context deadline. See [PR 26855](https://github.com/Azure/azure-sdk-for-go/pull/26855).
 * Partition key range cache change-feed pagination is now resilient to mid-drain throttling. 429 responses are retried indefinitely (with capped linear backoff + jitter) since the service is explicitly asking the client to slow down, and the pages already accumulated are preserved instead of restarting the drain from page 1 on the next refresh. See [PR 26855](https://github.com/Azure/azure-sdk-for-go/pull/26855).
 

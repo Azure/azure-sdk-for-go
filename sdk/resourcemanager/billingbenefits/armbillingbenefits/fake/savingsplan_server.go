@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billingbenefits/armbillingbenefits/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billingbenefits/armbillingbenefits/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -34,9 +34,9 @@ type SavingsPlanServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armbillingbenefits.SavingsPlanClientListAllOptions) (resp azfake.PagerResponder[armbillingbenefits.SavingsPlanClientListAllResponse])
 
-	// Update is the fake for method SavingsPlanClient.Update
+	// BeginUpdate is the fake for method SavingsPlanClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	Update func(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body armbillingbenefits.SavingsPlanUpdateRequest, options *armbillingbenefits.SavingsPlanClientUpdateOptions) (resp azfake.Responder[armbillingbenefits.SavingsPlanClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, savingsPlanOrderID string, savingsPlanID string, body armbillingbenefits.SavingsPlanUpdateRequest, options *armbillingbenefits.SavingsPlanClientBeginUpdateOptions) (resp azfake.PollerResponder[armbillingbenefits.SavingsPlanClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// ValidateUpdate is the fake for method SavingsPlanClient.ValidateUpdate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -51,6 +51,7 @@ func NewSavingsPlanServerTransport(srv *SavingsPlanServer) *SavingsPlanServerTra
 		srv:             srv,
 		newListPager:    newTracker[azfake.PagerResponder[armbillingbenefits.SavingsPlanClientListResponse]](),
 		newListAllPager: newTracker[azfake.PagerResponder[armbillingbenefits.SavingsPlanClientListAllResponse]](),
+		beginUpdate:     newTracker[azfake.PollerResponder[armbillingbenefits.SavingsPlanClientUpdateResponse]](),
 	}
 }
 
@@ -60,6 +61,7 @@ type SavingsPlanServerTransport struct {
 	srv             *SavingsPlanServer
 	newListPager    *tracker[azfake.PagerResponder[armbillingbenefits.SavingsPlanClientListResponse]]
 	newListAllPager *tracker[azfake.PagerResponder[armbillingbenefits.SavingsPlanClientListAllResponse]]
+	beginUpdate     *tracker[azfake.PollerResponder[armbillingbenefits.SavingsPlanClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for SavingsPlanServerTransport.
@@ -70,29 +72,48 @@ func (s *SavingsPlanServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "SavingsPlanClient.Get":
-		resp, err = s.dispatchGet(req)
-	case "SavingsPlanClient.NewListPager":
-		resp, err = s.dispatchNewListPager(req)
-	case "SavingsPlanClient.NewListAllPager":
-		resp, err = s.dispatchNewListAllPager(req)
-	case "SavingsPlanClient.Update":
-		resp, err = s.dispatchUpdate(req)
-	case "SavingsPlanClient.ValidateUpdate":
-		resp, err = s.dispatchValidateUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *SavingsPlanServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if savingsPlanServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = savingsPlanServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "SavingsPlanClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SavingsPlanClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			case "SavingsPlanClient.NewListAllPager":
+				res.resp, res.err = s.dispatchNewListAllPager(req)
+			case "SavingsPlanClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "SavingsPlanClient.ValidateUpdate":
+				res.resp, res.err = s.dispatchValidateUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *SavingsPlanServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -102,7 +123,7 @@ func (s *SavingsPlanServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	const regexStr = `/providers/Microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans/(?P<savingsPlanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -149,7 +170,7 @@ func (s *SavingsPlanServerTransport) dispatchNewListPager(req *http.Request) (*h
 		const regexStr = `/providers/Microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		savingsPlanOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("savingsPlanOrderId")])
@@ -264,43 +285,51 @@ func (s *SavingsPlanServerTransport) dispatchNewListAllPager(req *http.Request) 
 	return resp, nil
 }
 
-func (s *SavingsPlanServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.Update == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+func (s *SavingsPlanServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans/(?P<savingsPlanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/providers/Microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans/(?P<savingsPlanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.SavingsPlanUpdateRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		savingsPlanOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("savingsPlanOrderId")])
+		if err != nil {
+			return nil, err
+		}
+		savingsPlanIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("savingsPlanId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), savingsPlanOrderIDParam, savingsPlanIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.SavingsPlanUpdateRequest](req)
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	savingsPlanOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("savingsPlanOrderId")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	savingsPlanIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("savingsPlanId")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
 	}
-	respr, errRespr := s.srv.Update(req.Context(), savingsPlanOrderIDParam, savingsPlanIDParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SavingsPlanModel, req)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("Location", *val)
-	}
+
 	return resp, nil
 }
 
@@ -311,7 +340,7 @@ func (s *SavingsPlanServerTransport) dispatchValidateUpdate(req *http.Request) (
 	const regexStr = `/providers/Microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans/(?P<savingsPlanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armbillingbenefits.SavingsPlanUpdateValidateRequest](req)
@@ -339,4 +368,10 @@ func (s *SavingsPlanServerTransport) dispatchValidateUpdate(req *http.Request) (
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to SavingsPlanServerTransport
+var savingsPlanServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

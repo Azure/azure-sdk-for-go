@@ -16,12 +16,56 @@ import (
 
 // ServerFactory is a fake server for instances of the armbillingbenefits.ClientFactory type.
 type ServerFactory struct {
-	OperationsServer            OperationsServer
-	RPServer                    RPServer
+	// ApplicableMaccsServer contains the fakes for client ApplicableMaccsClient
+	ApplicableMaccsServer ApplicableMaccsServer
+
+	// BenefitServer contains the fakes for client BenefitClient
+	BenefitServer BenefitServer
+
+	// ConditionalCreditContributorsServer contains the fakes for client ConditionalCreditContributorsClient
+	ConditionalCreditContributorsServer ConditionalCreditContributorsServer
+
+	// ConditionalCreditsServer contains the fakes for client ConditionalCreditsClient
+	ConditionalCreditsServer ConditionalCreditsServer
+
+	// ContributorsServer contains the fakes for client ContributorsClient
+	ContributorsServer ContributorsServer
+
+	// CreditsServer contains the fakes for client CreditsClient
+	CreditsServer CreditsServer
+
+	// DiscountServer contains the fakes for client DiscountClient
+	DiscountServer DiscountServer
+
+	// DiscountsServer contains the fakes for client DiscountsClient
+	DiscountsServer DiscountsServer
+
+	// FreeServicesServer contains the fakes for client FreeServicesClient
+	FreeServicesServer FreeServicesServer
+
+	// MaccsServer contains the fakes for client MaccsClient
+	MaccsServer MaccsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// ReservationOrderAliasServer contains the fakes for client ReservationOrderAliasClient
 	ReservationOrderAliasServer ReservationOrderAliasServer
-	SavingsPlanServer           SavingsPlanServer
+
+	// SavingsPlanServer contains the fakes for client SavingsPlanClient
+	SavingsPlanServer SavingsPlanServer
+
+	// SavingsPlanOrderAliasServer contains the fakes for client SavingsPlanOrderAliasClient
 	SavingsPlanOrderAliasServer SavingsPlanOrderAliasServer
-	SavingsPlanOrderServer      SavingsPlanOrderServer
+
+	// SavingsPlanOrderServer contains the fakes for client SavingsPlanOrderClient
+	SavingsPlanOrderServer SavingsPlanOrderServer
+
+	// SellerResourceServer contains the fakes for client SellerResourceClient
+	SellerResourceServer SellerResourceServer
+
+	// SourcesServer contains the fakes for client SourcesClient
+	SourcesServer SourcesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -36,14 +80,25 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armbillingbenefits.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                           *ServerFactory
-	trMu                          sync.Mutex
-	trOperationsServer            *OperationsServerTransport
-	trRPServer                    *RPServerTransport
-	trReservationOrderAliasServer *ReservationOrderAliasServerTransport
-	trSavingsPlanServer           *SavingsPlanServerTransport
-	trSavingsPlanOrderAliasServer *SavingsPlanOrderAliasServerTransport
-	trSavingsPlanOrderServer      *SavingsPlanOrderServerTransport
+	srv                                   *ServerFactory
+	trMu                                  sync.Mutex
+	trApplicableMaccsServer               *ApplicableMaccsServerTransport
+	trBenefitServer                       *BenefitServerTransport
+	trConditionalCreditContributorsServer *ConditionalCreditContributorsServerTransport
+	trConditionalCreditsServer            *ConditionalCreditsServerTransport
+	trContributorsServer                  *ContributorsServerTransport
+	trCreditsServer                       *CreditsServerTransport
+	trDiscountServer                      *DiscountServerTransport
+	trDiscountsServer                     *DiscountsServerTransport
+	trFreeServicesServer                  *FreeServicesServerTransport
+	trMaccsServer                         *MaccsServerTransport
+	trOperationsServer                    *OperationsServerTransport
+	trReservationOrderAliasServer         *ReservationOrderAliasServerTransport
+	trSavingsPlanServer                   *SavingsPlanServerTransport
+	trSavingsPlanOrderAliasServer         *SavingsPlanOrderAliasServerTransport
+	trSavingsPlanOrderServer              *SavingsPlanOrderServerTransport
+	trSellerResourceServer                *SellerResourceServerTransport
+	trSourcesServer                       *SourcesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -59,12 +114,45 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ApplicableMaccsClient":
+		initServer(s, &s.trApplicableMaccsServer, func() *ApplicableMaccsServerTransport {
+			return NewApplicableMaccsServerTransport(&s.srv.ApplicableMaccsServer)
+		})
+		resp, err = s.trApplicableMaccsServer.Do(req)
+	case "BenefitClient":
+		initServer(s, &s.trBenefitServer, func() *BenefitServerTransport { return NewBenefitServerTransport(&s.srv.BenefitServer) })
+		resp, err = s.trBenefitServer.Do(req)
+	case "ConditionalCreditContributorsClient":
+		initServer(s, &s.trConditionalCreditContributorsServer, func() *ConditionalCreditContributorsServerTransport {
+			return NewConditionalCreditContributorsServerTransport(&s.srv.ConditionalCreditContributorsServer)
+		})
+		resp, err = s.trConditionalCreditContributorsServer.Do(req)
+	case "ConditionalCreditsClient":
+		initServer(s, &s.trConditionalCreditsServer, func() *ConditionalCreditsServerTransport {
+			return NewConditionalCreditsServerTransport(&s.srv.ConditionalCreditsServer)
+		})
+		resp, err = s.trConditionalCreditsServer.Do(req)
+	case "ContributorsClient":
+		initServer(s, &s.trContributorsServer, func() *ContributorsServerTransport { return NewContributorsServerTransport(&s.srv.ContributorsServer) })
+		resp, err = s.trContributorsServer.Do(req)
+	case "CreditsClient":
+		initServer(s, &s.trCreditsServer, func() *CreditsServerTransport { return NewCreditsServerTransport(&s.srv.CreditsServer) })
+		resp, err = s.trCreditsServer.Do(req)
+	case "DiscountClient":
+		initServer(s, &s.trDiscountServer, func() *DiscountServerTransport { return NewDiscountServerTransport(&s.srv.DiscountServer) })
+		resp, err = s.trDiscountServer.Do(req)
+	case "DiscountsClient":
+		initServer(s, &s.trDiscountsServer, func() *DiscountsServerTransport { return NewDiscountsServerTransport(&s.srv.DiscountsServer) })
+		resp, err = s.trDiscountsServer.Do(req)
+	case "FreeServicesClient":
+		initServer(s, &s.trFreeServicesServer, func() *FreeServicesServerTransport { return NewFreeServicesServerTransport(&s.srv.FreeServicesServer) })
+		resp, err = s.trFreeServicesServer.Do(req)
+	case "MaccsClient":
+		initServer(s, &s.trMaccsServer, func() *MaccsServerTransport { return NewMaccsServerTransport(&s.srv.MaccsServer) })
+		resp, err = s.trMaccsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "RPClient":
-		initServer(s, &s.trRPServer, func() *RPServerTransport { return NewRPServerTransport(&s.srv.RPServer) })
-		resp, err = s.trRPServer.Do(req)
 	case "ReservationOrderAliasClient":
 		initServer(s, &s.trReservationOrderAliasServer, func() *ReservationOrderAliasServerTransport {
 			return NewReservationOrderAliasServerTransport(&s.srv.ReservationOrderAliasServer)
@@ -83,6 +171,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSavingsPlanOrderServerTransport(&s.srv.SavingsPlanOrderServer)
 		})
 		resp, err = s.trSavingsPlanOrderServer.Do(req)
+	case "SellerResourceClient":
+		initServer(s, &s.trSellerResourceServer, func() *SellerResourceServerTransport {
+			return NewSellerResourceServerTransport(&s.srv.SellerResourceServer)
+		})
+		resp, err = s.trSellerResourceServer.Do(req)
+	case "SourcesClient":
+		initServer(s, &s.trSourcesServer, func() *SourcesServerTransport { return NewSourcesServerTransport(&s.srv.SourcesServer) })
+		resp, err = s.trSourcesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

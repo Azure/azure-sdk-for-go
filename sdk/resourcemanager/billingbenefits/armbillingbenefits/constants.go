@@ -5,11 +5,6 @@
 
 package armbillingbenefits
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billingbenefits/armbillingbenefits"
-	moduleVersion = "v2.1.0"
-)
-
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -42,6 +37,45 @@ func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 	}
 }
 
+// ApplyDiscountOn - The customer action on which the discount is applied. Supported values are Purchase, Consume, and Renew.
+// Validation: Required, one of supported values.
+type ApplyDiscountOn string
+
+const (
+	ApplyDiscountOnConsume  ApplyDiscountOn = "Consume"
+	ApplyDiscountOnPurchase ApplyDiscountOn = "Purchase"
+	ApplyDiscountOnRenew    ApplyDiscountOn = "Renew"
+)
+
+// PossibleApplyDiscountOnValues returns the possible values for the ApplyDiscountOn const type.
+func PossibleApplyDiscountOnValues() []ApplyDiscountOn {
+	return []ApplyDiscountOn{
+		ApplyDiscountOnConsume,
+		ApplyDiscountOnPurchase,
+		ApplyDiscountOnRenew,
+	}
+}
+
+// BenefitType - Represents benefit model type for validation.
+type BenefitType string
+
+const (
+	BenefitTypeConditionalCredits BenefitType = "ConditionalCredits"
+	BenefitTypeCredits            BenefitType = "Credits"
+	BenefitTypeMACC               BenefitType = "MACC"
+	BenefitTypeSavingsPlan        BenefitType = "SavingsPlan"
+)
+
+// PossibleBenefitTypeValues returns the possible values for the BenefitType const type.
+func PossibleBenefitTypeValues() []BenefitType {
+	return []BenefitType{
+		BenefitTypeConditionalCredits,
+		BenefitTypeCredits,
+		BenefitTypeMACC,
+		BenefitTypeSavingsPlan,
+	}
+}
+
 // BillingPlan - Represents the billing plan in ISO 8601 format. Required only for monthly billing plans.
 type BillingPlan string
 
@@ -56,17 +90,89 @@ func PossibleBillingPlanValues() []BillingPlan {
 	}
 }
 
-// CommitmentGrain - Commitment grain.
+// CommitmentGrain - Grain.
 type CommitmentGrain string
 
 const (
-	CommitmentGrainHourly CommitmentGrain = "Hourly"
+	CommitmentGrainFullTerm CommitmentGrain = "FullTerm"
+	CommitmentGrainHourly   CommitmentGrain = "Hourly"
+	CommitmentGrainUnknown  CommitmentGrain = "Unknown"
 )
 
 // PossibleCommitmentGrainValues returns the possible values for the CommitmentGrain const type.
 func PossibleCommitmentGrainValues() []CommitmentGrain {
 	return []CommitmentGrain{
+		CommitmentGrainFullTerm,
 		CommitmentGrainHourly,
+		CommitmentGrainUnknown,
+	}
+}
+
+// ConditionalCreditEntityType - Type of conditional credit entity
+type ConditionalCreditEntityType string
+
+const (
+	ConditionalCreditEntityTypeContributor ConditionalCreditEntityType = "Contributor"
+	ConditionalCreditEntityTypePrimary     ConditionalCreditEntityType = "Primary"
+)
+
+// PossibleConditionalCreditEntityTypeValues returns the possible values for the ConditionalCreditEntityType const type.
+func PossibleConditionalCreditEntityTypeValues() []ConditionalCreditEntityType {
+	return []ConditionalCreditEntityType{
+		ConditionalCreditEntityTypeContributor,
+		ConditionalCreditEntityTypePrimary,
+	}
+}
+
+// ConditionalCreditStatus - The status of the conditional credit
+type ConditionalCreditStatus string
+
+const (
+	ConditionalCreditStatusActive            ConditionalCreditStatus = "Active"
+	ConditionalCreditStatusCanceled          ConditionalCreditStatus = "Canceled"
+	ConditionalCreditStatusCompleted         ConditionalCreditStatus = "Completed"
+	ConditionalCreditStatusFailed            ConditionalCreditStatus = "Failed"
+	ConditionalCreditStatusPending           ConditionalCreditStatus = "Pending"
+	ConditionalCreditStatusPendingSettlement ConditionalCreditStatus = "PendingSettlement"
+	ConditionalCreditStatusScheduled         ConditionalCreditStatus = "Scheduled"
+	ConditionalCreditStatusStopped           ConditionalCreditStatus = "Stopped"
+	ConditionalCreditStatusUnknown           ConditionalCreditStatus = "Unknown"
+)
+
+// PossibleConditionalCreditStatusValues returns the possible values for the ConditionalCreditStatus const type.
+func PossibleConditionalCreditStatusValues() []ConditionalCreditStatus {
+	return []ConditionalCreditStatus{
+		ConditionalCreditStatusActive,
+		ConditionalCreditStatusCanceled,
+		ConditionalCreditStatusCompleted,
+		ConditionalCreditStatusFailed,
+		ConditionalCreditStatusPending,
+		ConditionalCreditStatusPendingSettlement,
+		ConditionalCreditStatusScheduled,
+		ConditionalCreditStatusStopped,
+		ConditionalCreditStatusUnknown,
+	}
+}
+
+// ConditionalCreditsProvisioningState - The provisioning state of the resource
+type ConditionalCreditsProvisioningState string
+
+const (
+	ConditionalCreditsProvisioningStateCanceled  ConditionalCreditsProvisioningState = "Canceled"
+	ConditionalCreditsProvisioningStateFailed    ConditionalCreditsProvisioningState = "Failed"
+	ConditionalCreditsProvisioningStatePending   ConditionalCreditsProvisioningState = "Pending"
+	ConditionalCreditsProvisioningStateSucceeded ConditionalCreditsProvisioningState = "Succeeded"
+	ConditionalCreditsProvisioningStateUnknown   ConditionalCreditsProvisioningState = "Unknown"
+)
+
+// PossibleConditionalCreditsProvisioningStateValues returns the possible values for the ConditionalCreditsProvisioningState const type.
+func PossibleConditionalCreditsProvisioningStateValues() []ConditionalCreditsProvisioningState {
+	return []ConditionalCreditsProvisioningState{
+		ConditionalCreditsProvisioningStateCanceled,
+		ConditionalCreditsProvisioningStateFailed,
+		ConditionalCreditsProvisioningStatePending,
+		ConditionalCreditsProvisioningStateSucceeded,
+		ConditionalCreditsProvisioningStateUnknown,
 	}
 }
 
@@ -90,6 +196,266 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// CreditExpirationPolicy - Expiration policy of the Credit
+type CreditExpirationPolicy string
+
+const (
+	// CreditExpirationPolicyNone - No policy applied to the expiration of this credit
+	CreditExpirationPolicyNone CreditExpirationPolicy = "None"
+	// CreditExpirationPolicySuspendBillingProfile - Billing profile is suspended when the credit expires
+	CreditExpirationPolicySuspendBillingProfile CreditExpirationPolicy = "SuspendBillingProfile"
+)
+
+// PossibleCreditExpirationPolicyValues returns the possible values for the CreditExpirationPolicy const type.
+func PossibleCreditExpirationPolicyValues() []CreditExpirationPolicy {
+	return []CreditExpirationPolicy{
+		CreditExpirationPolicyNone,
+		CreditExpirationPolicySuspendBillingProfile,
+	}
+}
+
+// CreditRedemptionPolicy - Redemption policy of the Credit
+type CreditRedemptionPolicy string
+
+const (
+	// CreditRedemptionPolicyAutoRedeem - Credit is automatically redeemed
+	CreditRedemptionPolicyAutoRedeem CreditRedemptionPolicy = "AutoRedeem"
+	// CreditRedemptionPolicyManualRedeem - Credit is manually redeemed
+	CreditRedemptionPolicyManualRedeem CreditRedemptionPolicy = "ManualRedeem"
+	// CreditRedemptionPolicyNotApplicable - Redemption policy is not applicable for this credit
+	CreditRedemptionPolicyNotApplicable CreditRedemptionPolicy = "NotApplicable"
+)
+
+// PossibleCreditRedemptionPolicyValues returns the possible values for the CreditRedemptionPolicy const type.
+func PossibleCreditRedemptionPolicyValues() []CreditRedemptionPolicy {
+	return []CreditRedemptionPolicy{
+		CreditRedemptionPolicyAutoRedeem,
+		CreditRedemptionPolicyManualRedeem,
+		CreditRedemptionPolicyNotApplicable,
+	}
+}
+
+// CreditStatus - Status of the credit
+type CreditStatus string
+
+const (
+	// CreditStatusActive - Credit is active and available for use
+	CreditStatusActive CreditStatus = "Active"
+	// CreditStatusCanceled - Credit has been cancelled
+	CreditStatusCanceled CreditStatus = "Canceled"
+	// CreditStatusExhausted - Credit has been fully consumed
+	CreditStatusExhausted CreditStatus = "Exhausted"
+	// CreditStatusExpired - Credit has expired
+	CreditStatusExpired CreditStatus = "Expired"
+	// CreditStatusFailed - Credit operation failed
+	CreditStatusFailed CreditStatus = "Failed"
+	// CreditStatusNotStarted - Credit application has not started yet
+	CreditStatusNotStarted CreditStatus = "NotStarted"
+	// CreditStatusPending - Credit is pending activation
+	CreditStatusPending CreditStatus = "Pending"
+	// CreditStatusSucceeded - Credit operation succeeded
+	CreditStatusSucceeded CreditStatus = "Succeeded"
+	// CreditStatusUnknown - Credit status is unknown
+	CreditStatusUnknown CreditStatus = "Unknown"
+)
+
+// PossibleCreditStatusValues returns the possible values for the CreditStatus const type.
+func PossibleCreditStatusValues() []CreditStatus {
+	return []CreditStatus{
+		CreditStatusActive,
+		CreditStatusCanceled,
+		CreditStatusExhausted,
+		CreditStatusExpired,
+		CreditStatusFailed,
+		CreditStatusNotStarted,
+		CreditStatusPending,
+		CreditStatusSucceeded,
+		CreditStatusUnknown,
+	}
+}
+
+// DiscountAppliedScopeType - List of applied scopes supported for discounts.
+type DiscountAppliedScopeType string
+
+const (
+	DiscountAppliedScopeTypeBillingAccount DiscountAppliedScopeType = "BillingAccount"
+	DiscountAppliedScopeTypeBillingProfile DiscountAppliedScopeType = "BillingProfile"
+	DiscountAppliedScopeTypeCustomer       DiscountAppliedScopeType = "Customer"
+)
+
+// PossibleDiscountAppliedScopeTypeValues returns the possible values for the DiscountAppliedScopeType const type.
+func PossibleDiscountAppliedScopeTypeValues() []DiscountAppliedScopeType {
+	return []DiscountAppliedScopeType{
+		DiscountAppliedScopeTypeBillingAccount,
+		DiscountAppliedScopeTypeBillingProfile,
+		DiscountAppliedScopeTypeCustomer,
+	}
+}
+
+// DiscountCombinationRule - The discount combination rule when there are multiple applicable custom prices. Validation: Required.
+// Supported values are Stackable and BestOf.
+type DiscountCombinationRule string
+
+const (
+	DiscountCombinationRuleBestOf    DiscountCombinationRule = "BestOf"
+	DiscountCombinationRuleStackable DiscountCombinationRule = "Stackable"
+)
+
+// PossibleDiscountCombinationRuleValues returns the possible values for the DiscountCombinationRule const type.
+func PossibleDiscountCombinationRuleValues() []DiscountCombinationRule {
+	return []DiscountCombinationRule{
+		DiscountCombinationRuleBestOf,
+		DiscountCombinationRuleStackable,
+	}
+}
+
+// DiscountEntityType - This defines whether the entity being created is primary or affiliate. Supported values: primary,
+// affiliate. Validation: Required, must match one of the 2 values.
+type DiscountEntityType string
+
+const (
+	DiscountEntityTypeAffiliate DiscountEntityType = "Affiliate"
+	DiscountEntityTypePrimary   DiscountEntityType = "Primary"
+)
+
+// PossibleDiscountEntityTypeValues returns the possible values for the DiscountEntityType const type.
+func PossibleDiscountEntityTypeValues() []DiscountEntityType {
+	return []DiscountEntityType{
+		DiscountEntityTypeAffiliate,
+		DiscountEntityTypePrimary,
+	}
+}
+
+// DiscountProvisioningState - Provisioning states of Discount.
+type DiscountProvisioningState string
+
+const (
+	DiscountProvisioningStateCanceled  DiscountProvisioningState = "Canceled"
+	DiscountProvisioningStateFailed    DiscountProvisioningState = "Failed"
+	DiscountProvisioningStatePending   DiscountProvisioningState = "Pending"
+	DiscountProvisioningStateSucceeded DiscountProvisioningState = "Succeeded"
+	DiscountProvisioningStateUnknown   DiscountProvisioningState = "Unknown"
+)
+
+// PossibleDiscountProvisioningStateValues returns the possible values for the DiscountProvisioningState const type.
+func PossibleDiscountProvisioningStateValues() []DiscountProvisioningState {
+	return []DiscountProvisioningState{
+		DiscountProvisioningStateCanceled,
+		DiscountProvisioningStateFailed,
+		DiscountProvisioningStatePending,
+		DiscountProvisioningStateSucceeded,
+		DiscountProvisioningStateUnknown,
+	}
+}
+
+// DiscountRuleType - The type of the priceable node pricing rule. Validation: Required. Supported values are fixedPriceLock,
+// fixedListPrice, and priceCeiling.
+type DiscountRuleType string
+
+const (
+	DiscountRuleTypeFixedListPrice DiscountRuleType = "FixedListPrice"
+	DiscountRuleTypeFixedPriceLock DiscountRuleType = "FixedPriceLock"
+	DiscountRuleTypePriceCeiling   DiscountRuleType = "PriceCeiling"
+)
+
+// PossibleDiscountRuleTypeValues returns the possible values for the DiscountRuleType const type.
+func PossibleDiscountRuleTypeValues() []DiscountRuleType {
+	return []DiscountRuleType{
+		DiscountRuleTypeFixedListPrice,
+		DiscountRuleTypeFixedPriceLock,
+		DiscountRuleTypePriceCeiling,
+	}
+}
+
+// DiscountStatus - Represents the current status of the discount.
+type DiscountStatus string
+
+const (
+	DiscountStatusActive   DiscountStatus = "Active"
+	DiscountStatusCanceled DiscountStatus = "Canceled"
+	DiscountStatusExpired  DiscountStatus = "Expired"
+	DiscountStatusFailed   DiscountStatus = "Failed"
+	DiscountStatusPending  DiscountStatus = "Pending"
+)
+
+// PossibleDiscountStatusValues returns the possible values for the DiscountStatus const type.
+func PossibleDiscountStatusValues() []DiscountStatus {
+	return []DiscountStatus{
+		DiscountStatusActive,
+		DiscountStatusCanceled,
+		DiscountStatusExpired,
+		DiscountStatusFailed,
+		DiscountStatusPending,
+	}
+}
+
+// DiscountType - Defines the type of discount. Supported values are ProductFamily, Product, Sku, CustomPrice, and CustomPriceMultiCurrency.
+type DiscountType string
+
+const (
+	DiscountTypeCustomPrice              DiscountType = "CustomPrice"
+	DiscountTypeCustomPriceMultiCurrency DiscountType = "CustomPriceMultiCurrency"
+	DiscountTypeProduct                  DiscountType = "Product"
+	DiscountTypeProductFamily            DiscountType = "ProductFamily"
+	DiscountTypeSKU                      DiscountType = "Sku"
+)
+
+// PossibleDiscountTypeValues returns the possible values for the DiscountType const type.
+func PossibleDiscountTypeValues() []DiscountType {
+	return []DiscountType{
+		DiscountTypeCustomPrice,
+		DiscountTypeCustomPriceMultiCurrency,
+		DiscountTypeProduct,
+		DiscountTypeProductFamily,
+		DiscountTypeSKU,
+	}
+}
+
+// EnablementMode - Represents the enablement status of a feature or settings.
+type EnablementMode string
+
+const (
+	EnablementModeDisabled EnablementMode = "Disabled"
+	EnablementModeEnabled  EnablementMode = "Enabled"
+	EnablementModeUnknown  EnablementMode = "Unknown"
+)
+
+// PossibleEnablementModeValues returns the possible values for the EnablementMode const type.
+func PossibleEnablementModeValues() []EnablementMode {
+	return []EnablementMode{
+		EnablementModeDisabled,
+		EnablementModeEnabled,
+		EnablementModeUnknown,
+	}
+}
+
+// FreeServicesStatus - Status of the free services
+type FreeServicesStatus string
+
+const (
+	// FreeServicesStatusActive - Free services are active
+	FreeServicesStatusActive FreeServicesStatus = "Active"
+	// FreeServicesStatusCanceled - Free services have been canceled
+	FreeServicesStatusCanceled FreeServicesStatus = "Canceled"
+	// FreeServicesStatusCompleted - Free services have been fully consumed or completed
+	FreeServicesStatusCompleted FreeServicesStatus = "Completed"
+	// FreeServicesStatusPending - Free services are pending activation
+	FreeServicesStatusPending FreeServicesStatus = "Pending"
+	// FreeServicesStatusUnknown - Free services status is unknown
+	FreeServicesStatusUnknown FreeServicesStatus = "Unknown"
+)
+
+// PossibleFreeServicesStatusValues returns the possible values for the FreeServicesStatus const type.
+func PossibleFreeServicesStatusValues() []FreeServicesStatus {
+	return []FreeServicesStatus{
+		FreeServicesStatusActive,
+		FreeServicesStatusCanceled,
+		FreeServicesStatusCompleted,
+		FreeServicesStatusPending,
+		FreeServicesStatusUnknown,
+	}
+}
+
 // InstanceFlexibility - Turning this on will apply the reservation discount to other VMs in the same VM size group.
 type InstanceFlexibility string
 
@@ -103,6 +469,142 @@ func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
 	return []InstanceFlexibility{
 		InstanceFlexibilityOff,
 		InstanceFlexibilityOn,
+	}
+}
+
+// MaccEntityType - Represents type of the object being operated on. Possible values are primary or contributor.
+type MaccEntityType string
+
+const (
+	MaccEntityTypeContributor MaccEntityType = "Contributor"
+	MaccEntityTypePrimary     MaccEntityType = "Primary"
+)
+
+// PossibleMaccEntityTypeValues returns the possible values for the MaccEntityType const type.
+func PossibleMaccEntityTypeValues() []MaccEntityType {
+	return []MaccEntityType{
+		MaccEntityTypeContributor,
+		MaccEntityTypePrimary,
+	}
+}
+
+// MaccMilestoneStatus - Represents the current status of the Milestone.
+type MaccMilestoneStatus string
+
+const (
+	MaccMilestoneStatusActive            MaccMilestoneStatus = "Active"
+	MaccMilestoneStatusCanceled          MaccMilestoneStatus = "Canceled"
+	MaccMilestoneStatusCompleted         MaccMilestoneStatus = "Completed"
+	MaccMilestoneStatusFailed            MaccMilestoneStatus = "Failed"
+	MaccMilestoneStatusPending           MaccMilestoneStatus = "Pending"
+	MaccMilestoneStatusPendingSettlement MaccMilestoneStatus = "PendingSettlement"
+	MaccMilestoneStatusRemoved           MaccMilestoneStatus = "Removed"
+	MaccMilestoneStatusScheduled         MaccMilestoneStatus = "Scheduled"
+	MaccMilestoneStatusShortfallCharged  MaccMilestoneStatus = "ShortfallCharged"
+	MaccMilestoneStatusShortfallWaived   MaccMilestoneStatus = "ShortfallWaived"
+	MaccMilestoneStatusUnknown           MaccMilestoneStatus = "Unknown"
+)
+
+// PossibleMaccMilestoneStatusValues returns the possible values for the MaccMilestoneStatus const type.
+func PossibleMaccMilestoneStatusValues() []MaccMilestoneStatus {
+	return []MaccMilestoneStatus{
+		MaccMilestoneStatusActive,
+		MaccMilestoneStatusCanceled,
+		MaccMilestoneStatusCompleted,
+		MaccMilestoneStatusFailed,
+		MaccMilestoneStatusPending,
+		MaccMilestoneStatusPendingSettlement,
+		MaccMilestoneStatusRemoved,
+		MaccMilestoneStatusScheduled,
+		MaccMilestoneStatusShortfallCharged,
+		MaccMilestoneStatusShortfallWaived,
+		MaccMilestoneStatusUnknown,
+	}
+}
+
+// MaccStatus - Represents the current status of the MACC.
+type MaccStatus string
+
+const (
+	MaccStatusActive            MaccStatus = "Active"
+	MaccStatusCanceled          MaccStatus = "Canceled"
+	MaccStatusCompleted         MaccStatus = "Completed"
+	MaccStatusFailed            MaccStatus = "Failed"
+	MaccStatusPending           MaccStatus = "Pending"
+	MaccStatusPendingSettlement MaccStatus = "PendingSettlement"
+	MaccStatusScheduled         MaccStatus = "Scheduled"
+	MaccStatusShortfallCharged  MaccStatus = "ShortfallCharged"
+	MaccStatusShortfallWaived   MaccStatus = "ShortfallWaived"
+	MaccStatusStopped           MaccStatus = "Stopped"
+	MaccStatusUnknown           MaccStatus = "Unknown"
+)
+
+// PossibleMaccStatusValues returns the possible values for the MaccStatus const type.
+func PossibleMaccStatusValues() []MaccStatus {
+	return []MaccStatus{
+		MaccStatusActive,
+		MaccStatusCanceled,
+		MaccStatusCompleted,
+		MaccStatusFailed,
+		MaccStatusPending,
+		MaccStatusPendingSettlement,
+		MaccStatusScheduled,
+		MaccStatusShortfallCharged,
+		MaccStatusShortfallWaived,
+		MaccStatusStopped,
+		MaccStatusUnknown,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// MilestoneStatus - Current status of the milestone
+type MilestoneStatus string
+
+const (
+	MilestoneStatusActive            MilestoneStatus = "Active"
+	MilestoneStatusCanceled          MilestoneStatus = "Canceled"
+	MilestoneStatusCompleted         MilestoneStatus = "Completed"
+	MilestoneStatusFailed            MilestoneStatus = "Failed"
+	MilestoneStatusMissed            MilestoneStatus = "Missed"
+	MilestoneStatusPending           MilestoneStatus = "Pending"
+	MilestoneStatusPendingSettlement MilestoneStatus = "PendingSettlement"
+	MilestoneStatusRemoved           MilestoneStatus = "Removed"
+	MilestoneStatusScheduled         MilestoneStatus = "Scheduled"
+	MilestoneStatusUnknown           MilestoneStatus = "Unknown"
+)
+
+// PossibleMilestoneStatusValues returns the possible values for the MilestoneStatus const type.
+func PossibleMilestoneStatusValues() []MilestoneStatus {
+	return []MilestoneStatus{
+		MilestoneStatusActive,
+		MilestoneStatusCanceled,
+		MilestoneStatusCompleted,
+		MilestoneStatusFailed,
+		MilestoneStatusMissed,
+		MilestoneStatusPending,
+		MilestoneStatusPendingSettlement,
+		MilestoneStatusRemoved,
+		MilestoneStatusScheduled,
+		MilestoneStatusUnknown,
 	}
 }
 
@@ -142,6 +644,22 @@ func PossiblePaymentStatusValues() []PaymentStatus {
 		PaymentStatusFailed,
 		PaymentStatusScheduled,
 		PaymentStatusSucceeded,
+	}
+}
+
+// PricingPolicy - Supported values: Protected, Locked
+type PricingPolicy string
+
+const (
+	PricingPolicyLocked    PricingPolicy = "Locked"
+	PricingPolicyProtected PricingPolicy = "Protected"
+)
+
+// PossiblePricingPolicyValues returns the possible values for the PricingPolicy const type.
+func PossiblePricingPolicyValues() []PricingPolicy {
+	return []PricingPolicy{
+		PricingPolicyLocked,
+		PricingPolicyProtected,
 	}
 }
 
@@ -237,10 +755,32 @@ func PossibleReservedResourceTypeValues() []ReservedResourceType {
 	}
 }
 
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
+type SKUTier string
+
+const (
+	SKUTierBasic    SKUTier = "Basic"
+	SKUTierFree     SKUTier = "Free"
+	SKUTierPremium  SKUTier = "Premium"
+	SKUTierStandard SKUTier = "Standard"
+)
+
+// PossibleSKUTierValues returns the possible values for the SKUTier const type.
+func PossibleSKUTierValues() []SKUTier {
+	return []SKUTier{
+		SKUTierBasic,
+		SKUTierFree,
+		SKUTierPremium,
+		SKUTierStandard,
+	}
+}
+
 // Term - Represent benefit term in ISO 8601 format.
 type Term string
 
 const (
+	TermP1M Term = "P1M"
 	TermP1Y Term = "P1Y"
 	TermP3Y Term = "P3Y"
 	TermP5Y Term = "P5Y"
@@ -249,6 +789,7 @@ const (
 // PossibleTermValues returns the possible values for the Term const type.
 func PossibleTermValues() []Term {
 	return []Term{
+		TermP1M,
 		TermP1Y,
 		TermP3Y,
 		TermP5Y,

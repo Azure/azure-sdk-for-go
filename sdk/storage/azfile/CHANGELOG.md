@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.2 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0 (2026-05-14)
+
+### Features Added
+* Includes all features from `1.6.0-beta.1`
 
 ## 1.7.0-beta.1 (2026-05-05)
 

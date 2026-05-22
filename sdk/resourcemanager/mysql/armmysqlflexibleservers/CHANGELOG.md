@@ -1,5 +1,46 @@
 # Release History
 
+## 2.0.0-beta.5 (2026-03-19)
+### Breaking Changes
+
+- Function `*LongRunningBackupClient.BeginCreate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *LongRunningBackupClientBeginCreateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, backupName string, parameters ServerBackupV2, options *LongRunningBackupClientBeginCreateOptions)`
+- Function `*MaintenancesClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serverName string, maintenanceName string, options *MaintenancesClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serverName string, maintenanceName string, parameters MaintenanceUpdate, options *MaintenancesClientBeginUpdateOptions)`
+- Type of `MySQLServerIdentity.UserAssignedIdentities` has been changed from `map[string]any` to `map[string]*UserAssignedIdentity`
+- Type of `Operation.Origin` has been changed from `*string` to `*Origin`
+- Type of `OperationProgressResult.PercentComplete` has been changed from `*float32` to `*float64`
+- Type of `OperationStatusExtendedResult.PercentComplete` has been changed from `*float32` to `*float64`
+- Type of `OperationStatusResult.PercentComplete` has been changed from `*float32` to `*float64`
+- Struct `BackupRequestBase` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `Provisioning` has been removed
+- Struct `ProvisioningStateProperties` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+- Field `Parameters` of struct `LongRunningBackupClientBeginCreateOptions` has been removed
+- Field `Parameters` of struct `MaintenancesClientBeginUpdateOptions` has been removed
+
+### Features Added
+
+- New enum type `BatchOfMaintenance` with values `BatchOfMaintenanceBatch1`, `BatchOfMaintenanceBatch2`, `BatchOfMaintenanceDefault`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
+- New function `NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error)`
+- New function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.BeginDelete(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.Get(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *PrivateEndpointConnectionsClientListByServerOptions) (PrivateEndpointConnectionsClientListByServerResponse, error)`
+- New function `NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error)`
+- New function `*PrivateLinkResourcesClient.Get(ctx context.Context, resourceGroupName string, serverName string, groupName string, options *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error)`
+- New function `*PrivateLinkResourcesClient.NewListByServerPager(resourceGroupName string, serverName string, options *PrivateLinkResourcesClientListByServerOptions) *runtime.Pager[PrivateLinkResourcesClientListByServerResponse]`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New field `BatchOfMaintenance` in struct `MaintenanceWindow`
+
+
 ## 2.0.0-beta.4 (2025-02-27)
 ### Features Added
 

@@ -33,9 +33,8 @@ func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, e
 	// callers are coalesced inside gem.Update via the single-in-flight
 	// pattern, so at most one HTTP call is in flight. If the call fails
 	// the throttle in gem.Update (lastAttemptTime) ensures subsequent
-	// bootstrap retries respect refreshTimeInterval -- preventing the
-	// failure storm described in
-	// https://github.com/Azure/azure-sdk-for-go/issues/25468.
+	// bootstrap retries respect refreshTimeInterval, preventing a
+	// failure storm.
 	var err error
 	if !p.gem.populated() {
 		// Use the same context, but without the cancellation signal.
@@ -45,6 +44,9 @@ func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, e
 		err = p.gem.Update(context.WithoutCancel(req.Raw().Context()), false)
 	}
 	if p.gem.ShouldRefresh() && p.asyncRefreshPending.CompareAndSwap(false, true) {
+		// Capture the context before launching the goroutine so we do not
+		// depend on req's lifetime after the policy returns.
+		refreshCtx := context.WithoutCancel(req.Raw().Context())
 		go func() {
 			defer p.asyncRefreshPending.Store(false)
 			// gem.Update's panic-safe defer re-panics after cleanup. We
@@ -59,7 +61,14 @@ func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, e
 						r, debug.Stack())
 				}
 			}()
-			_ = p.gem.Update(context.WithoutCancel(req.Raw().Context()), false)
+			// Log refresh failures so a chronically failing GEM is
+			// observable. Without this, post-bootstrap topology drift is
+			// silent: the data plane keeps routing to the cached topology
+			// and callers see no signal until requests start failing.
+			if err := p.gem.Update(refreshCtx, false); err != nil {
+				log.Writef(azlog.EventResponse,
+					"azcosmos GEM async refresh failed: %v", err)
+			}
 		}()
 	}
 	if err != nil {

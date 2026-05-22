@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// Regression tests for the fixes applied for
-// https://github.com/Azure/azure-sdk-for-go/issues/25468 -- excess
-// GetDatabaseAccount calls observed with preferred regions configured.
+// Regression tests for excess GetDatabaseAccount calls observed with
+// preferred regions configured.
 //
 // These tests cover:
 //   F1: failed GEM Update is throttled to refreshTimeInterval (lastAttemptTime)
 //   F2: concurrent Update callers are coalesced into a single HTTP call
-//   F3: write-retry on 403 issues at most one GEM call per logical request
+//   F3: write-retry on 403/WriteForbidden force-refreshes the GEM per attempt
 //   F4: a failed initial bootstrap Update is retried on the next request
 //   F5: locationCache.readEndpoints does not deadlock on the stale+unavailable path
 //   Soak: under sustained mixed load, total GEM calls respect refreshTimeInterval
@@ -151,11 +150,10 @@ func TestFix2_ConcurrentUpdateCallersCoalesce(t *testing.T) {
 }
 
 // ----------------------------------------------------------------------------
-// F3: write-retry on 403/WriteForbidden invalidates the GEM exactly once
-// (when the endpoint is newly marked unavailable), then subsequent retries
-// within the unavailability window are throttled.
+// F3: write-retry on 403/WriteForbidden force-refreshes the GEM on every
+// retry attempt so the client picks up topology changes immediately.
 // ----------------------------------------------------------------------------
-func TestFix3_WriteRetryIssuesAtMostOneGEMCall(t *testing.T) {
+func TestFix3_WriteRetryForceRefreshesGEM(t *testing.T) {
 	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
 	require.NoError(t, err)
 
@@ -189,8 +187,8 @@ func TestFix3_WriteRetryIssuesAtMostOneGEMCall(t *testing.T) {
 		require.True(t, shouldRetry)
 		rc.retryCount++
 	}
-	require.Equal(t, int64(1), transport.count.Load(),
-		"write retries within the same unavailability window must collapse to one GEM call")
+	require.Equal(t, int64(writeRetries), transport.count.Load(),
+		"write retries on 403/WriteForbidden must force-refresh the GEM on every attempt")
 }
 
 // ----------------------------------------------------------------------------
@@ -407,9 +405,8 @@ func TestFix5_ReadEndpointsDoesNotDeadlock(t *testing.T) {
 // ----------------------------------------------------------------------------
 // Soak test: a high-concurrency burst against a healthy GEM with the default
 // 5-min refresh interval should issue exactly one GetDatabaseAccount call.
-// This is the headline regression guard for issue #25468.
 // ----------------------------------------------------------------------------
-func TestRegression25468_HealthyHighConcurrencyStaysAtOneGEMCall(t *testing.T) {
+func TestRegression_HealthyHighConcurrencyStaysAtOneGEMCall(t *testing.T) {
 	if testing.Short() {
 		t.Skip("500-goroutine soak; skipped under -short")
 	}
@@ -448,7 +445,7 @@ func TestRegression25468_HealthyHighConcurrencyStaysAtOneGEMCall(t *testing.T) {
 // Soak test variant: the same burst against a FAILING GEM must also produce
 // exactly one HTTP call, demonstrating that F1 + F2 together close the
 // failure-storm path.
-func TestRegression25468_FailingGEMHighConcurrencyStaysAtOneGEMCall(t *testing.T) {
+func TestRegression_FailingGEMHighConcurrencyStaysAtOneGEMCall(t *testing.T) {
 	if testing.Short() {
 		t.Skip("500-goroutine soak; skipped under -short")
 	}
@@ -481,7 +478,7 @@ func TestRegression25468_FailingGEMHighConcurrencyStaysAtOneGEMCall(t *testing.T
 }
 
 // ----------------------------------------------------------------------------
-// Default-endpoint elimination (issue #25468 followup).
+// Default-endpoint elimination.
 // After the GEM is populated, data-plane requests must never resolve to the
 // customer-supplied endpoint -- with the single exception of the degenerate
 // "zero write regions" case for write requests.
@@ -610,18 +607,17 @@ func TestDefaultEndpointElim_ZeroWriteRegionsRetainsDefaultFallback(t *testing.T
 		"zero-write-regions write must still route to the customer endpoint (documented degenerate case)")
 }
 
-func TestDefaultEndpointElim_CrossRegionRetriesDisabledStillRoutesRegional(t *testing.T) {
+func TestDefaultEndpointElim_CrossRegionRetriesDisabledUsesDefaultEndpoint(t *testing.T) {
 	defaultHost := "customer-endpoint.documents.azure.com:443"
 	gem := makeGEMWithRegions(t, false, []string{"East US"}, false /*enableCrossRegion=false*/)
 
-	// With cross-region retries disabled, the primary endpoint must still
-	// be regional; retries must pin to the same region (locationIndex=0
-	// regardless of the caller's retry count).
+	// With cross-region retries disabled, single-master writes route to the
+	// default (customer-supplied) endpoint -- preserving the long-standing
+	// behavior of this flag.
 	for idx := 0; idx < 10; idx++ {
 		ep := gem.ResolveServiceEndpoint(idx, resourceTypeDocument, true, false)
-		require.NotEqual(t, defaultHost, ep.Host,
-			"cross-region-retries=false must not fall back to default endpoint at idx=%d", idx)
-		require.Contains(t, ep.Host, "east-us")
+		require.Equal(t, defaultHost, ep.Host,
+			"cross-region-retries=false must route writes to the default endpoint at idx=%d", idx)
 	}
 }
 

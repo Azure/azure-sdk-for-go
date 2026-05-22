@@ -116,9 +116,8 @@ func (lc *locationCache) updateLocked(writeLocations []accountRegion, readLocati
 	}
 
 	// Choose regional fallbacks so the route lists never trail into the
-	// customer-supplied default endpoint. See issue #25468 / followup
-	// "no data-plane traffic to default endpoint": the only data-plane code
-	// path that may still hit the default endpoint is the degenerate "zero
+	// customer-supplied default endpoint. The only data-plane code path
+	// that may still hit the default endpoint is the degenerate "zero
 	// write regions on a write" case.
 	writeFallback := lc.defaultEndpoint
 	if len(nextLoc.availWriteLocations) > 0 {
@@ -147,23 +146,11 @@ func (lc *locationCache) updateLocked(writeLocations []accountRegion, readLocati
 
 func (lc *locationCache) resolveServiceEndpoint(locationIndex int, resourceType resourceType, isWriteOperation, useWriteEndpoint bool) url.URL {
 	if (isWriteOperation || useWriteEndpoint) && !lc.canUseMultipleWriteLocsToRoute(resourceType) {
-		if len(lc.locationInfo.availWriteLocations) > 0 {
-			// Prefer a regional endpoint. The cross-region-retries flag only
-			// gates whether we walk across regions on retry; it must not
-			// cause the primary endpoint to fall back to the default
-			// endpoint when regional metadata is available
-			// (issue #25468 followup: no data-plane traffic to default).
-			if lc.enableCrossRegionRetries {
-				locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)
-			} else {
-				locationIndex = 0
-			}
+		if lc.enableCrossRegionRetries && len(lc.locationInfo.availWriteLocations) > 0 {
+			locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)
 			writeLocation := lc.locationInfo.availWriteLocations[locationIndex]
 			return lc.locationInfo.availWriteEndpointsByLocation[writeLocation]
 		}
-		// Degenerate case: account metadata advertises zero write regions.
-		// Per the project decision this is the ONLY data-plane code path
-		// where we still fall back to the customer-supplied endpoint.
 		return lc.defaultEndpoint
 	}
 
@@ -253,8 +240,7 @@ func (lc *locationCache) markEndpointUnavailableForWrite(endpoint url.URL) (wasA
 // markEndpointUnavailable atomically samples whether the endpoint was already
 // unavailable for `op` and records the unavailability. Returning the prior
 // state from inside the same critical section that performs the mark
-// eliminates the check-then-act race exploited by concurrent callers (see
-// issue #25468 followup: bound on concurrent same-endpoint marks).
+// eliminates the check-then-act race exploited by concurrent callers.
 func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedOperations) (wasAlreadyUnavailable bool, err error) {
 	now := time.Now()
 	lc.mapMutex.Lock()
@@ -270,6 +256,14 @@ func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedO
 			lastCheckTime:  now,
 			unavailableOps: op,
 		}
+	}
+	// Fast path: if the endpoint was already unavailable for this op within
+	// the unavailability window, the route lists cannot change -- skip the
+	// full updateLocked recompute. The only state mutation is the bumped
+	// lastCheckTime, which getPrefAvailableEndpointsLocked observes via
+	// isEndpointUnavailableLocked and which yields the same result.
+	if wasAlreadyUnavailable {
+		return wasAlreadyUnavailable, nil
 	}
 	return wasAlreadyUnavailable, lc.updateLocked(nil, nil, nil, nil)
 }
@@ -336,7 +330,7 @@ func (lc *locationCache) getPrefAvailableEndpointsLocked(endpointsByLoc map[stri
 		// itself advertises zero regions). The caller passes a regional
 		// fallback whenever availWriteLocations is non-empty, so the only
 		// time this is the customer-supplied default endpoint is the
-		// degenerate "zero regions" case approved for issue #25468 followup.
+		// degenerate "zero regions" case.
 		endpoints = append(endpoints, fallbackEndpoint)
 	}
 	return endpoints
@@ -368,9 +362,8 @@ func newDatabaseAccountLocationsInfo(prefLocations []string, defaultEndpoint url
 	// successful Update() replaces them with regional endpoints. This is
 	// safe because the pipeline policy (globalEndpointManagerPolicy) blocks
 	// data-plane requests on a synchronous bootstrap and surfaces the GEM
-	// error if it fails -- so resolveServiceEndpoint is never consulted for
-	// a real data-plane request while these seeded values are still in
-	// effect. See issue #25468 followup.
+	// error if it fails, so resolveServiceEndpoint is never consulted for a
+	// real data-plane request while these seeded values are still in effect.
 	writeEndpoints := []url.URL{defaultEndpoint}
 	readEndpoints := []url.URL{defaultEndpoint}
 	return &databaseAccountLocationsInfo{

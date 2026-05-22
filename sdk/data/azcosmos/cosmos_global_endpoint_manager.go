@@ -29,10 +29,8 @@ type globalEndpointManager struct {
 	lastUpdateTime      time.Time
 	// lastAttemptTime records the most recent Update attempt regardless of
 	// outcome. shouldRefresh() honours it so a failed GetAccountProperties is
-	// throttled to refreshTimeInterval just like a successful one. This
-	// prevents the failure-loop described in
-	// https://github.com/Azure/azure-sdk-for-go/issues/25468 where every
-	// caller after a failed Update would re-issue the HTTP call immediately.
+	// throttled to refreshTimeInterval just like a successful one, preventing
+	// a failure-loop where every caller re-issues the HTTP call immediately.
 	lastAttemptTime time.Time
 	// lastUpdateErr is the error from the most recent refresh attempt. It is
 	// returned to callers that hit the throttle window before the GEM has
@@ -40,13 +38,12 @@ type globalEndpointManager struct {
 	// surfaced on every request rather than silently swallowed.
 	lastUpdateErr error
 	// everPopulated is set true on the first successful refresh and never
-	// reset, even when invalidate() zeroes lastUpdateTime to force a fresh
-	// refresh. populated() reads this flag rather than the timestamp, so a
-	// transient post-invalidation refresh failure does not stall the data
-	// plane: requests can still route through the existing locationCache
-	// topology while the next refresh attempt is pending the throttle
-	// window. See issue #25468 deep-review finding. Stored as atomic.Bool
-	// so the hot-path policy check is lock-free.
+	// reset, even when invalidate() zeroes lastUpdateTime. populated() reads
+	// this flag rather than the timestamp, so a transient post-invalidation
+	// refresh failure does not stall the data plane: requests can still route
+	// through the existing locationCache topology while the next refresh
+	// attempt waits for the throttle window. Stored as atomic.Bool so the
+	// hot-path policy check is lock-free.
 	everPopulated atomic.Bool
 	// inflight coalesces concurrent Update callers: only the first does the
 	// HTTP call; the rest wait on the per-flight done channel and read
@@ -159,13 +156,10 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 }
 
 // populated reports whether the GEM has ever been successfully populated.
-// Unlike a check of !lastUpdateTime.IsZero(), this remains true after
-// invalidate() zeroes the timestamps -- so a transient post-invalidation
-// refresh failure does not stall the data plane: the policy can still
-// route requests through the existing locationCache topology while the
-// next refresh attempt waits for the throttle window. See issue #25468
-// deep-review finding. Lock-free atomic read so the policy's hot path
-// does not contend on gemMutex.
+// Unlike !lastUpdateTime.IsZero(), this remains true after invalidate()
+// zeroes the timestamps, so a transient post-invalidation refresh failure
+// does not stall the data plane. Lock-free atomic read keeps the policy
+// hot path off gemMutex.
 func (gem *globalEndpointManager) populated() bool {
 	return gem.everPopulated.Load()
 }
@@ -190,7 +184,7 @@ func (gem *globalEndpointManager) shouldRefresh() bool {
 	// Honor whichever happened more recently: a successful update or an
 	// attempt that failed. Failures must be throttled too, otherwise a
 	// failing endpoint causes every caller to re-issue GetDatabaseAccount
-	// immediately (issue #25468).
+	// immediately.
 	last := gem.lastUpdateTime
 	if gem.lastAttemptTime.After(last) {
 		last = gem.lastAttemptTime
@@ -206,8 +200,7 @@ func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, reso
 // Concurrent callers are coalesced via a single-in-flight pattern so at most
 // one HTTP call is in flight per client at any time. Both successes and
 // failures advance lastAttemptTime so the next refresh is throttled to
-// refreshTimeInterval -- this prevents the failure-storm described in
-// https://github.com/Azure/azure-sdk-for-go/issues/25468.
+// refreshTimeInterval, preventing a failure-storm.
 //
 // If the GEM has never been successfully populated and the throttle is
 // active, Update returns the cached error from the most recent failed
@@ -217,11 +210,12 @@ func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, reso
 // the data plane keeps using the cached topology until the throttle expires
 // and a fresh refresh can run.
 //
-// Update respects ctx cancellation in both leader and waiter roles. The
-// leader's HTTP call uses ctx directly (or a derived context inside
-// GetAccountProperties). Waiters select between flight completion and
-// ctx.Done() so a caller-side timeout cannot be exceeded by an unrelated
-// stuck refresh.
+// Update respects ctx cancellation for waiters. The leader's HTTP call runs
+// under context.WithoutCancel(ctx) so an unrelated caller-side cancellation
+// does not poison the shared flight result for other coalesced waiters
+// (GetAccountProperties applies its own 60s timeout). Waiters select between
+// flight completion and their own ctx.Done() so a caller-side timeout cannot
+// be exceeded by an unrelated stuck refresh.
 func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {
 	gem.gemMutex.Lock()
 	if !gem.shouldRefresh() && !forceRefresh {
@@ -295,7 +289,7 @@ func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool)
 			panic(r)
 		}
 	}()
-	err = gem.refreshOnce(ctx)
+	err = gem.refreshOnce(context.WithoutCancel(ctx))
 	return err
 }
 

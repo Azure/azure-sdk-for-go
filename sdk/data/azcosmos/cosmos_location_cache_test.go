@@ -263,8 +263,7 @@ func TestGetPrefAvailableEndpoints(t *testing.T) {
 	prefWriteEndpoints := lc.getPrefAvailableEndpointsLocked(lc.locationInfo.availWriteEndpointsByLocation, lc.locationInfo.availWriteLocations, write, lc.defaultEndpoint)
 	// loc2: preferred + available; loc1: unavailable + preferred (moved to
 	// tail). The trailing default-endpoint fallback was removed when we
-	// stopped routing data-plane traffic to the customer-supplied endpoint
-	// (issue #25468 followup).
+	// stopped routing data-plane traffic to the customer-supplied endpoint.
 	expectedWriteEndpoints := []*url.URL{loc2Endpoint, loc1Endpoint}
 
 	for i, endpoint := range expectedWriteEndpoints {
@@ -284,10 +283,9 @@ func TestReadEndpoints(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	// Before issue #25468 followup the code skipped loc1 in the main pref
-	// loop (because it equalled the write fallback), pushing it to the tail.
-	// Now loc1 is included in preferred order, giving a more intuitive
-	// result.
+	// Previously the code skipped loc1 in the main pref loop (because it
+	// equalled the write fallback), pushing it to the tail. Now loc1 is
+	// included in preferred order, giving a more intuitive result.
 	expectedReadEndpoints := []*url.URL{loc1Endpoint, loc2Endpoint, loc4Endpoint}
 	actualReadEndpoints, err := lc.readEndpoints()
 	if err != nil {
@@ -336,8 +334,8 @@ func TestWriteEndpoints(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	// Trailing default-endpoint fallback was removed for issue #25468
-	// followup: route lists must contain only regional endpoints.
+	// Trailing default-endpoint fallback was removed: route lists must
+	// contain only regional endpoints.
 	expectedWriteEndpoints := []*url.URL{loc1Endpoint, loc2Endpoint, loc3Endpoint}
 	actualWriteEndpoints, err := lc.writeEndpoints()
 	if err != nil {

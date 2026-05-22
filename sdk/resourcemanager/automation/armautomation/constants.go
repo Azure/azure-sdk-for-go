@@ -5,11 +5,6 @@
 
 package armautomation
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
-	moduleVersion = "v0.9.0"
-)
-
 // AgentRegistrationKeyName - Gets or sets the agent registration key name - primary or secondary.
 type AgentRegistrationKeyName string
 
@@ -407,7 +402,7 @@ type ModuleProvisioningState string
 
 const (
 	ModuleProvisioningStateActivitiesStored            ModuleProvisioningState = "ActivitiesStored"
-	ModuleProvisioningStateCancelled                   ModuleProvisioningState = "Cancelled"
+	ModuleProvisioningStateCanceled                    ModuleProvisioningState = "Canceled"
 	ModuleProvisioningStateConnectionTypeImported      ModuleProvisioningState = "ConnectionTypeImported"
 	ModuleProvisioningStateContentDownloaded           ModuleProvisioningState = "ContentDownloaded"
 	ModuleProvisioningStateContentRetrieved            ModuleProvisioningState = "ContentRetrieved"
@@ -428,7 +423,7 @@ const (
 func PossibleModuleProvisioningStateValues() []ModuleProvisioningState {
 	return []ModuleProvisioningState{
 		ModuleProvisioningStateActivitiesStored,
-		ModuleProvisioningStateCancelled,
+		ModuleProvisioningStateCanceled,
 		ModuleProvisioningStateConnectionTypeImported,
 		ModuleProvisioningStateContentDownloaded,
 		ModuleProvisioningStateContentRetrieved,
@@ -459,6 +454,50 @@ func PossibleOperatingSystemTypeValues() []OperatingSystemType {
 	return []OperatingSystemType{
 		OperatingSystemTypeLinux,
 		OperatingSystemTypeWindows,
+	}
+}
+
+// PackageProvisioningState - Gets or sets the provisioning state of the Package.
+type PackageProvisioningState string
+
+const (
+	PackageProvisioningStateActivitiesStored            PackageProvisioningState = "ActivitiesStored"
+	PackageProvisioningStateCanceled                    PackageProvisioningState = "Canceled"
+	PackageProvisioningStateConnectionTypeImported      PackageProvisioningState = "ConnectionTypeImported"
+	PackageProvisioningStateContentDownloaded           PackageProvisioningState = "ContentDownloaded"
+	PackageProvisioningStateContentRetrieved            PackageProvisioningState = "ContentRetrieved"
+	PackageProvisioningStateContentStored               PackageProvisioningState = "ContentStored"
+	PackageProvisioningStateContentValidated            PackageProvisioningState = "ContentValidated"
+	PackageProvisioningStateCreated                     PackageProvisioningState = "Created"
+	PackageProvisioningStateCreating                    PackageProvisioningState = "Creating"
+	PackageProvisioningStateFailed                      PackageProvisioningState = "Failed"
+	PackageProvisioningStateModuleDataStored            PackageProvisioningState = "ModuleDataStored"
+	PackageProvisioningStateModuleImportRunbookComplete PackageProvisioningState = "ModuleImportRunbookComplete"
+	PackageProvisioningStateRunningImportModuleRunbook  PackageProvisioningState = "RunningImportModuleRunbook"
+	PackageProvisioningStateStartingImportModuleRunbook PackageProvisioningState = "StartingImportModuleRunbook"
+	PackageProvisioningStateSucceeded                   PackageProvisioningState = "Succeeded"
+	PackageProvisioningStateUpdating                    PackageProvisioningState = "Updating"
+)
+
+// PossiblePackageProvisioningStateValues returns the possible values for the PackageProvisioningState const type.
+func PossiblePackageProvisioningStateValues() []PackageProvisioningState {
+	return []PackageProvisioningState{
+		PackageProvisioningStateActivitiesStored,
+		PackageProvisioningStateCanceled,
+		PackageProvisioningStateConnectionTypeImported,
+		PackageProvisioningStateContentDownloaded,
+		PackageProvisioningStateContentRetrieved,
+		PackageProvisioningStateContentStored,
+		PackageProvisioningStateContentValidated,
+		PackageProvisioningStateCreated,
+		PackageProvisioningStateCreating,
+		PackageProvisioningStateFailed,
+		PackageProvisioningStateModuleDataStored,
+		PackageProvisioningStateModuleImportRunbookComplete,
+		PackageProvisioningStateRunningImportModuleRunbook,
+		PackageProvisioningStateStartingImportModuleRunbook,
+		PackageProvisioningStateSucceeded,
+		PackageProvisioningStateUpdating,
 	}
 }
 
@@ -526,7 +565,9 @@ const (
 	RunbookTypeEnumGraphPowerShell         RunbookTypeEnum = "GraphPowerShell"
 	RunbookTypeEnumGraphPowerShellWorkflow RunbookTypeEnum = "GraphPowerShellWorkflow"
 	RunbookTypeEnumPowerShell              RunbookTypeEnum = "PowerShell"
+	RunbookTypeEnumPowerShell72            RunbookTypeEnum = "PowerShell72"
 	RunbookTypeEnumPowerShellWorkflow      RunbookTypeEnum = "PowerShellWorkflow"
+	RunbookTypeEnumPython                  RunbookTypeEnum = "Python"
 	RunbookTypeEnumPython2                 RunbookTypeEnum = "Python2"
 	RunbookTypeEnumPython3                 RunbookTypeEnum = "Python3"
 	RunbookTypeEnumScript                  RunbookTypeEnum = "Script"
@@ -539,7 +580,9 @@ func PossibleRunbookTypeEnumValues() []RunbookTypeEnum {
 		RunbookTypeEnumGraphPowerShell,
 		RunbookTypeEnumGraphPowerShellWorkflow,
 		RunbookTypeEnumPowerShell,
+		RunbookTypeEnumPowerShell72,
 		RunbookTypeEnumPowerShellWorkflow,
+		RunbookTypeEnumPython,
 		RunbookTypeEnumPython2,
 		RunbookTypeEnumPython3,
 		RunbookTypeEnumScript,

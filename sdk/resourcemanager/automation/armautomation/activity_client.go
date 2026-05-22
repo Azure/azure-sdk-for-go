@@ -28,7 +28,7 @@ type ActivityClient struct {
 //   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
 //     forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewActivityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActivityClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewActivityClient(subscriptionID string, credential azcore.TokenCredential,
 // Get - Retrieve the activity in the module identified by module name and activity name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-01-13-preview
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - moduleName - The name of module.
@@ -73,7 +73,7 @@ func (client *ActivityClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *ActivityClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, activityName string, options *ActivityClientGetOptions) (*policy.Request, error) {
+func (client *ActivityClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, activityName string, _ *ActivityClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/activities/{activityName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -100,7 +100,7 @@ func (client *ActivityClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-13-preview")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,7 +117,7 @@ func (client *ActivityClient) getHandleResponse(resp *http.Response) (ActivityCl
 
 // NewListByModulePager - Retrieve a list of activities in the module identified by module name.
 //
-// Generated from API version 2020-01-13-preview
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - moduleName - The name of module.
@@ -147,7 +147,7 @@ func (client *ActivityClient) NewListByModulePager(resourceGroupName string, aut
 }
 
 // listByModuleCreateRequest creates the ListByModule request.
-func (client *ActivityClient) listByModuleCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ActivityClientListByModuleOptions) (*policy.Request, error) {
+func (client *ActivityClient) listByModuleCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, _ *ActivityClientListByModuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/activities"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -170,7 +170,7 @@ func (client *ActivityClient) listByModuleCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-13-preview")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

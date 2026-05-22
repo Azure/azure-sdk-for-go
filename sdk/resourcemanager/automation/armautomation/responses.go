@@ -30,6 +30,12 @@ type AccountClientListByResourceGroupResponse struct {
 	AccountListResult
 }
 
+// AccountClientListDeletedRunbooksResponse contains the response from method AccountClient.NewListDeletedRunbooksPager.
+type AccountClientListDeletedRunbooksResponse struct {
+	// The response model for the list deleted runbook.
+	DeletedRunbookListResult
+}
+
 // AccountClientListResponse contains the response from method AccountClient.NewListPager.
 type AccountClientListResponse struct {
 	// The response model for the list account operation.
@@ -188,36 +194,6 @@ type DeletedAutomationAccountsClientListBySubscriptionResponse struct {
 	DeletedAutomationAccountListResult
 }
 
-// DscCompilationJobClientCreateResponse contains the response from method DscCompilationJobClient.BeginCreate.
-type DscCompilationJobClientCreateResponse struct {
-	// Definition of the Dsc Compilation job.
-	DscCompilationJob
-}
-
-// DscCompilationJobClientGetResponse contains the response from method DscCompilationJobClient.Get.
-type DscCompilationJobClientGetResponse struct {
-	// Definition of the Dsc Compilation job.
-	DscCompilationJob
-}
-
-// DscCompilationJobClientGetStreamResponse contains the response from method DscCompilationJobClient.GetStream.
-type DscCompilationJobClientGetStreamResponse struct {
-	// Definition of the job stream.
-	JobStream
-}
-
-// DscCompilationJobClientListByAutomationAccountResponse contains the response from method DscCompilationJobClient.NewListByAutomationAccountPager.
-type DscCompilationJobClientListByAutomationAccountResponse struct {
-	// The response model for the list job operation.
-	DscCompilationJobListResult
-}
-
-// DscCompilationJobStreamClientListByJobResponse contains the response from method DscCompilationJobStreamClient.ListByJob.
-type DscCompilationJobStreamClientListByJobResponse struct {
-	// The response model for the list job stream operation.
-	JobStreamListResult
-}
-
 // DscConfigurationClientCreateOrUpdateWithJSONResponse contains the response from method DscConfigurationClient.CreateOrUpdateWithJSON.
 type DscConfigurationClientCreateOrUpdateWithJSONResponse struct {
 	// Definition of the configuration type.
@@ -237,7 +213,7 @@ type DscConfigurationClientDeleteResponse struct {
 
 // DscConfigurationClientGetContentResponse contains the response from method DscConfigurationClient.GetContent.
 type DscConfigurationClientGetContentResponse struct {
-	Value *string
+	// placeholder for future response values
 }
 
 // DscConfigurationClientGetResponse contains the response from method DscConfigurationClient.Get.
@@ -371,6 +347,12 @@ type HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse struct {
 // HybridRunbookWorkersClientMoveResponse contains the response from method HybridRunbookWorkersClient.Move.
 type HybridRunbookWorkersClientMoveResponse struct {
 	// placeholder for future response values
+}
+
+// HybridRunbookWorkersClientPatchResponse contains the response from method HybridRunbookWorkersClient.Patch.
+type HybridRunbookWorkersClientPatchResponse struct {
+	// Definition of hybrid runbook worker.
+	HybridRunbookWorker
 }
 
 // JobClientCreateResponse contains the response from method JobClient.Create.
@@ -533,6 +515,35 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// PackageClientCreateOrUpdateResponse contains the response from method PackageClient.CreateOrUpdate.
+type PackageClientCreateOrUpdateResponse struct {
+	// Definition of the Package type.
+	Package
+}
+
+// PackageClientDeleteResponse contains the response from method PackageClient.Delete.
+type PackageClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PackageClientGetResponse contains the response from method PackageClient.Get.
+type PackageClientGetResponse struct {
+	// Definition of the Package type.
+	Package
+}
+
+// PackageClientListByRuntimeEnvironmentResponse contains the response from method PackageClient.NewListByRuntimeEnvironmentPager.
+type PackageClientListByRuntimeEnvironmentResponse struct {
+	// The response model for the list runtime environments operation.
+	PackageListResult
+}
+
+// PackageClientUpdateResponse contains the response from method PackageClient.Update.
+type PackageClientUpdateResponse struct {
+	// Definition of the Package type.
+	Package
+}
+
 // PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.
 type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	// A private endpoint connection
@@ -587,6 +598,35 @@ type Python2PackageClientListByAutomationAccountResponse struct {
 
 // Python2PackageClientUpdateResponse contains the response from method Python2PackageClient.Update.
 type Python2PackageClientUpdateResponse struct {
+	// Definition of the module type.
+	Module
+}
+
+// Python3PackageClientCreateOrUpdateResponse contains the response from method Python3PackageClient.CreateOrUpdate.
+type Python3PackageClientCreateOrUpdateResponse struct {
+	// Definition of the module type.
+	Module
+}
+
+// Python3PackageClientDeleteResponse contains the response from method Python3PackageClient.Delete.
+type Python3PackageClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// Python3PackageClientGetResponse contains the response from method Python3PackageClient.Get.
+type Python3PackageClientGetResponse struct {
+	// Definition of the module type.
+	Module
+}
+
+// Python3PackageClientListByAutomationAccountResponse contains the response from method Python3PackageClient.NewListByAutomationAccountPager.
+type Python3PackageClientListByAutomationAccountResponse struct {
+	// The response model for the list module operation.
+	ModuleListResult
+}
+
+// Python3PackageClientUpdateResponse contains the response from method Python3PackageClient.Update.
+type Python3PackageClientUpdateResponse struct {
 	// Definition of the module type.
 	Module
 }
@@ -650,6 +690,35 @@ type RunbookDraftClientReplaceContentResponse struct {
 type RunbookDraftClientUndoEditResponse struct {
 	// The response model for the undo edit runbook operation.
 	RunbookDraftUndoEditResult
+}
+
+// RuntimeEnvironmentsClientCreateResponse contains the response from method RuntimeEnvironmentsClient.Create.
+type RuntimeEnvironmentsClientCreateResponse struct {
+	// Definition of the Runtime Environment type.
+	RuntimeEnvironment
+}
+
+// RuntimeEnvironmentsClientDeleteResponse contains the response from method RuntimeEnvironmentsClient.Delete.
+type RuntimeEnvironmentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RuntimeEnvironmentsClientGetResponse contains the response from method RuntimeEnvironmentsClient.Get.
+type RuntimeEnvironmentsClientGetResponse struct {
+	// Definition of the Runtime Environment type.
+	RuntimeEnvironment
+}
+
+// RuntimeEnvironmentsClientListByAutomationAccountResponse contains the response from method RuntimeEnvironmentsClient.NewListByAutomationAccountPager.
+type RuntimeEnvironmentsClientListByAutomationAccountResponse struct {
+	// List of all the Runtime Environments of automation account.
+	RuntimeEnvironmentListResult
+}
+
+// RuntimeEnvironmentsClientUpdateResponse contains the response from method RuntimeEnvironmentsClient.Update.
+type RuntimeEnvironmentsClientUpdateResponse struct {
+	// Definition of the Runtime Environment type.
+	RuntimeEnvironment
 }
 
 // ScheduleClientCreateOrUpdateResponse contains the response from method ScheduleClient.CreateOrUpdate.

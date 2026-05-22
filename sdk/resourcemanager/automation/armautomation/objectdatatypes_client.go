@@ -28,7 +28,7 @@ type ObjectDataTypesClient struct {
 //   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
 //     forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewObjectDataTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ObjectDataTypesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewObjectDataTypesClient(subscriptionID string, credential azcore.TokenCred
 
 // NewListFieldsByModuleAndTypePager - Retrieve a list of fields of a given type identified by module name.
 //
-// Generated from API version 2020-01-13-preview
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - moduleName - The name of module.
@@ -75,7 +75,7 @@ func (client *ObjectDataTypesClient) NewListFieldsByModuleAndTypePager(resourceG
 }
 
 // listFieldsByModuleAndTypeCreateRequest creates the ListFieldsByModuleAndType request.
-func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *ObjectDataTypesClientListFieldsByModuleAndTypeOptions) (*policy.Request, error) {
+func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, _ *ObjectDataTypesClientListFieldsByModuleAndTypeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/objectDataTypes/{typeName}/fields"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -102,7 +102,7 @@ func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-13-preview")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,7 +119,7 @@ func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeHandleResponse(res
 
 // NewListFieldsByTypePager - Retrieve a list of fields of a given type across all accessible modules.
 //
-// Generated from API version 2020-01-13-preview
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - typeName - The name of type.
@@ -150,7 +150,7 @@ func (client *ObjectDataTypesClient) NewListFieldsByTypePager(resourceGroupName 
 }
 
 // listFieldsByTypeCreateRequest creates the ListFieldsByType request.
-func (client *ObjectDataTypesClient) listFieldsByTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, typeName string, options *ObjectDataTypesClientListFieldsByTypeOptions) (*policy.Request, error) {
+func (client *ObjectDataTypesClient) listFieldsByTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, typeName string, _ *ObjectDataTypesClientListFieldsByTypeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/objectDataTypes/{typeName}/fields"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,7 +173,7 @@ func (client *ObjectDataTypesClient) listFieldsByTypeCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-13-preview")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

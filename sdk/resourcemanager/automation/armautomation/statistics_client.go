@@ -28,7 +28,7 @@ type StatisticsClient struct {
 //   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
 //     forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StatisticsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewStatisticsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // NewListByAutomationAccountPager - Retrieve the statistics for the account.
 //
-// Generated from API version 2021-06-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - options - StatisticsClientListByAutomationAccountOptions contains the optional parameters for the StatisticsClient.NewListByAutomationAccountPager
@@ -95,7 +95,7 @@ func (client *StatisticsClient) listByAutomationAccountCreateRequest(ctx context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-06-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

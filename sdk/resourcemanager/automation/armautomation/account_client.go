@@ -28,7 +28,7 @@ type AccountClient struct {
 //   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
 //     forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, 
 // CreateOrUpdate - Create or update automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - parameters - Parameters supplied to the create or update automation account.
@@ -72,7 +72,7 @@ func (client *AccountClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AccountClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, parameters AccountCreateOrUpdateParameters, options *AccountClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AccountClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, parameters AccountCreateOrUpdateParameters, _ *AccountClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -91,7 +91,7 @@ func (client *AccountClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -112,7 +112,7 @@ func (client *AccountClient) createOrUpdateHandleResponse(resp *http.Response) (
 // Delete - Delete an automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - options - AccountClientDeleteOptions contains the optional parameters for the AccountClient.Delete method.
@@ -138,7 +138,7 @@ func (client *AccountClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *AccountClientDeleteOptions) (*policy.Request, error) {
+func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, _ *AccountClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -157,7 +157,7 @@ func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -166,7 +166,7 @@ func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Get information about an Automation Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - options - AccountClientGetOptions contains the optional parameters for the AccountClient.Get method.
@@ -193,7 +193,7 @@ func (client *AccountClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *AccountClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *AccountClientGetOptions) (*policy.Request, error) {
+func (client *AccountClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, _ *AccountClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -212,7 +212,7 @@ func (client *AccountClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -229,7 +229,7 @@ func (client *AccountClient) getHandleResponse(resp *http.Response) (AccountClie
 
 // NewListPager - Retrieve a list of accounts within a given subscription.
 //
-// Generated from API version 2021-06-22
+// Generated from API version 2024-10-23
 //   - options - AccountClientListOptions contains the optional parameters for the AccountClient.NewListPager method.
 func (client *AccountClient) NewListPager(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountClientListResponse]{
@@ -255,7 +255,7 @@ func (client *AccountClient) NewListPager(options *AccountClientListOptions) *ru
 }
 
 // listCreateRequest creates the List request.
-func (client *AccountClient) listCreateRequest(ctx context.Context, options *AccountClientListOptions) (*policy.Request, error) {
+func (client *AccountClient) listCreateRequest(ctx context.Context, _ *AccountClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Automation/automationAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -266,7 +266,7 @@ func (client *AccountClient) listCreateRequest(ctx context.Context, options *Acc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountCli
 
 // NewListByResourceGroupPager - Retrieve a list of accounts within a given resource group.
 //
-// Generated from API version 2021-06-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.NewListByResourceGroupPager
 //     method.
@@ -311,7 +311,7 @@ func (client *AccountClient) NewListByResourceGroupPager(resourceGroupName strin
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AccountClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AccountClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AccountClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AccountClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -326,7 +326,7 @@ func (client *AccountClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,10 +341,75 @@ func (client *AccountClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
+// NewListDeletedRunbooksPager - Retrieve the deleted runbooks for an automation account.
+//
+// Generated from API version 2024-10-23
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - AccountClientListDeletedRunbooksOptions contains the optional parameters for the AccountClient.NewListDeletedRunbooksPager
+//     method.
+func (client *AccountClient) NewListDeletedRunbooksPager(resourceGroupName string, automationAccountName string, options *AccountClientListDeletedRunbooksOptions) *runtime.Pager[AccountClientListDeletedRunbooksResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccountClientListDeletedRunbooksResponse]{
+		More: func(page AccountClientListDeletedRunbooksResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AccountClientListDeletedRunbooksResponse) (AccountClientListDeletedRunbooksResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountClient.NewListDeletedRunbooksPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listDeletedRunbooksCreateRequest(ctx, resourceGroupName, automationAccountName, options)
+			}, nil)
+			if err != nil {
+				return AccountClientListDeletedRunbooksResponse{}, err
+			}
+			return client.listDeletedRunbooksHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listDeletedRunbooksCreateRequest creates the ListDeletedRunbooks request.
+func (client *AccountClient) listDeletedRunbooksCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, _ *AccountClientListDeletedRunbooksOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/listDeletedRunbooks"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if automationAccountName == "" {
+		return nil, errors.New("parameter automationAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-10-23")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listDeletedRunbooksHandleResponse handles the ListDeletedRunbooks response.
+func (client *AccountClient) listDeletedRunbooksHandleResponse(resp *http.Response) (AccountClientListDeletedRunbooksResponse, error) {
+	result := AccountClientListDeletedRunbooksResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedRunbookListResult); err != nil {
+		return AccountClientListDeletedRunbooksResponse{}, err
+	}
+	return result, nil
+}
+
 // Update - Update an automation account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-22
+// Generated from API version 2024-10-23
 //   - resourceGroupName - Name of an Azure Resource group.
 //   - automationAccountName - The name of the automation account.
 //   - parameters - Parameters supplied to the update automation account.
@@ -372,7 +437,7 @@ func (client *AccountClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AccountClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, parameters AccountUpdateParameters, options *AccountClientUpdateOptions) (*policy.Request, error) {
+func (client *AccountClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, parameters AccountUpdateParameters, _ *AccountClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -391,7 +456,7 @@ func (client *AccountClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-22")
+	reqQP.Set("api-version", "2024-10-23")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

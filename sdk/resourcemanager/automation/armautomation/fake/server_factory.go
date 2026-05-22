@@ -16,52 +16,146 @@ import (
 
 // ServerFactory is a fake server for instances of the armautomation.ClientFactory type.
 type ServerFactory struct {
-	AccountServer                                AccountServer
-	ActivityServer                               ActivityServer
-	AgentRegistrationInformationServer           AgentRegistrationInformationServer
-	CertificateServer                            CertificateServer
-	Server                                       Server
-	ConnectionServer                             ConnectionServer
-	ConnectionTypeServer                         ConnectionTypeServer
-	CredentialServer                             CredentialServer
-	DeletedAutomationAccountsServer              DeletedAutomationAccountsServer
-	DscCompilationJobServer                      DscCompilationJobServer
-	DscCompilationJobStreamServer                DscCompilationJobStreamServer
-	DscConfigurationServer                       DscConfigurationServer
-	DscNodeServer                                DscNodeServer
-	DscNodeConfigurationServer                   DscNodeConfigurationServer
-	FieldsServer                                 FieldsServer
-	HybridRunbookWorkerGroupServer               HybridRunbookWorkerGroupServer
-	HybridRunbookWorkersServer                   HybridRunbookWorkersServer
-	JobServer                                    JobServer
-	JobScheduleServer                            JobScheduleServer
-	JobStreamServer                              JobStreamServer
-	KeysServer                                   KeysServer
-	LinkedWorkspaceServer                        LinkedWorkspaceServer
-	ModuleServer                                 ModuleServer
-	NodeCountInformationServer                   NodeCountInformationServer
-	NodeReportsServer                            NodeReportsServer
-	ObjectDataTypesServer                        ObjectDataTypesServer
-	OperationsServer                             OperationsServer
-	PrivateEndpointConnectionsServer             PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer                   PrivateLinkResourcesServer
-	Python2PackageServer                         Python2PackageServer
-	RunbookServer                                RunbookServer
-	RunbookDraftServer                           RunbookDraftServer
-	ScheduleServer                               ScheduleServer
+	// AccountServer contains the fakes for client AccountClient
+	AccountServer AccountServer
+
+	// ActivityServer contains the fakes for client ActivityClient
+	ActivityServer ActivityServer
+
+	// AgentRegistrationInformationServer contains the fakes for client AgentRegistrationInformationClient
+	AgentRegistrationInformationServer AgentRegistrationInformationServer
+
+	// CertificateServer contains the fakes for client CertificateClient
+	CertificateServer CertificateServer
+
+	// Server contains the fakes for client Client
+	Server Server
+
+	// ConnectionServer contains the fakes for client ConnectionClient
+	ConnectionServer ConnectionServer
+
+	// ConnectionTypeServer contains the fakes for client ConnectionTypeClient
+	ConnectionTypeServer ConnectionTypeServer
+
+	// CredentialServer contains the fakes for client CredentialClient
+	CredentialServer CredentialServer
+
+	// DeletedAutomationAccountsServer contains the fakes for client DeletedAutomationAccountsClient
+	DeletedAutomationAccountsServer DeletedAutomationAccountsServer
+
+	// DscConfigurationServer contains the fakes for client DscConfigurationClient
+	DscConfigurationServer DscConfigurationServer
+
+	// DscNodeServer contains the fakes for client DscNodeClient
+	DscNodeServer DscNodeServer
+
+	// DscNodeConfigurationServer contains the fakes for client DscNodeConfigurationClient
+	DscNodeConfigurationServer DscNodeConfigurationServer
+
+	// FieldsServer contains the fakes for client FieldsClient
+	FieldsServer FieldsServer
+
+	// HybridRunbookWorkerGroupServer contains the fakes for client HybridRunbookWorkerGroupClient
+	HybridRunbookWorkerGroupServer HybridRunbookWorkerGroupServer
+
+	// HybridRunbookWorkersServer contains the fakes for client HybridRunbookWorkersClient
+	HybridRunbookWorkersServer HybridRunbookWorkersServer
+
+	// JobServer contains the fakes for client JobClient
+	JobServer JobServer
+
+	// JobScheduleServer contains the fakes for client JobScheduleClient
+	JobScheduleServer JobScheduleServer
+
+	// JobStreamServer contains the fakes for client JobStreamClient
+	JobStreamServer JobStreamServer
+
+	// KeysServer contains the fakes for client KeysClient
+	KeysServer KeysServer
+
+	// LinkedWorkspaceServer contains the fakes for client LinkedWorkspaceClient
+	LinkedWorkspaceServer LinkedWorkspaceServer
+
+	// ModuleServer contains the fakes for client ModuleClient
+	ModuleServer ModuleServer
+
+	// NodeCountInformationServer contains the fakes for client NodeCountInformationClient
+	NodeCountInformationServer NodeCountInformationServer
+
+	// NodeReportsServer contains the fakes for client NodeReportsClient
+	NodeReportsServer NodeReportsServer
+
+	// ObjectDataTypesServer contains the fakes for client ObjectDataTypesClient
+	ObjectDataTypesServer ObjectDataTypesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PackageServer contains the fakes for client PackageClient
+	PackageServer PackageServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// Python2PackageServer contains the fakes for client Python2PackageClient
+	Python2PackageServer Python2PackageServer
+
+	// Python3PackageServer contains the fakes for client Python3PackageClient
+	Python3PackageServer Python3PackageServer
+
+	// RunbookServer contains the fakes for client RunbookClient
+	RunbookServer RunbookServer
+
+	// RunbookDraftServer contains the fakes for client RunbookDraftClient
+	RunbookDraftServer RunbookDraftServer
+
+	// RuntimeEnvironmentsServer contains the fakes for client RuntimeEnvironmentsClient
+	RuntimeEnvironmentsServer RuntimeEnvironmentsServer
+
+	// ScheduleServer contains the fakes for client ScheduleClient
+	ScheduleServer ScheduleServer
+
+	// SoftwareUpdateConfigurationMachineRunsServer contains the fakes for client SoftwareUpdateConfigurationMachineRunsClient
 	SoftwareUpdateConfigurationMachineRunsServer SoftwareUpdateConfigurationMachineRunsServer
-	SoftwareUpdateConfigurationRunsServer        SoftwareUpdateConfigurationRunsServer
-	SoftwareUpdateConfigurationsServer           SoftwareUpdateConfigurationsServer
-	SourceControlServer                          SourceControlServer
-	SourceControlSyncJobServer                   SourceControlSyncJobServer
-	SourceControlSyncJobStreamsServer            SourceControlSyncJobStreamsServer
-	StatisticsServer                             StatisticsServer
-	TestJobServer                                TestJobServer
-	TestJobStreamsServer                         TestJobStreamsServer
-	UsagesServer                                 UsagesServer
-	VariableServer                               VariableServer
-	WatcherServer                                WatcherServer
-	WebhookServer                                WebhookServer
+
+	// SoftwareUpdateConfigurationRunsServer contains the fakes for client SoftwareUpdateConfigurationRunsClient
+	SoftwareUpdateConfigurationRunsServer SoftwareUpdateConfigurationRunsServer
+
+	// SoftwareUpdateConfigurationsServer contains the fakes for client SoftwareUpdateConfigurationsClient
+	SoftwareUpdateConfigurationsServer SoftwareUpdateConfigurationsServer
+
+	// SourceControlServer contains the fakes for client SourceControlClient
+	SourceControlServer SourceControlServer
+
+	// SourceControlSyncJobServer contains the fakes for client SourceControlSyncJobClient
+	SourceControlSyncJobServer SourceControlSyncJobServer
+
+	// SourceControlSyncJobStreamsServer contains the fakes for client SourceControlSyncJobStreamsClient
+	SourceControlSyncJobStreamsServer SourceControlSyncJobStreamsServer
+
+	// StatisticsServer contains the fakes for client StatisticsClient
+	StatisticsServer StatisticsServer
+
+	// TestJobServer contains the fakes for client TestJobClient
+	TestJobServer TestJobServer
+
+	// TestJobStreamsServer contains the fakes for client TestJobStreamsClient
+	TestJobStreamsServer TestJobStreamsServer
+
+	// UsagesServer contains the fakes for client UsagesClient
+	UsagesServer UsagesServer
+
+	// VariableServer contains the fakes for client VariableClient
+	VariableServer VariableServer
+
+	// WatcherServer contains the fakes for client WatcherClient
+	WatcherServer WatcherServer
+
+	// WebhookServer contains the fakes for client WebhookClient
+	WebhookServer WebhookServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -87,8 +181,6 @@ type ServerFactoryTransport struct {
 	trConnectionTypeServer                         *ConnectionTypeServerTransport
 	trCredentialServer                             *CredentialServerTransport
 	trDeletedAutomationAccountsServer              *DeletedAutomationAccountsServerTransport
-	trDscCompilationJobServer                      *DscCompilationJobServerTransport
-	trDscCompilationJobStreamServer                *DscCompilationJobStreamServerTransport
 	trDscConfigurationServer                       *DscConfigurationServerTransport
 	trDscNodeServer                                *DscNodeServerTransport
 	trDscNodeConfigurationServer                   *DscNodeConfigurationServerTransport
@@ -105,11 +197,14 @@ type ServerFactoryTransport struct {
 	trNodeReportsServer                            *NodeReportsServerTransport
 	trObjectDataTypesServer                        *ObjectDataTypesServerTransport
 	trOperationsServer                             *OperationsServerTransport
+	trPackageServer                                *PackageServerTransport
 	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
 	trPython2PackageServer                         *Python2PackageServerTransport
+	trPython3PackageServer                         *Python3PackageServerTransport
 	trRunbookServer                                *RunbookServerTransport
 	trRunbookDraftServer                           *RunbookDraftServerTransport
+	trRuntimeEnvironmentsServer                    *RuntimeEnvironmentsServerTransport
 	trScheduleServer                               *ScheduleServerTransport
 	trSoftwareUpdateConfigurationMachineRunsServer *SoftwareUpdateConfigurationMachineRunsServerTransport
 	trSoftwareUpdateConfigurationRunsServer        *SoftwareUpdateConfigurationRunsServerTransport
@@ -172,16 +267,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDeletedAutomationAccountsServerTransport(&s.srv.DeletedAutomationAccountsServer)
 		})
 		resp, err = s.trDeletedAutomationAccountsServer.Do(req)
-	case "DscCompilationJobClient":
-		initServer(s, &s.trDscCompilationJobServer, func() *DscCompilationJobServerTransport {
-			return NewDscCompilationJobServerTransport(&s.srv.DscCompilationJobServer)
-		})
-		resp, err = s.trDscCompilationJobServer.Do(req)
-	case "DscCompilationJobStreamClient":
-		initServer(s, &s.trDscCompilationJobStreamServer, func() *DscCompilationJobStreamServerTransport {
-			return NewDscCompilationJobStreamServerTransport(&s.srv.DscCompilationJobStreamServer)
-		})
-		resp, err = s.trDscCompilationJobStreamServer.Do(req)
 	case "DscConfigurationClient":
 		initServer(s, &s.trDscConfigurationServer, func() *DscConfigurationServerTransport {
 			return NewDscConfigurationServerTransport(&s.srv.DscConfigurationServer)
@@ -244,6 +329,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PackageClient":
+		initServer(s, &s.trPackageServer, func() *PackageServerTransport { return NewPackageServerTransport(&s.srv.PackageServer) })
+		resp, err = s.trPackageServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
 		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
@@ -259,12 +347,22 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPython2PackageServerTransport(&s.srv.Python2PackageServer)
 		})
 		resp, err = s.trPython2PackageServer.Do(req)
+	case "Python3PackageClient":
+		initServer(s, &s.trPython3PackageServer, func() *Python3PackageServerTransport {
+			return NewPython3PackageServerTransport(&s.srv.Python3PackageServer)
+		})
+		resp, err = s.trPython3PackageServer.Do(req)
 	case "RunbookClient":
 		initServer(s, &s.trRunbookServer, func() *RunbookServerTransport { return NewRunbookServerTransport(&s.srv.RunbookServer) })
 		resp, err = s.trRunbookServer.Do(req)
 	case "RunbookDraftClient":
 		initServer(s, &s.trRunbookDraftServer, func() *RunbookDraftServerTransport { return NewRunbookDraftServerTransport(&s.srv.RunbookDraftServer) })
 		resp, err = s.trRunbookDraftServer.Do(req)
+	case "RuntimeEnvironmentsClient":
+		initServer(s, &s.trRuntimeEnvironmentsServer, func() *RuntimeEnvironmentsServerTransport {
+			return NewRuntimeEnvironmentsServerTransport(&s.srv.RuntimeEnvironmentsServer)
+		})
+		resp, err = s.trRuntimeEnvironmentsServer.Do(req)
 	case "ScheduleClient":
 		initServer(s, &s.trScheduleServer, func() *ScheduleServerTransport { return NewScheduleServerTransport(&s.srv.ScheduleServer) })
 		resp, err = s.trScheduleServer.Do(req)

@@ -16,13 +16,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 )
 
 // HybridRunbookWorkersServer is a fake server for instances of the armautomation.HybridRunbookWorkersClient type.
 type HybridRunbookWorkersServer struct {
 	// Create is the fake for method HybridRunbookWorkersClient.Create
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	Create func(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerID string, hybridRunbookWorkerCreationParameters armautomation.HybridRunbookWorkerCreateParameters, options *armautomation.HybridRunbookWorkersClientCreateOptions) (resp azfake.Responder[armautomation.HybridRunbookWorkersClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method HybridRunbookWorkersClient.Delete
@@ -40,6 +41,10 @@ type HybridRunbookWorkersServer struct {
 	// Move is the fake for method HybridRunbookWorkersClient.Move
 	// HTTP status codes to indicate success: http.StatusOK
 	Move func(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerID string, hybridRunbookWorkerMoveParameters armautomation.HybridRunbookWorkerMoveParameters, options *armautomation.HybridRunbookWorkersClientMoveOptions) (resp azfake.Responder[armautomation.HybridRunbookWorkersClientMoveResponse], errResp azfake.ErrorResponder)
+
+	// Patch is the fake for method HybridRunbookWorkersClient.Patch
+	// HTTP status codes to indicate success: http.StatusOK
+	Patch func(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, hybridRunbookWorkerID string, options *armautomation.HybridRunbookWorkersClientPatchOptions) (resp azfake.Responder[armautomation.HybridRunbookWorkersClientPatchResponse], errResp azfake.ErrorResponder)
 }
 
 // NewHybridRunbookWorkersServerTransport creates a new instance of HybridRunbookWorkersServerTransport with the provided implementation.
@@ -67,29 +72,50 @@ func (h *HybridRunbookWorkersServerTransport) Do(req *http.Request) (*http.Respo
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return h.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "HybridRunbookWorkersClient.Create":
-		resp, err = h.dispatchCreate(req)
-	case "HybridRunbookWorkersClient.Delete":
-		resp, err = h.dispatchDelete(req)
-	case "HybridRunbookWorkersClient.Get":
-		resp, err = h.dispatchGet(req)
-	case "HybridRunbookWorkersClient.NewListByHybridRunbookWorkerGroupPager":
-		resp, err = h.dispatchNewListByHybridRunbookWorkerGroupPager(req)
-	case "HybridRunbookWorkersClient.Move":
-		resp, err = h.dispatchMove(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (h *HybridRunbookWorkersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if hybridRunbookWorkersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = hybridRunbookWorkersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "HybridRunbookWorkersClient.Create":
+				res.resp, res.err = h.dispatchCreate(req)
+			case "HybridRunbookWorkersClient.Delete":
+				res.resp, res.err = h.dispatchDelete(req)
+			case "HybridRunbookWorkersClient.Get":
+				res.resp, res.err = h.dispatchGet(req)
+			case "HybridRunbookWorkersClient.NewListByHybridRunbookWorkerGroupPager":
+				res.resp, res.err = h.dispatchNewListByHybridRunbookWorkerGroupPager(req)
+			case "HybridRunbookWorkersClient.Move":
+				res.resp, res.err = h.dispatchMove(req)
+			case "HybridRunbookWorkersClient.Patch":
+				res.resp, res.err = h.dispatchPatch(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (h *HybridRunbookWorkersServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
@@ -99,7 +125,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchCreate(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armautomation.HybridRunbookWorkerCreateParameters](req)
@@ -127,8 +153,8 @@ func (h *HybridRunbookWorkersServerTransport) dispatchCreate(req *http.Request) 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HybridRunbookWorker, req)
 	if err != nil {
@@ -144,7 +170,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchDelete(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -185,7 +211,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchGet(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -228,7 +254,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchNewListByHybridRunbookWork
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -283,7 +309,7 @@ func (h *HybridRunbookWorkersServerTransport) dispatchMove(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/move`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armautomation.HybridRunbookWorkerMoveParameters](req)
@@ -319,4 +345,61 @@ func (h *HybridRunbookWorkersServerTransport) dispatchMove(req *http.Request) (*
 		return nil, err
 	}
 	return resp, nil
+}
+
+func (h *HybridRunbookWorkersServerTransport) dispatchPatch(req *http.Request) (*http.Response, error) {
+	if h.srv.Patch == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Patch not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkerGroups/(?P<hybridRunbookWorkerGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridRunbookWorkers/(?P<hybridRunbookWorkerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armautomation.HybridRunbookWorkerCreateParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	automationAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("automationAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	hybridRunbookWorkerGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hybridRunbookWorkerGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hybridRunbookWorkerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("hybridRunbookWorkerId")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armautomation.HybridRunbookWorkersClientPatchOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armautomation.HybridRunbookWorkersClientPatchOptions{
+			HybridRunbookWorkerCreationParameters: &body,
+		}
+	}
+	respr, errRespr := h.srv.Patch(req.Context(), resourceGroupNameParam, automationAccountNameParam, hybridRunbookWorkerGroupNameParam, hybridRunbookWorkerIDParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HybridRunbookWorker, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to HybridRunbookWorkersServerTransport
+var hybridRunbookWorkersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -269,6 +269,17 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		// reads so concurrent requests learn about the outage, but do
 		// not mark it unavailable for writes on a single-master
 		// account (we have nowhere else to send writes).
+		//
+		// Intentionally no gem.Update(ctx, true) here: as of PR #26815
+		// MarkEndpointUnavailable* invalidates the GEM cache once per
+		// newly-unavailable endpoint, so the *next* caller's
+		// Update(false) will issue a refresh on its own. We skip the
+		// synchronous refresh because connection errors do not
+		// indicate that account topology has changed — they just say
+		// "this region is unhealthy right now." Forcing a refresh on
+		// every give-up under a regional outage would amplify the
+		// outage by piling GetDatabaseAccount calls on the metadata
+		// endpoint precisely when we want to be most responsive.
 		if err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
 			return false, err
 		}
@@ -320,7 +331,7 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 		}
 	}
 
-	err := p.gem.Update(req.Raw().Context(), isWriteOperation)
+	err := p.gem.Update(req.Raw().Context(), true)
 	if err != nil {
 		return false, err
 	}

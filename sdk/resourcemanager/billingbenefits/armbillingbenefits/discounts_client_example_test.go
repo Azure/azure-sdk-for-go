@@ -844,7 +844,7 @@ func ExampleDiscountsClient_NewScopeListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDiscountsClient().NewScopeListPager("providers/Microsoft.Billing/billingAccounts/{acctId}", nil)
+	pager := clientFactory.NewDiscountsClient("subscriptionID").NewScopeListPager("providers/Microsoft.Billing/billingAccounts/{acctId}", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -422,7 +422,7 @@ func ExampleCreditsClient_NewListApplicablePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCreditsClient().NewListApplicablePager("providers/Microsoft.Billing/billingAccounts/{acctId}", nil)
+	pager := clientFactory.NewCreditsClient("subscriptionID").NewListApplicablePager("providers/Microsoft.Billing/billingAccounts/{acctId}", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

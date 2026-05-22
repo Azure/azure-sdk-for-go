@@ -271,6 +271,14 @@ func TestFix3c_ConcurrentSameEndpointMarksAreBounded(t *testing.T) {
 		}()
 	}
 	wg.Wait()
+	// Trigger one more Update after the burst settles. This is required for
+	// scheduler determinism: under some timings every concurrent Update can
+	// complete (observing the still-fresh lastUpdateTime) before any marker
+	// fires invalidate(), leaving the post-invalidation refresh un-triggered.
+	// This explicit post-burst Update guarantees the invalidation is acted on
+	// exactly once -- the singleflight then collapses any in-flight leader
+	// and the new caller to a single HTTP round-trip.
+	_ = gem.Update(context.Background(), false)
 	// Give any spawned refresh time to drain.
 	time.Sleep(200 * time.Millisecond)
 

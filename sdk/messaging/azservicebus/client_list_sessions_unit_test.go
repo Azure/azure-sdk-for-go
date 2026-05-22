@@ -179,7 +179,7 @@ func TestClient_ListSessionsForQueue_StopsOnEmptyFirstPage(t *testing.T) {
 }
 
 func TestClient_ListSessionsForQueue_ActiveModeSendsSentinel(t *testing.T) {
-	// Active-messages mode (UpdatedAfter nil) must send the 10000-01-01 sentinel
+	// Active-messages mode (SessionStateUpdatedAfter nil) must send the 10000-01-01 sentinel
 	// (253402300800000 ms on the AMQP wire) so the service's .NET AMQP decoder
 	// clamps it to DateTime.MaxValue, triggering active-messages mode.
 	link := &scriptedRPCLink{
@@ -200,8 +200,8 @@ func TestClient_ListSessionsForQueue_ActiveModeSendsSentinel(t *testing.T) {
 	require.Equal(t, 10000, ts.Year())
 }
 
-func TestClient_ListSessionsForQueue_UpdatedAfterIsPropagated(t *testing.T) {
-	updatedAfter := time.Date(2026, 3, 15, 10, 30, 0, 0, time.UTC)
+func TestClient_ListSessionsForQueue_SessionStateUpdatedAfterIsPropagated(t *testing.T) {
+	sessionStateUpdatedAfter := time.Date(2026, 3, 15, 10, 30, 0, 0, time.UTC)
 
 	link := &scriptedRPCLink{
 		t: t,
@@ -212,14 +212,14 @@ func TestClient_ListSessionsForQueue_UpdatedAfterIsPropagated(t *testing.T) {
 	client, _ := newClientForListSessionsUnitTest(t, link)
 
 	_, err := client.ListSessionsForQueue(context.Background(), "myqueue",
-		&ListSessionsOptions{UpdatedAfter: &updatedAfter})
+		&ListSessionsOptions{SessionStateUpdatedAfter: &sessionStateUpdatedAfter})
 	require.NoError(t, err)
 	require.Len(t, link.calls, 1)
 
 	body := link.calls[0].Value.(map[string]any)
 	ts, ok := body["last-updated-time"].(time.Time)
 	require.True(t, ok)
-	require.True(t, ts.Equal(updatedAfter), "expected %v, got %v", updatedAfter, ts)
+	require.True(t, ts.Equal(sessionStateUpdatedAfter), "expected %v, got %v", sessionStateUpdatedAfter, ts)
 }
 
 func TestClient_ListSessionsForQueue_EmptyNameReturnsError(t *testing.T) {

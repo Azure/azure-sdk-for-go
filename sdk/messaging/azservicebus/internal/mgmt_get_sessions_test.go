@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetMessageSessions_UpdatedAfterMode(t *testing.T) {
+func TestGetMessageSessions_SessionStateUpdatedAfterMode(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 

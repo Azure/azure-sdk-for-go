@@ -380,13 +380,13 @@ func (client *Client) getCleanupForCloseable() (uint64, func()) {
 
 // ListSessionsOptions contains options for the ListSessionsForQueue and ListSessionsForSubscription methods.
 type ListSessionsOptions struct {
-	// UpdatedAfter, if set, returns only sessions whose state was updated after this time.
+	// SessionStateUpdatedAfter, if set, returns only sessions whose state was updated after this time.
 	// If not set, returns sessions with active messages in the entity.
-	UpdatedAfter *time.Time
+	SessionStateUpdatedAfter *time.Time
 }
 
 // ListSessionsForQueue lists the IDs of sessions with active messages in a session-enabled queue.
-// If options.UpdatedAfter is set, returns only sessions whose state was updated after that time.
+// If options.SessionStateUpdatedAfter is set, returns only sessions whose state was updated after that time.
 func (client *Client) ListSessionsForQueue(ctx context.Context, queueName string, options *ListSessionsOptions) ([]string, error) {
 	entityPath, err := (&entity{Queue: queueName}).String()
 	if err != nil {
@@ -396,7 +396,7 @@ func (client *Client) ListSessionsForQueue(ctx context.Context, queueName string
 }
 
 // ListSessionsForSubscription lists the IDs of sessions with active messages in a session-enabled subscription.
-// If options.UpdatedAfter is set, returns only sessions whose state was updated after that time.
+// If options.SessionStateUpdatedAfter is set, returns only sessions whose state was updated after that time.
 func (client *Client) ListSessionsForSubscription(ctx context.Context, topicName string, subscriptionName string, options *ListSessionsOptions) ([]string, error) {
 	entityPath, err := (&entity{Topic: topicName, Subscription: subscriptionName}).String()
 	if err != nil {
@@ -413,8 +413,8 @@ func (client *Client) listSessionsForEntity(ctx context.Context, entityPath stri
 	// DateTime.MaxValue.Ticks back to DateTime.MaxValue. This matches Track 1 Java's
 	// SessionBrowser.MAXDATE = new Date(253402300800000L).
 	lastUpdatedTime := time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC)
-	if options != nil && options.UpdatedAfter != nil {
-		lastUpdatedTime = *options.UpdatedAfter
+	if options != nil && options.SessionStateUpdatedAfter != nil {
+		lastUpdatedTime = *options.SessionStateUpdatedAfter
 	}
 
 	managementPath := entityPath + "/$management"

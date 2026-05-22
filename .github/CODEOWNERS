@@ -60,10 +60,10 @@
 
 # ServiceLabel: %Azure Arc enabled servers
 # ServiceOwners:                                                   @rpsqrd @edyoung
-
+ @j7nw4r @SwayGom
 # ServiceLabel: %Azure Data Explorer
 # ServiceOwners:                                                   @ilayrn @orhasban @zoharHenMicrosoft
-
+ @j7nw4r @SwayGom
 # ServiceLabel: %Azure Stack
 # ServiceOwners:                                                   @sarathys @bganapa @rakku-ms
 
@@ -109,13 +109,13 @@
 # ServiceOwners:                                                   @jaggerbodas-ms @arwong
 
 # ServiceLabel: %Cognitive - Computer Vision
-# ServiceOwners:                                                   @ryogok @TFR258 @tburns10
+# ServiceOwners:                                                   @ryogok @TFR258 @tburns10 @j7nw4r @SwayGom
 
 # ServiceLabel: %Cognitive - Content Moderator
-# ServiceOwners:                                                   @swiftarrow11
+# ServiceOwners:                                                   @swiftarrow11 @j7nw4r @SwayGom
 
 # ServiceLabel: %Cognitive - Custom Vision
-# ServiceOwners:                                                   @areddish @tburns10
+# ServiceOwners:                                                   @areddish @tburns10 @j7nw4r @SwayGom
 
 # ServiceLabel: %Cognitive - Face
 # ServiceOwners:                                                   @JinyuID @dipidoo @SteveMSFT

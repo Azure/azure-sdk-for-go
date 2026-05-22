@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -211,8 +208,8 @@ func TestClient(t *testing.T) {
 		for pager.More() {
 			page, err := pager.NextPage(ctx)
 			require.NoError(t, err)
-			require.NotEmpty(t, page.Manifests.Attributes)
-			items += len(page.Manifests.Attributes)
+			require.NotEmpty(t, page.Attributes)
+			items += len(page.Attributes)
 		}
 		require.NotZero(t, items)
 
@@ -223,8 +220,8 @@ func TestClient(t *testing.T) {
 		for pager.More() {
 			page, err := pager.NextPage(ctx)
 			require.NoError(t, err)
-			require.NotEmpty(t, page.Manifests.Attributes)
-			descendingItems = append(descendingItems, page.Manifests.Attributes...)
+			require.NotEmpty(t, page.Attributes)
+			descendingItems = append(descendingItems, page.Attributes...)
 		}
 		pager = client.NewListManifestsPager(repository, &ClientListManifestsOptions{
 			OrderBy: to.Ptr(ArtifactManifestOrderByLastUpdatedOnAscending),
@@ -233,8 +230,8 @@ func TestClient(t *testing.T) {
 		for pager.More() {
 			page, err := pager.NextPage(ctx)
 			require.NoError(t, err)
-			require.NotEmpty(t, page.Manifests.Attributes)
-			ascendingItems = append(ascendingItems, page.Manifests.Attributes...)
+			require.NotEmpty(t, page.Attributes)
+			ascendingItems = append(ascendingItems, page.Attributes...)
 		}
 		for i := range descendingItems {
 			require.Equal(t, descendingItems[i].Digest, ascendingItems[len(ascendingItems)-1-i].Digest)
@@ -325,7 +322,7 @@ func TestClient_NewListRepositoriesPager(t *testing.T) {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
 		pages++
-		items += len(page.Repositories.Names)
+		items += len(page.Names)
 	}
 	require.NotZero(t, pages)
 	require.NotZero(t, items)
@@ -425,14 +422,14 @@ func TestClient_Update(t *testing.T) {
 			},
 		})
 		require.NoError(t, err)
-		require.False(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
+		require.False(t, *res.ChangeableAttributes.CanWrite)
 		res, err = client.UpdateRepositoryProperties(ctx, repository, &ClientUpdateRepositoryPropertiesOptions{
 			Value: &RepositoryWriteableProperties{
 				CanWrite: to.Ptr(true),
 			},
 		})
 		require.NoError(t, err)
-		require.True(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
+		require.True(t, *res.ChangeableAttributes.CanWrite)
 	})
 
 	t.Run("UpdateTagProperties", func(t *testing.T) {

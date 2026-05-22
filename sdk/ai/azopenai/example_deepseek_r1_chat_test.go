@@ -9,7 +9,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/openai/openai-go"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
+	"github.com/openai/openai-go/v3/option"
 )
 
 // Example_deepseekReasoningBasic demonstrates basic chat completions using DeepSeek-R1 reasoning model.
@@ -27,20 +30,20 @@ import (
 // for complex problems, making it ideal for mathematical reasoning, logical deduction,
 // and analytical problem solving.
 func Example_deepseekReasoningBasic() {
-	if !CheckRequiredEnvVars("AOAI_DEEPSEEK_ENDPOINT", "AOAI_DEEPSEEK_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.\n")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_DEEPSEEK_ENDPOINT")
 	model := os.Getenv("AOAI_DEEPSEEK_MODEL")
 
-	// Create a client with token credentials
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Send a reasoning problem to DeepSeek-R1
 	resp, err := client.Chat.Completions.New(
@@ -109,20 +112,19 @@ func Example_deepseekReasoningBasic() {
 // - AOAI_DEEPSEEK_ENDPOINT: Your Azure OpenAI endpoint URL with DeepSeek model access
 // - AOAI_DEEPSEEK_MODEL: The DeepSeek model deployment name (e.g., "deepseek-r1")
 func Example_deepseekReasoningMultiTurn() {
-	if !CheckRequiredEnvVars("AOAI_DEEPSEEK_ENDPOINT", "AOAI_DEEPSEEK_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.\n")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_DEEPSEEK_ENDPOINT")
 	model := os.Getenv("AOAI_DEEPSEEK_MODEL")
 
-	// Create a client with token credentials
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	fmt.Fprintf(os.Stderr, "=== Multi-Turn Reasoning Conversation ===\n\n")
 
@@ -190,24 +192,25 @@ func Example_deepseekReasoningMultiTurn() {
 // The example uses environment variables for configuration:
 // - AOAI_DEEPSEEK_ENDPOINT: Your Azure OpenAI endpoint URL with DeepSeek model access
 // - AOAI_DEEPSEEK_MODEL: The DeepSeek model deployment name (e.g., "deepseek-r1")
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // This example uses a simple math problem to demonstrate DeepSeek-R1's step-by-step
 // reasoning capabilities in a streaming context.
 func Example_deepseekReasoningStreaming() {
-	if !CheckRequiredEnvVars("AOAI_DEEPSEEK_ENDPOINT", "AOAI_DEEPSEEK_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.\n")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_DEEPSEEK_ENDPOINT")
 	model := os.Getenv("AOAI_DEEPSEEK_MODEL")
 
-	// Create a client with token credentials
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
+
 	// Create a streaming chat completion
 	stream := client.Chat.Completions.NewStreaming(
 		context.TODO(), openai.ChatCompletionNewParams{

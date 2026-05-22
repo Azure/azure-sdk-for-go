@@ -8,7 +8,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type BaseExportModel.
@@ -53,7 +55,7 @@ func (b *BaseExportModel) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -127,11 +129,13 @@ func (e *ErrorDetail) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExportQuery.
 func (e ExportQuery) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "authorizationScopeFilter", e.AuthorizationScopeFilter)
 	populate(objectMap, "fullProperties", e.FullProperties)
 	populate(objectMap, "maskSensitive", e.MaskSensitive)
 	populate(objectMap, "namePattern", e.NamePattern)
 	populate(objectMap, "query", e.Query)
 	populate(objectMap, "recursive", e.Recursive)
+	populate(objectMap, "table", e.Table)
 	populate(objectMap, "targetProvider", e.TargetProvider)
 	objectMap["type"] = TypeExportQuery
 	return json.Marshal(objectMap)
@@ -146,6 +150,9 @@ func (e *ExportQuery) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "authorizationScopeFilter":
+			err = unpopulate(val, "AuthorizationScopeFilter", &e.AuthorizationScopeFilter)
+			delete(rawMsg, key)
 		case "fullProperties":
 			err = unpopulate(val, "FullProperties", &e.FullProperties)
 			delete(rawMsg, key)
@@ -160,6 +167,9 @@ func (e *ExportQuery) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recursive":
 			err = unpopulate(val, "Recursive", &e.Recursive)
+			delete(rawMsg, key)
+		case "table":
+			err = unpopulate(val, "Table", &e.Table)
 			delete(rawMsg, key)
 		case "targetProvider":
 			err = unpopulate(val, "TargetProvider", &e.TargetProvider)
@@ -282,6 +292,7 @@ func (e ExportResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "configuration", e.Configuration)
 	populate(objectMap, "errors", e.Errors)
+	populate(objectMap, "import", e.Import)
 	populate(objectMap, "skippedResources", e.SkippedResources)
 	return json.Marshal(objectMap)
 }
@@ -300,6 +311,9 @@ func (e *ExportResult) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "errors":
 			err = unpopulate(val, "Errors", &e.Errors)
+			delete(rawMsg, key)
+		case "import":
+			err = unpopulate(val, "Import", &e.Import)
 			delete(rawMsg, key)
 		case "skippedResources":
 			err = unpopulate(val, "SkippedResources", &e.SkippedResources)
@@ -428,13 +442,13 @@ func (o *OperationListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OperationStatus.
 func (o OperationStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "endTime", o.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", o.EndTime)
 	populate(objectMap, "error", o.Error)
 	populate(objectMap, "id", o.ID)
 	populate(objectMap, "name", o.Name)
 	populate(objectMap, "percentComplete", o.PercentComplete)
 	populate(objectMap, "properties", o.Properties)
-	populateDateTimeRFC3339(objectMap, "startTime", o.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", o.StartTime)
 	populate(objectMap, "status", o.Status)
 	return json.Marshal(objectMap)
 }
@@ -449,7 +463,7 @@ func (o *OperationStatus) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateDateTimeRFC3339(val, "EndTime", &o.EndTime)
+			err = unpopulateTime[datetime.RFC3339](val, "EndTime", &o.EndTime)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &o.Error)
@@ -467,7 +481,7 @@ func (o *OperationStatus) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Properties", &o.Properties)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateDateTimeRFC3339(val, "StartTime", &o.StartTime)
+			err = unpopulateTime[datetime.RFC3339](val, "StartTime", &o.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &o.Status)
@@ -490,6 +504,27 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+	} else if !reflect.ValueOf(t).IsNil() {
+		newTime := T(*t)
+		m[k] = (*T)(&newTime)
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
+		m[k] = v
+	}
+}
+
 func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -498,4 +533,21 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
+}
+
+func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
+	if data == nil || string(data) == "null" {
+		return nil
+	}
+	var aux T
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	newTime := time.Time(aux)
+	*t = &newTime
+	return nil
+}
+
+type dateTimeConstraints interface {
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -16,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v4"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -37,7 +34,7 @@ func (testsuite *FileTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.accountName = "fileaccountnam"
+	testsuite.accountName = "fileaccountnam1"
 	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
@@ -68,7 +65,7 @@ func (testsuite *FileTestSuite) Prepare() {
 		Location: to.Ptr(testsuite.location),
 		Properties: &armstorage.AccountPropertiesCreateParameters{
 			AllowBlobPublicAccess:        to.Ptr(false),
-			AllowSharedKeyAccess:         to.Ptr(true),
+			AllowSharedKeyAccess:         to.Ptr(false),
 			DefaultToOAuthAuthentication: to.Ptr(false),
 			Encryption: &armstorage.Encryption{
 				KeySource:                       to.Ptr(armstorage.KeySourceMicrosoftStorage),

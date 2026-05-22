@@ -1,5 +1,39 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-05-20)
+### Breaking Changes
+
+- Struct `CertificateBodyDescription` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `Resource` has been removed
+
+### Features Added
+
+- New enum type `GatewayVersion` with values `GatewayVersionV1`, `GatewayVersionV2`
+- New struct `Details`
+- New field `SystemData` in struct `CertificateDescription`
+- New field `SystemData` in struct `EventHubConsumerGroupInfo`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `DeviceHostName`, `IotHubDetails`, `ServiceHostName` in struct `Properties`
+
+
+## 1.4.0-beta.1 (2025-11-11)
+### Features Added
+
+- New value `IotHubSKUGEN2` added to enum type `IotHubSKU`
+- New value `IotHubSKUTierGeneration2` added to enum type `IotHubSKUTier`
+- New value `RoutingSourceDigitalTwinChangeEvents`, `RoutingSourceMqttBrokerMessages` added to enum type `RoutingSource`
+- New enum type `IPVersion` with values `IPVersionIPv4`, `IPVersionIPv4IPv6`, `IPVersionIPv6`
+- New struct `DeviceRegistry`
+- New struct `EncryptionPropertiesDescription`
+- New struct `KeyVaultKeyProperties`
+- New struct `PropertiesDeviceStreams`
+- New struct `RootCertificateProperties`
+- New field `PolicyResourceID` in struct `CertificateProperties`
+- New field `PolicyResourceID` in struct `CertificatePropertiesWithNonce`
+- New field `DeviceRegistry`, `DeviceStreams`, `Encryption`, `IPVersion`, `RootCertificate` in struct `Properties`
+
+
 ## 1.3.0 (2023-11-24)
 ### Features Added
 

@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure IoT Hub module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub/v2
 ```
 
 ## Authorization
@@ -55,7 +55,7 @@ clientFactory, err := armiothub.NewClientFactory(<subscription ID>, cred, &optio
 A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewResourceClient()
+client := clientFactory.NewCertificatesClient()
 ```
 
 ## Fakes

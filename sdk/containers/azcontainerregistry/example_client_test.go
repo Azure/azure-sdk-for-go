@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -9,12 +6,12 @@ package azcontainerregistry_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry"
 	"io"
 	"log"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry"
 )
 
 var client *azcontainerregistry.Client
@@ -115,7 +112,7 @@ func ExampleClient_NewListManifestsPager() {
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for i, v := range page.Manifests.Attributes {
+		for i, v := range page.Attributes {
 			fmt.Printf("manifest %d: %s\n", i+1, *v.Digest)
 		}
 	}
@@ -128,7 +125,7 @@ func ExampleClient_NewListRepositoriesPager() {
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for i, v := range page.Repositories.Names {
+		for i, v := range page.Names {
 			fmt.Printf("repository %d: %s\n", i+1, *v)
 		}
 	}
@@ -165,7 +162,7 @@ func ExampleClient_UpdateRepositoryProperties() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	fmt.Printf("repository namoserver - 'CanWrite' property: %t\n", *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
+	fmt.Printf("repository namoserver - 'CanWrite' property: %t\n", *res.ChangeableAttributes.CanWrite)
 }
 
 func ExampleClient_UpdateTagProperties() {

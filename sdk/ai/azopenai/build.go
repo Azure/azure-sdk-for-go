@@ -1,6 +1,3 @@
-//go:build go1.21
-// +build go1.21
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -8,7 +5,7 @@
 //go:generate autorest  ./autorest.md
 //go:generate rm -f options.go openai_client.go responses.go
 //go:generate go mod tidy
-//go:generate goimports -w .
+//go:generate gofmt -w .
 
 // running the tests that check that generation went the way we expected to.
 //go:go test -v ./internal

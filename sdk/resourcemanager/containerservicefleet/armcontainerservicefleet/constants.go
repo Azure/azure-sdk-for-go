@@ -19,6 +19,27 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
+// AdoptionPolicy - Action if the Namespace with the same name already exists.
+type AdoptionPolicy string
+
+const (
+	// AdoptionPolicyAlways - Always take over the existing Namespace to be managed by ARM, even if it is not identical.
+	AdoptionPolicyAlways AdoptionPolicy = "Always"
+	// AdoptionPolicyIfIdentical - If there is an identical Namespace, take over the existing Namespace to be managed by ARM.
+	AdoptionPolicyIfIdentical AdoptionPolicy = "IfIdentical"
+	// AdoptionPolicyNever - If the Namespace already exists, do not take over the existing Namespace to be managed by ARM.
+	AdoptionPolicyNever AdoptionPolicy = "Never"
+)
+
+// PossibleAdoptionPolicyValues returns the possible values for the AdoptionPolicy const type.
+func PossibleAdoptionPolicyValues() []AdoptionPolicy {
+	return []AdoptionPolicy{
+		AdoptionPolicyAlways,
+		AdoptionPolicyIfIdentical,
+		AdoptionPolicyNever,
+	}
+}
+
 // AutoUpgradeLastTriggerStatus - AutoUpgradeLastTriggerStatus is the status of the last AutoUpgrade trigger (attempt to automatically
 // create and start UpdateRun when there are new released versions) of an auto upgrade profile.
 type AutoUpgradeLastTriggerStatus string
@@ -106,6 +127,54 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// DeletePolicy - Delete options for the ARM managed namespace.
+type DeletePolicy string
+
+const (
+	// DeletePolicyDelete - Delete both ARM resource and Namespace.
+	DeletePolicyDelete DeletePolicy = "Delete"
+	// DeletePolicyKeep - Delete the ARM resource but keep the Namespace.
+	DeletePolicyKeep DeletePolicy = "Keep"
+)
+
+// PossibleDeletePolicyValues returns the possible values for the DeletePolicy const type.
+func PossibleDeletePolicyValues() []DeletePolicy {
+	return []DeletePolicy{
+		DeletePolicyDelete,
+		DeletePolicyKeep,
+	}
+}
+
+// FleetManagedNamespaceProvisioningState - The provisioning state of the fleet managed namespace resource
+type FleetManagedNamespaceProvisioningState string
+
+const (
+	// FleetManagedNamespaceProvisioningStateCanceled - Resource creation was canceled.
+	FleetManagedNamespaceProvisioningStateCanceled FleetManagedNamespaceProvisioningState = "Canceled"
+	// FleetManagedNamespaceProvisioningStateCreating - The provisioning state of a fleet managed namespace being created.
+	FleetManagedNamespaceProvisioningStateCreating FleetManagedNamespaceProvisioningState = "Creating"
+	// FleetManagedNamespaceProvisioningStateDeleting - The provisioning state of a fleet managed namespace being deleted.
+	FleetManagedNamespaceProvisioningStateDeleting FleetManagedNamespaceProvisioningState = "Deleting"
+	// FleetManagedNamespaceProvisioningStateFailed - Resource creation failed.
+	FleetManagedNamespaceProvisioningStateFailed FleetManagedNamespaceProvisioningState = "Failed"
+	// FleetManagedNamespaceProvisioningStateSucceeded - Resource has been created.
+	FleetManagedNamespaceProvisioningStateSucceeded FleetManagedNamespaceProvisioningState = "Succeeded"
+	// FleetManagedNamespaceProvisioningStateUpdating - The provisioning state of a fleet managed namespace being updated.
+	FleetManagedNamespaceProvisioningStateUpdating FleetManagedNamespaceProvisioningState = "Updating"
+)
+
+// PossibleFleetManagedNamespaceProvisioningStateValues returns the possible values for the FleetManagedNamespaceProvisioningState const type.
+func PossibleFleetManagedNamespaceProvisioningStateValues() []FleetManagedNamespaceProvisioningState {
+	return []FleetManagedNamespaceProvisioningState{
+		FleetManagedNamespaceProvisioningStateCanceled,
+		FleetManagedNamespaceProvisioningStateCreating,
+		FleetManagedNamespaceProvisioningStateDeleting,
+		FleetManagedNamespaceProvisioningStateFailed,
+		FleetManagedNamespaceProvisioningStateSucceeded,
+		FleetManagedNamespaceProvisioningStateUpdating,
 	}
 }
 
@@ -247,6 +316,30 @@ func PossibleGateTypeValues() []GateType {
 	}
 }
 
+// LabelSelectorOperator - A label selector operator is the set of operators that can be used in a selector requirement.
+type LabelSelectorOperator string
+
+const (
+	// LabelSelectorOperatorDoesNotExist - Label Selector Operator DoesNotExist
+	LabelSelectorOperatorDoesNotExist LabelSelectorOperator = "DoesNotExist"
+	// LabelSelectorOperatorExists - Label Selector Operator Exists
+	LabelSelectorOperatorExists LabelSelectorOperator = "Exists"
+	// LabelSelectorOperatorIn - Label Selector Operator In
+	LabelSelectorOperatorIn LabelSelectorOperator = "In"
+	// LabelSelectorOperatorNotIn - Label Selector Operator NotIn
+	LabelSelectorOperatorNotIn LabelSelectorOperator = "NotIn"
+)
+
+// PossibleLabelSelectorOperatorValues returns the possible values for the LabelSelectorOperator const type.
+func PossibleLabelSelectorOperatorValues() []LabelSelectorOperator {
+	return []LabelSelectorOperator{
+		LabelSelectorOperatorDoesNotExist,
+		LabelSelectorOperatorExists,
+		LabelSelectorOperatorIn,
+		LabelSelectorOperatorNotIn,
+	}
+}
+
 // ManagedClusterUpgradeType - The type of upgrade to perform when targeting ManagedClusters.
 type ManagedClusterUpgradeType string
 
@@ -346,6 +439,113 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// PlacementType - PlacementType identifies the type of placement.
+type PlacementType string
+
+const (
+	// PlacementTypePickAll - PickAll picks all clusters that satisfy the rules.
+	PlacementTypePickAll PlacementType = "PickAll"
+	// PlacementTypePickFixed - PickFixed picks a fixed set of clusters.
+	PlacementTypePickFixed PlacementType = "PickFixed"
+)
+
+// PossiblePlacementTypeValues returns the possible values for the PlacementType const type.
+func PossiblePlacementTypeValues() []PlacementType {
+	return []PlacementType{
+		PlacementTypePickAll,
+		PlacementTypePickFixed,
+	}
+}
+
+// PolicyRule - The possible values representing different network policy rules.
+type PolicyRule string
+
+const (
+	// PolicyRuleAllowAll - Allow all network traffic.
+	PolicyRuleAllowAll PolicyRule = "AllowAll"
+	// PolicyRuleAllowSameNamespace - Allow traffic within the same namespace.
+	PolicyRuleAllowSameNamespace PolicyRule = "AllowSameNamespace"
+	// PolicyRuleDenyAll - Deny all network traffic.
+	PolicyRuleDenyAll PolicyRule = "DenyAll"
+)
+
+// PossiblePolicyRuleValues returns the possible values for the PolicyRule const type.
+func PossiblePolicyRuleValues() []PolicyRule {
+	return []PolicyRule{
+		PolicyRuleAllowAll,
+		PolicyRuleAllowSameNamespace,
+		PolicyRuleDenyAll,
+	}
+}
+
+// PropagationType - How the namespace will be provisioned among the fleet members.
+type PropagationType string
+
+const (
+	// PropagationTypePlacement - Using ClusterResourcePlacement.
+	PropagationTypePlacement PropagationType = "Placement"
+)
+
+// PossiblePropagationTypeValues returns the possible values for the PropagationType const type.
+func PossiblePropagationTypeValues() []PropagationType {
+	return []PropagationType{
+		PropagationTypePlacement,
+	}
+}
+
+// PropertySelectorOperator - PropertySelectorOperator is the operator that can be used with PropertySelectorRequirements.
+type PropertySelectorOperator string
+
+const (
+	// PropertySelectorOperatorEq - Eq dictates Fleet to select cluster if its observed value of a given property is equal to
+	// the values specified in the requirement.
+	PropertySelectorOperatorEq PropertySelectorOperator = "Eq"
+	// PropertySelectorOperatorGe - Ge dictates Fleet to select cluster if its observed value of a given property is greater than
+	// or equal to the value specified in the requirement.
+	PropertySelectorOperatorGe PropertySelectorOperator = "Ge"
+	// PropertySelectorOperatorGt - Gt dictates Fleet to select cluster if its observed value of a given property is greater than
+	// the value specified in the requirement.
+	PropertySelectorOperatorGt PropertySelectorOperator = "Gt"
+	// PropertySelectorOperatorLe - Le dictates Fleet to select cluster if its observed value of a given property is less than
+	// or equal to the value specified in the requirement.
+	PropertySelectorOperatorLe PropertySelectorOperator = "Le"
+	// PropertySelectorOperatorLt - Lt dictates Fleet to select cluster if its observed value of a given property is less than
+	// the value specified in the requirement.
+	PropertySelectorOperatorLt PropertySelectorOperator = "Lt"
+	// PropertySelectorOperatorNe - Ne dictates Fleet to select cluster if its observed value of a given property is not equal
+	// to the values specified in the requirement.
+	PropertySelectorOperatorNe PropertySelectorOperator = "Ne"
+)
+
+// PossiblePropertySelectorOperatorValues returns the possible values for the PropertySelectorOperator const type.
+func PossiblePropertySelectorOperatorValues() []PropertySelectorOperator {
+	return []PropertySelectorOperator{
+		PropertySelectorOperatorEq,
+		PropertySelectorOperatorGe,
+		PropertySelectorOperatorGt,
+		PropertySelectorOperatorLe,
+		PropertySelectorOperatorLt,
+		PropertySelectorOperatorNe,
+	}
+}
+
+// TaintEffect - TaintEffect
+type TaintEffect string
+
+const (
+	// TaintEffectNoSchedule - Do not allow new pods to schedule onto the node unless they tolerate the taint, but allow all pods
+	// submitted to Kubelet without going through the scheduler to start, and allow all already-running pods to continue running.
+	// Enforced by the scheduler.
+	TaintEffectNoSchedule TaintEffect = "NoSchedule"
+)
+
+// PossibleTaintEffectValues returns the possible values for the TaintEffect const type.
+func PossibleTaintEffectValues() []TaintEffect {
+	return []TaintEffect{
+		TaintEffectNoSchedule,
+	}
+}
+
 // TargetType - The target type of a skip request.
 type TargetType string
 
@@ -385,6 +585,24 @@ func PossibleTimingValues() []Timing {
 	return []Timing{
 		TimingAfter,
 		TimingBefore,
+	}
+}
+
+// TolerationOperator - A toleration operator is the set of operators that can be used in a toleration.
+type TolerationOperator string
+
+const (
+	// TolerationOperatorEqual - Toleration Operator Equal
+	TolerationOperatorEqual TolerationOperator = "Equal"
+	// TolerationOperatorExists - Toleration Operator Exists
+	TolerationOperatorExists TolerationOperator = "Exists"
+)
+
+// PossibleTolerationOperatorValues returns the possible values for the TolerationOperator const type.
+func PossibleTolerationOperatorValues() []TolerationOperator {
+	return []TolerationOperator{
+		TolerationOperatorEqual,
+		TolerationOperatorExists,
 	}
 }
 

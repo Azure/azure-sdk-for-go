@@ -25,15 +25,19 @@ type QueryItemsResponse struct {
 }
 
 func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
+	continuationToken := resp.Header.Get(cosmosHeaderContinuationToken)
+	queryMetrics := resp.Header.Get(cosmosHeaderQueryMetrics)
+	if queryMetrics != "" {
+		recordQueryMetricsFromResponse(resp)
+	}
+
 	response := QueryItemsResponse{
 		Response: newResponse(resp),
 	}
 
-	continuationToken := resp.Header.Get(cosmosHeaderContinuationToken)
 	if continuationToken != "" {
 		response.ContinuationToken = &continuationToken
 	}
-	queryMetrics := resp.Header.Get(cosmosHeaderQueryMetrics)
 	if queryMetrics != "" {
 		response.QueryMetrics = &queryMetrics
 	}
@@ -44,14 +48,14 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 
 	result := queryServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return QueryItemsResponse{}, err
+		return response, wrapResponseError(err, response.Response)
 	}
 
 	marshalledValue := make([][]byte, 0)
 	for _, e := range result.Documents {
 		m, err := json.Marshal(e)
 		if err != nil {
-			return QueryItemsResponse{}, err
+			return response, wrapResponseError(err, response.Response)
 		}
 		marshalledValue = append(marshalledValue, m)
 	}
@@ -85,7 +89,7 @@ func newContainersQueryResponse(resp *http.Response) (QueryContainersResponse, e
 	}
 	result := queryContainersServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return QueryContainersResponse{}, err
+		return response, wrapResponseError(err, response.Response)
 	}
 
 	response.Containers = result.Containers
@@ -119,7 +123,7 @@ func newDatabasesQueryResponse(resp *http.Response) (QueryDatabasesResponse, err
 
 	result := queryDatabasesServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return QueryDatabasesResponse{}, err
+		return response, wrapResponseError(err, response.Response)
 	}
 
 	response.Databases = result.Databases
@@ -129,4 +133,14 @@ func newDatabasesQueryResponse(resp *http.Response) (QueryDatabasesResponse, err
 
 type queryDatabasesServiceResponse struct {
 	Databases []DatabaseProperties `json:"Databases,omitempty"`
+}
+
+// ReadManyItemsResponse contains the response from the ReadManyItems operation.
+type ReadManyItemsResponse struct {
+	// The total cost of the operation in RUs
+	RequestCharge float32
+	// Diagnostics contains request diagnostics for the operation.
+	Diagnostics Diagnostics
+	// List of items.
+	Items [][]byte
 }

@@ -104,9 +104,25 @@ func (c *ClientFactory) NewIscsiPathsClient() *IscsiPathsClient {
 	}
 }
 
+// NewLicensesClient creates a new instance of LicensesClient.
+func (c *ClientFactory) NewLicensesClient() *LicensesClient {
+	return &LicensesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewLocationsClient creates a new instance of LocationsClient.
 func (c *ClientFactory) NewLocationsClient() *LocationsClient {
 	return &LocationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMaintenancesClient creates a new instance of MaintenancesClient.
+func (c *ClientFactory) NewMaintenancesClient() *MaintenancesClient {
+	return &MaintenancesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

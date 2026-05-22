@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -107,6 +104,14 @@ func (testsuite *ApimpoliciesTestSuite) TestPolicy() {
 	fmt.Println("Call operation: Policy_Get")
 	_, err = policyClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PolicyIDNamePolicy, &armapimanagement.PolicyClientGetOptions{Format: nil})
 	testsuite.Require().NoError(err)
+
+	// From step Policy_ListByService
+	fmt.Println("Call operation: Policy_ListByService")
+	pager := policyClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, nil)
+	for pager.More() {
+		_, err = pager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+	}
 
 	// From step Policy_Delete
 	fmt.Println("Call operation: Policy_Delete")

@@ -4,8 +4,14 @@
 
 package armhardwaresecuritymodules
 
-// CloudHsmClusterBackupStatusClientGetResponse contains the response from method CloudHsmClusterBackupStatusClient.BeginGet.
+// CloudHsmClusterBackupStatusClientGetResponse contains the response from method CloudHsmClusterBackupStatusClient.Get.
 type CloudHsmClusterBackupStatusClientGetResponse struct {
+	// Backup operation Result
+	BackupResult
+
+	// The Location header contains the URL where the status of the long running operation can be checked.
+	Location *string
+
 	// An opaque, globally-unique, server-generated string identifier for the request.
 	XMSRequestID *string
 }
@@ -33,8 +39,14 @@ type CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse stru
 	PrivateLinkResourceListResult
 }
 
-// CloudHsmClusterRestoreStatusClientGetResponse contains the response from method CloudHsmClusterRestoreStatusClient.BeginGet.
+// CloudHsmClusterRestoreStatusClientGetResponse contains the response from method CloudHsmClusterRestoreStatusClient.Get.
 type CloudHsmClusterRestoreStatusClientGetResponse struct {
+	// Restore operation properties
+	RestoreResult
+
+	// The Location header contains the URL where the status of the long running operation can be checked.
+	Location *string
+
 	// An opaque, globally-unique, server-generated string identifier for the request.
 	XMSRequestID *string
 }

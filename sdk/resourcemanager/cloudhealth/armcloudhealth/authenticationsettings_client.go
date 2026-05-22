@@ -26,7 +26,7 @@ type AuthenticationSettingsClient struct {
 // NewAuthenticationSettingsClient creates a new instance of AuthenticationSettingsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAuthenticationSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthenticationSettingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -170,7 +170,6 @@ func (client *AuthenticationSettingsClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

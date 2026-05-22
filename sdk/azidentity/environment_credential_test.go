@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -74,7 +71,9 @@ func TestEnvironmentCredential(t *testing.T) {
 				t.Run("missing "+k, func(t *testing.T) {
 					before := os.Getenv(k)
 					require.NoError(t, os.Unsetenv(k))
-					defer os.Setenv(k, before)
+					defer func() {
+						_ = os.Setenv(k, before)
+					}()
 					_, err := NewEnvironmentCredential(nil)
 					require.Error(t, err)
 				})

@@ -73,9 +73,9 @@ func TestServer(t *testing.T) {
 	// get settings
 	settingsResp, err := client.GetSettings(context.TODO(), nil)
 	require.NoError(t, err)
-	require.Len(t, settingsResp.ListResult.Settings, 2)
-	require.Equal(t, *settingsResp.ListResult.Settings[0].Name, settingName)
-	require.Equal(t, *settingsResp.ListResult.Settings[1].Name, settingName2)
+	require.Len(t, settingsResp.Settings, 2)
+	require.Equal(t, *settingsResp.Settings[0].Name, settingName)
+	require.Equal(t, *settingsResp.Settings[1].Name, settingName2)
 
 	// update setting
 	updateResp, err := client.UpdateSetting(context.TODO(), settingName, settings.UpdateSettingRequest{Value: &settingValue2}, nil)

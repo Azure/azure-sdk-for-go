@@ -1,14 +1,55 @@
 # Release History
 
-## 1.6.3-beta.1 (Unreleased)
+## 1.8.0-beta.2 (Unreleased)
 
 ### Features Added
+* Added support for Structured Message CRC64 content validation on upload and download operations using `TransferValidationTypeComputeStructuredMessageCRC64`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.7.0 (2026-05-14)
+
+### Features Added
+* Includes all features from `1.7.0-beta.1`
+
+## 1.8.0-beta.1 (2026-05-05)
+
+### Features Added
+* Added support for service version 2026-06-06.
+* Added support for Blob Smart Tier.
+
+## 1.7.0-beta.1 (2026-04-23)
+
+### Features Added
+* Added support for service version 2026-04-06.
+* Added support for Delete Blob Conditional Tier.
+* Added support for Server-side Encryption Rekeying.
+* Added cross-tenant support for Principal-Bound User Delegation SAS.
+* Added support for Dynamic User Delegation SAS.
+
+### Bugs Fixed
+* Added support for error code `IncrementalCopyOfEarlierSnapshotNotAllowed`. This replaces `IncrementalCopyOfEralierVersionSnapshotNotAllowed` which has been deprecated.
+* Added support for missing SKU name values.
+
+## 1.6.4 (2026-01-12)
+
+### Features Added
+* Added support for the StartFrom parameter on `BlobContainerClient.listBlobs()` and `BlobContainerClient.listBlobsByHierarchy()` APIs. 
+* Added support for conditional headers on `BlobClientBase.getTags()` and `BlobClientBase.setTags()` APIs.
+
+### Other Changes
+* Added support for service version 2026-02-06.
+
+## 1.6.3 (2025-10-16)
+
+### Other Changes
+* Updated service version to `2025-11-05`
+* Updated `azidentity` version to `1.13.0`
+* Updated `azcore` version to `1.19.1`
 
 ## 1.6.2 (2025-07-23)
 

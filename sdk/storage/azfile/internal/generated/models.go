@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -8,9 +5,11 @@ package generated
 
 import (
 	"encoding/xml"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"net/url"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 type TransactionalContentSetter interface {
@@ -31,6 +30,11 @@ func (f *FileClientUploadRangeFromURLOptions) SetSourceContentCRC64(v []byte) {
 	f.SourceContentCRC64 = v
 }
 
+type StringEncoded struct {
+	Content *string `xml:",chardata"`
+	Encoded *bool   `xml:"Encoded,attr"`
+}
+
 // Custom MarshalXML/UnmarshalXML functions for types that need special handling.
 
 // MarshalXML implements the xml.Marshaller interface for type Handle.
@@ -38,12 +42,12 @@ func (h Handle) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias Handle
 	aux := &struct {
 		*alias
-		LastReconnectTime *dateTimeRFC1123 `xml:"LastReconnectTime"`
-		OpenTime          *dateTimeRFC1123 `xml:"OpenTime"`
+		LastReconnectTime *datetime.RFC1123 `xml:"LastReconnectTime"`
+		OpenTime          *datetime.RFC1123 `xml:"OpenTime"`
 	}{
 		alias:             (*alias)(&h),
-		LastReconnectTime: (*dateTimeRFC1123)(h.LastReconnectTime),
-		OpenTime:          (*dateTimeRFC1123)(h.OpenTime),
+		LastReconnectTime: (*datetime.RFC1123)(h.LastReconnectTime),
+		OpenTime:          (*datetime.RFC1123)(h.OpenTime),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -53,9 +57,9 @@ func (h *Handle) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	type alias Handle
 	aux := &struct {
 		*alias
-		Path              *StringEncoded   `xml:"Path"`
-		LastReconnectTime *dateTimeRFC1123 `xml:"LastReconnectTime"`
-		OpenTime          *dateTimeRFC1123 `xml:"OpenTime"`
+		Path              *StringEncoded    `xml:"Path"`
+		LastReconnectTime *datetime.RFC1123 `xml:"LastReconnectTime"`
+		OpenTime          *datetime.RFC1123 `xml:"OpenTime"`
 	}{
 		alias: (*alias)(h),
 	}

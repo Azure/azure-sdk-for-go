@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -49,6 +46,7 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 		InsecureAllowCredentialWithHTTP: conOptions.InsecureAllowCredentialWithHTTP,
 	})
 	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewRangePolicy()},
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -69,7 +67,7 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 // The directoryPath is optional in the fileURL. If omitted, it points to file within the specified share.
 func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
@@ -90,6 +88,7 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewRangePolicy()},
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -150,17 +149,15 @@ func (f *Client) URL() string {
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
-	fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()
-	resp, err := f.generated().Create(ctx, fileContentLength, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return f.generated().Create(ctx, fileContentLength, opts)
 }
 
 // Delete operation removes the file from the storage account.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-file2.
 func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
-	opts, leaseAccessConditions := options.format()
-	resp, err := f.generated().Delete(ctx, opts, leaseAccessConditions)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return f.generated().Delete(ctx, opts)
 }
 
 // Rename operation renames a file, and can optionally set system properties for the file.
@@ -173,7 +170,7 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		return RenameResponse{}, errors.New("destination path must not be empty")
 	}
 
-	opts, srcLease, destLease, smbInfo, fileHTTPHeaders := options.format()
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot, f.getClientOptions().AllowSourceTrailingDot)
 
 	urlParts, err := sas.ParseURL(f.URL())
 	if err != nil {
@@ -196,7 +193,7 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 
 	destFileClient := (*Client)(base.NewFileClient(destURL, f.generated().InternalClient(), f.sharedKey(), f.getClientOptions()))
 
-	resp, err := destFileClient.generated().Rename(ctx, f.URL(), opts, srcLease, destLease, smbInfo, fileHTTPHeaders)
+	resp, err := destFileClient.generated().Rename(ctx, f.URL(), opts)
 	return RenameResponse{
 		FileClientRenameResponse: resp,
 	}, err
@@ -206,26 +203,23 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file-properties.
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
-	opts, leaseAccessConditions := options.format()
-	resp, err := f.generated().GetProperties(ctx, opts, leaseAccessConditions)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return f.generated().GetProperties(ctx, opts)
 }
 
 // SetHTTPHeaders operation sets HTTP headers on the file.
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) SetHTTPHeaders(ctx context.Context, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
-	opts, fileHTTPHeaders, leaseAccessConditions := options.format()
-	resp, err := f.generated().SetHTTPHeaders(ctx, opts, fileHTTPHeaders, leaseAccessConditions)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return f.generated().SetHTTPHeaders(ctx, opts)
 }
 
 // SetMetadata operation sets user-defined metadata for the specified file.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-metadata.
 func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
-	opts, leaseAccessConditions := options.format()
-	resp, err := f.generated().SetMetadata(ctx, opts, leaseAccessConditions)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return f.generated().SetMetadata(ctx, opts)
 }
 
 // StartCopyFromURL operation copies the data at the source URL to a file.
@@ -233,8 +227,8 @@ func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/copy-file.
 func (f *Client) StartCopyFromURL(ctx context.Context, copySource string, options *StartCopyFromURLOptions) (StartCopyFromURLResponse, error) {
-	opts, copyFileSmbInfo, leaseAccessConditions := options.format()
-	resp, err := f.generated().StartCopy(ctx, copySource, opts, copyFileSmbInfo, leaseAccessConditions)
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot, f.getClientOptions().AllowSourceTrailingDot)
+	resp, err := f.generated().StartCopy(ctx, copySource, opts)
 	return resp, err
 }
 
@@ -243,17 +237,15 @@ func (f *Client) StartCopyFromURL(ctx context.Context, copySource string, option
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/abort-copy-file.
 func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCopyOptions) (AbortCopyResponse, error) {
-	opts, leaseAccessConditions := options.format()
-	resp, err := f.generated().AbortCopy(ctx, copyID, opts, leaseAccessConditions)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return f.generated().AbortCopy(ctx, copyID, opts)
 }
 
 // Resize operation resizes the file to the specified size.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions) (ResizeResponse, error) {
-	opts, leaseAccessConditions := options.format(size)
-	resp, err := f.generated().SetHTTPHeaders(ctx, opts, nil, leaseAccessConditions)
-	return resp, err
+	opts := options.format(size, f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return f.generated().SetHTTPHeaders(ctx, opts)
 }
 
 // UploadRange operation uploads a range of bytes to a file.
@@ -262,13 +254,12 @@ func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions)
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
 func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeekCloser, options *UploadRangeOptions) (UploadRangeResponse, error) {
-	rangeParam, contentLength, uploadRangeOptions, leaseAccessConditions, err := options.format(offset, body)
+	rangeParam, contentLength, uploadRangeOptions, err := options.format(offset, body, f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	if err != nil {
 		return UploadRangeResponse{}, err
 	}
 
-	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeUpdate, contentLength, body, uploadRangeOptions, leaseAccessConditions)
-	return resp, err
+	return f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeUpdate, contentLength, uploadRangeOptions)
 }
 
 // ClearRange operation clears the specified range and releases the space used in storage for that range.
@@ -276,13 +267,12 @@ func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeek
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
 func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options *ClearRangeOptions) (ClearRangeResponse, error) {
-	rangeParam, leaseAccessConditions, err := options.format(contentRange)
+	rangeParam, opts, err := options.format(contentRange, f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	if err != nil {
 		return ClearRangeResponse{}, err
 	}
 
-	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeClear, 0, nil, nil, leaseAccessConditions)
-	return resp, err
+	return f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeClear, 0, opts)
 }
 
 // UploadRangeFromURL operation uploads a range of bytes to a file where the contents are read from a URL.
@@ -292,21 +282,19 @@ func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range-from-url.
 func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, sourceOffset int64, destinationOffset int64, count int64, options *UploadRangeFromURLOptions) (UploadRangeFromURLResponse, error) {
-	destRange, opts, sourceModifiedAccessConditions, leaseAccessConditions, err := options.format(sourceOffset, destinationOffset, count)
+	destRange, opts, err := options.format(sourceOffset, destinationOffset, count, f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot, f.getClientOptions().AllowSourceTrailingDot)
 	if err != nil {
 		return UploadRangeFromURLResponse{}, err
 	}
 
-	resp, err := f.generated().UploadRangeFromURL(ctx, destRange, copySource, 0, opts, sourceModifiedAccessConditions, leaseAccessConditions)
-	return resp, err
+	return f.generated().UploadRangeFromURL(ctx, destRange, copySource, generated.FileRangeWriteFromURLTypeUpdate, 0, opts)
 }
 
 // GetRangeList operation returns the list of valid ranges for a file.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-ranges.
 func (f *Client) GetRangeList(ctx context.Context, options *GetRangeListOptions) (GetRangeListResponse, error) {
-	opts, leaseAccessConditions := options.format()
-	resp, err := f.generated().GetRangeList(ctx, opts, leaseAccessConditions)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return f.generated().GetRangeList(ctx, opts)
 }
 
 // ForceCloseHandles operation closes a handle or handles opened on a file.
@@ -314,41 +302,36 @@ func (f *Client) GetRangeList(ctx context.Context, options *GetRangeListOptions)
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/force-close-handles.
 func (f *Client) ForceCloseHandles(ctx context.Context, handleID string, options *ForceCloseHandlesOptions) (ForceCloseHandlesResponse, error) {
-	opts := options.format()
-	resp, err := f.generated().ForceCloseHandles(ctx, handleID, opts)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return f.generated().ForceCloseHandles(ctx, handleID, opts)
 }
 
 // ListHandles operation returns a list of open handles on a file.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-handles.
 func (f *Client) ListHandles(ctx context.Context, options *ListHandlesOptions) (ListHandlesResponse, error) {
-	opts := options.format()
-	resp, err := f.generated().ListHandles(ctx, opts)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return f.generated().ListHandles(ctx, opts)
 }
 
 // CreateHardLink operation creates Hard Link to targetFile in same share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-hard-link.
 func (f *Client) CreateHardLink(ctx context.Context, targetFile string, options *CreateHardLinkOptions) (CreateHardLinkResponse, error) {
-	opts, leaseAccessConditions := options.format()
-	resp, err := f.generated().CreateHardLink(ctx, targetFile, opts, leaseAccessConditions)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent)
+	return f.generated().CreateHardLink(ctx, targetFile, opts)
 }
 
 // CreateSymbolicLink operation creates a Symbolic Link to targetFile in same share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-symbolic-link.
 func (f *Client) CreateSymbolicLink(ctx context.Context, linkText string, options *CreateSymbolicLinkOptions) (CreateSymbolicLinkResponse, error) {
-	opts, leaseAccessConditions := options.format()
-	resp, err := f.generated().CreateSymbolicLink(ctx, linkText, opts, leaseAccessConditions)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent)
+	return f.generated().CreateSymbolicLink(ctx, linkText, opts)
 }
 
 // GetSymbolicLink operation allows to read the value of a symbolic link.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/read-symbolic-link.
 func (f *Client) GetSymbolicLink(ctx context.Context, options *GetSymbolicLinkOptions) (GetSymbolicLinkResponse, error) {
-	opts := options.format()
-	resp, err := f.generated().GetSymbolicLink(ctx, opts)
-	return resp, err
+	opts := options.format(f.getClientOptions().FileRequestIntent)
+	return f.generated().GetSymbolicLink(ctx, opts)
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at file.
@@ -554,12 +537,12 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file.
 func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOptions) (DownloadStreamResponse, error) {
-	opts, leaseAccessConditions := options.format()
 	if options == nil {
 		options = &DownloadStreamOptions{}
 	}
+	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 
-	resp, err := f.generated().Download(ctx, opts, leaseAccessConditions)
+	resp, err := f.generated().Download(ctx, opts)
 	if err != nil {
 		return DownloadStreamResponse{}, err
 	}

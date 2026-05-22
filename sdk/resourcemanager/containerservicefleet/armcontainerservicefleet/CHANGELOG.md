@@ -1,5 +1,72 @@
 # Release History
 
+## 3.0.0-beta.4 (2026-03-24)
+### Features Added
+
+- New field `MaxConcurrency` in struct `UpdateGroup`
+- New field `MaxConcurrency` in struct `UpdateGroupStatus`
+- New field `MaxConcurrency` in struct `UpdateStage`
+- New field `MaxConcurrency` in struct `UpdateStageStatus`
+
+
+## 3.0.0-beta.3 (2026-03-11)
+### Breaking Changes
+
+- Field `IfMatch` of struct `AutoUpgradeProfileOperationsClientGenerateUpdateRunResponse` has been removed
+
+### Features Added
+
+- New field `SkipToken`, `Top` in struct `AutoUpgradeProfilesClientListByFleetOptions`
+- New field `Filter`, `SkipToken`, `Top` in struct `FleetMembersClientListByFleetOptions`
+- New field `SkipToken`, `Top` in struct `FleetUpdateStrategiesClientListByFleetOptions`
+- New field `SkipToken`, `Top` in struct `FleetsClientListBySubscriptionOptions`
+- New field `Filter`, `SkipToken`, `Top` in struct `GatesClientListByFleetOptions`
+- New field `SkipToken`, `Top` in struct `UpdateRunsClientListByFleetOptions`
+
+
+## 3.0.0-beta.2 (2025-12-03)
+### Features Added
+
+- New enum type `AdoptionPolicy` with values `AdoptionPolicyAlways`, `AdoptionPolicyIfIdentical`, `AdoptionPolicyNever`
+- New enum type `DeletePolicy` with values `DeletePolicyDelete`, `DeletePolicyKeep`
+- New enum type `FleetManagedNamespaceProvisioningState` with values `FleetManagedNamespaceProvisioningStateCanceled`, `FleetManagedNamespaceProvisioningStateCreating`, `FleetManagedNamespaceProvisioningStateDeleting`, `FleetManagedNamespaceProvisioningStateFailed`, `FleetManagedNamespaceProvisioningStateSucceeded`, `FleetManagedNamespaceProvisioningStateUpdating`
+- New enum type `LabelSelectorOperator` with values `LabelSelectorOperatorDoesNotExist`, `LabelSelectorOperatorExists`, `LabelSelectorOperatorIn`, `LabelSelectorOperatorNotIn`
+- New enum type `PlacementType` with values `PlacementTypePickAll`, `PlacementTypePickFixed`
+- New enum type `PolicyRule` with values `PolicyRuleAllowAll`, `PolicyRuleAllowSameNamespace`, `PolicyRuleDenyAll`
+- New enum type `PropagationType` with values `PropagationTypePlacement`
+- New enum type `PropertySelectorOperator` with values `PropertySelectorOperatorEq`, `PropertySelectorOperatorGe`, `PropertySelectorOperatorGt`, `PropertySelectorOperatorLe`, `PropertySelectorOperatorLt`, `PropertySelectorOperatorNe`
+- New enum type `TaintEffect` with values `TaintEffectNoSchedule`
+- New enum type `TolerationOperator` with values `TolerationOperatorEqual`, `TolerationOperatorExists`
+- New function `*ClientFactory.NewFleetManagedNamespacesClient() *FleetManagedNamespacesClient`
+- New function `NewFleetManagedNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetManagedNamespacesClient, error)`
+- New function `*FleetManagedNamespacesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, resource FleetManagedNamespace, options *FleetManagedNamespacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[FleetManagedNamespacesClientCreateOrUpdateResponse], error)`
+- New function `*FleetManagedNamespacesClient.BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientBeginDeleteOptions) (*runtime.Poller[FleetManagedNamespacesClientDeleteResponse], error)`
+- New function `*FleetManagedNamespacesClient.Get(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientGetOptions) (FleetManagedNamespacesClientGetResponse, error)`
+- New function `*FleetManagedNamespacesClient.NewListByFleetPager(resourceGroupName string, fleetName string, options *FleetManagedNamespacesClientListByFleetOptions) *runtime.Pager[FleetManagedNamespacesClientListByFleetResponse]`
+- New function `*FleetManagedNamespacesClient.BeginUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*runtime.Poller[FleetManagedNamespacesClientUpdateResponse], error)`
+- New struct `Affinity`
+- New struct `ClusterAffinity`
+- New struct `ClusterResourcePlacementSpec`
+- New struct `ClusterSelector`
+- New struct `ClusterSelectorTerm`
+- New struct `FleetManagedNamespace`
+- New struct `FleetManagedNamespaceListResult`
+- New struct `FleetManagedNamespacePatch`
+- New struct `FleetManagedNamespaceProperties`
+- New struct `FleetManagedNamespaceStatus`
+- New struct `LabelSelector`
+- New struct `LabelSelectorRequirement`
+- New struct `ManagedNamespaceProperties`
+- New struct `NetworkPolicy`
+- New struct `PlacementPolicy`
+- New struct `PlacementProfile`
+- New struct `PropagationPolicy`
+- New struct `PropertySelector`
+- New struct `PropertySelectorRequirement`
+- New struct `ResourceQuota`
+- New struct `Toleration`
+
+
 ## 3.0.0-beta.1 (2025-08-07)
 ### Breaking Changes
 

@@ -8,12 +8,188 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/vmClusters_addVms.json
-func ExampleCloudVMClustersClient_BeginAddVMs() {
+// Generated from example definition: 2025-09-01/CloudVmClusters_AddVms_MaximumSet_Gen.json
+func ExampleCloudVMClustersClient_BeginAddVMs_addVMSToVMClusterGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginAddVMs(ctx, "rgopenapi", "cloudvmcluster1", armoracledatabase.AddRemoveDbNode{
+		DbServers: []*string{
+			to.Ptr("ocid1..aaaa"),
+			to.Ptr("ocid1..aaaaaa"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientAddVMsResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
+	// 			DataStorageSizeInTbs: to.Ptr[float64](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			MemorySizeInGbs: to.Ptr[int32](1000),
+	// 			TimeZone: to.Ptr("UTC"),
+	// 			Hostname: to.Ptr("hostname1"),
+	// 			Domain: to.Ptr("domain1"),
+	// 			CPUCoreCount: to.Ptr[int32](2),
+	// 			OcpuCount: to.Ptr[float32](3),
+	// 			ClusterName: to.Ptr("cluster1"),
+	// 			DataStoragePercentage: to.Ptr[int32](100),
+	// 			IsLocalBackupEnabled: to.Ptr(true),
+	// 			CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 			IsSparseDiskgroupEnabled: to.Ptr(true),
+	// 			SSHPublicKeys: []*string{
+	// 				to.Ptr("ssh-key 1"),
+	// 			},
+	// 			NsgCidrs: []*armoracledatabase.NsgCidr{
+	// 				{
+	// 					Source: to.Ptr("10.0.0.0/16"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](1520),
+	// 						Max: to.Ptr[int32](1522),
+	// 					},
+	// 				},
+	// 				{
+	// 					Source: to.Ptr("10.10.0.0/24"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](9434),
+	// 						Max: to.Ptr[int32](11996),
+	// 					},
+	// 				},
+	// 			},
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+	// 			ScanListenerPortTCP: to.Ptr[int32](1050),
+	// 			ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			GiVersion: to.Ptr("19.0.0.0"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+	// 			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+	// 				IsDiagnosticsEventsEnabled: to.Ptr(true),
+	// 				IsHealthMonitoringEnabled: to.Ptr(true),
+	// 				IsIncidentLogsEnabled: to.Ptr(true),
+	// 			},
+	// 			DisplayName: to.Ptr("cluster 1"),
+	// 			DbServers: []*string{
+	// 				to.Ptr("ocid1..aaaa"),
+	// 			},
+	// 			Ocid: to.Ptr("ocid1..aaaa"),
+	// 			ListenerPort: to.Ptr[int64](1050),
+	// 			NodeCount: to.Ptr[int32](100),
+	// 			StorageSizeInGbs: to.Ptr[int32](1000),
+	// 			FileSystemConfigurationDetails: []*armoracledatabase.FileSystemConfigurationDetails{
+	// 				{
+	// 					MountPoint: to.Ptr("gukfhjlmkqfqdgb"),
+	// 					FileSystemSizeGb: to.Ptr[int32](20),
+	// 				},
+	// 			},
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			ZoneID: to.Ptr("ocid1..aaaa"),
+	// 			SystemVersion: to.Ptr("v1"),
+	// 			DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+	// 			ScanIPIDs: []*string{
+	// 				to.Ptr("10.0.0.1"),
+	// 			},
+	// 			VipIDs: []*string{
+	// 				to.Ptr("10.0.1.3"),
+	// 			},
+	// 			ScanDNSName: to.Ptr("dbdns1"),
+	// 			ScanDNSRecordID: to.Ptr("scandns1"),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.CloudVMClusterLifecycleStateProvisioning),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			NsgURL: to.Ptr("https://microsoft.com/a"),
+	// 			IormConfigCache: &armoracledatabase.ExadataIormConfig{
+	// 				DbPlans: []*armoracledatabase.DbIormConfig{
+	// 					{
+	// 						DbName: to.Ptr("db1"),
+	// 						FlashCacheLimit: to.Ptr("none"),
+	// 						Share: to.Ptr[int32](32),
+	// 					},
+	// 				},
+	// 				LifecycleDetails: to.Ptr("Disabled"),
+	// 				LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+	// 				Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+	// 			},
+	// 			LastUpdateHistoryEntryID: to.Ptr("none"),
+	// 			CompartmentID: to.Ptr("ocid1..aaaaaa"),
+	// 			SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Name: to.Ptr("cluster1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_AddVms_MinimumSet_Gen.json
+func ExampleCloudVMClustersClient_BeginAddVMs_addVMSToVMClusterGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginAddVMs(ctx, "rgopenapi", "cloudvmcluster1", armoracledatabase.AddRemoveDbNode{
+		DbServers: []*string{
+			to.Ptr("ocid1..aaaa"),
+			to.Ptr("ocid1..aaaaaa"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientAddVMsResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Location: to.Ptr("eastus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/vmClusters_addVms.json
+func ExampleCloudVMClustersClient_BeginAddVMs_cloudVMClustersAddVms() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -119,8 +295,1372 @@ func ExampleCloudVMClustersClient_BeginAddVMs() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/vmClusters_listPrivateIpAddresses.json
-func ExampleCloudVMClustersClient_ListPrivateIPAddresses() {
+// Generated from example definition: 2025-09-01/CloudVmClusters_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleCloudVMClustersClient_BeginCreateOrUpdate_createVMClusterGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginCreateOrUpdate(ctx, "rgopenapi", "cloudvmcluster1", armoracledatabase.CloudVMCluster{
+		Properties: &armoracledatabase.CloudVMClusterProperties{
+			DataStorageSizeInTbs:         to.Ptr[float64](1000),
+			DbNodeStorageSizeInGbs:       to.Ptr[int32](1000),
+			MemorySizeInGbs:              to.Ptr[int32](1000),
+			TimeZone:                     to.Ptr("UTC"),
+			Hostname:                     to.Ptr("hostname1"),
+			Domain:                       to.Ptr("domain1"),
+			CPUCoreCount:                 to.Ptr[int32](2),
+			OcpuCount:                    to.Ptr[float32](3),
+			ClusterName:                  to.Ptr("cluster1"),
+			DataStoragePercentage:        to.Ptr[int32](100),
+			IsLocalBackupEnabled:         to.Ptr(true),
+			CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+			IsSparseDiskgroupEnabled:     to.Ptr(true),
+			SSHPublicKeys: []*string{
+				to.Ptr("ssh-key 1"),
+			},
+			NsgCidrs: []*armoracledatabase.NsgCidr{
+				{
+					Source: to.Ptr("10.0.0.0/16"),
+					DestinationPortRange: &armoracledatabase.PortRange{
+						Min: to.Ptr[int32](1520),
+						Max: to.Ptr[int32](1522),
+					},
+				},
+				{
+					Source: to.Ptr("10.10.0.0/24"),
+					DestinationPortRange: &armoracledatabase.PortRange{
+						Min: to.Ptr[int32](9434),
+						Max: to.Ptr[int32](11996),
+					},
+				},
+			},
+			LicenseModel:           to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+			ScanListenerPortTCP:    to.Ptr[int32](1050),
+			ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+			VnetID:                 to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+			GiVersion:              to.Ptr("19.0.0.0"),
+			SubnetID:               to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+			BackupSubnetCidr:       to.Ptr("172.17.5.0/24"),
+			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+				IsDiagnosticsEventsEnabled: to.Ptr(true),
+				IsHealthMonitoringEnabled:  to.Ptr(true),
+				IsIncidentLogsEnabled:      to.Ptr(true),
+			},
+			DisplayName: to.Ptr("cluster 1"),
+			DbServers: []*string{
+				to.Ptr("ocid1..aaaa"),
+			},
+			Ocid:             to.Ptr("ocid1..aaaa"),
+			StorageSizeInGbs: to.Ptr[int32](1000),
+			FileSystemConfigurationDetails: []*armoracledatabase.FileSystemConfigurationDetails{
+				{
+					MountPoint:       to.Ptr("gukfhjlmkqfqdgb"),
+					FileSystemSizeGb: to.Ptr[int32](20),
+				},
+			},
+			ZoneID:          to.Ptr("ocid1..aaaa"),
+			SystemVersion:   to.Ptr("v1"),
+			DiskRedundancy:  to.Ptr(armoracledatabase.DiskRedundancyHigh),
+			ScanDNSRecordID: to.Ptr("scandns1"),
+			LifecycleState:  to.Ptr(armoracledatabase.CloudVMClusterLifecycleStateProvisioning),
+			ComputeNodes: []*string{
+				to.Ptr("ggficcnjgibtuqgdbbrzyckmtlhddecfcvjurboqfufqchgpvwmlcdcyyxnjivpkvsvr"),
+			},
+			IormConfigCache: &armoracledatabase.ExadataIormConfig{
+				DbPlans: []*armoracledatabase.DbIormConfig{
+					{
+						DbName:          to.Ptr("db1"),
+						FlashCacheLimit: to.Ptr("none"),
+						Share:           to.Ptr[int32](32),
+					},
+				},
+				LifecycleDetails: to.Ptr("Disabled"),
+				LifecycleState:   to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+				Objective:        to.Ptr(armoracledatabase.ObjectiveLowLatency),
+			},
+			LastUpdateHistoryEntryID: to.Ptr("none"),
+			CompartmentID:            to.Ptr("ocid1..aaaaaa"),
+			SubnetOcid:               to.Ptr("ocid1..aaaaaa"),
+			ComputeModel:             to.Ptr(armoracledatabase.ComputeModelECPU),
+		},
+		Location: to.Ptr("eastus"),
+		Tags:     map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientCreateOrUpdateResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
+	// 			DataStorageSizeInTbs: to.Ptr[float64](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			MemorySizeInGbs: to.Ptr[int32](1000),
+	// 			TimeZone: to.Ptr("UTC"),
+	// 			Hostname: to.Ptr("hostname1"),
+	// 			Domain: to.Ptr("domain1"),
+	// 			CPUCoreCount: to.Ptr[int32](2),
+	// 			OcpuCount: to.Ptr[float32](3),
+	// 			ClusterName: to.Ptr("cluster1"),
+	// 			DataStoragePercentage: to.Ptr[int32](100),
+	// 			IsLocalBackupEnabled: to.Ptr(true),
+	// 			CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 			IsSparseDiskgroupEnabled: to.Ptr(true),
+	// 			SSHPublicKeys: []*string{
+	// 				to.Ptr("ssh-key 1"),
+	// 			},
+	// 			NsgCidrs: []*armoracledatabase.NsgCidr{
+	// 				{
+	// 					Source: to.Ptr("10.0.0.0/16"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](1520),
+	// 						Max: to.Ptr[int32](1522),
+	// 					},
+	// 				},
+	// 				{
+	// 					Source: to.Ptr("10.10.0.0/24"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](9434),
+	// 						Max: to.Ptr[int32](11996),
+	// 					},
+	// 				},
+	// 			},
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+	// 			ScanListenerPortTCP: to.Ptr[int32](1050),
+	// 			ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			GiVersion: to.Ptr("19.0.0.0"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+	// 			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+	// 				IsDiagnosticsEventsEnabled: to.Ptr(true),
+	// 				IsHealthMonitoringEnabled: to.Ptr(true),
+	// 				IsIncidentLogsEnabled: to.Ptr(true),
+	// 			},
+	// 			DisplayName: to.Ptr("cluster 1"),
+	// 			DbServers: []*string{
+	// 				to.Ptr("ocid1..aaaa"),
+	// 			},
+	// 			Ocid: to.Ptr("ocid1..aaaa"),
+	// 			ListenerPort: to.Ptr[int64](1050),
+	// 			NodeCount: to.Ptr[int32](100),
+	// 			StorageSizeInGbs: to.Ptr[int32](1000),
+	// 			FileSystemConfigurationDetails: []*armoracledatabase.FileSystemConfigurationDetails{
+	// 				{
+	// 					MountPoint: to.Ptr("gukfhjlmkqfqdgb"),
+	// 					FileSystemSizeGb: to.Ptr[int32](20),
+	// 				},
+	// 			},
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			ZoneID: to.Ptr("ocid1..aaaa"),
+	// 			SystemVersion: to.Ptr("v1"),
+	// 			DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+	// 			ScanIPIDs: []*string{
+	// 				to.Ptr("10.0.0.1"),
+	// 			},
+	// 			VipIDs: []*string{
+	// 				to.Ptr("10.0.1.3"),
+	// 			},
+	// 			ScanDNSName: to.Ptr("dbdns1"),
+	// 			ScanDNSRecordID: to.Ptr("scandns1"),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.CloudVMClusterLifecycleStateProvisioning),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			NsgURL: to.Ptr("https://microsoft.com/a"),
+	// 			IormConfigCache: &armoracledatabase.ExadataIormConfig{
+	// 				DbPlans: []*armoracledatabase.DbIormConfig{
+	// 					{
+	// 						DbName: to.Ptr("db1"),
+	// 						FlashCacheLimit: to.Ptr("none"),
+	// 						Share: to.Ptr[int32](32),
+	// 					},
+	// 				},
+	// 				LifecycleDetails: to.Ptr("Disabled"),
+	// 				LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+	// 				Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+	// 			},
+	// 			LastUpdateHistoryEntryID: to.Ptr("none"),
+	// 			CompartmentID: to.Ptr("ocid1..aaaaaa"),
+	// 			SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Name: to.Ptr("cluster1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_CreateOrUpdate_MinimumSet_Gen.json
+func ExampleCloudVMClustersClient_BeginCreateOrUpdate_createVMClusterGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginCreateOrUpdate(ctx, "rgopenapi", "cloudvmcluster1", armoracledatabase.CloudVMCluster{
+		Location: to.Ptr("eastus"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientCreateOrUpdateResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Location: to.Ptr("eastus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/vmClusters_create.json
+func ExampleCloudVMClustersClient_BeginCreateOrUpdate_cloudVMClustersCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginCreateOrUpdate(ctx, "rg000", "cluster1", armoracledatabase.CloudVMCluster{
+		Properties: &armoracledatabase.CloudVMClusterProperties{
+			DataStorageSizeInTbs:         to.Ptr[float64](1000),
+			DbNodeStorageSizeInGbs:       to.Ptr[int32](1000),
+			MemorySizeInGbs:              to.Ptr[int32](1000),
+			TimeZone:                     to.Ptr("UTC"),
+			Hostname:                     to.Ptr("hostname1"),
+			Domain:                       to.Ptr("domain1"),
+			CPUCoreCount:                 to.Ptr[int32](2),
+			OcpuCount:                    to.Ptr[float32](3),
+			ClusterName:                  to.Ptr("cluster1"),
+			DataStoragePercentage:        to.Ptr[int32](100),
+			IsLocalBackupEnabled:         to.Ptr(false),
+			CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+			IsSparseDiskgroupEnabled:     to.Ptr(false),
+			SSHPublicKeys: []*string{
+				to.Ptr("ssh-key 1"),
+			},
+			NsgCidrs: []*armoracledatabase.NsgCidr{
+				{
+					Source: to.Ptr("10.0.0.0/16"),
+					DestinationPortRange: &armoracledatabase.PortRange{
+						Min: to.Ptr[int32](1520),
+						Max: to.Ptr[int32](1522),
+					},
+				},
+				{
+					Source: to.Ptr("10.10.0.0/24"),
+				},
+			},
+			LicenseModel:           to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+			ScanListenerPortTCP:    to.Ptr[int32](1050),
+			ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+			VnetID:                 to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+			GiVersion:              to.Ptr("19.0.0.0"),
+			SubnetID:               to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+			BackupSubnetCidr:       to.Ptr("172.17.5.0/24"),
+			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+				IsDiagnosticsEventsEnabled: to.Ptr(false),
+				IsHealthMonitoringEnabled:  to.Ptr(false),
+				IsIncidentLogsEnabled:      to.Ptr(false),
+			},
+			DisplayName: to.Ptr("cluster 1"),
+			DbServers: []*string{
+				to.Ptr("ocid1..aaaa"),
+			},
+		},
+		Location: to.Ptr("eastus"),
+		Tags: map[string]*string{
+			"tagK1": to.Ptr("tagV1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientCreateOrUpdateResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tagK1": to.Ptr("tagV1"),
+	// 		},
+	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
+	// 			Ocid: to.Ptr("ocid1..aaaa"),
+	// 			ListenerPort: to.Ptr[int64](1050),
+	// 			NodeCount: to.Ptr[int32](100),
+	// 			StorageSizeInGbs: to.Ptr[int32](1000),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			TimeZone: to.Ptr("UTC"),
+	// 			ZoneID: to.Ptr("ocid1..aaaa"),
+	// 			Hostname: to.Ptr("hostname1"),
+	// 			Domain: to.Ptr("domain1"),
+	// 			CPUCoreCount: to.Ptr[int32](10),
+	// 			OcpuCount: to.Ptr[float32](100),
+	// 			ClusterName: to.Ptr("cluster1"),
+	// 			DataStoragePercentage: to.Ptr[int32](80),
+	// 			IsLocalBackupEnabled: to.Ptr(false),
+	// 			CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 			IsSparseDiskgroupEnabled: to.Ptr(false),
+	// 			SSHPublicKeys: []*string{
+	// 				to.Ptr("ssh-key 1"),
+	// 			},
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+	// 			ScanListenerPortTCP: to.Ptr[int32](1050),
+	// 			ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			GiVersion: to.Ptr("19.0.0.0"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+	// 			SystemVersion: to.Ptr("v1"),
+	// 			DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+	// 			ScanIPIDs: []*string{
+	// 				to.Ptr("10.0.0.1"),
+	// 			},
+	// 			VipIDs: []*string{
+	// 				to.Ptr("10.0.1.3"),
+	// 			},
+	// 			ScanDNSName: to.Ptr("dbdns1"),
+	// 			ScanDNSRecordID: to.Ptr("scandns1"),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+	// 				IsDiagnosticsEventsEnabled: to.Ptr(false),
+	// 				IsHealthMonitoringEnabled: to.Ptr(false),
+	// 				IsIncidentLogsEnabled: to.Ptr(false),
+	// 			},
+	// 			DisplayName: to.Ptr("cluster 1"),
+	// 			IormConfigCache: &armoracledatabase.ExadataIormConfig{
+	// 				DbPlans: []*armoracledatabase.DbIormConfig{
+	// 					{
+	// 						DbName: to.Ptr("db1"),
+	// 						FlashCacheLimit: to.Ptr("none"),
+	// 						Share: to.Ptr[int32](32),
+	// 					},
+	// 				},
+	// 				LifecycleDetails: to.Ptr("Disabled"),
+	// 				LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+	// 				Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+	// 			},
+	// 			LastUpdateHistoryEntryID: to.Ptr("none"),
+	// 			DbServers: []*string{
+	// 				to.Ptr("ocid1..aaaa"),
+	// 			},
+	// 			CompartmentID: to.Ptr("ocid1..aaaaaa"),
+	// 			SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_Delete_MaximumSet_Gen.json
+func ExampleCloudVMClustersClient_BeginDelete_deleteVMClusterGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginDelete(ctx, "rgopenapi", "cloudvmcluster1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_Delete_MinimumSet_Gen.json
+func ExampleCloudVMClustersClient_BeginDelete_deleteVMClusterGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginDelete(ctx, "rgopenapi", "cloudvmcluster1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/vmClusters_delete.json
+func ExampleCloudVMClustersClient_BeginDelete_cloudVMClustersDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginDelete(ctx, "rg000", "cluster1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_Get_MaximumSet_Gen.json
+func ExampleCloudVMClustersClient_Get_getVMClusterGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCloudVMClustersClient().Get(ctx, "rgopenapi", "cloudvmcluster1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientGetResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
+	// 			DataStorageSizeInTbs: to.Ptr[float64](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			MemorySizeInGbs: to.Ptr[int32](1000),
+	// 			TimeZone: to.Ptr("UTC"),
+	// 			Hostname: to.Ptr("hostname1"),
+	// 			Domain: to.Ptr("domain1"),
+	// 			CPUCoreCount: to.Ptr[int32](2),
+	// 			OcpuCount: to.Ptr[float32](3),
+	// 			ClusterName: to.Ptr("cluster1"),
+	// 			DataStoragePercentage: to.Ptr[int32](100),
+	// 			IsLocalBackupEnabled: to.Ptr(true),
+	// 			CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 			IsSparseDiskgroupEnabled: to.Ptr(true),
+	// 			SSHPublicKeys: []*string{
+	// 				to.Ptr("ssh-key 1"),
+	// 			},
+	// 			NsgCidrs: []*armoracledatabase.NsgCidr{
+	// 				{
+	// 					Source: to.Ptr("10.0.0.0/16"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](1520),
+	// 						Max: to.Ptr[int32](1522),
+	// 					},
+	// 				},
+	// 				{
+	// 					Source: to.Ptr("10.10.0.0/24"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](9434),
+	// 						Max: to.Ptr[int32](11996),
+	// 					},
+	// 				},
+	// 			},
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+	// 			ScanListenerPortTCP: to.Ptr[int32](1050),
+	// 			ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			GiVersion: to.Ptr("19.0.0.0"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+	// 			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+	// 				IsDiagnosticsEventsEnabled: to.Ptr(true),
+	// 				IsHealthMonitoringEnabled: to.Ptr(true),
+	// 				IsIncidentLogsEnabled: to.Ptr(true),
+	// 			},
+	// 			DisplayName: to.Ptr("cluster 1"),
+	// 			DbServers: []*string{
+	// 				to.Ptr("ocid1..aaaa"),
+	// 			},
+	// 			Ocid: to.Ptr("ocid1..aaaa"),
+	// 			ListenerPort: to.Ptr[int64](1050),
+	// 			NodeCount: to.Ptr[int32](100),
+	// 			StorageSizeInGbs: to.Ptr[int32](1000),
+	// 			FileSystemConfigurationDetails: []*armoracledatabase.FileSystemConfigurationDetails{
+	// 				{
+	// 					MountPoint: to.Ptr("gukfhjlmkqfqdgb"),
+	// 					FileSystemSizeGb: to.Ptr[int32](20),
+	// 				},
+	// 			},
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			ZoneID: to.Ptr("ocid1..aaaa"),
+	// 			SystemVersion: to.Ptr("v1"),
+	// 			DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+	// 			ScanIPIDs: []*string{
+	// 				to.Ptr("10.0.0.1"),
+	// 			},
+	// 			VipIDs: []*string{
+	// 				to.Ptr("10.0.1.3"),
+	// 			},
+	// 			ScanDNSName: to.Ptr("dbdns1"),
+	// 			ScanDNSRecordID: to.Ptr("scandns1"),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.CloudVMClusterLifecycleStateProvisioning),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			NsgURL: to.Ptr("https://microsoft.com/a"),
+	// 			IormConfigCache: &armoracledatabase.ExadataIormConfig{
+	// 				DbPlans: []*armoracledatabase.DbIormConfig{
+	// 					{
+	// 						DbName: to.Ptr("db1"),
+	// 						FlashCacheLimit: to.Ptr("none"),
+	// 						Share: to.Ptr[int32](32),
+	// 					},
+	// 				},
+	// 				LifecycleDetails: to.Ptr("Disabled"),
+	// 				LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+	// 				Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+	// 			},
+	// 			LastUpdateHistoryEntryID: to.Ptr("none"),
+	// 			CompartmentID: to.Ptr("ocid1..aaaaaa"),
+	// 			SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Name: to.Ptr("tvodakfvzrbipruplzk"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_Get_MinimumSet_Gen.json
+func ExampleCloudVMClustersClient_Get_getVMClusterGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCloudVMClustersClient().Get(ctx, "rgopenapi", "cloudvmcluster1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientGetResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Location: to.Ptr("eastus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/vmClusters_get.json
+func ExampleCloudVMClustersClient_Get_cloudVMClustersGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCloudVMClustersClient().Get(ctx, "rg000", "cluster1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientGetResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tagK1": to.Ptr("tagV1"),
+	// 		},
+	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
+	// 			Ocid: to.Ptr("ocid1..aaaa"),
+	// 			ListenerPort: to.Ptr[int64](1050),
+	// 			NodeCount: to.Ptr[int32](100),
+	// 			StorageSizeInGbs: to.Ptr[int32](1000),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			TimeZone: to.Ptr("UTC"),
+	// 			ZoneID: to.Ptr("ocid1..aaaa"),
+	// 			Hostname: to.Ptr("hostname1"),
+	// 			Domain: to.Ptr("domain1"),
+	// 			CPUCoreCount: to.Ptr[int32](10),
+	// 			OcpuCount: to.Ptr[float32](100),
+	// 			ClusterName: to.Ptr("cluster1"),
+	// 			DataStoragePercentage: to.Ptr[int32](80),
+	// 			IsLocalBackupEnabled: to.Ptr(false),
+	// 			CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 			IsSparseDiskgroupEnabled: to.Ptr(false),
+	// 			SSHPublicKeys: []*string{
+	// 				to.Ptr("ssh-key 1"),
+	// 			},
+	// 			NsgCidrs: []*armoracledatabase.NsgCidr{
+	// 				{
+	// 					Source: to.Ptr("10.0.0.0/16"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](1520),
+	// 						Max: to.Ptr[int32](1522),
+	// 					},
+	// 				},
+	// 				{
+	// 					Source: to.Ptr("10.10.0.0/24"),
+	// 				},
+	// 			},
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+	// 			ScanListenerPortTCP: to.Ptr[int32](1050),
+	// 			ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			GiVersion: to.Ptr("19.0.0.0"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+	// 			SystemVersion: to.Ptr("v1"),
+	// 			DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+	// 			ScanIPIDs: []*string{
+	// 				to.Ptr("10.0.0.1"),
+	// 			},
+	// 			VipIDs: []*string{
+	// 				to.Ptr("10.0.1.3"),
+	// 			},
+	// 			ScanDNSName: to.Ptr("dbdns1"),
+	// 			ScanDNSRecordID: to.Ptr("scandns1"),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			NsgURL: to.Ptr("https://fake"),
+	// 			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+	// 				IsDiagnosticsEventsEnabled: to.Ptr(false),
+	// 				IsHealthMonitoringEnabled: to.Ptr(false),
+	// 				IsIncidentLogsEnabled: to.Ptr(false),
+	// 			},
+	// 			DisplayName: to.Ptr("cluster 1"),
+	// 			IormConfigCache: &armoracledatabase.ExadataIormConfig{
+	// 				DbPlans: []*armoracledatabase.DbIormConfig{
+	// 					{
+	// 						DbName: to.Ptr("db1"),
+	// 						FlashCacheLimit: to.Ptr("none"),
+	// 						Share: to.Ptr[int32](32),
+	// 					},
+	// 				},
+	// 				LifecycleDetails: to.Ptr("Disabled"),
+	// 				LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+	// 				Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+	// 			},
+	// 			LastUpdateHistoryEntryID: to.Ptr("none"),
+	// 			DbServers: []*string{
+	// 				to.Ptr("ocid1..aaaa"),
+	// 			},
+	// 			CompartmentID: to.Ptr("ocid1..aaaaaa"),
+	// 			SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleCloudVMClustersClient_NewListByResourceGroupPager_listVMClustersByResourceGroupGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudVMClustersClient().NewListByResourceGroupPager("rgopenapi", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudVMClustersClientListByResourceGroupResponse{
+		// 	CloudVMClusterListResult: armoracledatabase.CloudVMClusterListResult{
+		// 		Value: []*armoracledatabase.CloudVMCluster{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+		// 				Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Properties: &armoracledatabase.CloudVMClusterProperties{
+		// 					Ocid: to.Ptr("ocid1..aaaa"),
+		// 					ListenerPort: to.Ptr[int64](1050),
+		// 					NodeCount: to.Ptr[int32](100),
+		// 					StorageSizeInGbs: to.Ptr[int32](1000),
+		// 					DataStorageSizeInTbs: to.Ptr[float64](10),
+		// 					DbNodeStorageSizeInGbs: to.Ptr[int32](100),
+		// 					MemorySizeInGbs: to.Ptr[int32](1000),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+		// 					LifecycleDetails: to.Ptr("success"),
+		// 					TimeZone: to.Ptr("UTC"),
+		// 					ZoneID: to.Ptr("ocid1..aaaa"),
+		// 					Hostname: to.Ptr("hostname1"),
+		// 					Domain: to.Ptr("domain1"),
+		// 					CPUCoreCount: to.Ptr[int32](10),
+		// 					OcpuCount: to.Ptr[float32](100),
+		// 					ClusterName: to.Ptr("cluster1"),
+		// 					DataStoragePercentage: to.Ptr[int32](80),
+		// 					IsLocalBackupEnabled: to.Ptr(true),
+		// 					CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+		// 					IsSparseDiskgroupEnabled: to.Ptr(true),
+		// 					SSHPublicKeys: []*string{
+		// 						to.Ptr("ssh-key 1"),
+		// 					},
+		// 					LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+		// 					ScanListenerPortTCP: to.Ptr[int32](1050),
+		// 					ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+		// 					VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+		// 					GiVersion: to.Ptr("19.0.0.0"),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 					BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+		// 					SystemVersion: to.Ptr("v1"),
+		// 					DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+		// 					ScanIPIDs: []*string{
+		// 						to.Ptr("10.0.0.1"),
+		// 					},
+		// 					VipIDs: []*string{
+		// 						to.Ptr("10.0.1.3"),
+		// 					},
+		// 					ScanDNSName: to.Ptr("dbdns1"),
+		// 					ScanDNSRecordID: to.Ptr("scandns1"),
+		// 					Shape: to.Ptr("EXADATA.X9M"),
+		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					OciURL: to.Ptr("https://fake"),
+		// 					DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+		// 						IsDiagnosticsEventsEnabled: to.Ptr(true),
+		// 						IsHealthMonitoringEnabled: to.Ptr(true),
+		// 						IsIncidentLogsEnabled: to.Ptr(true),
+		// 					},
+		// 					DisplayName: to.Ptr("cluster 1"),
+		// 					IormConfigCache: &armoracledatabase.ExadataIormConfig{
+		// 						DbPlans: []*armoracledatabase.DbIormConfig{
+		// 							{
+		// 								DbName: to.Ptr("db1"),
+		// 								FlashCacheLimit: to.Ptr("none"),
+		// 								Share: to.Ptr[int32](32),
+		// 							},
+		// 						},
+		// 						LifecycleDetails: to.Ptr("Disabled"),
+		// 						LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+		// 						Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+		// 					},
+		// 					LastUpdateHistoryEntryID: to.Ptr("none"),
+		// 					DbServers: []*string{
+		// 						to.Ptr("ocid1..aaaa"),
+		// 					},
+		// 					CompartmentID: to.Ptr("ocid1..aaaaaa"),
+		// 					SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+		// 					FileSystemConfigurationDetails: []*armoracledatabase.FileSystemConfigurationDetails{
+		// 						{
+		// 							MountPoint: to.Ptr("gukfhjlmkqfqdgb"),
+		// 							FileSystemSizeGb: to.Ptr[int32](20),
+		// 						},
+		// 					},
+		// 					LifecycleState: to.Ptr(armoracledatabase.CloudVMClusterLifecycleStateProvisioning),
+		// 					NsgURL: to.Ptr("https://microsoft.com/a"),
+		// 					NsgCidrs: []*armoracledatabase.NsgCidr{
+		// 						{
+		// 							Source: to.Ptr("jbkimzvbowffprrlihoxmwuyfkysvwqowpnfxuegojrvucurxbvplrkqtulwjbfj"),
+		// 							DestinationPortRange: &armoracledatabase.PortRange{
+		// 								Min: to.Ptr[int32](9434),
+		// 								Max: to.Ptr[int32](11996),
+		// 							},
+		// 						},
+		// 					},
+		// 					ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+		// 				},
+		// 				Name: to.Ptr("nxuozfnnalsznrzltxchotyg"),
+		// 				SystemData: &armoracledatabase.SystemData{
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_ListByResourceGroup_MinimumSet_Gen.json
+func ExampleCloudVMClustersClient_NewListByResourceGroupPager_listVMClustersByResourceGroupGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudVMClustersClient().NewListByResourceGroupPager("rgopenapi", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudVMClustersClientListByResourceGroupResponse{
+		// 	CloudVMClusterListResult: armoracledatabase.CloudVMClusterListResult{
+		// 		Value: []*armoracledatabase.CloudVMCluster{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+		// 				Location: to.Ptr("eastus"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/vmClusters_listByResourceGroup.json
+func ExampleCloudVMClustersClient_NewListByResourceGroupPager_cloudVMClustersListByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudVMClustersClient().NewListByResourceGroupPager("rg000", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudVMClustersClientListByResourceGroupResponse{
+		// 	CloudVMClusterListResult: armoracledatabase.CloudVMClusterListResult{
+		// 		Value: []*armoracledatabase.CloudVMCluster{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+		// 				Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 					"tagK1": to.Ptr("tagV1"),
+		// 				},
+		// 				Properties: &armoracledatabase.CloudVMClusterProperties{
+		// 					Ocid: to.Ptr("ocid1..aaaa"),
+		// 					ListenerPort: to.Ptr[int64](1050),
+		// 					NodeCount: to.Ptr[int32](100),
+		// 					StorageSizeInGbs: to.Ptr[int32](1000),
+		// 					DataStorageSizeInTbs: to.Ptr[float64](10),
+		// 					DbNodeStorageSizeInGbs: to.Ptr[int32](100),
+		// 					MemorySizeInGbs: to.Ptr[int32](1000),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+		// 					LifecycleDetails: to.Ptr("success"),
+		// 					TimeZone: to.Ptr("UTC"),
+		// 					ZoneID: to.Ptr("ocid1..aaaa"),
+		// 					Hostname: to.Ptr("hostname1"),
+		// 					Domain: to.Ptr("domain1"),
+		// 					CPUCoreCount: to.Ptr[int32](10),
+		// 					OcpuCount: to.Ptr[float32](100),
+		// 					ClusterName: to.Ptr("cluster1"),
+		// 					DataStoragePercentage: to.Ptr[int32](80),
+		// 					IsLocalBackupEnabled: to.Ptr(false),
+		// 					CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+		// 					IsSparseDiskgroupEnabled: to.Ptr(false),
+		// 					SSHPublicKeys: []*string{
+		// 						to.Ptr("ssh-key 1"),
+		// 					},
+		// 					LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+		// 					ScanListenerPortTCP: to.Ptr[int32](1050),
+		// 					ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+		// 					VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+		// 					GiVersion: to.Ptr("19.0.0.0"),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 					BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+		// 					SystemVersion: to.Ptr("v1"),
+		// 					DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+		// 					ScanIPIDs: []*string{
+		// 						to.Ptr("10.0.0.1"),
+		// 					},
+		// 					VipIDs: []*string{
+		// 						to.Ptr("10.0.1.3"),
+		// 					},
+		// 					ScanDNSName: to.Ptr("dbdns1"),
+		// 					ScanDNSRecordID: to.Ptr("scandns1"),
+		// 					Shape: to.Ptr("EXADATA.X9M"),
+		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					OciURL: to.Ptr("https://fake"),
+		// 					DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+		// 						IsDiagnosticsEventsEnabled: to.Ptr(false),
+		// 						IsHealthMonitoringEnabled: to.Ptr(false),
+		// 						IsIncidentLogsEnabled: to.Ptr(false),
+		// 					},
+		// 					DisplayName: to.Ptr("cluster 1"),
+		// 					IormConfigCache: &armoracledatabase.ExadataIormConfig{
+		// 						DbPlans: []*armoracledatabase.DbIormConfig{
+		// 							{
+		// 								DbName: to.Ptr("db1"),
+		// 								FlashCacheLimit: to.Ptr("none"),
+		// 								Share: to.Ptr[int32](32),
+		// 							},
+		// 						},
+		// 						LifecycleDetails: to.Ptr("Disabled"),
+		// 						LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+		// 						Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+		// 					},
+		// 					LastUpdateHistoryEntryID: to.Ptr("none"),
+		// 					DbServers: []*string{
+		// 						to.Ptr("ocid1..aaaa"),
+		// 					},
+		// 					CompartmentID: to.Ptr("ocid1..aaaaaa"),
+		// 					SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_ListBySubscription_MaximumSet_Gen.json
+func ExampleCloudVMClustersClient_NewListBySubscriptionPager_listVMClustersBySubscriptionGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudVMClustersClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudVMClustersClientListBySubscriptionResponse{
+		// 	CloudVMClusterListResult: armoracledatabase.CloudVMClusterListResult{
+		// 		Value: []*armoracledatabase.CloudVMCluster{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+		// 				Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Properties: &armoracledatabase.CloudVMClusterProperties{
+		// 					Ocid: to.Ptr("ocid1..aaaa"),
+		// 					ListenerPort: to.Ptr[int64](1050),
+		// 					NodeCount: to.Ptr[int32](100),
+		// 					StorageSizeInGbs: to.Ptr[int32](1000),
+		// 					DataStorageSizeInTbs: to.Ptr[float64](10),
+		// 					DbNodeStorageSizeInGbs: to.Ptr[int32](100),
+		// 					MemorySizeInGbs: to.Ptr[int32](1000),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+		// 					LifecycleDetails: to.Ptr("success"),
+		// 					TimeZone: to.Ptr("UTC"),
+		// 					ZoneID: to.Ptr("ocid1..aaaa"),
+		// 					Hostname: to.Ptr("hostname1"),
+		// 					Domain: to.Ptr("domain1"),
+		// 					CPUCoreCount: to.Ptr[int32](10),
+		// 					OcpuCount: to.Ptr[float32](100),
+		// 					ClusterName: to.Ptr("cluster1"),
+		// 					DataStoragePercentage: to.Ptr[int32](80),
+		// 					IsLocalBackupEnabled: to.Ptr(true),
+		// 					CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+		// 					IsSparseDiskgroupEnabled: to.Ptr(true),
+		// 					SSHPublicKeys: []*string{
+		// 						to.Ptr("ssh-key 1"),
+		// 					},
+		// 					LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+		// 					ScanListenerPortTCP: to.Ptr[int32](1050),
+		// 					ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+		// 					VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+		// 					GiVersion: to.Ptr("19.0.0.0"),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 					BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+		// 					SystemVersion: to.Ptr("v1"),
+		// 					DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+		// 					ScanIPIDs: []*string{
+		// 						to.Ptr("10.0.0.1"),
+		// 					},
+		// 					VipIDs: []*string{
+		// 						to.Ptr("10.0.1.3"),
+		// 					},
+		// 					ScanDNSName: to.Ptr("dbdns1"),
+		// 					ScanDNSRecordID: to.Ptr("scandns1"),
+		// 					Shape: to.Ptr("EXADATA.X9M"),
+		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					OciURL: to.Ptr("https://fake"),
+		// 					DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+		// 						IsDiagnosticsEventsEnabled: to.Ptr(true),
+		// 						IsHealthMonitoringEnabled: to.Ptr(true),
+		// 						IsIncidentLogsEnabled: to.Ptr(true),
+		// 					},
+		// 					DisplayName: to.Ptr("cluster 1"),
+		// 					IormConfigCache: &armoracledatabase.ExadataIormConfig{
+		// 						DbPlans: []*armoracledatabase.DbIormConfig{
+		// 							{
+		// 								DbName: to.Ptr("db1"),
+		// 								FlashCacheLimit: to.Ptr("none"),
+		// 								Share: to.Ptr[int32](32),
+		// 							},
+		// 						},
+		// 						LifecycleDetails: to.Ptr("Disabled"),
+		// 						LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+		// 						Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+		// 					},
+		// 					LastUpdateHistoryEntryID: to.Ptr("none"),
+		// 					DbServers: []*string{
+		// 						to.Ptr("ocid1..aaaa"),
+		// 					},
+		// 					CompartmentID: to.Ptr("ocid1..aaaaaa"),
+		// 					SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+		// 					FileSystemConfigurationDetails: []*armoracledatabase.FileSystemConfigurationDetails{
+		// 						{
+		// 							MountPoint: to.Ptr("gukfhjlmkqfqdgb"),
+		// 							FileSystemSizeGb: to.Ptr[int32](20),
+		// 						},
+		// 					},
+		// 					LifecycleState: to.Ptr(armoracledatabase.CloudVMClusterLifecycleStateProvisioning),
+		// 					NsgURL: to.Ptr("https://microsoft.com/a"),
+		// 					NsgCidrs: []*armoracledatabase.NsgCidr{
+		// 						{
+		// 							Source: to.Ptr("jbkimzvbowffprrlihoxmwuyfkysvwqowpnfxuegojrvucurxbvplrkqtulwjbfj"),
+		// 							DestinationPortRange: &armoracledatabase.PortRange{
+		// 								Min: to.Ptr[int32](9434),
+		// 								Max: to.Ptr[int32](11996),
+		// 							},
+		// 						},
+		// 					},
+		// 					ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+		// 				},
+		// 				Name: to.Ptr("nxuozfnnalsznrzltxchotyg"),
+		// 				SystemData: &armoracledatabase.SystemData{
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_ListBySubscription_MinimumSet_Gen.json
+func ExampleCloudVMClustersClient_NewListBySubscriptionPager_listVMClustersBySubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudVMClustersClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudVMClustersClientListBySubscriptionResponse{
+		// 	CloudVMClusterListResult: armoracledatabase.CloudVMClusterListResult{
+		// 		Value: []*armoracledatabase.CloudVMCluster{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+		// 				Location: to.Ptr("eastus"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/vmClusters_listBySubscription.json
+func ExampleCloudVMClustersClient_NewListBySubscriptionPager_cloudVMClustersListBySubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCloudVMClustersClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.CloudVMClustersClientListBySubscriptionResponse{
+		// 	CloudVMClusterListResult: armoracledatabase.CloudVMClusterListResult{
+		// 		Value: []*armoracledatabase.CloudVMCluster{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+		// 				Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 					"tagK1": to.Ptr("tagV1"),
+		// 				},
+		// 				Properties: &armoracledatabase.CloudVMClusterProperties{
+		// 					Ocid: to.Ptr("ocid1..aaaa"),
+		// 					ListenerPort: to.Ptr[int64](1050),
+		// 					NodeCount: to.Ptr[int32](100),
+		// 					StorageSizeInGbs: to.Ptr[int32](1000),
+		// 					DataStorageSizeInTbs: to.Ptr[float64](10),
+		// 					DbNodeStorageSizeInGbs: to.Ptr[int32](100),
+		// 					MemorySizeInGbs: to.Ptr[int32](1000),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+		// 					LifecycleDetails: to.Ptr("success"),
+		// 					TimeZone: to.Ptr("UTC"),
+		// 					ZoneID: to.Ptr("ocid1..aaaa"),
+		// 					Hostname: to.Ptr("hostname1"),
+		// 					Domain: to.Ptr("domain1"),
+		// 					CPUCoreCount: to.Ptr[int32](10),
+		// 					OcpuCount: to.Ptr[float32](100),
+		// 					ClusterName: to.Ptr("cluster1"),
+		// 					DataStoragePercentage: to.Ptr[int32](80),
+		// 					IsLocalBackupEnabled: to.Ptr(false),
+		// 					CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+		// 					IsSparseDiskgroupEnabled: to.Ptr(false),
+		// 					SSHPublicKeys: []*string{
+		// 						to.Ptr("ssh-key 1"),
+		// 					},
+		// 					LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+		// 					ScanListenerPortTCP: to.Ptr[int32](1050),
+		// 					ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+		// 					VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+		// 					GiVersion: to.Ptr("19.0.0.0"),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 					BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+		// 					SystemVersion: to.Ptr("v1"),
+		// 					DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+		// 					ScanIPIDs: []*string{
+		// 						to.Ptr("10.0.0.1"),
+		// 					},
+		// 					VipIDs: []*string{
+		// 						to.Ptr("10.0.1.3"),
+		// 					},
+		// 					ScanDNSName: to.Ptr("dbdns1"),
+		// 					ScanDNSRecordID: to.Ptr("scandns1"),
+		// 					Shape: to.Ptr("EXADATA.X9M"),
+		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					OciURL: to.Ptr("https://fake"),
+		// 					DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+		// 						IsDiagnosticsEventsEnabled: to.Ptr(false),
+		// 						IsHealthMonitoringEnabled: to.Ptr(false),
+		// 						IsIncidentLogsEnabled: to.Ptr(false),
+		// 					},
+		// 					DisplayName: to.Ptr("cluster 1"),
+		// 					IormConfigCache: &armoracledatabase.ExadataIormConfig{
+		// 						DbPlans: []*armoracledatabase.DbIormConfig{
+		// 							{
+		// 								DbName: to.Ptr("db1"),
+		// 								FlashCacheLimit: to.Ptr("none"),
+		// 								Share: to.Ptr[int32](32),
+		// 							},
+		// 						},
+		// 						LifecycleDetails: to.Ptr("Disabled"),
+		// 						LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+		// 						Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+		// 					},
+		// 					LastUpdateHistoryEntryID: to.Ptr("none"),
+		// 					DbServers: []*string{
+		// 						to.Ptr("ocid1..aaaa"),
+		// 					},
+		// 					CompartmentID: to.Ptr("ocid1..aaaaaa"),
+		// 					SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_ListPrivateIpAddresses_MaximumSet_Gen.json
+func ExampleCloudVMClustersClient_ListPrivateIPAddresses_listPrivateIPAddressesForVMClusterGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCloudVMClustersClient().ListPrivateIPAddresses(ctx, "rgopenapi", "cloudvmcluster1", armoracledatabase.PrivateIPAddressesFilter{
+		SubnetID: to.Ptr("ocid1..aaaaaa"),
+		VnicID:   to.Ptr("ocid1..aaaaa"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientListPrivateIPAddressesResponse{
+	// 	undefined: &[]*armoracledatabase.PrivateIPAddressProperties{
+	// 		{
+	// 			DisplayName: to.Ptr("ip1"),
+	// 			HostnameLabel: to.Ptr("hostname1"),
+	// 			Ocid: to.Ptr("ocid1..aaaa"),
+	// 			IPAddress: to.Ptr("192.168.0.1"),
+	// 			SubnetID: to.Ptr("ocid1..aaaa"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_ListPrivateIpAddresses_MinimumSet_Gen.json
+func ExampleCloudVMClustersClient_ListPrivateIPAddresses_listPrivateIPAddressesForVMClusterGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCloudVMClustersClient().ListPrivateIPAddresses(ctx, "rgopenapi", "cloudvmcluster1", armoracledatabase.PrivateIPAddressesFilter{
+		SubnetID: to.Ptr("ocid1..aaaaaa"),
+		VnicID:   to.Ptr("ocid1..aaaaa"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientListPrivateIPAddressesResponse{
+	// 	undefined: &[]*armoracledatabase.PrivateIPAddressProperties{
+	// 		{
+	// 			DisplayName: to.Ptr("ip1"),
+	// 			HostnameLabel: to.Ptr("hostname1"),
+	// 			Ocid: to.Ptr("ocid1..aaaa"),
+	// 			IPAddress: to.Ptr("192.168.0.1"),
+	// 			SubnetID: to.Ptr("ocid1..aaaa"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/vmClusters_listPrivateIpAddresses.json
+func ExampleCloudVMClustersClient_ListPrivateIPAddresses_cloudVMClustersListPrivateIPAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -153,8 +1693,183 @@ func ExampleCloudVMClustersClient_ListPrivateIPAddresses() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/vmClusters_removeVms.json
-func ExampleCloudVMClustersClient_BeginRemoveVMs() {
+// Generated from example definition: 2025-09-01/CloudVmClusters_RemoveVms_MaximumSet_Gen.json
+func ExampleCloudVMClustersClient_BeginRemoveVMs_removeVMSFromVMClusterGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginRemoveVMs(ctx, "rgopenapi", "cloudvmcluster1", armoracledatabase.AddRemoveDbNode{
+		DbServers: []*string{
+			to.Ptr("ocid1..aaaa"),
+			to.Ptr("ocid1..aaaaaa"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientRemoveVMsResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
+	// 			DataStorageSizeInTbs: to.Ptr[float64](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			MemorySizeInGbs: to.Ptr[int32](1000),
+	// 			TimeZone: to.Ptr("UTC"),
+	// 			Hostname: to.Ptr("hostname1"),
+	// 			Domain: to.Ptr("domain1"),
+	// 			CPUCoreCount: to.Ptr[int32](2),
+	// 			OcpuCount: to.Ptr[float32](3),
+	// 			ClusterName: to.Ptr("cluster1"),
+	// 			DataStoragePercentage: to.Ptr[int32](100),
+	// 			IsLocalBackupEnabled: to.Ptr(true),
+	// 			CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 			IsSparseDiskgroupEnabled: to.Ptr(true),
+	// 			SSHPublicKeys: []*string{
+	// 				to.Ptr("ssh-key 1"),
+	// 			},
+	// 			NsgCidrs: []*armoracledatabase.NsgCidr{
+	// 				{
+	// 					Source: to.Ptr("10.0.0.0/16"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](1520),
+	// 						Max: to.Ptr[int32](1522),
+	// 					},
+	// 				},
+	// 				{
+	// 					Source: to.Ptr("10.10.0.0/24"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](9434),
+	// 						Max: to.Ptr[int32](11996),
+	// 					},
+	// 				},
+	// 			},
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+	// 			ScanListenerPortTCP: to.Ptr[int32](1050),
+	// 			ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			GiVersion: to.Ptr("19.0.0.0"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+	// 			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+	// 				IsDiagnosticsEventsEnabled: to.Ptr(true),
+	// 				IsHealthMonitoringEnabled: to.Ptr(true),
+	// 				IsIncidentLogsEnabled: to.Ptr(true),
+	// 			},
+	// 			DisplayName: to.Ptr("cluster 1"),
+	// 			DbServers: []*string{
+	// 				to.Ptr("ocid1..aaaa"),
+	// 			},
+	// 			Ocid: to.Ptr("ocid1..aaaa"),
+	// 			ListenerPort: to.Ptr[int64](1050),
+	// 			NodeCount: to.Ptr[int32](100),
+	// 			StorageSizeInGbs: to.Ptr[int32](1000),
+	// 			FileSystemConfigurationDetails: []*armoracledatabase.FileSystemConfigurationDetails{
+	// 				{
+	// 					MountPoint: to.Ptr("gukfhjlmkqfqdgb"),
+	// 					FileSystemSizeGb: to.Ptr[int32](20),
+	// 				},
+	// 			},
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			ZoneID: to.Ptr("ocid1..aaaa"),
+	// 			SystemVersion: to.Ptr("v1"),
+	// 			DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+	// 			ScanIPIDs: []*string{
+	// 				to.Ptr("10.0.0.1"),
+	// 			},
+	// 			VipIDs: []*string{
+	// 				to.Ptr("10.0.1.3"),
+	// 			},
+	// 			ScanDNSName: to.Ptr("dbdns1"),
+	// 			ScanDNSRecordID: to.Ptr("scandns1"),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.CloudVMClusterLifecycleStateProvisioning),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			NsgURL: to.Ptr("https://microsoft.com/a"),
+	// 			IormConfigCache: &armoracledatabase.ExadataIormConfig{
+	// 				DbPlans: []*armoracledatabase.DbIormConfig{
+	// 					{
+	// 						DbName: to.Ptr("db1"),
+	// 						FlashCacheLimit: to.Ptr("none"),
+	// 						Share: to.Ptr[int32](32),
+	// 					},
+	// 				},
+	// 				LifecycleDetails: to.Ptr("Disabled"),
+	// 				LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+	// 				Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+	// 			},
+	// 			LastUpdateHistoryEntryID: to.Ptr("none"),
+	// 			CompartmentID: to.Ptr("ocid1..aaaaaa"),
+	// 			SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Name: to.Ptr("tvodakfvzrbipruplzk"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_RemoveVms_MinimumSet_Gen.json
+func ExampleCloudVMClustersClient_BeginRemoveVMs_removeVMSFromVMClusterGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginRemoveVMs(ctx, "rgopenapi", "cloudvmcluster1", armoracledatabase.AddRemoveDbNode{
+		DbServers: []*string{
+			to.Ptr("ocid1..aaaa"),
+			to.Ptr("ocid1..aaaaaa"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientRemoveVMsResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		Location: to.Ptr("eastus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/vmClusters_removeVms.json
+func ExampleCloudVMClustersClient_BeginRemoveVMs_cloudVMClustersRemoveVms() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -180,6 +1895,305 @@ func ExampleCloudVMClustersClient_BeginRemoveVMs() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientRemoveVMsResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tagK1": to.Ptr("tagV1"),
+	// 		},
+	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
+	// 			Ocid: to.Ptr("ocid1..aaaa"),
+	// 			ListenerPort: to.Ptr[int64](1050),
+	// 			NodeCount: to.Ptr[int32](100),
+	// 			StorageSizeInGbs: to.Ptr[int32](1000),
+	// 			DataStorageSizeInTbs: to.Ptr[float64](10),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](100),
+	// 			MemorySizeInGbs: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			TimeZone: to.Ptr("UTC"),
+	// 			ZoneID: to.Ptr("ocid1..aaaa"),
+	// 			Hostname: to.Ptr("hostname1"),
+	// 			Domain: to.Ptr("domain1"),
+	// 			CPUCoreCount: to.Ptr[int32](10),
+	// 			OcpuCount: to.Ptr[float32](100),
+	// 			ClusterName: to.Ptr("cluster1"),
+	// 			DataStoragePercentage: to.Ptr[int32](80),
+	// 			IsLocalBackupEnabled: to.Ptr(false),
+	// 			CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 			IsSparseDiskgroupEnabled: to.Ptr(false),
+	// 			SSHPublicKeys: []*string{
+	// 				to.Ptr("ssh-key 1"),
+	// 			},
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+	// 			ScanListenerPortTCP: to.Ptr[int32](1050),
+	// 			ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			GiVersion: to.Ptr("19.0.0.0"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+	// 			SystemVersion: to.Ptr("v1"),
+	// 			DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+	// 			ScanIPIDs: []*string{
+	// 				to.Ptr("10.0.0.1"),
+	// 			},
+	// 			VipIDs: []*string{
+	// 				to.Ptr("10.0.1.3"),
+	// 			},
+	// 			ScanDNSName: to.Ptr("dbdns1"),
+	// 			ScanDNSRecordID: to.Ptr("scandns1"),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+	// 				IsDiagnosticsEventsEnabled: to.Ptr(false),
+	// 				IsHealthMonitoringEnabled: to.Ptr(false),
+	// 				IsIncidentLogsEnabled: to.Ptr(false),
+	// 			},
+	// 			DisplayName: to.Ptr("cluster 1"),
+	// 			IormConfigCache: &armoracledatabase.ExadataIormConfig{
+	// 				DbPlans: []*armoracledatabase.DbIormConfig{
+	// 					{
+	// 						DbName: to.Ptr("db1"),
+	// 						FlashCacheLimit: to.Ptr("none"),
+	// 						Share: to.Ptr[int32](32),
+	// 					},
+	// 				},
+	// 				LifecycleDetails: to.Ptr("Disabled"),
+	// 				LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+	// 				Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+	// 			},
+	// 			LastUpdateHistoryEntryID: to.Ptr("none"),
+	// 			DbServers: []*string{
+	// 				to.Ptr("ocid1..aaaa"),
+	// 			},
+	// 			CompartmentID: to.Ptr("ocid1..aaaaaa"),
+	// 			SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_Update_MaximumSet_Gen.json
+func ExampleCloudVMClustersClient_BeginUpdate_patchVMClusterGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginUpdate(ctx, "rgopenapi", "cloudvmcluster1", armoracledatabase.CloudVMClusterUpdate{
+		Tags: map[string]*string{
+			"key4668": to.Ptr("gtrpgiq"),
+		},
+		Properties: &armoracledatabase.CloudVMClusterUpdateProperties{
+			StorageSizeInGbs: to.Ptr[int32](17),
+			FileSystemConfigurationDetails: []*armoracledatabase.FileSystemConfigurationDetails{
+				{
+					MountPoint:       to.Ptr("gukfhjlmkqfqdgb"),
+					FileSystemSizeGb: to.Ptr[int32](20),
+				},
+			},
+			DataStorageSizeInTbs:   to.Ptr[float64](29),
+			DbNodeStorageSizeInGbs: to.Ptr[int32](24),
+			MemorySizeInGbs:        to.Ptr[int32](9),
+			CPUCoreCount:           to.Ptr[int32](18),
+			OcpuCount:              to.Ptr[float32](7),
+			SSHPublicKeys: []*string{
+				to.Ptr("hazhcc"),
+			},
+			LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+				IsDiagnosticsEventsEnabled: to.Ptr(true),
+				IsHealthMonitoringEnabled:  to.Ptr(true),
+				IsIncidentLogsEnabled:      to.Ptr(true),
+			},
+			DisplayName: to.Ptr("hvdyewkjqjxwzinkqnnsqxbmccteohzumz"),
+			ComputeNodes: []*string{
+				to.Ptr("ggficcnjgibtuqgdbbrzyckmtlhddecfcvjurboqfufqchgpvwmlcdcyyxnjivpkvsvr"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientUpdateResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
+	// 			DataStorageSizeInTbs: to.Ptr[float64](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](1000),
+	// 			MemorySizeInGbs: to.Ptr[int32](1000),
+	// 			TimeZone: to.Ptr("UTC"),
+	// 			Hostname: to.Ptr("hostname1"),
+	// 			Domain: to.Ptr("domain1"),
+	// 			CPUCoreCount: to.Ptr[int32](2),
+	// 			OcpuCount: to.Ptr[float32](3),
+	// 			ClusterName: to.Ptr("cluster1"),
+	// 			DataStoragePercentage: to.Ptr[int32](100),
+	// 			IsLocalBackupEnabled: to.Ptr(true),
+	// 			CloudExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 			IsSparseDiskgroupEnabled: to.Ptr(true),
+	// 			SSHPublicKeys: []*string{
+	// 				to.Ptr("hazhcc"),
+	// 			},
+	// 			NsgCidrs: []*armoracledatabase.NsgCidr{
+	// 				{
+	// 					Source: to.Ptr("10.0.0.0/16"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](1520),
+	// 						Max: to.Ptr[int32](1522),
+	// 					},
+	// 				},
+	// 				{
+	// 					Source: to.Ptr("10.10.0.0/24"),
+	// 					DestinationPortRange: &armoracledatabase.PortRange{
+	// 						Min: to.Ptr[int32](9434),
+	// 						Max: to.Ptr[int32](11996),
+	// 					},
+	// 				},
+	// 			},
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
+	// 			ScanListenerPortTCP: to.Ptr[int32](1050),
+	// 			ScanListenerPortTCPSSL: to.Ptr[int32](1025),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			GiVersion: to.Ptr("19.0.0.0"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			BackupSubnetCidr: to.Ptr("172.17.5.0/24"),
+	// 			DataCollectionOptions: &armoracledatabase.DataCollectionOptions{
+	// 				IsDiagnosticsEventsEnabled: to.Ptr(true),
+	// 				IsHealthMonitoringEnabled: to.Ptr(true),
+	// 				IsIncidentLogsEnabled: to.Ptr(true),
+	// 			},
+	// 			DisplayName: to.Ptr("cluster 1"),
+	// 			DbServers: []*string{
+	// 				to.Ptr("ocid1..aaaa"),
+	// 			},
+	// 			Ocid: to.Ptr("ocid1..aaaa"),
+	// 			ListenerPort: to.Ptr[int64](1050),
+	// 			NodeCount: to.Ptr[int32](100),
+	// 			StorageSizeInGbs: to.Ptr[int32](1000),
+	// 			FileSystemConfigurationDetails: []*armoracledatabase.FileSystemConfigurationDetails{
+	// 				{
+	// 					MountPoint: to.Ptr("gukfhjlmkqfqdgb"),
+	// 					FileSystemSizeGb: to.Ptr[int32](20),
+	// 				},
+	// 			},
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T02:18:35.683Z"); return t}()),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			ZoneID: to.Ptr("ocid1..aaaa"),
+	// 			SystemVersion: to.Ptr("v1"),
+	// 			DiskRedundancy: to.Ptr(armoracledatabase.DiskRedundancyHigh),
+	// 			ScanIPIDs: []*string{
+	// 				to.Ptr("10.0.0.1"),
+	// 			},
+	// 			VipIDs: []*string{
+	// 				to.Ptr("10.0.1.3"),
+	// 			},
+	// 			ScanDNSName: to.Ptr("dbdns1"),
+	// 			ScanDNSRecordID: to.Ptr("scandns1"),
+	// 			Shape: to.Ptr("EXADATA.X9M"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.CloudVMClusterLifecycleStateProvisioning),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			NsgURL: to.Ptr("https://microsoft.com/a"),
+	// 			IormConfigCache: &armoracledatabase.ExadataIormConfig{
+	// 				DbPlans: []*armoracledatabase.DbIormConfig{
+	// 					{
+	// 						DbName: to.Ptr("db1"),
+	// 						FlashCacheLimit: to.Ptr("none"),
+	// 						Share: to.Ptr[int32](32),
+	// 					},
+	// 				},
+	// 				LifecycleDetails: to.Ptr("Disabled"),
+	// 				LifecycleState: to.Ptr(armoracledatabase.IormLifecycleStateDisabled),
+	// 				Objective: to.Ptr(armoracledatabase.ObjectiveLowLatency),
+	// 			},
+	// 			LastUpdateHistoryEntryID: to.Ptr("none"),
+	// 			CompartmentID: to.Ptr("ocid1..aaaaaa"),
+	// 			SubnetOcid: to.Ptr("ocid1..aaaaaa"),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
+	// 		Name: to.Ptr("tvodakfvzrbipruplzk"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/CloudVmClusters_Update_MinimumSet_Gen.json
+func ExampleCloudVMClustersClient_BeginUpdate_patchVMClusterGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginUpdate(ctx, "rgopenapi", "cloudvmcluster1", armoracledatabase.CloudVMClusterUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientUpdateResponse{
+	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 		Location: to.Ptr("eastus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/vmClusters_patch.json
+func ExampleCloudVMClustersClient_BeginUpdate_cloudVMClustersUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudVMClustersClient().BeginUpdate(ctx, "rg000", "cluster1", armoracledatabase.CloudVMClusterUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.CloudVMClustersClientUpdateResponse{
 	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),

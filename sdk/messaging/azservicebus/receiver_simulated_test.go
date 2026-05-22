@@ -167,7 +167,7 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndCancelled(t *testing.T) {
 			require.NoError(t, err)
 			require.Equal(t, []string{"hello"}, getSortedBodies(messages))
 
-			sender.Close(context.Background())
+			_ = sender.Close(context.Background())
 
 			require.Equal(t, 3, len(md.Events.GetOpenLinks()))
 			require.Equal(t, 1, len(md.Events.GetOpenConns()))
@@ -542,7 +542,7 @@ func TestReceiver_ReceiveMessages_MessageReleaser(t *testing.T) {
 		if evt.Type == emulation.EventTypeLinkDisposition {
 			dispEvt := evt.Data.(emulation.DispositionEvent)
 
-			if dispEvt.LinkEvent.Entity == "queue" && string(dispEvt.Data[0]) == "message available again after being released by releaser" {
+			if dispEvt.Entity == "queue" && string(dispEvt.Data[0]) == "message available again after being released by releaser" {
 				break
 			}
 		}

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -55,6 +52,12 @@ func StartRecording(t *testing.T, pathToPackage string) func() {
 	err := recording.Start(t, pathToPackage, nil)
 	if err != nil {
 		t.Fatalf("Failed to start recording: %v", err)
+	}
+	err = recording.SetDefaultMatcher(t, &recording.SetDefaultMatcherOptions{
+		IgnoredQueryParameters: []string{"api-version"},
+	})
+	if err != nil {
+		t.Fatalf("Failed to set default matcher: %v", err)
 	}
 	return func() { StopRecording(t) }
 }

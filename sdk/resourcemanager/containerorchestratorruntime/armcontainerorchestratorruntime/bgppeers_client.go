@@ -24,7 +24,7 @@ type BgpPeersClient struct {
 
 // NewBgpPeersClient creates a new instance of BgpPeersClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBgpPeersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BgpPeersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -160,7 +160,6 @@ func (client *BgpPeersClient) deleteCreateRequest(ctx context.Context, resourceU
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

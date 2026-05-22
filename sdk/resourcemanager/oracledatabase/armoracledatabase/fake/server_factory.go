@@ -51,6 +51,12 @@ type ServerFactory struct {
 	// DbSystemShapesServer contains the fakes for client DbSystemShapesClient
 	DbSystemShapesServer DbSystemShapesServer
 
+	// DbSystemsServer contains the fakes for client DbSystemsClient
+	DbSystemsServer DbSystemsServer
+
+	// DbVersionsServer contains the fakes for client DbVersionsClient
+	DbVersionsServer DbVersionsServer
+
 	// ExadbVMClustersServer contains the fakes for client ExadbVMClustersClient
 	ExadbVMClustersServer ExadbVMClustersServer
 
@@ -69,11 +75,17 @@ type ServerFactory struct {
 	// GiVersionsServer contains the fakes for client GiVersionsClient
 	GiVersionsServer GiVersionsServer
 
+	// NetworkAnchorsServer contains the fakes for client NetworkAnchorsClient
+	NetworkAnchorsServer NetworkAnchorsServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
 	// OracleSubscriptionsServer contains the fakes for client OracleSubscriptionsClient
 	OracleSubscriptionsServer OracleSubscriptionsServer
+
+	// ResourceAnchorsServer contains the fakes for client ResourceAnchorsClient
+	ResourceAnchorsServer ResourceAnchorsServer
 
 	// SystemVersionsServer contains the fakes for client SystemVersionsClient
 	SystemVersionsServer SystemVersionsServer
@@ -108,14 +120,18 @@ type ServerFactoryTransport struct {
 	trDbNodesServer                                 *DbNodesServerTransport
 	trDbServersServer                               *DbServersServerTransport
 	trDbSystemShapesServer                          *DbSystemShapesServerTransport
+	trDbSystemsServer                               *DbSystemsServerTransport
+	trDbVersionsServer                              *DbVersionsServerTransport
 	trExadbVMClustersServer                         *ExadbVMClustersServerTransport
 	trExascaleDbNodesServer                         *ExascaleDbNodesServerTransport
 	trExascaleDbStorageVaultsServer                 *ExascaleDbStorageVaultsServerTransport
 	trFlexComponentsServer                          *FlexComponentsServerTransport
 	trGiMinorVersionsServer                         *GiMinorVersionsServerTransport
 	trGiVersionsServer                              *GiVersionsServerTransport
+	trNetworkAnchorsServer                          *NetworkAnchorsServerTransport
 	trOperationsServer                              *OperationsServerTransport
 	trOracleSubscriptionsServer                     *OracleSubscriptionsServerTransport
+	trResourceAnchorsServer                         *ResourceAnchorsServerTransport
 	trSystemVersionsServer                          *SystemVersionsServerTransport
 	trVirtualNetworkAddressesServer                 *VirtualNetworkAddressesServerTransport
 }
@@ -189,6 +205,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDbSystemShapesServerTransport(&s.srv.DbSystemShapesServer)
 		})
 		resp, err = s.trDbSystemShapesServer.Do(req)
+	case "DbSystemsClient":
+		initServer(s, &s.trDbSystemsServer, func() *DbSystemsServerTransport { return NewDbSystemsServerTransport(&s.srv.DbSystemsServer) })
+		resp, err = s.trDbSystemsServer.Do(req)
+	case "DbVersionsClient":
+		initServer(s, &s.trDbVersionsServer, func() *DbVersionsServerTransport { return NewDbVersionsServerTransport(&s.srv.DbVersionsServer) })
+		resp, err = s.trDbVersionsServer.Do(req)
 	case "ExadbVMClustersClient":
 		initServer(s, &s.trExadbVMClustersServer, func() *ExadbVMClustersServerTransport {
 			return NewExadbVMClustersServerTransport(&s.srv.ExadbVMClustersServer)
@@ -217,6 +239,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "GiVersionsClient":
 		initServer(s, &s.trGiVersionsServer, func() *GiVersionsServerTransport { return NewGiVersionsServerTransport(&s.srv.GiVersionsServer) })
 		resp, err = s.trGiVersionsServer.Do(req)
+	case "NetworkAnchorsClient":
+		initServer(s, &s.trNetworkAnchorsServer, func() *NetworkAnchorsServerTransport {
+			return NewNetworkAnchorsServerTransport(&s.srv.NetworkAnchorsServer)
+		})
+		resp, err = s.trNetworkAnchorsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -225,6 +252,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewOracleSubscriptionsServerTransport(&s.srv.OracleSubscriptionsServer)
 		})
 		resp, err = s.trOracleSubscriptionsServer.Do(req)
+	case "ResourceAnchorsClient":
+		initServer(s, &s.trResourceAnchorsServer, func() *ResourceAnchorsServerTransport {
+			return NewResourceAnchorsServerTransport(&s.srv.ResourceAnchorsServer)
+		})
+		resp, err = s.trResourceAnchorsServer.Do(req)
 	case "SystemVersionsClient":
 		initServer(s, &s.trSystemVersionsServer, func() *SystemVersionsServerTransport {
 			return NewSystemVersionsServerTransport(&s.srv.SystemVersionsServer)

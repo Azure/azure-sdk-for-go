@@ -1,9 +1,26 @@
 # Azure App Configuration Client Module for Go
 
-Azure App Configuration is a managed service that helps developers centralize their application and feature settings simply and securely.
-It allows you to create and manage application configuration settings and retrieve their revisions from a specific point in time.
-
 [Source code][azappconfig_src] | [Package (pkg.go.dev)][azappconfig] | [Product documentation][appconfig_docs]
+
+Azure App Configuration is a managed service that helps developers centralize their application and feature settings simply and securely.
+
+Use `azappconfig` (this package) to:
+
+- Manage configuration settings and snapshots in Azure App Configuration
+- Perform granular reads that operate outside the realm of normal configuration consumption
+
+Most applications should start with the [azureappconfiguration](https://pkg.go.dev/github.com/Azure/AppConfiguration-GoProvider/azureappconfiguration) package, which builds on this low-level client library and is the recommended way to consume configuration at runtime. It adds:
+
+- Strongly-typed struct data binding
+- Returning key-values as raw JSON bytes
+- Configuration refresh during runtime
+- High reliability with caching, replica discovery, failover, and load balancing
+- Key vault reference resolution and auto-refresh
+- Feature flag integration for the [featuremanagement](https://pkg.go.dev/github.com/microsoft/Featuremanagement-Go/featuremanagement) library
+
+For more information, please go to [configuration provider](https://learn.microsoft.com/azure/azure-app-configuration/configuration-provider-overview).
+
+
 
 ## Getting started
 
@@ -12,7 +29,7 @@ It allows you to create and manage application configuration settings and retrie
 Install `azappconfig` with `go get`:
 
 ```Bash
-go get github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig
+go get github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2
 ```
 
 ### Prerequisites
@@ -34,6 +51,8 @@ A [Setting][azappconfig_setting] is the fundamental resource within a Configurat
 The [Label][label_concept] property of a Setting provides a way to separate Settings into different dimensions. These dimensions are user defined and can take any form. Some common examples of dimensions to use for a label include regions, semantic versions, or environments. Many applications have a required set of configuration keys that have varying values as the application exists across different dimensions.
 
 For example, MaxRequests may be 100 in "NorthAmerica" and 200 in "WestEurope". By creating a Setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, with a "WestEurope" label, an application can seamlessly retrieve Settings as it runs in these two dimensions.
+
+**Tags** provide additional metadata for configuration settings and enable powerful filtering capabilities. Tags are key-value pairs that can be used to categorize and query settings. For example, you can tag settings with `environment=production` or `version=1.2.3` and then use the `TagsFilter` in `SettingSelector` to retrieve only settings that match specific tag criteria.
 
 ## Examples
 

@@ -53,7 +53,7 @@ func Example_consumingEventsWithCheckpoints() {
 		return
 	}
 
-	defer consumerClient.Close(context.TODO())
+	defer func() { _ = consumerClient.Close(context.TODO()) }()
 
 	// Create the Processor
 	//
@@ -167,7 +167,7 @@ func initializePartitionResources(partitionID string) error {
 func shutdownPartitionResources(partitionClient *azeventhubs.ProcessorPartitionClient) {
 	// Each PartitionClient holds onto an external resource and should be closed if you're
 	// not processing them anymore.
-	defer partitionClient.Close(context.TODO())
+	defer func() { _ = partitionClient.Close(context.TODO()) }()
 
 	log.Printf("Shutting down partition related resources for partition %s", partitionClient.PartitionID())
 }

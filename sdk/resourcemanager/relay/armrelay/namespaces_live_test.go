@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -10,14 +7,15 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay/v2" // imports as armrelay
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -62,6 +60,23 @@ func TestNamespacesTestSuite(t *testing.T) {
 	suite.Run(t, new(NamespacesTestSuite))
 }
 
+func (testsuite *NamespacesTestSuite) waitForNamespaceReady() {
+	namespacesClient, err := armrelay.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+
+	deadline := time.Now().Add(2 * time.Minute)
+	for time.Now().Before(deadline) {
+		resp, err := namespacesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
+		testsuite.Require().NoError(err)
+		if resp.Properties == nil || resp.Properties.ProvisioningState == nil || *resp.Properties.ProvisioningState != "Updating" {
+			return
+		}
+		time.Sleep(10 * time.Second)
+	}
+
+	testsuite.T().Fatal("timed out waiting for relay namespace to leave Updating state")
+}
+
 func (testsuite *NamespacesTestSuite) Prepare() {
 	var err error
 	// From step Namespaces_CreateOrUpdate
@@ -80,10 +95,10 @@ func (testsuite *NamespacesTestSuite) Prepare() {
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
-	var namespacesClientCreateOrUpdateResponse *armrelay.NamespacesClientCreateOrUpdateResponse
-	namespacesClientCreateOrUpdateResponse, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
+	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
 	testsuite.Require().NoError(err)
-	testsuite.namespaceId = *namespacesClientCreateOrUpdateResponse.ID
+	testsuite.namespaceId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Relay/namespaces/%s",
+		testsuite.subscriptionId, testsuite.resourceGroupName, testsuite.namespaceName)
 }
 
 // Microsoft.Relay/namespaces/{namespaceName}
@@ -109,6 +124,7 @@ func (testsuite *NamespacesTestSuite) TestNamespaces() {
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
+	testsuite.waitForNamespaceReady()
 
 	// From step Namespaces_List
 	fmt.Println("Call operation: Namespaces_List")
@@ -138,6 +154,7 @@ func (testsuite *NamespacesTestSuite) TestNamespaces() {
 func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 	var privateEndpointConnectionName string
 	var err error
+	testsuite.waitForNamespaceReady()
 	// From step Create_PrivateEndpoint
 	template := map[string]any{
 		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -168,7 +185,7 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -194,7 +211,7 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('networkInterfaceName')]",
 				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
@@ -223,7 +240,7 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('privateEndpointName')]",
 				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
@@ -255,7 +272,7 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
 				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-05-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
@@ -269,10 +286,10 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
@@ -288,7 +305,6 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 		testsuite.Require().NoError(err)
 
 		privateEndpointConnectionName = *nextResult.Value[0].Name
-		break
 	}
 
 	// From step PrivateEndpointConnections_Get
@@ -314,6 +330,7 @@ func (testsuite *NamespacesTestSuite) TestPrivateEndpointConnections() {
 // Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}
 func (testsuite *NamespacesTestSuite) TestNamespacesAuthorization() {
 	var err error
+	testsuite.waitForNamespaceReady()
 	// From step Namespaces_CreateOrUpdateAuthorizationRule
 	fmt.Println("Call operation: Namespaces_CreateOrUpdateAuthorizationRule")
 	namespacesClient, err := armrelay.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
@@ -362,6 +379,7 @@ func (testsuite *NamespacesTestSuite) TestNamespacesAuthorization() {
 // Microsoft.Relay/namespaces/{namespaceName}/networkRuleSets/default
 func (testsuite *NamespacesTestSuite) TestNamespacesNetworkRuleSet() {
 	var err error
+	testsuite.waitForNamespaceReady()
 	// From step Namespaces_CreateOrUpdateNetworkRuleSet
 	fmt.Println("Call operation: Namespaces_CreateOrUpdateNetworkRuleSet")
 	namespacesClient, err := armrelay.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)

@@ -1,18 +1,15 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package base
 
 import (
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
-	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -49,17 +46,17 @@ func GetAudience(clOpts *ClientOptions) string {
 		return strings.TrimRight(clOpts.Audience, "/") + "/.default"
 	}
 }
-func NewServiceClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
+func NewServiceClient(queueURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
 	return &Client[generated.ServiceClient]{
-		inner:     generated.NewServiceClient(queueURL, pipeline),
+		inner:     generated.NewServiceClient(queueURL, azClient),
 		sharedKey: sharedKey,
 	}
 }
 
-func NewQueueClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.QueueClient, generated.MessagesClient] {
+func NewQueueClient(queueURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.QueueClient, generated.MessagesClient] {
 	return &CompositeClient[generated.QueueClient, generated.MessagesClient]{
-		innerT:    generated.NewQueueClient(queueURL, pipeline),
-		innerU:    generated.NewMessagesClient(runtime.JoinPaths(queueURL, "messages"), pipeline),
+		innerT:    generated.NewQueueClient(queueURL, azClient),
+		innerU:    &generated.MessagesClient{},
 		sharedKey: sharedKey,
 	}
 }

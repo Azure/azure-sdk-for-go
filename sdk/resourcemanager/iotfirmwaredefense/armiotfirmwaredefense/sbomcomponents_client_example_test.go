@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/SbomComponents_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/SbomComponents_ListByFirmware_MaximumSet_Gen.json
 func ExampleSbomComponentsClient_NewListByFirmwarePager_sbomComponentsListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -38,23 +38,23 @@ func ExampleSbomComponentsClient_NewListByFirmwarePager_sbomComponentsListByFirm
 		// 		Value: []*armiotfirmwaredefense.SbomComponentResource{
 		// 			{
 		// 				Properties: &armiotfirmwaredefense.SbomComponent{
-		// 					ComponentID: to.Ptr("unxftmiuhgvkyo"),
-		// 					ComponentName: to.Ptr("ysrpkpqbcvigjighmaxtuwrghpefiu"),
-		// 					Version: to.Ptr("fslvcaqpsksjnkhpvizqj"),
-		// 					License: to.Ptr("yqgmy"),
+		// 					ComponentID: to.Ptr("jquery:3.2.1"),
+		// 					ComponentName: to.Ptr("jquery"),
+		// 					Version: to.Ptr("3.2.1"),
+		// 					License: to.Ptr("MIT"),
 		// 					FilePaths: []*string{
-		// 						to.Ptr("bf"),
+		// 						to.Ptr("/path/to/jquery-3.2.1.min.js"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
-		// 				Name: to.Ptr("sifpfovpdazlgvbgwctyovzom"),
-		// 				Type: to.Ptr("fzubcjroyidauqcpbreipciwgm"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ResourceGroupName/providers/Microsoft.IoTFirmwareDefense/workspaces/WorkspaceName/firmwares/00000000-0000-0000-0000-000000000000/components/jquery:3.2.1"),
+		// 				Name: to.Ptr("jquery:3.2.1"),
+		// 				Type: to.Ptr("Microsoft.IoTFirmwareDefense/workspaces/firmwares/components"),
 		// 				SystemData: &armiotfirmwaredefense.SystemData{
-		// 					CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+		// 					CreatedBy: to.Ptr("UserName"),
 		// 					CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("of"),
+		// 					LastModifiedBy: to.Ptr("UserName"),
 		// 					LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 		// 				},
@@ -66,7 +66,7 @@ func ExampleSbomComponentsClient_NewListByFirmwarePager_sbomComponentsListByFirm
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/SbomComponents_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/SbomComponents_ListByFirmware_MinimumSet_Gen.json
 func ExampleSbomComponentsClient_NewListByFirmwarePager_sbomComponentsListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleSbomComponentsClient_NewListByFirmwarePager_sbomComponentsListByFirm
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSbomComponentsClient().NewListByFirmwarePager("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000", nil)
+	pager := clientFactory.NewSbomComponentsClient().NewListByFirmwarePager("FirmwareAnalysisRG", "default", "00000000-0000-0000-0000-000000000000", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

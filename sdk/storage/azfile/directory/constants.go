@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -19,6 +16,19 @@ const (
 // PossibleFilePermissionFormatValues returns the possible values for the FilePermissionFormat const type.
 func PossibleFilePermissionFormatValues() []FilePermissionFormat {
 	return generated.PossibleFilePermissionFormatValues()
+}
+
+// PropertySemantics has two values - New and Restore, SMB only
+type PropertySemantics = generated.FilePropertySemantics
+
+const (
+	FilePropertySemanticsNew     PropertySemantics = "New"
+	FilePropertySemanticsRestore PropertySemantics = "Restore"
+)
+
+// PossiblePropertySemanticsValues returns the possible values for the PropertySemantics const type.
+func PossiblePropertySemanticsValues() []PropertySemantics {
+	return generated.PossibleFilePropertySemanticsValues()
 }
 
 // ListFilesIncludeType defines values for ListFilesIncludeType

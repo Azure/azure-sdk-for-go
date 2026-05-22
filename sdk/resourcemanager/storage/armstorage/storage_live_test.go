@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -18,8 +15,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v4"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -42,7 +39,7 @@ func (testsuite *StorageTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.accountName = "accountnam"
+	testsuite.accountName = "accountnam1"
 	testsuite.encryptionScopeName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "encryption", 16, false)
 	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
@@ -83,7 +80,7 @@ func (testsuite *StorageTestSuite) Prepare() {
 		Location: to.Ptr(testsuite.location),
 		Properties: &armstorage.AccountPropertiesCreateParameters{
 			AllowBlobPublicAccess:        to.Ptr(false),
-			AllowSharedKeyAccess:         to.Ptr(true),
+			AllowSharedKeyAccess:         to.Ptr(false),
 			DefaultToOAuthAuthentication: to.Ptr(false),
 			Encryption: &armstorage.Encryption{
 				KeySource:                       to.Ptr(armstorage.KeySourceMicrosoftStorage),
@@ -171,12 +168,13 @@ func (testsuite *StorageTestSuite) TestStorageAccounts() {
 	fmt.Println("Call operation: StorageAccounts_RevokeUserDelegationKeys")
 	_, err = accountsClient.RevokeUserDelegationKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, nil)
 	testsuite.Require().NoError(err)
+	sasExpiry := time.Date(2099, time.May, 24, 11, 32, 48, 845719700, time.UTC)
 
 	// From step StorageAccounts_ListServiceSAS
 	fmt.Println("Call operation: StorageAccounts_ListServiceSAS")
 	_, err = accountsClient.ListServiceSAS(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armstorage.ServiceSasParameters{
 		CanonicalizedResource:  to.Ptr("/blob/" + testsuite.accountName + "/music"),
-		SharedAccessExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-24T11:32:48.8457197Z"); return t }()),
+		SharedAccessExpiryTime: to.Ptr(sasExpiry),
 		Permissions:            to.Ptr(armstorage.PermissionsL),
 		Resource:               to.Ptr(armstorage.SignedResourceC),
 	}, nil)
@@ -198,7 +196,7 @@ func (testsuite *StorageTestSuite) TestStorageAccounts() {
 	fmt.Println("Call operation: StorageAccounts_ListAccountSAS")
 	_, err = accountsClient.ListAccountSAS(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armstorage.AccountSasParameters{
 		KeyToSign:              to.Ptr("key1"),
-		SharedAccessExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-24T11:42:03.1567373Z"); return t }()),
+		SharedAccessExpiryTime: to.Ptr(sasExpiry.Add(10 * time.Minute)),
 		Permissions:            to.Ptr(armstorage.PermissionsR),
 		Protocols:              to.Ptr(armstorage.HTTPProtocolHTTPSHTTP),
 		ResourceTypes:          to.Ptr(armstorage.SignedResourceTypesS),
@@ -536,10 +534,10 @@ func (testsuite *StorageTestSuite) TestPrivateEndpointConnections() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)

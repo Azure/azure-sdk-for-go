@@ -6,6 +6,7 @@ package armazurestackhcivm
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -22,7 +23,7 @@ type AttestationStatusesClient struct {
 
 // NewAttestationStatusesClient creates a new instance of AttestationStatusesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAttestationStatusesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AttestationStatusesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -65,6 +66,9 @@ func (client *AttestationStatusesClient) Get(ctx context.Context, resourceURI st
 // getCreateRequest creates the Get request.
 func (client *AttestationStatusesClient) getCreateRequest(ctx context.Context, resourceURI string, _ *AttestationStatusesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/attestationStatus/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

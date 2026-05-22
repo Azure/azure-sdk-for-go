@@ -46,7 +46,7 @@ func MultiBalanceTester(ctx context.Context) error {
 			case s := <-ch:
 				golog.Println(s)
 			case <-ctx.Done():
-				break
+				return
 			}
 		}
 	}()

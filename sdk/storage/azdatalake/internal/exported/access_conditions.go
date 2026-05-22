@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -29,6 +26,9 @@ type LeaseAccessConditions = generated.LeaseAccessConditions
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = generated.ModifiedAccessConditions
+
+// BlobModifiedAccessConditions contains a group of parameters for specifying blob access conditions.
+type BlobModifiedAccessConditions = blob.BlobModifiedAccessConditions
 
 // SourceModifiedAccessConditions contains a group of parameters for specifying access conditions of a source.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions

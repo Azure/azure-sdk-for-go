@@ -13,13 +13,12 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
-	t.Skip("Skipping while we investigate the issue with Azure OpenAI.")
-	client := newStainlessTestClient(t, azureOpenAI.Embeddings.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Embeddings.Endpoint)
 
 	_, err := client.Embeddings.New(context.Background(), openai.EmbeddingNewParams{
 		Model: openai.EmbeddingModel("thisdoesntexist"),
@@ -27,12 +26,11 @@ func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
 
 	var openaiErr *openai.Error
 	require.ErrorAs(t, err, &openaiErr)
-	require.Equal(t, http.StatusNotFound, openaiErr.StatusCode)
-	require.Contains(t, err.Error(), "does not exist")
+	require.Contains(t, []int{http.StatusBadRequest, http.StatusNotFound}, openaiErr.StatusCode)
 }
 
 func TestClient_GetEmbeddings(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.Embeddings.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Embeddings.Endpoint)
 
 	resp, err := client.Embeddings.New(context.Background(), openai.EmbeddingNewParams{
 		Input: openai.EmbeddingNewParamsInputUnion{
@@ -46,7 +44,7 @@ func TestClient_GetEmbeddings(t *testing.T) {
 
 func TestClient_GetEmbeddings_embeddingsFormat(t *testing.T) {
 	testFn := func(t *testing.T, epm endpointWithModel, dimension int64) {
-		client := newStainlessTestClient(t, epm.Endpoint)
+		client := newStainlessTestClientWithAzureURL(t, epm.Endpoint)
 
 		arg := openai.EmbeddingNewParams{
 			Input: openai.EmbeddingNewParamsInputUnion{

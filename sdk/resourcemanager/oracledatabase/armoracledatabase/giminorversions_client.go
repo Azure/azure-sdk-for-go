@@ -26,7 +26,7 @@ type GiMinorVersionsClient struct {
 // NewGiMinorVersionsClient creates a new instance of GiMinorVersionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGiMinorVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GiMinorVersionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewGiMinorVersionsClient(subscriptionID string, credential azcore.TokenCred
 // Get - Get a GiMinorVersion
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - giversionname - GiVersion name
 //   - giMinorVersionName - The name of the GiMinorVersion
@@ -93,7 +93,7 @@ func (client *GiMinorVersionsClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *GiMinorVersionsClient) getHandleResponse(resp *http.Response) (GiM
 
 // NewListByParentPager - List GiMinorVersion resources by GiVersion
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - giversionname - GiVersion name
 //   - options - GiMinorVersionsClientListByParentOptions contains the optional parameters for the GiMinorVersionsClient.NewListByParentPager
@@ -158,7 +158,7 @@ func (client *GiMinorVersionsClient) listByParentCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	if options != nil && options.ShapeFamily != nil {
 		reqQP.Set("shapeFamily", string(*options.ShapeFamily))
 	}

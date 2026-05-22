@@ -92,7 +92,7 @@ func TestMarkEndpointUnavailable(t *testing.T) {
 	}
 	if info, ok := lc.locationUnavailabilityInfoMap[*loc1Endpoint]; ok {
 		var zeroTime time.Time
-		if firstCheckTime = info.lastCheckTime; firstCheckTime == zeroTime {
+		if firstCheckTime = info.lastCheckTime; firstCheckTime.Equal(zeroTime) {
 			t.Errorf("Expected lastCheckTime to be set, but was not")
 		}
 		if info.unavailableOps != read {
@@ -109,7 +109,7 @@ func TestMarkEndpointUnavailable(t *testing.T) {
 	}
 	if info, ok := lc.locationUnavailabilityInfoMap[*loc1Endpoint]; ok {
 		var zeroTime time.Time
-		if info.lastCheckTime == zeroTime || info.lastCheckTime == firstCheckTime {
+		if info.lastCheckTime.Equal(zeroTime) || info.lastCheckTime.Equal(firstCheckTime) {
 			t.Errorf("Expected lastCheckTime to be updated, but was not. First check time: %s, last check time: %s", firstCheckTime, info.lastCheckTime)
 		}
 		if info.unavailableOps != all {

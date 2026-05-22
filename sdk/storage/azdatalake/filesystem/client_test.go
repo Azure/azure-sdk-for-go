@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -31,12 +28,13 @@ var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running datalake Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &RecordedTestSuite{})
 		suite.Run(t, &UnrecordedTestSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &RecordedTestSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &RecordedTestSuite{})
 	}
 }
@@ -1444,17 +1442,19 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 	_, err = dirClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
+	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(true, nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(5, len(resp.Paths))
-		_require.NotNil(resp.PathList.Paths[0].IsDirectory)
+		paths = append(paths, resp.Paths...)
 
 		if err != nil {
 			break
 		}
 	}
+	_require.Equal(5, len(paths))
+	_require.NotNil(paths[0].IsDirectory)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsRecursiveWithEtagCheck() {
@@ -1515,16 +1515,18 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursiveNoPrefix() {
 	_, err = dirClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
+	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(true, nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(4, len(resp.Paths))
-		_require.NotNil(resp.PathList.Paths[0].IsDirectory)
+		paths = append(paths, resp.Paths...)
 		if err != nil {
 			break
 		}
 	}
+	_require.Equal(4, len(paths))
+	_require.NotNil(paths[0].IsDirectory)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithoutRecursive() {
@@ -1714,21 +1716,23 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithEncryptionContext() {
 	_, err = dirClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
+	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(true, nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(5, len(resp.Paths))
-		_require.Equal(resp.PathList.Paths[2].IsDirectory, to.Ptr(true))
-		_require.Nil(resp.PathList.Paths[3].IsDirectory)
-		_require.Nil(resp.PathList.Paths[2].EncryptionContext)
-		// Encryption context is only applicable on files, not directories.
-		_require.Equal(resp.PathList.Paths[3].EncryptionContext, &testcommon.TestEncryptionContext)
+		paths = append(paths, resp.Paths...)
 
 		if err != nil {
 			break
 		}
 	}
+	_require.Equal(5, len(paths))
+	_require.Equal(paths[2].IsDirectory, to.Ptr(true))
+	_require.Nil(paths[3].IsDirectory)
+	_require.Nil(paths[2].EncryptionContext)
+	// Encryption context is only applicable on files, not directories.
+	_require.Equal(paths[3].EncryptionContext, &testcommon.TestEncryptionContext)
 }
 
 func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPaths() {
@@ -1754,7 +1758,7 @@ func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPaths() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(3, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		_require.Equal(3, len(resp.Segment.PathItems))
 		if err != nil {
 			break
 		}
@@ -1825,7 +1829,7 @@ func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPathsWithPrefix() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(3, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		_require.Equal(3, len(resp.Segment.PathItems))
 		if err != nil {
 			break
 		}
@@ -1863,7 +1867,7 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPaths() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(1, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		_require.Equal(1, len(resp.Segment.PathItems))
 		if err != nil {
 			break
 		}
@@ -1960,7 +1964,7 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithPrefix() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(4, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		_require.Equal(4, len(resp.Segment.PathItems))
 		if err != nil {
 			break
 		}
@@ -2007,7 +2011,7 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithContinuation() {
 
 	resp, err := pager.NextPage(context.Background())
 	_require.NoError(err)
-	_require.Equal(3, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+	_require.Equal(3, len(resp.Segment.PathItems))
 	_require.NotNil(resp.NextMarker)
 
 	token := resp.NextMarker
@@ -2016,7 +2020,7 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithContinuation() {
 	})
 	resp, err = pager.NextPage(context.Background())
 	_require.NoError(err)
-	_require.Equal(1, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+	_require.Equal(1, len(resp.Segment.PathItems))
 	_require.Equal("", *resp.NextMarker)
 }
 

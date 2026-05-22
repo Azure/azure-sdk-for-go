@@ -4,25 +4,25 @@
 
 package armdeploymentsafeguards
 
-// DeploymentSafeguardsClientCreateResponse contains the response from method DeploymentSafeguardsClient.BeginCreate.
-type DeploymentSafeguardsClientCreateResponse struct {
+// ClientCreateResponse contains the response from method Client.BeginCreate.
+type ClientCreateResponse struct {
 	// Deployment Safeguards
 	DeploymentSafeguard
 }
 
-// DeploymentSafeguardsClientDeleteResponse contains the response from method DeploymentSafeguardsClient.BeginDelete.
-type DeploymentSafeguardsClientDeleteResponse struct {
+// ClientDeleteResponse contains the response from method Client.BeginDelete.
+type ClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// DeploymentSafeguardsClientGetResponse contains the response from method DeploymentSafeguardsClient.Get.
-type DeploymentSafeguardsClientGetResponse struct {
+// ClientGetResponse contains the response from method Client.Get.
+type ClientGetResponse struct {
 	// Deployment Safeguards
 	DeploymentSafeguard
 }
 
-// DeploymentSafeguardsClientListResponse contains the response from method DeploymentSafeguardsClient.NewListPager.
-type DeploymentSafeguardsClientListResponse struct {
+// ClientListResponse contains the response from method Client.NewListPager.
+type ClientListResponse struct {
 	// The response of a DeploymentSafeguard list operation.
 	DeploymentSafeguardListResult
 }

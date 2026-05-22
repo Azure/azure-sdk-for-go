@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -129,7 +126,7 @@ func init() {
 		log.Printf("AZURE_RECORD_MODE was not set, defaulting to playback")
 		recordMode = PlaybackMode
 	}
-	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
+	if recordMode != RecordingMode && recordMode != PlaybackMode && recordMode != LiveMode {
 		log.Panicf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v.\n", RecordingMode, PlaybackMode, LiveMode, recordMode)
 	}
 
@@ -416,15 +413,19 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	} else if resp, err = requestStart(url, testId, absAssetLocation); err != nil {
 		return err
 	} else if resp.StatusCode >= 400 {
+		_ = resp.Body.Close()
 		if resp, err = requestStart(url, testId, relAssetLocation); err != nil {
 			return err
 		}
 	}
 
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
 	recId := resp.Header.Get(IDHeader)
 	if recId == "" {
 		b, err := io.ReadAll(resp.Body)
-		defer resp.Body.Close()
 		if err != nil {
 			return err
 		}
@@ -432,9 +433,8 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	}
 
 	// Unmarshal any variables returned by the proxy
-	var m map[string]interface{}
+	var m map[string]any
 	body, err := io.ReadAll(resp.Body)
-	defer resp.Body.Close()
 	if err != nil {
 		return err
 	}
@@ -507,15 +507,18 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	if err != nil {
 		return err
 	}
+
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
 	if resp.StatusCode != 200 {
 		b, err := io.ReadAll(resp.Body)
-		defer resp.Body.Close()
 		if err == nil {
 			return fmt.Errorf("proxy did not stop the recording properly: %s", string(b))
 		}
 		return fmt.Errorf("proxy did not stop the recording properly: %s", err.Error())
 	}
-	_ = resp.Body.Close()
 	return err
 }
 

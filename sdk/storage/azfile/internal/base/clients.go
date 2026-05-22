@@ -1,18 +1,16 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package base
 
 import (
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
-	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -81,7 +79,7 @@ func NewServiceClient(serviceURL string, azClient *azcore.Client, sharedKey *exp
 
 func NewShareClient(shareURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *Client[generated.ShareClient] {
 	return &Client[generated.ShareClient]{
-		inner:     generated.NewShareClient(shareURL, options.FileRequestIntent, azClient),
+		inner:     generated.NewShareClient(shareURL, azClient),
 		sharedKey: sharedKey,
 		options:   options,
 	}
@@ -89,7 +87,7 @@ func NewShareClient(shareURL string, azClient *azcore.Client, sharedKey *exporte
 
 func NewDirectoryClient(directoryURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *Client[generated.DirectoryClient] {
 	return &Client[generated.DirectoryClient]{
-		inner:     generated.NewDirectoryClient(directoryURL, options.AllowTrailingDot, options.FileRequestIntent, options.AllowSourceTrailingDot, azClient),
+		inner:     generated.NewDirectoryClient(directoryURL, azClient),
 		sharedKey: sharedKey,
 		options:   options,
 	}
@@ -97,7 +95,7 @@ func NewDirectoryClient(directoryURL string, azClient *azcore.Client, sharedKey 
 
 func NewFileClient(fileURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *Client[generated.FileClient] {
 	return &Client[generated.FileClient]{
-		inner:     generated.NewFileClient(fileURL, options.AllowTrailingDot, options.FileRequestIntent, options.AllowSourceTrailingDot, azClient),
+		inner:     generated.NewFileClient(fileURL, azClient),
 		sharedKey: sharedKey,
 		options:   options,
 	}

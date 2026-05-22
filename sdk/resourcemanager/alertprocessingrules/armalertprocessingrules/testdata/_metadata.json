@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.AlertsManagement": "2021-08-08"
+  },
+  "emitterVersion": "0.10.2"
+}

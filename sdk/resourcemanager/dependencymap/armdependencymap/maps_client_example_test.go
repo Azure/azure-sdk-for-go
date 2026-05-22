@@ -112,10 +112,29 @@ func ExampleMapsClient_BeginExportDependencies() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdependencymap.MapsClientExportDependenciesResponse{
+	// 	ExportDependenciesOperationResult: &armdependencymap.ExportDependenciesOperationResult{
+	// 		ID: to.Ptr("/subscriptions/D6E58BDB-45F1-41EC-A884-1FC945058848/resourceGroups/rgdependencyMap/providers/Microsoft.DependencyMap/locations/EASTUS2EUAP/operationStatuses/icttwtbaztlrahdfosqwnepbvgrk"),
+	// 		Name: to.Ptr("icttwtbaztlrahdfosqwnepbvgrk"),
+	// 		Status: to.Ptr("Succeeded"),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-29T07:35:15.336Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-29T07:35:15.336Z"); return t}()),
+	// 		Properties: &armdependencymap.ExportDependenciesResultProperties{
+	// 			ExportedDataSasURI: to.Ptr("https://contoso.blob.core.windows.net/export-data/file.csv?sv=..."),
+	// 			StatusCode: to.Ptr(armdependencymap.ExportDependenciesStatusCodePartialMatch),
+	// 			AdditionalInfo: &armdependencymap.ExportDependenciesAdditionalInfo{
+	// 				AvailableDaysCount: to.Ptr[int32](7),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2025-01-31-preview/Maps_Get.json

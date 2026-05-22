@@ -26,7 +26,7 @@ type TargetsClient struct {
 // NewTargetsClient creates a new instance of TargetsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTargetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TargetsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewTargetsClient(subscriptionID string, credential azcore.TokenCredential, 
 // CreateOrUpdate - Create or update a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentProviderNamespace - The parent resource provider namespace.
 //   - parentResourceType - The parent resource type.
@@ -104,7 +104,7 @@ func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -126,7 +126,7 @@ func (client *TargetsClient) createOrUpdateHandleResponse(resp *http.Response) (
 // Delete - Delete a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentProviderNamespace - The parent resource provider namespace.
 //   - parentResourceType - The parent resource type.
@@ -186,16 +186,15 @@ func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentProviderNamespace - The parent resource provider namespace.
 //   - parentResourceType - The parent resource type.
@@ -256,7 +255,7 @@ func (client *TargetsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -273,7 +272,7 @@ func (client *TargetsClient) getHandleResponse(resp *http.Response) (TargetsClie
 
 // NewListPager - Get a list of Target resources that extend a tracked regional resource.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentProviderNamespace - The parent resource provider namespace.
 //   - parentResourceType - The parent resource type.
@@ -330,7 +329,7 @@ func (client *TargetsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}

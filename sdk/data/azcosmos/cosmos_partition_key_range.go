@@ -46,14 +46,14 @@ type partitionKeyRange struct {
 // MarshalJSON implements the json.Marshaler interface
 func (pkr partitionKeyRange) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString(fmt.Sprintf("\"id\":\"%s\"", pkr.ID))
+	fmt.Fprintf(buffer, "\"id\":\"%s\"", pkr.ID)
 
 	if pkr.ResourceID != "" {
-		buffer.WriteString(fmt.Sprintf(",\"_rid\":\"%s\"", pkr.ResourceID))
+		fmt.Fprintf(buffer, ",\"_rid\":\"%s\"", pkr.ResourceID)
 	}
 
 	if pkr.ETag != nil {
-		buffer.WriteString(",\"_etag\":")
+		fmt.Fprint(buffer, ",\"_etag\":")
 		etag, err := json.Marshal(pkr.ETag)
 		if err != nil {
 			return nil, err
@@ -62,23 +62,23 @@ func (pkr partitionKeyRange) MarshalJSON() ([]byte, error) {
 	}
 
 	if pkr.MinInclusive != "" {
-		buffer.WriteString(fmt.Sprintf(",\"minInclusive\":\"%s\"", pkr.MinInclusive))
+		fmt.Fprintf(buffer, ",\"minInclusive\":\"%s\"", pkr.MinInclusive)
 	}
 
 	if pkr.MaxExclusive != "" {
-		buffer.WriteString(fmt.Sprintf(",\"maxExclusive\":\"%s\"", pkr.MaxExclusive))
+		fmt.Fprintf(buffer, ",\"maxExclusive\":\"%s\"", pkr.MaxExclusive)
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"ridPrefix\":%d", pkr.ResourceIDPrefix))
+	fmt.Fprintf(buffer, ",\"ridPrefix\":%d", pkr.ResourceIDPrefix)
 
 	if pkr.SelfLink != "" {
-		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", pkr.SelfLink))
+		fmt.Fprintf(buffer, ",\"_self\":\"%s\"", pkr.SelfLink)
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"throughputFraction\":%f", pkr.ThroughputFraction))
+	fmt.Fprintf(buffer, ",\"throughputFraction\":%f", pkr.ThroughputFraction)
 
 	if pkr.Status != "" {
-		buffer.WriteString(fmt.Sprintf(",\"status\":\"%s\"", pkr.Status))
+		fmt.Fprintf(buffer, ",\"status\":\"%s\"", pkr.Status)
 	}
 
 	if pkr.Parents != nil {
@@ -86,7 +86,7 @@ func (pkr partitionKeyRange) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		buffer.WriteString(",\"parents\":")
+		fmt.Fprint(buffer, ",\"parents\":")
 		buffer.Write(parents)
 	}
 
@@ -95,17 +95,17 @@ func (pkr partitionKeyRange) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		buffer.WriteString(",\"ownedArchivalPKRangeIds\":")
+		fmt.Fprint(buffer, ",\"ownedArchivalPKRangeIds\":")
 		buffer.Write(ids)
 	}
 
 	if !pkr.LastModified.IsZero() {
-		buffer.WriteString(fmt.Sprintf(",\"_ts\":%v", strconv.FormatInt(pkr.LastModified.Unix(), 10)))
+		fmt.Fprintf(buffer, ",\"_ts\":%v", strconv.FormatInt(pkr.LastModified.Unix(), 10))
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"lsn\":%d", pkr.LSN))
+	fmt.Fprintf(buffer, ",\"lsn\":%d", pkr.LSN)
 
-	buffer.WriteString("}")
+	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }
 

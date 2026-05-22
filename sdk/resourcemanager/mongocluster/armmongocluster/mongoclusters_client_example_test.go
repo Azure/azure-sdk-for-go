@@ -13,8 +13,8 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_NameAvailability.json
-func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoClusterNameIsAvailabilityForUse() {
+// Generated from example definition: 2026-02-01-preview/MongoClusters_NameAvailability.json
+func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoClusterNameIsAvailableForUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -35,13 +35,13 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoC
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: &armmongocluster.CheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armmongocluster.CheckNameAvailabilityResponse{
 	// 		NameAvailable: to.Ptr(true),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_NameAvailability_AlreadyExists.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_NameAvailability_AlreadyExists.json
 func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMongoClusterNameIsAlreadyInUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMon
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: &armmongocluster.CheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armmongocluster.CheckNameAvailabilityResponse{
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr(armmongocluster.CheckNameAvailabilityReasonAlreadyExists),
 	// 		Message: to.Ptr("Cluster name 'existingmongocluster' is already in use."),
@@ -71,7 +71,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMon
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_Create.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_Create.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 		Properties: &armmongocluster.Properties{
 			Administrator: &armmongocluster.AdministratorProperties{
 				UserName: to.Ptr("mongoAdmin"),
-				Password: to.Ptr("password"),
+				Password: to.Ptr("********"),
 			},
 			AuthConfig: &armmongocluster.AuthConfigProperties{
 				AllowedModes: []*armmongocluster.AuthenticationMode{
@@ -114,16 +114,16 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
@@ -176,7 +176,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_CreateGeoReplica.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_CreateGeoReplica.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterResourceFromASourceResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,6 +195,9 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/mySourceMongoCluster"),
 				SourceLocation:   to.Ptr("eastus"),
 			},
+			Storage: &armmongocluster.StorageProperties{
+				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -202,16 +205,16 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myReplicaMongoCluster"),
 	// 		Name: to.Ptr("myReplicaMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		Properties: &armmongocluster.Properties{
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -225,7 +228,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -259,7 +262,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_CreateGeoReplica_CMK.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_CreateGeoReplica_CMK.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,13 +303,13 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myReplicaMongoCluster"),
 	// 		Name: to.Ptr("myReplicaMongoCluster"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
@@ -387,7 +390,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_CreatePITR.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_CreatePITR.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceFromAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -402,6 +405,10 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 		Location: to.Ptr("westus2"),
 		Properties: &armmongocluster.Properties{
 			CreateMode: to.Ptr(armmongocluster.CreateModePointInTimeRestore),
+			Administrator: &armmongocluster.AdministratorProperties{
+				UserName: to.Ptr("mongoAdmin"),
+				Password: to.Ptr("********"),
+			},
 			RestoreParameters: &armmongocluster.RestoreParameters{
 				PointInTimeUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T20:07:35Z"); return t }()),
 				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"),
@@ -413,16 +420,16 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		Properties: &armmongocluster.Properties{
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -467,7 +474,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_CreatePITR_CMK.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_CreatePITR_CMK.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -508,13 +515,13 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
@@ -572,7 +579,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// 				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
 	// 					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
 	// 						IdentityType: to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
-	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
 	// 					},
 	// 					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey"),
 	// 				},
@@ -581,7 +588,9 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// 		Identity: &armmongocluster.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 	// 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
-	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster": &armmongocluster.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armmongocluster.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 				},
 	// 			},
 	// 		},
@@ -589,7 +598,89 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_Create_CMK.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_CreatePITR_EntraAuth.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIdAuthenticationModeEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
+		Location: to.Ptr("westus2"),
+		Properties: &armmongocluster.Properties{
+			CreateMode: to.Ptr(armmongocluster.CreateModePointInTimeRestore),
+			AuthConfig: &armmongocluster.AuthConfigProperties{
+				AllowedModes: []*armmongocluster.AuthenticationMode{
+					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+				},
+			},
+			RestoreParameters: &armmongocluster.RestoreParameters{
+				PointInTimeUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T20:07:35Z"); return t }()),
+				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
+	// 	MongoCluster: armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
+	// 		Properties: &armmongocluster.Properties{
+	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](128),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](1),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-02-01-preview/MongoClusters_Create_CMK.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResourceWithCustomerManagedKeyEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -611,7 +702,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 		Properties: &armmongocluster.Properties{
 			Administrator: &armmongocluster.AdministratorProperties{
 				UserName: to.Ptr("mongoAdmin"),
-				Password: to.Ptr("password"),
+				Password: to.Ptr("********"),
 			},
 			Storage: &armmongocluster.StorageProperties{
 				SizeGb: to.Ptr[int64](32),
@@ -641,13 +732,13 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
@@ -707,7 +798,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// 				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
 	// 					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
 	// 						IdentityType: to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
-	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
 	// 					},
 	// 					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey"),
 	// 				},
@@ -716,7 +807,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// 		Identity: &armmongocluster.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 	// 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
-	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster": &armmongocluster.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armmongocluster.UserAssignedIdentity{
 	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 				},
@@ -726,7 +817,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_Create_SSDv2.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_Create_SSDv2.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResourceWithPremiumSsDv2Storage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -742,7 +833,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 		Properties: &armmongocluster.Properties{
 			Administrator: &armmongocluster.AdministratorProperties{
 				UserName: to.Ptr("mongoAdmin"),
-				Password: to.Ptr("password"),
+				Password: to.Ptr("********"),
 			},
 			AuthConfig: &armmongocluster.AuthConfigProperties{
 				AllowedModes: []*armmongocluster.AuthenticationMode{
@@ -751,10 +842,8 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 			},
 			ServerVersion: to.Ptr("5.0"),
 			Storage: &armmongocluster.StorageProperties{
-				SizeGb:     to.Ptr[int64](32),
-				Type:       to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
-				Iops:       to.Ptr[int64](3000),
-				Throughput: to.Ptr[int64](125),
+				SizeGb: to.Ptr[int64](32),
+				Type:   to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 			},
 			Compute: &armmongocluster.ComputeProperties{
 				Tier: to.Ptr("M30"),
@@ -772,16 +861,16 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
@@ -804,8 +893,6 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](32),
 	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
-	// 				Iops: to.Ptr[int64](3000),
-	// 				Throughput: to.Ptr[int64](125),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -836,7 +923,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_Delete.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_Delete.json
 func ExampleMongoClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -853,11 +940,11 @@ func ExampleMongoClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_Get.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_Get.json
 func ExampleMongoClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -876,10 +963,10 @@ func ExampleMongoClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientGetResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		Tags: map[string]*string{
 	// 			"additionalProp1": to.Ptr("string"),
 	// 			"additionalProp2": to.Ptr("string"),
@@ -932,13 +1019,14 @@ func ExampleMongoClustersClient_Get() {
 	// 			DataAPI: &armmongocluster.DataAPIProperties{
 	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
 	// 			},
+	// 			NetworkBypassMode: to.Ptr(armmongocluster.NetworkBypassModeNone),
 	// 		},
 	// 		Location: to.Ptr("westus2"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_List.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_List.json
 func ExampleMongoClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -966,7 +1054,7 @@ func ExampleMongoClustersClient_NewListPager() {
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 		// 				Name: to.Ptr("myMongoCluster"),
-		// 				Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 		// 				Tags: map[string]*string{
 		// 					"additionalProp1": to.Ptr("string"),
 		// 					"additionalProp2": to.Ptr("string"),
@@ -1025,7 +1113,7 @@ func ExampleMongoClustersClient_NewListPager() {
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster2"),
 		// 				Name: to.Ptr("myMongoCluster2"),
-		// 				Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 		// 				Tags: map[string]*string{
 		// 					"additionalProp1": to.Ptr("string"),
 		// 				},
@@ -1085,7 +1173,7 @@ func ExampleMongoClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_ListByResourceGroup.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_ListByResourceGroup.json
 func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1113,7 +1201,7 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 		// 				Name: to.Ptr("myMongoCluster"),
-		// 				Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 		// 				Tags: map[string]*string{
 		// 					"additionalProp1": to.Ptr("string"),
 		// 					"additionalProp2": to.Ptr("string"),
@@ -1172,7 +1260,7 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster2"),
 		// 				Name: to.Ptr("myMongoCluster2"),
-		// 				Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 		// 				Tags: map[string]*string{
 		// 					"additionalProp1": to.Ptr("string"),
 		// 				},
@@ -1232,7 +1320,7 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_ListConnectionStrings.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_ListConnectionStrings.json
 func ExampleMongoClustersClient_ListConnectionStrings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1251,7 +1339,7 @@ func ExampleMongoClustersClient_ListConnectionStrings() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientListConnectionStringsResponse{
-	// 	ListConnectionStringsResult: &armmongocluster.ListConnectionStringsResult{
+	// 	ListConnectionStringsResult: armmongocluster.ListConnectionStringsResult{
 	// 		ConnectionStrings: []*armmongocluster.ConnectionString{
 	// 			{
 	// 				ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
@@ -1262,7 +1350,7 @@ func ExampleMongoClustersClient_ListConnectionStrings() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_ForcePromoteReplica.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_ForcePromoteReplica.json
 func ExampleMongoClustersClient_BeginPromote() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1282,11 +1370,153 @@ func ExampleMongoClustersClient_BeginPromote() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_PatchDataApi.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_PatchCMK.json
+func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionKeyOnAMongoClusterResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Identity: &armmongocluster.ManagedServiceIdentity{
+			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2": {},
+			},
+		},
+		Properties: &armmongocluster.UpdateProperties{
+			Encryption: &armmongocluster.EncryptionProperties{
+				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
+					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
+						IdentityType:                   to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2"),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey2"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientUpdateResponse{
+	// 	MongoCluster: armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](4),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PrivateEndpointConnections: []*armmongocluster.PrivateEndpointConnection{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster/privateEndpointConnections/mymongocluster-pe.ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 					SystemData: &armmongocluster.SystemData{
+	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						CreatedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 						CreatedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
+	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						LastModifiedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 						LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
+	// 					},
+	// 					Properties: &armmongocluster.PrivateEndpointConnectionProperties{
+	// 						PrivateEndpoint: &armmongocluster.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.Network/privateEndpoints/mymongocluster-pe"),
+	// 						},
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("MongoCluster"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armmongocluster.PrivateLinkServiceConnectionState{
+	// 							Status: to.Ptr(armmongocluster.PrivateEndpointServiceConnectionStatusApproved),
+	// 							Description: to.Ptr("Auto-approved"),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessDisabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 			CreateMode: to.Ptr(armmongocluster.CreateModeDefault),
+	// 			Encryption: &armmongocluster.EncryptionProperties{
+	// 				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
+	// 					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2"),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey2"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Identity: &armmongocluster.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2": &armmongocluster.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-02-01-preview/MongoClusters_PatchDataApi.json
 func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1309,16 +1539,16 @@ func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResourc
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
@@ -1397,7 +1627,94 @@ func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResourc
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_PatchDiskSize.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_PatchDisableNativeAuth.json
+func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToRemoveNativeAuthentication() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Properties: &armmongocluster.UpdateProperties{
+			AuthConfig: &armmongocluster.AuthConfigProperties{
+				AllowedModes: []*armmongocluster.AuthenticationMode{
+					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientUpdateResponse{
+	// 	MongoCluster: armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](4),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-02-01-preview/MongoClusters_PatchDiskSize.json
 func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1420,16 +1737,16 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterRes
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
@@ -1482,7 +1799,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterRes
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_PatchEnableEntraIDAuth.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_PatchEnableEntraIDAuth.json
 func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToIncludeMicrosoftEntraIdAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1508,16 +1825,16 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
@@ -1571,7 +1888,91 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_PatchNetworkBypassMode.json
+func ExampleMongoClustersClient_BeginUpdate_enablesNetworkBypassModeOnAMongoClusterResourceToAllowAzureCosmosDbServiceToBypassNetworkRestrictions() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Properties: &armmongocluster.UpdateProperties{
+			NetworkBypassMode: to.Ptr(armmongocluster.NetworkBypassModeAzureCosmosDB),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientUpdateResponse{
+	// 	MongoCluster: armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](4),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessDisabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 			NetworkBypassMode: to.Ptr(armmongocluster.NetworkBypassModeAzureCosmosDB),
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-02-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
 func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoClusterResourceWithAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1592,16 +1993,16 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoC
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
@@ -1680,8 +2081,8 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoC
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_PatchSSDv2.json
-func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeIopsAndThroughputOnAMongoClusterResource() {
+// Generated from example definition: 2026-02-01-preview/MongoClusters_PatchSSDv2.json
+func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeOnAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1694,10 +2095,8 @@ func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeIopsAndThr
 	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
 		Properties: &armmongocluster.UpdateProperties{
 			Storage: &armmongocluster.StorageProperties{
-				SizeGb:     to.Ptr[int64](128),
-				Type:       to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
-				Iops:       to.Ptr[int64](5000),
-				Throughput: to.Ptr[int64](1000),
+				SizeGb: to.Ptr[int64](128),
+				Type:   to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 			},
 		},
 	}, nil)
@@ -1706,16 +2105,16 @@ func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeIopsAndThr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
@@ -1737,8 +2136,6 @@ func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeIopsAndThr
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
 	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
-	// 				Iops: to.Ptr[int64](5000),
-	// 				Throughput: to.Ptr[int64](1000),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -1770,7 +2167,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeIopsAndThr
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_ResetPassword.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_ResetPassword.json
 func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1785,7 +2182,7 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 		Properties: &armmongocluster.UpdateProperties{
 			Administrator: &armmongocluster.AdministratorProperties{
 				UserName: to.Ptr("mongoAdmin"),
-				Password: to.Ptr("password"),
+				Password: to.Ptr("********"),
 			},
 		},
 	}, nil)
@@ -1794,16 +2191,16 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
@@ -1856,7 +2253,7 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_Update.json
+// Generated from example definition: 2026-02-01-preview/MongoClusters_Update.json
 func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1903,16 +2300,16 @@ func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 	MongoCluster: armmongocluster.MongoCluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),

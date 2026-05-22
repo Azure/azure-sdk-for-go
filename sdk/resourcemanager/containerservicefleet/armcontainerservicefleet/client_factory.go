@@ -48,6 +48,14 @@ func (c *ClientFactory) NewAutoUpgradeProfilesClient() *AutoUpgradeProfilesClien
 	}
 }
 
+// NewFleetManagedNamespacesClient creates a new instance of FleetManagedNamespacesClient.
+func (c *ClientFactory) NewFleetManagedNamespacesClient() *FleetManagedNamespacesClient {
+	return &FleetManagedNamespacesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewFleetMembersClient creates a new instance of FleetMembersClient.
 func (c *ClientFactory) NewFleetMembersClient() *FleetMembersClient {
 	return &FleetMembersClient{

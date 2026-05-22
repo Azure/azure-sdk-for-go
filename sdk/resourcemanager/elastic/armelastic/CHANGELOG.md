@@ -1,5 +1,61 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-03-16)
+### Breaking Changes
+
+- Function `*MonitoredSubscriptionsClient.BeginCreateorUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginCreateorUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginCreateorUpdateOptions)`
+- Function `*MonitoredSubscriptionsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginUpdateOptions)`
+- Function `*MonitorsClient.BeginCreate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginCreateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, body MonitorResource, options *MonitorsClientBeginCreateOptions)`
+- Function `*MonitorsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, body MonitorResourceUpdateParameters, options *MonitorsClientBeginUpdateOptions)`
+- Function `*OpenAIClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, integrationName string, options *OpenAIClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, integrationName string, body OpenAIIntegrationRPModel, options *OpenAIClientCreateOrUpdateOptions)`
+- Function `*TagRulesClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, body MonitoringTagRules, options *TagRulesClientCreateOrUpdateOptions)`
+- Field `Body` of struct `MonitoredSubscriptionsClientBeginCreateorUpdateOptions` has been removed
+- Field `Body` of struct `MonitoredSubscriptionsClientBeginUpdateOptions` has been removed
+- Field `Body` of struct `MonitorsClientBeginCreateOptions` has been removed
+- Field `Body` of struct `MonitorsClientBeginUpdateOptions` has been removed
+- Field `Body` of struct `OpenAIClientCreateOrUpdateOptions` has been removed
+- Field `Body` of struct `TagRulesClientCreateOrUpdateOptions` has been removed
+
+### Features Added
+
+- New field `SystemData` in struct `MonitoredSubscriptionProperties`
+- New field `SystemData` in struct `OpenAIIntegrationRPModel`
+
+
+## 2.0.0 (2025-11-20)
+### Breaking Changes
+
+- Operation `*MonitorsClient.Update` has been changed to LRO, use `*MonitorsClient.BeginUpdate` instead.
+
+### Features Added
+
+- New enum type `ConfigurationType` with values `ConfigurationTypeGeneralPurpose`, `ConfigurationTypeNotApplicable`, `ConfigurationTypeTimeSeries`, `ConfigurationTypeVector`
+- New enum type `HostingType` with values `HostingTypeHosted`, `HostingTypeServerless`
+- New enum type `Operation` with values `OperationActive`, `OperationAddBegin`, `OperationAddComplete`, `OperationDeleteBegin`, `OperationDeleteComplete`
+- New enum type `ProjectType` with values `ProjectTypeElasticsearch`, `ProjectTypeNotApplicable`, `ProjectTypeObservability`, `ProjectTypeSecurity`
+- New enum type `Status` with values `StatusActive`, `StatusDeleting`, `StatusFailed`, `StatusInProgress`
+- New function `*ClientFactory.NewMonitoredSubscriptionsClient() *MonitoredSubscriptionsClient`
+- New function `NewMonitoredSubscriptionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*MonitoredSubscriptionsClient, error)`
+- New function `*MonitoredSubscriptionsClient.BeginCreateorUpdate(context.Context, string, string, string, *MonitoredSubscriptionsClientBeginCreateorUpdateOptions) (*runtime.Poller[MonitoredSubscriptionsClientCreateorUpdateResponse], error)`
+- New function `*MonitoredSubscriptionsClient.BeginDelete(context.Context, string, string, string, *MonitoredSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[MonitoredSubscriptionsClientDeleteResponse], error)`
+- New function `*MonitoredSubscriptionsClient.Get(context.Context, string, string, string, *MonitoredSubscriptionsClientGetOptions) (MonitoredSubscriptionsClientGetResponse, error)`
+- New function `*MonitoredSubscriptionsClient.NewListPager(string, string, *MonitoredSubscriptionsClientListOptions) *runtime.Pager[MonitoredSubscriptionsClientListResponse]`
+- New function `*MonitoredSubscriptionsClient.BeginUpdate(context.Context, string, string, string, *MonitoredSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[MonitoredSubscriptionsClientUpdateResponse], error)`
+- New function `*OrganizationsClient.BeginResubscribe(context.Context, string, string, *OrganizationsClientBeginResubscribeOptions) (*runtime.Poller[OrganizationsClientResubscribeResponse], error)`
+- New struct `MonitoredSubscription`
+- New struct `MonitoredSubscriptionProperties`
+- New struct `MonitoredSubscriptionPropertiesList`
+- New struct `ProjectDetails`
+- New struct `ResubscribeProperties`
+- New struct `SubscriptionList`
+- New field `Type` in struct `ConnectedPartnerResourceProperties`
+- New field `ConfigurationType`, `ProjectType` in struct `DeploymentInfoResponse`
+- New field `OfferID`, `PublisherID` in struct `MarketplaceSaaSInfoMarketplaceSubscription`
+- New field `HostingType`, `ProjectDetails` in struct `MonitorProperties`
+- New field `Kind` in struct `MonitorResource`
+- New field `OpenAIConnectorID` in struct `OpenAIIntegrationProperties`
+
+
 ## 1.0.0 (2024-10-24)
 ### Features Added
 

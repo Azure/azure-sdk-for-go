@@ -1,6 +1,3 @@
-//go:build go1.21
-// +build go1.21
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -12,7 +9,7 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // ContentFilterError can be extracted from an openai.Error using [ExtractContentFilterError].

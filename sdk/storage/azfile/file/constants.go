@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -8,6 +5,7 @@ package file
 
 import (
 	"encoding/binary"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 )
@@ -97,6 +95,14 @@ const (
 	FilePermissionFormatSddl   PermissionFormat = generated.FilePermissionFormatSddl
 )
 
+// PropertySemantics has two values - New and Restore, SMB only
+type PropertySemantics = generated.FilePropertySemantics
+
+const (
+	FilePropertySemanticsNew     PropertySemantics = "New"
+	FilePropertySemanticsRestore PropertySemantics = "Restore"
+)
+
 // PossibleFilePermissionFormatValues returns the possible values for the FilePermissionFormat const type.
 func PossibleFilePermissionFormatValues() []PermissionFormat {
 	return generated.PossibleFilePermissionFormatValues()
@@ -105,6 +111,11 @@ func PossibleFilePermissionFormatValues() []PermissionFormat {
 // PossibleRangeWriteTypeValues returns the possible values for the RangeWriteType const type.
 func PossibleRangeWriteTypeValues() []RangeWriteType {
 	return generated.PossibleFileRangeWriteTypeValues()
+}
+
+// PossiblePropertySemanticsValues returns the possible values for the PropertySemantics const type.
+func PossiblePropertySemanticsValues() []PropertySemantics {
+	return generated.PossibleFilePropertySemanticsValues()
 }
 
 // SourceContentValidationType abstracts mechanisms used to validate source content

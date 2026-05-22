@@ -297,10 +297,7 @@ func writeFuncs(funcs map[string]exports.Func, subheader string, md *markdown.Wr
 	items := make([]string, len(funcs))
 	i := 0
 	for k, v := range funcs {
-		params := ""
-		if v.Params != nil {
-			params = *v.Params
-		}
+		params := formatParams(v.Params)
 		returns := ""
 		if v.Returns != nil {
 			returns = *v.Returns
@@ -316,6 +313,23 @@ func writeFuncs(funcs map[string]exports.Func, subheader string, md *markdown.Wr
 	for _, item := range items {
 		md.WriteLine(item)
 	}
+}
+
+// formatParams converts a parameter list to a comma-delimited string with names and types
+func formatParams(params []exports.Param) string {
+	if len(params) == 0 {
+		return ""
+	}
+
+	var parts []string
+	for _, p := range params {
+		if p.Name != "" {
+			parts = append(parts, p.Name+" "+p.Type)
+		} else {
+			parts = append(parts, p.Type)
+		}
+	}
+	return strings.Join(parts, ", ")
 }
 
 // writes out struct information

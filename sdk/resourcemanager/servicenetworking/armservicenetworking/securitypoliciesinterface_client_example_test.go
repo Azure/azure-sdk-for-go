@@ -46,7 +46,7 @@ func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putIPAccessRules
 	// 		Name: to.Ptr("ipAccessRules-0"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/ipAccessRules-0"),
-	// 		Location: to.Ptr("eastus"),
+	// 		Location: to.Ptr("NorthCentralUS"),
 	// 		Properties: &armservicenetworking.SecurityPolicyProperties{
 	// 			PolicyType: to.Ptr(armservicenetworking.PolicyTypeIPAccessRules),
 	// 			IPAccessRulesPolicy: &armservicenetworking.IPAccessRulesPolicy{
@@ -74,7 +74,7 @@ func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putWafSecurityPo
 		Location: to.Ptr("NorthCentralUS"),
 		Properties: &armservicenetworking.SecurityPolicyProperties{
 			WafPolicy: &armservicenetworking.WafPolicy{
-				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
+				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
 			},
 		},
 	}, nil)
@@ -93,11 +93,11 @@ func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putWafSecurityPo
 	// 		Name: to.Ptr("waf-0"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/waf-0"),
-	// 		Location: to.Ptr("eastus"),
+	// 		Location: to.Ptr("NorthCentralUS"),
 	// 		Properties: &armservicenetworking.SecurityPolicyProperties{
 	// 			PolicyType: to.Ptr(armservicenetworking.PolicyTypeWAF),
 	// 			WafPolicy: &armservicenetworking.WafPolicy{
-	// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
+	// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 	// 		},
@@ -149,11 +149,11 @@ func ExampleSecurityPoliciesInterfaceClient_Get() {
 	// 		Name: to.Ptr("waf-0"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/waf-0"),
-	// 		Location: to.Ptr("eastus"),
+	// 		Location: to.Ptr("NorthCentralUS"),
 	// 		Properties: &armservicenetworking.SecurityPolicyProperties{
 	// 			PolicyType: to.Ptr(armservicenetworking.PolicyTypeWAF),
 	// 			WafPolicy: &armservicenetworking.WafPolicy{
-	// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
+	// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 	// 		},
@@ -190,11 +190,11 @@ func ExampleSecurityPoliciesInterfaceClient_NewListByTrafficControllerPager() {
 		// 				Name: to.Ptr("waf-0"),
 		// 				Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/waf-0"),
-		// 				Location: to.Ptr("eastus"),
+		// 				Location: to.Ptr("NorthCentralUS"),
 		// 				Properties: &armservicenetworking.SecurityPolicyProperties{
 		// 					PolicyType: to.Ptr(armservicenetworking.PolicyTypeWAF),
 		// 					WafPolicy: &armservicenetworking.WafPolicy{
-		// 						ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
+		// 						ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 		// 				},
@@ -234,7 +234,7 @@ func ExampleSecurityPoliciesInterfaceClient_Update_updateIPAccessRulesSecurityPo
 	// 		Name: to.Ptr("ipAccessRules-0"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/ipAccessRules-0"),
-	// 		Location: to.Ptr("eastus"),
+	// 		Location: to.Ptr("NorthCentralUS"),
 	// 		Properties: &armservicenetworking.SecurityPolicyProperties{
 	// 			PolicyType: to.Ptr(armservicenetworking.PolicyTypeIPAccessRules),
 	// 			IPAccessRulesPolicy: &armservicenetworking.IPAccessRulesPolicy{
@@ -261,7 +261,7 @@ func ExampleSecurityPoliciesInterfaceClient_Update_updateWafSecurityPolicy() {
 	res, err := clientFactory.NewSecurityPoliciesInterfaceClient().Update(ctx, "rg1", "tc1", "sp1", armservicenetworking.SecurityPolicyUpdate{
 		Properties: &armservicenetworking.SecurityPolicyUpdateProperties{
 			WafPolicy: &armservicenetworking.WafPolicy{
-				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
+				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
 			},
 		},
 	}, nil)
@@ -276,11 +276,11 @@ func ExampleSecurityPoliciesInterfaceClient_Update_updateWafSecurityPolicy() {
 	// 		Name: to.Ptr("waf-0"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/waf-0"),
-	// 		Location: to.Ptr("eastus"),
+	// 		Location: to.Ptr("NorthCentralUS"),
 	// 		Properties: &armservicenetworking.SecurityPolicyProperties{
 	// 			PolicyType: to.Ptr(armservicenetworking.PolicyTypeWAF),
 	// 			WafPolicy: &armservicenetworking.WafPolicy{
-	// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
+	// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 	// 		},

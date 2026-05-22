@@ -8,7 +8,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type BinaryHardeningFeatures.
@@ -248,14 +250,14 @@ func (c CryptoCertificate) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "certificateUsage", c.CertificateUsage)
 	populate(objectMap, "cryptoCertId", c.CryptoCertID)
 	populate(objectMap, "encoding", c.Encoding)
-	populateDateTimeRFC3339(objectMap, "expirationDate", c.ExpirationDate)
+	populateTime[datetime.RFC3339](objectMap, "expirationDate", c.ExpirationDate)
 	populate(objectMap, "filePaths", c.FilePaths)
 	populate(objectMap, "fingerprint", c.Fingerprint)
 	populate(objectMap, "isExpired", c.IsExpired)
 	populate(objectMap, "isSelfSigned", c.IsSelfSigned)
 	populate(objectMap, "isShortKeySize", c.IsShortKeySize)
 	populate(objectMap, "isWeakSignature", c.IsWeakSignature)
-	populateDateTimeRFC3339(objectMap, "issuedDate", c.IssuedDate)
+	populateTime[datetime.RFC3339](objectMap, "issuedDate", c.IssuedDate)
 	populate(objectMap, "issuer", c.Issuer)
 	populate(objectMap, "pairedKey", c.PairedKey)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
@@ -296,7 +298,7 @@ func (c *CryptoCertificate) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Encoding", &c.Encoding)
 			delete(rawMsg, key)
 		case "expirationDate":
-			err = unpopulateDateTimeRFC3339(val, "ExpirationDate", &c.ExpirationDate)
+			err = unpopulateTime[datetime.RFC3339](val, "ExpirationDate", &c.ExpirationDate)
 			delete(rawMsg, key)
 		case "filePaths":
 			err = unpopulate(val, "FilePaths", &c.FilePaths)
@@ -317,7 +319,7 @@ func (c *CryptoCertificate) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "IsWeakSignature", &c.IsWeakSignature)
 			delete(rawMsg, key)
 		case "issuedDate":
-			err = unpopulateDateTimeRFC3339(val, "IssuedDate", &c.IssuedDate)
+			err = unpopulateTime[datetime.RFC3339](val, "IssuedDate", &c.IssuedDate)
 			delete(rawMsg, key)
 		case "issuer":
 			err = unpopulate(val, "Issuer", &c.Issuer)
@@ -705,6 +707,41 @@ func (c *CryptoKeySummaryResource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type CveComponent.
+func (c CveComponent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "componentId", c.ComponentID)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "version", c.Version)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CveComponent.
+func (c *CveComponent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "componentId":
+			err = unpopulate(val, "ComponentID", &c.ComponentID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &c.Name)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &c.Version)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type CveLink.
 func (c CveLink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -813,12 +850,17 @@ func (c *CveResourceListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CveResult.
 func (c CveResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "component", c.Component)
 	populate(objectMap, "componentId", c.ComponentID)
 	populate(objectMap, "componentName", c.ComponentName)
 	populate(objectMap, "componentVersion", c.ComponentVersion)
 	populate(objectMap, "cveId", c.CveID)
 	populate(objectMap, "cveName", c.CveName)
+	populate(objectMap, "cvssScore", c.CvssScore)
 	populate(objectMap, "cvssScores", c.CvssScores)
+	populate(objectMap, "cvssV2Score", c.CvssV2Score)
+	populate(objectMap, "cvssV3Score", c.CvssV3Score)
+	populate(objectMap, "cvssVersion", c.CvssVersion)
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "effectiveCvssScore", c.EffectiveCvssScore)
 	populate(objectMap, "effectiveCvssVersion", c.EffectiveCvssVersion)
@@ -837,6 +879,9 @@ func (c *CveResult) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "component":
+			err = unpopulate(val, "Component", &c.Component)
+			delete(rawMsg, key)
 		case "componentId":
 			err = unpopulate(val, "ComponentID", &c.ComponentID)
 			delete(rawMsg, key)
@@ -852,8 +897,20 @@ func (c *CveResult) UnmarshalJSON(data []byte) error {
 		case "cveName":
 			err = unpopulate(val, "CveName", &c.CveName)
 			delete(rawMsg, key)
+		case "cvssScore":
+			err = unpopulate(val, "CvssScore", &c.CvssScore)
+			delete(rawMsg, key)
 		case "cvssScores":
 			err = unpopulate(val, "CvssScores", &c.CvssScores)
+			delete(rawMsg, key)
+		case "cvssV2Score":
+			err = unpopulate(val, "CvssV2Score", &c.CvssV2Score)
+			delete(rawMsg, key)
+		case "cvssV3Score":
+			err = unpopulate(val, "CvssV3Score", &c.CvssV3Score)
+			delete(rawMsg, key)
+		case "cvssVersion":
+			err = unpopulate(val, "CvssVersion", &c.CvssVersion)
 			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &c.Description)
@@ -1785,10 +1842,10 @@ func (s *SummaryResourceProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -1804,7 +1861,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateTime[datetime.RFC3339](val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -1813,7 +1870,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateTime[datetime.RFC3339](val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
@@ -2119,6 +2176,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+	} else if !reflect.ValueOf(t).IsNil() {
+		newTime := T(*t)
+		m[k] = (*T)(&newTime)
+	}
+}
+
 func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -2127,4 +2195,21 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
+}
+
+func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
+	if data == nil || string(data) == "null" {
+		return nil
+	}
+	var aux T
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	newTime := time.Time(aux)
+	*t = &newTime
+	return nil
+}
+
+type dateTimeConstraints interface {
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -39,23 +36,4 @@ type CopyFileNFSProperties struct {
 	// file is copied from the source file. override: The owner user identifier (UID) and group identifier (GID) on the destination
 	// file is determined via the x-ms-owner and x-ms-group headers.
 	FileOwnerCopyMode *generated.OwnerCopyMode
-}
-
-// FormatCopyFileNFSProperties returns creation time, last write time.
-func FormatCopyFileNFSProperties(np *CopyFileNFSProperties) (opts *generated.CopyFileSMBInfo) {
-	opts = &generated.CopyFileSMBInfo{}
-
-	if np == nil {
-		return nil
-	}
-
-	if np.CreationTime != nil {
-		opts.FileCreationTime = np.CreationTime.FormatCreationTime()
-	}
-
-	if np.LastWriteTime != nil {
-		opts.FileLastWriteTime = np.LastWriteTime.FormatLastWriteTime()
-	}
-
-	return
 }

@@ -1,10 +1,8 @@
-# Developer Documentation
+# Documentation
 
-Note: this documentation is for developers of SDKs, if you need documentation for using SDKs, refer to the individual READMEs in each package's root. For example, for help with the `azidentity` package refer to the [README here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/README.md)
+This folder contains documentation for the Azure SDK for Go repository. For documentation on using a specific SDK, refer to the individual READMEs in each module's root.
 
-- If you are onboarding an entirely new service and starting from scratch please refer to the [new service onboarding documentation][new_service_docs].
-- If you are ready to release a package, follow the release [release documentation][release].
+The folder structure is as follows:
 
-<!-- LINKS -->
-[new_service_docs]: https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/developer_setup.md
-[release]: https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/release.md
+* [development](https://github.com/Azure/azure-sdk-for-go/tree/main/documentation/development)- advanced documentation for SDK *developers* (not SDK consumers)
+* [legacy](https://github.com/Azure/azure-sdk-for-go/tree/main/documentation/legacy)- information on previous SDK versions

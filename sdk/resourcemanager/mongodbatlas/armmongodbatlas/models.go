@@ -78,7 +78,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
@@ -126,9 +126,6 @@ type OrganizationResource struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the Organization resource
-	Name *string
-
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
@@ -140,6 +137,9 @@ type OrganizationResource struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

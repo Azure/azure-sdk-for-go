@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -9,6 +6,7 @@ package runtime
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"net"
 	"net/http"
@@ -104,19 +102,18 @@ func TestHTTPTracePolicy(t *testing.T) {
 	require.EqualValues(t, "use of closed network connection", spanStatusStr)
 
 	const urlErrText = "the endpoint is invalid"
-	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, srv.URL())
+	endpointWithQP := srv.URL() + "?foo=redactme&visibleqp=bar"
+	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, endpointWithQP)
 	require.NoError(t, err)
 	srv.AppendError(&url.Error{
 		Op:  http.MethodGet,
-		URL: srv.URL(),
+		URL: endpointWithQP,
 		Err: errors.New(urlErrText),
 	})
 	_, err = pl.Do(req)
 	require.Error(t, err)
-	var urlErr *url.Error
-	require.False(t, errors.As(err, &urlErr))
 	require.EqualValues(t, tracing.SpanStatusError, spanStatus)
-	require.EqualValues(t, urlErrText, spanStatusStr)
+	require.EqualValues(t, fmt.Sprintf("%s \"%s\": %s", http.MethodGet, srv.URL()+"?foo=REDACTED&visibleqp=bar", urlErrText), spanStatusStr)
 }
 
 func TestStartSpan(t *testing.T) {
@@ -190,11 +187,12 @@ func TestStartSpansDontNest(t *testing.T) {
 	httpSpanCount := 0
 	endCalled := 0
 	tr := tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
-		if spanName == "HTTP GET" {
+		switch spanName {
+		case "HTTP GET":
 			httpSpanCount++
-		} else if spanName == "FooMethod" {
+		case "FooMethod":
 			apiSpanCount++
-		} else {
+		default:
 			t.Fatalf("unexpected span name %s", spanName)
 		}
 		spanImpl := tracing.SpanImpl{

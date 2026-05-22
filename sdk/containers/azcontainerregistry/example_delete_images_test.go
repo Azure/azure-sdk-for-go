@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -9,10 +6,11 @@ package azcontainerregistry_test
 import (
 	"context"
 	"fmt"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry"
-	"log"
 )
 
 func Example_deleteImages() {
@@ -31,7 +29,7 @@ func Example_deleteImages() {
 		if err != nil {
 			log.Fatalf("failed to advance repository page: %v", err)
 		}
-		for _, r := range repositoryPage.Repositories.Names {
+		for _, r := range repositoryPage.Names {
 			manifestPager := client.NewListManifestsPager(*r, &azcontainerregistry.ClientListManifestsOptions{
 				OrderBy: to.Ptr(azcontainerregistry.ArtifactManifestOrderByLastUpdatedOnDescending),
 			})
@@ -41,7 +39,7 @@ func Example_deleteImages() {
 					log.Fatalf("failed to advance manifest page: %v", err)
 				}
 				imagesToKeep := 3
-				for i, m := range manifestPage.Manifests.Attributes {
+				for i, m := range manifestPage.Attributes {
 					if i >= imagesToKeep {
 						for _, t := range m.Tags {
 							fmt.Printf("delete tag from image: %s", *t)

@@ -428,7 +428,7 @@ func TestNamespaceConnectionRecovery(t *testing.T) {
 		require.Equal(t, origConnID, testData.NS.connID, "new client failed to be created so the conn ID is unchanged")
 
 		// if the namespace is closed then this function fails.
-		testData.NS.Close(context.Background(), true)
+		_ = testData.NS.Close(context.Background(), true)
 		err = testData.NS.Recover(context.Background(), origConnID)
 		require.ErrorIs(t, err, ErrClientClosed)
 	})

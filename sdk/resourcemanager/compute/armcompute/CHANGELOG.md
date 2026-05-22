@@ -1,5 +1,137 @@
 # Release History
 
+## 8.0.0 (2026-04-21)
+### Breaking Changes
+
+- All Cloud Services (classic) related types, clients, and functions have been removed due to the [Azure Cloud Services (classic) retirement](https://azure.microsoft.com/updates?id=486344).
+
+### Features Added
+
+- New value `SecurityTypesStandard` added to enum type `SecurityTypes`
+- New value `ZonalPlatformFaultDomainAlignModeBestEffortAligned` added to enum type `ZonalPlatformFaultDomainAlignMode`
+- New enum type `LifecycleHookAction` with values `LifecycleHookActionApprove`, `LifecycleHookActionReject`
+- New enum type `LifecycleHookActionState` with values `LifecycleHookActionStateApproved`, `LifecycleHookActionStateRejected`, `LifecycleHookActionStateWaiting`
+- New enum type `StorageAlignmentStatus` with values `StorageAlignmentStatusAligned`, `StorageAlignmentStatusUnaligned`
+- New enum type `StorageFaultDomainAlignmentType` with values `StorageFaultDomainAlignmentTypeAligned`, `StorageFaultDomainAlignmentTypeBestEffortAligned`
+- New enum type `VMScaleSetLifecycleHookEventState` with values `VMScaleSetLifecycleHookEventStateActive`, `VMScaleSetLifecycleHookEventStateCompleted`
+- New enum type `VMScaleSetLifecycleHookEventType` with values `VMScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting`, `VMScaleSetLifecycleHookEventTypeUpgradeAutoOSScheduling`
+- New function `*ClientFactory.NewVirtualMachineScaleSetLifeCycleHookEventsClient() *VirtualMachineScaleSetLifeCycleHookEventsClient`
+- New function `PossibleLifecycleHookActionValues() []LifecycleHookAction`
+- New function `NewVirtualMachineScaleSetLifeCycleHookEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineScaleSetLifeCycleHookEventsClient, error)`
+- New function `*VirtualMachineScaleSetLifeCycleHookEventsClient.Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, lifecycleHookEventName string, options *VirtualMachineScaleSetLifeCycleHookEventsClientGetOptions) (VirtualMachineScaleSetLifeCycleHookEventsClientGetResponse, error)`
+- New function `*VirtualMachineScaleSetLifeCycleHookEventsClient.NewListPager(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetLifeCycleHookEventsClientListOptions) *runtime.Pager[VirtualMachineScaleSetLifeCycleHookEventsClientListResponse]`
+- New function `*VirtualMachineScaleSetLifeCycleHookEventsClient.Update(ctx context.Context, resourceGroupName string, vmScaleSetName string, lifecycleHookEventName string, properties VMScaleSetLifecycleHookEventUpdate, options *VirtualMachineScaleSetLifeCycleHookEventsClientUpdateOptions) (VirtualMachineScaleSetLifeCycleHookEventsClientUpdateResponse, error)`
+- New struct `ExternalHealthPolicy`
+- New struct `LifecycleHook`
+- New struct `LifecycleHooksProfile`
+- New struct `OperationRecoverySettings`
+- New struct `ReimageRecoveryPolicy`
+- New struct `ResiliencyProfile`
+- New struct `RestartRecoveryPolicy`
+- New struct `StartRecoveryPolicy`
+- New struct `VMScaleSetLifecycleHookEvent`
+- New struct `VMScaleSetLifecycleHookEventAdditionalContext`
+- New struct `VMScaleSetLifecycleHookEventListResult`
+- New struct `VMScaleSetLifecycleHookEventProperties`
+- New struct `VMScaleSetLifecycleHookEventTargetResource`
+- New struct `VMScaleSetLifecycleHookEventUpdate`
+- New struct `ZoneMovement`
+- New field `Expand` in struct `CapacityReservationsClientListByCapacityReservationGroupOptions`
+- New field `StorageFaultDomainAlignment` in struct `DataDisk`
+- New field `EnableFullCaching` in struct `DiffDiskSettings`
+- New field `StorageAlignmentStatus` in struct `DiskInstanceView`
+- New field `StorageFaultDomainAlignment` in struct `OSDisk`
+- New field `OperationRecoverySettings` in struct `ResiliencyPolicy`
+- New field `ResiliencyProfile` in struct `VirtualMachineProperties`
+- New field `StorageFaultDomainAlignment` in struct `VirtualMachineScaleSetDataDisk`
+- New field `StorageFaultDomainAlignment` in struct `VirtualMachineScaleSetOSDisk`
+- New field `ExternalHealthPolicy`, `LifecycleHooksProfile` in struct `VirtualMachineScaleSetProperties`
+- New field `Placement` in struct `VirtualMachineScaleSetUpdate`
+- New field `StorageFaultDomainAlignment` in struct `VirtualMachineScaleSetUpdateOSDisk`
+- New field `LifecycleHooksProfile` in struct `VirtualMachineScaleSetUpdateProperties`
+- New field `VirtualMachineResourceID` in struct `VirtualMachineScaleSetVMProperties`
+- New field `ForceDeallocate` in struct `VirtualMachinesClientBeginDeallocateOptions`
+
+
+## 7.3.0 (2026-01-23)
+### Features Added
+
+- New enum type `GalleryScriptParameterType` with values `GalleryScriptParameterTypeBoolean`, `GalleryScriptParameterTypeDouble`, `GalleryScriptParameterTypeEnum`, `GalleryScriptParameterTypeInt`, `GalleryScriptParameterTypeString`
+- New enum type `StorageAccountStrategy` with values `StorageAccountStrategyDefaultStandardLRS`, `StorageAccountStrategyPreferStandardZRS`
+- New function `*ClientFactory.NewGalleryScriptVersionsClient() *GalleryScriptVersionsClient`
+- New function `*ClientFactory.NewGalleryScriptsClient() *GalleryScriptsClient`
+- New function `NewGalleryScriptVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GalleryScriptVersionsClient, error)`
+- New function `*GalleryScriptVersionsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScriptVersionName string, galleryScriptVersion GalleryScriptVersion, options *GalleryScriptVersionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[GalleryScriptVersionsClientCreateOrUpdateResponse], error)`
+- New function `*GalleryScriptVersionsClient.BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScriptVersionName string, options *GalleryScriptVersionsClientBeginDeleteOptions) (*runtime.Poller[GalleryScriptVersionsClientDeleteResponse], error)`
+- New function `*GalleryScriptVersionsClient.Get(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScriptVersionName string, options *GalleryScriptVersionsClientGetOptions) (GalleryScriptVersionsClientGetResponse, error)`
+- New function `*GalleryScriptVersionsClient.NewListByGalleryScriptPager(resourceGroupName string, galleryName string, galleryScriptName string, options *GalleryScriptVersionsClientListByGalleryScriptOptions) *runtime.Pager[GalleryScriptVersionsClientListByGalleryScriptResponse]`
+- New function `*GalleryScriptVersionsClient.BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScriptVersionName string, galleryScriptVersion GalleryScriptVersionUpdate, options *GalleryScriptVersionsClientBeginUpdateOptions) (*runtime.Poller[GalleryScriptVersionsClientUpdateResponse], error)`
+- New function `NewGalleryScriptsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GalleryScriptsClient, error)`
+- New function `*GalleryScriptsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScript GalleryScript, options *GalleryScriptsClientBeginCreateOrUpdateOptions) (*runtime.Poller[GalleryScriptsClientCreateOrUpdateResponse], error)`
+- New function `*GalleryScriptsClient.BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, options *GalleryScriptsClientBeginDeleteOptions) (*runtime.Poller[GalleryScriptsClientDeleteResponse], error)`
+- New function `*GalleryScriptsClient.Get(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, options *GalleryScriptsClientGetOptions) (GalleryScriptsClientGetResponse, error)`
+- New function `*GalleryScriptsClient.NewListByGalleryPager(resourceGroupName string, galleryName string, options *GalleryScriptsClientListByGalleryOptions) *runtime.Pager[GalleryScriptsClientListByGalleryResponse]`
+- New function `*GalleryScriptsClient.BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScript GalleryScriptUpdate, options *GalleryScriptsClientBeginUpdateOptions) (*runtime.Poller[GalleryScriptsClientUpdateResponse], error)`
+- New struct `GalleryScript`
+- New struct `GalleryScriptList`
+- New struct `GalleryScriptParameter`
+- New struct `GalleryScriptProperties`
+- New struct `GalleryScriptUpdate`
+- New struct `GalleryScriptVersion`
+- New struct `GalleryScriptVersionList`
+- New struct `GalleryScriptVersionProperties`
+- New struct `GalleryScriptVersionPublishingProfile`
+- New struct `GalleryScriptVersionSafetyProfile`
+- New struct `GalleryScriptVersionUpdate`
+- New struct `ScriptSource`
+- New field `StorageAccountStrategy` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `StorageAccountStrategy` in struct `GalleryImageVersionPublishingProfile`
+
+
+## 7.2.0 (2025-11-21)
+### Features Added
+
+- New field `EnableFips1403Encryption` in struct `AdditionalCapabilities`
+- New field `SnapshotAccessState` in struct `DiskRestorePointInstanceView`
+- New field `InstantAccess` in struct `RestorePointCollectionProperties`
+- New field `InstantAccessDurationMinutes` in struct `RestorePointProperties`
+
+
+## 7.1.0 (2025-10-09)
+### Features Added
+
+- New value `OrchestrationServiceNamesAutomaticZoneRebalancing` added to enum type `OrchestrationServiceNames`
+- New value `ZonePlacementPolicyTypeAuto` added to enum type `ZonePlacementPolicyType`
+- New enum type `HighSpeedInterconnectPlacement` with values `HighSpeedInterconnectPlacementNone`, `HighSpeedInterconnectPlacementTrunk`
+- New enum type `OrchestrationServiceOperationStatus` with values `OrchestrationServiceOperationStatusCompleted`, `OrchestrationServiceOperationStatusInProgress`
+- New enum type `ReservationType` with values `ReservationTypeBlock`, `ReservationTypeTargeted`
+- New enum type `ScriptShellTypes` with values `ScriptShellTypesDefault`, `ScriptShellTypesPowershell7`
+- New function `*VirtualMachineScaleSetsClient.BeginScaleOut(context.Context, string, string, VMScaleSetScaleOutInput, *VirtualMachineScaleSetsClientBeginScaleOutOptions) (*runtime.Poller[VirtualMachineScaleSetsClientScaleOutResponse], error)`
+- New struct `AllInstancesDown`
+- New struct `MaxInstancePercentPerZonePolicy`
+- New struct `ScheduleProfile`
+- New struct `VMScaleSetScaleOutInput`
+- New struct `VMScaleSetScaleOutInputProperties`
+- New struct `ZoneAllocationPolicy`
+- New field `ReservationType` in struct `CapacityReservationGroupProperties`
+- New field `ScheduleProfile` in struct `CapacityReservationProperties`
+- New field `ScheduledEventsAPIVersion` in struct `EventGridAndResourceGraph`
+- New field `LastStatusChangeTime`, `LatestOperationStatus` in struct `OrchestrationServiceSummary`
+- New field `AddProxyAgentExtension` in struct `ProxyAgentSettings`
+- New field `ZoneAllocationPolicy` in struct `ResiliencyPolicy`
+- New field `AllInstancesDown` in struct `ScheduledEventsPolicy`
+- New field `Tags` in struct `VirtualMachineNetworkInterfaceConfiguration`
+- New field `Tags` in struct `VirtualMachinePublicIPAddressConfiguration`
+- New field `GalleryScriptReferenceID`, `ScriptShell` in struct `VirtualMachineRunCommandScriptSource`
+- New field `Placement` in struct `VirtualMachineScaleSet`
+- New field `Tags` in struct `VirtualMachineScaleSetNetworkConfiguration`
+- New field `HighSpeedInterconnectPlacement` in struct `VirtualMachineScaleSetProperties`
+- New field `Tags` in struct `VirtualMachineScaleSetPublicIPAddressConfiguration`
+- New field `Tags` in struct `VirtualMachineScaleSetUpdateNetworkConfiguration`
+- New field `Tags` in struct `VirtualMachineScaleSetUpdatePublicIPAddressConfiguration`
+- New field `PatchNameMasksToExclude`, `PatchNameMasksToInclude` in struct `WindowsParameters`
+
+
 ## 7.0.0 (2025-07-23)
 ### Breaking Changes
 

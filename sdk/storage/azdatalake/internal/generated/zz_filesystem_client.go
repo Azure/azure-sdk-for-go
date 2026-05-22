@@ -22,13 +22,14 @@ import (
 type FileSystemClient struct {
 	internal *azcore.Client
 	endpoint string
+	version  string
 }
 
 // Create - Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails. This
 // operation does not support conditional HTTP requests.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-06-06
 //   - options - FileSystemClientCreateOptions contains the optional parameters for the FileSystemClient.Create method.
 func (client *FileSystemClient) Create(ctx context.Context, options *FileSystemClientCreateOptions) (FileSystemClientCreateResponse, error) {
 	var err error
@@ -67,7 +68,7 @@ func (client *FileSystemClient) createCreateRequest(ctx context.Context, options
 	if options != nil && options.Properties != nil {
 		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -110,10 +111,10 @@ func (client *FileSystemClient) createHandleResponse(resp *http.Response) (FileS
 // other operations, including operations on any files or directories within the filesystem, will fail with status code 404
 // (Not Found) while the filesystem is being deleted. This operation supports
 // conditional HTTP requests. For more information, see Specifying Conditional Headers for Blob Service Operations
-// [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
+// [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-06-06
 //   - options - FileSystemClientDeleteOptions contains the optional parameters for the FileSystemClient.Delete method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
 //     method.
@@ -157,7 +158,7 @@ func (client *FileSystemClient) deleteCreateRequest(ctx context.Context, options
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -183,7 +184,7 @@ func (client *FileSystemClient) deleteHandleResponse(resp *http.Response) (FileS
 // GetProperties - All system and user-defined filesystem properties are specified in the response headers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-06-06
 //   - options - FileSystemClientGetPropertiesOptions contains the optional parameters for the FileSystemClient.GetProperties
 //     method.
 func (client *FileSystemClient) GetProperties(ctx context.Context, options *FileSystemClientGetPropertiesOptions) (FileSystemClientGetPropertiesResponse, error) {
@@ -220,7 +221,7 @@ func (client *FileSystemClient) getPropertiesCreateRequest(ctx context.Context, 
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -261,7 +262,7 @@ func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response)
 
 // NewListBlobHierarchySegmentPager - The List Blobs operation returns a list of the blobs under the specified container
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-06-06
 //   - options - FileSystemClientListBlobHierarchySegmentOptions contains the optional parameters for the FileSystemClient.NewListBlobHierarchySegmentPager
 //     method.
 //
@@ -300,7 +301,7 @@ func (client *FileSystemClient) ListBlobHierarchySegmentCreateRequest(ctx contex
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -334,7 +335,7 @@ func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *htt
 
 // NewListPathsPager - List FileSystem paths and their properties.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-06-06
 //   - recursive - Required
 //   - options - FileSystemClientListPathsOptions contains the optional parameters for the FileSystemClient.NewListPathsPager
 //     method.
@@ -346,6 +347,9 @@ func (client *FileSystemClient) ListPathsCreateRequest(ctx context.Context, recu
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	if options != nil && options.BeginFrom != nil {
+		reqQP.Set("beginFrom", *options.BeginFrom)
+	}
 	if options != nil && options.Continuation != nil {
 		reqQP.Set("continuation", *options.Continuation)
 	}
@@ -368,7 +372,7 @@ func (client *FileSystemClient) ListPathsCreateRequest(ctx context.Context, recu
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -409,10 +413,10 @@ func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response) (Fi
 
 // SetProperties - Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information,
 // see Specifying Conditional Headers for Blob Service Operations
-// [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
+// [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-06-06
 //   - options - FileSystemClientSetPropertiesOptions contains the optional parameters for the FileSystemClient.SetProperties
 //     method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -460,7 +464,7 @@ func (client *FileSystemClient) setPropertiesCreateRequest(ctx context.Context, 
 	if options != nil && options.Properties != nil {
 		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 

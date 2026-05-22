@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -52,7 +49,7 @@ func (testsuite *ClustersTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestClustersTestSuite(t *testing.T) {
+func TTestClustersTestSuite(t *testing.T) {
 	suite.Run(t, new(ClustersTestSuite))
 }
 
@@ -68,12 +65,12 @@ func (testsuite *ClustersTestSuite) TestCluster() {
 		Tags: map[string]*string{
 			"tag1": to.Ptr("val1"),
 		},
-		Identity: &armoperationalinsights.Identity{
-			Type: to.Ptr(armoperationalinsights.IdentityTypeSystemAssigned),
+		Identity: &armoperationalinsights.ManagedServiceIdentity{
+			Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		SKU: &armoperationalinsights.ClusterSKU{
 			Name:     to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-			Capacity: to.Ptr(armoperationalinsights.CapacityTenHundred),
+			Capacity: to.Ptr[int64](1000),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

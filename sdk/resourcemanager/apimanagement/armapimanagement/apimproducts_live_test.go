@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -264,6 +261,15 @@ func (testsuite *ApimproductsTestSuite) TestProductpolicy() {
 	// From step ProductPolicy_GetEntityTag
 	fmt.Println("Call operation: ProductPolicy_GetEntityTag")
 	_, err = productPolicyClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, armapimanagement.PolicyIDNamePolicy, nil)
+	testsuite.Require().NoError(err)
+
+	// From step ProductPolicy_ListByProduct
+	fmt.Println("Call operation: ProductPolicy_ListByProduct")
+	pager := productPolicyClient.NewListByProductPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, nil)
+	for pager.More() {
+		_, err = pager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+	}
 	testsuite.Require().NoError(err)
 
 	// From step ProductPolicy_Get

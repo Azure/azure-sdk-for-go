@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.1-beta.1 (Unreleased)
+## 2.2.1-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,34 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.2.0 (2026-04-14)
+
+### Features Added
+* Added new method `NewCheckSettingsPager` which can be used to check settings from the Azure App Configuration store using HEAD requests, returning only headers without the response body.
+* Added internal pipeline policy to normalize (case-insensitive alphabetical) ordering of query parameters for deterministic request URLs.
+
+## 2.1.0 (2026-02-06)
+
+### Features Added
+
+* Added support for sovereign clouds. [#25795](https://github.com/Azure/azure-sdk-for-go/pull/25795)
+
+### Other Changes
+
+* Added internal pipeline policy to handle audience error and surface up an improved error message. [#25795](https://github.com/Azure/azure-sdk-for-go/pull/25795)
+
+## 2.0.0 (2025-10-15)
+
+### Features Added
+
+* Support assigning Tags and filtering by Tags
+  * Added `Tags` field to `AddSettingOptions` and `SetSettingOptions` structs, enabling users to assign key-value metadata tags when creating or updating configuration settings.
+  * Added `TagsFilter` field to `SettingSelector` struct, allowing retrieval of settings and revisions filtered by tags.
+
+### Breaking Changes
+
+* Changed `Tags` field type in `Setting` from `map[string]string` to `map[string]*string` to support null tag values and maintain compatibility with the Azure App Configuration service backend.
 
 ## 1.2.0 (2025-05-06)
 

@@ -34,7 +34,15 @@ type ContainerGroupProperties struct {
 	SubnetIDs []*Subnet
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// DynamicSizing - Specifies the dynamic sizing configuration.
+type DynamicSizing struct {
+	// Indicates whether dynamic sizing is enabled for the standby pool.
+	Enabled *bool
+}
+
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -55,7 +63,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
@@ -117,6 +125,9 @@ type StandbyContainerGroupPoolElasticityProfile struct {
 	// REQUIRED; Specifies maximum number of standby container groups in the standby pool.
 	MaxReadyCapacity *int64
 
+	// Specifies the dynamic sizing configuration.
+	DynamicSizing *DynamicSizing
+
 	// Specifies refill policy of the pool.
 	RefillPolicy *RefillPolicy
 }
@@ -150,11 +161,11 @@ type StandbyContainerGroupPoolResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the standby container group pool
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -214,12 +225,11 @@ type StandbyContainerGroupPoolRuntimeViewResource struct {
 	// The resource-specific properties for this resource.
 	Properties *StandbyContainerGroupPoolRuntimeViewResourceProperties
 
-	// READ-ONLY; The unique identifier for the runtime view. The input string should be the word 'latest', which will get the
-	// latest runtime view of the pool, otherwise the request will fail with NotFound exception.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -260,9 +270,16 @@ type StandbyVirtualMachinePoolElasticityProfile struct {
 	// REQUIRED; Specifies the maximum number of virtual machines in the standby virtual machine pool.
 	MaxReadyCapacity *int64
 
+	// Specifies the dynamic sizing configuration.
+	DynamicSizing *DynamicSizing
+
 	// Specifies the desired minimum number of virtual machines in the standby virtual machine pool. MinReadyCapacity cannot exceed
 	// MaxReadyCapacity.
 	MinReadyCapacity *int64
+
+	// Specifies the duration to wait after virtual machine provisioning before the virtual machine becomes available for use.
+	// The duration should be specified in ISO 8601 format (e.g., PT2S for 2 seconds).
+	PostProvisioningDelay *string
 }
 
 // StandbyVirtualMachinePoolForecastValues - Displays the forecast information of the standby pool.
@@ -294,11 +311,11 @@ type StandbyVirtualMachinePoolResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the standby virtual machine pool
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -358,12 +375,11 @@ type StandbyVirtualMachinePoolRuntimeViewResource struct {
 	// The resource-specific properties for this resource.
 	Properties *StandbyVirtualMachinePoolRuntimeViewResourceProperties
 
-	// READ-ONLY; The unique identifier for the runtime view. The input string should be the word 'latest', which will get the
-	// latest runtime view of the pool, otherwise the request will fail with NotFound exception.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -406,11 +422,11 @@ type StandbyVirtualMachineResource struct {
 	// The resource-specific properties for this resource.
 	Properties *StandbyVirtualMachineResourceProperties
 
-	// READ-ONLY; Name of the standby virtual machine
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

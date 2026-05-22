@@ -38,12 +38,10 @@ func main() {
 
 	// fix up options type
 	regexReplace("options.go", `Options \*string`, "Options *QueryOptions")
-	regexReplace("client.go", `\*opts\.Options`, "opts.Options.preferHeader()")
+	regexReplace("client.go", `\*options\.Options`, "options.Options.preferHeader()")
 	regexReplace("fake/server.go", `Options\: optionsParam`, "Options: preferHeaderToQueryOptions(*optionsParam)")
 
 	// Adjust URL path handling in fake/server.go to remove the "/v1" prefix from req.URL.EscapedPath().
 	regexReplace("fake/server.go", `req\.URL\.EscapedPath\(\)`, `strings.TrimPrefix(req.URL.EscapedPath(), "/v1")`)
-
-	// suppress versions constant
-	regexReplace("constants.go", `Possibleversions`, "possibleVersions")
+	regexReplace("fake/server.go", `import \(`, `import ( "strings"`)
 }

@@ -31,15 +31,15 @@ func newPartitionKeyRangeResponse(resp *http.Response) (partitionKeyRangeRespons
 		Response: newResponse(resp),
 	}
 
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	body, err := azruntime.Payload(resp)
 	if err != nil {
-		return response, err
+		return response, wrapResponseError(err, response.Response)
 	}
 
 	if err := json.Unmarshal(body, &response); err != nil {
-		return response, err
+		return response, wrapResponseError(err, response.Response)
 	}
 
 	return response, nil

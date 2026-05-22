@@ -41,10 +41,15 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 		// Update the retry context with the latest retry values
 		req.SetOperationValue(retryContext)
 		resolvedEndpoint := p.gem.ResolveServiceEndpoint(retryContext.retryCount, o.resourceType, o.isWriteOperation, retryContext.useWriteEndpoint)
+		regionName := p.gem.GetEndpointLocation(resolvedEndpoint)
 		req.Raw().Host = resolvedEndpoint.Host
 		req.Raw().URL.Host = resolvedEndpoint.Host
+		attemptStartTime := time.Now().UTC()
 		response, err := req.Next() // err can happen in weird scenarios (connectivity, etc)
 		if err != nil {
+			if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
+				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName)
+			}
 			if p.isNetworkConnectionError(err) {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, &retryContext)
 				if errRetry != nil {
@@ -62,10 +67,14 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			}
 			return nil, err
 		}
+		if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
+			state.clientSideStats.recordHTTPResponse(attemptStartTime, response, o.resourceType, regionName)
+		}
 		subStatus := response.Header.Get(cosmosHeaderSubstatus)
 		if p.shouldRetryStatus(response.StatusCode, subStatus) {
 			retryContext.useWriteEndpoint = false
-			if response.StatusCode == http.StatusForbidden {
+			switch response.StatusCode {
+			case http.StatusForbidden:
 				shouldRetry, err := p.attemptRetryOnEndpointFailure(req, o.isWriteOperation, &retryContext)
 				if err != nil {
 					return nil, err
@@ -73,11 +82,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				if !shouldRetry {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
-			} else if response.StatusCode == http.StatusNotFound {
+			case http.StatusNotFound:
 				if !p.attemptRetryOnSessionUnavailable(o.isWriteOperation, &retryContext) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
-			} else if response.StatusCode == http.StatusServiceUnavailable {
+			case http.StatusServiceUnavailable:
 				if !p.attemptRetryOnServiceUnavailable(o.isWriteOperation, &retryContext) {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}

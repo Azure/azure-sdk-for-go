@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -15,6 +12,7 @@ import (
 type TransactionalContentSetter interface {
 	SetCRC64([]byte)
 	SetMD5([]byte)
+	SetStructuredBody(bodyType string, contentLength int64)
 }
 
 func (a *AppendBlobClientAppendBlockOptions) SetCRC64(v []byte) {
@@ -25,12 +23,22 @@ func (a *AppendBlobClientAppendBlockOptions) SetMD5(v []byte) {
 	a.TransactionalContentMD5 = v
 }
 
+func (a *AppendBlobClientAppendBlockOptions) SetStructuredBody(bodyType string, contentLength int64) {
+	a.StructuredBodyType = to.Ptr(bodyType)
+	a.StructuredContentLength = to.Ptr(contentLength)
+}
+
 func (b *BlockBlobClientStageBlockOptions) SetCRC64(v []byte) {
 	b.TransactionalContentCRC64 = v
 }
 
 func (b *BlockBlobClientStageBlockOptions) SetMD5(v []byte) {
 	b.TransactionalContentMD5 = v
+}
+
+func (b *BlockBlobClientStageBlockOptions) SetStructuredBody(bodyType string, contentLength int64) {
+	b.StructuredBodyType = to.Ptr(bodyType)
+	b.StructuredContentLength = to.Ptr(contentLength)
 }
 
 func (p *PageBlobClientUploadPagesOptions) SetCRC64(v []byte) {
@@ -41,12 +49,22 @@ func (p *PageBlobClientUploadPagesOptions) SetMD5(v []byte) {
 	p.TransactionalContentMD5 = v
 }
 
+func (p *PageBlobClientUploadPagesOptions) SetStructuredBody(bodyType string, contentLength int64) {
+	p.StructuredBodyType = to.Ptr(bodyType)
+	p.StructuredContentLength = to.Ptr(contentLength)
+}
+
 func (b *BlockBlobClientUploadOptions) SetCRC64(v []byte) {
 	b.TransactionalContentCRC64 = v
 }
 
 func (b *BlockBlobClientUploadOptions) SetMD5(v []byte) {
 	b.TransactionalContentMD5 = v
+}
+
+func (b *BlockBlobClientUploadOptions) SetStructuredBody(bodyType string, contentLength int64) {
+	b.StructuredBodyType = to.Ptr(bodyType)
+	b.StructuredContentLength = to.Ptr(contentLength)
 }
 
 type SourceContentSetter interface {

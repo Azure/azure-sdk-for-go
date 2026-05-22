@@ -8,15 +8,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/rbac"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // Server is a fake server for instances of the rbac.Client type.
@@ -145,7 +144,13 @@ func (s *ServerTransport) dispatchCreateOrUpdateRoleDefinition(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return rbac.RoleScope(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +187,13 @@ func (s *ServerTransport) dispatchCreateRoleAssignment(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return rbac.RoleScope(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -215,7 +226,13 @@ func (s *ServerTransport) dispatchDeleteRoleAssignment(req *http.Request) (*http
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return rbac.RoleScope(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -248,7 +265,13 @@ func (s *ServerTransport) dispatchDeleteRoleDefinition(req *http.Request) (*http
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return rbac.RoleScope(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -281,7 +304,13 @@ func (s *ServerTransport) dispatchGetRoleAssignment(req *http.Request) (*http.Re
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return rbac.RoleScope(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -314,7 +343,13 @@ func (s *ServerTransport) dispatchGetRoleDefinition(req *http.Request) (*http.Re
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return rbac.RoleScope(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -350,7 +385,13 @@ func (s *ServerTransport) dispatchNewListRoleAssignmentsPager(req *http.Request)
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+		scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return rbac.RoleScope(p), nil
+		})
 		if err != nil {
 			return nil, err
 		}
@@ -399,7 +440,13 @@ func (s *ServerTransport) dispatchNewListRoleDefinitionsPager(req *http.Request)
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+		scopeParam, err := parseWithCast(matches[regex.SubexpIndex("scope")], func(v string) (rbac.RoleScope, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return rbac.RoleScope(p), nil
+		})
 		if err != nil {
 			return nil, err
 		}

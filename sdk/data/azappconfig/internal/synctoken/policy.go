@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -10,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/exported"
 )
 
 // Policy is a pipeline policy for managing Sync-Token
@@ -41,7 +38,10 @@ func (p *Policy) Do(req *policy.Request) (*http.Response, error) {
 
 	// update the cache from the response if available.
 	// e.g. a 404 will include a Sync-Token but a 400 will not.
-	if st := resp.Header.Get(syncTokenHeader); st != "" {
+	for _, st := range resp.Header.Values(syncTokenHeader) {
+		if st == "" {
+			continue
+		}
 		if err := p.cache.Set(exported.SyncToken(st)); err != nil {
 			return nil, &nonRetriableError{err}
 		}

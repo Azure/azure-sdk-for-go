@@ -311,6 +311,12 @@ type AzureFirewallsClientListResponse struct {
 	AzureFirewallListResult
 }
 
+// AzureFirewallsClientPacketCaptureOperationResponse contains the response from method AzureFirewallsClient.BeginPacketCaptureOperation.
+type AzureFirewallsClientPacketCaptureOperationResponse struct {
+	// Response of an Azure Firewall Packet Capture Operation.
+	AzureFirewallPacketCaptureResponse
+}
+
 // AzureFirewallsClientPacketCaptureResponse contains the response from method AzureFirewallsClient.BeginPacketCapture.
 type AzureFirewallsClientPacketCaptureResponse struct {
 	// placeholder for future response values
@@ -2163,6 +2169,12 @@ type PublicIPAddressesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse contains the response from method PublicIPAddressesClient.BeginDisassociateCloudServiceReservedPublicIP.
+type PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse struct {
+	// Public IP address resource.
+	PublicIPAddress
+}
+
 // PublicIPAddressesClientGetCloudServicePublicIPAddressResponse contains the response from method PublicIPAddressesClient.GetCloudServicePublicIPAddress.
 type PublicIPAddressesClientGetCloudServicePublicIPAddressResponse struct {
 	// Public IP address resource.
@@ -2215,6 +2227,12 @@ type PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse 
 type PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse struct {
 	// Response for ListPublicIpAddresses API service call.
 	PublicIPAddressListResult
+}
+
+// PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse contains the response from method PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress.
+type PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse struct {
+	// Public IP address resource.
+	PublicIPAddress
 }
 
 // PublicIPAddressesClientUpdateTagsResponse contains the response from method PublicIPAddressesClient.UpdateTags.
@@ -2795,6 +2813,12 @@ type SecurityPerimeterProfilesClientListResponse struct {
 	NspProfileListResult
 }
 
+// SecurityPerimeterServiceTagsClientListResponse contains the response from method SecurityPerimeterServiceTagsClient.NewListPager.
+type SecurityPerimeterServiceTagsClientListResponse struct {
+	// Result of the request to list NSP service tags.
+	NspServiceTagsListResult
+}
+
 // SecurityPerimetersClientCreateOrUpdateResponse contains the response from method SecurityPerimetersClient.CreateOrUpdate.
 type SecurityPerimetersClientCreateOrUpdateResponse struct {
 	// The Network Security Perimeter resource
@@ -2987,6 +3011,63 @@ type ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse struct {
 	// Response for ListServiceEndpointPolicyDefinition API service call. Retrieves all service endpoint policy definition that
 	// belongs to a service endpoint policy.
 	ServiceEndpointPolicyDefinitionListResult
+}
+
+// ServiceGatewaysClientCreateOrUpdateResponse contains the response from method ServiceGatewaysClient.BeginCreateOrUpdate.
+type ServiceGatewaysClientCreateOrUpdateResponse struct {
+	// ServiceGateway resource.
+	ServiceGateway
+}
+
+// ServiceGatewaysClientDeleteResponse contains the response from method ServiceGatewaysClient.BeginDelete.
+type ServiceGatewaysClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ServiceGatewaysClientGetAddressLocationsResponse contains the response from method ServiceGatewaysClient.NewGetAddressLocationsPager.
+type ServiceGatewaysClientGetAddressLocationsResponse struct {
+	// Response for get service gateway address locations.
+	GetServiceGatewayAddressLocationsResult
+}
+
+// ServiceGatewaysClientGetResponse contains the response from method ServiceGatewaysClient.Get.
+type ServiceGatewaysClientGetResponse struct {
+	// ServiceGateway resource.
+	ServiceGateway
+}
+
+// ServiceGatewaysClientGetServicesResponse contains the response from method ServiceGatewaysClient.NewGetServicesPager.
+type ServiceGatewaysClientGetServicesResponse struct {
+	// Response for get service gateway services.
+	GetServiceGatewayServicesResult
+}
+
+// ServiceGatewaysClientListAllResponse contains the response from method ServiceGatewaysClient.NewListAllPager.
+type ServiceGatewaysClientListAllResponse struct {
+	// Response for ListServiceGateways API service call.
+	ServiceGatewayListResult
+}
+
+// ServiceGatewaysClientListResponse contains the response from method ServiceGatewaysClient.NewListPager.
+type ServiceGatewaysClientListResponse struct {
+	// Response for ListServiceGateways API service call.
+	ServiceGatewayListResult
+}
+
+// ServiceGatewaysClientUpdateAddressLocationsResponse contains the response from method ServiceGatewaysClient.BeginUpdateAddressLocations.
+type ServiceGatewaysClientUpdateAddressLocationsResponse struct {
+	// placeholder for future response values
+}
+
+// ServiceGatewaysClientUpdateServicesResponse contains the response from method ServiceGatewaysClient.BeginUpdateServices.
+type ServiceGatewaysClientUpdateServicesResponse struct {
+	// placeholder for future response values
+}
+
+// ServiceGatewaysClientUpdateTagsResponse contains the response from method ServiceGatewaysClient.UpdateTags.
+type ServiceGatewaysClientUpdateTagsResponse struct {
+	// ServiceGateway resource.
+	ServiceGateway
 }
 
 // ServiceTagInformationClientListResponse contains the response from method ServiceTagInformationClient.NewListPager.
@@ -3265,6 +3346,12 @@ type VPNServerConfigurationsClientListByResourceGroupResponse struct {
 	// Result of the request to list all VpnServerConfigurations. It contains a list of VpnServerConfigurations and a URL nextLink
 	// to get the next set of results.
 	ListVPNServerConfigurationsResult
+}
+
+// VPNServerConfigurationsClientListRadiusSecretsResponse contains the response from method VPNServerConfigurationsClient.ListRadiusSecrets.
+type VPNServerConfigurationsClientListRadiusSecretsResponse struct {
+	// List of Radius servers with respective radius secrets.
+	RadiusAuthServerListResult
 }
 
 // VPNServerConfigurationsClientListResponse contains the response from method VPNServerConfigurationsClient.NewListPager.
@@ -3631,6 +3718,41 @@ type VirtualHubsClientUpdateTagsResponse struct {
 	VirtualHub
 }
 
+// VirtualNetworkAppliancesClientCreateOrUpdateResponse contains the response from method VirtualNetworkAppliancesClient.BeginCreateOrUpdate.
+type VirtualNetworkAppliancesClientCreateOrUpdateResponse struct {
+	// A virtual network appliance in a resource group.
+	VirtualNetworkAppliance
+}
+
+// VirtualNetworkAppliancesClientDeleteResponse contains the response from method VirtualNetworkAppliancesClient.BeginDelete.
+type VirtualNetworkAppliancesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualNetworkAppliancesClientGetResponse contains the response from method VirtualNetworkAppliancesClient.Get.
+type VirtualNetworkAppliancesClientGetResponse struct {
+	// A virtual network appliance in a resource group.
+	VirtualNetworkAppliance
+}
+
+// VirtualNetworkAppliancesClientListAllResponse contains the response from method VirtualNetworkAppliancesClient.NewListAllPager.
+type VirtualNetworkAppliancesClientListAllResponse struct {
+	// Response for the ListVirtualNetworkAppliance API service call.
+	VirtualNetworkApplianceListResult
+}
+
+// VirtualNetworkAppliancesClientListResponse contains the response from method VirtualNetworkAppliancesClient.NewListPager.
+type VirtualNetworkAppliancesClientListResponse struct {
+	// Response for the ListVirtualNetworkAppliance API service call.
+	VirtualNetworkApplianceListResult
+}
+
+// VirtualNetworkAppliancesClientUpdateTagsResponse contains the response from method VirtualNetworkAppliancesClient.UpdateTags.
+type VirtualNetworkAppliancesClientUpdateTagsResponse struct {
+	// A virtual network appliance in a resource group.
+	VirtualNetworkAppliance
+}
+
 // VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse contains the response from method VirtualNetworkGatewayConnectionsClient.BeginCreateOrUpdate.
 type VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse struct {
 	// A common class for general resource information.
@@ -3837,6 +3959,12 @@ type VirtualNetworkGatewaysClientInvokePrepareMigrationResponse struct {
 type VirtualNetworkGatewaysClientListConnectionsResponse struct {
 	// Response for the VirtualNetworkGatewayListConnections API service call.
 	VirtualNetworkGatewayListConnectionsResult
+}
+
+// VirtualNetworkGatewaysClientListRadiusSecretsResponse contains the response from method VirtualNetworkGatewaysClient.ListRadiusSecrets.
+type VirtualNetworkGatewaysClientListRadiusSecretsResponse struct {
+	// List of Radius servers with respective radius secrets.
+	RadiusAuthServerListResult
 }
 
 // VirtualNetworkGatewaysClientListResponse contains the response from method VirtualNetworkGatewaysClient.NewListPager.

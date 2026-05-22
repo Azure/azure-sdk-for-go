@@ -225,7 +225,16 @@ func (lc *locationCache) getLocation(endpoint url.URL) string {
 	return ""
 }
 
+// canUseMultipleWriteLocs returns whether the account supports multi-master
+// writes. Callers that already hold lc.mapMutex use this; the public
+// CanUseMultipleWriteLocations entrypoint locks first.
 func (lc *locationCache) canUseMultipleWriteLocs() bool {
+	return lc.enableMultipleWriteLocations
+}
+
+func (lc *locationCache) CanUseMultipleWriteLocs() bool {
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
 	return lc.enableMultipleWriteLocations
 }
 

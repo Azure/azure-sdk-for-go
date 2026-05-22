@@ -31,14 +31,14 @@ type DatabaseProperties struct {
 func (tp DatabaseProperties) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
 
-	buffer.WriteString(fmt.Sprintf("\"id\":\"%s\"", tp.ID))
+	fmt.Fprintf(buffer, "\"id\":\"%s\"", tp.ID)
 
 	if tp.ResourceID != "" {
-		buffer.WriteString(fmt.Sprintf(",\"_rid\":\"%s\"", tp.ResourceID))
+		fmt.Fprintf(buffer, ",\"_rid\":\"%s\"", tp.ResourceID)
 	}
 
 	if tp.ETag != nil {
-		buffer.WriteString(",\"_etag\":")
+		fmt.Fprint(buffer, ",\"_etag\":")
 		etag, err := json.Marshal(tp.ETag)
 		if err != nil {
 			return nil, err
@@ -47,14 +47,14 @@ func (tp DatabaseProperties) MarshalJSON() ([]byte, error) {
 	}
 
 	if tp.SelfLink != "" {
-		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", tp.SelfLink))
+		fmt.Fprintf(buffer, ",\"_self\":\"%s\"", tp.SelfLink)
 	}
 
 	if !tp.LastModified.IsZero() {
-		buffer.WriteString(fmt.Sprintf(",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10)))
+		fmt.Fprintf(buffer, ",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10))
 	}
 
-	buffer.WriteString("}")
+	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }
 

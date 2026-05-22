@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/Summaries_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/Summaries_Get_MaximumSet_Gen.json
 func ExampleSummariesClient_Get_summariesGetMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,14 +35,14 @@ func ExampleSummariesClient_Get_summariesGetMaximumSetGenGeneratedByMaximumSetRu
 	// 			SummaryType: to.Ptr(armiotfirmwaredefense.SummaryTypeFirmware),
 	// 			ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
-	// 		Name: to.Ptr(armiotfirmwaredefense.SummaryType("zmei")),
-	// 		Type: to.Ptr("psmxtcvsakwewovdqlcndeaisxf"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ResourceGroupName/providers/Microsoft.IoTFirmwareDefense/workspaces/WorkspaceName/firmwares/00000000-0000-0000-0000-000000000000/summaries/firmware"),
+	// 		Name: to.Ptr("firmware"),
+	// 		Type: to.Ptr("Microsoft.IoTFirmwareDefense/workspaces/firmwares/summaries"),
 	// 		SystemData: &armiotfirmwaredefense.SystemData{
-	// 			CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+	// 			CreatedBy: to.Ptr("UserName"),
 	// 			CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("of"),
+	// 			LastModifiedBy: to.Ptr("UserName"),
 	// 			LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 	// 		},
@@ -50,7 +50,7 @@ func ExampleSummariesClient_Get_summariesGetMaximumSetGenGeneratedByMaximumSetRu
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Summaries_Get_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/Summaries_Get_MinimumSet_Gen.json
 func ExampleSummariesClient_Get_summariesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleSummariesClient_Get_summariesGetMinimumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSummariesClient().Get(ctx, "FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000", armiotfirmwaredefense.SummaryTypeFirmware, nil)
+	res, err := clientFactory.NewSummariesClient().Get(ctx, "FirmwareAnalysisRG", "default", "00000000-0000-0000-0000-000000000000", armiotfirmwaredefense.SummaryTypeFirmware, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -74,14 +74,14 @@ func ExampleSummariesClient_Get_summariesGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Summaries_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/Summaries_ListByFirmware_MaximumSet_Gen.json
 func ExampleSummariesClient_NewListByFirmwarePager_summariesListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -100,14 +100,18 @@ func ExampleSummariesClient_NewListByFirmwarePager_summariesListByFirmwareMaximu
 		// 	SummaryResourceListResult: armiotfirmwaredefense.SummaryResourceListResult{
 		// 		Value: []*armiotfirmwaredefense.SummaryResource{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
-		// 				Name: to.Ptr(armiotfirmwaredefense.SummaryType("zmei")),
+		// 				Properties: &armiotfirmwaredefense.SummaryResourceProperties{
+		// 					SummaryType: to.Ptr(armiotfirmwaredefense.SummaryType("SummaryResourceProperties")),
+		// 					ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ResourceGroupName/providers/Microsoft.IoTFirmwareDefense/workspaces/WorkspaceName/firmwares/00000000-0000-0000-0000-000000000000/summaries/firmware"),
+		// 				Name: to.Ptr("zmei"),
 		// 				Type: to.Ptr("psmxtcvsakwewovdqlcndeaisxf"),
 		// 				SystemData: &armiotfirmwaredefense.SystemData{
-		// 					CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+		// 					CreatedBy: to.Ptr("UserName"),
 		// 					CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("of"),
+		// 					LastModifiedBy: to.Ptr("UserName"),
 		// 					LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 		// 				},
@@ -119,7 +123,7 @@ func ExampleSummariesClient_NewListByFirmwarePager_summariesListByFirmwareMaximu
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/Summaries_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/Summaries_ListByFirmware_MinimumSet_Gen.json
 func ExampleSummariesClient_NewListByFirmwarePager_summariesListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +134,7 @@ func ExampleSummariesClient_NewListByFirmwarePager_summariesListByFirmwareMinimu
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSummariesClient().NewListByFirmwarePager("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000", nil)
+	pager := clientFactory.NewSummariesClient().NewListByFirmwarePager("FirmwareAnalysisRG", "default", "00000000-0000-0000-0000-000000000000", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

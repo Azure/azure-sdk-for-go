@@ -26,7 +26,7 @@ type StandbyVirtualMachinePoolRuntimeViewsClient struct {
 // NewStandbyVirtualMachinePoolRuntimeViewsClient creates a new instance of StandbyVirtualMachinePoolRuntimeViewsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStandbyVirtualMachinePoolRuntimeViewsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StandbyVirtualMachinePoolRuntimeViewsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewStandbyVirtualMachinePoolRuntimeViewsClient(subscriptionID string, crede
 // Get - Get a StandbyVirtualMachinePoolRuntimeViewResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyVirtualMachinePoolName - Name of the standby virtual machine pool
 //   - runtimeView - The unique identifier for the runtime view. The input string should be the word 'latest', which will get
@@ -95,7 +95,7 @@ func (client *StandbyVirtualMachinePoolRuntimeViewsClient) getCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +112,7 @@ func (client *StandbyVirtualMachinePoolRuntimeViewsClient) getHandleResponse(res
 
 // NewListByStandbyPoolPager - List StandbyVirtualMachinePoolRuntimeViewResource resources by StandbyVirtualMachinePoolResource
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyVirtualMachinePoolName - Name of the standby virtual machine pool
 //   - options - StandbyVirtualMachinePoolRuntimeViewsClientListByStandbyPoolOptions contains the optional parameters for the
@@ -160,7 +160,7 @@ func (client *StandbyVirtualMachinePoolRuntimeViewsClient) listByStandbyPoolCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

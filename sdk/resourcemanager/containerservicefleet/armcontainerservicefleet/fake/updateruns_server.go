@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // UpdateRunsServer is a fake server for instances of the armcontainerservicefleet.UpdateRunsClient type.
@@ -297,6 +298,7 @@ func (u *UpdateRunsServerTransport) dispatchNewListByFleetPager(req *http.Reques
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -305,7 +307,33 @@ func (u *UpdateRunsServerTransport) dispatchNewListByFleetPager(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		resp := u.srv.NewListByFleetPager(resourceGroupNameParam, fleetNameParam, nil)
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armcontainerservicefleet.UpdateRunsClientListByFleetOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armcontainerservicefleet.UpdateRunsClientListByFleetOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := u.srv.NewListByFleetPager(resourceGroupNameParam, fleetNameParam, options)
 		newListByFleetPager = &resp
 		u.newListByFleetPager.add(req, newListByFleetPager)
 		server.PagerResponderInjectNextLinks(newListByFleetPager, req, func(page *armcontainerservicefleet.UpdateRunsClientListByFleetResponse, createLink func() string) {

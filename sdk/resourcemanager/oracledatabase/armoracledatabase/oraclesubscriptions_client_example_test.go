@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/oracleSubscriptions_addAzureSubscriptions.json
-func ExampleOracleSubscriptionsClient_BeginAddAzureSubscriptions() {
+// Generated from example definition: 2025-09-01/OracleSubscriptions_AddAzureSubscriptions_MaximumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginAddAzureSubscriptions_addAzureSubscriptionsToTheOracleSubscriptionGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -37,8 +37,393 @@ func ExampleOracleSubscriptionsClient_BeginAddAzureSubscriptions() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/oracleSubscriptions_listActivationLinks.json
-func ExampleOracleSubscriptionsClient_BeginListActivationLinks() {
+// Generated from example definition: 2025-09-01/OracleSubscriptions_AddAzureSubscriptions_MinimumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginAddAzureSubscriptions_addAzureSubscriptionsToTheOracleSubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginAddAzureSubscriptions(ctx, armoracledatabase.AzureSubscriptions{
+		AzureSubscriptionIDs: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000001"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/oracleSubscriptions_addAzureSubscriptions.json
+func ExampleOracleSubscriptionsClient_BeginAddAzureSubscriptions_oracleSubscriptionsAddAzureSubscriptions() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginAddAzureSubscriptions(ctx, armoracledatabase.AzureSubscriptions{
+		AzureSubscriptionIDs: []*string{
+			to.Ptr("00000000-0000-0000-0000-000000000001"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginCreateOrUpdate_createOrUpdateOracleSubscriptionGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginCreateOrUpdate(ctx, armoracledatabase.OracleSubscription{
+		Properties: &armoracledatabase.OracleSubscriptionProperties{
+			CloudAccountID:    to.Ptr("ocid1..aaaaaa"),
+			CloudAccountState: to.Ptr(armoracledatabase.CloudAccountProvisioningStatePending),
+			TermUnit:          to.Ptr("akzq"),
+			ProductCode:       to.Ptr("aujimmjxyetnqkmjqrwapn"),
+			Intent:            to.Ptr(armoracledatabase.IntentRetain),
+		},
+		Plan: &armoracledatabase.Plan{
+			Name:          to.Ptr("plan1"),
+			Publisher:     to.Ptr("publisher1"),
+			Product:       to.Ptr("product1"),
+			PromotionCode: to.Ptr("none"),
+			Version:       to.Ptr("alpha"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientCreateOrUpdateResponse{
+	// 	OracleSubscription: &armoracledatabase.OracleSubscription{
+	// 		Properties: &armoracledatabase.OracleSubscriptionProperties{
+	// 			ProvisioningState: to.Ptr(armoracledatabase.OracleSubscriptionProvisioningStateSucceeded),
+	// 			SaasSubscriptionID: to.Ptr("saas1"),
+	// 			CloudAccountID: to.Ptr("ocid1..aaaaaa"),
+	// 			CloudAccountState: to.Ptr(armoracledatabase.CloudAccountProvisioningStatePending),
+	// 			TermUnit: to.Ptr("akzq"),
+	// 			Intent: to.Ptr(armoracledatabase.IntentRetain),
+	// 			AzureSubscriptionIDs: []*string{
+	// 				to.Ptr("qrplrbvwarbkqsqdodbtdoyo"),
+	// 			},
+	// 			AddSubscriptionOperationState: to.Ptr(armoracledatabase.AddSubscriptionOperationStateSucceeded),
+	// 			LastOperationStatusDetail: to.Ptr("inkvybccxpzxvkwzhfcztr"),
+	// 		},
+	// 		Plan: &armoracledatabase.Plan{
+	// 			Name: to.Ptr("plan1"),
+	// 			Publisher: to.Ptr("publisher1"),
+	// 			Product: to.Ptr("product1"),
+	// 			PromotionCode: to.Ptr("none"),
+	// 			Version: to.Ptr("alpha"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/oracleSubscriptions/default"),
+	// 		Name: to.Ptr("sxraf"),
+	// 		Type: to.Ptr("Oracle.Database/oracleSubscriptions"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_CreateOrUpdate_MinimumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginCreateOrUpdate_createOrUpdateOracleSubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginCreateOrUpdate(ctx, armoracledatabase.OracleSubscription{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientCreateOrUpdateResponse{
+	// 	OracleSubscription: &armoracledatabase.OracleSubscription{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/oracleSubscriptions_create.json
+func ExampleOracleSubscriptionsClient_BeginCreateOrUpdate_oracleSubscriptionsCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginCreateOrUpdate(ctx, armoracledatabase.OracleSubscription{
+		Properties: &armoracledatabase.OracleSubscriptionProperties{},
+		Plan: &armoracledatabase.Plan{
+			Name:          to.Ptr("plan1"),
+			Publisher:     to.Ptr("publisher1"),
+			Product:       to.Ptr("product1"),
+			PromotionCode: to.Ptr("none"),
+			Version:       to.Ptr("alpha"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientCreateOrUpdateResponse{
+	// 	OracleSubscription: &armoracledatabase.OracleSubscription{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/oracleSubscriptions/default"),
+	// 		Type: to.Ptr("Oracle.Database/oracleSubscriptions"),
+	// 		Properties: &armoracledatabase.OracleSubscriptionProperties{
+	// 			ProvisioningState: to.Ptr(armoracledatabase.OracleSubscriptionProvisioningStateSucceeded),
+	// 			SaasSubscriptionID: to.Ptr("saas1"),
+	// 			CloudAccountID: to.Ptr("ocid1..aaaaaa"),
+	// 			CloudAccountState: to.Ptr(armoracledatabase.CloudAccountProvisioningStatePending),
+	// 		},
+	// 		Plan: &armoracledatabase.Plan{
+	// 			Name: to.Ptr("plan1"),
+	// 			Publisher: to.Ptr("publisher1"),
+	// 			Product: to.Ptr("product1"),
+	// 			PromotionCode: to.Ptr("none"),
+	// 			Version: to.Ptr("alpha"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_Delete_MaximumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginDelete_deleteOracleSubscriptionGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginDelete(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_Delete_MinimumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginDelete_deleteOracleSubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginDelete(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/oracleSubscriptions_delete.json
+func ExampleOracleSubscriptionsClient_BeginDelete_oracleSubscriptionsDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginDelete(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_Get_MaximumSet_Gen.json
+func ExampleOracleSubscriptionsClient_Get_getOracleSubscriptionGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOracleSubscriptionsClient().Get(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientGetResponse{
+	// 	OracleSubscription: &armoracledatabase.OracleSubscription{
+	// 		Properties: &armoracledatabase.OracleSubscriptionProperties{
+	// 			ProvisioningState: to.Ptr(armoracledatabase.OracleSubscriptionProvisioningStateSucceeded),
+	// 			SaasSubscriptionID: to.Ptr("saas1"),
+	// 			CloudAccountID: to.Ptr("ocid1..aaaaaa"),
+	// 			CloudAccountState: to.Ptr(armoracledatabase.CloudAccountProvisioningStatePending),
+	// 			TermUnit: to.Ptr("akzq"),
+	// 			Intent: to.Ptr(armoracledatabase.IntentRetain),
+	// 			AzureSubscriptionIDs: []*string{
+	// 				to.Ptr("qrplrbvwarbkqsqdodbtdoyo"),
+	// 			},
+	// 			AddSubscriptionOperationState: to.Ptr(armoracledatabase.AddSubscriptionOperationStateSucceeded),
+	// 			LastOperationStatusDetail: to.Ptr("inkvybccxpzxvkwzhfcztr"),
+	// 		},
+	// 		Plan: &armoracledatabase.Plan{
+	// 			Name: to.Ptr("plan1"),
+	// 			Publisher: to.Ptr("publisher1"),
+	// 			Product: to.Ptr("product1"),
+	// 			PromotionCode: to.Ptr("none"),
+	// 			Version: to.Ptr("alpha"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/oracleSubscriptions/default"),
+	// 		Name: to.Ptr("sxraf"),
+	// 		Type: to.Ptr("Oracle.Database/oracleSubscriptions"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_Get_MinimumSet_Gen.json
+func ExampleOracleSubscriptionsClient_Get_getOracleSubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOracleSubscriptionsClient().Get(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientGetResponse{
+	// 	OracleSubscription: &armoracledatabase.OracleSubscription{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/oracleSubscriptions_get.json
+func ExampleOracleSubscriptionsClient_Get_oracleSubscriptionsGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOracleSubscriptionsClient().Get(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientGetResponse{
+	// 	OracleSubscription: &armoracledatabase.OracleSubscription{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/oracleSubscriptions/default"),
+	// 		Type: to.Ptr("Oracle.Database/oracleSubscriptions"),
+	// 		Properties: &armoracledatabase.OracleSubscriptionProperties{
+	// 			ProvisioningState: to.Ptr(armoracledatabase.OracleSubscriptionProvisioningStateSucceeded),
+	// 			SaasSubscriptionID: to.Ptr("saas1"),
+	// 			CloudAccountID: to.Ptr("ocid1..aaaaaa"),
+	// 			CloudAccountState: to.Ptr(armoracledatabase.CloudAccountProvisioningStatePending),
+	// 		},
+	// 		Plan: &armoracledatabase.Plan{
+	// 			Name: to.Ptr("plan1"),
+	// 			Publisher: to.Ptr("publisher1"),
+	// 			Product: to.Ptr("product1"),
+	// 			PromotionCode: to.Ptr("none"),
+	// 			Version: to.Ptr("alpha"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_ListActivationLinks_MaximumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginListActivationLinks_listActivationLinksForTheOracleSubscriptionGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -67,8 +452,213 @@ func ExampleOracleSubscriptionsClient_BeginListActivationLinks() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/oracleSubscriptions_listCloudAccountDetails.json
-func ExampleOracleSubscriptionsClient_BeginListCloudAccountDetails() {
+// Generated from example definition: 2025-09-01/OracleSubscriptions_ListActivationLinks_MinimumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginListActivationLinks_listActivationLinksForTheOracleSubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginListActivationLinks(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientListActivationLinksResponse{
+	// 	ActivationLinks: &armoracledatabase.ActivationLinks{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/oracleSubscriptions_listActivationLinks.json
+func ExampleOracleSubscriptionsClient_BeginListActivationLinks_oracleSubscriptionsListActivationLinks() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginListActivationLinks(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientListActivationLinksResponse{
+	// 	ActivationLinks: &armoracledatabase.ActivationLinks{
+	// 		NewCloudAccountActivationLink: to.Ptr("https://new-tenancy-activation-link"),
+	// 		ExistingCloudAccountActivationLink: to.Ptr("https://existing-tenancy-activation-link"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_ListBySubscription_MaximumSet_Gen.json
+func ExampleOracleSubscriptionsClient_NewListBySubscriptionPager_listOracleSubscriptionsBySubscriptionGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOracleSubscriptionsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse{
+		// 	OracleSubscriptionListResult: armoracledatabase.OracleSubscriptionListResult{
+		// 		Value: []*armoracledatabase.OracleSubscription{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/oracleSubscriptions/default"),
+		// 				Type: to.Ptr("Oracle.Database/oracleSubscriptions"),
+		// 				Properties: &armoracledatabase.OracleSubscriptionProperties{
+		// 					ProvisioningState: to.Ptr(armoracledatabase.OracleSubscriptionProvisioningStateSucceeded),
+		// 					SaasSubscriptionID: to.Ptr("saas1"),
+		// 					CloudAccountID: to.Ptr("ocid1..aaaaaa"),
+		// 					CloudAccountState: to.Ptr(armoracledatabase.CloudAccountProvisioningStatePending),
+		// 					TermUnit: to.Ptr("yhwdyubzxys"),
+		// 					Intent: to.Ptr(armoracledatabase.IntentRetain),
+		// 					AzureSubscriptionIDs: []*string{
+		// 						to.Ptr("vjdqlpepuxvegjtlrj"),
+		// 					},
+		// 					AddSubscriptionOperationState: to.Ptr(armoracledatabase.AddSubscriptionOperationStateSucceeded),
+		// 					LastOperationStatusDetail: to.Ptr("ddtjrmzwwurfemsarjjvqtwdo"),
+		// 				},
+		// 				Plan: &armoracledatabase.Plan{
+		// 					Name: to.Ptr("plan1"),
+		// 					Publisher: to.Ptr("publisher1"),
+		// 					Product: to.Ptr("product1"),
+		// 					PromotionCode: to.Ptr("none"),
+		// 					Version: to.Ptr("alpha"),
+		// 				},
+		// 				Name: to.Ptr("zwainyphvpxjncfxnallsvn"),
+		// 				SystemData: &armoracledatabase.SystemData{
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/abudqlha"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_ListBySubscription_MinimumSet_Gen.json
+func ExampleOracleSubscriptionsClient_NewListBySubscriptionPager_listOracleSubscriptionsBySubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOracleSubscriptionsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse{
+		// 	OracleSubscriptionListResult: armoracledatabase.OracleSubscriptionListResult{
+		// 		Value: []*armoracledatabase.OracleSubscription{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/oracleSubscriptions/default"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/oracleSubscriptions_listBySubscription.json
+func ExampleOracleSubscriptionsClient_NewListBySubscriptionPager_oracleSubscriptionsListBySubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOracleSubscriptionsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.OracleSubscriptionsClientListBySubscriptionResponse{
+		// 	OracleSubscriptionListResult: armoracledatabase.OracleSubscriptionListResult{
+		// 		Value: []*armoracledatabase.OracleSubscription{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/oracleSubscriptions/default"),
+		// 				Type: to.Ptr("Oracle.Database/oracleSubscriptions"),
+		// 				Properties: &armoracledatabase.OracleSubscriptionProperties{
+		// 					ProvisioningState: to.Ptr(armoracledatabase.OracleSubscriptionProvisioningStateSucceeded),
+		// 					SaasSubscriptionID: to.Ptr("saas1"),
+		// 					CloudAccountID: to.Ptr("ocid1..aaaaaa"),
+		// 					CloudAccountState: to.Ptr(armoracledatabase.CloudAccountProvisioningStatePending),
+		// 				},
+		// 				Plan: &armoracledatabase.Plan{
+		// 					Name: to.Ptr("plan1"),
+		// 					Publisher: to.Ptr("publisher1"),
+		// 					Product: to.Ptr("product1"),
+		// 					PromotionCode: to.Ptr("none"),
+		// 					Version: to.Ptr("alpha"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_ListCloudAccountDetails_MaximumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginListCloudAccountDetails_listCloudAccountDetailsForTheOracleSubscriptionGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -97,8 +687,134 @@ func ExampleOracleSubscriptionsClient_BeginListCloudAccountDetails() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/oracleSubscriptions_listSaasSubscriptionDetails.json
-func ExampleOracleSubscriptionsClient_BeginListSaasSubscriptionDetails() {
+// Generated from example definition: 2025-09-01/OracleSubscriptions_ListCloudAccountDetails_MinimumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginListCloudAccountDetails_listCloudAccountDetailsForTheOracleSubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginListCloudAccountDetails(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientListCloudAccountDetailsResponse{
+	// 	CloudAccountDetails: &armoracledatabase.CloudAccountDetails{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/oracleSubscriptions_listCloudAccountDetails.json
+func ExampleOracleSubscriptionsClient_BeginListCloudAccountDetails_oracleSubscriptionsListCloudAccountDetails() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginListCloudAccountDetails(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientListCloudAccountDetailsResponse{
+	// 	CloudAccountDetails: &armoracledatabase.CloudAccountDetails{
+	// 		CloudAccountName: to.Ptr("Cloud Account"),
+	// 		CloudAccountHomeRegion: to.Ptr("East US"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_ListSaasSubscriptionDetails_MaximumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginListSaasSubscriptionDetails_listSaasSubscriptionDetailsForTheOracleSubscriptionGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginListSaasSubscriptionDetails(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientListSaasSubscriptionDetailsResponse{
+	// 	SaasSubscriptionDetails: &armoracledatabase.SaasSubscriptionDetails{
+	// 		ID: to.Ptr("1234567890"),
+	// 		SubscriptionName: to.Ptr("Oracle"),
+	// 		TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-07T00:00:00Z"); return t}()),
+	// 		OfferID: to.Ptr("offer1"),
+	// 		PlanID: to.Ptr("silver"),
+	// 		SaasSubscriptionStatus: to.Ptr("PendingFulfillmentStart"),
+	// 		PublisherID: to.Ptr("Oracle"),
+	// 		PurchaserEmailID: to.Ptr("test@test.com"),
+	// 		PurchaserTenantID: to.Ptr("1234567890"),
+	// 		TermUnit: to.Ptr("P1M"),
+	// 		IsAutoRenew: to.Ptr(true),
+	// 		IsFreeTrial: to.Ptr(true),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_ListSaasSubscriptionDetails_MinimumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginListSaasSubscriptionDetails_listSaasSubscriptionDetailsForTheOracleSubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginListSaasSubscriptionDetails(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientListSaasSubscriptionDetailsResponse{
+	// 	SaasSubscriptionDetails: &armoracledatabase.SaasSubscriptionDetails{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/oracleSubscriptions_listSaasSubscriptionDetails.json
+func ExampleOracleSubscriptionsClient_BeginListSaasSubscriptionDetails_oracleSubscriptionsListSaasSubscriptionDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -137,8 +853,107 @@ func ExampleOracleSubscriptionsClient_BeginListSaasSubscriptionDetails() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/oracleSubscriptions_patch.json
-func ExampleOracleSubscriptionsClient_BeginUpdate() {
+// Generated from example definition: 2025-09-01/OracleSubscriptions_Update_MaximumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginUpdate_patchOracleSubscriptionGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginUpdate(ctx, armoracledatabase.OracleSubscriptionUpdate{
+		Plan: &armoracledatabase.PlanUpdate{
+			Name:          to.Ptr("klnnbggrxhvvaiajvjx"),
+			Publisher:     to.Ptr("xvsarzadrjqergudsohjk"),
+			Product:       to.Ptr("hivkczjyrimjilbmqj"),
+			PromotionCode: to.Ptr("zhotaxrodldvmwpksvsrwbnc"),
+			Version:       to.Ptr("ueudckjmuqpjvsmmenzyflgpa"),
+		},
+		Properties: &armoracledatabase.OracleSubscriptionUpdateProperties{
+			ProductCode: to.Ptr("kbqzsukkjceoplyalyrdayfj"),
+			Intent:      to.Ptr(armoracledatabase.IntentRetain),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientUpdateResponse{
+	// 	OracleSubscription: &armoracledatabase.OracleSubscription{
+	// 		Properties: &armoracledatabase.OracleSubscriptionProperties{
+	// 			ProvisioningState: to.Ptr(armoracledatabase.OracleSubscriptionProvisioningStateSucceeded),
+	// 			SaasSubscriptionID: to.Ptr("saas1"),
+	// 			CloudAccountID: to.Ptr("ocid1..aaaaaa"),
+	// 			CloudAccountState: to.Ptr(armoracledatabase.CloudAccountProvisioningStatePending),
+	// 			TermUnit: to.Ptr("akzq"),
+	// 			Intent: to.Ptr(armoracledatabase.IntentRetain),
+	// 			AzureSubscriptionIDs: []*string{
+	// 				to.Ptr("qrplrbvwarbkqsqdodbtdoyo"),
+	// 			},
+	// 			AddSubscriptionOperationState: to.Ptr(armoracledatabase.AddSubscriptionOperationStateSucceeded),
+	// 			LastOperationStatusDetail: to.Ptr("inkvybccxpzxvkwzhfcztr"),
+	// 		},
+	// 		Plan: &armoracledatabase.Plan{
+	// 			Name: to.Ptr("plan1"),
+	// 			Publisher: to.Ptr("publisher1"),
+	// 			Product: to.Ptr("product1"),
+	// 			PromotionCode: to.Ptr("none"),
+	// 			Version: to.Ptr("alpha"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/oracleSubscriptions/default"),
+	// 		Name: to.Ptr("sxraf"),
+	// 		Type: to.Ptr("Oracle.Database/oracleSubscriptions"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/OracleSubscriptions_Update_MinimumSet_Gen.json
+func ExampleOracleSubscriptionsClient_BeginUpdate_patchOracleSubscriptionGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOracleSubscriptionsClient().BeginUpdate(ctx, armoracledatabase.OracleSubscriptionUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.OracleSubscriptionsClientUpdateResponse{
+	// 	OracleSubscription: &armoracledatabase.OracleSubscription{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/oracleSubscriptions_patch.json
+func ExampleOracleSubscriptionsClient_BeginUpdate_oracleSubscriptionsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

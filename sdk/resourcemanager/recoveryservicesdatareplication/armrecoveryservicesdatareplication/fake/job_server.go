@@ -147,11 +147,11 @@ func (j *JobServerTransport) dispatchNewListPager(req *http.Request) (*http.Resp
 		if err != nil {
 			return nil, err
 		}
-		odataOptionsUnescaped, err := url.QueryUnescape(qp.Get("odataOptions"))
+		oDataOptionsUnescaped, err := url.QueryUnescape(qp.Get("odataOptions"))
 		if err != nil {
 			return nil, err
 		}
-		odataOptionsParam := getOptional(odataOptionsUnescaped)
+		oDataOptionsParam := getOptional(oDataOptionsUnescaped)
 		continuationTokenUnescaped, err := url.QueryUnescape(qp.Get("continuationToken"))
 		if err != nil {
 			return nil, err
@@ -176,9 +176,9 @@ func (j *JobServerTransport) dispatchNewListPager(req *http.Request) (*http.Resp
 			return nil, err
 		}
 		var options *armrecoveryservicesdatareplication.JobClientListOptions
-		if odataOptionsParam != nil || continuationTokenParam != nil || pageSizeParam != nil {
+		if oDataOptionsParam != nil || continuationTokenParam != nil || pageSizeParam != nil {
 			options = &armrecoveryservicesdatareplication.JobClientListOptions{
-				OdataOptions:      odataOptionsParam,
+				ODataOptions:      oDataOptionsParam,
 				ContinuationToken: continuationTokenParam,
 				PageSize:          pageSizeParam,
 			}

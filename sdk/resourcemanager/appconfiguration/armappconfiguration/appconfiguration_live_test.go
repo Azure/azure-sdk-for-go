@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -17,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -79,6 +76,9 @@ func (testsuite *AppconfigurationTestSuite) Prepare() {
 		},
 		SKU: &armappconfiguration.SKU{
 			Name: to.Ptr("Standard"),
+		},
+		Properties: &armappconfiguration.ConfigurationStoreProperties{
+			DisableLocalAuth: to.Ptr(true),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -168,17 +168,19 @@ func (testsuite *AppconfigurationTestSuite) TestConfigurationStores() {
 	for configurationStoresClientNewListKeysPager.More() {
 		nextResult, err := configurationStoresClientNewListKeysPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-
-		keyId = *nextResult.Value[0].ID
-		break
+		if len(nextResult.Value) > 0 {
+			keyId = *nextResult.Value[0].ID
+			break
+		}
 	}
-
-	// From step ConfigurationStores_RegenerateKey
-	fmt.Println("Call operation: ConfigurationStores_RegenerateKey")
-	_, err = configurationStoresClient.RegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.configStoreName, armappconfiguration.RegenerateKeyParameters{
-		ID: to.Ptr(keyId),
-	}, nil)
-	testsuite.Require().NoError(err)
+	if keyId != "" {
+		// From step ConfigurationStores_RegenerateKey
+		fmt.Println("Call operation: ConfigurationStores_RegenerateKey")
+		_, err = configurationStoresClient.RegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.configStoreName, armappconfiguration.RegenerateKeyParameters{
+			ID: to.Ptr(keyId),
+		}, nil)
+		testsuite.Require().NoError(err)
+	}
 }
 
 // Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}
@@ -218,7 +220,7 @@ func (testsuite *AppconfigurationTestSuite) TestReplicas() {
 }
 
 // Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}
-func (testsuite *AppconfigurationTestSuite) TTestPrivateEndpointConnections() {
+func (testsuite *AppconfigurationTestSuite) TestPrivateEndpointConnections() {
 	var privateEndpointConnectionName string
 	var err error
 	// From step Create_PrivateEndpoint
@@ -352,10 +354,10 @@ func (testsuite *AppconfigurationTestSuite) TTestPrivateEndpointConnections() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)

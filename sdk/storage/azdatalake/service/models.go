@@ -1,20 +1,19 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package service
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
-	"time"
+
+	blobSAS "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
-import blobSAS "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 
 // CreateFileSystemOptions contains the optional parameters for the FileSystem Create method.
 type CreateFileSystemOptions = filesystem.CreateOptions

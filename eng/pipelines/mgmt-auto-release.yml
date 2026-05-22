@@ -26,12 +26,12 @@ extends:
 
               - task: Npm@1
                 inputs:
-                  command: 'custom'
-                  customCommand: 'install -g @azure-tools/typespec-client-generator-cli@v0.21.0'
+                  command: 'ci'
+                  workingDir: 'eng/common/tsp-client'
 
               - task: GoTool@0
                 inputs:
-                  version: '1.23.2'
+                  version: '1.25.4'
 
               - task: ShellScript@2
                 inputs:

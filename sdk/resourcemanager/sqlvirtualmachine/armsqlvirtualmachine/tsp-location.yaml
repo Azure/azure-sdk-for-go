@@ -1,0 +1,4 @@
+directory: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/SqlVirtualMachine
+commit: aa822c9c01b9e83fbc8ad8ec4c308203a3c29287
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

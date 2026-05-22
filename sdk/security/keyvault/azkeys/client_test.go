@@ -31,7 +31,7 @@ func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
 	for i := 0; i < 12; i++ {
 		err = fn()
 		var respErr *azcore.ResponseError
-		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
+		if !errors.As(err, &respErr) || respErr.StatusCode != expectedStatus {
 			break
 		}
 		if i < 11 {
@@ -160,6 +160,8 @@ func TestCRUD(t *testing.T) {
 				testSerde(t, &getResp.KeyBundle)
 
 				if mhsm {
+					t.Skip("Skipping MHSM attestation until it supports 2025-07-01")
+
 					getAttResp, err := client.GetKeyAttestation(context.Background(), keyName, "", nil)
 					require.NoError(t, err)
 					require.Equal(t, createResp.Key.KID.Name(), getAttResp.Key.KID.Name())
@@ -589,7 +591,9 @@ func TestReleaseKey(t *testing.T) {
 			resp, err := attestationClient.Do(req)
 			require.NoError(t, err)
 			require.Equal(t, http.StatusOK, resp.StatusCode)
-			defer resp.Body.Close()
+			defer func() {
+				_ = resp.Body.Close()
+			}()
 
 			var tR struct {
 				Token *string `json:"token"`
@@ -604,7 +608,7 @@ func TestReleaseKey(t *testing.T) {
 				t.Skip("test encountered a transient service fault; see https://github.com/Azure/azure-sdk-for-net/issues/27957")
 			}
 			require.NoError(t, err)
-			require.NotEmpty(t, releaseResp.KeyReleaseResult.Value)
+			require.NotEmpty(t, releaseResp.Value)
 			testSerde(t, &releaseResp.KeyReleaseResult)
 		})
 	}

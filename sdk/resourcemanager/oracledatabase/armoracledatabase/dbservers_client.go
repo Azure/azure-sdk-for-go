@@ -26,7 +26,7 @@ type DbServersClient struct {
 // NewDbServersClient creates a new instance of DbServersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDbServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DbServersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewDbServersClient(subscriptionID string, credential azcore.TokenCredential
 // Get - Get a DbServer
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudexadatainfrastructurename - CloudExadataInfrastructure name
 //   - dbserverocid - DbServer OCID.
@@ -93,7 +93,7 @@ func (client *DbServersClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *DbServersClient) getHandleResponse(resp *http.Response) (DbServers
 
 // NewListByCloudExadataInfrastructurePager - List DbServer resources by CloudExadataInfrastructure
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudexadatainfrastructurename - CloudExadataInfrastructure name
 //   - options - DbServersClientListByCloudExadataInfrastructureOptions contains the optional parameters for the DbServersClient.NewListByCloudExadataInfrastructurePager
@@ -158,7 +158,7 @@ func (client *DbServersClient) listByCloudExadataInfrastructureCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

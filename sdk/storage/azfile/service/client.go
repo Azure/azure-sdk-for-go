@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -45,6 +42,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 		InsecureAllowCredentialWithHTTP: conOptions.InsecureAllowCredentialWithHTTP,
 	})
 	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewRangePolicy()},
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -63,7 +61,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
@@ -82,6 +80,7 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewRangePolicy()},
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -129,6 +128,22 @@ func (s *Client) getClientOptions() *base.ClientOptions {
 // URL returns the URL endpoint used by the Client object.
 func (s *Client) URL() string {
 	return s.generated().Endpoint()
+}
+
+// GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
+// OAuth is required for this call, as well as any role that can delegate access to the storage account.
+func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, o *GetUserDelegationCredentialOptions) (*UserDelegationCredential, error) {
+	url := s.URL()
+	parts := strings.Split(strings.TrimPrefix(url, "https://"), ".")
+	account := parts[0]
+
+	getUserDelegationKeyOptions := o.format()
+	udk, err := s.generated().GetUserDelegationKey(ctx, info, getUserDelegationKeyOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return exported.NewUserDelegationCredential(account, udk.UserDelegationKey), nil
 }
 
 // NewShareClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-01-preview/ManagedPrivateEndpoints_Create.json
+// Generated from example definition: 2025-08-01/ManagedPrivateEndpoints_Create.json
 func ExampleManagedPrivateEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleManagedPrivateEndpointsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/ManagedPrivateEndpoints_Delete.json
+// Generated from example definition: 2025-08-01/ManagedPrivateEndpoints_Delete.json
 func ExampleManagedPrivateEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleManagedPrivateEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/ManagedPrivateEndpoints_Get.json
+// Generated from example definition: 2025-08-01/ManagedPrivateEndpoints_Get.json
 func ExampleManagedPrivateEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleManagedPrivateEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/ManagedPrivateEndpoints_List.json
+// Generated from example definition: 2025-08-01/ManagedPrivateEndpoints_List.json
 func ExampleManagedPrivateEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleManagedPrivateEndpointsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01-preview/ManagedPrivateEndpoints_Refresh.json
+// Generated from example definition: 2025-08-01/ManagedPrivateEndpoints_Refresh.json
 func ExampleManagedPrivateEndpointsClient_BeginRefresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleManagedPrivateEndpointsClient_BeginRefresh() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/ManagedPrivateEndpoints_Patch.json
+// Generated from example definition: 2025-08-01/ManagedPrivateEndpoints_Patch.json
 func ExampleManagedPrivateEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

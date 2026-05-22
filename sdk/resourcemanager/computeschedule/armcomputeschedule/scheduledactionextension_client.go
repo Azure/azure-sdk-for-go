@@ -6,6 +6,7 @@ package armcomputeschedule
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -22,7 +23,7 @@ type ScheduledActionExtensionClient struct {
 
 // NewScheduledActionExtensionClient creates a new instance of ScheduledActionExtensionClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScheduledActionExtensionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledActionExtensionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -66,6 +67,9 @@ func (client *ScheduledActionExtensionClient) NewListByVMsPager(resourceURI stri
 // listByVMsCreateRequest creates the ListByVMs request.
 func (client *ScheduledActionExtensionClient) listByVMsCreateRequest(ctx context.Context, resourceURI string, _ *ScheduledActionExtensionClientListByVMsOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ComputeSchedule/associatedScheduledActions"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -56,6 +53,7 @@ func TestDecodeByteArray(t *testing.T) {
 	require.NoError(t, DecodeByteArray(fmt.Sprintf("\"%s\"", stdEncoding), &out, Base64StdFormat))
 	require.EqualValues(t, decoded, string(out))
 	require.Error(t, DecodeByteArray(stdEncoding, &out, 123))
+	require.Error(t, DecodeByteArray("\"", &out, Base64StdFormat))
 }
 
 func TestNewKeyCredential(t *testing.T) {

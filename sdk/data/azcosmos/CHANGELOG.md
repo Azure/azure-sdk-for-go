@@ -1,6 +1,72 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.7 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+* Fixed excessive `GetDatabaseAccount` HTTP calls and a self-deadlock in `locationCache.readEndpoints`/`writeEndpoints` when using preferred regions. Concurrent refreshes are now coalesced via a single in-flight pattern, refresh failures honour the throttle just like successes, a chronic bootstrap failure surfaces the cached error rather than refresh-storming, and async refresh failures are logged so post-bootstrap topology drift is observable. Also stopped data-plane retries from trailing into the customer-supplied (default) endpoint once account topology is populated; route lists now contain only regional endpoints. `enableCrossRegionRetries=false` still routes single-master writes to the default endpoint, and accounts advertising zero write regions still fall back to it for writes. See [PR 26815](https://github.com/Azure/azure-sdk-for-go/pull/26815).
+
+### Other Changes
+
+* Tightened the default HTTP client: 5s dial timeout (down from azcore's 30s), 65s `http.Client.Timeout` wall-clock cap per HTTP attempt (was unbounded), larger idle connection pool (1000 total / 100 per host, up from azcore's 100 / 10), and faster HTTP/2 health checks. Caller-supplied `Transport` and shorter `context` deadlines are unaffected. See [PR 26856](https://github.com/Azure/azure-sdk-for-go/pull/26856).
+
+## 1.5.0-beta.6 (2026-05-15)
+
+### Features Added
+
+* Adds `PriorityLevel` and `ThroughputBucket` options at the client and per-request level for item, query, change-feed, batch, and read-many operations. See [PR 26750](https://github.com/Azure/azure-sdk-for-go/pull/26750)
+* Added client-level partition key range cache and container properties cache, reducing redundant metadata round-trips for ReadMany and query operations. See [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)
+* Added operation diagnostics on responses and `DiagnosticsFromError` for retrieving diagnostics from failed operations. See [PR 26548](https://github.com/Azure/azure-sdk-for-go/pull/26548)
+
+### Breaking Changes
+
+* Removed `ChangeFeedResponse.PopulateCompositeContinuationToken()`. The method is no longer needed: `GetChangeFeed` now populates `ChangeFeedResponse.ContinuationToken` directly with the multi-range composite token. Callers who built single-range tokens manually can use `GetCompositeContinuationToken()` instead. See [PR 26792](https://github.com/Azure/azure-sdk-for-go/pull/26792).
+
+### Bugs Fixed
+
+* Fixed `GetChangeFeed` to survive partition splits: customer-supplied `FeedRange`s are now overlap-matched against the routing map, `410/Gone` triggers a cache refresh and bounded retry, split parents expand into per-child queue entries (inheriting the parent's ETag), and the continuation token persists multi-range state across calls. Continuation tokens are guarded against cross-container reuse. See [PR 26768](https://github.com/Azure/azure-sdk-for-go/pull/26768).
+* Fixed V2 partition key routing: the top 2 bits of the first EPK byte are now masked to stay within the partition key range space [0x00, 0x3F]. Previously, items whose V2 hash started with a byte >= 0x40 could fail routing in ReadMany because the EPK lexicographically exceeded the "FF" range sentinel. See [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)
+* Fixed error handling for partition key range calls which would previously cause panics on any error. See [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)
+* Fixed partition key range cache to use change-feed pagination when fetching ranges, preventing incomplete range sets on containers with many partitions. The incremental refresh path now accumulates all pages before merging, correctly handling cascading splits across multiple change-feed pages. See [PR 26777](https://github.com/Azure/azure-sdk-for-go/pull/26777)
+
+## 1.5.0-beta.5 (2026-03-09)
+
+### Features Added
+
+* Adds support for float 16 datatype for vector embedding policy. See [PR 25707](https://github.com/Azure/azure-sdk-for-go/pull/25707)
+* Improved the performance of the built-in ReadMany implementation. See [PR 26007](https://github.com/Azure/azure-sdk-for-go/pull/26007)
+
+### Breaking Changes
+
+* Removed `QueryEngine` field from `ReadManyOptions`. ReadMany now always uses the built-in Go-native implementation.
+
+### Other Changes
+
+* Small performance optimizations to API's using query engine. See [PR 25669](https://github.com/Azure/azure-sdk-for-go/pull/25669)
+
+## 1.5.0-beta.4 (2025-11-24)
+
+### Features Added
+
+* Added client engine support for `ReadManyItems`. See [PR 25458](https://github.com/Azure/azure-sdk-for-go/pull/25458)
+
+## 1.5.0-beta.3 (2025-11-10)
+
+### Features Added
+
+* Adjusted the query engine abstraction to support future enhancements and optimizations. See [PR 25503](https://github.com/Azure/azure-sdk-for-go/pull/25503)
+
+## 1.5.0-beta.2 (2025-11-03)
+
+### Features Added
+
+* Added `ReadManyItems` API to read documents across partitions. See [PR 25522](https://github.com/Azure/azure-sdk-for-go/pull/25522)
+
+## 1.5.0-beta.1 (2025-10-16)
 
 ### Features Added
 
@@ -9,15 +75,13 @@
 * Added support for specifying Vector Search indexing policies when creating a container. See [PR 24833](https://github.com/Azure/azure-sdk-for-go/pull/24833)
 * Added support for reading Feed Ranges from a container. See [PR 24889](https://github.com/Azure/azure-sdk-for-go/pull/24889)
 * Added support for reading Change Feed through Feed Ranges from a container. See [PR 24898](https://github.com/Azure/azure-sdk-for-go/pull/24898)
+* Additional logging in the query engine integration code. See [PR 25444](https://github.com/Azure/azure-sdk-for-go/pull/25444)
 
-### Breaking Changes
+## 1.4.1 (2025-08-27)
 
 ### Bugs Fixed
 
-* Fixed excessive `GetDatabaseAccount` (region topology) HTTP calls when using preferred regions. Previously a failed refresh did not advance the throttle, concurrent callers each spawned a goroutine that issued its own HTTP call, and a failed bootstrap could pin the client into a permanent refresh storm. Concurrent refreshes are now coalesced via a single in-flight pattern, failures honour the same throttle as successes, and a chronic bootstrap failure surfaces the cached error rather than retrying on every request. Also fixed a self-deadlock in `locationCache.readEndpoints`/`writeEndpoints` on the stale-endpoints refresh path. See [PR 26815](https://github.com/Azure/azure-sdk-for-go/pull/26815).
-* Data-plane retries no longer trail into the customer-supplied (default) endpoint once the account topology is populated. Previously every preferred route list ended with the default endpoint, so retry traversal eventually issued data-plane requests there even when full regional metadata was available. Route lists now contain only regional endpoints. `resolveServiceEndpoint` behavior is unchanged: `enableCrossRegionRetries=false` still routes single-master writes to the default endpoint, and accounts advertising zero write regions still fall back to it for writes. See [PR 26815](https://github.com/Azure/azure-sdk-for-go/pull/26815).
-
-### Other Changes
+* Fixed bug where the correct header was not being sent for writes on multiple write region accounts. See [PR 25127](https://github.com/Azure/azure-sdk-for-go/pull/25127)
 
 ## 1.5.0-beta.0 (2025-06-09)
 
@@ -35,7 +99,7 @@
 
 ### Features Added
 
-* Added limited support for cross-partition queries that can be served by the gateway. See [PR 23926](https://github.com/Azure/azure-sdk-for-go/pull/23926) and <https://learn.microsoft.com/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway> for more details.
+* Added limited support for cross-partition queries that can be served by the gateway. See [PR 23926](https://github.com/Azure/azure-sdk-for-go/pull/23926) and this [querying with Cosmos document](https://learn.microsoft.com/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway) for more details.
 
 ### Other Changes
 
@@ -88,7 +152,7 @@
 ### Features Added
 
 * Added regional routing support through ClientOptions.PreferredRegions
-* Added cross-region availability and failover mechanics supporting [Azure Cosmos DB SDK multiregional environment behavior](https://learn.microsoft.com/azure/cosmos-db/nosql/troubleshoot-sdk-availability)
+* Added availability logic and failover mechanics to support cross-regional retries and resiliency enhancements
 * Added extended logging for requests, responses, and client configuration
 
 ### Breaking Changes

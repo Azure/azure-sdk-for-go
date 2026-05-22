@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -8,6 +5,9 @@ package lease_test
 
 import (
 	"context"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
@@ -16,19 +16,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running lease Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &LeaseRecordedTestsSuite{})
 		suite.Run(t, &LeaseUnrecordedTestsSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &LeaseRecordedTestsSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &LeaseRecordedTestsSuite{})
 	}
 }
@@ -290,7 +289,7 @@ func (l *LeaseRecordedTestsSuite) TestShareBreakLeaseNonDefault() {
 	_require.Error(err)
 
 	// wait for lease to expire
-	time.Sleep(6 * time.Second)
+	recording.Sleep(6 * time.Second)
 
 	_, err = shareClient.Delete(ctx, nil)
 	_require.NoError(err)

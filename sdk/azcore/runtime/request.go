@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -93,12 +90,16 @@ func JoinPaths(root string, paths ...string) string {
 	}
 
 	if qps != "" {
-		p = p + "?" + qps
+		if strings.Contains(p, "?") {
+			p = p + "&" + qps
+		} else {
+			p = p + "?" + qps
+		}
 	}
 
 	if strings.HasSuffix(root, "/") && strings.HasPrefix(p, "/") {
 		root = root[:len(root)-1]
-	} else if !strings.HasSuffix(root, "/") && !strings.HasPrefix(p, "/") {
+	} else if !strings.HasSuffix(root, "/") && !strings.HasPrefix(p, "/") && !strings.HasPrefix(p, "?") {
 		p = "/" + p
 	}
 	return root + p

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -175,7 +172,11 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, conte
 	if options != nil && options.TransactionalValidation != nil {
 		body, err = options.TransactionalValidation.Apply(body, uploadPagesOptions)
 		if err != nil {
-			return UploadPagesResponse{}, nil
+			return UploadPagesResponse{}, err
+		}
+		count, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+		if err != nil {
+			return UploadPagesResponse{}, err
 		}
 	}
 
@@ -194,11 +195,11 @@ func (pb *Client) UploadPagesFromURL(ctx context.Context, source string, sourceO
 	o *UploadPagesFromURLOptions) (UploadPagesFromURLResponse, error) {
 
 	uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sequenceNumberAccessConditions,
-		modifiedAccessConditions, sourceModifiedAccessConditions := o.format()
+		modifiedAccessConditions, sourceModifiedAccessConditions, sourceCPKInfo := o.format()
 
 	resp, err := pb.generated().UploadPagesFromURL(ctx, source, shared.RangeToString(sourceOffset, count), 0,
 		shared.RangeToString(destOffset, count), uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions,
-		sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
+		sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, sourceCPKInfo)
 
 	return resp, err
 }

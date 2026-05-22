@@ -1,6 +1,3 @@
-//go:build go1.21
-// +build go1.21
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -172,7 +169,9 @@ func getGoModelsWithByteSliceFields(goFile string, allowed map[string]bool) ([]s
 		return nil, err
 	}
 
-	defer file.Close()
+	defer func() {
+		_ = file.Close()
+	}()
 
 	scanner := bufio.NewScanner(file)
 

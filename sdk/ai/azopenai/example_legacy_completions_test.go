@@ -8,7 +8,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/openai/openai-go"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
 )
 
 // Example_completions demonstrates how to use Azure OpenAI's legacy Completions API.
@@ -21,6 +23,7 @@ import (
 // The example uses environment variables for configuration:
 // - AOAI_COMPLETIONS_MODEL: The deployment name of your completions model
 // - AOAI_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Legacy completions are useful for:
 // - Simple text generation tasks
@@ -28,19 +31,20 @@ import (
 // - Single-turn interactions
 // - Basic language generation scenarios
 func Example_completions() {
-	if !CheckRequiredEnvVars("AOAI_COMPLETIONS_MODEL", "AOAI_COMPLETIONS_ENDPOINT") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	model := os.Getenv("AOAI_COMPLETIONS_MODEL")
 	endpoint := os.Getenv("AOAI_COMPLETIONS_ENDPOINT")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	resp, err := client.Completions.New(context.TODO(), openai.CompletionNewParams{
 		Model: openai.CompletionNewParamsModel(model),
@@ -71,6 +75,7 @@ func Example_completions() {
 // The example uses environment variables for configuration:
 // - AOAI_COMPLETIONS_MODEL: The deployment name of your completions model
 // - AOAI_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Streaming completions are useful for:
 // - Real-time text generation display
@@ -78,19 +83,21 @@ func Example_completions() {
 // - Interactive text generation
 // - Long-form content creation
 func Example_streamCompletions() {
-	if !CheckRequiredEnvVars("AOAI_COMPLETIONS_MODEL", "AOAI_COMPLETIONS_ENDPOINT") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	model := os.Getenv("AOAI_COMPLETIONS_MODEL")
 	endpoint := os.Getenv("AOAI_COMPLETIONS_ENDPOINT")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
+
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	stream := client.Completions.NewStreaming(context.TODO(), openai.CompletionNewParams{
 		Model: openai.CompletionNewParamsModel(model),

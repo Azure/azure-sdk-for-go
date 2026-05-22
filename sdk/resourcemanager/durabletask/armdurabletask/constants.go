@@ -4,11 +4,6 @@
 
 package armdurabletask
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/durabletask/armdurabletask"
-	moduleVersion = "v0.2.0"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -70,6 +65,51 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	// PrivateEndpointConnectionProvisioningStateCreating - Connection is being created
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
+	// PrivateEndpointConnectionProvisioningStateDeleting - Connection is being deleted
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	// PrivateEndpointConnectionProvisioningStateFailed - Connection provisioning has failed
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
+	// PrivateEndpointConnectionProvisioningStateSucceeded - Connection has been provisioned
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCreating,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	// PrivateEndpointServiceConnectionStatusApproved - Connection approved
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	// PrivateEndpointServiceConnectionStatusPending - Connection waiting for approval or rejection
+	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
+	// PrivateEndpointServiceConnectionStatusRejected - Connection Rejected
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
 // ProvisioningState - The status of the current operation
 type ProvisioningState string
 
@@ -103,11 +143,29 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
+// PublicNetworkAccess - State of the public network access.
+type PublicNetworkAccess string
+
+const (
+	// PublicNetworkAccessDisabled - The public network access is disabled
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	// PublicNetworkAccessEnabled - The public network access is enabled
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
+	}
+}
+
 // PurgeableOrchestrationState - Purgeable orchestration state to be used in retention policies
 type PurgeableOrchestrationState string
 
 const (
-	// PurgeableOrchestrationStateCanceled - The orchestration is terminated
+	// PurgeableOrchestrationStateCanceled - The orchestration is canceled
 	PurgeableOrchestrationStateCanceled PurgeableOrchestrationState = "Canceled"
 	// PurgeableOrchestrationStateCompleted - The orchestration is completed
 	PurgeableOrchestrationStateCompleted PurgeableOrchestrationState = "Completed"
@@ -142,5 +200,23 @@ func PossibleRedundancyStateValues() []RedundancyState {
 	return []RedundancyState{
 		RedundancyStateNone,
 		RedundancyStateZone,
+	}
+}
+
+// SchedulerSKUName - The name of the Stock Keeping Unit (SKU) of a Durable Task Scheduler
+type SchedulerSKUName string
+
+const (
+	// SchedulerSKUNameConsumption - Consumption SKU
+	SchedulerSKUNameConsumption SchedulerSKUName = "Consumption"
+	// SchedulerSKUNameDedicated - Dedicated SKU
+	SchedulerSKUNameDedicated SchedulerSKUName = "Dedicated"
+)
+
+// PossibleSchedulerSKUNameValues returns the possible values for the SchedulerSKUName const type.
+func PossibleSchedulerSKUNameValues() []SchedulerSKUName {
+	return []SchedulerSKUName{
+		SchedulerSKUNameConsumption,
+		SchedulerSKUNameDedicated,
 	}
 }

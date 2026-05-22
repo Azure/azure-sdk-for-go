@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -20,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 const (
@@ -32,11 +34,41 @@ type Client struct {
 	internal    *azcore.Client
 	gem         *globalEndpointManager
 	endpointUrl *url.URL
+	caches      *sharedCacheSet
+	closeOnce   sync.Once
+}
+
+// getContainerCache returns the container properties cache for this client.
+func (c *Client) getContainerCache() *containerPropertiesCache {
+	if c.caches == nil {
+		return nil
+	}
+	return c.caches.containerCache
+}
+
+// getPKRangeCache returns the partition key range cache for this client.
+func (c *Client) getPKRangeCache() *partitionKeyRangeCache {
+	if c.caches == nil {
+		return nil
+	}
+	return c.caches.pkRangeCache
 }
 
 // Endpoint used to create the client.
 func (c *Client) Endpoint() string {
 	return c.endpoint
+}
+
+// Close releases the shared cache reference for this client. The underlying
+// caches are removed from the global registry once all clients to the same
+// account endpoint have been closed. After Close, the client should not be used.
+// Close is idempotent; calling it multiple times is safe.
+func (c *Client) Close() {
+	c.closeOnce.Do(func() {
+		if c.endpoint != "" {
+			releaseCaches(c.endpoint)
+		}
+	})
 }
 
 // NewClientWithKey creates a new instance of Cosmos client with shared key authentication. It uses the default pipeline configuration.
@@ -53,6 +85,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
+	o = withDefaultTransport(o)
 
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
@@ -63,7 +96,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint)}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -75,15 +108,32 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	scope, err := createScopeFromEndpoint(endpointUrl)
-	if err != nil {
-		return nil, err
+
+	var scope []string
+
+	if o != nil && o.Cloud.Services != nil {
+		if svcCfg, ok := o.Cloud.Services[ServiceName]; ok && svcCfg.Audience != "" {
+			audience := svcCfg.Audience
+			scope = []string{audience + "/.default"}
+			log.Write(azlog.EventRequest, fmt.Sprintf("Using custom scope for authentication: %s", scope[0]))
+		}
 	}
+
+	if scope == nil {
+		// Fallback to account-scope
+		scope, err = createScopeFromEndpoint(endpointUrl)
+		if err != nil {
+			return nil, err
+		}
+		log.Write(azlog.EventRequest, fmt.Sprintf("Using account scope from endpoint for authentication: %s", scope[0]))
+	}
+
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
+	o = withDefaultTransport(o)
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
 		return nil, err
@@ -93,7 +143,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint)}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.
@@ -142,6 +192,8 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 			PerCall: []policy.Policy{
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
+					priorityLevel:                options.PriorityLevel,
+					throughputBucket:             options.ThroughputBucket,
 				},
 				&globalEndpointManagerPolicy{gem: gem},
 			},
@@ -168,6 +220,29 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 			},
 		},
 		&options.ClientOptions)
+}
+
+// withDefaultTransport returns a *ClientOptions whose Transport is set to the
+// Cosmos default HTTP client when the caller has not supplied one. Callers
+// of NewClient*/NewClientFromConnectionString invoke this exactly once and
+// reuse the result for both the user-facing and the global-endpoint-manager
+// pipelines so options are normalized in a single place. The returned value
+// is always non-nil; only the top-level Transport field is set on the clone,
+// so the caller's *ClientOptions struct is never mutated, but slice fields
+// such as PreferredRegions or PerCallPolicies still share backing arrays
+// with the caller's struct and should not be mutated in place.
+func withDefaultTransport(options *ClientOptions) *ClientOptions {
+	if options == nil {
+		return &ClientOptions{
+			ClientOptions: azcore.ClientOptions{Transport: defaultCosmosHTTPClient},
+		}
+	}
+	if options.Transport != nil {
+		return options
+	}
+	clone := *options
+	clone.Transport = defaultCosmosHTTPClient
+	return &clone
 }
 
 func createScopeFromEndpoint(endpoint *url.URL) ([]string, error) {
@@ -217,7 +292,7 @@ func (c *Client) CreateDatabase(
 	if err != nil {
 		return DatabaseResponse{}, err
 	}
-	ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
+	ctx, endSpan := startSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 
 	if o == nil {
@@ -282,7 +357,7 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 			if err != nil {
 				return QueryDatabasesResponse{}, err
 			}
-			ctx, endSpan := azruntime.StartSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
+			ctx, endSpan := startSpan(ctx, spanName.name, c.internal.Tracer(), &spanName.options)
 			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
@@ -475,15 +550,15 @@ func (c *Client) createRequest(
 		}
 	}
 
-	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	req.Raw().Header.Set(headerXmsVersion, apiVersion)
-	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
+	addDefaultHeaders(req)
 
 	req.SetOperationValue(operationContext)
 
 	if requestEnricher != nil {
 		requestEnricher(req)
 	}
+
+	req = attachRequestDiagnostics(req, operationContext)
 
 	return req, nil
 }
@@ -508,18 +583,37 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 
 func (c *Client) executeAndEnsureSuccessResponse(ctx context.Context, request *policy.Request) (*http.Response, error) {
 	log.Write(azlog.EventResponse, fmt.Sprintf("\n===== Client preferred regions:\n%v\n=====\n", c.gem.preferredLocations))
+	state := requestDiagnosticsStateFromContext(request.Raw().Context())
+	finalizeRequestTrace := func() {
+		if state != nil && state.requestTrace != nil {
+			state.requestTrace.End()
+		}
+	}
+
 	response, err := c.internal.Pipeline().Do(request)
 	if err != nil {
-		return nil, err
+		var responseErr *azcore.ResponseError
+		if errors.As(err, &responseErr) && responseErr.RawResponse != nil {
+			addPointOperationStatisticsFromResponse(responseErr.RawResponse, responseErr.Error(), traceDatumKeyPointOperationStatistics)
+			finalizeRequestTrace()
+			return nil, err
+		}
+
+		finalizeRequestTrace()
+		return nil, wrapRequestError(err, diagnosticsFromContext(request.Raw().Context()))
 	}
 
 	c.addResponseValuesToSpan(ctx, response)
 
 	successResponse := (response.StatusCode >= 200 && response.StatusCode < 300) || response.StatusCode == 304
 	if successResponse {
+		addPointOperationStatisticsFromResponse(response, "", traceDatumKeyPointOperationStatistics)
+		finalizeRequestTrace()
 		return response, nil
 	}
 
+	addPointOperationStatisticsFromResponse(response, response.Status, traceDatumKeyPointOperationStatistics)
+	finalizeRequestTrace()
 	return nil, azruntime.NewResponseErrorWithErrorCode(response, response.Status)
 }
 
@@ -530,7 +624,7 @@ func (c *Client) accountEndpointUrl() *url.URL {
 func (c *Client) addResponseValuesToSpan(ctx context.Context, resp *http.Response) {
 	span := c.internal.Tracer().SpanFromContext(ctx)
 	span.SetAttributes(
-		tracing.Attribute{Key: "db.cosmosdb.request_charge", Value: newResponse(resp).RequestCharge},
+		tracing.Attribute{Key: "db.cosmosdb.request_charge", Value: readRequestCharge(resp)},
 		tracing.Attribute{Key: "db.cosmosdb.status_code", Value: resp.StatusCode},
 	)
 }
@@ -541,6 +635,15 @@ type pipelineRequestOptions struct {
 	resourceAddress       string
 	isRidBased            bool
 	isWriteOperation      bool
+}
+
+func addDefaultHeaders(req *policy.Request) {
+	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	req.Raw().Header.Set(headerXmsVersion, apiVersion)
+	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
+	if activityID, err := uuid.New(); err == nil {
+		req.Raw().Header.Set(cosmosHeaderActivityId, activityID.String())
+	}
 }
 
 func getAllowedHeaders() []string {
@@ -616,5 +719,7 @@ func getAllowedHeaders() []string {
 		cosmosHeaderIsPartitionKeyDeletePending,
 		cosmosHeaderQueryExecutionInfo,
 		headerXmsItemCount,
+		cosmosHeaderPriorityLevel,
+		cosmosHeaderThroughputBucket,
 	}
 }

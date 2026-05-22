@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/Datastores_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/Datastores_CreateOrUpdate.json
 func ExampleDatastoresClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleDatastoresClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Datastores_Delete.json
+// Generated from example definition: 2025-09-01/Datastores_Delete.json
 func ExampleDatastoresClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleDatastoresClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Datastores_Get.json
+// Generated from example definition: 2025-09-01/Datastores_Get.json
 func ExampleDatastoresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleDatastoresClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Datastores_List.json
+// Generated from example definition: 2025-09-01/Datastores_List.json
 func ExampleDatastoresClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,9 +8,6 @@ package armcontainerservicefleet
 type AutoUpgradeProfileOperationsClientGenerateUpdateRunResponse struct {
 	// GenerateResponse is the response of a generate request.
 	GenerateResponse
-
-	// The request should only proceed if an entity matches this string.
-	IfMatch *string
 }
 
 // AutoUpgradeProfilesClientCreateOrUpdateResponse contains the response from method AutoUpgradeProfilesClient.BeginCreateOrUpdate.
@@ -34,6 +31,35 @@ type AutoUpgradeProfilesClientGetResponse struct {
 type AutoUpgradeProfilesClientListByFleetResponse struct {
 	// The response of a AutoUpgradeProfile list operation.
 	AutoUpgradeProfileListResult
+}
+
+// FleetManagedNamespacesClientCreateOrUpdateResponse contains the response from method FleetManagedNamespacesClient.BeginCreateOrUpdate.
+type FleetManagedNamespacesClientCreateOrUpdateResponse struct {
+	// A fleet managed namespace.
+	FleetManagedNamespace
+}
+
+// FleetManagedNamespacesClientDeleteResponse contains the response from method FleetManagedNamespacesClient.BeginDelete.
+type FleetManagedNamespacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// FleetManagedNamespacesClientGetResponse contains the response from method FleetManagedNamespacesClient.Get.
+type FleetManagedNamespacesClientGetResponse struct {
+	// A fleet managed namespace.
+	FleetManagedNamespace
+}
+
+// FleetManagedNamespacesClientListByFleetResponse contains the response from method FleetManagedNamespacesClient.NewListByFleetPager.
+type FleetManagedNamespacesClientListByFleetResponse struct {
+	// The response of a FleetManagedNamespace list operation.
+	FleetManagedNamespaceListResult
+}
+
+// FleetManagedNamespacesClientUpdateResponse contains the response from method FleetManagedNamespacesClient.BeginUpdate.
+type FleetManagedNamespacesClientUpdateResponse struct {
+	// A fleet managed namespace.
+	FleetManagedNamespace
 }
 
 // FleetMembersClientCreateResponse contains the response from method FleetMembersClient.BeginCreate.

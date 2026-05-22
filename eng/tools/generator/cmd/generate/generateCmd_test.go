@@ -32,8 +32,7 @@ func TestValidatePaths(t *testing.T) {
 	}
 
 	// Test with valid paths
-	err = validatePaths(sdkPath, specPath)
-	if err != nil {
+	if err = validatePaths(sdkPath, specPath); err != nil {
 		t.Errorf("Expected no error for valid paths, got: %v", err)
 	}
 
@@ -108,8 +107,7 @@ options:
 	}
 
 	// Test with direct path to file
-	result, err = resolveTspConfigPath(ctx, "specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml", specPath)
-	if err != nil {
+	if result, err = resolveTspConfigPath(ctx, "specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml", specPath); err != nil {
 		t.Errorf("Expected no error for valid file path, got: %v", err)
 	}
 	if result != tspConfigPath {

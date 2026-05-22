@@ -904,6 +904,14 @@ func (c *ClientFactory) NewSecurityPerimeterProfilesClient() *SecurityPerimeterP
 	}
 }
 
+// NewSecurityPerimeterServiceTagsClient creates a new instance of SecurityPerimeterServiceTagsClient.
+func (c *ClientFactory) NewSecurityPerimeterServiceTagsClient() *SecurityPerimeterServiceTagsClient {
+	return &SecurityPerimeterServiceTagsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSecurityPerimetersClient creates a new instance of SecurityPerimetersClient.
 func (c *ClientFactory) NewSecurityPerimetersClient() *SecurityPerimetersClient {
 	return &SecurityPerimetersClient{
@@ -963,6 +971,14 @@ func (c *ClientFactory) NewServiceEndpointPoliciesClient() *ServiceEndpointPolic
 // NewServiceEndpointPolicyDefinitionsClient creates a new instance of ServiceEndpointPolicyDefinitionsClient.
 func (c *ClientFactory) NewServiceEndpointPolicyDefinitionsClient() *ServiceEndpointPolicyDefinitionsClient {
 	return &ServiceEndpointPolicyDefinitionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewServiceGatewaysClient creates a new instance of ServiceGatewaysClient.
+func (c *ClientFactory) NewServiceGatewaysClient() *ServiceGatewaysClient {
+	return &ServiceGatewaysClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -1179,6 +1195,14 @@ func (c *ClientFactory) NewVirtualHubRouteTableV2SClient() *VirtualHubRouteTable
 // NewVirtualHubsClient creates a new instance of VirtualHubsClient.
 func (c *ClientFactory) NewVirtualHubsClient() *VirtualHubsClient {
 	return &VirtualHubsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVirtualNetworkAppliancesClient creates a new instance of VirtualNetworkAppliancesClient.
+func (c *ClientFactory) NewVirtualNetworkAppliancesClient() *VirtualNetworkAppliancesClient {
+	return &VirtualNetworkAppliancesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

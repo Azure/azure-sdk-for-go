@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v9"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -49,6 +49,10 @@ type AzureFirewallsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPacketCapture func(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters armnetwork.FirewallPacketCaptureParameters, options *armnetwork.AzureFirewallsClientBeginPacketCaptureOptions) (resp azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureResponse], errResp azfake.ErrorResponder)
 
+	// BeginPacketCaptureOperation is the fake for method AzureFirewallsClient.BeginPacketCaptureOperation
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPacketCaptureOperation func(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters armnetwork.FirewallPacketCaptureParameters, options *armnetwork.AzureFirewallsClientBeginPacketCaptureOperationOptions) (resp azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureOperationResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdateTags is the fake for method AzureFirewallsClient.BeginUpdateTags
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateTags func(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters armnetwork.TagsObject, options *armnetwork.AzureFirewallsClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armnetwork.AzureFirewallsClientUpdateTagsResponse], errResp azfake.ErrorResponder)
@@ -59,28 +63,30 @@ type AzureFirewallsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAzureFirewallsServerTransport(srv *AzureFirewallsServer) *AzureFirewallsServerTransport {
 	return &AzureFirewallsServerTransport{
-		srv:                      srv,
-		beginCreateOrUpdate:      newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientCreateOrUpdateResponse]](),
-		beginDelete:              newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientDeleteResponse]](),
-		newListPager:             newTracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListResponse]](),
-		newListAllPager:          newTracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListAllResponse]](),
-		beginListLearnedPrefixes: newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientListLearnedPrefixesResponse]](),
-		beginPacketCapture:       newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureResponse]](),
-		beginUpdateTags:          newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientUpdateTagsResponse]](),
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListResponse]](),
+		newListAllPager:             newTracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListAllResponse]](),
+		beginListLearnedPrefixes:    newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientListLearnedPrefixesResponse]](),
+		beginPacketCapture:          newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureResponse]](),
+		beginPacketCaptureOperation: newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureOperationResponse]](),
+		beginUpdateTags:             newTracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientUpdateTagsResponse]](),
 	}
 }
 
 // AzureFirewallsServerTransport connects instances of armnetwork.AzureFirewallsClient to instances of AzureFirewallsServer.
 // Don't use this type directly, use NewAzureFirewallsServerTransport instead.
 type AzureFirewallsServerTransport struct {
-	srv                      *AzureFirewallsServer
-	beginCreateOrUpdate      *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientCreateOrUpdateResponse]]
-	beginDelete              *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientDeleteResponse]]
-	newListPager             *tracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListResponse]]
-	newListAllPager          *tracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListAllResponse]]
-	beginListLearnedPrefixes *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientListLearnedPrefixesResponse]]
-	beginPacketCapture       *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureResponse]]
-	beginUpdateTags          *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientUpdateTagsResponse]]
+	srv                         *AzureFirewallsServer
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListResponse]]
+	newListAllPager             *tracker[azfake.PagerResponder[armnetwork.AzureFirewallsClientListAllResponse]]
+	beginListLearnedPrefixes    *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientListLearnedPrefixesResponse]]
+	beginPacketCapture          *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureResponse]]
+	beginPacketCaptureOperation *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientPacketCaptureOperationResponse]]
+	beginUpdateTags             *tracker[azfake.PollerResponder[armnetwork.AzureFirewallsClientUpdateTagsResponse]]
 }
 
 // Do implements the policy.Transporter interface for AzureFirewallsServerTransport.
@@ -120,6 +126,8 @@ func (a *AzureFirewallsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = a.dispatchBeginListLearnedPrefixes(req)
 			case "AzureFirewallsClient.BeginPacketCapture":
 				res.resp, res.err = a.dispatchBeginPacketCapture(req)
+			case "AzureFirewallsClient.BeginPacketCaptureOperation":
+				res.resp, res.err = a.dispatchBeginPacketCaptureOperation(req)
 			case "AzureFirewallsClient.BeginUpdateTags":
 				res.resp, res.err = a.dispatchBeginUpdateTags(req)
 			default:
@@ -150,7 +158,7 @@ func (a *AzureFirewallsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetwork.AzureFirewall](req)
@@ -198,7 +206,7 @@ func (a *AzureFirewallsServerTransport) dispatchBeginDelete(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -240,7 +248,7 @@ func (a *AzureFirewallsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -275,7 +283,7 @@ func (a *AzureFirewallsServerTransport) dispatchNewListPager(req *http.Request) 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/azureFirewalls`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -312,7 +320,7 @@ func (a *AzureFirewallsServerTransport) dispatchNewListAllPager(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/azureFirewalls`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListAllPager(nil)
@@ -345,7 +353,7 @@ func (a *AzureFirewallsServerTransport) dispatchBeginListLearnedPrefixes(req *ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/learnedIPPrefixes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -389,7 +397,7 @@ func (a *AzureFirewallsServerTransport) dispatchBeginPacketCapture(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCapture`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetwork.FirewallPacketCaptureParameters](req)
@@ -428,6 +436,54 @@ func (a *AzureFirewallsServerTransport) dispatchBeginPacketCapture(req *http.Req
 	return resp, nil
 }
 
+func (a *AzureFirewallsServerTransport) dispatchBeginPacketCaptureOperation(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginPacketCaptureOperation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPacketCaptureOperation not implemented")}
+	}
+	beginPacketCaptureOperation := a.beginPacketCaptureOperation.get(req)
+	if beginPacketCaptureOperation == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptureOperation`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.FirewallPacketCaptureParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		azureFirewallNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("azureFirewallName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginPacketCaptureOperation(req.Context(), resourceGroupNameParam, azureFirewallNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPacketCaptureOperation = &respr
+		a.beginPacketCaptureOperation.add(req, beginPacketCaptureOperation)
+	}
+
+	resp, err := server.PollerResponderNext(beginPacketCaptureOperation, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginPacketCaptureOperation.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPacketCaptureOperation) {
+		a.beginPacketCaptureOperation.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AzureFirewallsServerTransport) dispatchBeginUpdateTags(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginUpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
@@ -437,7 +493,7 @@ func (a *AzureFirewallsServerTransport) dispatchBeginUpdateTags(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armnetwork.TagsObject](req)

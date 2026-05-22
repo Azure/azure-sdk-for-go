@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/Gates_Get.json
+// Generated from example definition: 2026-02-01-preview/Gates_Get.json
 func ExampleGatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleGatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Gates_ListByFleet.json
+// Generated from example definition: 2026-02-01-preview/Gates_ListByFleet.json
 func ExampleGatesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleGatesClient_NewListByFleetPager() {
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/Gates_Update.json
+// Generated from example definition: 2026-02-01-preview/Gates_Update.json
 func ExampleGatesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

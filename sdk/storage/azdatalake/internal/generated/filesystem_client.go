@@ -1,14 +1,12 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package generated
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // used to convert times from UTC to GMT before sending across the wire
@@ -29,6 +27,7 @@ func NewFileSystemClient(endpoint string, azClient *azcore.Client) *FileSystemCl
 	client := &FileSystemClient{
 		internal: azClient,
 		endpoint: endpoint,
+		version:  ServiceVersion,
 	}
 	return client
 }

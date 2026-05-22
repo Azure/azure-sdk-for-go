@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -16,9 +13,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -61,7 +58,7 @@ func (testsuite *DatafactoryTestSuite) SetupSuite() {
 	testsuite.linkedServiceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "linkedse", 8+6, false)
 	testsuite.locationId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "location", 8+6, false)
 	testsuite.managedPrivateEndpointName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "managedp", 8+6, false)
-	testsuite.managedVirtualNetworkName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "managedv", 8+6, false)
+	testsuite.managedVirtualNetworkName = "default"
 	testsuite.nodeName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "nodename", 8+6, false)
 	testsuite.pipelineName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "pipeline", 8+6, false)
 	testsuite.runId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "runid", 8+6, false)
@@ -823,7 +820,7 @@ func (testsuite *DatafactoryTestSuite) TestPrivateEndpointConnection() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -837,6 +834,7 @@ func (testsuite *DatafactoryTestSuite) TestPrivateEndpointConnection() {
 							"name": "default",
 							"properties": map[string]any{
 								"addressPrefix":                     "10.0.0.0/24",
+								"defaultOutboundAccess":             false,
 								"delegations":                       []any{},
 								"privateEndpointNetworkPolicies":    "Disabled",
 								"privateLinkServiceNetworkPolicies": "Enabled",
@@ -910,12 +908,13 @@ func (testsuite *DatafactoryTestSuite) TestPrivateEndpointConnection() {
 			map[string]any{
 				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
 				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
 					"addressPrefix":                     "10.0.0.0/24",
+					"defaultOutboundAccess":             false,
 					"delegations":                       []any{},
 					"privateEndpointNetworkPolicies":    "Disabled",
 					"privateLinkServiceNetworkPolicies": "Enabled",
@@ -924,10 +923,10 @@ func (testsuite *DatafactoryTestSuite) TestPrivateEndpointConnection() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)

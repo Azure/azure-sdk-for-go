@@ -84,10 +84,10 @@ func TestCompareVersions(t *testing.T) {
 		minimum  string
 		expected bool
 	}{
-		{"1.23", "1.23", true},
-		{"1.24", "1.23", true},
-		{"1.22", "1.23", false},
-		{"2.0", "1.23", true},
+		{"1.24", "1.24", true},
+		{"1.25", "1.24", true},
+		{"1.23", "1.24", false},
+		{"2.0", "1.24", true},
 		{"20.1.0", "20.0.0", true},
 		{"20.0.0", "20.0.0", true},
 		{"19.9.0", "20.0.0", false},

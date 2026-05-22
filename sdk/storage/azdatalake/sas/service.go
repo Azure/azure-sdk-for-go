@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -33,16 +30,19 @@ type DatalakeSignatureValues struct {
 	FilePath string
 	// Not nil for a directory SAS (ie sr=d)
 	// Use "" to create a FileSystem SAS
-	DirectoryPath        string
-	CacheControl         string // rscc
-	ContentDisposition   string // rscd
-	ContentEncoding      string // rsce
-	ContentLanguage      string // rscl
-	ContentType          string // rsct
-	AuthorizedObjectID   string // saoid
-	UnauthorizedObjectID string // suoid
-	CorrelationID        string // scid
-	EncryptionScope      string `param:"ses"`
+	DirectoryPath                string
+	CacheControl                 string // rscc
+	ContentDisposition           string // rscd
+	ContentEncoding              string // rsce
+	ContentLanguage              string // rscl
+	ContentType                  string // rsct
+	AuthorizedObjectID           string // saoid
+	UnauthorizedObjectID         string // suoid
+	CorrelationID                string // scid
+	EncryptionScope              string `param:"ses"`
+	SignedDelegatedUserObjectID  string // sduoid
+	SignedRequestHeaders         map[string]string
+	SignedRequestQueryParameters map[string]string
 }
 
 // TODO: add snapshot and versioning support in the future
@@ -51,7 +51,57 @@ func getDirectoryDepth(path string) string {
 	if path == "" {
 		return ""
 	}
-	return fmt.Sprint(strings.Count(path, "/") + 1)
+
+	trimmed := strings.Trim(path, "/")
+	if trimmed == "" {
+		return "0"
+	}
+
+	return fmt.Sprint(strings.Count(trimmed, "/") + 1)
+}
+
+// formatSignedRequestHeaders builds both the comma-separated header names for the srh query parameter
+// and the canonicalized string for the stringToSign from a map of header name to header value.
+// Canonicalized format: headerName_1:headerValue_1\nheaderName_2:headerValue_2\n (trailing \n on each pair)
+func formatSignedRequestHeaders(headers map[string]string) (names string, canonicalized string) {
+	if len(headers) == 0 {
+		return "", ""
+	}
+
+	keys := make([]string, 0, len(headers))
+	var sb strings.Builder
+
+	for key, value := range headers {
+		keys = append(keys, key)
+		sb.WriteString(key)
+		sb.WriteByte(':')
+		sb.WriteString(value)
+		sb.WriteByte('\n')
+	}
+
+	return strings.Join(keys, ","), sb.String()
+}
+
+// formatSignedRequestQueryParameters builds both the comma-separated query parameter names for the srq query parameter
+// and the canonicalized string for the stringToSign from a map of query parameter name to value.
+// Canonicalized format: \nqueryParam_1:queryParamValue_1\nqueryParam_2:queryParamValue_2 (prefix \n on each pair)
+func formatSignedRequestQueryParameters(params map[string]string) (names string, canonicalized string) {
+	if len(params) == 0 {
+		return "", ""
+	}
+
+	keys := make([]string, 0, len(params))
+	var sb strings.Builder
+
+	for key, value := range params {
+		keys = append(keys, key)
+		sb.WriteByte('\n')
+		sb.WriteString(key)
+		sb.WriteByte(':')
+		sb.WriteString(value)
+	}
+
+	return strings.Join(keys, ","), sb.String()
 }
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
@@ -181,6 +231,14 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 
 	udkStart, udkExpiry := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry)
 
+	var signedDelegatedUserTenantID string
+	if udk.SignedDelegatedUserTenantID != nil {
+		signedDelegatedUserTenantID = *udk.SignedDelegatedUserTenantID
+	}
+
+	srhNames, srhCanonicalized := formatSignedRequestHeaders(v.SignedRequestHeaders)
+	srqNames, srqCanonicalized := formatSignedRequestQueryParameters(v.SignedRequestQueryParameters)
+
 	stringToSign := strings.Join([]string{
 		v.Permissions,
 		startTime,
@@ -195,14 +253,16 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		v.AuthorizedObjectID,
 		v.UnauthorizedObjectID,
 		v.CorrelationID,
-		"", // Placeholder for SignedKeyDelegatedUserTenantId (future field)
-		"", // Placeholder for SignedDelegatedUserObjectId (future field)
+		signedDelegatedUserTenantID,
+		v.SignedDelegatedUserObjectID,
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,
 		resource,
 		"", // snapshot not supported
 		v.EncryptionScope,
+		srhCanonicalized,
+		srqCanonicalized,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce
@@ -226,17 +286,20 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		encryptionScope: v.EncryptionScope,
 
 		// Container/Blob-specific SAS parameters
-		resource:             resource,
-		identifier:           v.Identifier,
-		cacheControl:         v.CacheControl,
-		contentDisposition:   v.ContentDisposition,
-		contentEncoding:      v.ContentEncoding,
-		contentLanguage:      v.ContentLanguage,
-		contentType:          v.ContentType,
-		signedDirectoryDepth: getDirectoryDepth(v.DirectoryPath),
-		authorizedObjectID:   v.AuthorizedObjectID,
-		unauthorizedObjectID: v.UnauthorizedObjectID,
-		correlationID:        v.CorrelationID,
+		resource:                     resource,
+		identifier:                   v.Identifier,
+		cacheControl:                 v.CacheControl,
+		contentDisposition:           v.ContentDisposition,
+		contentEncoding:              v.ContentEncoding,
+		contentLanguage:              v.ContentLanguage,
+		contentType:                  v.ContentType,
+		signedDirectoryDepth:         getDirectoryDepth(v.DirectoryPath),
+		authorizedObjectID:           v.AuthorizedObjectID,
+		unauthorizedObjectID:         v.UnauthorizedObjectID,
+		correlationID:                v.CorrelationID,
+		signedDelegatedUserObjectID:  v.SignedDelegatedUserObjectID,
+		signedRequestHeaders:         srhNames,
+		signedRequestQueryParameters: srqNames,
 		// Calculated SAS signature
 		signature: signature,
 	}
@@ -248,6 +311,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService
 	p.signedVersion = *udk.SignedVersion
+	p.signedDelegatedUserTenantID = signedDelegatedUserTenantID
 
 	return p, nil
 }
@@ -269,8 +333,8 @@ func getCanonicalName(account string, filesystemName string, fileName string, di
 // Initialize an instance of this type and then call its String method to set BlobSignatureValues' Permissions field.
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
 type FileSystemPermissions struct {
-	Read, Add, Create, Write, Delete, List, Move bool
-	Execute, ModifyOwnership, ModifyPermissions  bool // Meant for hierarchical namespace accounts
+	Read, Add, Create, Write, Delete, List, Tag, Move bool
+	Execute, ModifyOwnership, ModifyPermissions       bool // Meant for hierarchical namespace accounts
 }
 
 // String produces the SAS permissions string for an Azure Storage container.
@@ -294,6 +358,9 @@ func (p *FileSystemPermissions) String() string {
 	}
 	if p.List {
 		b.WriteRune('l')
+	}
+	if p.Tag {
+		b.WriteRune('t')
 	}
 	if p.Move {
 		b.WriteRune('m')
@@ -327,6 +394,8 @@ func parseFileSystemPermissions(s string) (FileSystemPermissions, error) {
 			p.Delete = true
 		case 'l':
 			p.List = true
+		case 't':
+			p.Tag = true
 		case 'm':
 			p.Move = true
 		case 'e':
@@ -345,8 +414,8 @@ func parseFileSystemPermissions(s string) (FileSystemPermissions, error) {
 // FilePermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
 // Initialize an instance of this type and then call its String method to set BlobSignatureValues' Permissions field.
 type FilePermissions struct {
-	Read, Add, Create, Write, Delete, List, Move bool
-	Execute, Ownership, Permissions              bool
+	Read, Add, Create, Write, Delete, List, Tag, Move bool
+	Execute, Ownership, Permissions                   bool
 }
 
 // String produces the SAS permissions string for an Azure Storage blob.
@@ -371,6 +440,9 @@ func (p *FilePermissions) String() string {
 	if p.List {
 		b.WriteRune('l')
 	}
+	if p.Tag {
+		b.WriteRune('t')
+	}
 	if p.Move {
 		b.WriteRune('m')
 	}
@@ -389,8 +461,8 @@ func (p *FilePermissions) String() string {
 // DirectoryPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
 // Initialize an instance of this type and then call its String method to set BlobSignatureValues' Permissions field.
 type DirectoryPermissions struct {
-	Read, Add, Create, Write, Delete, List, Move bool
-	Execute, Ownership, Permissions              bool
+	Read, Add, Create, Write, Delete, List, Tag, Move bool
+	Execute, Ownership, Permissions                   bool
 }
 
 // String produces the SAS permissions string for an Azure Storage blob.
@@ -414,6 +486,9 @@ func (p *DirectoryPermissions) String() string {
 	}
 	if p.List {
 		b.WriteRune('l')
+	}
+	if p.Tag {
+		b.WriteRune('t')
 	}
 	if p.Move {
 		b.WriteRune('m')
@@ -447,6 +522,8 @@ func parsePathPermissions(s string) (FilePermissions, error) {
 			p.Delete = true
 		case 'l':
 			p.List = true
+		case 't':
+			p.Tag = true
 		case 'm':
 			p.Move = true
 		case 'e':

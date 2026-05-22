@@ -4,11 +4,6 @@
 
 package armplaywright
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/playwright/armplaywright"
-	moduleVersion = "v0.1.0"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -70,9 +65,9 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type EnablementStatus string
 
 const (
-	// EnablementStatusDisabled - The feature is Disabled.
+	// EnablementStatusDisabled - The feature is disabled.
 	EnablementStatusDisabled EnablementStatus = "Disabled"
-	// EnablementStatusEnabled - The feature is Enabled.
+	// EnablementStatusEnabled - The feature is enabled.
 	EnablementStatusEnabled EnablementStatus = "Enabled"
 )
 
@@ -84,15 +79,15 @@ func PossibleEnablementStatusValues() []EnablementStatus {
 	}
 }
 
-// FreeTrialState - The free-trial state.
+// FreeTrialState - The free trial state.
 type FreeTrialState string
 
 const (
-	// FreeTrialStateActive - The free-trial is Active.
+	// FreeTrialStateActive - The free trial is active and available for use.
 	FreeTrialStateActive FreeTrialState = "Active"
-	// FreeTrialStateExpired - The free-trial is Expired.
+	// FreeTrialStateExpired - The free trial has expired and is no longer available.
 	FreeTrialStateExpired FreeTrialState = "Expired"
-	// FreeTrialStateNotApplicable - The free-trial is Not Applicable.
+	// FreeTrialStateNotApplicable - The free trial is not applicable for this resource.
 	FreeTrialStateNotApplicable FreeTrialState = "NotApplicable"
 )
 
@@ -102,6 +97,30 @@ func PossibleFreeTrialStateValues() []FreeTrialState {
 		FreeTrialStateActive,
 		FreeTrialStateExpired,
 		FreeTrialStateNotApplicable,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 
@@ -131,13 +150,13 @@ func PossibleOriginValues() []Origin {
 type ProvisioningState string
 
 const (
-	// ProvisioningStateAccepted - Request accepted for processing..
+	// ProvisioningStateAccepted - Request has been accepted for processing.
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
 	// ProvisioningStateCanceled - Resource creation was canceled.
 	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateCreating - Creation in progress..
+	// ProvisioningStateCreating - Resource creation is in progress.
 	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleting - Deletion in progress..
+	// ProvisioningStateDeleting - Resource deletion is in progress.
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
 	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
@@ -157,7 +176,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// QuotaName - Playwright quota names.
+// QuotaName - Available Playwright quota types.
 type QuotaName string
 
 const (

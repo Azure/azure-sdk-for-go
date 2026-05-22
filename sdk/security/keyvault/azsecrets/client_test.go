@@ -5,6 +5,7 @@ package azsecrets_test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -383,7 +384,7 @@ func TestRecover(t *testing.T) {
 }
 
 func TestAPIVersion(t *testing.T) {
-	apiVersion := "7.3"
+	apiVersion := "2025-07-01"
 	var requireVersion = func(req *http.Request) bool {
 		version := req.URL.Query().Get("api-version")
 		require.Equal(t, version, apiVersion)
@@ -408,4 +409,97 @@ func TestAPIVersion(t *testing.T) {
 
 	_, err = client.GetSecret(context.Background(), "name", "", nil)
 	require.NoError(t, err)
+}
+
+func TestPreviousVersion(t *testing.T) {
+	tests := []struct {
+		name     string
+		jsonBody string
+		expected *string
+	}{
+		{name: "no previousVersion", jsonBody: `{"kid":"https://vault/secret/secret-name"}`, expected: nil},
+		{name: "with previousVersion", jsonBody: `{"kid":"https://vault/secret/secret-name","previousVersion":"dummyVersion"}`, expected: to.Ptr("dummyVersion")},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			var s azsecrets.Secret
+			err := json.Unmarshal([]byte(tc.jsonBody), &s)
+			require.NoError(t, err)
+			if tc.expected == nil {
+				require.Nil(t, s.PreviousVersion)
+			} else {
+				require.NotNil(t, s.PreviousVersion)
+				require.Equal(t, *tc.expected, *s.PreviousVersion)
+			}
+
+			var ds azsecrets.DeletedSecret
+			err = json.Unmarshal([]byte(tc.jsonBody), &ds)
+			require.NoError(t, err)
+			if tc.expected == nil {
+				require.Nil(t, ds.PreviousVersion)
+			} else {
+				require.NotNil(t, ds.PreviousVersion)
+				require.Equal(t, *tc.expected, *ds.PreviousVersion)
+			}
+		})
+	}
+}
+
+func TestOutContentType(t *testing.T) {
+	vaultURL := "https://fakevault.vault.azure.net"
+	var verifyOutContentType = func(req *http.Request) bool {
+		octVal := req.URL.Query().Get("outContentType")
+		if octVal != string(azsecrets.ContentTypePEM) {
+			t.Errorf("unexpected outContentType: got %q, want %q", octVal, azsecrets.ContentTypePEM)
+			return false
+		}
+		return true
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithBody([]byte(`{"value":"-----BEGIN PRIVATE KEY-----\nMIIE...\n-----END PRIVATE KEY-----","contentType":"application/x-pem-file","id":"https://fakevault.vault.azure.net/secrets/mysecret/abc123"}`)),
+		mock.WithPredicate(verifyOutContentType),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	opts := &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: srv,
+		},
+	}
+	client, err := azsecrets.NewClient(vaultURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	outCT := azsecrets.ContentTypePEM
+	resp, err := client.GetSecret(context.Background(), "mysecret", "", &azsecrets.GetSecretOptions{OutContentType: &outCT})
+	require.NoError(t, err)
+	require.NotNil(t, resp.Value)
+	require.Contains(t, *resp.Value, "BEGIN PRIVATE KEY")
+}
+
+func TestPreviousVersionFromServer(t *testing.T) {
+	vaultURL := "https://fakevault.vault.azure.net"
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithBody([]byte(`{"value":"secretval","id":"https://fakevault.vault.azure.net/secrets/mysecret/v2","previousVersion":"v1"}`)),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	opts := &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: srv,
+		},
+	}
+	client, err := azsecrets.NewClient(vaultURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	resp, err := client.GetSecret(context.Background(), "mysecret", "v2", nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp.PreviousVersion)
+	require.Equal(t, "v1", *resp.PreviousVersion)
 }

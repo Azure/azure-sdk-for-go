@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -127,7 +124,9 @@ func (s *sanitizerTests) TestUriSanitizer() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	defer func() {
+		require.NoError(jsonFile.Close())
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
@@ -187,7 +186,9 @@ func (s *sanitizerTests) TestHeaderRegexSanitizer() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	defer func() {
+		require.NoError(jsonFile.Close())
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
@@ -245,7 +246,9 @@ func (s *sanitizerTests) TestBodyKeySanitizer() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	defer func() {
+		require.NoError(jsonFile.Close())
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
@@ -306,7 +309,9 @@ func (s *sanitizerTests) TestBodyRegexSanitizer() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	defer func() {
+		require.NoError(jsonFile.Close())
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
@@ -357,7 +362,9 @@ func (s *sanitizerTests) TestRemoveHeaderSanitizer() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	defer func() {
+		require.NoError(jsonFile.Close())
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
@@ -422,7 +429,9 @@ func (s *sanitizerTests) TestContinuationSanitizer() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	defer func() {
+		require.NoError(jsonFile.Close())
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
@@ -470,7 +479,9 @@ func (s *sanitizerTests) TestGeneralRegexSanitizer() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	defer func() {
+		require.NoError(jsonFile.Close())
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
@@ -517,7 +528,9 @@ func (s *sanitizerTests) TestOAuthResponseSanitizer() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	defer func() {
+		require.NoError(jsonFile.Close())
+	}()
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(err)
@@ -560,7 +573,9 @@ func (s *sanitizerTests) TestUriSubscriptionIdSanitizer() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	defer func() {
+		require.NoError(jsonFile.Close())
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
@@ -617,7 +632,9 @@ func (s *sanitizerTests) TestResetSanitizers() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	defer func() {
+		require.NoError(jsonFile.Close())
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
@@ -671,7 +688,9 @@ func (s *sanitizerTests) TestSingleTestSanitizer() {
 			// Read the file
 			jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 			require.NoError(err)
-			defer jsonFile.Close()
+			defer func() {
+				require.NoError(jsonFile.Close())
+			}()
 
 			var data RecordingFileStruct
 			byteValue, err := io.ReadAll(jsonFile)

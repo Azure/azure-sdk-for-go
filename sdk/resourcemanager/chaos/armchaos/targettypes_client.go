@@ -26,7 +26,7 @@ type TargetTypesClient struct {
 // NewTargetTypesClient creates a new instance of TargetTypesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTargetTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TargetTypesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewTargetTypesClient(subscriptionID string, credential azcore.TokenCredenti
 // Get - Get a Target Type resources for given location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
 //   - targetTypeName - String that represents a Target Type resource name.
 //   - options - TargetTypesClientGetOptions contains the optional parameters for the TargetTypesClient.Get method.
@@ -88,7 +88,7 @@ func (client *TargetTypesClient) getCreateRequest(ctx context.Context, location 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *TargetTypesClient) getHandleResponse(resp *http.Response) (TargetT
 
 // NewListPager - Get a list of Target Type resources for given location.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
 //   - options - TargetTypesClientListOptions contains the optional parameters for the TargetTypesClient.NewListPager method.
 func (client *TargetTypesClient) NewListPager(location string, options *TargetTypesClientListOptions) *runtime.Pager[TargetTypesClientListResponse] {
@@ -147,7 +147,7 @@ func (client *TargetTypesClient) listCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}

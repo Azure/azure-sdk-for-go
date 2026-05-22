@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -9,6 +6,10 @@ package share_test
 import (
 	"context"
 	"fmt"
+	"strconv"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -19,20 +20,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"strconv"
-	"testing"
-	"time"
 )
 
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running share Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &ShareRecordedTestsSuite{})
 		suite.Run(t, &ShareUnrecordedTestsSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &ShareRecordedTestsSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &ShareRecordedTestsSuite{})
 	}
 }
@@ -473,6 +472,90 @@ func (s *ShareRecordedTestsSuite) TestShareCreateNegativeInvalidMetadata() {
 	_require.Error(err)
 }
 
+func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDisabled() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// Create share with directory leases disabled
+	resp, err := shareClient.Create(context.Background(), &share.CreateOptions{
+		EnableSMBDirectoryLease: to.Ptr(false),
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+
+	// Verify with GetProperties
+	getResp, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(getResp.ETag)
+	_require.NotNil(getResp.LastModified)
+	_require.Equal(false, *getResp.EnableSMBDirectoryLease)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseEnabled() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// Create share with directory leases explicitly enabled
+	resp, err := shareClient.Create(context.Background(), &share.CreateOptions{
+		EnableSMBDirectoryLease: to.Ptr(true),
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+
+	// Verify with GetProperties
+	getResp, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(true, *getResp.EnableSMBDirectoryLease)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// Create share with no explicit option (should default to true)
+	resp, err := shareClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+
+	// Verify with GetProperties
+	getResp, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(true, *getResp.EnableSMBDirectoryLease)
+}
+
 func (s *ShareRecordedTestsSuite) TestShareDeleteNegativeNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -881,6 +964,8 @@ func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyMoreThanFive() {
 }
 
 func (s *ShareRecordedTestsSuite) TestShareGetSetAccessPolicyDefault() {
+	// TODO: rerecord test and remove recording.SetDefaultMatcher
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(), &recording.SetDefaultMatcherOptions{CompareBodies: to.Ptr(false), ExcludedHeaders: []string{"Accept", "Content-Type"}}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -973,6 +1058,8 @@ func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyNonDefaultDeleteAndMod
 }
 
 func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyDeleteAllPolicies() {
+	// TODO: rerecord test and remove recording.SetDefaultMatcher
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(), &recording.SetDefaultMatcherOptions{CompareBodies: to.Ptr(false), ExcludedHeaders: []string{"Accept", "Content-Type"}}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1359,7 +1446,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotDefault() {
 	_, err = fClient.StartCopyFromURL(context.Background(), sourceURL, nil)
 	_require.NoError(err)
 
-	time.Sleep(2 * time.Second)
+	recording.Sleep(2 * time.Second)
 
 	// After restore
 	_, err = fClient.GetProperties(context.Background(), nil)
@@ -1562,7 +1649,7 @@ func (s *ShareRecordedTestsSuite) TestShareRestoreSuccess() {
 	_require.NoError(err)
 
 	// wait for share deletion
-	time.Sleep(60 * time.Second)
+	recording.Sleep(60 * time.Second)
 
 	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
 		Include: service.ListSharesInclude{Deleted: true},
@@ -1640,7 +1727,7 @@ func (s *ShareRecordedTestsSuite) TestShareRestoreWithSnapshotsAgain() {
 	_require.NoError(err)
 
 	// wait for share deletion
-	time.Sleep(60 * time.Second)
+	recording.Sleep(60 * time.Second)
 
 	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
 		Include: service.ListSharesInclude{Deleted: true},
@@ -1823,7 +1910,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSASUsingAccessPolicy() {
 	_require.NoError(err)
 	_require.Len(gResp.SignedIdentifiers, 1)
 
-	time.Sleep(30 * time.Second)
+	recording.Sleep(30 * time.Second)
 
 	sasQueryParams, err := sas.SignatureValues{
 		Protocol:   sas.ProtocolHTTPS,

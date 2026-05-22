@@ -26,7 +26,7 @@ type SitesClient struct {
 // NewSitesClient creates a new instance of SitesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SitesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,9 +42,9 @@ func NewSitesClient(subscriptionID string, credential azcore.TokenCredential, op
 // BeginCreateOrUpdate - Create a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - siteName - Name of Site resource
+//   - siteName - The name of the Site
 //   - resource - Resource create parameters.
 //   - options - SitesClientBeginCreateOrUpdateOptions contains the optional parameters for the SitesClient.BeginCreateOrUpdate
 //     method.
@@ -68,7 +68,7 @@ func (client *SitesClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 // CreateOrUpdate - Create a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 func (client *SitesClient) createOrUpdate(ctx context.Context, resourceGroupName string, siteName string, resource Site, options *SitesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SitesClient.BeginCreateOrUpdate"
@@ -110,7 +110,7 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,9 +123,9 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 // Delete - Delete a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - siteName - Name of Site resource
+//   - siteName - The name of the Site
 //   - options - SitesClientDeleteOptions contains the optional parameters for the SitesClient.Delete method.
 func (client *SitesClient) Delete(ctx context.Context, resourceGroupName string, siteName string, options *SitesClientDeleteOptions) (SitesClientDeleteResponse, error) {
 	var err error
@@ -168,18 +168,17 @@ func (client *SitesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - siteName - Name of Site resource
+//   - siteName - The name of the Site
 //   - options - SitesClientGetOptions contains the optional parameters for the SitesClient.Get method.
 func (client *SitesClient) Get(ctx context.Context, resourceGroupName string, siteName string, options *SitesClientGetOptions) (SitesClientGetResponse, error) {
 	var err error
@@ -223,7 +222,7 @@ func (client *SitesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,9 +237,9 @@ func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGe
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List Site resources by resource group
+// NewListByResourceGroupPager - List a Site
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SitesClientListByResourceGroupOptions contains the optional parameters for the SitesClient.NewListByResourceGroupPager
 //     method.
@@ -283,7 +282,7 @@ func (client *SitesClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,10 +300,10 @@ func (client *SitesClient) listByResourceGroupHandleResponse(resp *http.Response
 // Update - Update a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - siteName - Name of Site resource
-//   - properties - The resource properties to be updated.
+//   - siteName - The name of the Site
+//   - properties - Resource create parameters.
 //   - options - SitesClientUpdateOptions contains the optional parameters for the SitesClient.Update method.
 func (client *SitesClient) Update(ctx context.Context, resourceGroupName string, siteName string, properties SiteUpdate, options *SitesClientUpdateOptions) (SitesClientUpdateResponse, error) {
 	var err error
@@ -348,7 +347,7 @@ func (client *SitesClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

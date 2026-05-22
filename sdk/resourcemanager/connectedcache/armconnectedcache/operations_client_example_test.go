@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2023-05-01-preview/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -26,7 +26,7 @@ type StandbyVirtualMachinesClient struct {
 // NewStandbyVirtualMachinesClient creates a new instance of StandbyVirtualMachinesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStandbyVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StandbyVirtualMachinesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewStandbyVirtualMachinesClient(subscriptionID string, credential azcore.To
 // Get - Get a StandbyVirtualMachineResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyVirtualMachinePoolName - Name of the standby virtual machine pool
 //   - standbyVirtualMachineName - Name of the standby virtual machine
@@ -94,7 +94,7 @@ func (client *StandbyVirtualMachinesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *StandbyVirtualMachinesClient) getHandleResponse(resp *http.Respons
 
 // NewListByStandbyVirtualMachinePoolResourcePager - List StandbyVirtualMachineResource resources by StandbyVirtualMachinePoolResource
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyVirtualMachinePoolName - Name of the standby virtual machine pool
 //   - options - StandbyVirtualMachinesClientListByStandbyVirtualMachinePoolResourceOptions contains the optional parameters for
@@ -159,7 +159,7 @@ func (client *StandbyVirtualMachinesClient) listByStandbyVirtualMachinePoolResou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

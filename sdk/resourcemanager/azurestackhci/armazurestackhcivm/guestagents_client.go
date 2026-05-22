@@ -6,6 +6,7 @@ package armazurestackhcivm
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -22,7 +23,7 @@ type GuestAgentsClient struct {
 
 // NewGuestAgentsClient creates a new instance of GuestAgentsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGuestAgentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GuestAgentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -87,6 +88,9 @@ func (client *GuestAgentsClient) create(ctx context.Context, resourceURI string,
 // createCreateRequest creates the Create request.
 func (client *GuestAgentsClient) createCreateRequest(ctx context.Context, resourceURI string, resource GuestAgent, _ *GuestAgentsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/guestAgents/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -154,6 +158,9 @@ func (client *GuestAgentsClient) deleteOperation(ctx context.Context, resourceUR
 // deleteCreateRequest creates the Delete request.
 func (client *GuestAgentsClient) deleteCreateRequest(ctx context.Context, resourceURI string, _ *GuestAgentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/guestAgents/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -162,7 +169,6 @@ func (client *GuestAgentsClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -197,6 +203,9 @@ func (client *GuestAgentsClient) Get(ctx context.Context, resourceURI string, op
 // getCreateRequest creates the Get request.
 func (client *GuestAgentsClient) getCreateRequest(ctx context.Context, resourceURI string, _ *GuestAgentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/guestAgents/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -250,6 +259,9 @@ func (client *GuestAgentsClient) NewListByVirtualMachineInstancePager(resourceUR
 // listByVirtualMachineInstanceCreateRequest creates the ListByVirtualMachineInstance request.
 func (client *GuestAgentsClient) listByVirtualMachineInstanceCreateRequest(ctx context.Context, resourceURI string, _ *GuestAgentsClientListByVirtualMachineInstanceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/guestAgents"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

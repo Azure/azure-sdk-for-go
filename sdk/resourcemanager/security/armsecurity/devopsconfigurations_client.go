@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultDevOpsConfigurationsClientVersion string = "2025-11-01-preview"
-
 // DevOpsConfigurationsClient contains the methods for the DevOpsConfigurations group.
 // Don't use this type directly, use NewDevOpsConfigurationsClient() instead.
 //
@@ -114,7 +112,7 @@ func (client *DevOpsConfigurationsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDevOpsConfigurationsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -194,7 +192,7 @@ func (client *DevOpsConfigurationsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDevOpsConfigurationsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -249,7 +247,7 @@ func (client *DevOpsConfigurationsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDevOpsConfigurationsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -314,7 +312,7 @@ func (client *DevOpsConfigurationsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDevOpsConfigurationsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -400,7 +398,7 @@ func (client *DevOpsConfigurationsClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDevOpsConfigurationsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -23,7 +23,7 @@ func ExamplePrivateLinksClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateLinksClient().BeginCreate(ctx, "rg", "<privateLinkName>", armsecurity.PrivateLinkResource{
+	poller, err := clientFactory.NewPrivateLinksClient().BeginCreate(ctx, "rg", armsecurity.PrivateLinkResource{
 		Location:   to.Ptr("eastus"),
 		Properties: &armsecurity.PrivateLinkProperties{},
 		Tags: map[string]*string{
@@ -31,8 +31,7 @@ func ExamplePrivateLinksClient_BeginCreate() {
 			"owner":       to.Ptr("security-team"),
 			"project":     to.Ptr("private-links"),
 		},
-	}, &armsecurity.PrivateLinksClientBeginCreateOptions{
-		PrivateLinkName: "spl"})
+	}, armsecurity.PrivateLinkParameters{PrivateLinkName: "spl"}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -92,8 +91,7 @@ func ExamplePrivateLinksClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateLinksClient().BeginDelete(ctx, "rg", "<privateLinkName>", &armsecurity.PrivateLinksClientBeginDeleteOptions{
-		PrivateLinkName: "spl"})
+	poller, err := clientFactory.NewPrivateLinksClient().BeginDelete(ctx, "rg", armsecurity.PrivateLinkParameters{PrivateLinkName: "spl"}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -114,8 +112,7 @@ func ExamplePrivateLinksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateLinksClient().Get(ctx, "rg", "<privateLinkName>", &armsecurity.PrivateLinksClientGetOptions{
-		PrivateLinkName: "spl"})
+	res, err := clientFactory.NewPrivateLinksClient().Get(ctx, "rg", armsecurity.PrivateLinkParameters{PrivateLinkName: "spl"}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -190,8 +187,7 @@ func ExamplePrivateLinksClient_Head() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateLinksClient().Head(ctx, "rg", "<privateLinkName>", &armsecurity.PrivateLinksClientHeadOptions{
-		PrivateLinkName: "spl"})
+	res, err := clientFactory.NewPrivateLinksClient().Head(ctx, "rg", armsecurity.PrivateLinkParameters{PrivateLinkName: "spl"}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -483,14 +479,13 @@ func ExamplePrivateLinksClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateLinksClient().Update(ctx, "rg", "<privateLinkName>", armsecurity.PrivateLinkUpdate{
+	res, err := clientFactory.NewPrivateLinksClient().Update(ctx, "rg", armsecurity.PrivateLinkUpdate{
 		Tags: map[string]*string{
 			"environment": to.Ptr("development"),
 			"owner":       to.Ptr("security-team-updated"),
 			"project":     to.Ptr("private-links"),
 		},
-	}, &armsecurity.PrivateLinksClientUpdateOptions{
-		PrivateLinkName: "spl"})
+	}, armsecurity.PrivateLinkParameters{PrivateLinkName: "spl"}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

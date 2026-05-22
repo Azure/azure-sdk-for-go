@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultComplianceResultsClientVersion string = "2017-08-01"
-
 // ComplianceResultsClient contains the methods for the ComplianceResults group.
 // Don't use this type directly, use NewComplianceResultsClient() instead.
 //
@@ -83,7 +81,7 @@ func (client *ComplianceResultsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultComplianceResultsClientVersion)
+	reqQP.Set("api-version", version20170801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -137,7 +135,7 @@ func (client *ComplianceResultsClient) listCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultComplianceResultsClientVersion)
+	reqQP.Set("api-version", version20170801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

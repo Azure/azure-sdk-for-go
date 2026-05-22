@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultMdeOnboardingsClientVersion string = "2021-10-01-preview"
-
 // MdeOnboardingsClient contains the methods for the MdeOnboardings group.
 // Don't use this type directly, use NewMdeOnboardingsClient() instead.
 //
@@ -80,7 +78,7 @@ func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, _ *Mde
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultMdeOnboardingsClientVersion)
+	reqQP.Set("api-version", version20211001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -132,7 +130,7 @@ func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, _ *Md
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultMdeOnboardingsClientVersion)
+	reqQP.Set("api-version", version20211001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

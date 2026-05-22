@@ -22,8 +22,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateLinkResourcesClient().Get(ctx, "rg", "<privateLinkName>", "containers", &armsecurity.PrivateLinkResourcesClientGetOptions{
-		PrivateLinkName: "pls"})
+	res, err := clientFactory.NewPrivateLinkResourcesClient().Get(ctx, "rg", "containers", armsecurity.PrivateLinkParameters{PrivateLinkName: "pls"}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -60,8 +59,7 @@ func ExamplePrivateLinkResourcesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPrivateLinkResourcesClient().NewListPager("rg", "<privateLinkName>", &armsecurity.PrivateLinkResourcesClientListOptions{
-		PrivateLinkName: "pls"})
+	pager := clientFactory.NewPrivateLinkResourcesClient().NewListPager("rg", armsecurity.PrivateLinkParameters{PrivateLinkName: "pls"}, nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

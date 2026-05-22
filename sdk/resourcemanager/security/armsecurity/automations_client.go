@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAutomationsClientVersion string = "2023-12-01-preview"
-
 // AutomationsClient contains the methods for the Automations group.
 // Don't use this type directly, use NewAutomationsClient() instead.
 //
@@ -93,7 +91,7 @@ func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAutomationsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -158,7 +156,7 @@ func (client *AutomationsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAutomationsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -210,7 +208,7 @@ func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAutomationsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,7 +261,7 @@ func (client *AutomationsClient) listCreateRequest(ctx context.Context, _ *Autom
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAutomationsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +320,7 @@ func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAutomationsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -385,7 +383,7 @@ func (client *AutomationsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAutomationsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -452,7 +450,7 @@ func (client *AutomationsClient) validateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAutomationsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

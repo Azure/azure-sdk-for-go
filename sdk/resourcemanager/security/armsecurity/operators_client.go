@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultOperatorsClientVersion string = "2023-01-01-preview"
-
 // OperatorsClient contains the methods for the Operators group.
 // Don't use this type directly, use NewOperatorsClient() instead.
 //
@@ -91,7 +89,7 @@ func (client *OperatorsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultOperatorsClientVersion)
+	reqQP.Set("api-version", version20230101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -152,7 +150,7 @@ func (client *OperatorsClient) deleteCreateRequest(ctx context.Context, pricingN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultOperatorsClientVersion)
+	reqQP.Set("api-version", version20230101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -204,7 +202,7 @@ func (client *OperatorsClient) getCreateRequest(ctx context.Context, pricingName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultOperatorsClientVersion)
+	reqQP.Set("api-version", version20230101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +260,7 @@ func (client *OperatorsClient) listCreateRequest(ctx context.Context, pricingNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultOperatorsClientVersion)
+	reqQP.Set("api-version", version20230101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

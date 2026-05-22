@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultCustomRecommendationsClientVersion string = "2024-08-01"
-
 // CustomRecommendationsClient contains the methods for the CustomRecommendations group.
 // Don't use this type directly, use NewCustomRecommendationsClient() instead.
 //
@@ -85,7 +83,7 @@ func (client *CustomRecommendationsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultCustomRecommendationsClientVersion)
+	reqQP.Set("api-version", version20240801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -147,7 +145,7 @@ func (client *CustomRecommendationsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultCustomRecommendationsClientVersion)
+	reqQP.Set("api-version", version20240801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -196,7 +194,7 @@ func (client *CustomRecommendationsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultCustomRecommendationsClientVersion)
+	reqQP.Set("api-version", version20240801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -250,7 +248,7 @@ func (client *CustomRecommendationsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultCustomRecommendationsClientVersion)
+	reqQP.Set("api-version", version20240801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

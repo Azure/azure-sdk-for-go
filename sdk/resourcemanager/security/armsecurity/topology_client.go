@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultTopologyClientVersion string = "2020-01-01"
-
 // TopologyClient contains the methods for the Topology group.
 // Don't use this type directly, use NewTopologyClient() instead.
 //
@@ -95,7 +93,7 @@ func (client *TopologyClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTopologyClientVersion)
+	reqQP.Set("api-version", version20200101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -147,7 +145,7 @@ func (client *TopologyClient) listCreateRequest(ctx context.Context, _ *Topology
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTopologyClientVersion)
+	reqQP.Set("api-version", version20200101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +203,7 @@ func (client *TopologyClient) listByHomeRegionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTopologyClientVersion)
+	reqQP.Set("api-version", version20200101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

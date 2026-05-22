@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultGitLabGroupsClientVersion string = "2025-11-01-preview"
-
 // GitLabGroupsClient contains the methods for the GitLabGroups group.
 // Don't use this type directly, use NewGitLabGroupsClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *GitLabGroupsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGitLabGroupsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -160,7 +158,7 @@ func (client *GitLabGroupsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGitLabGroupsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -225,7 +223,7 @@ func (client *GitLabGroupsClient) listAvailableCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGitLabGroupsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

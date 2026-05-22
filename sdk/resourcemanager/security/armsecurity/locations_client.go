@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultLocationsClientVersion string = "2015-06-01-preview"
-
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
 //
@@ -85,7 +83,7 @@ func (client *LocationsClient) getCreateRequest(ctx context.Context, ascLocation
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultLocationsClientVersion)
+	reqQP.Set("api-version", version20150601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -139,7 +137,7 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, _ *Locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultLocationsClientVersion)
+	reqQP.Set("api-version", version20150601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

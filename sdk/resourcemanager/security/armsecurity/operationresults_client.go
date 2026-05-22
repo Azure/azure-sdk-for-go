@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultOperationResultsClientVersion string = "2025-10-01-preview"
-
 // OperationResultsClient contains the methods for the OperationResults group.
 // Don't use this type directly, use NewOperationResultsClient() instead.
 //
@@ -91,7 +89,7 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultOperationResultsClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

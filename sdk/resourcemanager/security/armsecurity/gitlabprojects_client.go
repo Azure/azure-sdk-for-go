@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultGitLabProjectsClientVersion string = "2025-11-01-preview"
-
 // GitLabProjectsClient contains the methods for the GitLabProjects group.
 // Don't use this type directly, use NewGitLabProjectsClient() instead.
 //
@@ -100,7 +98,7 @@ func (client *GitLabProjectsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGitLabProjectsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -168,7 +166,7 @@ func (client *GitLabProjectsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGitLabProjectsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

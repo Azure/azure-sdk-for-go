@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultConnectorsClientVersion string = "2024-08-01-preview"
-
 // ConnectorsClient contains the methods for the Connectors group.
 // Don't use this type directly, use NewConnectorsClient() instead.
 //
@@ -93,7 +91,7 @@ func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultConnectorsClientVersion)
+	reqQP.Set("api-version", version20240801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -158,7 +156,7 @@ func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultConnectorsClientVersion)
+	reqQP.Set("api-version", version20240801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -210,7 +208,7 @@ func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultConnectorsClientVersion)
+	reqQP.Set("api-version", version20240801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,7 +261,7 @@ func (client *ConnectorsClient) listCreateRequest(ctx context.Context, _ *Connec
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultConnectorsClientVersion)
+	reqQP.Set("api-version", version20240801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +320,7 @@ func (client *ConnectorsClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultConnectorsClientVersion)
+	reqQP.Set("api-version", version20240801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -385,7 +383,7 @@ func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultConnectorsClientVersion)
+	reqQP.Set("api-version", version20240801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

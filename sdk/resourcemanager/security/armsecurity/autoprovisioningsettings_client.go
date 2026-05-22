@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAutoProvisioningSettingsClientVersion string = "2017-08-01-preview"
-
 // AutoProvisioningSettingsClient contains the methods for the AutoProvisioningSettings group.
 // Don't use this type directly, use NewAutoProvisioningSettingsClient() instead.
 //
@@ -87,7 +85,7 @@ func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAutoProvisioningSettingsClientVersion)
+	reqQP.Set("api-version", version20170801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -149,7 +147,7 @@ func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAutoProvisioningSettingsClientVersion)
+	reqQP.Set("api-version", version20170801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,7 +200,7 @@ func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAutoProvisioningSettingsClientVersion)
+	reqQP.Set("api-version", version20170801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

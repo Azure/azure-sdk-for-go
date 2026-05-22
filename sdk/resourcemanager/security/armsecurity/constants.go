@@ -4,6 +4,37 @@
 
 package armsecurity
 
+const (
+	version20150601Preview string = "2015-06-01-preview"
+	version20170801        string = "2017-08-01"
+	version20170801Preview string = "2017-08-01-preview"
+	version20190101        string = "2019-01-01"
+	version20190101Preview string = "2019-01-01-preview"
+	version20190801        string = "2019-08-01"
+	version20200101        string = "2020-01-01"
+	version20210801Preview string = "2021-08-01-preview"
+	version20211001Preview string = "2021-10-01-preview"
+	version20220101        string = "2022-01-01"
+	version20220101Preview string = "2022-01-01-preview"
+	version20220501        string = "2022-05-01"
+	version20220701Preview string = "2022-07-01-preview"
+	version20230101Preview string = "2023-01-01-preview"
+	version20230215Preview string = "2023-02-15-preview"
+	version20230501        string = "2023-05-01"
+	version20230501Preview string = "2023-05-01-preview"
+	version20231115        string = "2023-11-15"
+	version20231201Preview string = "2023-12-01-preview"
+	version20240101        string = "2024-01-01"
+	version20240801        string = "2024-08-01"
+	version20240801Preview string = "2024-08-01-preview"
+	version20250504        string = "2025-05-04"
+	version20250901Preview string = "2025-09-01-preview"
+	version20251001Preview string = "2025-10-01-preview"
+	version20251101Preview string = "2025-11-01-preview"
+	version20260101        string = "2026-01-01"
+	version20260401Preview string = "2026-04-01-preview"
+)
+
 // AADConnectivityState - The connectivity state of the external AAD solution
 type AADConnectivityState string
 

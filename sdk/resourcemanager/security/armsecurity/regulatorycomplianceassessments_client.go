@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultRegulatoryComplianceAssessmentsClientVersion string = "2019-01-01-preview"
-
 // RegulatoryComplianceAssessmentsClient contains the methods for the RegulatoryComplianceAssessments group.
 // Don't use this type directly, use NewRegulatoryComplianceAssessmentsClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *RegulatoryComplianceAssessmentsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultRegulatoryComplianceAssessmentsClientVersion)
+	reqQP.Set("api-version", version20190101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -162,7 +160,7 @@ func (client *RegulatoryComplianceAssessmentsClient) listCreateRequest(ctx conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", defaultRegulatoryComplianceAssessmentsClientVersion)
+	reqQP.Set("api-version", version20190101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

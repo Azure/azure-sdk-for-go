@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultDiscoveredSecuritySolutionsClientVersion string = "2020-01-01"
-
 // DiscoveredSecuritySolutionsClient contains the methods for the DiscoveredSecuritySolutions group.
 // Don't use this type directly, use NewDiscoveredSecuritySolutionsClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *DiscoveredSecuritySolutionsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDiscoveredSecuritySolutionsClientVersion)
+	reqQP.Set("api-version", version20200101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -149,7 +147,7 @@ func (client *DiscoveredSecuritySolutionsClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDiscoveredSecuritySolutionsClientVersion)
+	reqQP.Set("api-version", version20200101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -207,7 +205,7 @@ func (client *DiscoveredSecuritySolutionsClient) listByHomeRegionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDiscoveredSecuritySolutionsClientVersion)
+	reqQP.Set("api-version", version20200101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

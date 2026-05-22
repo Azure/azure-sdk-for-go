@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAPICollectionsClientVersion string = "2023-11-15"
-
 // APICollectionsClient contains the methods for the APICollections group.
 // Don't use this type directly, use NewAPICollectionsClient() instead.
 //
@@ -101,7 +99,7 @@ func (client *APICollectionsClient) getByAzureAPIManagementServiceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	reqQP.Set("api-version", version20231115)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -168,7 +166,7 @@ func (client *APICollectionsClient) listByAzureAPIManagementServiceCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	reqQP.Set("api-version", version20231115)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -228,7 +226,7 @@ func (client *APICollectionsClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	reqQP.Set("api-version", version20231115)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +281,7 @@ func (client *APICollectionsClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	reqQP.Set("api-version", version20231115)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -354,7 +352,7 @@ func (client *APICollectionsClient) offboardAzureAPIManagementAPICreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	reqQP.Set("api-version", version20231115)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -437,7 +435,7 @@ func (client *APICollectionsClient) onboardAzureAPIManagementAPICreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAPICollectionsClientVersion)
+	reqQP.Set("api-version", version20231115)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultGovernanceAssignmentsClientVersion string = "2022-01-01-preview"
-
 // GovernanceAssignmentsClient contains the methods for the GovernanceAssignments group.
 // Don't use this type directly, use NewGovernanceAssignmentsClient() instead.
 //
@@ -90,7 +88,7 @@ func (client *GovernanceAssignmentsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGovernanceAssignmentsClientVersion)
+	reqQP.Set("api-version", version20220101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -157,7 +155,7 @@ func (client *GovernanceAssignmentsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGovernanceAssignmentsClientVersion)
+	reqQP.Set("api-version", version20220101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -211,7 +209,7 @@ func (client *GovernanceAssignmentsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGovernanceAssignmentsClientVersion)
+	reqQP.Set("api-version", version20220101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -270,7 +268,7 @@ func (client *GovernanceAssignmentsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGovernanceAssignmentsClientVersion)
+	reqQP.Set("api-version", version20220101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

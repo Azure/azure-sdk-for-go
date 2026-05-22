@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultDefenderForStorageClientVersion string = "2025-09-01-preview"
-
 // DefenderForStorageClient contains the methods for the DefenderForStorage group.
 // Don't use this type directly, use NewDefenderForStorageClient() instead.
 //
@@ -89,7 +87,7 @@ func (client *DefenderForStorageClient) cancelMalwareScanCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	reqQP.Set("api-version", version20250901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -149,7 +147,7 @@ func (client *DefenderForStorageClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	reqQP.Set("api-version", version20250901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -211,7 +209,7 @@ func (client *DefenderForStorageClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	reqQP.Set("api-version", version20250901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -275,7 +273,7 @@ func (client *DefenderForStorageClient) getMalwareScanCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	reqQP.Set("api-version", version20250901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -329,7 +327,7 @@ func (client *DefenderForStorageClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	reqQP.Set("api-version", version20250901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -389,7 +387,7 @@ func (client *DefenderForStorageClient) startMalwareScanCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDefenderForStorageClientVersion)
+	reqQP.Set("api-version", version20250901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

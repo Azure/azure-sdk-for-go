@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAssessmentsClientVersion string = "2025-05-04"
-
 // AssessmentsClient contains the methods for the Assessments group.
 // Don't use this type directly, use NewAssessmentsClient() instead.
 //
@@ -86,7 +84,7 @@ func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAssessmentsClientVersion)
+	reqQP.Set("api-version", version20250504)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -148,7 +146,7 @@ func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAssessmentsClientVersion)
+	reqQP.Set("api-version", version20250504)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -199,7 +197,7 @@ func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceI
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", defaultAssessmentsClientVersion)
+	reqQP.Set("api-version", version20250504)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -252,7 +250,7 @@ func (client *AssessmentsClient) listCreateRequest(ctx context.Context, scope st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAssessmentsClientVersion)
+	reqQP.Set("api-version", version20250504)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

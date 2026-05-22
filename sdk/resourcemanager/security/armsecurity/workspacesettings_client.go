@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultWorkspaceSettingsClientVersion string = "2017-08-01-preview"
-
 // WorkspaceSettingsClient contains the methods for the WorkspaceSettings group.
 // Don't use this type directly, use NewWorkspaceSettingsClient() instead.
 //
@@ -87,7 +85,7 @@ func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultWorkspaceSettingsClientVersion)
+	reqQP.Set("api-version", version20170801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -148,7 +146,7 @@ func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultWorkspaceSettingsClientVersion)
+	reqQP.Set("api-version", version20170801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -196,7 +194,7 @@ func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, wor
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultWorkspaceSettingsClientVersion)
+	reqQP.Set("api-version", version20170801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -250,7 +248,7 @@ func (client *WorkspaceSettingsClient) listCreateRequest(ctx context.Context, _ 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultWorkspaceSettingsClientVersion)
+	reqQP.Set("api-version", version20170801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -309,7 +307,7 @@ func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultWorkspaceSettingsClientVersion)
+	reqQP.Set("api-version", version20170801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

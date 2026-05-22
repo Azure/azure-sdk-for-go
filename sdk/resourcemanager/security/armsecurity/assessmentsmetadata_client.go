@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAssessmentsMetadataClientVersion string = "2025-05-04"
-
 // AssessmentsMetadataClient contains the methods for the AssessmentsMetadata group.
 // Don't use this type directly, use NewAssessmentsMetadataClient() instead.
 //
@@ -87,7 +85,7 @@ func (client *AssessmentsMetadataClient) createInSubscriptionCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAssessmentsMetadataClientVersion)
+	reqQP.Set("api-version", version20250504)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -149,7 +147,7 @@ func (client *AssessmentsMetadataClient) deleteInSubscriptionCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAssessmentsMetadataClientVersion)
+	reqQP.Set("api-version", version20250504)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -192,7 +190,7 @@ func (client *AssessmentsMetadataClient) getCreateRequest(ctx context.Context, a
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAssessmentsMetadataClientVersion)
+	reqQP.Set("api-version", version20250504)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -250,7 +248,7 @@ func (client *AssessmentsMetadataClient) getInSubscriptionCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAssessmentsMetadataClientVersion)
+	reqQP.Set("api-version", version20250504)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -299,7 +297,7 @@ func (client *AssessmentsMetadataClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAssessmentsMetadataClientVersion)
+	reqQP.Set("api-version", version20250504)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -352,7 +350,7 @@ func (client *AssessmentsMetadataClient) listBySubscriptionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAssessmentsMetadataClientVersion)
+	reqQP.Set("api-version", version20250504)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultStandardsClientVersion string = "2021-08-01-preview"
-
 // StandardsClient contains the methods for the Standards group.
 // Don't use this type directly, use NewStandardsClient() instead.
 //
@@ -93,7 +91,7 @@ func (client *StandardsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultStandardsClientVersion)
+	reqQP.Set("api-version", version20210801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -158,7 +156,7 @@ func (client *StandardsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultStandardsClientVersion)
+	reqQP.Set("api-version", version20210801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -210,7 +208,7 @@ func (client *StandardsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultStandardsClientVersion)
+	reqQP.Set("api-version", version20210801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,7 +265,7 @@ func (client *StandardsClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultStandardsClientVersion)
+	reqQP.Set("api-version", version20210801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -320,7 +318,7 @@ func (client *StandardsClient) listBySubscriptionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultStandardsClientVersion)
+	reqQP.Set("api-version", version20210801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

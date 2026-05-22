@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultSettingsClientVersion string = "2022-05-01"
-
 // SettingsClient contains the methods for the Settings group.
 // Don't use this type directly, use NewSettingsClient() instead.
 //
@@ -85,7 +83,7 @@ func (client *SettingsClient) getCreateRequest(ctx context.Context, settingName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSettingsClientVersion)
+	reqQP.Set("api-version", version20220501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -137,7 +135,7 @@ func (client *SettingsClient) listCreateRequest(ctx context.Context, _ *Settings
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSettingsClientVersion)
+	reqQP.Set("api-version", version20220501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -195,7 +193,7 @@ func (client *SettingsClient) updateCreateRequest(ctx context.Context, settingNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSettingsClientVersion)
+	reqQP.Set("api-version", version20220501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

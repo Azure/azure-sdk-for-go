@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAzureDevOpsReposClientVersion string = "2025-11-01-preview"
-
 // AzureDevOpsReposClient contains the methods for the AzureDevOpsRepos group.
 // Don't use this type directly, use NewAzureDevOpsReposClient() instead.
 //
@@ -126,7 +124,7 @@ func (client *AzureDevOpsReposClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAzureDevOpsReposClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -197,7 +195,7 @@ func (client *AzureDevOpsReposClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAzureDevOpsReposClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -270,7 +268,7 @@ func (client *AzureDevOpsReposClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAzureDevOpsReposClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -368,7 +366,7 @@ func (client *AzureDevOpsReposClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAzureDevOpsReposClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

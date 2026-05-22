@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultSecureScoreControlDefinitionsClientVersion string = "2020-01-01"
-
 // SecureScoreControlDefinitionsClient contains the methods for the SecureScoreControlDefinitions group.
 // Don't use this type directly, use NewSecureScoreControlDefinitionsClient() instead.
 //
@@ -77,7 +75,7 @@ func (client *SecureScoreControlDefinitionsClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSecureScoreControlDefinitionsClientVersion)
+	reqQP.Set("api-version", version20200101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -131,7 +129,7 @@ func (client *SecureScoreControlDefinitionsClient) listBySubscriptionCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSecureScoreControlDefinitionsClientVersion)
+	reqQP.Set("api-version", version20200101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

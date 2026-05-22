@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultSubAssessmentsClientVersion string = "2019-01-01-preview"
-
 // SubAssessmentsClient contains the methods for the SubAssessments group.
 // Don't use this type directly, use NewSubAssessmentsClient() instead.
 //
@@ -88,7 +86,7 @@ func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSubAssessmentsClientVersion)
+	reqQP.Set("api-version", version20190101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -146,7 +144,7 @@ func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSubAssessmentsClientVersion)
+	reqQP.Set("api-version", version20190101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +198,7 @@ func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSubAssessmentsClientVersion)
+	reqQP.Set("api-version", version20190101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

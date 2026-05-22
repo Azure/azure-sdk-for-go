@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultGovernanceRulesClientVersion string = "2022-01-01-preview"
-
 // GovernanceRulesClient contains the methods for the GovernanceRules group.
 // Don't use this type directly, use NewGovernanceRulesClient() instead.
 //
@@ -85,7 +83,7 @@ func (client *GovernanceRulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGovernanceRulesClientVersion)
+	reqQP.Set("api-version", version20220101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -166,7 +164,7 @@ func (client *GovernanceRulesClient) deleteCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGovernanceRulesClientVersion)
+	reqQP.Set("api-version", version20220101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -233,7 +231,7 @@ func (client *GovernanceRulesClient) executeCreateRequest(ctx context.Context, s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGovernanceRulesClientVersion)
+	reqQP.Set("api-version", version20220101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ExecuteGovernanceRuleParams != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -288,7 +286,7 @@ func (client *GovernanceRulesClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGovernanceRulesClientVersion)
+	reqQP.Set("api-version", version20220101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -342,7 +340,7 @@ func (client *GovernanceRulesClient) listCreateRequest(ctx context.Context, scop
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGovernanceRulesClientVersion)
+	reqQP.Set("api-version", version20220101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -406,7 +404,7 @@ func (client *GovernanceRulesClient) operationResultsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGovernanceRulesClientVersion)
+	reqQP.Set("api-version", version20220101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultApplicationClientVersion string = "2022-07-01-preview"
-
 // ApplicationClient contains the methods for the Application group.
 // Don't use this type directly, use NewApplicationClient() instead.
 //
@@ -87,7 +85,7 @@ func (client *ApplicationClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultApplicationClientVersion)
+	reqQP.Set("api-version", version20220701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -147,7 +145,7 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, applic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultApplicationClientVersion)
+	reqQP.Set("api-version", version20220701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -194,7 +192,7 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, applicati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultApplicationClientVersion)
+	reqQP.Set("api-version", version20220701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

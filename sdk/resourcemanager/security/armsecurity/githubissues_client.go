@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultGitHubIssuesClientVersion string = "2025-11-01-preview"
-
 // GitHubIssuesClient contains the methods for the GitHubIssues group.
 // Don't use this type directly, use NewGitHubIssuesClient() instead.
 //
@@ -121,7 +119,7 @@ func (client *GitHubIssuesClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGitHubIssuesClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.CreateIssueRequest != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

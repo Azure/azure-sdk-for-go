@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultSolutionsClientVersion string = "2020-01-01"
-
 // SolutionsClient contains the methods for the Solutions group.
 // Don't use this type directly, use NewSolutionsClient() instead.
 //
@@ -95,7 +93,7 @@ func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSolutionsClientVersion)
+	reqQP.Set("api-version", version20200101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -147,7 +145,7 @@ func (client *SolutionsClient) listCreateRequest(ctx context.Context, _ *Solutio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSolutionsClientVersion)
+	reqQP.Set("api-version", version20200101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

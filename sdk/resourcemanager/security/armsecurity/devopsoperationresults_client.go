@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultDevOpsOperationResultsClientVersion string = "2025-11-01-preview"
-
 // DevOpsOperationResultsClient contains the methods for the DevOpsOperationResults group.
 // Don't use this type directly, use NewDevOpsOperationResultsClient() instead.
 //
@@ -97,7 +95,7 @@ func (client *DevOpsOperationResultsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDevOpsOperationResultsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

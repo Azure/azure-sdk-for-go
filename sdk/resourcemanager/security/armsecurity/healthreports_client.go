@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultHealthReportsClientVersion string = "2023-05-01-preview"
-
 // HealthReportsClient contains the methods for the HealthReports group.
 // Don't use this type directly, use NewHealthReportsClient() instead.
 //
@@ -83,7 +81,7 @@ func (client *HealthReportsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultHealthReportsClientVersion)
+	reqQP.Set("api-version", version20230501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -137,7 +135,7 @@ func (client *HealthReportsClient) listCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultHealthReportsClientVersion)
+	reqQP.Set("api-version", version20230501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

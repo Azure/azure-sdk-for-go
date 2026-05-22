@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultTasksClientVersion string = "2015-06-01-preview"
-
 // TasksClient contains the methods for the Tasks group.
 // Don't use this type directly, use NewTasksClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *TasksClient) getResourceGroupLevelTaskCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTasksClientVersion)
+	reqQP.Set("api-version", version20150601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -159,7 +157,7 @@ func (client *TasksClient) getSubscriptionLevelTaskCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTasksClientVersion)
+	reqQP.Set("api-version", version20150601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,7 +212,7 @@ func (client *TasksClient) listCreateRequest(ctx context.Context, options *Tasks
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", defaultTasksClientVersion)
+	reqQP.Set("api-version", version20150601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -275,7 +273,7 @@ func (client *TasksClient) listByHomeRegionCreateRequest(ctx context.Context, as
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", defaultTasksClientVersion)
+	reqQP.Set("api-version", version20150601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,7 +339,7 @@ func (client *TasksClient) listByResourceGroupCreateRequest(ctx context.Context,
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", defaultTasksClientVersion)
+	reqQP.Set("api-version", version20150601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -413,7 +411,7 @@ func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTasksClientVersion)
+	reqQP.Set("api-version", version20150601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -470,7 +468,7 @@ func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTasksClientVersion)
+	reqQP.Set("api-version", version20150601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

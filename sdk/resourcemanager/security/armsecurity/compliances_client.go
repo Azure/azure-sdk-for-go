@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultCompliancesClientVersion string = "2017-08-01-preview"
-
 // CompliancesClient contains the methods for the Compliances group.
 // Don't use this type directly, use NewCompliancesClient() instead.
 //
@@ -83,7 +81,7 @@ func (client *CompliancesClient) getCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultCompliancesClientVersion)
+	reqQP.Set("api-version", version20170801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -136,7 +134,7 @@ func (client *CompliancesClient) listCreateRequest(ctx context.Context, scope st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultCompliancesClientVersion)
+	reqQP.Set("api-version", version20170801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

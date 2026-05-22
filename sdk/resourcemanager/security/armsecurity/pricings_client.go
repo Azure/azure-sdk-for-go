@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultPricingsClientVersion string = "2024-01-01"
-
 // PricingsClient contains the methods for the Pricings group.
 // Don't use this type directly, use NewPricingsClient() instead.
 //
@@ -83,7 +81,7 @@ func (client *PricingsClient) deleteCreateRequest(ctx context.Context, scopeID s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultPricingsClientVersion)
+	reqQP.Set("api-version", version20240101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -132,7 +130,7 @@ func (client *PricingsClient) getCreateRequest(ctx context.Context, scopeID stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultPricingsClientVersion)
+	reqQP.Set("api-version", version20240101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -192,7 +190,7 @@ func (client *PricingsClient) listCreateRequest(ctx context.Context, scopeID str
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", defaultPricingsClientVersion)
+	reqQP.Set("api-version", version20240101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,7 +251,7 @@ func (client *PricingsClient) updateCreateRequest(ctx context.Context, scopeID s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultPricingsClientVersion)
+	reqQP.Set("api-version", version20240101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

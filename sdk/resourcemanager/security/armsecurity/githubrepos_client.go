@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultGitHubReposClientVersion string = "2025-11-01-preview"
-
 // GitHubReposClient contains the methods for the GitHubRepos group.
 // Don't use this type directly, use NewGitHubReposClient() instead.
 //
@@ -100,7 +98,7 @@ func (client *GitHubReposClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGitHubReposClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -168,7 +166,7 @@ func (client *GitHubReposClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGitHubReposClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

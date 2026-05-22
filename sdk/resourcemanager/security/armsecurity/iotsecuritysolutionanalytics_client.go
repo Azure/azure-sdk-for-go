@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultIotSecuritySolutionAnalyticsClientVersion string = "2019-08-01"
-
 // IotSecuritySolutionAnalyticsClient contains the methods for the IotSecuritySolutionAnalytics group.
 // Don't use this type directly, use NewIotSecuritySolutionAnalyticsClient() instead.
 //
@@ -91,7 +89,7 @@ func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIotSecuritySolutionAnalyticsClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -154,7 +152,7 @@ func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIotSecuritySolutionAnalyticsClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

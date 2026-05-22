@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultIotSecuritySolutionClientVersion string = "2019-08-01"
-
 // IotSecuritySolutionClient contains the methods for the IotSecuritySolution group.
 // Don't use this type directly, use NewIotSecuritySolutionClient() instead.
 //
@@ -92,7 +90,7 @@ func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIotSecuritySolutionClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -158,7 +156,7 @@ func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIotSecuritySolutionClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -210,7 +208,7 @@ func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIotSecuritySolutionClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -271,7 +269,7 @@ func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx co
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", defaultIotSecuritySolutionClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,7 +325,7 @@ func (client *IotSecuritySolutionClient) listBySubscriptionCreateRequest(ctx con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", defaultIotSecuritySolutionClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -392,7 +390,7 @@ func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIotSecuritySolutionClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

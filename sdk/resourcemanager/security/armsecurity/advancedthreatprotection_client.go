@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAdvancedThreatProtectionClientVersion string = "2019-01-01"
-
 // AdvancedThreatProtectionClient contains the methods for the AdvancedThreatProtection group.
 // Don't use this type directly, use NewAdvancedThreatProtectionClient() instead.
 //
@@ -81,7 +79,7 @@ func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAdvancedThreatProtectionClientVersion)
+	reqQP.Set("api-version", version20190101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -140,7 +138,7 @@ func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAdvancedThreatProtectionClientVersion)
+	reqQP.Set("api-version", version20190101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

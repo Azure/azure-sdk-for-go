@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultIotSecuritySolutionsAnalyticsAggregatedAlertClientVersion string = "2019-08-01"
-
 // IotSecuritySolutionsAnalyticsAggregatedAlertClient contains the methods for the IotSecuritySolutionsAnalyticsAggregatedAlert
 // group.
 // Don't use this type directly, use NewIotSecuritySolutionsAnalyticsAggregatedAlertClient() instead.
@@ -97,7 +95,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIotSecuritySolutionsAnalyticsAggregatedAlertClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -156,7 +154,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIotSecuritySolutionsAnalyticsAggregatedAlertClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -222,7 +220,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listCreateRequ
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", defaultIotSecuritySolutionsAnalyticsAggregatedAlertClientVersion)
+	reqQP.Set("api-version", version20190801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

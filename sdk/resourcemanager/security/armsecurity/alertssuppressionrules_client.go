@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAlertsSuppressionRulesClientVersion string = "2019-01-01-preview"
-
 // AlertsSuppressionRulesClient contains the methods for the AlertsSuppressionRules group.
 // Don't use this type directly, use NewAlertsSuppressionRulesClient() instead.
 //
@@ -85,7 +83,7 @@ func (client *AlertsSuppressionRulesClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsSuppressionRulesClientVersion)
+	reqQP.Set("api-version", version20190101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -133,7 +131,7 @@ func (client *AlertsSuppressionRulesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsSuppressionRulesClientVersion)
+	reqQP.Set("api-version", version20190101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,7 +187,7 @@ func (client *AlertsSuppressionRulesClient) listCreateRequest(ctx context.Contex
 	if options != nil && options.AlertType != nil {
 		reqQP.Set("AlertType", *options.AlertType)
 	}
-	reqQP.Set("api-version", defaultAlertsSuppressionRulesClientVersion)
+	reqQP.Set("api-version", version20190101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -248,7 +246,7 @@ func (client *AlertsSuppressionRulesClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsSuppressionRulesClientVersion)
+	reqQP.Set("api-version", version20190101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

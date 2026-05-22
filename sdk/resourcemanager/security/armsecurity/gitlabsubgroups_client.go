@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultGitLabSubgroupsClientVersion string = "2025-11-01-preview"
-
 // GitLabSubgroupsClient contains the methods for the GitLabSubgroups group.
 // Don't use this type directly, use NewGitLabSubgroupsClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *GitLabSubgroupsClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGitLabSubgroupsClientVersion)
+	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

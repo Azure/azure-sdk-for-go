@@ -14,8 +14,6 @@ import (
 	"strings"
 )
 
-const defaultSensitivitySettingsClientVersion string = "2023-02-15-preview"
-
 // SensitivitySettingsClient contains the methods for the SensitivitySettings group.
 // Don't use this type directly, use NewSensitivitySettingsClient() instead.
 //
@@ -73,7 +71,7 @@ func (client *SensitivitySettingsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSensitivitySettingsClientVersion)
+	reqQP.Set("api-version", version20230215Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -125,7 +123,7 @@ func (client *SensitivitySettingsClient) getCreateRequest(ctx context.Context, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSensitivitySettingsClientVersion)
+	reqQP.Set("api-version", version20230215Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -174,7 +172,7 @@ func (client *SensitivitySettingsClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSensitivitySettingsClientVersion)
+	reqQP.Set("api-version", version20230215Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

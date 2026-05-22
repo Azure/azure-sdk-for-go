@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultApplicationsClientVersion string = "2022-07-01-preview"
-
 // ApplicationsClient contains the methods for the Applications group.
 // Don't use this type directly, use NewApplicationsClient() instead.
 //
@@ -80,7 +78,7 @@ func (client *ApplicationsClient) listCreateRequest(ctx context.Context, _ *Appl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultApplicationsClientVersion)
+	reqQP.Set("api-version", version20220701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

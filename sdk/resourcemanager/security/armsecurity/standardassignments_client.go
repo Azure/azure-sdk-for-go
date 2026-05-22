@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultStandardAssignmentsClientVersion string = "2024-08-01"
-
 // StandardAssignmentsClient contains the methods for the StandardAssignments group.
 // Don't use this type directly, use NewStandardAssignmentsClient() instead.
 //
@@ -89,7 +87,7 @@ func (client *StandardAssignmentsClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultStandardAssignmentsClientVersion)
+	reqQP.Set("api-version", version20240801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -154,7 +152,7 @@ func (client *StandardAssignmentsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultStandardAssignmentsClientVersion)
+	reqQP.Set("api-version", version20240801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -204,7 +202,7 @@ func (client *StandardAssignmentsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultStandardAssignmentsClientVersion)
+	reqQP.Set("api-version", version20240801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -258,7 +256,7 @@ func (client *StandardAssignmentsClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultStandardAssignmentsClientVersion)
+	reqQP.Set("api-version", version20240801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

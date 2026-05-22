@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultConnectorApplicationsClientVersion string = "2022-07-01-preview"
-
 // ConnectorApplicationsClient contains the methods for the ConnectorApplications group.
 // Don't use this type directly, use NewConnectorApplicationsClient() instead.
 //
@@ -91,7 +89,7 @@ func (client *ConnectorApplicationsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultConnectorApplicationsClientVersion)
+	reqQP.Set("api-version", version20220701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

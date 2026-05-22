@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultContactsClientVersion string = "2023-12-01-preview"
-
 // ContactsClient contains the methods for the Contacts group.
 // Don't use this type directly, use NewContactsClient() instead.
 //
@@ -86,7 +84,7 @@ func (client *ContactsClient) createCreateRequest(ctx context.Context, securityC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContactsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -146,7 +144,7 @@ func (client *ContactsClient) deleteCreateRequest(ctx context.Context, securityC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContactsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -193,7 +191,7 @@ func (client *ContactsClient) getCreateRequest(ctx context.Context, securityCont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContactsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +243,7 @@ func (client *ContactsClient) listCreateRequest(ctx context.Context, _ *Contacts
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContactsClientVersion)
+	reqQP.Set("api-version", version20231201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

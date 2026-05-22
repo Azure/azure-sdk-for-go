@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAlertsClientVersion string = "2022-01-01"
-
 // AlertsClient contains the methods for the Alerts group.
 // Don't use this type directly, use NewAlertsClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *AlertsClient) getResourceGroupLevelCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -159,7 +157,7 @@ func (client *AlertsClient) getSubscriptionLevelCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +209,7 @@ func (client *AlertsClient) listCreateRequest(ctx context.Context, _ *AlertsClie
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -269,7 +267,7 @@ func (client *AlertsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -333,7 +331,7 @@ func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -392,7 +390,7 @@ func (client *AlertsClient) listSubscriptionLevelByRegionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -469,7 +467,7 @@ func (client *AlertsClient) simulateCreateRequest(ctx context.Context, ascLocati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, alertSimulatorRequestBody); err != nil {
@@ -530,7 +528,7 @@ func (client *AlertsClient) updateResourceGroupLevelStateToActivateCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -587,7 +585,7 @@ func (client *AlertsClient) updateResourceGroupLevelStateToDismissCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -644,7 +642,7 @@ func (client *AlertsClient) updateResourceGroupLevelStateToInProgressCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -701,7 +699,7 @@ func (client *AlertsClient) updateResourceGroupLevelStateToResolveCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -753,7 +751,7 @@ func (client *AlertsClient) updateSubscriptionLevelStateToActivateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -805,7 +803,7 @@ func (client *AlertsClient) updateSubscriptionLevelStateToDismissCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -857,7 +855,7 @@ func (client *AlertsClient) updateSubscriptionLevelStateToInProgressCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -909,7 +907,7 @@ func (client *AlertsClient) updateSubscriptionLevelStateToResolveCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertsClientVersion)
+	reqQP.Set("api-version", version20220101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

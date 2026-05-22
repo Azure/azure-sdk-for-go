@@ -16,6 +16,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 	"testing"
@@ -3970,4 +3971,103 @@ func (s *AppendBlobUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserT
 	_require.NoError(err)
 	enc := qp.Encode()
 	_require.Contains(enc, "skdutid="+skdutid)
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := testcommon.CreateNewAppendBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
+
+	_, content := testcommon.GetDataAndReader(testName, 4*1024)
+
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &appendblob.AppendBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	// Download and verify data
+	downloadResp, err := abClient.BlobClient().DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockUploadDownloadRoundtripWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := testcommon.CreateNewAppendBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
+
+	_, content := testcommon.GetDataAndReader(testName, 8*1024)
+
+	// Upload with SM CRC64
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &appendblob.AppendBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	// Download with SM CRC64 validation
+	downloadResp, err := abClient.BlobClient().DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockMultipleWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := testcommon.CreateNewAppendBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
+
+	// Append two blocks with SM validation
+	_, block1 := testcommon.GetDataAndReader(testName+"block1", 4*1024)
+	block2 := make([]byte, 4*1024)
+	for i := range block2 {
+		block2[i] = byte((i + 100) % 251)
+	}
+
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(bytes.NewReader(block1)), &appendblob.AppendBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(bytes.NewReader(block2)), &appendblob.AppendBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	// Download and verify both blocks
+	downloadResp, err := abClient.BlobClient().DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+
+	expectedData := slices.Concat(block1, block2)
+	_require.Equal(expectedData, downloadedData)
 }

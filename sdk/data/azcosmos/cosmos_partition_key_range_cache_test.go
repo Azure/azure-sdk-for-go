@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"net/http"
 	"net/url"
 	"sync"
 	"sync/atomic"
@@ -177,11 +178,16 @@ func Test_partitionKeyRangeCache_cacheMiss_fullRefresh(t *testing.T) {
 		mock.WithBody([]byte(`{"id": "col1", "_rid": "testRID", "partitionKey": {"paths": ["/pk"], "kind": "Hash", "version": 2}}`)),
 		mock.WithStatusCode(200),
 	)
-	// PK range response (full refresh)
+	// PK range response (full change-feed refresh — first page)
 	srv.AppendResponse(
 		mock.WithBody(pkRangeResponse),
 		mock.WithHeader(cosmosHeaderEtag, "etag1"),
 		mock.WithStatusCode(200),
+	)
+	// 304 Not Modified — terminates the change-feed loop
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
 	)
 
 	client := createMockClientForPKRangeCache(srv)
@@ -304,7 +310,13 @@ func Test_partitionKeyRangeCache_incrementalRefresh_mergeFailure_fullRefresh(t *
 		mock.WithHeader(cosmosHeaderEtag, "etag2"),
 		mock.WithStatusCode(200),
 	)
-	// Full refresh response: complete set of 3 ranges
+	// 304 terminates the incremental change-feed loop — tryCombine sees only the 1 child
+	// range, detects the gap, returns nil → falls through to full refresh
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag2"),
+	)
+	// Full change-feed refresh response: complete set of 3 ranges
 	srv.AppendResponse(
 		mock.WithBody([]byte(`{
 			"_rid": "testRID",
@@ -317,6 +329,11 @@ func Test_partitionKeyRangeCache_incrementalRefresh_mergeFailure_fullRefresh(t *
 		}`)),
 		mock.WithHeader(cosmosHeaderEtag, "etag3"),
 		mock.WithStatusCode(200),
+	)
+	// 304 Not Modified — terminates the full change-feed refresh loop
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag3"),
 	)
 
 	client := createMockClientForPKRangeCache(srv)
@@ -376,4 +393,392 @@ func Test_partitionKeyRangeCache_incrementalRefresh_contextCancelled(t *testing.
 	require.Equal(t, "etag1", entry.routingMap.changeFeedETag)
 	require.Equal(t, 1, len(entry.routingMap.orderedRanges))
 	entry.mu.Unlock()
+}
+
+func Test_partitionKeyRangeCache_fullRefresh_multiPage(t *testing.T) {
+	// Scenario: Full refresh requires multiple change-feed pages before 304.
+	// This validates the pagination loop that accumulates ranges across pages.
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	// Page 1: first partition range
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r0", "id": "0", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": []}
+			],
+			"_count": 1
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag-page1"),
+		mock.WithStatusCode(200),
+	)
+	// Page 2: second partition range
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r1", "id": "1", "minInclusive": "05C1E18D2D7F08", "maxExclusive": "FF", "parents": []}
+			],
+			"_count": 1
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag-page2"),
+		mock.WithStatusCode(200),
+	)
+	// 304 Not Modified — terminates the loop
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag-page2"),
+	)
+
+	client := createMockClientForPKRangeCache(srv)
+
+	// Empty cache — will trigger full change-feed refresh
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	rm, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	require.Equal(t, 2, len(rm.orderedRanges))
+	require.Equal(t, "0", rm.orderedRanges[0].ID)
+	require.Equal(t, "", rm.orderedRanges[0].MinInclusive)
+	require.Equal(t, "05C1E18D2D7F08", rm.orderedRanges[0].MaxExclusive)
+	require.Equal(t, "1", rm.orderedRanges[1].ID)
+	require.Equal(t, "05C1E18D2D7F08", rm.orderedRanges[1].MinInclusive)
+	require.Equal(t, "FF", rm.orderedRanges[1].MaxExclusive)
+	require.Equal(t, "etag-page2", rm.changeFeedETag)
+}
+
+func Test_partitionKeyRangeCache_fullRefresh_filtersParentsInSamePage(t *testing.T) {
+	// Scenario: During a full change-feed refresh, the service returns parent and
+	// children ranges in the same page. The parent-filtering in
+	// newCollectionRoutingMap should filter the parent.
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	// Response includes parent "0" and its two children
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r0", "id": "0", "minInclusive": "", "maxExclusive": "FF", "parents": []},
+				{"_rid": "r1", "id": "1", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": ["0"]},
+				{"_rid": "r2", "id": "2", "minInclusive": "05C1E18D2D7F08", "maxExclusive": "FF", "parents": ["0"]}
+			],
+			"_count": 3
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+		mock.WithStatusCode(200),
+	)
+	// 304 Not Modified
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+	)
+
+	client := createMockClientForPKRangeCache(srv)
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	rm, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	// Parent "0" should be filtered out, leaving 2 child ranges
+	require.Equal(t, 2, len(rm.orderedRanges))
+	require.Equal(t, "1", rm.orderedRanges[0].ID)
+	require.Equal(t, "2", rm.orderedRanges[1].ID)
+	require.True(t, rm.isGone("0"))
+}
+
+// captureRequestsPolicy is a test policy that records all outgoing HTTP requests.
+type captureRequestsPolicy struct {
+	mu       sync.Mutex
+	requests []*http.Request
+}
+
+func (p *captureRequestsPolicy) Do(req *policy.Request) (*http.Response, error) {
+	p.mu.Lock()
+	p.requests = append(p.requests, req.Raw().Clone(req.Raw().Context()))
+	p.mu.Unlock()
+	return req.Next()
+}
+
+func Test_partitionKeyRangeCache_fullRefresh_setsChangeFeedHeaders(t *testing.T) {
+	// Scenario: Verify that full refresh requests include A-IM and x-ms-max-item-count headers.
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r0", "id": "0", "minInclusive": "", "maxExclusive": "FF", "parents": []}
+			],
+			"_count": 1
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+		mock.WithStatusCode(200),
+	)
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+	)
+
+	capture := &captureRequestsPolicy{}
+
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{PerCall: []policy.Policy{capture}},
+		&policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+		caches: &sharedCacheSet{
+			pkRangeCache:   newPartitionKeyRangeCache(),
+			containerCache: newContainerPropertiesCache(),
+		},
+	}
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	_, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+
+	// Should have captured 2 requests: initial fetch + 304 termination
+	require.Equal(t, 2, len(capture.requests))
+
+	// First request: should have A-IM and max-item-count, but NO If-None-Match
+	firstReq := capture.requests[0]
+	require.Equal(t, cosmosHeaderValuesChangeFeed, firstReq.Header.Get(cosmosHeaderChangeFeed))
+	require.Equal(t, cosmosHeaderValuesMaxItemAll, firstReq.Header.Get(cosmosHeaderMaxItemCount))
+	require.Empty(t, firstReq.Header.Get(headerIfNoneMatch), "full refresh should not set If-None-Match")
+
+	// Second request: should have A-IM, max-item-count, AND If-None-Match with the ETag from page 1
+	secondReq := capture.requests[1]
+	require.Equal(t, cosmosHeaderValuesChangeFeed, secondReq.Header.Get(cosmosHeaderChangeFeed))
+	require.Equal(t, cosmosHeaderValuesMaxItemAll, secondReq.Header.Get(cosmosHeaderMaxItemCount))
+	require.Equal(t, "etag1", secondReq.Header.Get(headerIfNoneMatch))
+}
+
+func Test_partitionKeyRangeCache_fullRefresh_emptyPagesBeforeData(t *testing.T) {
+	// Scenario: The service returns 200 with empty PartitionKeyRanges arrays
+	// before returning actual data. The loop must NOT terminate on empty 200 pages —
+	// only 304 Not Modified signals the end of the change feed.
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	// Page 1: 200 with empty array (not 304 — should continue draining)
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [],
+			"_count": 0
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag-empty1"),
+		mock.WithStatusCode(200),
+	)
+	// Page 2: another empty 200
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [],
+			"_count": 0
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag-empty2"),
+		mock.WithStatusCode(200),
+	)
+	// Page 3: actual data
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r0", "id": "0", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": []},
+				{"_rid": "r1", "id": "1", "minInclusive": "05C1E18D2D7F08", "maxExclusive": "FF", "parents": []}
+			],
+			"_count": 2
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag-data"),
+		mock.WithStatusCode(200),
+	)
+	// 304 Not Modified — terminates the loop
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag-data"),
+	)
+
+	client := createMockClientForPKRangeCache(srv)
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	rm, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	require.Equal(t, 2, len(rm.orderedRanges))
+	require.Equal(t, "0", rm.orderedRanges[0].ID)
+	require.Equal(t, "1", rm.orderedRanges[1].ID)
+	require.Equal(t, "etag-data", rm.changeFeedETag)
+}
+
+func Test_partitionKeyRangeCache_incrementalRefresh_emptyPagesBeforeData(t *testing.T) {
+	// Scenario: During incremental refresh, the service returns empty 200 pages
+	// before the actual split data arrives. Must keep draining until 304.
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	// Initial load: single range
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r0", "id": "0", "minInclusive": "", "maxExclusive": "FF", "parents": []}
+			],
+			"_count": 1
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+		mock.WithStatusCode(200),
+	)
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+	)
+
+	// Incremental refresh: empty 200, then actual split data, then 304
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [],
+			"_count": 0
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag2"),
+		mock.WithStatusCode(200),
+	)
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r1", "id": "1", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": ["0"]},
+				{"_rid": "r2", "id": "2", "minInclusive": "05C1E18D2D7F08", "maxExclusive": "FF", "parents": ["0"]}
+			],
+			"_count": 2
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag3"),
+		mock.WithStatusCode(200),
+	)
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag3"),
+	)
+
+	client := createMockClientForPKRangeCache(srv)
+
+	// Populate cache
+	rm, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	require.Equal(t, 1, len(rm.orderedRanges))
+
+	// Trigger incremental refresh
+	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+
+	// Should have 2 ranges after split (parent "0" filtered)
+	require.Equal(t, 2, len(rm.orderedRanges))
+	require.Equal(t, "1", rm.orderedRanges[0].ID)
+	require.Equal(t, "2", rm.orderedRanges[1].ID)
+	require.Equal(t, "etag3", rm.changeFeedETag)
+	require.True(t, rm.isGone("0"))
+}
+
+func Test_partitionKeyRangeCache_incrementalRefresh_cascadingSplitAcrossPages(t *testing.T) {
+	// Scenario: Page 1 returns only ONE child of a split (range "1"), making the
+	// intermediate state incomplete — range "1" covers only half the keyspace that
+	// parent "0" covered, so per-page tryCombine would see a gap and fail.
+	// Page 2 delivers the sibling ("2"). The accumulate-all-then-combine approach
+	// handles this because tryCombine sees both children together.
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	// Initial getRoutingMap call: single range "0" covering full keyspace
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r0", "id": "0", "minInclusive": "", "maxExclusive": "FF", "parents": []}
+			],
+			"_count": 1
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+		mock.WithStatusCode(200),
+	)
+	// 304 to complete initial load
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+	)
+
+	// Incremental refresh page 1: only first child of split "0" → "1" + "2"
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r1", "id": "1", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": ["0"]}
+			],
+			"_count": 1
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag2"),
+		mock.WithStatusCode(200),
+	)
+	// Incremental refresh page 2: second child of the same split
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r2", "id": "2", "minInclusive": "05C1E18D2D7F08", "maxExclusive": "FF", "parents": ["0"]}
+			],
+			"_count": 1
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag3"),
+		mock.WithStatusCode(200),
+	)
+	// 304 to complete incremental refresh
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag3"),
+	)
+
+	client := createMockClientForPKRangeCache(srv)
+
+	// First: populate the cache with initial range
+	rm, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	require.Equal(t, 1, len(rm.orderedRanges))
+	require.Equal(t, "0", rm.orderedRanges[0].ID)
+
+	// Trigger incremental refresh via forceRefresh
+	rm, err = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+
+	// Final state should have 2 ranges: "1" and "2" (parent "0" filtered)
+	require.Equal(t, 2, len(rm.orderedRanges))
+	require.Equal(t, "1", rm.orderedRanges[0].ID)
+	require.Equal(t, "", rm.orderedRanges[0].MinInclusive)
+	require.Equal(t, "05C1E18D2D7F08", rm.orderedRanges[0].MaxExclusive)
+	require.Equal(t, "2", rm.orderedRanges[1].ID)
+	require.Equal(t, "05C1E18D2D7F08", rm.orderedRanges[1].MinInclusive)
+	require.Equal(t, "FF", rm.orderedRanges[1].MaxExclusive)
+	require.Equal(t, "etag3", rm.changeFeedETag)
+
+	// Verify parent is marked as gone
+	require.True(t, rm.isGone("0"))
 }

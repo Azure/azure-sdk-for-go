@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/StorageAccountListPrivateLinkResources.json
+// Generated from example definition: 2025-08-01/StorageAccountListPrivateLinkResources.json
 func ExamplePrivateLinkResourcesClient_ListByStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_ListByStorageAccount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.PrivateLinkResourcesClientListByStorageAccountResponse{
-	// 	PrivateLinkResourceListResult: &armstorage.PrivateLinkResourceListResult{
+	// 	PrivateLinkResourceListResult: armstorage.PrivateLinkResourceListResult{
 	// 		Value: []*armstorage.PrivateLinkResource{
 	// 			{
 	// 				Name: to.Ptr("blob"),

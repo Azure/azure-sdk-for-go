@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager/v2"
 	"net/http"
+	"slices"
 )
 
 // GeographicHierarchiesServer is a fake server for instances of the armtrafficmanager.GeographicHierarchiesClient type.
@@ -47,9 +48,7 @@ func (g *GeographicHierarchiesServerTransport) Do(req *http.Request) (*http.Resp
 }
 
 func (g *GeographicHierarchiesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -65,10 +64,7 @@ func (g *GeographicHierarchiesServerTransport) dispatchToMethodFake(req *http.Re
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -88,7 +84,7 @@ func (g *GeographicHierarchiesServerTransport) dispatchGetDefault(req *http.Requ
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GeographicHierarchy, req)

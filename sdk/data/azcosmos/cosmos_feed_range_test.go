@@ -194,6 +194,11 @@ func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
 		mock.WithHeader(cosmosHeaderEtag, "changeFeedEtag1"),
 		mock.WithStatusCode(200),
 	)
+	// 304 Not Modified — terminates the change-feed loop
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "changeFeedEtag1"),
+	)
 
 	defaultEndpoint, _ := url.Parse(srv.URL())
 	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
@@ -222,7 +227,7 @@ func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
 	require.Equal(t, "FF", feedRanges[1].MaxExclusive)
 
 	requestsAfterFirstCall := srv.Requests()
-	require.Equal(t, 2, requestsAfterFirstCall, "first call should make 2 HTTP requests (container read + PK ranges)")
+	require.Equal(t, 3, requestsAfterFirstCall, "first call should make 3 HTTP requests (container read + PK ranges + 304)")
 
 	// Second call: should use caches, no additional HTTP requests
 	// (no more responses queued — would panic if a request was made)
@@ -233,4 +238,148 @@ func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
 	require.Equal(t, feedRanges[1], feedRanges2[1])
 
 	require.Equal(t, requestsAfterFirstCall, srv.Requests(), "second call should make 0 HTTP requests (cache hit)")
+}
+
+// TestNormalizeMaxBoundary verifies the open-top "" sentinel becomes "FF",
+// matching the Cosmos convention used everywhere routing math is performed.
+// Min boundaries are NOT normalized — "" already sorts lowest.
+func TestNormalizeMaxBoundary(t *testing.T) {
+	require.Equal(t, "FF", normalizeMaxBoundary(""), "empty Max must normalize to FF")
+	require.Equal(t, "FF", normalizeMaxBoundary("FF"), "explicit FF must round-trip")
+	require.Equal(t, "80", normalizeMaxBoundary("80"), "non-empty Max must pass through unchanged")
+	require.Equal(t, "00", normalizeMaxBoundary("00"))
+	require.Equal(t, "AABBCCDD", normalizeMaxBoundary("AABBCCDD"), "long EPK must pass through unchanged")
+}
+
+// TestRangesOverlap_TableDriven exercises the half-open interval overlap
+// predicate. All four boundaries must be normalized hex EPK strings.
+func TestRangesOverlap_TableDriven(t *testing.T) {
+	cases := []struct {
+		name                   string
+		aMin, aMax, bMin, bMax string
+		want                   bool
+	}{
+		{"identical", "10", "20", "10", "20", true},
+		{"a-contains-b", "00", "FF", "20", "30", true},
+		{"b-contains-a", "20", "30", "00", "FF", true},
+		{"a-overlaps-b-left", "00", "30", "20", "FF", true},
+		{"a-overlaps-b-right", "20", "FF", "00", "30", true},
+		{"adjacent-a-then-b", "00", "20", "20", "FF", false},
+		{"adjacent-b-then-a", "20", "FF", "00", "20", false},
+		{"disjoint-a-below", "00", "10", "20", "30", false},
+		{"disjoint-a-above", "30", "FF", "00", "20", false},
+		{"single-byte-overlap", "10", "11", "10", "FF", true},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			require.Equal(t, c.want, rangesOverlap(c.aMin, c.aMax, c.bMin, c.bMax))
+		})
+	}
+}
+
+// TestOverlappingPartitionKeyRanges_TableDriven covers the boundary
+// behaviors of overlap-resolution against a snapshot routing map. This is
+// the single most critical helper in the F1 fix — it replaces the exact-
+// match findPartitionKeyRangeID that was the original-bug source.
+func TestOverlappingPartitionKeyRanges_TableDriven(t *testing.T) {
+	threeRanges := []partitionKeyRange{
+		{ID: "0", MinInclusive: "", MaxExclusive: "55"},
+		{ID: "1", MinInclusive: "55", MaxExclusive: "AA"},
+		{ID: "2", MinInclusive: "AA", MaxExclusive: "FF"},
+	}
+
+	cases := []struct {
+		name    string
+		feed    FeedRange
+		ranges  []partitionKeyRange
+		wantIDs []string
+	}{
+		{
+			name:    "exact-match-single-range",
+			feed:    FeedRange{MinInclusive: "55", MaxExclusive: "AA"},
+			ranges:  threeRanges,
+			wantIDs: []string{"1"},
+		},
+		{
+			name:    "spans-all-three-ranges",
+			feed:    FeedRange{MinInclusive: "", MaxExclusive: "FF"},
+			ranges:  threeRanges,
+			wantIDs: []string{"0", "1", "2"},
+		},
+		{
+			name:    "spans-all-three-with-empty-max",
+			feed:    FeedRange{MinInclusive: "", MaxExclusive: ""},
+			ranges:  threeRanges,
+			wantIDs: []string{"0", "1", "2"},
+		},
+		{
+			name:    "strict-sub-range-of-one-physical",
+			feed:    FeedRange{MinInclusive: "20", MaxExclusive: "40"},
+			ranges:  threeRanges,
+			wantIDs: []string{"0"},
+		},
+		{
+			name:    "straddles-two-ranges",
+			feed:    FeedRange{MinInclusive: "30", MaxExclusive: "70"},
+			ranges:  threeRanges,
+			wantIDs: []string{"0", "1"},
+		},
+		{
+			name:    "preserves-input-order",
+			feed:    FeedRange{MinInclusive: "10", MaxExclusive: "C0"},
+			ranges:  threeRanges,
+			wantIDs: []string{"0", "1", "2"},
+		},
+		{
+			name:    "empty-snapshot-returns-nil",
+			feed:    FeedRange{MinInclusive: "", MaxExclusive: "FF"},
+			ranges:  nil,
+			wantIDs: nil,
+		},
+		{
+			name:    "inverted-feed-range-returns-nil",
+			feed:    FeedRange{MinInclusive: "FF", MaxExclusive: "00"},
+			ranges:  threeRanges,
+			wantIDs: nil,
+		},
+		{
+			name:    "equal-bounds-returns-nil",
+			feed:    FeedRange{MinInclusive: "55", MaxExclusive: "55"},
+			ranges:  threeRanges,
+			wantIDs: nil,
+		},
+		{
+			name: "no-overlap-with-non-empty-snapshot",
+			feed: FeedRange{MinInclusive: "10", MaxExclusive: "20"},
+			ranges: []partitionKeyRange{
+				{ID: "x", MinInclusive: "30", MaxExclusive: "40"},
+				{ID: "y", MinInclusive: "60", MaxExclusive: "70"},
+			},
+			wantIDs: nil,
+		},
+		{
+			name: "boundary-touch-is-not-overlap",
+			feed: FeedRange{MinInclusive: "55", MaxExclusive: "AA"},
+			ranges: []partitionKeyRange{
+				{ID: "left", MinInclusive: "00", MaxExclusive: "55"}, // touches but doesn't overlap
+				{ID: "match", MinInclusive: "55", MaxExclusive: "AA"},
+				{ID: "right", MinInclusive: "AA", MaxExclusive: "FF"}, // touches but doesn't overlap
+			},
+			wantIDs: []string{"match"},
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			out := overlappingPartitionKeyRanges(c.feed, c.ranges)
+			gotIDs := make([]string, 0, len(out))
+			for _, r := range out {
+				gotIDs = append(gotIDs, r.ID)
+			}
+			if len(c.wantIDs) == 0 {
+				require.Empty(t, gotIDs)
+			} else {
+				require.Equal(t, c.wantIDs, gotIDs)
+			}
+		})
+	}
 }

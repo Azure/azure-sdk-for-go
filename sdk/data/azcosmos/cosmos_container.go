@@ -5,7 +5,6 @@ package azcosmos
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -278,6 +277,8 @@ func (c *ContainerClient) CreateItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -335,6 +336,8 @@ func (c *ContainerClient) UpsertItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -390,6 +393,8 @@ func (c *ContainerClient) ReplaceItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -442,6 +447,8 @@ func (c *ContainerClient) ReadItem(
 	if o == nil {
 		o = &ItemOptions{}
 	}
+	h.priorityLevel = o.PriorityLevel
+	h.throughputBucket = o.ThroughputBucket
 
 	operationContext := pipelineRequestOptions{
 		resourceType:          resourceTypeDocument,
@@ -493,9 +500,15 @@ func (c *ContainerClient) ReadManyItems(
 		readManyOptions = &originalOptions
 	}
 
+	h := headerOptionsOverride{
+		priorityLevel:    readManyOptions.PriorityLevel,
+		throughputBucket: readManyOptions.ThroughputBucket,
+	}
+
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: c.link,
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		headerOptionsOverride: &h,
 	}
 
 	ctx, endTrace := ensureOperationTrace(ctx, fmt.Sprintf("read_many_items %s", c.id))
@@ -556,6 +569,8 @@ func (c *ContainerClient) DeleteItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -614,6 +629,8 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 	if o != nil {
 		originalOptions := *o
 		queryOptions = &originalOptions
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -695,6 +712,8 @@ func (c *ContainerClient) PatchItem(
 		o = &ItemOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -751,6 +770,8 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 		o = &TransactionalBatchOptions{}
 	} else {
 		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+		h.priorityLevel = o.PriorityLevel
+		h.throughputBucket = o.ThroughputBucket
 	}
 
 	// If contentResponseOnWrite is not enabled at the client level the
@@ -794,8 +815,19 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 // GetChangeFeed retrieves a single page of the change feed using the provided options.
 // ctx - The context for the request.
 // options - Options for the operation
-// If options.FeedRange is set, it will retrieve the change feed for the specific range.
-// If options.Continuation contains a composite continuation token, it will extract the feed range from it.
+//
+// Routes via overlap-match against the current PK-range cache (split-aware). When
+// the customer's FeedRange straddles a split, it's expanded into one queue entry
+// per child so no events are missed at the boundary. 410/Gone responses with a
+// PK-range substatus trigger a cache refresh and bounded retry. The continuation
+// token is a multi-range composite; subsequent calls drain remaining ranges.
+//
+// Returns ErrFeedRangeUnresolved (wrapped) when the customer's FeedRange/token
+// doesn't overlap any current physical range even after a forced refresh — a
+// signal to re-derive FeedRanges from GetFeedRanges.
+//
+// Returns an error wrapping *azcore.ResponseError on persistent 410/Gone or any
+// non-retryable HTTP error.
 func (c *ContainerClient) GetChangeFeed(
 	ctx context.Context,
 	options *ChangeFeedOptions,
@@ -804,30 +836,6 @@ func (c *ContainerClient) GetChangeFeed(
 		options = &ChangeFeedOptions{}
 	}
 
-	if options.FeedRange == nil && options.Continuation != nil && *options.Continuation != "" {
-		var compositeToken compositeContinuationToken
-		if err := json.Unmarshal([]byte(*options.Continuation), &compositeToken); err == nil {
-			if len(compositeToken.Continuation) > 0 {
-				options.FeedRange = &FeedRange{
-					MinInclusive: compositeToken.Continuation[0].MinInclusive,
-					MaxExclusive: compositeToken.Continuation[0].MaxExclusive,
-				}
-			}
-		}
-	}
-
-	if options.FeedRange != nil {
-		return c.getChangeFeedForEPKRange(ctx, options.FeedRange, options)
-	} else {
-		return ChangeFeedResponse{}, fmt.Errorf("GetChangeFeed requires a FeedRange to be set in the options, or a continuation token that contains a composite continuation token")
-	}
-}
-
-func (c *ContainerClient) getChangeFeedForEPKRange(
-	ctx context.Context,
-	feedRange *FeedRange,
-	options *ChangeFeedOptions,
-) (ChangeFeedResponse, error) {
 	var err error
 	spanName, err := c.getSpanForItems(operationTypeRead)
 	if err != nil {
@@ -836,57 +844,22 @@ func (c *ContainerClient) getChangeFeedForEPKRange(
 	ctx, endSpan := startSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 
-	if options == nil {
-		options = &ChangeFeedOptions{}
-	}
-
-	pkrResp, err := c.getPartitionKeyRanges(ctx, nil)
-	if err != nil {
-		return ChangeFeedResponse{}, err
-	}
-	partitionKeyRanges := pkrResp.PartitionKeyRanges
-
-	var addHeaders func(*policy.Request)
-	headersPtr := options.toHeaders(partitionKeyRanges)
-	if headersPtr != nil {
-		headers := *headersPtr
-		addHeaders = func(r *policy.Request) {
-			for k, v := range headers {
-				r.Raw().Header.Set(k, v)
-			}
-		}
-	}
-
-	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: c.link,
-	}
-
-	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	// Cross-container token guard. We only need the container's current
+	// ResourceID when a continuation token carries one to validate. Building
+	// the initial queue takes care of that lazily so the no-token path stays
+	// at one extra request (pk-ranges fetch).
+	token, partitionKeyRanges, err := c.buildChangeFeedInitialQueue(ctx, options)
 	if err != nil {
 		return ChangeFeedResponse{}, err
 	}
 
-	azResponse, err := c.database.client.sendGetRequest(
-		path,
-		ctx,
-		operationContext,
-		nil,
-		addHeaders,
-	)
-	if err != nil {
-		return ChangeFeedResponse{}, err
-	}
-
-	response, err := newChangeFeedResponse(azResponse)
-	if err != nil {
-		return response, err
-	}
-
-	response.FeedRange = feedRange
-	response.PopulateCompositeContinuationToken()
-
-	return response, nil
+	// Capture into err so the deferred endSpan closure observes drain
+	// failures (410 budget exhaustion, send errors, refresh failures,
+	// serialization errors, ErrFeedRangeUnresolved) instead of recording
+	// success on every drain that actually failed.
+	var resp ChangeFeedResponse
+	resp, err = c.getChangeFeedForQueue(ctx, options, token, partitionKeyRanges)
+	return resp, err
 }
 
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {

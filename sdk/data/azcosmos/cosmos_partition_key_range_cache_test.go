@@ -1302,158 +1302,158 @@ func Test_partitionKeyRangeCache_forceRefresh_canceledCallerNoBackgroundFetch(t 
 // transport for subsequent requests. Used to verify runRefresh's deferred
 // cleanup recovers from a panic without wedging the entry.
 type panicTransport struct {
-inner policy.Transporter
-fired atomic.Bool
+	inner policy.Transporter
+	fired atomic.Bool
 }
 
 func (p *panicTransport) Do(req *http.Request) (*http.Response, error) {
-if !p.fired.Swap(true) {
-panic("simulated panic in transport")
-}
-return p.inner.Do(req)
+	if !p.fired.Swap(true) {
+		panic("simulated panic in transport")
+	}
+	return p.inner.Do(req)
 }
 
 func Test_partitionKeyRangeCache_panicInRefresh_recoversAndAllowsRetry(t *testing.T) {
-// A panic in the refresh goroutine must not leak: the deferred cleanup
-// recovers, surfaces an error to the current awaiter, clears inFlight,
-// and closes op.done — so the next caller starts a fresh refresh.
-srv, closeSrv := mock.NewTLSServer()
-defer closeSrv()
+	// A panic in the refresh goroutine must not leak: the deferred cleanup
+	// recovers, surfaces an error to the current awaiter, clears inFlight,
+	// and closes op.done — so the next caller starts a fresh refresh.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
 
-body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
-appendPKRangesAndTerminator(srv, body, "etag1")
+	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body, "etag1")
 
-defaultEndpoint, _ := url.Parse(srv.URL())
-panicTr := &panicTransport{inner: srv}
-internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{
-Transport: panicTr,
-Retry:     policy.RetryOptions{MaxRetries: -1},
-})
-gem := &globalEndpointManager{preferredLocations: []string{}}
-client := &Client{
-endpoint:    srv.URL(),
-endpointUrl: defaultEndpoint,
-internal:    internalClient,
-gem:         gem,
-}
-client.caches = &sharedCacheSet{
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	panicTr := &panicTransport{inner: srv}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{
+		Transport: panicTr,
+		Retry:     policy.RetryOptions{MaxRetries: -1},
+	})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         gem,
+	}
+	client.caches = &sharedCacheSet{
 		pkRangeCache:   newPartitionKeyRangeCache(),
 		containerCache: newContainerPropertiesCache(),
 	}
 
-entry := &pkRangeCacheEntry{}
-client.caches.pkRangeCache.mu.Lock()
-client.caches.pkRangeCache.entries["testRID"] = entry
-client.caches.pkRangeCache.mu.Unlock()
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
 
-_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
-require.Error(t, err, "first call must surface the panic, not block forever")
-require.ErrorIs(t, err, errPKRangeCacheRefreshPanic)
+	_, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.Error(t, err, "first call must surface the panic, not block forever")
+	require.ErrorIs(t, err, errPKRangeCacheRefreshPanic)
 
-// The slot must be cleared so the next caller starts a fresh op.
-entry.mu.Lock()
-require.Nil(t, entry.inFlight, "panic must not leak the in-flight slot")
-entry.mu.Unlock()
+	// The slot must be cleared so the next caller starts a fresh op.
+	entry.mu.Lock()
+	require.Nil(t, entry.inFlight, "panic must not leak the in-flight slot")
+	entry.mu.Unlock()
 
-rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
-require.NoError(t, err, "next caller must be able to refresh after panic recovery")
-require.NotNil(t, rm)
-require.Equal(t, "etag1", rm.changeFeedETag)
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err, "next caller must be able to refresh after panic recovery")
+	require.NotNil(t, rm)
+	require.Equal(t, "etag1", rm.changeFeedETag)
 }
 
 func Test_partitionKeyRangeCache_invalidateDuringThrottleStorm_unwedges(t *testing.T) {
-// Under a 429 storm the per-page retry loop runs forever; invalidate()
-// must cancel the in-flight refresh so the next caller is freed from
-// the wedged op rather than joining it.
-srv, closeSrv := mock.NewTLSServer()
-defer closeSrv()
+	// Under a 429 storm the per-page retry loop runs forever; invalidate()
+	// must cancel the in-flight refresh so the next caller is freed from
+	// the wedged op rather than joining it.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
 
-// Queue many 429s — enough that the first call will still be retrying
-// when invalidate fires. After invalidate cancels the in-flight op, the
-// retry path consumes the success body below.
-for i := 0; i < 500; i++ {
-srv.AppendResponse(mock.WithBody([]byte(`{"code":"TooManyRequests"}`)), mock.WithStatusCode(429))
-}
-body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
-appendPKRangesAndTerminator(srv, body, "etagFresh")
+	// Queue many 429s — enough that the first call will still be retrying
+	// when invalidate fires. After invalidate cancels the in-flight op, the
+	// retry path consumes the success body below.
+	for i := 0; i < 500; i++ {
+		srv.AppendResponse(mock.WithBody([]byte(`{"code":"TooManyRequests"}`)), mock.WithStatusCode(429))
+	}
+	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body, "etagFresh")
 
-client := createMockClientForPKRangeCacheNoRetry(srv)
-entry := &pkRangeCacheEntry{}
-client.caches.pkRangeCache.mu.Lock()
-client.caches.pkRangeCache.entries["testRID"] = entry
-client.caches.pkRangeCache.mu.Unlock()
+	client := createMockClientForPKRangeCacheNoRetry(srv)
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
 
-done := make(chan struct {
-rm  *collectionRoutingMap
-err error
-}, 1)
-go func() {
-rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
-done <- struct {
-rm  *collectionRoutingMap
-err error
-}{rm, err}
-}()
+	done := make(chan struct {
+		rm  *collectionRoutingMap
+		err error
+	}, 1)
+	go func() {
+		rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+		done <- struct {
+			rm  *collectionRoutingMap
+			err error
+		}{rm, err}
+	}()
 
-// Spin briefly until we know the throttle storm is in progress.
-require.Eventually(t, func() bool {
-entry.mu.Lock()
-inFlight := entry.inFlight != nil
-entry.mu.Unlock()
-return inFlight
-}, 2*time.Second, 5*time.Millisecond, "refresh must be in-flight before invalidate")
+	// Spin briefly until we know the throttle storm is in progress.
+	require.Eventually(t, func() bool {
+		entry.mu.Lock()
+		inFlight := entry.inFlight != nil
+		entry.mu.Unlock()
+		return inFlight
+	}, 2*time.Second, 5*time.Millisecond, "refresh must be in-flight before invalidate")
 
-client.caches.pkRangeCache.invalidate("testRID")
+	client.caches.pkRangeCache.invalidate("testRID")
 
-select {
-case res := <-done:
-// Caller should either surface ctx-cancel-class error from the
-// cancelled in-flight op (via the sentinel retry) and pick up the
-// fresh body, or just get the fresh body directly.
-require.NoError(t, res.err, "post-invalidate retry must surface a fresh result")
-require.NotNil(t, res.rm)
-require.Equal(t, "etagFresh", res.rm.changeFeedETag)
-case <-time.After(5 * time.Second):
-t.Fatal("invalidate() failed to unwedge the throttled refresh")
-}
+	select {
+	case res := <-done:
+		// Caller should either surface ctx-cancel-class error from the
+		// cancelled in-flight op (via the sentinel retry) and pick up the
+		// fresh body, or just get the fresh body directly.
+		require.NoError(t, res.err, "post-invalidate retry must surface a fresh result")
+		require.NotNil(t, res.rm)
+		require.Equal(t, "etagFresh", res.rm.changeFeedETag)
+	case <-time.After(5 * time.Second):
+		t.Fatal("invalidate() failed to unwedge the throttled refresh")
+	}
 }
 
 func Test_partitionKeyRangeCache_forceRefreshAfterInvalidate_doesNotJoinPreInvalidateOp(t *testing.T) {
-// Invariant: a caller that calls invalidate() then forceRefresh() must
-// NOT receive the result of an in-flight op that started before the
-// invalidate. This is the contract the 410-driven path relies on.
-srv, closeSrv := mock.NewTLSServer()
-defer closeSrv()
+	// Invariant: a caller that calls invalidate() then forceRefresh() must
+	// NOT receive the result of an in-flight op that started before the
+	// invalidate. This is the contract the 410-driven path relies on.
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
 
-// The fresh post-invalidate op consumes these responses.
-body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
-appendPKRangesAndTerminator(srv, body, "etagPostInvalidate")
+	// The fresh post-invalidate op consumes these responses.
+	body := []byte(`{"_rid":"testRID","PartitionKeyRanges":[{"_rid":"r0","id":"0","minInclusive":"","maxExclusive":"FF","parents":[]}],"_count":1}`)
+	appendPKRangesAndTerminator(srv, body, "etagPostInvalidate")
 
-gate := newGatePolicy()
-client := createGatedClientForPKRangeCache(srv, gate)
+	gate := newGatePolicy()
+	client := createGatedClientForPKRangeCache(srv, gate)
 
-entry := &pkRangeCacheEntry{}
-client.caches.pkRangeCache.mu.Lock()
-client.caches.pkRangeCache.entries["testRID"] = entry
-client.caches.pkRangeCache.mu.Unlock()
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
 
-// Caller A: starts a refresh that we gate.
-doneA := make(chan struct{}, 1)
-go func() {
-_, _ = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
-doneA <- struct{}{}
-}()
-<-gate.started
+	// Caller A: starts a refresh that we gate.
+	doneA := make(chan struct{}, 1)
+	go func() {
+		_, _ = client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+		doneA <- struct{}{}
+	}()
+	<-gate.started
 
-// Caller B: invalidates first, then forceRefresh. Must see the fresh
-// post-invalidate result, not whatever the pre-invalidate op produces.
-client.caches.pkRangeCache.invalidate("testRID")
-close(gate.release)
+	// Caller B: invalidates first, then forceRefresh. Must see the fresh
+	// post-invalidate result, not whatever the pre-invalidate op produces.
+	client.caches.pkRangeCache.invalidate("testRID")
+	close(gate.release)
 
-rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
-require.NoError(t, err)
-require.NotNil(t, rm)
-require.Equal(t, "etagPostInvalidate", rm.changeFeedETag, "caller must observe the post-invalidate refresh")
+	rm, err := client.caches.pkRangeCache.forceRefresh(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	require.NotNil(t, rm)
+	require.Equal(t, "etagPostInvalidate", rm.changeFeedETag, "caller must observe the post-invalidate refresh")
 
-<-doneA
+	<-doneA
 }

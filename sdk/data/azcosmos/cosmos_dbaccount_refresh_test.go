@@ -17,6 +17,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -56,10 +57,12 @@ func (c *countingTransport) Do(req *http.Request) (*http.Response, error) {
 		status, body = c.respFunc()
 	}
 	resp := &http.Response{
-		StatusCode: status,
-		Header:     http.Header{"Content-Type": []string{"application/json"}},
-		Body:       jsonBody(body),
-		Request:    req,
+		StatusCode:    status,
+		Status:        fmt.Sprintf("%d %s", status, http.StatusText(status)),
+		Header:        http.Header{"Content-Type": []string{"application/json"}},
+		Body:          jsonBody(body),
+		ContentLength: int64(len(body)),
+		Request:       req,
 	}
 	return resp, nil
 }

@@ -260,7 +260,7 @@ func TestGetPrefAvailableEndpoints(t *testing.T) {
 	}
 	// loc1: unavailable, loc2: available, loc5: non-existent
 	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, "location5"}
-	prefWriteEndpoints := lc.getPrefAvailableEndpointsLocked(lc.locationInfo.availWriteEndpointsByLocation, lc.locationInfo.availWriteLocations, write, lc.defaultEndpoint)
+	prefWriteEndpoints := lc.getPrefAvailableEndpointsLocked(lc.locationInfo.availWriteEndpointsByLocation, lc.locationInfo.availWriteLocations, lc.locationInfo.prefLocations, write, lc.defaultEndpoint)
 	// loc2: preferred + available; loc1: unavailable + preferred (moved to
 	// tail). The trailing default-endpoint fallback was removed when we
 	// stopped routing data-plane traffic to the customer-supplied endpoint.

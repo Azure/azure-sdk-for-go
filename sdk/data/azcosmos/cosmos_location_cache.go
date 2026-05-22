@@ -125,7 +125,7 @@ func (lc *locationCache) updateLocked(writeLocations []accountRegion, readLocati
 			writeFallback = ep
 		}
 	}
-	nextLoc.writeEndpoints = lc.getPrefAvailableEndpointsLocked(nextLoc.availWriteEndpointsByLocation, nextLoc.availWriteLocations, write, writeFallback)
+	nextLoc.writeEndpoints = lc.getPrefAvailableEndpointsLocked(nextLoc.availWriteEndpointsByLocation, nextLoc.availWriteLocations, nextLoc.prefLocations, write, writeFallback)
 	// Prefer the first available read region for the read fallback. Only
 	// fall back to the first write endpoint (or, transitively, the default
 	// endpoint) when the account advertises zero read regions -- accounts
@@ -137,7 +137,7 @@ func (lc *locationCache) updateLocked(writeLocations []accountRegion, readLocati
 			readFallback = ep
 		}
 	}
-	nextLoc.readEndpoints = lc.getPrefAvailableEndpointsLocked(nextLoc.availReadEndpointsByLocation, nextLoc.availReadLocations, read, readFallback)
+	nextLoc.readEndpoints = lc.getPrefAvailableEndpointsLocked(nextLoc.availReadEndpointsByLocation, nextLoc.availReadLocations, nextLoc.prefLocations, read, readFallback)
 	lc.lastUpdateTime = time.Now()
 	lc.locationInfo = nextLoc
 	// TODO: log
@@ -309,12 +309,17 @@ func (lc *locationCache) isEndpointUnavailableLocked(endpoint url.URL, ops reque
 	return time.Since(info.lastCheckTime) < lc.unavailableLocationExpirationTime
 }
 
-func (lc *locationCache) getPrefAvailableEndpointsLocked(endpointsByLoc map[string]url.URL, locs []string, availOps requestedOperations, fallbackEndpoint url.URL) []url.URL {
+// getPrefAvailableEndpointsLocked returns the endpoints for the customer's
+// preferred locations in priority order, with unavailable endpoints moved to
+// the tail. Callers pass prefLocations explicitly so updateLocked can compute
+// route lists from the in-progress nextLoc snapshot rather than the
+// already-committed lc.locationInfo.
+func (lc *locationCache) getPrefAvailableEndpointsLocked(endpointsByLoc map[string]url.URL, locs []string, prefLocations []string, availOps requestedOperations, fallbackEndpoint url.URL) []url.URL {
 	endpoints := make([]url.URL, 0)
 	if lc.enableCrossRegionRetries {
 		if lc.canUseMultipleWriteLocs() || availOps&read != 0 {
 			unavailEndpoints := make([]url.URL, 0)
-			for _, loc := range lc.locationInfo.prefLocations {
+			for _, loc := range prefLocations {
 				if endpoint, ok := endpointsByLoc[loc]; ok {
 					if lc.isEndpointUnavailableLocked(endpoint, availOps) {
 						unavailEndpoints = append(unavailEndpoints, endpoint)

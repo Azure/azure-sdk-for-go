@@ -60,10 +60,10 @@
 # ServiceOwners:                                                   @rajeshka @shankarsama
 
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs/                                        @axisc @hmlam @sjkwak
+/sdk/messaging/azeventhubs/                                        @axisc @hmlam @sjkwak @j7nw4r @SwayGom
 
 # ServiceLabel: %Event Hubs
-# ServiceOwners:                                                   @axisc @hmlam @sjkwak
+# ServiceOwners:                                                   @axisc @hmlam @sjkwak @j7nw4r @SwayGom
 
 # PRLabel: %Internal
 /sdk/internal/                                                     @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
@@ -109,13 +109,13 @@
 # ServiceOwners:                                                   @jhendrixMSFT @rickwinter
 
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus/                                       @EldertGrootenboer @skarri-microsoft
+/sdk/messaging/azservicebus/                                       @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom
 
 # PRLabel: %Service Bus
-/sdk/messaging/stress/                                             @EldertGrootenboer @skarri-microsoft
+/sdk/messaging/stress/                                             @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom
 
 # ServiceLabel: %Service Bus
-# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft
+# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom
 
 # PRLabel: %Storage
 /sdk/storage/                                                      @gapra-msft @jhendrixMSFT @souravgupta-msft @tanyasethi-msft

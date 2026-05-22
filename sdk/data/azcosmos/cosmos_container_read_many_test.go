@@ -915,7 +915,7 @@ func TestReadMany_querySpanRecordsErrorOnFailure(t *testing.T) {
 		&policy.ClientOptions{
 			Transport:       srv,
 			TracingProvider: tp,
-			Retry:           policy.RetryOptions{MaxRetries: 0, StatusCodes: []int{}},
+			Retry:           policy.RetryOptions{MaxRetries: -1, StatusCodes: []int{}},
 		})
 	require.NoError(t, err)
 

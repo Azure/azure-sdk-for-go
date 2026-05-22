@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-* Fixed excessive `GetDatabaseAccount` HTTP calls and a self-deadlock in `locationCache.readEndpoints`/`writeEndpoints` when using preferred regions. Concurrent refreshes are now coalesced via a single in-flight pattern, refresh failures honour the throttle just like successes, a chronic bootstrap failure surfaces the cached error rather than refresh-storming, and async refresh failures are logged so post-bootstrap topology drift is observable. Also stopped data-plane retries from trailing into the customer-supplied (default) endpoint once account topology is populated; route lists now contain only regional endpoints. `enableCrossRegionRetries=false` still routes single-master writes to the default endpoint, and accounts advertising zero write regions still fall back to it for writes. See [PR 26815](https://github.com/Azure/azure-sdk-for-go/pull/26815).
+* Fixed excessive `GetDatabaseAccount` HTTP calls when using preferred regions, and stopped data-plane retries from trailing into the customer-supplied (default) endpoint once account topology is populated. See [PR 26815](https://github.com/Azure/azure-sdk-for-go/pull/26815).
 
 ### Other Changes
 

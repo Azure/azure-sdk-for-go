@@ -217,7 +217,7 @@ func ExampleContributorsClient_NewListFromApplicableMaccPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewContributorsClient("subscriptionID").NewListFromApplicableMaccPager("20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31", "13810867107109237", nil)
+	pager := clientFactory.NewContributorsClient("<subscriptionID>").NewListFromApplicableMaccPager("20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31", "13810867107109237", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultConditionalCreditContributorsClientVersion string = "2025-12-01-preview"
-
 // ConditionalCreditContributorsClient contains the methods for the ConditionalCreditContributors group.
 // Don't use this type directly, use NewConditionalCreditContributorsClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *ConditionalCreditContributorsClient) getFromPrimaryCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultConditionalCreditContributorsClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -156,7 +154,7 @@ func (client *ConditionalCreditContributorsClient) listFromApplicableConditional
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultConditionalCreditContributorsClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,7 +217,7 @@ func (client *ConditionalCreditContributorsClient) listFromPrimaryCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultConditionalCreditContributorsClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultSavingsPlanClientVersion string = "2025-12-01-preview"
-
 // SavingsPlanClient contains the methods for the SavingsPlan group.
 // Don't use this type directly, use NewSavingsPlanClient() instead.
 //
@@ -87,7 +85,7 @@ func (client *SavingsPlanClient) getCreateRequest(ctx context.Context, savingsPl
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", defaultSavingsPlanClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -140,7 +138,7 @@ func (client *SavingsPlanClient) listCreateRequest(ctx context.Context, savingsP
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSavingsPlanClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,7 +195,7 @@ func (client *SavingsPlanClient) listAllCreateRequest(ctx context.Context, optio
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", strconv.FormatFloat(float64(*options.Skiptoken), 'f', -1, 32))
 	}
-	reqQP.Set("api-version", defaultSavingsPlanClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	if options != nil && options.RefreshSummary != nil {
 		reqQP.Set("refreshSummary", *options.RefreshSummary)
 	}
@@ -283,7 +281,7 @@ func (client *SavingsPlanClient) updateCreateRequest(ctx context.Context, saving
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSavingsPlanClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -338,7 +336,7 @@ func (client *SavingsPlanClient) validateUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSavingsPlanClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

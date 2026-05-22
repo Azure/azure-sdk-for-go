@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultDiscountClientVersion string = "2025-12-01-preview"
-
 // DiscountClient contains the methods for the Discount group.
 // Don't use this type directly, use NewDiscountClient() instead.
 //
@@ -90,7 +88,7 @@ func (client *DiscountClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDiscountClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,7 +170,7 @@ func (client *DiscountClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDiscountClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

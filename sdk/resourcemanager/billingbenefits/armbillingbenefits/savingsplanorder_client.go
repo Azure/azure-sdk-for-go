@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultSavingsPlanOrderClientVersion string = "2025-12-01-preview"
-
 // SavingsPlanOrderClient contains the methods for the SavingsPlanOrder group.
 // Don't use this type directly, use NewSavingsPlanOrderClient() instead.
 //
@@ -79,7 +77,7 @@ func (client *SavingsPlanOrderClient) elevateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSavingsPlanOrderClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -135,7 +133,7 @@ func (client *SavingsPlanOrderClient) getCreateRequest(ctx context.Context, savi
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", defaultSavingsPlanOrderClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -184,7 +182,7 @@ func (client *SavingsPlanOrderClient) listCreateRequest(ctx context.Context, _ *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSavingsPlanOrderClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

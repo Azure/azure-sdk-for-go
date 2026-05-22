@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultApplicableMaccsClientVersion string = "2025-12-01-preview"
-
 // ApplicableMaccsClient contains the methods for the ApplicableMaccs group.
 // Don't use this type directly, use NewApplicableMaccsClient() instead.
 //
@@ -79,7 +77,7 @@ func (client *ApplicableMaccsClient) listCreateRequest(ctx context.Context, bill
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultApplicableMaccsClientVersion)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

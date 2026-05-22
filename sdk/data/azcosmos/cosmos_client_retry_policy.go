@@ -117,9 +117,9 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			}
 			kind := classifyNetworkError(err)
 			if kind != connectionErrorNone {
-				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, &retryContext)
+				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
 				if errRetry != nil {
-					return nil, errRetry
+					return nil, errorinfo.NonRetriableError(errRetry)
 				}
 				if !shouldRetry {
 					return nil, errorinfo.NonRetriableError(err)
@@ -158,7 +158,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			case http.StatusRequestTimeout:
 				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o.isWriteOperation, &retryContext)
 				if err != nil {
-					return nil, err
+					return nil, errorinfo.NonRetriableError(err)
 				}
 				if !shouldRetry {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
@@ -206,12 +206,22 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 //     duplicate side-effects, and mark the endpoint unavailable so
 //     concurrent requests learn about the regional outage.
 //
+// Ambiguous-error writes also skip the same-region budget: replaying a
+// non-idempotent mutation (e.g. PatchItem(Increment), TransactionalBatch)
+// up to 3 times against the same region could silently produce up to 4
+// applications of the operation. Reads can always be retried.
+//
 // After the single cross-region failover, any further connection error
 // stops retrying — the policy does not chain failovers across regions.
 //
 // When enableCrossRegionRetries is false the policy performs no retries
 // at all; the caller has explicitly opted into a "fail fast" mode.
-func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind connectionErrorKind, isWriteOperation bool, retryContext *retryContext) (bool, error) {
+//
+// transportErr is the underlying transport error from req.Next(); it is
+// preserved alongside the caller's context error if the backoff is
+// interrupted by ctx cancellation, so callers can errors.Is the result
+// against both context.DeadlineExceeded and the transport error class.
+func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind connectionErrorKind, isWriteOperation bool, transportErr error, retryContext *retryContext) (bool, error) {
 	if retryContext.retryCount > maxRetryCount {
 		return false, nil
 	}
@@ -222,11 +232,18 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		return false, nil
 	}
 
-	// While still on the original region, allow the same-region budget.
-	if !retryContext.crossRegionFailoverDone && retryContext.sameRegionRetryCount < maxSameRegionConnectionRetries {
+	// While still on the original region, allow the same-region budget,
+	// but only for operations where retry is safe: reads always, writes
+	// only when we can prove the request never reached the service.
+	// Ambiguous-error writes skip this branch entirely so a
+	// non-idempotent mutation that may have been applied server-side is
+	// not silently replayed.
+	if !retryContext.crossRegionFailoverDone &&
+		retryContext.sameRegionRetryCount < maxSameRegionConnectionRetries &&
+		(!isWriteOperation || kind == connectionErrorNotSent) {
 		retryContext.sameRegionRetryCount += 1
-		if err := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); err != nil {
-			return false, nil
+		if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
+			return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)
 		}
 		return true, nil
 	}
@@ -281,8 +298,8 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 	retryContext.sameRegionRetryCount = 0
 	retryContext.retryCount += 1
 	retryContext.crossRegionFailoverDone = true
-	if err := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); err != nil {
-		return false, nil
+	if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
+		return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)
 	}
 	return true, nil
 }
@@ -368,8 +385,13 @@ func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, is
 		return false, err
 	}
 	retryContext.requestTimeoutRetryDone = true
-	if err := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); err != nil {
-		return false, nil
+	// Preserve the caller's cancellation cause if their context fires
+	// during the backoff so errors.Is(returned, context.DeadlineExceeded)
+	// works at the call site. There is no transport error to compose
+	// with here (the 408 path is reached from a successful HTTP
+	// exchange), so the bare sleep error is sufficient.
+	if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
+		return false, sleepErr
 	}
 	return true, nil
 }

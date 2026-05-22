@@ -638,6 +638,11 @@ func (e *fakeAmbiguousNetError) Temporary() bool { return false }
 func (e *fakeAmbiguousNetError) Unwrap() error   { return syscall.ECONNRESET }
 
 func TestAmbiguousConnectionErrorWriteDoesNotFailOver(t *testing.T) {
+	// Ambiguous transport errors on a write must NOT be retried at all by
+	// the client retry policy (neither same-region nor cross-region) —
+	// the request body may already have been applied server-side and
+	// retrying could produce duplicate mutations (e.g. PatchItem with
+	// Increment, TransactionalBatch with non-idempotent ops).
 	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
 	defer cleanup()
 
@@ -656,9 +661,12 @@ func TestAmbiguousConnectionErrorWriteDoesNotFailOver(t *testing.T) {
 
 	assert.Error(t, err)
 	rc := verifier.requests[0].retryContext
-	// 3 same-region attempts, no cross-region failover for ambiguous writes.
-	assert.Equal(t, 3, rc.sameRegionRetryCount)
+	// No same-region retries, no cross-region failover; exactly 1 HTTP
+	// request reached the server.
+	assert.Equal(t, 0, rc.sameRegionRetryCount)
 	assert.Equal(t, 0, rc.retryCount)
+	assert.False(t, rc.crossRegionFailoverDone)
+	assert.Equal(t, 1, srv.Requests())
 }
 
 func TestAmbiguousConnectionErrorReadFailsOver(t *testing.T) {
@@ -929,6 +937,10 @@ func TestCallerDeadlineDuringBackoffShortCircuits(t *testing.T) {
 	elapsed := time.Since(start)
 
 	require.Error(t, err)
+	// The cancellation cause must be preserved so callers can
+	// errors.Is(err, context.DeadlineExceeded) regardless of whether
+	// the deadline fired before req.Next() or during backoff.
+	assert.ErrorIs(t, err, context.DeadlineExceeded)
 	// We should give up before the full 3-second same-region budget.
 	assert.Less(t, elapsed, defaultBackoff*time.Second, "policy should not sleep through caller deadline")
 	// At most 2 requests: the initial attempt and possibly one more

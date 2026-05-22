@@ -196,8 +196,17 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 				&globalEndpointManagerPolicy{gem: gem},
 			},
 			PerRetry: []policy.Policy{
-				authPolicy,
+				// clientRetryPolicy is listed before authPolicy so that
+				// its internal retry loop (continue inside Do) naturally
+				// re-invokes authPolicy via req.Next() on each attempt.
+				// This refreshes the Authorization header from the
+				// credential cache on every internal retry — important
+				// for short-lived AAD/MSI tokens that may expire across
+				// the cumulative same-region + cross-region retry
+				// window. Cosmos master/resource keys are unaffected
+				// because they are static.
 				&clientRetryPolicy{gem: gem},
+				authPolicy,
 			},
 			Tracing: azruntime.TracingOptions{
 				Namespace: "Microsoft.DocumentDB",

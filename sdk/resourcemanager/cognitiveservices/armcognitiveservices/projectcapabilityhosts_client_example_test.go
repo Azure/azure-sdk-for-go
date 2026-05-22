@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-15-preview/ProjectCapabilityHost/createOrUpdate.json
+// Generated from example definition: 2026-03-15-preview/ProjectCapabilityHost/createOrUpdate.json
 func ExampleProjectCapabilityHostsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,13 +44,13 @@ func ExampleProjectCapabilityHostsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ProjectCapabilityHostsClientCreateOrUpdateResponse{
-	// 	ProjectCapabilityHost: &armcognitiveservices.ProjectCapabilityHost{
+	// 	ProjectCapabilityHost: armcognitiveservices.ProjectCapabilityHost{
 	// 		Name: to.Ptr("capabilityHostName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/capabilityHosts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.CognitiveServices/accounts/account-1/projects/project-1/capabilityHosts/capabilityHostName"),
@@ -73,7 +73,7 @@ func ExampleProjectCapabilityHostsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/ProjectCapabilityHost/delete.json
+// Generated from example definition: 2026-03-15-preview/ProjectCapabilityHost/delete.json
 func ExampleProjectCapabilityHostsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,11 +90,11 @@ func ExampleProjectCapabilityHostsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/ProjectCapabilityHost/get.json
+// Generated from example definition: 2026-03-15-preview/ProjectCapabilityHost/get.json
 func ExampleProjectCapabilityHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleProjectCapabilityHostsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ProjectCapabilityHostsClientGetResponse{
-	// 	ProjectCapabilityHost: &armcognitiveservices.ProjectCapabilityHost{
+	// 	ProjectCapabilityHost: armcognitiveservices.ProjectCapabilityHost{
 	// 		Name: to.Ptr("capabilityHostName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/capabilityHosts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.CognitiveServices/accounts/account-1/projects/project-1/capabilityHosts/capabilityHostName"),
@@ -136,7 +136,7 @@ func ExampleProjectCapabilityHostsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/ProjectCapabilityHost/list.json
+// Generated from example definition: 2026-03-15-preview/ProjectCapabilityHost/list.json
 func ExampleProjectCapabilityHostsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

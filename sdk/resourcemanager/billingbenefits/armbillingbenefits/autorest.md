@@ -5,9 +5,10 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/billingbenefits/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/billingbenefits/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/5476ceee2ed3364cdedec8e0d002d2e45389a8f0/specification/billingbenefits/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/5476ceee2ed3364cdedec8e0d002d2e45389a8f0/specification/billingbenefits/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 2.1.0
+module-version: 3.0.0
+tag: package-preview-2025-12-01-preview
 
 ```

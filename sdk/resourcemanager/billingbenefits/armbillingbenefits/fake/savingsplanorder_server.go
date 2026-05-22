@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billingbenefits/armbillingbenefits/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billingbenefits/armbillingbenefits/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,15 +23,15 @@ import (
 type SavingsPlanOrderServer struct {
 	// Elevate is the fake for method SavingsPlanOrderClient.Elevate
 	// HTTP status codes to indicate success: http.StatusOK
-	Elevate func(ctx context.Context, savingsPlanOrderID string, options *armbillingbenefits.SavingsPlanOrderClientElevateOptions) (resp azfake.Responder[armbillingbenefits.SavingsPlanOrderClientElevateResponse], errResp azfake.ErrorResponder)
+	Elevate	func(ctx context.Context, savingsPlanOrderID string, options *armbillingbenefits.SavingsPlanOrderClientElevateOptions) (resp azfake.Responder[armbillingbenefits.SavingsPlanOrderClientElevateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SavingsPlanOrderClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, savingsPlanOrderID string, options *armbillingbenefits.SavingsPlanOrderClientGetOptions) (resp azfake.Responder[armbillingbenefits.SavingsPlanOrderClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, savingsPlanOrderID string, options *armbillingbenefits.SavingsPlanOrderClientGetOptions) (resp azfake.Responder[armbillingbenefits.SavingsPlanOrderClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method SavingsPlanOrderClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armbillingbenefits.SavingsPlanOrderClientListOptions) (resp azfake.PagerResponder[armbillingbenefits.SavingsPlanOrderClientListResponse])
+	NewListPager	func(options *armbillingbenefits.SavingsPlanOrderClientListOptions) (resp azfake.PagerResponder[armbillingbenefits.SavingsPlanOrderClientListResponse])
 }
 
 // NewSavingsPlanOrderServerTransport creates a new instance of SavingsPlanOrderServerTransport with the provided implementation.
@@ -39,16 +39,16 @@ type SavingsPlanOrderServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSavingsPlanOrderServerTransport(srv *SavingsPlanOrderServer) *SavingsPlanOrderServerTransport {
 	return &SavingsPlanOrderServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armbillingbenefits.SavingsPlanOrderClientListResponse]](),
+		srv:		srv,
+		newListPager:	newTracker[azfake.PagerResponder[armbillingbenefits.SavingsPlanOrderClientListResponse]](),
 	}
 }
 
 // SavingsPlanOrderServerTransport connects instances of armbillingbenefits.SavingsPlanOrderClient to instances of SavingsPlanOrderServer.
 // Don't use this type directly, use NewSavingsPlanOrderServerTransport instead.
 type SavingsPlanOrderServerTransport struct {
-	srv          *SavingsPlanOrderServer
-	newListPager *tracker[azfake.PagerResponder[armbillingbenefits.SavingsPlanOrderClientListResponse]]
+	srv		*SavingsPlanOrderServer
+	newListPager	*tracker[azfake.PagerResponder[armbillingbenefits.SavingsPlanOrderClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SavingsPlanOrderServerTransport.
@@ -59,25 +59,44 @@ func (s *SavingsPlanOrderServerTransport) Do(req *http.Request) (*http.Response,
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "SavingsPlanOrderClient.Elevate":
-		resp, err = s.dispatchElevate(req)
-	case "SavingsPlanOrderClient.Get":
-		resp, err = s.dispatchGet(req)
-	case "SavingsPlanOrderClient.NewListPager":
-		resp, err = s.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *SavingsPlanOrderServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if savingsPlanOrderServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = savingsPlanOrderServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "SavingsPlanOrderClient.Elevate":
+				res.resp, res.err = s.dispatchElevate(req)
+			case "SavingsPlanOrderClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SavingsPlanOrderClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *SavingsPlanOrderServerTransport) dispatchElevate(req *http.Request) (*http.Response, error) {
@@ -87,7 +106,7 @@ func (s *SavingsPlanOrderServerTransport) dispatchElevate(req *http.Request) (*h
 	const regexStr = `/providers/Microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/elevate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	savingsPlanOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("savingsPlanOrderId")])
@@ -116,7 +135,7 @@ func (s *SavingsPlanOrderServerTransport) dispatchGet(req *http.Request) (*http.
 	const regexStr = `/providers/Microsoft\.BillingBenefits/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -175,4 +194,10 @@ func (s *SavingsPlanOrderServerTransport) dispatchNewListPager(req *http.Request
 		s.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to SavingsPlanOrderServerTransport
+var savingsPlanOrderServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

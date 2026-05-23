@@ -42,4 +42,5 @@ extends:
                 inputs:
                   scriptPath: 'eng/scripts/mgmt-auto-release.sh'
                   cwd: '$(System.DefaultWorkingDirectory)'
-                  args: '$(GH_TOKEN)'
+                  env:
+                    GH_TOKEN: $(GH_TOKEN)

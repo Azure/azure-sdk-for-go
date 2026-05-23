@@ -10,6 +10,8 @@ extends:
           - template: /eng/pipelines/templates/variables/image.yml
         jobs:
           - job:
+            variables:
+              autoReleaseNpmrcPath: $(Agent.TempDirectory)/mgmt-auto-release/.npmrc
 
             pool:
               image: $(LINUXVMIMAGE)
@@ -19,15 +21,23 @@ extends:
 
             displayName: Go Auto Release
             steps:
+              - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+                parameters:
+                  npmrcPath: $(autoReleaseNpmrcPath)
+
               - task: Npm@1
                 inputs:
                   command: 'custom'
                   customCommand: 'install -g autorest@latest'
+                env:
+                  npm_config_userconfig: $(autoReleaseNpmrcPath)
 
               - task: Npm@1
                 inputs:
                   command: 'ci'
                   workingDir: 'eng/common/tsp-client'
+                env:
+                  npm_config_userconfig: $(autoReleaseNpmrcPath)
 
               - task: GoTool@0
                 inputs:
@@ -42,5 +52,5 @@ extends:
                 inputs:
                   scriptPath: 'eng/scripts/mgmt-auto-release.sh'
                   cwd: '$(System.DefaultWorkingDirectory)'
-                  env:
-                    GH_TOKEN: $(GH_TOKEN)
+                env:
+                  GH_TOKEN: $(GH_TOKEN)

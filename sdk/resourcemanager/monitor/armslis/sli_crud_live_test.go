@@ -65,6 +65,18 @@ func (testsuite *SliCrudTestSuite) TestSliCrudLifecycle() {
 	// Step 1: Create SLI
 	fmt.Println("Call operation: Slis_CreateOrUpdate")
 	createResp, err := client.CreateOrUpdate(testsuite.ctx, testsuite.serviceGroupName, testsuite.sliName, armslis.Sli{
+		Identity: &armslis.ManagedServiceIdentity{
+			Type: to.Ptr(armslis.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: func() map[string]*armslis.UserAssignedIdentity {
+				identities := map[string]*armslis.UserAssignedIdentity{
+					testsuite.managedIdentityResourceID: {},
+				}
+				if testsuite.sourceManagedIdentityResourceID != testsuite.managedIdentityResourceID {
+					identities[testsuite.sourceManagedIdentityResourceID] = &armslis.UserAssignedIdentity{}
+				}
+				return identities
+			}(),
+		},
 		Properties: &armslis.SliResource{
 			Description:    to.Ptr("Live test SLI - measures latency of test API"),
 			Category:       to.Ptr(armslis.CategoryLatency),
@@ -95,22 +107,25 @@ func (testsuite *SliCrudTestSuite) TestSliCrudLifecycle() {
 							SignalSourceID:                  to.Ptr("A"),
 							SourceAmwAccountManagedIdentity: to.Ptr(testsuite.sourceManagedIdentityResourceID),
 							SourceAmwAccountResourceID:      to.Ptr(testsuite.sourceAmwResourceID),
-							MetricNamespace:                 to.Ptr("TestMetrics"),
-							MetricName:                      to.Ptr("TestLatency"),
+							// Source metric is a real Azure Managed Prometheus metric scraped by AKS.
+							// Test infra (bicep) deploys an AKS cluster with the Azure Monitor metrics addon
+							// pointed at the source AMW; container_cpu_usage_seconds_total is always populated.
+							MetricNamespace:                 to.Ptr("customdefault"),
+							MetricName:                      to.Ptr("container_cpu_usage_seconds_total"),
 							Filters: []*armslis.Condition{
 								{
-									DimensionName: to.Ptr("ApiName"),
-									Operator:      to.Ptr(armslis.ConditionOperatorEqual),
-									Value:         to.Ptr("TestApi"),
+									DimensionName: to.Ptr("container"),
+									Operator:      to.Ptr(armslis.ConditionOperatorNotEqual),
+									Value:         to.Ptr("POD"),
 								},
 							},
 							SpatialAggregation: &armslis.SpatialAggregation{
-								Type:       to.Ptr(armslis.SpatialAggregationTypeAverage),
-								Dimensions: []*string{to.Ptr("Region")},
+								Type:       to.Ptr(armslis.SpatialAggregationTypeSum),
+								Dimensions: []*string{to.Ptr("instance")},
 							},
 							TemporalAggregation: &armslis.TemporalAggregation{
-								Type:              to.Ptr(armslis.TemporalAggregationTypeAverage),
-								WindowSizeMinutes: to.Ptr[int32](5),
+								Type:              to.Ptr(armslis.TemporalAggregationTypeRate),
+								WindowSizeMinutes: to.Ptr[int32](1),
 							},
 						},
 					},

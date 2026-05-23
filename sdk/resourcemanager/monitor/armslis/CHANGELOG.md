@@ -1,5 +1,15 @@
 # Release History
 
+## 0.2.0 (2026-05-23)
+### Breaking Changes
+
+- `SamplingTypeAvg` from enum `SamplingType` has been removed
+
+### Features Added
+
+- New value `SamplingTypeAverage`, `SamplingTypeCount` added to enum type `SamplingType`
+
+
 ## 0.1.0 (2026-04-22)
 
 ### Features Added

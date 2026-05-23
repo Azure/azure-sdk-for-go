@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/monitor/armslis",
-  "Tag": ""
+  "Tag": "go/resourcemanager/monitor/armslis_abb1f28df6"
 }

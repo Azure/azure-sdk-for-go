@@ -94,7 +94,7 @@ func TestMarkEndpointUnavailable(t *testing.T) {
 	lc := ResetLocationCache()
 	var firstCheckTime time.Time
 	// mark endpoint unavailable for first time
-	err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
+	_, err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
@@ -111,7 +111,7 @@ func TestMarkEndpointUnavailable(t *testing.T) {
 	}
 	// mark endpoint unavailable for second time
 	time.Sleep(100 * time.Millisecond)
-	err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
+	_, err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
@@ -131,7 +131,7 @@ func TestMarkEndpointUnavailable(t *testing.T) {
 func TestRefreshStaleEndpoints(t *testing.T) {
 	lc := ResetLocationCache()
 	// mark endpoint unavailable for first time
-	err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
+	_, err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
@@ -150,11 +150,11 @@ func TestRefreshStaleEndpoints(t *testing.T) {
 
 func TestIsEndpointUnavailable(t *testing.T) {
 	lc := ResetLocationCache()
-	err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
+	_, err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
-	err = lc.markEndpointUnavailableForWrite(*loc2Endpoint)
+	_, err = lc.markEndpointUnavailableForWrite(*loc2Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
@@ -262,15 +262,17 @@ func TestGetPrefAvailableEndpoints(t *testing.T) {
 		t.Fatalf("Received error Reading DB account: %s", err.Error())
 	}
 	// marks loc1 unavailable, which will put it last in the preferred available endpoint list
-	err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
+	_, err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
 	// loc1: unavailable, loc2: available, loc5: non-existent
 	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, "location5"}
-	prefWriteEndpoints := lc.getPrefAvailableEndpoints(lc.locationInfo.availWriteEndpointsByLocation, lc.locationInfo.availWriteLocations, write, lc.defaultEndpoint)
-	// loc2: preferred + available, default: fallback endpoint, loc1: unavailable + preferred
-	expectedWriteEndpoints := []*url.URL{loc2Endpoint, defaultEndpoint, loc1Endpoint}
+	prefWriteEndpoints := lc.getPrefAvailableEndpointsLocked(lc.locationInfo.availWriteEndpointsByLocation, lc.locationInfo.availWriteLocations, lc.locationInfo.prefLocations, write, lc.defaultEndpoint)
+	// loc2: preferred + available; loc1: unavailable + preferred (moved to
+	// tail). The trailing default-endpoint fallback was removed when we
+	// stopped routing data-plane traffic to the customer-supplied endpoint.
+	expectedWriteEndpoints := []*url.URL{loc2Endpoint, loc1Endpoint}
 
 	for i, endpoint := range expectedWriteEndpoints {
 		if endpoint.String() != prefWriteEndpoints[i].String() {
@@ -289,7 +291,10 @@ func TestReadEndpoints(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	expectedReadEndpoints := []*url.URL{loc2Endpoint, loc4Endpoint, loc1Endpoint}
+	// Previously the code skipped loc1 in the main pref loop (because it
+	// equalled the write fallback), pushing it to the tail. Now loc1 is
+	// included in preferred order, giving a more intuitive result.
+	expectedReadEndpoints := []*url.URL{loc1Endpoint, loc2Endpoint, loc4Endpoint}
 	actualReadEndpoints, err := lc.readEndpoints()
 	if err != nil {
 		t.Fatalf("Received error getting read endpoints: %s", err.Error())
@@ -305,11 +310,11 @@ func TestReadEndpoints(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	err = lc.markEndpointUnavailableForRead(*loc2Endpoint)
+	_, err = lc.markEndpointUnavailableForRead(*loc2Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
-	expectedReadEndpoints = []*url.URL{loc4Endpoint, loc1Endpoint, loc2Endpoint}
+	expectedReadEndpoints = []*url.URL{loc1Endpoint, loc4Endpoint, loc2Endpoint}
 	actualReadEndpoints, err = lc.readEndpoints()
 	if err != nil {
 		t.Fatalf("Received error getting read endpoints: %s", err.Error())
@@ -337,7 +342,9 @@ func TestWriteEndpoints(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	expectedWriteEndpoints := []*url.URL{loc1Endpoint, loc2Endpoint, loc3Endpoint, defaultEndpoint}
+	// Trailing default-endpoint fallback was removed: route lists must
+	// contain only regional endpoints.
+	expectedWriteEndpoints := []*url.URL{loc1Endpoint, loc2Endpoint, loc3Endpoint}
 	actualWriteEndpoints, err := lc.writeEndpoints()
 	if err != nil {
 		t.Fatalf("Received error getting write endpoints: %s", err.Error())
@@ -353,11 +360,11 @@ func TestWriteEndpoints(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
+	_, err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
-	expectedWriteEndpoints = []*url.URL{loc2Endpoint, loc3Endpoint, defaultEndpoint, loc1Endpoint}
+	expectedWriteEndpoints = []*url.URL{loc2Endpoint, loc3Endpoint, loc1Endpoint}
 	actualWriteEndpoints, err = lc.writeEndpoints()
 	if err != nil {
 		t.Fatalf("Received error getting write endpoints: %s", err.Error())

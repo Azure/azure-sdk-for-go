@@ -33,8 +33,13 @@ extends:
                 inputs:
                   version: '1.25.4'
 
+              - template: /eng/common/pipelines/templates/steps/login-to-github.yml
+                parameters:
+                  TokenOwners:
+                    - azure
+
               - task: ShellScript@2
                 inputs:
                   scriptPath: 'eng/scripts/mgmt-auto-release.sh'
                   cwd: '$(System.DefaultWorkingDirectory)'
-                  args: '$(azuresdk-github-pat)'
+                  args: '$(GH_TOKEN)'

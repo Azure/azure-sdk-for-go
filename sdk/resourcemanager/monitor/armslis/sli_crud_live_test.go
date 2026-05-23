@@ -110,8 +110,8 @@ func (testsuite *SliCrudTestSuite) TestSliCrudLifecycle() {
 							// Source metric is a real Azure Managed Prometheus metric scraped by AKS.
 							// Test infra (bicep) deploys an AKS cluster with the Azure Monitor metrics addon
 							// pointed at the source AMW; container_cpu_usage_seconds_total is always populated.
-							MetricNamespace:                 to.Ptr("customdefault"),
-							MetricName:                      to.Ptr("container_cpu_usage_seconds_total"),
+							MetricNamespace: to.Ptr("customdefault"),
+							MetricName:      to.Ptr("container_cpu_usage_seconds_total"),
 							Filters: []*armslis.Condition{
 								{
 									DimensionName: to.Ptr("container"),

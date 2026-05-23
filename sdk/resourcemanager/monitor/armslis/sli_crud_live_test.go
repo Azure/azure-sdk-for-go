@@ -52,6 +52,9 @@ func (testsuite *SliCrudTestSuite) TearDownSuite() {
 }
 
 func TestSliCrudTestSuite(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skip("Skipping SLI live test: requires AZURE_RECORD_MODE=live with real Azure credentials and AMW")
+	}
 	suite.Run(t, new(SliCrudTestSuite))
 }
 

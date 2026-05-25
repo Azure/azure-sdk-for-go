@@ -6,5 +6,5 @@ package armeventhub
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
-	moduleVersion = "v1.4.0-beta.2"
+	moduleVersion = "v2.0.0-beta.2"
 )

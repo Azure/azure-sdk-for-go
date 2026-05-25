@@ -1,5 +1,23 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-05-25)
+### Breaking Changes
+
+- Field `SystemData` of struct `NetworkSecurityPerimeterConfiguration` has been removed
+- Field `NetworkSecurityPerimeterConfiguration` of struct `NetworkSecurityPerimeterConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `MinCompactionLagInMins` of struct `RetentionDescription` has been removed
+
+### Features Added
+
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New struct `ProxyResource`
+- New struct `Resource`
+- New struct `TrackedResource`
+- New field `MinCompactionLagTimeInMinutes` in struct `RetentionDescription`
+
+
 ## 1.4.0-beta.2 (2026-05-18)
 ### Breaking Changes
 

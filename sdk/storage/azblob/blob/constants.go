@@ -17,9 +17,16 @@ const (
 	// DefaultDownloadBlockSize is default block size
 	DefaultDownloadBlockSize = int64(4 * 1024 * 1024) // 4MB
 
-	// DefaultConcurrency is the default number of blocks downloaded or uploaded in parallel
+	// DefaultConcurrency is the legacy default number of blocks downloaded or uploaded in parallel.
+	// Deprecated: Use DefaultConcurrencyValue() instead, which returns a value based on CPU core count.
 	DefaultConcurrency = shared.DefaultConcurrency
 )
+
+// DefaultConcurrencyValue returns the default concurrency for parallel uploads/downloads.
+// The value is based on CPU core count, clamped between 8 and 96.
+func DefaultConcurrencyValue() uint16 {
+	return shared.DefaultConcurrencyValue()
+}
 
 // BlobType defines values for BlobType
 type BlobType = generated.BlobType

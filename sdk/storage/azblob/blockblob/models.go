@@ -273,7 +273,8 @@ type uploadFromReaderOptions struct {
 	CPKInfo      *blob.CPKInfo
 	CPKScopeInfo *blob.CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to upload in parallel (0=default)
+	// Concurrency indicates the maximum number of blocks to upload in parallel.
+	// The default is based on CPU core count (min 8, max 96).
 	Concurrency uint16
 
 	TransactionalValidation blob.TransferValidationType
@@ -334,7 +335,8 @@ type UploadStreamOptions struct {
 	BlockSize int64
 
 	// Concurrency defines the max number of concurrent uploads to be performed to upload the file.
-	// Each concurrent upload will create a buffer of size BlockSize.  The default value is one.
+	// Each concurrent upload will create a buffer of size BlockSize.  The default is based on
+	// CPU core count (min 8, max 96).
 	Concurrency int
 
 	TransactionalValidation blob.TransferValidationType
@@ -350,7 +352,7 @@ type UploadStreamOptions struct {
 
 func (u *UploadStreamOptions) setDefaults() {
 	if u.Concurrency == 0 {
-		u.Concurrency = 1
+		u.Concurrency = int(shared.DefaultConcurrencyValue())
 	}
 
 	if u.BlockSize < _1MiB {

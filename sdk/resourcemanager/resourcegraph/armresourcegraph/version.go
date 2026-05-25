@@ -6,5 +6,5 @@ package armresourcegraph
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armresourcegraph"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.10.0"
 )

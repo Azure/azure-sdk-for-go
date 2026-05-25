@@ -142,7 +142,7 @@ type uploadFromReaderOptions struct {
 	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
 	Progress func(bytesTransferred int64)
 	// Concurrency indicates the maximum number of chunks to upload in parallel.
-	// The default is based on CPU core count (min 8, max 96).
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 	// AccessConditions contains optional parameters to access leased entity.
 	AccessConditions *AccessConditions
@@ -159,7 +159,7 @@ type UploadStreamOptions struct {
 	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxAppendBytes.
 	ChunkSize int64
 	// Concurrency indicates the maximum number of chunks to upload in parallel.
-	// The default is based on CPU core count (min 8, max 96).
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 	// AccessConditions contains optional parameters to access leased entity.
 	AccessConditions *AccessConditions
@@ -431,7 +431,7 @@ type DownloadBufferOptions struct {
 	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
 	// Concurrency indicates the maximum number of chunks to download in parallel.
-	// The default is based on CPU core count (min 8, max 96).
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk *RetryReaderOptions
@@ -486,7 +486,7 @@ type DownloadFileOptions struct {
 	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
 	// Concurrency indicates the maximum number of chunks to download in parallel.
-	// The default is based on CPU core count (min 8, max 96).
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk *RetryReaderOptions

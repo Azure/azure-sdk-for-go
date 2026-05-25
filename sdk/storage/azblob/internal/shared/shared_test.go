@@ -210,18 +210,21 @@ func TestIsIPEndpointStyle(t *testing.T) {
 }
 
 func TestDefaultConcurrencyValue_InBounds(t *testing.T) {
+	t.Setenv("AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY", "")
 	val := DefaultConcurrencyValue()
 	require.GreaterOrEqual(t, val, uint16(8))
 	require.LessOrEqual(t, val, uint16(96))
 }
 
 func TestDefaultConcurrencyValue_Deterministic(t *testing.T) {
+	t.Setenv("AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY", "")
 	val1 := DefaultConcurrencyValue()
 	val2 := DefaultConcurrencyValue()
 	require.Equal(t, val1, val2)
 }
 
 func TestDefaultConcurrencyValue_MatchesCPU(t *testing.T) {
+	t.Setenv("AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY", "")
 	cpus := runtime.NumCPU()
 	val := DefaultConcurrencyValue()
 	if cpus < 8 {

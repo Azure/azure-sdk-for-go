@@ -24,6 +24,7 @@ const (
 
 // DefaultConcurrencyValue returns the default concurrency for parallel uploads/downloads.
 // The value is based on CPU core count, clamped between 8 and 96.
+// Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default of 5.
 func DefaultConcurrencyValue() uint16 {
 	return shared.DefaultConcurrencyValue()
 }

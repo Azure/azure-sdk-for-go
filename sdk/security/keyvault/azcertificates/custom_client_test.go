@@ -26,6 +26,20 @@ func TestNewPlatformManaged(t *testing.T) {
 	require.Equal(t, metadata, pm.Metadata)
 }
 
+func TestNewPlatformManagedNilMetadata(t *testing.T) {
+	pm := NewPlatformManaged("tls-server", nil)
+
+	require.NotNil(t, pm.CertificateUsage)
+	require.Equal(t, "tls-server", *pm.CertificateUsage)
+	require.Nil(t, pm.Metadata)
+
+	data, err := json.Marshal(pm)
+	require.NoError(t, err)
+	require.JSONEq(t, `{
+		"certificateUsage": "tls-server"
+	}`, string(data))
+}
+
 func TestPlatformManagedSerde(t *testing.T) {
 	policy := CertificatePolicy{
 		IssuerParameters: &IssuerParameters{Name: to.Ptr("Self")},
@@ -89,6 +103,38 @@ func TestCreateCertificateRequestIncludesPlatformManaged(t *testing.T) {
 				"metadata": {
 					"issuer": "internal-ca",
 					"rotationDays": 90
+				}
+			}
+		}
+	}`, string(body))
+}
+
+func TestUpdateCertificatePolicyRequestIncludesPlatformManaged(t *testing.T) {
+	client := &Client{vaultBaseUrl: "https://fakevault.vault.azure.net"}
+	policy := CertificatePolicy{
+		IssuerParameters: &IssuerParameters{Name: to.Ptr("Self")},
+		PlatformManaged: NewPlatformManaged("tls-client", map[string]any{
+			"issuer": "internal-ca",
+			"renewal": map[string]any{
+				"enabled": true,
+			},
+		}),
+	}
+
+	req, err := client.updateCertificatePolicyCreateRequest(context.Background(), "cert-name", policy, nil)
+	require.NoError(t, err)
+	require.Equal(t, version20260301Preview, req.Raw().URL.Query().Get("api-version"))
+
+	body, err := io.ReadAll(req.Raw().Body)
+	require.NoError(t, err)
+	require.JSONEq(t, `{
+		"issuer": {"name": "Self"},
+		"platformManaged": {
+			"certificateUsage": "tls-client",
+			"metadata": {
+				"issuer": "internal-ca",
+				"renewal": {
+					"enabled": true
 				}
 			}
 		}

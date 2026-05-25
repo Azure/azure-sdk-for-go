@@ -9,22 +9,22 @@ type AccessTier string
 
 const (
 	AccessTierArchive AccessTier = "Archive"
-	AccessTierCold    AccessTier = "Cold"
-	AccessTierCool    AccessTier = "Cool"
-	AccessTierHot     AccessTier = "Hot"
-	AccessTierP10     AccessTier = "P10"
-	AccessTierP15     AccessTier = "P15"
-	AccessTierP20     AccessTier = "P20"
-	AccessTierP30     AccessTier = "P30"
-	AccessTierP4      AccessTier = "P4"
-	AccessTierP40     AccessTier = "P40"
-	AccessTierP50     AccessTier = "P50"
-	AccessTierP6      AccessTier = "P6"
-	AccessTierP60     AccessTier = "P60"
-	AccessTierP70     AccessTier = "P70"
-	AccessTierP80     AccessTier = "P80"
+	AccessTierCold AccessTier = "Cold"
+	AccessTierCool AccessTier = "Cool"
+	AccessTierHot AccessTier = "Hot"
+	AccessTierP10 AccessTier = "P10"
+	AccessTierP15 AccessTier = "P15"
+	AccessTierP20 AccessTier = "P20"
+	AccessTierP30 AccessTier = "P30"
+	AccessTierP4 AccessTier = "P4"
+	AccessTierP40 AccessTier = "P40"
+	AccessTierP50 AccessTier = "P50"
+	AccessTierP6 AccessTier = "P6"
+	AccessTierP60 AccessTier = "P60"
+	AccessTierP70 AccessTier = "P70"
+	AccessTierP80 AccessTier = "P80"
 	AccessTierPremium AccessTier = "Premium"
-	AccessTierSmart   AccessTier = "Smart"
+	AccessTierSmart AccessTier = "Smart"
 )
 
 // PossibleAccessTierValues returns the possible values for the AccessTier const type.
@@ -53,11 +53,11 @@ func PossibleAccessTierValues() []AccessTier {
 type AccountKind string
 
 const (
-	AccountKindBlobStorage      AccountKind = "BlobStorage"
+	AccountKindBlobStorage AccountKind = "BlobStorage"
 	AccountKindBlockBlobStorage AccountKind = "BlockBlobStorage"
-	AccountKindFileStorage      AccountKind = "FileStorage"
-	AccountKindStorage          AccountKind = "Storage"
-	AccountKindStorageV2        AccountKind = "StorageV2"
+	AccountKindFileStorage AccountKind = "FileStorage"
+	AccountKindStorage AccountKind = "Storage"
+	AccountKindStorageV2 AccountKind = "StorageV2"
 )
 
 // PossibleAccountKindValues returns the possible values for the AccountKind const type.
@@ -74,9 +74,9 @@ func PossibleAccountKindValues() []AccountKind {
 type ArchiveStatus string
 
 const (
-	ArchiveStatusRehydratePendingToCold  ArchiveStatus = "rehydrate-pending-to-cold"
-	ArchiveStatusRehydratePendingToCool  ArchiveStatus = "rehydrate-pending-to-cool"
-	ArchiveStatusRehydratePendingToHot   ArchiveStatus = "rehydrate-pending-to-hot"
+	ArchiveStatusRehydratePendingToCold ArchiveStatus = "rehydrate-pending-to-cold"
+	ArchiveStatusRehydratePendingToCool ArchiveStatus = "rehydrate-pending-to-cool"
+	ArchiveStatusRehydratePendingToHot ArchiveStatus = "rehydrate-pending-to-hot"
 	ArchiveStatusRehydratePendingToSmart ArchiveStatus = "rehydrate-pending-to-smart"
 )
 
@@ -93,7 +93,7 @@ func PossibleArchiveStatusValues() []ArchiveStatus {
 type BlobCopySourceTags string
 
 const (
-	BlobCopySourceTagsCOPY    BlobCopySourceTags = "COPY"
+	BlobCopySourceTagsCOPY BlobCopySourceTags = "COPY"
 	BlobCopySourceTagsREPLACE BlobCopySourceTags = "REPLACE"
 )
 
@@ -109,8 +109,8 @@ func PossibleBlobCopySourceTagsValues() []BlobCopySourceTags {
 type BlobGeoReplicationStatus string
 
 const (
-	BlobGeoReplicationStatusBootstrap   BlobGeoReplicationStatus = "bootstrap"
-	BlobGeoReplicationStatusLive        BlobGeoReplicationStatus = "live"
+	BlobGeoReplicationStatusBootstrap BlobGeoReplicationStatus = "bootstrap"
+	BlobGeoReplicationStatusLive BlobGeoReplicationStatus = "live"
 	BlobGeoReplicationStatusUnavailable BlobGeoReplicationStatus = "unavailable"
 )
 
@@ -127,8 +127,8 @@ type BlobType string
 
 const (
 	BlobTypeAppendBlob BlobType = "AppendBlob"
-	BlobTypeBlockBlob  BlobType = "BlockBlob"
-	BlobTypePageBlob   BlobType = "PageBlob"
+	BlobTypeBlockBlob BlobType = "BlockBlob"
+	BlobTypePageBlob BlobType = "PageBlob"
 )
 
 // PossibleBlobTypeValues returns the possible values for the BlobType const type.
@@ -143,8 +143,8 @@ func PossibleBlobTypeValues() []BlobType {
 type BlockListType string
 
 const (
-	BlockListTypeAll         BlockListType = "all"
-	BlockListTypeCommitted   BlockListType = "committed"
+	BlockListTypeAll BlockListType = "all"
+	BlockListTypeCommitted BlockListType = "committed"
 	BlockListTypeUncommitted BlockListType = "uncommitted"
 )
 
@@ -161,7 +161,7 @@ type CopyStatusType string
 
 const (
 	CopyStatusTypeAborted CopyStatusType = "aborted"
-	CopyStatusTypeFailed  CopyStatusType = "failed"
+	CopyStatusTypeFailed CopyStatusType = "failed"
 	CopyStatusTypePending CopyStatusType = "pending"
 	CopyStatusTypeSuccess CopyStatusType = "success"
 )
@@ -180,7 +180,7 @@ type DeleteSnapshotsOptionType string
 
 const (
 	DeleteSnapshotsOptionTypeInclude DeleteSnapshotsOptionType = "include"
-	DeleteSnapshotsOptionTypeOnly    DeleteSnapshotsOptionType = "only"
+	DeleteSnapshotsOptionTypeOnly DeleteSnapshotsOptionType = "only"
 )
 
 // PossibleDeleteSnapshotsOptionTypeValues returns the possible values for the DeleteSnapshotsOptionType const type.
@@ -194,7 +194,7 @@ func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 type DeleteType string
 
 const (
-	DeleteTypeNone      DeleteType = "None"
+	DeleteTypeNone DeleteType = "None"
 	DeleteTypePermanent DeleteType = "Permanent"
 )
 
@@ -210,7 +210,7 @@ type EncryptionAlgorithmType string
 
 const (
 	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = "AES256"
-	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = "None"
+	EncryptionAlgorithmTypeNone EncryptionAlgorithmType = "None"
 )
 
 // PossibleEncryptionAlgorithmTypeValues returns the possible values for the EncryptionAlgorithmType const type.
@@ -224,10 +224,10 @@ func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
 type ExpiryOptions string
 
 const (
-	ExpiryOptionsAbsolute           ExpiryOptions = "Absolute"
-	ExpiryOptionsNeverExpire        ExpiryOptions = "NeverExpire"
+	ExpiryOptionsAbsolute ExpiryOptions = "Absolute"
+	ExpiryOptionsNeverExpire ExpiryOptions = "NeverExpire"
 	ExpiryOptionsRelativeToCreation ExpiryOptions = "RelativeToCreation"
-	ExpiryOptionsRelativeToNow      ExpiryOptions = "RelativeToNow"
+	ExpiryOptionsRelativeToNow ExpiryOptions = "RelativeToNow"
 )
 
 // PossibleExpiryOptionsValues returns the possible values for the ExpiryOptions const type.
@@ -256,7 +256,7 @@ func PossibleFileShareTokenIntentValues() []FileShareTokenIntent {
 type FilterBlobsIncludeItem string
 
 const (
-	FilterBlobsIncludeItemNone     FilterBlobsIncludeItem = "none"
+	FilterBlobsIncludeItemNone FilterBlobsIncludeItem = "none"
 	FilterBlobsIncludeItemVersions FilterBlobsIncludeItem = "versions"
 )
 
@@ -271,8 +271,8 @@ func PossibleFilterBlobsIncludeItemValues() []FilterBlobsIncludeItem {
 type ImmutabilityPolicyMode string
 
 const (
-	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = "Locked"
-	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = "Mutable"
+	ImmutabilityPolicyModeLocked ImmutabilityPolicyMode = "Locked"
+	ImmutabilityPolicyModeMutable ImmutabilityPolicyMode = "Mutable"
 	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = "Unlocked"
 )
 
@@ -288,7 +288,7 @@ func PossibleImmutabilityPolicyModeValues() []ImmutabilityPolicyMode {
 type ImmutabilityPolicySetting string
 
 const (
-	ImmutabilityPolicySettingLocked   ImmutabilityPolicySetting = "Locked"
+	ImmutabilityPolicySettingLocked ImmutabilityPolicySetting = "Locked"
 	ImmutabilityPolicySettingUnlocked ImmutabilityPolicySetting = "Unlocked"
 )
 
@@ -303,7 +303,7 @@ func PossibleImmutabilityPolicySettingValues() []ImmutabilityPolicySetting {
 type LeaseDurationType string
 
 const (
-	LeaseDurationTypeFixed    LeaseDurationType = "fixed"
+	LeaseDurationTypeFixed LeaseDurationType = "fixed"
 	LeaseDurationTypeInfinite LeaseDurationType = "infinite"
 )
 
@@ -319,10 +319,10 @@ type LeaseStateType string
 
 const (
 	LeaseStateTypeAvailable LeaseStateType = "available"
-	LeaseStateTypeBreaking  LeaseStateType = "breaking"
-	LeaseStateTypeBroken    LeaseStateType = "broken"
-	LeaseStateTypeExpired   LeaseStateType = "expired"
-	LeaseStateTypeLeased    LeaseStateType = "leased"
+	LeaseStateTypeBreaking LeaseStateType = "breaking"
+	LeaseStateTypeBroken LeaseStateType = "broken"
+	LeaseStateTypeExpired LeaseStateType = "expired"
+	LeaseStateTypeLeased LeaseStateType = "leased"
 )
 
 // PossibleLeaseStateTypeValues returns the possible values for the LeaseStateType const type.
@@ -339,7 +339,7 @@ func PossibleLeaseStateTypeValues() []LeaseStateType {
 type LeaseStatusType string
 
 const (
-	LeaseStatusTypeLocked   LeaseStatusType = "locked"
+	LeaseStatusTypeLocked LeaseStatusType = "locked"
 	LeaseStatusTypeUnlocked LeaseStatusType = "unlocked"
 )
 
@@ -354,17 +354,17 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 type ListBlobsIncludeItem string
 
 const (
-	ListBlobsIncludeItemCopy                ListBlobsIncludeItem = "copy"
-	ListBlobsIncludeItemDeleted             ListBlobsIncludeItem = "deleted"
+	ListBlobsIncludeItemCopy ListBlobsIncludeItem = "copy"
+	ListBlobsIncludeItemDeleted ListBlobsIncludeItem = "deleted"
 	ListBlobsIncludeItemDeletedwithversions ListBlobsIncludeItem = "deletedwithversions"
-	ListBlobsIncludeItemImmutabilitypolicy  ListBlobsIncludeItem = "immutabilitypolicy"
-	ListBlobsIncludeItemLegalhold           ListBlobsIncludeItem = "legalhold"
-	ListBlobsIncludeItemMetadata            ListBlobsIncludeItem = "metadata"
-	ListBlobsIncludeItemPermissions         ListBlobsIncludeItem = "permissions"
-	ListBlobsIncludeItemSnapshots           ListBlobsIncludeItem = "snapshots"
-	ListBlobsIncludeItemTags                ListBlobsIncludeItem = "tags"
-	ListBlobsIncludeItemUncommittedblobs    ListBlobsIncludeItem = "uncommittedblobs"
-	ListBlobsIncludeItemVersions            ListBlobsIncludeItem = "versions"
+	ListBlobsIncludeItemImmutabilitypolicy ListBlobsIncludeItem = "immutabilitypolicy"
+	ListBlobsIncludeItemLegalhold ListBlobsIncludeItem = "legalhold"
+	ListBlobsIncludeItemMetadata ListBlobsIncludeItem = "metadata"
+	ListBlobsIncludeItemPermissions ListBlobsIncludeItem = "permissions"
+	ListBlobsIncludeItemSnapshots ListBlobsIncludeItem = "snapshots"
+	ListBlobsIncludeItemTags ListBlobsIncludeItem = "tags"
+	ListBlobsIncludeItemUncommittedblobs ListBlobsIncludeItem = "uncommittedblobs"
+	ListBlobsIncludeItemVersions ListBlobsIncludeItem = "versions"
 )
 
 // PossibleListBlobsIncludeItemValues returns the possible values for the ListBlobsIncludeItem const type.
@@ -387,9 +387,9 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 type ListContainersIncludeType string
 
 const (
-	ListContainersIncludeTypeDeleted  ListContainersIncludeType = "deleted"
+	ListContainersIncludeTypeDeleted ListContainersIncludeType = "deleted"
 	ListContainersIncludeTypeMetadata ListContainersIncludeType = "metadata"
-	ListContainersIncludeTypeSystem   ListContainersIncludeType = "system"
+	ListContainersIncludeTypeSystem ListContainersIncludeType = "system"
 )
 
 // PossibleListContainersIncludeTypeValues returns the possible values for the ListContainersIncludeType const type.
@@ -408,10 +408,10 @@ const (
 	PremiumPageBlobAccessTierP15 PremiumPageBlobAccessTier = "P15"
 	PremiumPageBlobAccessTierP20 PremiumPageBlobAccessTier = "P20"
 	PremiumPageBlobAccessTierP30 PremiumPageBlobAccessTier = "P30"
-	PremiumPageBlobAccessTierP4  PremiumPageBlobAccessTier = "P4"
+	PremiumPageBlobAccessTierP4 PremiumPageBlobAccessTier = "P4"
 	PremiumPageBlobAccessTierP40 PremiumPageBlobAccessTier = "P40"
 	PremiumPageBlobAccessTierP50 PremiumPageBlobAccessTier = "P50"
-	PremiumPageBlobAccessTierP6  PremiumPageBlobAccessTier = "P6"
+	PremiumPageBlobAccessTierP6 PremiumPageBlobAccessTier = "P6"
 	PremiumPageBlobAccessTierP60 PremiumPageBlobAccessTier = "P60"
 	PremiumPageBlobAccessTierP70 PremiumPageBlobAccessTier = "P70"
 	PremiumPageBlobAccessTierP80 PremiumPageBlobAccessTier = "P80"
@@ -437,7 +437,7 @@ func PossiblePremiumPageBlobAccessTierValues() []PremiumPageBlobAccessTier {
 type PublicAccessType string
 
 const (
-	PublicAccessTypeFile       PublicAccessType = "blob"
+	PublicAccessTypeFile PublicAccessType = "blob"
 	PublicAccessTypeFileSystem PublicAccessType = "container"
 )
 
@@ -453,10 +453,10 @@ func PossiblePublicAccessTypeValues() []PublicAccessType {
 type QueryFormatType string
 
 const (
-	QueryFormatTypeArrow     QueryFormatType = "arrow"
+	QueryFormatTypeArrow QueryFormatType = "arrow"
 	QueryFormatTypeDelimited QueryFormatType = "delimited"
-	QueryFormatTypeJSON      QueryFormatType = "json"
-	QueryFormatTypeParquet   QueryFormatType = "parquet"
+	QueryFormatTypeJSON QueryFormatType = "json"
+	QueryFormatTypeParquet QueryFormatType = "parquet"
 )
 
 // PossibleQueryFormatTypeValues returns the possible values for the QueryFormatType const type.
@@ -474,7 +474,7 @@ func PossibleQueryFormatTypeValues() []QueryFormatType {
 type RehydratePriority string
 
 const (
-	RehydratePriorityHigh     RehydratePriority = "High"
+	RehydratePriorityHigh RehydratePriority = "High"
 	RehydratePriorityStandard RehydratePriority = "Standard"
 )
 
@@ -489,14 +489,14 @@ func PossibleRehydratePriorityValues() []RehydratePriority {
 type SKUName string
 
 const (
-	SKUNamePremiumLRS     SKUName = "Premium_LRS"
-	SKUNamePremiumZRS     SKUName = "Premium_ZRS"
-	SKUNameStandardGRS    SKUName = "Standard_GRS"
-	SKUNameStandardGZRS   SKUName = "Standard_GZRS"
-	SKUNameStandardLRS    SKUName = "Standard_LRS"
-	SKUNameStandardRAGRS  SKUName = "Standard_RAGRS"
+	SKUNamePremiumLRS SKUName = "Premium_LRS"
+	SKUNamePremiumZRS SKUName = "Premium_ZRS"
+	SKUNameStandardGRS SKUName = "Standard_GRS"
+	SKUNameStandardGZRS SKUName = "Standard_GZRS"
+	SKUNameStandardLRS SKUName = "Standard_LRS"
+	SKUNameStandardRAGRS SKUName = "Standard_RAGRS"
 	SKUNameStandardRAGZRS SKUName = "Standard_RAGZRS"
-	SKUNameStandardZRS    SKUName = "Standard_ZRS"
+	SKUNameStandardZRS SKUName = "Standard_ZRS"
 )
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
@@ -517,8 +517,8 @@ type SequenceNumberActionType string
 
 const (
 	SequenceNumberActionTypeIncrement SequenceNumberActionType = "increment"
-	SequenceNumberActionTypeMax       SequenceNumberActionType = "max"
-	SequenceNumberActionTypeUpdate    SequenceNumberActionType = "update"
+	SequenceNumberActionTypeMax SequenceNumberActionType = "max"
+	SequenceNumberActionTypeUpdate SequenceNumberActionType = "update"
 )
 
 // PossibleSequenceNumberActionTypeValues returns the possible values for the SequenceNumberActionType const type.
@@ -534,120 +534,120 @@ func PossibleSequenceNumberActionTypeValues() []SequenceNumberActionType {
 type StorageErrorCode string
 
 const (
-	StorageErrorCodeAccountAlreadyExists                       StorageErrorCode = "AccountAlreadyExists"
-	StorageErrorCodeAccountBeingCreated                        StorageErrorCode = "AccountBeingCreated"
-	StorageErrorCodeAccountIsDisabled                          StorageErrorCode = "AccountIsDisabled"
-	StorageErrorCodeAppendPositionConditionNotMet              StorageErrorCode = "AppendPositionConditionNotMet"
-	StorageErrorCodeAuthenticationFailed                       StorageErrorCode = "AuthenticationFailed"
-	StorageErrorCodeAuthorizationFailure                       StorageErrorCode = "AuthorizationFailure"
-	StorageErrorCodeAuthorizationPermissionMismatch            StorageErrorCode = "AuthorizationPermissionMismatch"
-	StorageErrorCodeAuthorizationProtocolMismatch              StorageErrorCode = "AuthorizationProtocolMismatch"
-	StorageErrorCodeAuthorizationResourceTypeMismatch          StorageErrorCode = "AuthorizationResourceTypeMismatch"
-	StorageErrorCodeAuthorizationServiceMismatch               StorageErrorCode = "AuthorizationServiceMismatch"
-	StorageErrorCodeAuthorizationSourceIPMismatch              StorageErrorCode = "AuthorizationSourceIPMismatch"
-	StorageErrorCodeBlobAccessTierNotSupportedForAccountType   StorageErrorCode = "BlobAccessTierNotSupportedForAccountType"
-	StorageErrorCodeBlobAlreadyExists                          StorageErrorCode = "BlobAlreadyExists"
-	StorageErrorCodeBlobArchived                               StorageErrorCode = "BlobArchived"
-	StorageErrorCodeBlobBeingRehydrated                        StorageErrorCode = "BlobBeingRehydrated"
-	StorageErrorCodeBlobImmutableDueToPolicy                   StorageErrorCode = "BlobImmutableDueToPolicy"
-	StorageErrorCodeBlobNotArchived                            StorageErrorCode = "BlobNotArchived"
-	StorageErrorCodeBlobNotFound                               StorageErrorCode = "BlobNotFound"
-	StorageErrorCodeBlobOverwritten                            StorageErrorCode = "BlobOverwritten"
-	StorageErrorCodeBlobTierInadequateForContentLength         StorageErrorCode = "BlobTierInadequateForContentLength"
-	StorageErrorCodeBlobUsesCustomerSpecifiedEncryption        StorageErrorCode = "BlobUsesCustomerSpecifiedEncryption"
-	StorageErrorCodeBlockCountExceedsLimit                     StorageErrorCode = "BlockCountExceedsLimit"
-	StorageErrorCodeBlockListTooLong                           StorageErrorCode = "BlockListTooLong"
-	StorageErrorCodeCannotChangeToLowerTier                    StorageErrorCode = "CannotChangeToLowerTier"
-	StorageErrorCodeCannotVerifyCopySource                     StorageErrorCode = "CannotVerifyCopySource"
-	StorageErrorCodeConditionHeadersNotSupported               StorageErrorCode = "ConditionHeadersNotSupported"
-	StorageErrorCodeConditionNotMet                            StorageErrorCode = "ConditionNotMet"
-	StorageErrorCodeContainerAlreadyExists                     StorageErrorCode = "ContainerAlreadyExists"
-	StorageErrorCodeContainerBeingDeleted                      StorageErrorCode = "ContainerBeingDeleted"
-	StorageErrorCodeContainerDisabled                          StorageErrorCode = "ContainerDisabled"
-	StorageErrorCodeContainerNotFound                          StorageErrorCode = "ContainerNotFound"
-	StorageErrorCodeContentLengthLargerThanTierLimit           StorageErrorCode = "ContentLengthLargerThanTierLimit"
-	StorageErrorCodeCopyAcrossAccountsNotSupported             StorageErrorCode = "CopyAcrossAccountsNotSupported"
-	StorageErrorCodeCopyIDMismatch                             StorageErrorCode = "CopyIdMismatch"
-	StorageErrorCodeEmptyMetadataKey                           StorageErrorCode = "EmptyMetadataKey"
-	StorageErrorCodeFeatureVersionMismatch                     StorageErrorCode = "FeatureVersionMismatch"
-	StorageErrorCodeIncrementalCopyBlobMismatch                StorageErrorCode = "IncrementalCopyBlobMismatch"
+	StorageErrorCodeAccountAlreadyExists StorageErrorCode = "AccountAlreadyExists"
+	StorageErrorCodeAccountBeingCreated StorageErrorCode = "AccountBeingCreated"
+	StorageErrorCodeAccountIsDisabled StorageErrorCode = "AccountIsDisabled"
+	StorageErrorCodeAppendPositionConditionNotMet StorageErrorCode = "AppendPositionConditionNotMet"
+	StorageErrorCodeAuthenticationFailed StorageErrorCode = "AuthenticationFailed"
+	StorageErrorCodeAuthorizationFailure StorageErrorCode = "AuthorizationFailure"
+	StorageErrorCodeAuthorizationPermissionMismatch StorageErrorCode = "AuthorizationPermissionMismatch"
+	StorageErrorCodeAuthorizationProtocolMismatch StorageErrorCode = "AuthorizationProtocolMismatch"
+	StorageErrorCodeAuthorizationResourceTypeMismatch StorageErrorCode = "AuthorizationResourceTypeMismatch"
+	StorageErrorCodeAuthorizationServiceMismatch StorageErrorCode = "AuthorizationServiceMismatch"
+	StorageErrorCodeAuthorizationSourceIPMismatch StorageErrorCode = "AuthorizationSourceIPMismatch"
+	StorageErrorCodeBlobAccessTierNotSupportedForAccountType StorageErrorCode = "BlobAccessTierNotSupportedForAccountType"
+	StorageErrorCodeBlobAlreadyExists StorageErrorCode = "BlobAlreadyExists"
+	StorageErrorCodeBlobArchived StorageErrorCode = "BlobArchived"
+	StorageErrorCodeBlobBeingRehydrated StorageErrorCode = "BlobBeingRehydrated"
+	StorageErrorCodeBlobImmutableDueToPolicy StorageErrorCode = "BlobImmutableDueToPolicy"
+	StorageErrorCodeBlobNotArchived StorageErrorCode = "BlobNotArchived"
+	StorageErrorCodeBlobNotFound StorageErrorCode = "BlobNotFound"
+	StorageErrorCodeBlobOverwritten StorageErrorCode = "BlobOverwritten"
+	StorageErrorCodeBlobTierInadequateForContentLength StorageErrorCode = "BlobTierInadequateForContentLength"
+	StorageErrorCodeBlobUsesCustomerSpecifiedEncryption StorageErrorCode = "BlobUsesCustomerSpecifiedEncryption"
+	StorageErrorCodeBlockCountExceedsLimit StorageErrorCode = "BlockCountExceedsLimit"
+	StorageErrorCodeBlockListTooLong StorageErrorCode = "BlockListTooLong"
+	StorageErrorCodeCannotChangeToLowerTier StorageErrorCode = "CannotChangeToLowerTier"
+	StorageErrorCodeCannotVerifyCopySource StorageErrorCode = "CannotVerifyCopySource"
+	StorageErrorCodeConditionHeadersNotSupported StorageErrorCode = "ConditionHeadersNotSupported"
+	StorageErrorCodeConditionNotMet StorageErrorCode = "ConditionNotMet"
+	StorageErrorCodeContainerAlreadyExists StorageErrorCode = "ContainerAlreadyExists"
+	StorageErrorCodeContainerBeingDeleted StorageErrorCode = "ContainerBeingDeleted"
+	StorageErrorCodeContainerDisabled StorageErrorCode = "ContainerDisabled"
+	StorageErrorCodeContainerNotFound StorageErrorCode = "ContainerNotFound"
+	StorageErrorCodeContentLengthLargerThanTierLimit StorageErrorCode = "ContentLengthLargerThanTierLimit"
+	StorageErrorCodeCopyAcrossAccountsNotSupported StorageErrorCode = "CopyAcrossAccountsNotSupported"
+	StorageErrorCodeCopyIDMismatch StorageErrorCode = "CopyIdMismatch"
+	StorageErrorCodeEmptyMetadataKey StorageErrorCode = "EmptyMetadataKey"
+	StorageErrorCodeFeatureVersionMismatch StorageErrorCode = "FeatureVersionMismatch"
+	StorageErrorCodeIncrementalCopyBlobMismatch StorageErrorCode = "IncrementalCopyBlobMismatch"
 	StorageErrorCodeIncrementalCopyOfEarlierSnapshotNotAllowed StorageErrorCode = "IncrementalCopyOfEarlierSnapshotNotAllowed"
-	StorageErrorCodeIncrementalCopySourceMustBeSnapshot        StorageErrorCode = "IncrementalCopySourceMustBeSnapshot"
-	StorageErrorCodeInfiniteLeaseDurationRequired              StorageErrorCode = "InfiniteLeaseDurationRequired"
-	StorageErrorCodeInsufficientAccountPermissions             StorageErrorCode = "InsufficientAccountPermissions"
-	StorageErrorCodeInternalError                              StorageErrorCode = "InternalError"
-	StorageErrorCodeInvalidAuthenticationInfo                  StorageErrorCode = "InvalidAuthenticationInfo"
-	StorageErrorCodeInvalidBlobOrBlock                         StorageErrorCode = "InvalidBlobOrBlock"
-	StorageErrorCodeInvalidBlobTier                            StorageErrorCode = "InvalidBlobTier"
-	StorageErrorCodeInvalidBlobType                            StorageErrorCode = "InvalidBlobType"
-	StorageErrorCodeInvalidBlockID                             StorageErrorCode = "InvalidBlockId"
-	StorageErrorCodeInvalidBlockList                           StorageErrorCode = "InvalidBlockList"
-	StorageErrorCodeInvalidHTTPVerb                            StorageErrorCode = "InvalidHttpVerb"
-	StorageErrorCodeInvalidHeaderValue                         StorageErrorCode = "InvalidHeaderValue"
-	StorageErrorCodeInvalidInput                               StorageErrorCode = "InvalidInput"
-	StorageErrorCodeInvalidMD5                                 StorageErrorCode = "InvalidMd5"
-	StorageErrorCodeInvalidMetadata                            StorageErrorCode = "InvalidMetadata"
-	StorageErrorCodeInvalidOperation                           StorageErrorCode = "InvalidOperation"
-	StorageErrorCodeInvalidPageRange                           StorageErrorCode = "InvalidPageRange"
-	StorageErrorCodeInvalidQueryParameterValue                 StorageErrorCode = "InvalidQueryParameterValue"
-	StorageErrorCodeInvalidRange                               StorageErrorCode = "InvalidRange"
-	StorageErrorCodeInvalidResourceName                        StorageErrorCode = "InvalidResourceName"
-	StorageErrorCodeInvalidSourceBlobType                      StorageErrorCode = "InvalidSourceBlobType"
-	StorageErrorCodeInvalidSourceBlobURL                       StorageErrorCode = "InvalidSourceBlobUrl"
-	StorageErrorCodeInvalidURI                                 StorageErrorCode = "InvalidUri"
-	StorageErrorCodeInvalidVersionForPageBlobOperation         StorageErrorCode = "InvalidVersionForPageBlobOperation"
-	StorageErrorCodeInvalidXMLDocument                         StorageErrorCode = "InvalidXmlDocument"
-	StorageErrorCodeInvalidXMLNodeValue                        StorageErrorCode = "InvalidXmlNodeValue"
-	StorageErrorCodeLeaseAlreadyBroken                         StorageErrorCode = "LeaseAlreadyBroken"
-	StorageErrorCodeLeaseAlreadyPresent                        StorageErrorCode = "LeaseAlreadyPresent"
-	StorageErrorCodeLeaseIDMismatchWithBlobOperation           StorageErrorCode = "LeaseIdMismatchWithBlobOperation"
-	StorageErrorCodeLeaseIDMismatchWithContainerOperation      StorageErrorCode = "LeaseIdMismatchWithContainerOperation"
-	StorageErrorCodeLeaseIDMismatchWithLeaseOperation          StorageErrorCode = "LeaseIdMismatchWithLeaseOperation"
-	StorageErrorCodeLeaseIDMissing                             StorageErrorCode = "LeaseIdMissing"
-	StorageErrorCodeLeaseIsBreakingAndCannotBeAcquired         StorageErrorCode = "LeaseIsBreakingAndCannotBeAcquired"
-	StorageErrorCodeLeaseIsBreakingAndCannotBeChanged          StorageErrorCode = "LeaseIsBreakingAndCannotBeChanged"
-	StorageErrorCodeLeaseIsBrokenAndCannotBeRenewed            StorageErrorCode = "LeaseIsBrokenAndCannotBeRenewed"
-	StorageErrorCodeLeaseLost                                  StorageErrorCode = "LeaseLost"
-	StorageErrorCodeLeaseNotPresentWithBlobOperation           StorageErrorCode = "LeaseNotPresentWithBlobOperation"
-	StorageErrorCodeLeaseNotPresentWithContainerOperation      StorageErrorCode = "LeaseNotPresentWithContainerOperation"
-	StorageErrorCodeLeaseNotPresentWithLeaseOperation          StorageErrorCode = "LeaseNotPresentWithLeaseOperation"
-	StorageErrorCodeMD5Mismatch                                StorageErrorCode = "Md5Mismatch"
-	StorageErrorCodeMaxBlobSizeConditionNotMet                 StorageErrorCode = "MaxBlobSizeConditionNotMet"
-	StorageErrorCodeMetadataTooLarge                           StorageErrorCode = "MetadataTooLarge"
-	StorageErrorCodeMissingContentLengthHeader                 StorageErrorCode = "MissingContentLengthHeader"
-	StorageErrorCodeMissingRequiredHeader                      StorageErrorCode = "MissingRequiredHeader"
-	StorageErrorCodeMissingRequiredQueryParameter              StorageErrorCode = "MissingRequiredQueryParameter"
-	StorageErrorCodeMissingRequiredXMLNode                     StorageErrorCode = "MissingRequiredXmlNode"
-	StorageErrorCodeMultipleConditionHeadersNotSupported       StorageErrorCode = "MultipleConditionHeadersNotSupported"
-	StorageErrorCodeNoAuthenticationInformation                StorageErrorCode = "NoAuthenticationInformation"
-	StorageErrorCodeNoPendingCopyOperation                     StorageErrorCode = "NoPendingCopyOperation"
-	StorageErrorCodeOperationNotAllowedOnIncrementalCopyBlob   StorageErrorCode = "OperationNotAllowedOnIncrementalCopyBlob"
-	StorageErrorCodeOperationTimedOut                          StorageErrorCode = "OperationTimedOut"
-	StorageErrorCodeOutOfRangeInput                            StorageErrorCode = "OutOfRangeInput"
-	StorageErrorCodeOutOfRangeQueryParameterValue              StorageErrorCode = "OutOfRangeQueryParameterValue"
-	StorageErrorCodePendingCopyOperation                       StorageErrorCode = "PendingCopyOperation"
-	StorageErrorCodePreviousSnapshotCannotBeNewer              StorageErrorCode = "PreviousSnapshotCannotBeNewer"
-	StorageErrorCodePreviousSnapshotNotFound                   StorageErrorCode = "PreviousSnapshotNotFound"
-	StorageErrorCodePreviousSnapshotOperationNotSupported      StorageErrorCode = "PreviousSnapshotOperationNotSupported"
-	StorageErrorCodeRequestBodyTooLarge                        StorageErrorCode = "RequestBodyTooLarge"
-	StorageErrorCodeRequestURLFailedToParse                    StorageErrorCode = "RequestUrlFailedToParse"
-	StorageErrorCodeResourceAlreadyExists                      StorageErrorCode = "ResourceAlreadyExists"
-	StorageErrorCodeResourceNotFound                           StorageErrorCode = "ResourceNotFound"
-	StorageErrorCodeResourceTypeMismatch                       StorageErrorCode = "ResourceTypeMismatch"
-	StorageErrorCodeSequenceNumberConditionNotMet              StorageErrorCode = "SequenceNumberConditionNotMet"
-	StorageErrorCodeSequenceNumberIncrementTooLarge            StorageErrorCode = "SequenceNumberIncrementTooLarge"
-	StorageErrorCodeServerBusy                                 StorageErrorCode = "ServerBusy"
-	StorageErrorCodeSnapshotCountExceeded                      StorageErrorCode = "SnapshotCountExceeded"
-	StorageErrorCodeSnapshotOperationRateExceeded              StorageErrorCode = "SnapshotOperationRateExceeded"
-	StorageErrorCodeSnapshotsPresent                           StorageErrorCode = "SnapshotsPresent"
-	StorageErrorCodeSourceConditionNotMet                      StorageErrorCode = "SourceConditionNotMet"
-	StorageErrorCodeSystemInUse                                StorageErrorCode = "SystemInUse"
-	StorageErrorCodeTargetConditionNotMet                      StorageErrorCode = "TargetConditionNotMet"
-	StorageErrorCodeUnauthorizedBlobOverwrite                  StorageErrorCode = "UnauthorizedBlobOverwrite"
-	StorageErrorCodeUnsupportedHTTPVerb                        StorageErrorCode = "UnsupportedHttpVerb"
-	StorageErrorCodeUnsupportedHeader                          StorageErrorCode = "UnsupportedHeader"
-	StorageErrorCodeUnsupportedQueryParameter                  StorageErrorCode = "UnsupportedQueryParameter"
-	StorageErrorCodeUnsupportedXMLNode                         StorageErrorCode = "UnsupportedXmlNode"
+	StorageErrorCodeIncrementalCopySourceMustBeSnapshot StorageErrorCode = "IncrementalCopySourceMustBeSnapshot"
+	StorageErrorCodeInfiniteLeaseDurationRequired StorageErrorCode = "InfiniteLeaseDurationRequired"
+	StorageErrorCodeInsufficientAccountPermissions StorageErrorCode = "InsufficientAccountPermissions"
+	StorageErrorCodeInternalError StorageErrorCode = "InternalError"
+	StorageErrorCodeInvalidAuthenticationInfo StorageErrorCode = "InvalidAuthenticationInfo"
+	StorageErrorCodeInvalidBlobOrBlock StorageErrorCode = "InvalidBlobOrBlock"
+	StorageErrorCodeInvalidBlobTier StorageErrorCode = "InvalidBlobTier"
+	StorageErrorCodeInvalidBlobType StorageErrorCode = "InvalidBlobType"
+	StorageErrorCodeInvalidBlockID StorageErrorCode = "InvalidBlockId"
+	StorageErrorCodeInvalidBlockList StorageErrorCode = "InvalidBlockList"
+	StorageErrorCodeInvalidHTTPVerb StorageErrorCode = "InvalidHttpVerb"
+	StorageErrorCodeInvalidHeaderValue StorageErrorCode = "InvalidHeaderValue"
+	StorageErrorCodeInvalidInput StorageErrorCode = "InvalidInput"
+	StorageErrorCodeInvalidMD5 StorageErrorCode = "InvalidMd5"
+	StorageErrorCodeInvalidMetadata StorageErrorCode = "InvalidMetadata"
+	StorageErrorCodeInvalidOperation StorageErrorCode = "InvalidOperation"
+	StorageErrorCodeInvalidPageRange StorageErrorCode = "InvalidPageRange"
+	StorageErrorCodeInvalidQueryParameterValue StorageErrorCode = "InvalidQueryParameterValue"
+	StorageErrorCodeInvalidRange StorageErrorCode = "InvalidRange"
+	StorageErrorCodeInvalidResourceName StorageErrorCode = "InvalidResourceName"
+	StorageErrorCodeInvalidSourceBlobType StorageErrorCode = "InvalidSourceBlobType"
+	StorageErrorCodeInvalidSourceBlobURL StorageErrorCode = "InvalidSourceBlobUrl"
+	StorageErrorCodeInvalidURI StorageErrorCode = "InvalidUri"
+	StorageErrorCodeInvalidVersionForPageBlobOperation StorageErrorCode = "InvalidVersionForPageBlobOperation"
+	StorageErrorCodeInvalidXMLDocument StorageErrorCode = "InvalidXmlDocument"
+	StorageErrorCodeInvalidXMLNodeValue StorageErrorCode = "InvalidXmlNodeValue"
+	StorageErrorCodeLeaseAlreadyBroken StorageErrorCode = "LeaseAlreadyBroken"
+	StorageErrorCodeLeaseAlreadyPresent StorageErrorCode = "LeaseAlreadyPresent"
+	StorageErrorCodeLeaseIDMismatchWithBlobOperation StorageErrorCode = "LeaseIdMismatchWithBlobOperation"
+	StorageErrorCodeLeaseIDMismatchWithContainerOperation StorageErrorCode = "LeaseIdMismatchWithContainerOperation"
+	StorageErrorCodeLeaseIDMismatchWithLeaseOperation StorageErrorCode = "LeaseIdMismatchWithLeaseOperation"
+	StorageErrorCodeLeaseIDMissing StorageErrorCode = "LeaseIdMissing"
+	StorageErrorCodeLeaseIsBreakingAndCannotBeAcquired StorageErrorCode = "LeaseIsBreakingAndCannotBeAcquired"
+	StorageErrorCodeLeaseIsBreakingAndCannotBeChanged StorageErrorCode = "LeaseIsBreakingAndCannotBeChanged"
+	StorageErrorCodeLeaseIsBrokenAndCannotBeRenewed StorageErrorCode = "LeaseIsBrokenAndCannotBeRenewed"
+	StorageErrorCodeLeaseLost StorageErrorCode = "LeaseLost"
+	StorageErrorCodeLeaseNotPresentWithBlobOperation StorageErrorCode = "LeaseNotPresentWithBlobOperation"
+	StorageErrorCodeLeaseNotPresentWithContainerOperation StorageErrorCode = "LeaseNotPresentWithContainerOperation"
+	StorageErrorCodeLeaseNotPresentWithLeaseOperation StorageErrorCode = "LeaseNotPresentWithLeaseOperation"
+	StorageErrorCodeMD5Mismatch StorageErrorCode = "Md5Mismatch"
+	StorageErrorCodeMaxBlobSizeConditionNotMet StorageErrorCode = "MaxBlobSizeConditionNotMet"
+	StorageErrorCodeMetadataTooLarge StorageErrorCode = "MetadataTooLarge"
+	StorageErrorCodeMissingContentLengthHeader StorageErrorCode = "MissingContentLengthHeader"
+	StorageErrorCodeMissingRequiredHeader StorageErrorCode = "MissingRequiredHeader"
+	StorageErrorCodeMissingRequiredQueryParameter StorageErrorCode = "MissingRequiredQueryParameter"
+	StorageErrorCodeMissingRequiredXMLNode StorageErrorCode = "MissingRequiredXmlNode"
+	StorageErrorCodeMultipleConditionHeadersNotSupported StorageErrorCode = "MultipleConditionHeadersNotSupported"
+	StorageErrorCodeNoAuthenticationInformation StorageErrorCode = "NoAuthenticationInformation"
+	StorageErrorCodeNoPendingCopyOperation StorageErrorCode = "NoPendingCopyOperation"
+	StorageErrorCodeOperationNotAllowedOnIncrementalCopyBlob StorageErrorCode = "OperationNotAllowedOnIncrementalCopyBlob"
+	StorageErrorCodeOperationTimedOut StorageErrorCode = "OperationTimedOut"
+	StorageErrorCodeOutOfRangeInput StorageErrorCode = "OutOfRangeInput"
+	StorageErrorCodeOutOfRangeQueryParameterValue StorageErrorCode = "OutOfRangeQueryParameterValue"
+	StorageErrorCodePendingCopyOperation StorageErrorCode = "PendingCopyOperation"
+	StorageErrorCodePreviousSnapshotCannotBeNewer StorageErrorCode = "PreviousSnapshotCannotBeNewer"
+	StorageErrorCodePreviousSnapshotNotFound StorageErrorCode = "PreviousSnapshotNotFound"
+	StorageErrorCodePreviousSnapshotOperationNotSupported StorageErrorCode = "PreviousSnapshotOperationNotSupported"
+	StorageErrorCodeRequestBodyTooLarge StorageErrorCode = "RequestBodyTooLarge"
+	StorageErrorCodeRequestURLFailedToParse StorageErrorCode = "RequestUrlFailedToParse"
+	StorageErrorCodeResourceAlreadyExists StorageErrorCode = "ResourceAlreadyExists"
+	StorageErrorCodeResourceNotFound StorageErrorCode = "ResourceNotFound"
+	StorageErrorCodeResourceTypeMismatch StorageErrorCode = "ResourceTypeMismatch"
+	StorageErrorCodeSequenceNumberConditionNotMet StorageErrorCode = "SequenceNumberConditionNotMet"
+	StorageErrorCodeSequenceNumberIncrementTooLarge StorageErrorCode = "SequenceNumberIncrementTooLarge"
+	StorageErrorCodeServerBusy StorageErrorCode = "ServerBusy"
+	StorageErrorCodeSnapshotCountExceeded StorageErrorCode = "SnapshotCountExceeded"
+	StorageErrorCodeSnapshotOperationRateExceeded StorageErrorCode = "SnapshotOperationRateExceeded"
+	StorageErrorCodeSnapshotsPresent StorageErrorCode = "SnapshotsPresent"
+	StorageErrorCodeSourceConditionNotMet StorageErrorCode = "SourceConditionNotMet"
+	StorageErrorCodeSystemInUse StorageErrorCode = "SystemInUse"
+	StorageErrorCodeTargetConditionNotMet StorageErrorCode = "TargetConditionNotMet"
+	StorageErrorCodeUnauthorizedBlobOverwrite StorageErrorCode = "UnauthorizedBlobOverwrite"
+	StorageErrorCodeUnsupportedHTTPVerb StorageErrorCode = "UnsupportedHttpVerb"
+	StorageErrorCodeUnsupportedHeader StorageErrorCode = "UnsupportedHeader"
+	StorageErrorCodeUnsupportedQueryParameter StorageErrorCode = "UnsupportedQueryParameter"
+	StorageErrorCodeUnsupportedXMLNode StorageErrorCode = "UnsupportedXmlNode"
 )
 
 // PossibleStorageErrorCodeValues returns the possible values for the StorageErrorCode const type.
@@ -769,3 +769,4 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 		StorageErrorCodeUnsupportedXMLNode,
 	}
 }
+

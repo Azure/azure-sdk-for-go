@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
 	"strconv"
 	"time"
@@ -53,11 +54,12 @@ func (a *ACLFailedEntry) UnmarshalJSON(data []byte) error {
 
 // MarshalXML implements the xml.Marshaller interface for type PathHierarchyListSegment.
 func (b PathHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Blobs"
 	type alias PathHierarchyListSegment
 	aux := &struct {
 		*alias
-		PathItems    *[]*PathItemInternal `xml:"Blob"`
-		PathPrefixes *[]*PathPrefix       `xml:"PathPrefix"`
+		PathItems *[]*PathItemInternal `xml:"Blob"`
+		PathPrefixes *[]*PathPrefix `xml:"PathPrefixes"`
 	}{
 		alias: (*alias)(&b),
 	}
@@ -70,30 +72,43 @@ func (b PathHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type PathItemInternal.
+func (b PathItemInternal) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Blob"
+	type alias PathItemInternal
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&b),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type PathPropertiesInternal.
 func (b PathPropertiesInternal) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Properties"
 	type alias PathPropertiesInternal
 	aux := &struct {
 		*alias
-		AccessTierChangeTime *dateTimeRFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5           *string          `xml:"Content-MD5"`
-		CopyCompletionTime   *dateTimeRFC1123 `xml:"CopyCompletionTime"`
-		CreationTime         *dateTimeRFC1123 `xml:"Creation-Time"`
-		DeleteTime           *dateTimeRFC1123 `xml:"DeleteTime"`
-		DeletedTime          *dateTimeRFC1123 `xml:"DeletedTime"`
-		ExpiresOn            *dateTimeRFC1123 `xml:"Expiry-Time"`
-		LastAccessedOn       *dateTimeRFC1123 `xml:"LastAccessTime"`
-		LastModified         *dateTimeRFC1123 `xml:"Last-Modified"`
+		AccessTierChangeTime *datetime.RFC1123 `xml:"AccessTierChangeTime"`
+		ContentMD5 *string `xml:"Content-MD5"`
+		CopyCompletionTime *datetime.RFC1123 `xml:"CopyCompletionTime"`
+		CreationTime *datetime.RFC1123 `xml:"Creation-Time"`
+		DeleteTime *datetime.RFC1123 `xml:"DeleteTime"`
+		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
+		ExpiresOn *datetime.RFC1123 `xml:"Expiry-Time"`
+		LastAccessedOn *datetime.RFC1123 `xml:"LastAccessTime"`
+		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
-		alias:                (*alias)(&b),
-		AccessTierChangeTime: (*dateTimeRFC1123)(b.AccessTierChangeTime),
-		CopyCompletionTime:   (*dateTimeRFC1123)(b.CopyCompletionTime),
-		CreationTime:         (*dateTimeRFC1123)(b.CreationTime),
-		DeleteTime:           (*dateTimeRFC1123)(b.DeleteTime),
-		DeletedTime:          (*dateTimeRFC1123)(b.DeletedTime),
-		ExpiresOn:            (*dateTimeRFC1123)(b.ExpiresOn),
-		LastAccessedOn:       (*dateTimeRFC1123)(b.LastAccessedOn),
-		LastModified:         (*dateTimeRFC1123)(b.LastModified),
+		alias: (*alias)(&b),
+		AccessTierChangeTime: (*datetime.RFC1123)(b.AccessTierChangeTime),
+		CopyCompletionTime: (*datetime.RFC1123)(b.CopyCompletionTime),
+		CreationTime: (*datetime.RFC1123)(b.CreationTime),
+		DeleteTime: (*datetime.RFC1123)(b.DeleteTime),
+		DeletedTime: (*datetime.RFC1123)(b.DeletedTime),
+		ExpiresOn: (*datetime.RFC1123)(b.ExpiresOn),
+		LastAccessedOn: (*datetime.RFC1123)(b.LastAccessedOn),
+		LastModified: (*datetime.RFC1123)(b.LastModified),
 	}
 	if b.ContentMD5 != nil {
 		encodedContentMD5 := runtime.EncodeByteArray(b.ContentMD5, runtime.Base64StdFormat)
@@ -107,15 +122,15 @@ func (b *PathPropertiesInternal) UnmarshalXML(dec *xml.Decoder, start xml.StartE
 	type alias PathPropertiesInternal
 	aux := &struct {
 		*alias
-		AccessTierChangeTime *dateTimeRFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5           *string          `xml:"Content-MD5"`
-		CopyCompletionTime   *dateTimeRFC1123 `xml:"CopyCompletionTime"`
-		CreationTime         *dateTimeRFC1123 `xml:"Creation-Time"`
-		DeleteTime           *dateTimeRFC1123 `xml:"DeleteTime"`
-		DeletedTime          *dateTimeRFC1123 `xml:"DeletedTime"`
-		ExpiresOn            *dateTimeRFC1123 `xml:"Expiry-Time"`
-		LastAccessedOn       *dateTimeRFC1123 `xml:"LastAccessTime"`
-		LastModified         *dateTimeRFC1123 `xml:"Last-Modified"`
+		AccessTierChangeTime *datetime.RFC1123 `xml:"AccessTierChangeTime"`
+		ContentMD5 *string `xml:"Content-MD5"`
+		CopyCompletionTime *datetime.RFC1123 `xml:"CopyCompletionTime"`
+		CreationTime *datetime.RFC1123 `xml:"Creation-Time"`
+		DeleteTime *datetime.RFC1123 `xml:"DeleteTime"`
+		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
+		ExpiresOn *datetime.RFC1123 `xml:"Expiry-Time"`
+		LastAccessedOn *datetime.RFC1123 `xml:"LastAccessTime"`
+		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(b),
 	}
@@ -216,6 +231,18 @@ func (f *FileSystemList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type ListPathsHierarchySegmentResponse.
+func (l ListPathsHierarchySegmentResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "EnumerationResults"
+	type alias ListPathsHierarchySegmentResponse
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&l),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Path.
 func (p Path) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -245,9 +272,9 @@ func (p *Path) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "contentLength":
 			var rawVal string
-			err = unpopulate(val, "ContentLength", &rawVal)
-			intVal, _ := strconv.ParseInt(rawVal, 10, 64)
-			p.ContentLength = &intVal
+err = unpopulate(val, "ContentLength", &rawVal)
+intVal, _ := strconv.ParseInt(rawVal, 10, 64)
+p.ContentLength = &intVal
 			delete(rawMsg, key)
 		case "creationTime":
 			err = unpopulate(val, "CreationTime", &p.CreationTime)
@@ -269,9 +296,9 @@ func (p *Path) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "isDirectory":
 			var rawVal string
-			err = unpopulate(val, "IsDirectory", &rawVal)
-			boolVal, _ := strconv.ParseBool(rawVal)
-			p.IsDirectory = &boolVal
+err = unpopulate(val, "IsDirectory", &rawVal)
+boolVal, _ := strconv.ParseBool(rawVal)
+p.IsDirectory = &boolVal
 			delete(rawMsg, key)
 		case "lastModified":
 			err = unpopulate(val, "LastModified", &p.LastModified)
@@ -436,3 +463,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

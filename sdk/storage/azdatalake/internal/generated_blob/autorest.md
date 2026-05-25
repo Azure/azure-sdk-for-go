@@ -9,6 +9,7 @@ version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
 input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e1470c23ac1cb2a15cd5ef1e2b2dd187a3de13e9/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-06-06/blob.json"
 credential-scope: "https://storage.azure.com/.default"
+containing-module: github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake
 output-folder: ../generated_blob
 file-prefix: "zz_"
 openapi-type: "data-plane"
@@ -19,7 +20,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.65"
+use: "@autorest/go@4.0.0-preview.79"
 ```
 
 ### Add a Properties field to the BlobPrefix definition
@@ -351,7 +352,6 @@ directive:
   where: $
   transform: >-
     return $.
-      replace(/"github\.com\/Azure\/azure\-sdk\-for\-go\/sdk\/azcore\/policy"/, `"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"`).
       replace(/result\.ETag\s+=\s+&val/g, `result.ETag = (*azcore.ETag)(&val)`).
       replace(/\*modifiedAccessConditions.IfMatch/g, `string(*modifiedAccessConditions.IfMatch)`).
       replace(/\*modifiedAccessConditions.IfNoneMatch/g, `string(*modifiedAccessConditions.IfNoneMatch)`).

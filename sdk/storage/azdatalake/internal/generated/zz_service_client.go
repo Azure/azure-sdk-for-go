@@ -21,12 +21,10 @@ import (
 type ServiceClient struct {
 	internal *azcore.Client
 	endpoint string
-	version  string
+	version string
 }
 
 // NewListFileSystemsPager - List filesystems and their properties in given account.
-//
-// Generated from API version 2026-06-06
 //   - options - ServiceClientListFileSystemsOptions contains the optional parameters for the ServiceClient.NewListFileSystemsPager
 //     method.
 //
@@ -50,7 +48,7 @@ func (client *ServiceClient) ListFileSystemsCreateRequest(ctx context.Context, o
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -86,3 +84,4 @@ func (client *ServiceClient) ListFileSystemsHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

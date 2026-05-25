@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
 	"time"
 )
@@ -20,12 +21,12 @@ func (a AccessPolicy) MarshalXML(enc *xml.Encoder, start xml.StartElement) error
 	type alias AccessPolicy
 	aux := &struct {
 		*alias
-		Expiry *dateTimeRFC3339 `xml:"Expiry"`
-		Start  *dateTimeRFC3339 `xml:"Start"`
+		Expiry *datetime.RFC3339 `xml:"Expiry"`
+		Start *datetime.RFC3339 `xml:"Start"`
 	}{
-		alias:  (*alias)(&a),
-		Expiry: (*dateTimeRFC3339)(a.Expiry),
-		Start:  (*dateTimeRFC3339)(a.Start),
+		alias: (*alias)(&a),
+		Expiry: (*datetime.RFC3339)(a.Expiry),
+		Start: (*datetime.RFC3339)(a.Start),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -35,8 +36,8 @@ func (a *AccessPolicy) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) er
 	type alias AccessPolicy
 	aux := &struct {
 		*alias
-		Expiry *dateTimeRFC3339 `xml:"Expiry"`
-		Start  *dateTimeRFC3339 `xml:"Start"`
+		Expiry *datetime.RFC3339 `xml:"Expiry"`
+		Start *datetime.RFC3339 `xml:"Start"`
 	}{
 		alias: (*alias)(a),
 	}
@@ -67,8 +68,21 @@ func (a ArrowConfiguration) MarshalXML(enc *xml.Encoder, start xml.StartElement)
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type ArrowField.
+func (a ArrowField) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Field"
+	type alias ArrowField
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&a),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type BlobFlatListSegment.
 func (b BlobFlatListSegment) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Blobs"
 	type alias BlobFlatListSegment
 	aux := &struct {
 		*alias
@@ -84,11 +98,12 @@ func (b BlobFlatListSegment) MarshalXML(enc *xml.Encoder, start xml.StartElement
 
 // MarshalXML implements the xml.Marshaller interface for type BlobHierarchyListSegment.
 func (b BlobHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Blobs"
 	type alias BlobHierarchyListSegment
 	aux := &struct {
 		*alias
-		BlobItems    *[]*BlobItem   `xml:"Blob"`
-		BlobPrefixes *[]*BlobPrefix `xml:"BlobPrefix"`
+		BlobItems *[]*BlobItem `xml:"Blob"`
+		BlobPrefixes *[]*BlobPrefix `xml:"BlobPrefixes"`
 	}{
 		alias: (*alias)(&b),
 	}
@@ -103,28 +118,29 @@ func (b BlobHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartEl
 
 // MarshalXML implements the xml.Marshaller interface for type BlobProperties.
 func (b BlobProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Properties"
 	type alias BlobProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime        *dateTimeRFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5                  *string          `xml:"Content-MD5"`
-		CopyCompletionTime          *dateTimeRFC1123 `xml:"CopyCompletionTime"`
-		CreationTime                *dateTimeRFC1123 `xml:"Creation-Time"`
-		DeletedTime                 *dateTimeRFC1123 `xml:"DeletedTime"`
-		ExpiresOn                   *dateTimeRFC1123 `xml:"Expiry-Time"`
-		ImmutabilityPolicyExpiresOn *dateTimeRFC1123 `xml:"ImmutabilityPolicyUntilDate"`
-		LastAccessedOn              *dateTimeRFC1123 `xml:"LastAccessTime"`
-		LastModified                *dateTimeRFC1123 `xml:"Last-Modified"`
+		AccessTierChangeTime *datetime.RFC1123 `xml:"AccessTierChangeTime"`
+		ContentMD5 *string `xml:"Content-MD5"`
+		CopyCompletionTime *datetime.RFC1123 `xml:"CopyCompletionTime"`
+		CreationTime *datetime.RFC1123 `xml:"Creation-Time"`
+		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
+		ExpiresOn *datetime.RFC1123 `xml:"Expiry-Time"`
+		ImmutabilityPolicyExpiresOn *datetime.RFC1123 `xml:"ImmutabilityPolicyUntilDate"`
+		LastAccessedOn *datetime.RFC1123 `xml:"LastAccessTime"`
+		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
-		alias:                       (*alias)(&b),
-		AccessTierChangeTime:        (*dateTimeRFC1123)(b.AccessTierChangeTime),
-		CopyCompletionTime:          (*dateTimeRFC1123)(b.CopyCompletionTime),
-		CreationTime:                (*dateTimeRFC1123)(b.CreationTime),
-		DeletedTime:                 (*dateTimeRFC1123)(b.DeletedTime),
-		ExpiresOn:                   (*dateTimeRFC1123)(b.ExpiresOn),
-		ImmutabilityPolicyExpiresOn: (*dateTimeRFC1123)(b.ImmutabilityPolicyExpiresOn),
-		LastAccessedOn:              (*dateTimeRFC1123)(b.LastAccessedOn),
-		LastModified:                (*dateTimeRFC1123)(b.LastModified),
+		alias: (*alias)(&b),
+		AccessTierChangeTime: (*datetime.RFC1123)(b.AccessTierChangeTime),
+		CopyCompletionTime: (*datetime.RFC1123)(b.CopyCompletionTime),
+		CreationTime: (*datetime.RFC1123)(b.CreationTime),
+		DeletedTime: (*datetime.RFC1123)(b.DeletedTime),
+		ExpiresOn: (*datetime.RFC1123)(b.ExpiresOn),
+		ImmutabilityPolicyExpiresOn: (*datetime.RFC1123)(b.ImmutabilityPolicyExpiresOn),
+		LastAccessedOn: (*datetime.RFC1123)(b.LastAccessedOn),
+		LastModified: (*datetime.RFC1123)(b.LastModified),
 	}
 	if b.ContentMD5 != nil {
 		encodedContentMD5 := runtime.EncodeByteArray(b.ContentMD5, runtime.Base64StdFormat)
@@ -138,15 +154,15 @@ func (b *BlobProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) 
 	type alias BlobProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime        *dateTimeRFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5                  *string          `xml:"Content-MD5"`
-		CopyCompletionTime          *dateTimeRFC1123 `xml:"CopyCompletionTime"`
-		CreationTime                *dateTimeRFC1123 `xml:"Creation-Time"`
-		DeletedTime                 *dateTimeRFC1123 `xml:"DeletedTime"`
-		ExpiresOn                   *dateTimeRFC1123 `xml:"Expiry-Time"`
-		ImmutabilityPolicyExpiresOn *dateTimeRFC1123 `xml:"ImmutabilityPolicyUntilDate"`
-		LastAccessedOn              *dateTimeRFC1123 `xml:"LastAccessTime"`
-		LastModified                *dateTimeRFC1123 `xml:"Last-Modified"`
+		AccessTierChangeTime *datetime.RFC1123 `xml:"AccessTierChangeTime"`
+		ContentMD5 *string `xml:"Content-MD5"`
+		CopyCompletionTime *datetime.RFC1123 `xml:"CopyCompletionTime"`
+		CreationTime *datetime.RFC1123 `xml:"Creation-Time"`
+		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
+		ExpiresOn *datetime.RFC1123 `xml:"Expiry-Time"`
+		ImmutabilityPolicyExpiresOn *datetime.RFC1123 `xml:"ImmutabilityPolicyUntilDate"`
+		LastAccessedOn *datetime.RFC1123 `xml:"LastAccessTime"`
+		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(b),
 	}
@@ -185,6 +201,18 @@ func (b *BlobProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) 
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type BlobTag.
+func (b BlobTag) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Tag"
+	type alias BlobTag
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&b),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type BlobTags.
 func (b BlobTags) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "Tags"
@@ -206,7 +234,7 @@ func (b BlockList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias BlockList
 	aux := &struct {
 		*alias
-		CommittedBlocks   *[]*Block `xml:"CommittedBlocks>Block"`
+		CommittedBlocks *[]*Block `xml:"CommittedBlocks>Block"`
 		UncommittedBlocks *[]*Block `xml:"UncommittedBlocks>Block"`
 	}{
 		alias: (*alias)(&b),
@@ -226,8 +254,8 @@ func (b BlockLookupList) MarshalXML(enc *xml.Encoder, start xml.StartElement) er
 	type alias BlockLookupList
 	aux := &struct {
 		*alias
-		Committed   *[]*string `xml:"Committed"`
-		Latest      *[]*string `xml:"Latest"`
+		Committed *[]*string `xml:"Committed"`
+		Latest *[]*string `xml:"Latest"`
 		Uncommitted *[]*string `xml:"Uncommitted"`
 	}{
 		alias: (*alias)(&b),
@@ -241,6 +269,20 @@ func (b BlockLookupList) MarshalXML(enc *xml.Encoder, start xml.StartElement) er
 	if b.Uncommitted != nil {
 		aux.Uncommitted = &b.Uncommitted
 	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type ContainerItem.
+func (c ContainerItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Container"
+	type alias ContainerItem
+	aux := &struct {
+		*alias
+		Metadata additionalProperties `xml:"Metadata"`
+	}{
+		alias: (*alias)(&c),
+	}
+	aux.Metadata = (additionalProperties)(c.Metadata)
 	return enc.EncodeElement(aux, start)
 }
 
@@ -265,12 +307,12 @@ func (c ContainerProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement
 	type alias ContainerProperties
 	aux := &struct {
 		*alias
-		DeletedTime  *dateTimeRFC1123 `xml:"DeletedTime"`
-		LastModified *dateTimeRFC1123 `xml:"Last-Modified"`
+		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
+		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
-		alias:        (*alias)(&c),
-		DeletedTime:  (*dateTimeRFC1123)(c.DeletedTime),
-		LastModified: (*dateTimeRFC1123)(c.LastModified),
+		alias: (*alias)(&c),
+		DeletedTime: (*datetime.RFC1123)(c.DeletedTime),
+		LastModified: (*datetime.RFC1123)(c.LastModified),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -280,8 +322,8 @@ func (c *ContainerProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElem
 	type alias ContainerProperties
 	aux := &struct {
 		*alias
-		DeletedTime  *dateTimeRFC1123 `xml:"DeletedTime"`
-		LastModified *dateTimeRFC1123 `xml:"Last-Modified"`
+		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
+		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(c),
 	}
@@ -297,8 +339,21 @@ func (c *ContainerProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElem
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type FilterBlobItem.
+func (f FilterBlobItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Blob"
+	type alias FilterBlobItem
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&f),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type FilterBlobSegment.
 func (f FilterBlobSegment) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "EnumerationResults"
 	type alias FilterBlobSegment
 	aux := &struct {
 		*alias
@@ -317,10 +372,10 @@ func (g GeoReplication) MarshalXML(enc *xml.Encoder, start xml.StartElement) err
 	type alias GeoReplication
 	aux := &struct {
 		*alias
-		LastSyncTime *dateTimeRFC1123 `xml:"LastSyncTime"`
+		LastSyncTime *datetime.RFC1123 `xml:"LastSyncTime"`
 	}{
-		alias:        (*alias)(&g),
-		LastSyncTime: (*dateTimeRFC1123)(g.LastSyncTime),
+		alias: (*alias)(&g),
+		LastSyncTime: (*datetime.RFC1123)(g.LastSyncTime),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -330,7 +385,7 @@ func (g *GeoReplication) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) 
 	type alias GeoReplication
 	aux := &struct {
 		*alias
-		LastSyncTime *dateTimeRFC1123 `xml:"LastSyncTime"`
+		LastSyncTime *datetime.RFC1123 `xml:"LastSyncTime"`
 	}{
 		alias: (*alias)(g),
 	}
@@ -343,8 +398,45 @@ func (g *GeoReplication) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) 
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type JSONTextConfiguration.
+func (j JSONTextConfiguration) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "JsonTextConfiguration"
+	type alias JSONTextConfiguration
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&j),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type ListBlobsFlatSegmentResponse.
+func (l ListBlobsFlatSegmentResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "EnumerationResults"
+	type alias ListBlobsFlatSegmentResponse
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&l),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type ListBlobsHierarchySegmentResponse.
+func (l ListBlobsHierarchySegmentResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "EnumerationResults"
+	type alias ListBlobsHierarchySegmentResponse
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&l),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type ListContainersSegmentResponse.
 func (l ListContainersSegmentResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "EnumerationResults"
 	type alias ListContainersSegmentResponse
 	aux := &struct {
 		*alias
@@ -364,7 +456,7 @@ func (p PageList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		ClearRange *[]*ClearRange `xml:"ClearRange"`
-		PageRange  *[]*PageRange  `xml:"PageRange"`
+		PageRange *[]*PageRange `xml:"PageRange"`
 	}{
 		alias: (*alias)(&p),
 	}
@@ -373,18 +465,6 @@ func (p PageList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	}
 	if p.PageRange != nil {
 		aux.PageRange = &p.PageRange
-	}
-	return enc.EncodeElement(aux, start)
-}
-
-// MarshalXML implements the xml.Marshaller interface for type QueryRequest.
-func (q QueryRequest) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	start.Name.Local = "QueryRequest"
-	type alias QueryRequest
-	aux := &struct {
-		*alias
-	}{
-		alias: (*alias)(&q),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -448,12 +528,12 @@ func (u UserDelegationKey) MarshalXML(enc *xml.Encoder, start xml.StartElement) 
 	type alias UserDelegationKey
 	aux := &struct {
 		*alias
-		SignedExpiry *dateTimeRFC3339 `xml:"SignedExpiry"`
-		SignedStart  *dateTimeRFC3339 `xml:"SignedStart"`
+		SignedExpiry *datetime.RFC3339 `xml:"SignedExpiry"`
+		SignedStart *datetime.RFC3339 `xml:"SignedStart"`
 	}{
-		alias:        (*alias)(&u),
-		SignedExpiry: (*dateTimeRFC3339)(u.SignedExpiry),
-		SignedStart:  (*dateTimeRFC3339)(u.SignedStart),
+		alias: (*alias)(&u),
+		SignedExpiry: (*datetime.RFC3339)(u.SignedExpiry),
+		SignedStart: (*datetime.RFC3339)(u.SignedStart),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -463,8 +543,8 @@ func (u *UserDelegationKey) UnmarshalXML(dec *xml.Decoder, start xml.StartElemen
 	type alias UserDelegationKey
 	aux := &struct {
 		*alias
-		SignedExpiry *dateTimeRFC3339 `xml:"SignedExpiry"`
-		SignedStart  *dateTimeRFC3339 `xml:"SignedStart"`
+		SignedExpiry *datetime.RFC3339 `xml:"SignedExpiry"`
+		SignedStart *datetime.RFC3339 `xml:"SignedStart"`
 	}{
 		alias: (*alias)(u),
 	}
@@ -499,3 +579,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

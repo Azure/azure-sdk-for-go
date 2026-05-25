@@ -11,9 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -22,15 +24,13 @@ import (
 type AppendBlobClient struct {
 	internal *azcore.Client
 	endpoint string
-	version  string
+	version string
 }
 
 // AppendBlock - The Append Block operation commits a new block of data to the end of an existing append blob. The Append
 // Block operation is permitted only if the blob was created with x-ms-blob-type set to
 // AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-06
 //   - contentLength - The length of the request.
 //   - body - Initial data
 //   - options - AppendBlobClientAppendBlockOptions contains the optional parameters for the AppendBlobClient.AppendBlock method.
@@ -69,7 +69,7 @@ func (client *AppendBlobClient) appendBlockCreateRequest(ctx context.Context, co
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.TransactionalContentMD5 != nil {
@@ -79,13 +79,13 @@ func (client *AppendBlobClient) appendBlockCreateRequest(ctx context.Context, co
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfModifiedSince).String()}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfUnmodifiedSince).String()}
 	}
 	if appendPositionAccessConditions != nil && appendPositionAccessConditions.AppendPosition != nil {
 		req.Raw().Header["x-ms-blob-condition-appendpos"] = []string{strconv.FormatInt(*appendPositionAccessConditions.AppendPosition, 10)}
@@ -207,8 +207,6 @@ func (client *AppendBlobClient) appendBlockHandleResponse(resp *http.Response) (
 // the contents are read from a source url. The Append Block operation is permitted only if the blob was
 // created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-06
 //   - sourceURL - Specify a URL to the copy source.
 //   - contentLength - The length of the request.
 //   - options - AppendBlobClientAppendBlockFromURLOptions contains the optional parameters for the AppendBlobClient.AppendBlockFromURL
@@ -251,7 +249,7 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.TransactionalContentMD5 != nil {
@@ -261,13 +259,13 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfModifiedSince).String()}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfUnmodifiedSince).String()}
 	}
 	if appendPositionAccessConditions != nil && appendPositionAccessConditions.AppendPosition != nil {
 		req.Raw().Header["x-ms-blob-condition-appendpos"] = []string{strconv.FormatInt(*appendPositionAccessConditions.AppendPosition, 10)}
@@ -322,13 +320,13 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfModifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-modified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC1123(*sourceModifiedAccessConditions.SourceIfModifiedSince).String()}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC1123(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).String()}
 	}
 	if options != nil && options.SourceRange != nil {
 		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
@@ -406,8 +404,6 @@ func (client *AppendBlobClient) appendBlockFromURLHandleResponse(resp *http.Resp
 
 // Create - The Create Append Blob operation creates a new append blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-06
 //   - contentLength - The length of the request.
 //   - options - AppendBlobClientCreateOptions contains the optional parameters for the AppendBlobClient.Create method.
 //   - BlobHTTPHeaders - BlobHTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
@@ -443,20 +439,20 @@ func (client *AppendBlobClient) createCreateRequest(ctx context.Context, content
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfModifiedSince).String()}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfUnmodifiedSince).String()}
 	}
 	if blobHTTPHeaders != nil && blobHTTPHeaders.BlobCacheControl != nil {
 		req.Raw().Header["x-ms-blob-cache-control"] = []string{*blobHTTPHeaders.BlobCacheControl}
@@ -499,7 +495,7 @@ func (client *AppendBlobClient) createCreateRequest(ctx context.Context, content
 		req.Raw().Header["x-ms-immutability-policy-mode"] = []string{string(*options.ImmutabilityPolicyMode)}
 	}
 	if options != nil && options.ImmutabilityPolicyExpiry != nil {
-		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{(*options.ImmutabilityPolicyExpiry).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC1123(*options.ImmutabilityPolicyExpiry).String()}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
@@ -579,8 +575,6 @@ func (client *AppendBlobClient) createHandleResponse(resp *http.Response) (Appen
 // Seal - The Seal operation seals the Append Blob to make it read-only. Seal is supported only on version 2019-12-12 version
 // or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-06
 //   - options - AppendBlobClientSealOptions contains the optional parameters for the AppendBlobClient.Seal method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
@@ -615,19 +609,19 @@ func (client *AppendBlobClient) sealCreateRequest(ctx context.Context, options *
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfModifiedSince).String()}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfUnmodifiedSince).String()}
 	}
 	if appendPositionAccessConditions != nil && appendPositionAccessConditions.AppendPosition != nil {
 		req.Raw().Header["x-ms-blob-condition-appendpos"] = []string{strconv.FormatInt(*appendPositionAccessConditions.AppendPosition, 10)}
@@ -680,3 +674,4 @@ func (client *AppendBlobClient) sealHandleResponse(resp *http.Response) (AppendB
 	}
 	return result, nil
 }
+

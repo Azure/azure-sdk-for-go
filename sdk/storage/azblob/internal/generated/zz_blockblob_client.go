@@ -11,9 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -22,7 +24,7 @@ import (
 type BlockBlobClient struct {
 	internal *azcore.Client
 	endpoint string
-	version  string
+	version string
 }
 
 // CommitBlockList - The Commit Block List operation writes a blob by specifying the list of block IDs that make up the blob.
@@ -33,8 +35,6 @@ type BlockBlobClient struct {
 // the most recently uploaded version of the block, whichever list it may
 // belong to.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-06
 //   - blocks - Blob Blocks.
 //   - options - BlockBlobClientCommitBlockListOptions contains the optional parameters for the BlockBlobClient.CommitBlockList
 //     method.
@@ -72,7 +72,7 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.TransactionalContentMD5 != nil {
 		req.Raw().Header["Content-MD5"] = []string{base64.StdEncoding.EncodeToString(options.TransactionalContentMD5)}
@@ -81,13 +81,13 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfModifiedSince).String()}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.Tier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.Tier)}
@@ -135,7 +135,7 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 		req.Raw().Header["x-ms-immutability-policy-mode"] = []string{string(*options.ImmutabilityPolicyMode)}
 	}
 	if options != nil && options.ImmutabilityPolicyExpiry != nil {
-		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{(*options.ImmutabilityPolicyExpiry).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC1123(*options.ImmutabilityPolicyExpiry).String()}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
@@ -224,8 +224,6 @@ func (client *BlockBlobClient) commitBlockListHandleResponse(resp *http.Response
 
 // GetBlockList - The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-06
 //   - listType - Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both lists together.
 //   - options - BlockBlobClientGetBlockListOptions contains the optional parameters for the BlockBlobClient.GetBlockList method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
@@ -263,7 +261,7 @@ func (client *BlockBlobClient) getBlockListCreateRequest(ctx context.Context, li
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -329,8 +327,6 @@ func (client *BlockBlobClient) getBlockListHandleResponse(resp *http.Response) (
 // partial updates to a block blob’s contents using a source URL, use the Put
 // Block from URL API in conjunction with Put Block List.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-06
 //   - contentLength - The length of the request.
 //   - copySource - Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies
 //     a page blob snapshot. The value should be URL-encoded as it would appear in a request
@@ -373,7 +369,7 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.TransactionalContentMD5 != nil {
@@ -383,13 +379,13 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfModifiedSince).String()}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.Tier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.Tier)}
@@ -470,7 +466,7 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfModifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-modified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC1123(*sourceModifiedAccessConditions.SourceIfModifiedSince).String()}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
@@ -479,7 +475,7 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 		req.Raw().Header["x-ms-source-if-tags"] = []string{*sourceModifiedAccessConditions.SourceIfTags}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC1123(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).String()}
 	}
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
@@ -545,8 +541,6 @@ func (client *BlockBlobClient) putBlobFromURLHandleResponse(resp *http.Response)
 
 // StageBlock - The Stage Block operation creates a new block to be committed as part of a blob
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-06
 //   - blockID - A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal
 //     to 64 bytes in size. For a given blob, the length of the value specified for the blockid
 //     parameter must be the same size for each block.
@@ -586,7 +580,7 @@ func (client *BlockBlobClient) stageBlockCreateRequest(ctx context.Context, bloc
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.TransactionalContentMD5 != nil {
@@ -681,8 +675,6 @@ func (client *BlockBlobClient) stageBlockHandleResponse(resp *http.Response) (Bl
 // StageBlockFromURL - The Stage Block operation creates a new block to be committed as part of a blob where the contents
 // are read from a URL.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-06
 //   - blockID - A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal
 //     to 64 bytes in size. For a given blob, the length of the value specified for the blockid
 //     parameter must be the same size for each block.
@@ -726,7 +718,7 @@ func (client *BlockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.RequestID != nil {
@@ -773,13 +765,13 @@ func (client *BlockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfModifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-modified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC1123(*sourceModifiedAccessConditions.SourceIfModifiedSince).String()}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC1123(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).String()}
 	}
 	if options != nil && options.SourceRange != nil {
 		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
@@ -842,8 +834,6 @@ func (client *BlockBlobClient) stageBlockFromURLHandleResponse(resp *http.Respon
 // Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of
 // the content of a block blob, use the Put Block List operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-06
 //   - contentLength - The length of the request.
 //   - body - Initial data
 //   - options - BlockBlobClientUploadOptions contains the optional parameters for the BlockBlobClient.Upload method.
@@ -880,7 +870,7 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.TransactionalContentMD5 != nil {
@@ -890,13 +880,13 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfModifiedSince).String()}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.Tier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.Tier)}
@@ -945,7 +935,7 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 		req.Raw().Header["x-ms-immutability-policy-mode"] = []string{string(*options.ImmutabilityPolicyMode)}
 	}
 	if options != nil && options.ImmutabilityPolicyExpiry != nil {
-		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{(*options.ImmutabilityPolicyExpiry).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC1123(*options.ImmutabilityPolicyExpiry).String()}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
@@ -1040,3 +1030,4 @@ func (client *BlockBlobClient) uploadHandleResponse(resp *http.Response) (BlockB
 	}
 	return result, nil
 }
+

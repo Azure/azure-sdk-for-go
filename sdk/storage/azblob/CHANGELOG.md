@@ -10,6 +10,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated code generator to `@autorest/go@4.0.0-preview.79`.
 
 ## 1.7.0 (2026-05-14)
 

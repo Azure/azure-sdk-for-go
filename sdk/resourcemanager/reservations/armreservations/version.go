@@ -6,5 +6,5 @@ package armreservations
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
-	moduleVersion = "v3.2.0-beta.1"
+	moduleVersion = "v4.2.0-beta.1"
 )

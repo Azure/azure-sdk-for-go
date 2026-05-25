@@ -1,6 +1,6 @@
 # Release History
 
-## 3.2.0-beta.1 (2026-05-20)
+## 4.0.0-beta.1 (2026-05-20)
 ### Breaking Changes
 
 - Enum `DisplayProvisioningState` has been removed

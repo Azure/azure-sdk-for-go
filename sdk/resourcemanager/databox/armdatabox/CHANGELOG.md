@@ -1,6 +1,6 @@
 # Release History
 
-## 2.3.0-beta.1 (2026-05-25)
+## 3.0.0-beta.1 (2026-05-25)
 ### Breaking Changes
 
 - Type of `AdditionalErrorInfo.Info` has been changed from `any` to `map[string]any`

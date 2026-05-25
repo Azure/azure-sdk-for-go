@@ -20,7 +20,7 @@ const (
 	// DefaultConcurrency is the legacy default number of blocks downloaded or uploaded in parallel.
 	//
 	// Deprecated: Use DefaultConcurrencyValue() instead, which returns a value based on CPU core count.
-	DefaultConcurrency = shared.DefaultConcurrency
+	DefaultConcurrency = shared.DefaultConcurrency //nolint:staticcheck // intentional re-export of deprecated const for backward compat
 )
 
 // DefaultConcurrencyValue returns the default concurrency for parallel uploads/downloads.

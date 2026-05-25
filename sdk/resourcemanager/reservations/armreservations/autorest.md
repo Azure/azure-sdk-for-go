@@ -5,9 +5,10 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/reservations/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/reservations/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/d26303426f8de577fa899fb12d45738f5c2a2a49/specification/reservations/resource-manager/Microsoft.Capacity/Reservations/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/d26303426f8de577fa899fb12d45738f5c2a2a49/specification/reservations/resource-manager/Microsoft.Capacity/Reservations/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 3.1.0
-
+module-version: 3.1.1
+tag: package-2022-11
+module-name: sdk/resourcemanager/reservations/armreservations
 ```

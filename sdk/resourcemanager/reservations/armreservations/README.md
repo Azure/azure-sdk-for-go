@@ -1,6 +1,6 @@
 # Azure Servations Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v3)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v3)
 
 The `armreservations` module provides operations for working with Azure Servations.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Servations module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v3
 ```
 
 ## Authorization
@@ -38,7 +38,7 @@ For more information on authentication, please see the documentation for `aziden
 Azure Servations module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
-clientFactory, err := armreservations.NewClientFactory(<subscription ID>, cred, nil)
+clientFactory, err := armreservations.NewClientFactory(cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -49,7 +49,7 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-clientFactory, err := armreservations.NewClientFactory(<subscription ID>, cred, &options)
+clientFactory, err := armreservations.NewClientFactory(cred, &options)
 ```
 
 ## Clients

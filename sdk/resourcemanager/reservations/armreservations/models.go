@@ -796,7 +796,8 @@ type PurchaseRequestProperties struct {
 	// Properties specific to each reserved resource type. Not required if not applicable.
 	ReservedResourceProperties *PurchaseRequestPropertiesReservedResourceProperties
 
-	// The type of the resource that is being reserved.
+	// The type of the resource that is being reserved. In addition to below types we have also added the following: OpenAIPTU,
+	// MDC, Sentinel.
 	ReservedResourceType *ReservedResourceType
 
 	// This is the date-time when the Azure hybrid benefit needs to be reviewed.

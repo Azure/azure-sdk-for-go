@@ -47,7 +47,7 @@ func NewMetricAlertsClient(subscriptionID string, credential azcore.TokenCredent
 // CreateOrUpdate - Create or update an metric alert definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2018-03-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ruleName - The name of the rule.
 //   - parameters - The parameters of the rule to create or update.
@@ -88,7 +88,7 @@ func (client *MetricAlertsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-03-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -106,7 +106,7 @@ func (client *MetricAlertsClient) createOrUpdateHandleResponse(resp *http.Respon
 // Delete - Delete an alert rule definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2018-03-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ruleName - The name of the rule.
 //   - options - MetricAlertsClientDeleteOptions contains the optional parameters for the MetricAlertsClient.Delete method.
@@ -145,7 +145,7 @@ func (client *MetricAlertsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-03-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -154,7 +154,7 @@ func (client *MetricAlertsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Retrieve an alert rule definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2018-03-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ruleName - The name of the rule.
 //   - options - MetricAlertsClientGetOptions contains the optional parameters for the MetricAlertsClient.Get method.
@@ -193,7 +193,7 @@ func (client *MetricAlertsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-03-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,7 +210,7 @@ func (client *MetricAlertsClient) getHandleResponse(resp *http.Response) (Metric
 
 // NewListByResourceGroupPager - Retrieve alert rule definitions in a resource group.
 //
-// Generated from API version 2018-03-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MetricAlertsClientListByResourceGroupOptions contains the optional parameters for the MetricAlertsClient.NewListByResourceGroupPager
 //     method.
@@ -252,7 +252,7 @@ func (client *MetricAlertsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-03-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -269,7 +269,7 @@ func (client *MetricAlertsClient) listByResourceGroupHandleResponse(resp *http.R
 
 // NewListBySubscriptionPager - Retrieve alert rule definitions in a subscription.
 //
-// Generated from API version 2018-03-01
+// Generated from API version 2024-03-01-preview
 //   - options - MetricAlertsClientListBySubscriptionOptions contains the optional parameters for the MetricAlertsClient.NewListBySubscriptionPager
 //     method.
 func (client *MetricAlertsClient) NewListBySubscriptionPager(options *MetricAlertsClientListBySubscriptionOptions) *runtime.Pager[MetricAlertsClientListBySubscriptionResponse] {
@@ -306,7 +306,7 @@ func (client *MetricAlertsClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-03-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *MetricAlertsClient) listBySubscriptionHandleResponse(resp *http.Re
 // Update - Update an metric alert definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2018-03-01
+// Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ruleName - The name of the rule.
 //   - parameters - The parameters of the rule to update.
@@ -364,7 +364,7 @@ func (client *MetricAlertsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-03-01")
+	reqQP.Set("api-version", "2024-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

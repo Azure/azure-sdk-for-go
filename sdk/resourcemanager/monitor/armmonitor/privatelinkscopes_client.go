@@ -48,7 +48,7 @@ func NewPrivateLinkScopesClient(subscriptionID string, credential azcore.TokenCr
 // InstrumentationKey nor AppId in the Put operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
 //   - azureMonitorPrivateLinkScopePayload - Properties that need to be specified to create or update a Azure Monitor PrivateLinkScope.
@@ -71,7 +71,7 @@ func (client *PrivateLinkScopesClient) CreateOrUpdate(ctx context.Context, resou
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *PrivateLinkScopesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, azureMonitorPrivateLinkScopePayload AzureMonitorPrivateLinkScope, options *PrivateLinkScopesClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/privateLinkScopes/{scopeName}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -89,7 +89,7 @@ func (client *PrivateLinkScopesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, azureMonitorPrivateLinkScopePayload)
@@ -107,7 +107,7 @@ func (client *PrivateLinkScopesClient) createOrUpdateHandleResponse(resp *http.R
 // BeginDelete - Deletes a Azure Monitor PrivateLinkScope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
 //   - options - PrivateLinkScopesClientBeginDeleteOptions contains the optional parameters for the PrivateLinkScopesClient.BeginDelete
@@ -127,7 +127,7 @@ func (client *PrivateLinkScopesClient) BeginDelete(ctx context.Context, resource
 // Delete - Deletes a Azure Monitor PrivateLinkScope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01-preview
+// Generated from API version 2023-06-01-preview
 func (client *PrivateLinkScopesClient) deleteOperation(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateLinkScopesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scopeName, options)
 	if err != nil {
@@ -137,7 +137,7 @@ func (client *PrivateLinkScopesClient) deleteOperation(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -145,7 +145,7 @@ func (client *PrivateLinkScopesClient) deleteOperation(ctx context.Context, reso
 
 // deleteCreateRequest creates the Delete request.
 func (client *PrivateLinkScopesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateLinkScopesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/privateLinkScopes/{scopeName}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -163,7 +163,7 @@ func (client *PrivateLinkScopesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,7 +172,7 @@ func (client *PrivateLinkScopesClient) deleteCreateRequest(ctx context.Context, 
 // Get - Returns a Azure Monitor PrivateLinkScope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
 //   - options - PrivateLinkScopesClientGetOptions contains the optional parameters for the PrivateLinkScopesClient.Get method.
@@ -193,7 +193,7 @@ func (client *PrivateLinkScopesClient) Get(ctx context.Context, resourceGroupNam
 
 // getCreateRequest creates the Get request.
 func (client *PrivateLinkScopesClient) getCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateLinkScopesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/privateLinkScopes/{scopeName}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -211,7 +211,7 @@ func (client *PrivateLinkScopesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -228,7 +228,7 @@ func (client *PrivateLinkScopesClient) getHandleResponse(resp *http.Response) (P
 
 // NewListPager - Gets a list of all Azure Monitor PrivateLinkScopes within a subscription.
 //
-// Generated from API version 2021-07-01-preview
+// Generated from API version 2023-06-01-preview
 //   - options - PrivateLinkScopesClientListOptions contains the optional parameters for the PrivateLinkScopesClient.NewListPager
 //     method.
 func (client *PrivateLinkScopesClient) NewListPager(options *PrivateLinkScopesClientListOptions) *runtime.Pager[PrivateLinkScopesClientListResponse] {
@@ -261,7 +261,7 @@ func (client *PrivateLinkScopesClient) NewListPager(options *PrivateLinkScopesCl
 
 // listCreateRequest creates the List request.
 func (client *PrivateLinkScopesClient) listCreateRequest(ctx context.Context, options *PrivateLinkScopesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes"
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/privateLinkScopes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -271,7 +271,7 @@ func (client *PrivateLinkScopesClient) listCreateRequest(ctx context.Context, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -288,7 +288,7 @@ func (client *PrivateLinkScopesClient) listHandleResponse(resp *http.Response) (
 
 // NewListByResourceGroupPager - Gets a list of Azure Monitor PrivateLinkScopes within a resource group.
 //
-// Generated from API version 2021-07-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateLinkScopesClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkScopesClient.NewListByResourceGroupPager
 //     method.
@@ -322,7 +322,7 @@ func (client *PrivateLinkScopesClient) NewListByResourceGroupPager(resourceGroup
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *PrivateLinkScopesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PrivateLinkScopesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/privateLinkScopes"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -336,7 +336,7 @@ func (client *PrivateLinkScopesClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -354,7 +354,7 @@ func (client *PrivateLinkScopesClient) listByResourceGroupHandleResponse(resp *h
 // UpdateTags - Updates an existing PrivateLinkScope's tags. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
 //   - privateLinkScopeTags - Updated tag information to set into the PrivateLinkScope instance.
@@ -377,7 +377,7 @@ func (client *PrivateLinkScopesClient) UpdateTags(ctx context.Context, resourceG
 
 // updateTagsCreateRequest creates the UpdateTags request.
 func (client *PrivateLinkScopesClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, privateLinkScopeTags TagsResource, options *PrivateLinkScopesClientUpdateTagsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/privateLinkScopes/{scopeName}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -395,7 +395,7 @@ func (client *PrivateLinkScopesClient) updateTagsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateLinkScopeTags)

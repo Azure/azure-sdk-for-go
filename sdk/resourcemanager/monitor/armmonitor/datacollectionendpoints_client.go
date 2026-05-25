@@ -47,7 +47,7 @@ func NewDataCollectionEndpointsClient(subscriptionID string, credential azcore.T
 // Create - Creates or updates a data collection endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
 //   - options - DataCollectionEndpointsClientCreateOptions contains the optional parameters for the DataCollectionEndpointsClient.Create
@@ -87,7 +87,7 @@ func (client *DataCollectionEndpointsClient) createCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -108,7 +108,7 @@ func (client *DataCollectionEndpointsClient) createHandleResponse(resp *http.Res
 // Delete - Deletes a data collection endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
 //   - options - DataCollectionEndpointsClientDeleteOptions contains the optional parameters for the DataCollectionEndpointsClient.Delete
@@ -148,7 +148,7 @@ func (client *DataCollectionEndpointsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -157,7 +157,7 @@ func (client *DataCollectionEndpointsClient) deleteCreateRequest(ctx context.Con
 // Get - Returns the specified data collection endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
 //   - options - DataCollectionEndpointsClientGetOptions contains the optional parameters for the DataCollectionEndpointsClient.Get
@@ -197,7 +197,7 @@ func (client *DataCollectionEndpointsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,9 +212,72 @@ func (client *DataCollectionEndpointsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
+// GetNSP - Gets the specified NSP configuration for the specified data collection endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
+//   - options - DataCollectionEndpointsClientGetNSPOptions contains the optional parameters for the DataCollectionEndpointsClient.GetNSP
+//     method.
+func (client *DataCollectionEndpointsClient) GetNSP(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, options *DataCollectionEndpointsClientGetNSPOptions) (DataCollectionEndpointsClientGetNSPResponse, error) {
+	req, err := client.getNSPCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, networkSecurityPerimeterConfigurationName, options)
+	if err != nil {
+		return DataCollectionEndpointsClientGetNSPResponse{}, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DataCollectionEndpointsClientGetNSPResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return DataCollectionEndpointsClientGetNSPResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getNSPHandleResponse(resp)
+}
+
+// getNSPCreateRequest creates the GetNSP request.
+func (client *DataCollectionEndpointsClient) getNSPCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, options *DataCollectionEndpointsClientGetNSPOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if dataCollectionEndpointName == "" {
+		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
+	if networkSecurityPerimeterConfigurationName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getNSPHandleResponse handles the GetNSP response.
+func (client *DataCollectionEndpointsClient) getNSPHandleResponse(resp *http.Response) (DataCollectionEndpointsClientGetNSPResponse, error) {
+	result := DataCollectionEndpointsClientGetNSPResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
+		return DataCollectionEndpointsClientGetNSPResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByResourceGroupPager - Lists all data collection endpoints in the specified resource group.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DataCollectionEndpointsClientListByResourceGroupOptions contains the optional parameters for the DataCollectionEndpointsClient.NewListByResourceGroupPager
 //     method.
@@ -262,7 +325,7 @@ func (client *DataCollectionEndpointsClient) listByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,7 +342,7 @@ func (client *DataCollectionEndpointsClient) listByResourceGroupHandleResponse(r
 
 // NewListBySubscriptionPager - Lists all data collection endpoints in the specified subscription
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - options - DataCollectionEndpointsClientListBySubscriptionOptions contains the optional parameters for the DataCollectionEndpointsClient.NewListBySubscriptionPager
 //     method.
 func (client *DataCollectionEndpointsClient) NewListBySubscriptionPager(options *DataCollectionEndpointsClientListBySubscriptionOptions) *runtime.Pager[DataCollectionEndpointsClientListBySubscriptionResponse] {
@@ -322,7 +385,7 @@ func (client *DataCollectionEndpointsClient) listBySubscriptionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -337,10 +400,152 @@ func (client *DataCollectionEndpointsClient) listBySubscriptionHandleResponse(re
 	return result, nil
 }
 
+// NewListNSPPager - Gets a list of NSP configurations for the specified data collection endpoint.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+//   - options - DataCollectionEndpointsClientListNSPOptions contains the optional parameters for the DataCollectionEndpointsClient.NewListNSPPager
+//     method.
+func (client *DataCollectionEndpointsClient) NewListNSPPager(resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientListNSPOptions) *runtime.Pager[DataCollectionEndpointsClientListNSPResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DataCollectionEndpointsClientListNSPResponse]{
+		More: func(page DataCollectionEndpointsClientListNSPResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DataCollectionEndpointsClientListNSPResponse) (DataCollectionEndpointsClientListNSPResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listNSPCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataCollectionEndpointsClientListNSPResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataCollectionEndpointsClientListNSPResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataCollectionEndpointsClientListNSPResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listNSPHandleResponse(resp)
+		},
+	})
+}
+
+// listNSPCreateRequest creates the ListNSP request.
+func (client *DataCollectionEndpointsClient) listNSPCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientListNSPOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/networkSecurityPerimeterConfigurations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if dataCollectionEndpointName == "" {
+		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listNSPHandleResponse handles the ListNSP response.
+func (client *DataCollectionEndpointsClient) listNSPHandleResponse(resp *http.Response) (DataCollectionEndpointsClientListNSPResponse, error) {
+	result := DataCollectionEndpointsClientListNSPResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationListResult); err != nil {
+		return DataCollectionEndpointsClientListNSPResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginReconcileNSP - Reconciles the specified NSP configuration for the specified data collection endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
+//   - options - DataCollectionEndpointsClientBeginReconcileNSPOptions contains the optional parameters for the DataCollectionEndpointsClient.BeginReconcileNSP
+//     method.
+func (client *DataCollectionEndpointsClient) BeginReconcileNSP(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, options *DataCollectionEndpointsClientBeginReconcileNSPOptions) (*runtime.Poller[DataCollectionEndpointsClientReconcileNSPResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reconcileNSP(ctx, resourceGroupName, dataCollectionEndpointName, networkSecurityPerimeterConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DataCollectionEndpointsClientReconcileNSPResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[DataCollectionEndpointsClientReconcileNSPResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// ReconcileNSP - Reconciles the specified NSP configuration for the specified data collection endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-10-01
+func (client *DataCollectionEndpointsClient) reconcileNSP(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, options *DataCollectionEndpointsClientBeginReconcileNSPOptions) (*http.Response, error) {
+	req, err := client.reconcileNSPCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, networkSecurityPerimeterConfigurationName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// reconcileNSPCreateRequest creates the ReconcileNSP request.
+func (client *DataCollectionEndpointsClient) reconcileNSPCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, options *DataCollectionEndpointsClientBeginReconcileNSPOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if dataCollectionEndpointName == "" {
+		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
+	if networkSecurityPerimeterConfigurationName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Update - Updates part of a data collection endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
 //   - options - DataCollectionEndpointsClientUpdateOptions contains the optional parameters for the DataCollectionEndpointsClient.Update
@@ -380,7 +585,7 @@ func (client *DataCollectionEndpointsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

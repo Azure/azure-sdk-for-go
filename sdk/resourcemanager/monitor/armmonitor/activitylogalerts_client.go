@@ -47,7 +47,7 @@ func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCr
 // CreateOrUpdate - Create a new Activity Log Alert rule or update an existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - activityLogAlertName - The name of the Activity Log Alert rule.
 //   - activityLogAlertRule - The Activity Log Alert rule to create or use for the update.
@@ -88,7 +88,7 @@ func (client *ActivityLogAlertsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, activityLogAlertRule)
@@ -106,7 +106,7 @@ func (client *ActivityLogAlertsClient) createOrUpdateHandleResponse(resp *http.R
 // Delete - Delete an Activity Log Alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - activityLogAlertName - The name of the Activity Log Alert rule.
 //   - options - ActivityLogAlertsClientDeleteOptions contains the optional parameters for the ActivityLogAlertsClient.Delete
@@ -146,7 +146,7 @@ func (client *ActivityLogAlertsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -155,7 +155,7 @@ func (client *ActivityLogAlertsClient) deleteCreateRequest(ctx context.Context, 
 // Get - Get an Activity Log Alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - activityLogAlertName - The name of the Activity Log Alert rule.
 //   - options - ActivityLogAlertsClientGetOptions contains the optional parameters for the ActivityLogAlertsClient.Get method.
@@ -194,7 +194,7 @@ func (client *ActivityLogAlertsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +211,7 @@ func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response) (A
 
 // NewListByResourceGroupPager - Get a list of all Activity Log Alert rules in a resource group.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ActivityLogAlertsClientListByResourceGroupOptions contains the optional parameters for the ActivityLogAlertsClient.NewListByResourceGroupPager
 //     method.
@@ -259,7 +259,7 @@ func (client *ActivityLogAlertsClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *h
 
 // NewListBySubscriptionIDPager - Get a list of all Activity Log Alert rules in a subscription.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2026-01-01
 //   - options - ActivityLogAlertsClientListBySubscriptionIDOptions contains the optional parameters for the ActivityLogAlertsClient.NewListBySubscriptionIDPager
 //     method.
 func (client *ActivityLogAlertsClient) NewListBySubscriptionIDPager(options *ActivityLogAlertsClientListBySubscriptionIDOptions) *runtime.Pager[ActivityLogAlertsClientListBySubscriptionIDResponse] {
@@ -319,7 +319,7 @@ func (client *ActivityLogAlertsClient) listBySubscriptionIDCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -339,7 +339,7 @@ func (client *ActivityLogAlertsClient) listBySubscriptionIDHandleResponse(resp *
 // operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - activityLogAlertName - The name of the Activity Log Alert rule.
 //   - activityLogAlertRulePatch - Parameters supplied to the operation.
@@ -380,7 +380,7 @@ func (client *ActivityLogAlertsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, activityLogAlertRulePatch)

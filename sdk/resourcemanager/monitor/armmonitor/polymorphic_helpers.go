@@ -23,6 +23,8 @@ func unmarshalMetricAlertCriteriaClassification(rawMsg json.RawMessage) (MetricA
 	switch m["odata.type"] {
 	case string(OdatatypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria):
 		b = &MetricAlertMultipleResourceMultipleMetricCriteria{}
+	case string(OdatatypeMicrosoftAzureMonitorPromQLCriteria):
+		b = &PromQLCriteria{}
 	case string(OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria):
 		b = &MetricAlertSingleResourceMultipleMetricCriteria{}
 	case string(OdatatypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria):
@@ -72,7 +74,7 @@ func unmarshalMultiMetricCriteriaClassificationArray(rawMsg json.RawMessage) ([]
 	return fArray, nil
 }
 
-func unmarshalRuleActionClassification(rawMsg json.RawMessage) (RuleActionClassification, error) {
+func unmarshalMultiPromQLCriteriaClassification(rawMsg json.RawMessage) (MultiPromQLCriteriaClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -80,19 +82,19 @@ func unmarshalRuleActionClassification(rawMsg json.RawMessage) (RuleActionClassi
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b RuleActionClassification
-	switch m["odata.type"] {
-	case "Microsoft.Azure.Management.Insights.Models.RuleEmailAction":
-		b = &RuleEmailAction{}
-	case "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction":
-		b = &RuleWebhookAction{}
+	var b MultiPromQLCriteriaClassification
+	switch m["criterionType"] {
+	case string(CriterionTypeDynamicThresholdCriterion):
+		b = &DynamicPromQLCriteria{}
+	case string(CriterionTypeStaticThresholdCriterion):
+		b = &StaticPromQLCriteria{}
 	default:
-		b = &RuleAction{}
+		b = &MultiPromQLCriteria{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalRuleActionClassificationArray(rawMsg json.RawMessage) ([]RuleActionClassification, error) {
+func unmarshalMultiPromQLCriteriaClassificationArray(rawMsg json.RawMessage) ([]MultiPromQLCriteriaClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -100,55 +102,13 @@ func unmarshalRuleActionClassificationArray(rawMsg json.RawMessage) ([]RuleActio
 	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
 		return nil, err
 	}
-	fArray := make([]RuleActionClassification, len(rawMessages))
+	fArray := make([]MultiPromQLCriteriaClassification, len(rawMessages))
 	for index, rawMessage := range rawMessages {
-		f, err := unmarshalRuleActionClassification(rawMessage)
+		f, err := unmarshalMultiPromQLCriteriaClassification(rawMessage)
 		if err != nil {
 			return nil, err
 		}
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalRuleConditionClassification(rawMsg json.RawMessage) (RuleConditionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b RuleConditionClassification
-	switch m["odata.type"] {
-	case "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition":
-		b = &LocationThresholdRuleCondition{}
-	case "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition":
-		b = &ManagementEventRuleCondition{}
-	case "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition":
-		b = &ThresholdRuleCondition{}
-	default:
-		b = &RuleCondition{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalRuleDataSourceClassification(rawMsg json.RawMessage) (RuleDataSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b RuleDataSourceClassification
-	switch m["odata.type"] {
-	case "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource":
-		b = &RuleManagementEventDataSource{}
-	case "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource":
-		b = &RuleMetricDataSource{}
-	default:
-		b = &RuleDataSource{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
 }

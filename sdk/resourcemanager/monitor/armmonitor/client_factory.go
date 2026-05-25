@@ -38,108 +38,18 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-func (c *ClientFactory) NewAutoscaleSettingsClient() *AutoscaleSettingsClient {
-	subClient, _ := NewAutoscaleSettingsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewDataCollectionEndpointsClient() *DataCollectionEndpointsClient {
+	subClient, _ := NewDataCollectionEndpointsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewPredictiveMetricClient() *PredictiveMetricClient {
-	subClient, _ := NewPredictiveMetricClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewDataCollectionRuleAssociationsClient() *DataCollectionRuleAssociationsClient {
+	subClient, _ := NewDataCollectionRuleAssociationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewAlertRuleIncidentsClient() *AlertRuleIncidentsClient {
-	subClient, _ := NewAlertRuleIncidentsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewAlertRulesClient() *AlertRulesClient {
-	subClient, _ := NewAlertRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewLogProfilesClient() *LogProfilesClient {
-	subClient, _ := NewLogProfilesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewDiagnosticSettingsClient() *DiagnosticSettingsClient {
-	subClient, _ := NewDiagnosticSettingsClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewDiagnosticSettingsCategoryClient() *DiagnosticSettingsCategoryClient {
-	subClient, _ := NewDiagnosticSettingsCategoryClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewActionGroupsClient() *ActionGroupsClient {
-	subClient, _ := NewActionGroupsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewTenantActionGroupsClient() *TenantActionGroupsClient {
-	subClient, _ := NewTenantActionGroupsClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewActivityLogsClient() *ActivityLogsClient {
-	subClient, _ := NewActivityLogsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewEventCategoriesClient() *EventCategoriesClient {
-	subClient, _ := NewEventCategoriesClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewTenantActivityLogsClient() *TenantActivityLogsClient {
-	subClient, _ := NewTenantActivityLogsClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewMetricDefinitionsClient() *MetricDefinitionsClient {
-	subClient, _ := NewMetricDefinitionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewMetricsClient() *MetricsClient {
-	subClient, _ := NewMetricsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewBaselinesClient() *BaselinesClient {
-	subClient, _ := NewBaselinesClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewMetricAlertsClient() *MetricAlertsClient {
-	subClient, _ := NewMetricAlertsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewMetricAlertsStatusClient() *MetricAlertsStatusClient {
-	subClient, _ := NewMetricAlertsStatusClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewScheduledQueryRulesClient() *ScheduledQueryRulesClient {
-	subClient, _ := NewScheduledQueryRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewMetricNamespacesClient() *MetricNamespacesClient {
-	subClient, _ := NewMetricNamespacesClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewVMInsightsClient() *VMInsightsClient {
-	subClient, _ := NewVMInsightsClient(c.credential, c.options)
+func (c *ClientFactory) NewDataCollectionRulesClient() *DataCollectionRulesClient {
+	subClient, _ := NewDataCollectionRulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -168,32 +78,92 @@ func (c *ClientFactory) NewPrivateLinkScopedResourcesClient() *PrivateLinkScoped
 	return subClient
 }
 
+func (c *ClientFactory) NewAutoscaleSettingsClient() *AutoscaleSettingsClient {
+	subClient, _ := NewAutoscaleSettingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewPredictiveMetricClient() *PredictiveMetricClient {
+	subClient, _ := NewPredictiveMetricClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewActivityLogsClient() *ActivityLogsClient {
+	subClient, _ := NewActivityLogsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewEventCategoriesClient() *EventCategoriesClient {
+	subClient, _ := NewEventCategoriesClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewTenantActivityLogsClient() *TenantActivityLogsClient {
+	subClient, _ := NewTenantActivityLogsClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewMetricDefinitionsClient() *MetricDefinitionsClient {
+	subClient, _ := NewMetricDefinitionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewServiceDiagnosticSettingsClient() *ServiceDiagnosticSettingsClient {
+	subClient, _ := NewServiceDiagnosticSettingsClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewAlertRuleIncidentsClient() *AlertRuleIncidentsClient {
+	subClient, _ := NewAlertRuleIncidentsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewLogProfilesClient() *LogProfilesClient {
+	subClient, _ := NewLogProfilesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewMetricsClient() *MetricsClient {
+	subClient, _ := NewMetricsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewActivityLogAlertsClient() *ActivityLogAlertsClient {
 	subClient, _ := NewActivityLogAlertsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewDataCollectionEndpointsClient() *DataCollectionEndpointsClient {
-	subClient, _ := NewDataCollectionEndpointsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewMetricAlertsClient() *MetricAlertsClient {
+	subClient, _ := NewMetricAlertsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewDataCollectionRuleAssociationsClient() *DataCollectionRuleAssociationsClient {
-	subClient, _ := NewDataCollectionRuleAssociationsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewMetricAlertsStatusClient() *MetricAlertsStatusClient {
+	subClient, _ := NewMetricAlertsStatusClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewDataCollectionRulesClient() *DataCollectionRulesClient {
-	subClient, _ := NewDataCollectionRulesClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewScheduledQueryRulesClient() *ScheduledQueryRulesClient {
+	subClient, _ := NewScheduledQueryRulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewAzureMonitorWorkspacesClient() *AzureMonitorWorkspacesClient {
-	subClient, _ := NewAzureMonitorWorkspacesClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewBaselinesClient() *BaselinesClient {
+	subClient, _ := NewBaselinesClient(c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewOperationsForMonitorClient() *OperationsForMonitorClient {
-	subClient, _ := NewOperationsForMonitorClient(c.credential, c.options)
+func (c *ClientFactory) NewActionGroupsClient() *ActionGroupsClient {
+	subClient, _ := NewActionGroupsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewScheduledQueryRuleClient() *ScheduledQueryRuleClient {
+	subClient, _ := NewScheduledQueryRuleClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewMetricNamespacesClient() *MetricNamespacesClient {
+	subClient, _ := NewMetricNamespacesClient(c.credential, c.options)
 	return subClient
 }

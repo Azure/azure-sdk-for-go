@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/powerplatform/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/powerplatform/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/0c39ea092acfc6151417232419b80ee0fb8771a9/specification/powerplatform/resource-manager/Microsoft.PowerPlatform/PowerPlatform/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/0c39ea092acfc6151417232419b80ee0fb8771a9/specification/powerplatform/resource-manager/Microsoft.PowerPlatform/PowerPlatform/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.3.0
-
+module-version: 0.4.0
+tag: package-2020-10-30-preview
 ```

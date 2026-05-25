@@ -29,6 +29,40 @@ func PossibleACLActionValues() []ACLAction {
 	}
 }
 
+type ClientConnectionCountRuleDiscriminator string
+
+const (
+	ClientConnectionCountRuleDiscriminatorThrottleByJwtCustomClaimRule ClientConnectionCountRuleDiscriminator = "ThrottleByJwtCustomClaimRule"
+	ClientConnectionCountRuleDiscriminatorThrottleByJwtSignatureRule   ClientConnectionCountRuleDiscriminator = "ThrottleByJwtSignatureRule"
+	ClientConnectionCountRuleDiscriminatorThrottleByUserIDRule         ClientConnectionCountRuleDiscriminator = "ThrottleByUserIdRule"
+)
+
+// PossibleClientConnectionCountRuleDiscriminatorValues returns the possible values for the ClientConnectionCountRuleDiscriminator const type.
+func PossibleClientConnectionCountRuleDiscriminatorValues() []ClientConnectionCountRuleDiscriminator {
+	return []ClientConnectionCountRuleDiscriminator{
+		ClientConnectionCountRuleDiscriminatorThrottleByJwtCustomClaimRule,
+		ClientConnectionCountRuleDiscriminatorThrottleByJwtSignatureRule,
+		ClientConnectionCountRuleDiscriminatorThrottleByUserIDRule,
+	}
+}
+
+type ClientTrafficControlRuleDiscriminator string
+
+const (
+	ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule ClientTrafficControlRuleDiscriminator = "TrafficThrottleByJwtCustomClaimRule"
+	ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule   ClientTrafficControlRuleDiscriminator = "TrafficThrottleByJwtSignatureRule"
+	ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule         ClientTrafficControlRuleDiscriminator = "TrafficThrottleByUserIdRule"
+)
+
+// PossibleClientTrafficControlRuleDiscriminatorValues returns the possible values for the ClientTrafficControlRuleDiscriminator const type.
+func PossibleClientTrafficControlRuleDiscriminatorValues() []ClientTrafficControlRuleDiscriminator {
+	return []ClientTrafficControlRuleDiscriminator{
+		ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule,
+		ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule,
+		ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule,
+	}
+}
+
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 

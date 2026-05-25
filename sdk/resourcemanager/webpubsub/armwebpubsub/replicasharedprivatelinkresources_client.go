@@ -46,7 +46,7 @@ func NewReplicaSharedPrivateLinkResourcesClient(subscriptionID string, credentia
 // BeginCreateOrUpdate - Create or update a shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - replicaName - The name of the replica.
@@ -75,7 +75,7 @@ func (client *ReplicaSharedPrivateLinkResourcesClient) BeginCreateOrUpdate(ctx c
 // CreateOrUpdate - Create or update a shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-01-01-preview
 func (client *ReplicaSharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, sharedPrivateLinkResourceName string, parameters SharedPrivateLinkResource, options *ReplicaSharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicaSharedPrivateLinkResourcesClient.BeginCreateOrUpdate"
@@ -125,7 +125,7 @@ func (client *ReplicaSharedPrivateLinkResourcesClient) createOrUpdateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -137,7 +137,7 @@ func (client *ReplicaSharedPrivateLinkResourcesClient) createOrUpdateCreateReque
 // Get - Get the specified shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - replicaName - The name of the replica.
@@ -194,7 +194,7 @@ func (client *ReplicaSharedPrivateLinkResourcesClient) getCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +211,7 @@ func (client *ReplicaSharedPrivateLinkResourcesClient) getHandleResponse(resp *h
 
 // NewListPager - List shared private link resources
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - replicaName - The name of the replica.
@@ -264,7 +264,7 @@ func (client *ReplicaSharedPrivateLinkResourcesClient) listCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

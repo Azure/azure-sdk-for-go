@@ -8,6 +8,24 @@
 
 package armwebpubsub
 
+// ClientConnectionCountRuleClassification provides polymorphic access to related types.
+// Call the interface's GetClientConnectionCountRule() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClientConnectionCountRule, *ThrottleByJwtCustomClaimRule, *ThrottleByJwtSignatureRule, *ThrottleByUserIDRule
+type ClientConnectionCountRuleClassification interface {
+	// GetClientConnectionCountRule returns the ClientConnectionCountRule content of the underlying type.
+	GetClientConnectionCountRule() *ClientConnectionCountRule
+}
+
+// ClientTrafficControlRuleClassification provides polymorphic access to related types.
+// Call the interface's GetClientTrafficControlRule() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClientTrafficControlRule, *TrafficThrottleByJwtCustomClaimRule, *TrafficThrottleByJwtSignatureRule, *TrafficThrottleByUserIDRule
+type ClientTrafficControlRuleClassification interface {
+	// GetClientTrafficControlRule returns the ClientTrafficControlRule content of the underlying type.
+	GetClientTrafficControlRule() *ClientTrafficControlRule
+}
+
 // EventListenerEndpointClassification provides polymorphic access to related types.
 // Call the interface's GetEventListenerEndpoint() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

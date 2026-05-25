@@ -10,6 +10,94 @@ package armwebpubsub
 
 import "encoding/json"
 
+func unmarshalClientConnectionCountRuleClassification(rawMsg json.RawMessage) (ClientConnectionCountRuleClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ClientConnectionCountRuleClassification
+	switch m["type"] {
+	case string(ClientConnectionCountRuleDiscriminatorThrottleByJwtCustomClaimRule):
+		b = &ThrottleByJwtCustomClaimRule{}
+	case string(ClientConnectionCountRuleDiscriminatorThrottleByJwtSignatureRule):
+		b = &ThrottleByJwtSignatureRule{}
+	case string(ClientConnectionCountRuleDiscriminatorThrottleByUserIDRule):
+		b = &ThrottleByUserIDRule{}
+	default:
+		b = &ClientConnectionCountRule{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalClientConnectionCountRuleClassificationArray(rawMsg json.RawMessage) ([]ClientConnectionCountRuleClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]ClientConnectionCountRuleClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalClientConnectionCountRuleClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalClientTrafficControlRuleClassification(rawMsg json.RawMessage) (ClientTrafficControlRuleClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ClientTrafficControlRuleClassification
+	switch m["type"] {
+	case string(ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule):
+		b = &TrafficThrottleByJwtCustomClaimRule{}
+	case string(ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule):
+		b = &TrafficThrottleByJwtSignatureRule{}
+	case string(ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule):
+		b = &TrafficThrottleByUserIDRule{}
+	default:
+		b = &ClientTrafficControlRule{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalClientTrafficControlRuleClassificationArray(rawMsg json.RawMessage) ([]ClientTrafficControlRuleClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]ClientTrafficControlRuleClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalClientTrafficControlRuleClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalEventListenerEndpointClassification(rawMsg json.RawMessage) (EventListenerEndpointClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

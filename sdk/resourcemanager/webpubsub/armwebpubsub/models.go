@@ -10,6 +10,38 @@ package armwebpubsub
 
 import "time"
 
+// ApplicationFirewallSettings - Application firewall settings for the resource
+type ApplicationFirewallSettings struct {
+	// Rules to control the client connection count
+	ClientConnectionCountRules []ClientConnectionCountRuleClassification
+
+	// Rules to control the client traffic
+	ClientTrafficControlRules []ClientTrafficControlRuleClassification
+
+	// Config to control the client connection lifetime in seconds, can be set to 0 to disable the config
+	MaxClientConnectionLifetimeInSeconds *int64
+}
+
+// ClientConnectionCountRule - A base class for client connection count rules
+type ClientConnectionCountRule struct {
+	// REQUIRED
+	Type *ClientConnectionCountRuleDiscriminator
+}
+
+// GetClientConnectionCountRule implements the ClientConnectionCountRuleClassification interface for type ClientConnectionCountRule.
+func (c *ClientConnectionCountRule) GetClientConnectionCountRule() *ClientConnectionCountRule {
+	return c
+}
+
+// ClientTrafficControlRule - A base class for client traffic control rules
+type ClientTrafficControlRule struct {
+	// REQUIRED
+	Type *ClientTrafficControlRuleDiscriminator
+}
+
+// GetClientTrafficControlRule implements the ClientTrafficControlRuleClassification interface for type ClientTrafficControlRule.
+func (c *ClientTrafficControlRule) GetClientTrafficControlRule() *ClientTrafficControlRule { return c }
+
 // CustomCertificate - A custom certificate.
 type CustomCertificate struct {
 	// REQUIRED; Custom certificate properties.
@@ -108,9 +140,13 @@ type Dimension struct {
 
 // EventHandler - Properties of event handler.
 type EventHandler struct {
-	// REQUIRED; Gets or sets the EventHandler URL template. You can use a predefined parameter {hub} and {event} inside the template,
-	// the value of the EventHandler URL is dynamically calculated when the client
-	// request comes in. For example, UrlTemplate can be http://example.com/api/{hub}/{event}. The host part can't contains parameters.
+	// REQUIRED; Gets or sets the URL template for the event handler. The actual URL is calculated when the corresponding event
+	// is triggered. The template supports predefined parameters syntax: {event}, {hub}, and
+	// KeyVault reference syntax {@Microsoft.KeyVault(SecretUri=_your_secret_identifier_)} For example, if the template is http://example.com/api/{event},
+	// when connect event is triggered, a POST request will
+	// be sent to the URL http://example.com/chat/api/connect. Note: Parameters are not allowed in the hostname of the URL, and
+	// curly brackets {} are reserved for parameter syntax only. If your URL path
+	// contains literal curly brackets, please URL-encode them to ensure proper handling.
 	URLTemplate *string
 
 	// Upstream auth settings. If not set, no auth is used for upstream messages.
@@ -131,7 +167,7 @@ type EventHubEndpoint struct {
 	// REQUIRED; The name of the Event Hub.
 	EventHubName *string
 
-	// REQUIRED; The fully qualified namespace name of the Event Hub resource. For example, "example.servicebus.windows.net".
+	// REQUIRED; The fully qualified namespace name of the Event Hub resource.
 	FullyQualifiedNamespace *string
 
 	// REQUIRED
@@ -559,6 +595,9 @@ type PrivateLinkServiceConnectionState struct {
 
 // Properties - A class that describes the properties of the resource
 type Properties struct {
+	// Application firewall settings for the resource
+	ApplicationFirewall *ApplicationFirewallSettings
+
 	// DisableLocalAuth Enable or disable aad auth When set as true, connection with AuthType=aad won't work.
 	DisableAADAuth *bool
 
@@ -867,6 +906,9 @@ type SharedPrivateLinkResourceProperties struct {
 	// REQUIRED; The resource id of the resource the shared private link resource is for
 	PrivateLinkResourceID *string
 
+	// A list of FQDNs for third party private link service
+	Fqdns []*string
+
 	// The request message for requesting approval of the shared private link resource
 	RequestMessage *string
 
@@ -946,6 +988,131 @@ type TLSSettings struct {
 	// Request client certificate during TLS handshake if enabled. Not supported for free tier. Any input will be ignored for
 	// free tier.
 	ClientCertEnabled *bool
+}
+
+// ThrottleByJwtCustomClaimRule - Throttle the client connection by a custom JWT claim
+type ThrottleByJwtCustomClaimRule struct {
+	// REQUIRED; The name of the claim in the JWT token. The client connection with the same claim value will be aggregated. If
+	// the claim is not found in the token, the connection will be allowed.
+	ClaimName *string
+
+	// REQUIRED
+	Type *ClientConnectionCountRuleDiscriminator
+
+	// Maximum connection count allowed for the same Jwt claim value. Clients with the same Jwt claim will get rejected if the
+	// connection count exceeds this value. Default value is 20.
+	MaxCount *int32
+}
+
+// GetClientConnectionCountRule implements the ClientConnectionCountRuleClassification interface for type ThrottleByJwtCustomClaimRule.
+func (t *ThrottleByJwtCustomClaimRule) GetClientConnectionCountRule() *ClientConnectionCountRule {
+	return &ClientConnectionCountRule{
+		Type: t.Type,
+	}
+}
+
+// ThrottleByJwtSignatureRule - Throttle the client connection by the JWT signature
+type ThrottleByJwtSignatureRule struct {
+	// REQUIRED
+	Type *ClientConnectionCountRuleDiscriminator
+
+	// Maximum connection count allowed for the same JWT signature. Clients with the same JWT signature will get rejected if the
+	// connection count exceeds this value. Default value is 20.
+	MaxCount *int32
+}
+
+// GetClientConnectionCountRule implements the ClientConnectionCountRuleClassification interface for type ThrottleByJwtSignatureRule.
+func (t *ThrottleByJwtSignatureRule) GetClientConnectionCountRule() *ClientConnectionCountRule {
+	return &ClientConnectionCountRule{
+		Type: t.Type,
+	}
+}
+
+// ThrottleByUserIDRule - Throttle the client connection by the user ID
+type ThrottleByUserIDRule struct {
+	// REQUIRED
+	Type *ClientConnectionCountRuleDiscriminator
+
+	// Maximum connection count allowed for the same user ID. Clients with the same user ID will get rejected if the connection
+	// count exceeds this value. Default value is 20.
+	MaxCount *int32
+}
+
+// GetClientConnectionCountRule implements the ClientConnectionCountRuleClassification interface for type ThrottleByUserIDRule.
+func (t *ThrottleByUserIDRule) GetClientConnectionCountRule() *ClientConnectionCountRule {
+	return &ClientConnectionCountRule{
+		Type: t.Type,
+	}
+}
+
+// TrafficThrottleByJwtCustomClaimRule - Throttle the client traffic by a custom JWT claim
+type TrafficThrottleByJwtCustomClaimRule struct {
+	// REQUIRED; The name of the claim in the JWT token. The message bytes with the same claim value will be aggregated. If the
+	// claim is not found in the token, the rule will be skipped.
+	ClaimName *string
+
+	// REQUIRED
+	Type *ClientTrafficControlRuleDiscriminator
+
+	// The aggregation window for the message bytes. The message bytes will be aggregated in this window and be reset after the
+	// window. Default value is 60 seconds.
+	AggregationWindowInSeconds *int32
+
+	// Maximum accumulated inbound message bytes allowed for the same JWT signature within a time window. Clients with the same
+	// JWT claim will get disconnected if the message bytes exceeds this value.
+	// Default value is 1GB.
+	MaxInboundMessageBytes *int64
+}
+
+// GetClientTrafficControlRule implements the ClientTrafficControlRuleClassification interface for type TrafficThrottleByJwtCustomClaimRule.
+func (t *TrafficThrottleByJwtCustomClaimRule) GetClientTrafficControlRule() *ClientTrafficControlRule {
+	return &ClientTrafficControlRule{
+		Type: t.Type,
+	}
+}
+
+// TrafficThrottleByJwtSignatureRule - Throttle the client traffic by the JWT signature
+type TrafficThrottleByJwtSignatureRule struct {
+	// REQUIRED
+	Type *ClientTrafficControlRuleDiscriminator
+
+	// The aggregation window for the message bytes. The message bytes will be aggregated in this window and be reset after the
+	// window. Default value is 60 seconds.
+	AggregationWindowInSeconds *int32
+
+	// Maximum accumulated inbound message bytes allowed for the same JWT signature within a time window. Clients with the same
+	// JWT signature will get disconnected if the message bytes exceeds this value.
+	// Default value is 1GB.
+	MaxInboundMessageBytes *int64
+}
+
+// GetClientTrafficControlRule implements the ClientTrafficControlRuleClassification interface for type TrafficThrottleByJwtSignatureRule.
+func (t *TrafficThrottleByJwtSignatureRule) GetClientTrafficControlRule() *ClientTrafficControlRule {
+	return &ClientTrafficControlRule{
+		Type: t.Type,
+	}
+}
+
+// TrafficThrottleByUserIDRule - Throttle the client traffic by the user ID
+type TrafficThrottleByUserIDRule struct {
+	// REQUIRED
+	Type *ClientTrafficControlRuleDiscriminator
+
+	// The aggregation window for the message bytes. The message bytes will be aggregated in this window and be reset after the
+	// window. Default value is 60 seconds.
+	AggregationWindowInSeconds *int32
+
+	// Maximum accumulated inbound message bytes allowed for the same user ID within a time window. Clients with the same user
+	// ID will get disconnected if the message bytes exceeds this value. Default value
+	// is 1GB.
+	MaxInboundMessageBytes *int64
+}
+
+// GetClientTrafficControlRule implements the ClientTrafficControlRuleClassification interface for type TrafficThrottleByUserIDRule.
+func (t *TrafficThrottleByUserIDRule) GetClientTrafficControlRule() *ClientTrafficControlRule {
+	return &ClientTrafficControlRule{
+		Type: t.Type,
+	}
 }
 
 // UpstreamAuthSettings - Upstream auth settings. If not set, no auth is used for upstream messages.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-05-22)
+## 0.10.0 (2026-05-22)
 ### Breaking Changes
 
 - Enum `ColumnDataType` has been removed

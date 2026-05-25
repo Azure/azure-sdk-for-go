@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-05-20)
+## 0.10.0 (2026-05-20)
 ### Breaking Changes
 
 - Function `*AttestationsClient.NewListForResourceGroupPager` parameter(s) have been changed from `(resourceGroupName string, queryOptions *QueryOptions, options *AttestationsClientListForResourceGroupOptions)` to `(resourceGroupName string, options *AttestationsClientListForResourceGroupOptions)`

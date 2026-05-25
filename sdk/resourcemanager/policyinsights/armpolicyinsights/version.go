@@ -6,5 +6,5 @@ package armpolicyinsights
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.10.0"
 )

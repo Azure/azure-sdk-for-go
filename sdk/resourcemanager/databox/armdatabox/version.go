@@ -6,5 +6,5 @@ package armdatabox
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
-	moduleVersion = "v3.3.0-beta.1"
+	moduleVersion = "v3.0.0-beta.1"
 )

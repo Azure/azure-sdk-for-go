@@ -5,7 +5,7 @@
 ### Features Added
 * Added support for the `Expect: 100-continue` HTTP header on requests with a body. The new `ExpectContinueBehavior` field on `ClientOptions` configures the
   behavior via `ExpectContinueOptions`. By default (`ExpectContinueModeApplyOnThrottle`) the header is sent for one minute after a 429, 500, or 503 response
-  is received; the interval can be overridden via `ExpectContinueOptions.AutoInterval`. Other modes are `ExpectContinueModeOn` (always send) and
+  is received; the interval can be overridden via `ExpectContinueOptions.ThrottleInterval`. Other modes are `ExpectContinueModeOn` (always send) and
   `ExpectContinueModeOff` (never send). Set the environment variable `AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER=true` to disable the feature regardless of
   `ClientOptions`.
 

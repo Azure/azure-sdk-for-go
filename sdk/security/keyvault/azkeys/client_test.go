@@ -431,6 +431,50 @@ func TestSecureWrapUnwrapKeyRequests(t *testing.T) {
 	require.Equal(t, 2, requestNumber)
 }
 
+func TestSecureWrapUnwrapKey(t *testing.T) {
+	client := startTest(t, true)
+
+	keyName := createRandomName(t, "testsecurewrap")
+	createParams := azkeys.CreateKeyParameters{
+		Kty:    to.Ptr(azkeys.KeyTypeRSAHSM),
+		KeyOps: to.SliceOfPtrs(azkeys.KeyOperationWrapKey, azkeys.KeyOperationUnwrapKey),
+	}
+	createResp, err := client.CreateKey(context.Background(), keyName, createParams, nil)
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, createResp.Key.KID)
+	require.NotNil(t, createResp.Key.KID)
+	require.NotEmpty(t, createResp.Key.KID.Version())
+
+	algorithm := azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256
+	wrapParams := azkeys.NewSecureWrapKeyParameters(algorithm)
+	testSerde(t, &wrapParams)
+	wrapResp, err := client.SecureWrapKey(context.Background(), keyName, createResp.Key.KID.Version(), wrapParams, nil)
+	if err != nil && strings.Contains(err.Error(), "Operation secureWrapKey is not permitted") {
+		t.Skip("secure wrap is not enabled on the target Managed HSM")
+	}
+	require.NoError(t, err)
+	require.Equal(t, algorithm, *wrapResp.Algorithm)
+	require.NotNil(t, wrapResp.Kid)
+	wrapKID := azkeys.ID(*wrapResp.Kid)
+	require.Equal(t, keyName, wrapKID.Name())
+	require.Equal(t, createResp.Key.KID.Version(), wrapKID.Version())
+	require.NotEmpty(t, wrapResp.Value)
+	testSerde(t, &wrapResp.SecureKeyOperationResult)
+
+	attestationToken := getTestAttestationToken(t)
+	unwrapParams := azkeys.NewSecureUnwrapKeyParameters(algorithm, wrapResp.Value, attestationToken)
+	testSerde(t, &unwrapParams)
+	unwrapResp, err := client.SecureUnwrapKey(context.Background(), keyName, createResp.Key.KID.Version(), unwrapParams, nil)
+	require.NoError(t, err)
+	require.Equal(t, algorithm, *unwrapResp.Algorithm)
+	require.NotNil(t, unwrapResp.Kid)
+	unwrapKID := azkeys.ID(*unwrapResp.Kid)
+	require.Equal(t, keyName, unwrapKID.Name())
+	require.Equal(t, createResp.Key.KID.Version(), unwrapKID.Version())
+	require.Len(t, unwrapResp.Value, 32)
+	testSerde(t, &unwrapResp.SecureKeyOperationResult)
+}
+
 func TestID(t *testing.T) {
 	for _, test := range []struct{ ID, name, version string }{
 		{"https://foo.vault.azure.net/keys/name/version", "name", "version"},
@@ -679,24 +723,8 @@ func TestReleaseKey(t *testing.T) {
 			require.NotNil(t, createResp.Key.KID)
 			defer cleanUpKey(t, client, createResp.Key.KID)
 
-			attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
-			require.NoError(t, err)
-			req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
-			require.NoError(t, err)
-			resp, err := attestationClient.Do(req)
-			require.NoError(t, err)
-			require.Equal(t, http.StatusOK, resp.StatusCode)
-			defer func() {
-				_ = resp.Body.Close()
-			}()
-
-			var tR struct {
-				Token *string `json:"token"`
-			}
-			err = json.NewDecoder(resp.Body).Decode(&tR)
-			require.NoError(t, err)
-
-			params := azkeys.ReleaseParameters{TargetAttestationToken: tR.Token}
+			attestationToken := getTestAttestationToken(t)
+			params := azkeys.ReleaseParameters{TargetAttestationToken: to.Ptr(attestationToken)}
 			testSerde(t, &params)
 			releaseResp, err := client.Release(context.Background(), key, "", params, nil)
 			if err != nil && strings.Contains(err.Error(), "Target environment attestation statement cannot be verified.") {
@@ -708,6 +736,27 @@ func TestReleaseKey(t *testing.T) {
 		})
 	}
 
+}
+
+func getTestAttestationToken(t *testing.T) string {
+	attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
+	require.NoError(t, err)
+	resp, err := attestationClient.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
+	var tokenResponse struct {
+		Token *string `json:"token"`
+	}
+	err = json.NewDecoder(resp.Body).Decode(&tokenResponse)
+	require.NoError(t, err)
+	require.NotNil(t, tokenResponse.Token)
+	return *tokenResponse.Token
 }
 
 func TestRotateKey(t *testing.T) {

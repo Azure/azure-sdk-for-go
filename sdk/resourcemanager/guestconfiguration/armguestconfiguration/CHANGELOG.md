@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0 (2026-04-30)
+## 1.3.0 (2026-05-25)
 ### Features Added
 
 - New function `*AssignmentsVMSSClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, vmssName string, name string, parameters Assignment, options *AssignmentsVMSSClientCreateOrUpdateOptions) (AssignmentsVMSSClientCreateOrUpdateResponse, error)`

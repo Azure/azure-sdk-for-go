@@ -8,16 +8,63 @@
 
 package armresourcegraph
 
+// ClientResourceChangeDetailsResponse contains the response from method Client.ResourceChangeDetails.
+type ClientResourceChangeDetailsResponse struct {
+	// A list of change details associated with a resource over a specific time interval.
+	ResourceChangeDataArray []*ResourceChangeData
+}
+
+// ClientResourceChangesResponse contains the response from method Client.ResourceChanges.
+type ClientResourceChangesResponse struct {
+	// A list of changes associated with a resource over a specific time interval.
+	ResourceChangeList
+}
+
 // ClientResourcesHistoryResponse contains the response from method Client.ResourcesHistory.
 type ClientResourcesHistoryResponse struct {
-	// Anything
-	Interface any
+	// Dictionary of <any>
+	Value map[string]any
 }
 
 // ClientResourcesResponse contains the response from method Client.Resources.
 type ClientResourcesResponse struct {
 	// Query result.
 	QueryResponse
+}
+
+// GraphQueryClientCreateOrUpdateResponse contains the response from method GraphQueryClient.CreateOrUpdate.
+type GraphQueryClientCreateOrUpdateResponse struct {
+	// Graph Query entity definition.
+	GraphQueryResource
+}
+
+// GraphQueryClientDeleteResponse contains the response from method GraphQueryClient.Delete.
+type GraphQueryClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GraphQueryClientGetResponse contains the response from method GraphQueryClient.Get.
+type GraphQueryClientGetResponse struct {
+	// Graph Query entity definition.
+	GraphQueryResource
+}
+
+// GraphQueryClientListBySubscriptionResponse contains the response from method GraphQueryClient.NewListBySubscriptionPager.
+type GraphQueryClientListBySubscriptionResponse struct {
+	// Graph query list result.
+	GraphQueryListResult
+}
+
+// GraphQueryClientListResponse contains the response from method GraphQueryClient.NewListPager.
+type GraphQueryClientListResponse struct {
+	// Graph query list result.
+	GraphQueryListResult
+}
+
+// GraphQueryClientUpdateResponse contains the response from method GraphQueryClient.Update.
+type GraphQueryClientUpdateResponse struct {
+	// Graph Query entity definition.
+	GraphQueryResource
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

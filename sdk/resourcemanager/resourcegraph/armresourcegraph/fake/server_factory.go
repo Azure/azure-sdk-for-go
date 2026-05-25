@@ -20,6 +20,7 @@ import (
 // ServerFactory is a fake server for instances of the armresourcegraph.ClientFactory type.
 type ServerFactory struct {
 	Server           Server
+	GraphQueryServer GraphQueryServer
 	OperationsServer OperationsServer
 }
 
@@ -38,6 +39,7 @@ type ServerFactoryTransport struct {
 	srv                *ServerFactory
 	trMu               sync.Mutex
 	trServer           *ServerTransport
+	trGraphQueryServer *GraphQueryServerTransport
 	trOperationsServer *OperationsServerTransport
 }
 
@@ -57,6 +59,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
+	case "GraphQueryClient":
+		initServer(s, &s.trGraphQueryServer, func() *GraphQueryServerTransport { return NewGraphQueryServerTransport(&s.srv.GraphQueryServer) })
+		resp, err = s.trGraphQueryServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

@@ -34,6 +34,40 @@ func PossibleAuthorizationScopeFilterValues() []AuthorizationScopeFilter {
 	}
 }
 
+// ChangeCategory - The change category.
+type ChangeCategory string
+
+const (
+	ChangeCategorySystem ChangeCategory = "System"
+	ChangeCategoryUser   ChangeCategory = "User"
+)
+
+// PossibleChangeCategoryValues returns the possible values for the ChangeCategory const type.
+func PossibleChangeCategoryValues() []ChangeCategory {
+	return []ChangeCategory{
+		ChangeCategorySystem,
+		ChangeCategoryUser,
+	}
+}
+
+// ChangeType - The change type for snapshot. PropertyChanges will be provided in case of Update change type
+type ChangeType string
+
+const (
+	ChangeTypeCreate ChangeType = "Create"
+	ChangeTypeDelete ChangeType = "Delete"
+	ChangeTypeUpdate ChangeType = "Update"
+)
+
+// PossibleChangeTypeValues returns the possible values for the ChangeType const type.
+func PossibleChangeTypeValues() []ChangeType {
+	return []ChangeType{
+		ChangeTypeCreate,
+		ChangeTypeDelete,
+		ChangeTypeUpdate,
+	}
+}
+
 // ColumnDataType - Data type of a column in a table.
 type ColumnDataType string
 
@@ -58,6 +92,26 @@ func PossibleColumnDataTypeValues() []ColumnDataType {
 	}
 }
 
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
 // FacetSortOrder - The sorting order by the selected column (count by default).
 type FacetSortOrder string
 
@@ -74,6 +128,24 @@ func PossibleFacetSortOrderValues() []FacetSortOrder {
 	}
 }
 
+// PropertyChangeType - The property change Type
+type PropertyChangeType string
+
+const (
+	PropertyChangeTypeInsert PropertyChangeType = "Insert"
+	PropertyChangeTypeRemove PropertyChangeType = "Remove"
+	PropertyChangeTypeUpdate PropertyChangeType = "Update"
+)
+
+// PossiblePropertyChangeTypeValues returns the possible values for the PropertyChangeType const type.
+func PossiblePropertyChangeTypeValues() []PropertyChangeType {
+	return []PropertyChangeType{
+		PropertyChangeTypeInsert,
+		PropertyChangeTypeRemove,
+		PropertyChangeTypeUpdate,
+	}
+}
+
 // ResultFormat - Defines in which format query result returned.
 type ResultFormat string
 
@@ -87,6 +159,20 @@ func PossibleResultFormatValues() []ResultFormat {
 	return []ResultFormat{
 		ResultFormatObjectArray,
 		ResultFormatTable,
+	}
+}
+
+// ResultKind - Enum indicating a type of graph query.
+type ResultKind string
+
+const (
+	ResultKindBasic ResultKind = "basic"
+)
+
+// PossibleResultKindValues returns the possible values for the ResultKind const type.
+func PossibleResultKindValues() []ResultKind {
+	return []ResultKind{
+		ResultKindBasic,
 	}
 }
 

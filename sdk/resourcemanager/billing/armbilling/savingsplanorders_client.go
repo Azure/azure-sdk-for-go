@@ -17,6 +17,8 @@ import (
 	"strings"
 )
 
+const defaultSavingsPlanOrdersClientVersion string = "2024-04-01"
+
 // SavingsPlanOrdersClient contains the methods for the SavingsPlanOrders group.
 // Don't use this type directly, use NewSavingsPlanOrdersClient() instead.
 //
@@ -83,7 +85,7 @@ func (client *SavingsPlanOrdersClient) getByBillingAccountCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultSavingsPlanOrdersClientVersion)
 	if options != nil && options.Expand != nil {
 		reqQP.Set("expand", *options.Expand)
 	}
@@ -140,7 +142,7 @@ func (client *SavingsPlanOrdersClient) listByBillingAccountCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultSavingsPlanOrdersClientVersion)
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}

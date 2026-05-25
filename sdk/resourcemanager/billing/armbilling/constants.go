@@ -4,10 +4,6 @@
 
 package armbilling
 
-const (
-	version20240401 string = "2024-04-01"
-)
-
 // AcceptanceMode - The mode of acceptance for an agreement.
 type AcceptanceMode string
 

@@ -4,17 +4,6 @@
 
 package armauthorization
 
-const (
-	version20150701        string = "2015-07-01"
-	version20211201Preview string = "2021-12-01-preview"
-	version20220401        string = "2022-04-01"
-	version20220501Preview string = "2022-05-01-preview"
-	version20220801Preview string = "2022-08-01-preview"
-	version20240701Preview string = "2024-07-01-preview"
-	version20240901Preview string = "2024-09-01-preview"
-	version20251201Preview string = "2025-12-01-preview"
-)
-
 // AccessRecommendationType - The feature- generated recommendation shown to the reviewer.
 type AccessRecommendationType string
 

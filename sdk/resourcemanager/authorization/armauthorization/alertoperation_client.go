@@ -17,8 +17,6 @@ import (
 
 // AlertOperationClient contains the methods for the AlertOperation group.
 // Don't use this type directly, use NewAlertOperationClient() instead.
-//
-// Generated from API version 2022-08-01-preview
 type AlertOperationClient struct {
 	internal *arm.Client
 }
@@ -39,6 +37,8 @@ func NewAlertOperationClient(credential azcore.TokenCredential, options *arm.Cli
 
 // Get - Get the specified alert operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-08-01-preview
 //   - scope - The scope of the alert operation.
 //   - operationID - The id of the alert operation.
 //   - options - AlertOperationClientGetOptions contains the optional parameters for the AlertOperationClient.Get method.
@@ -80,8 +80,8 @@ func (client *AlertOperationClient) getCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2022-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

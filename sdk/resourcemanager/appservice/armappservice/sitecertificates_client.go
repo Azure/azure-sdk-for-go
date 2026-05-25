@@ -18,8 +18,6 @@ import (
 
 // SiteCertificatesClient contains the methods for the SiteCertificates group.
 // Don't use this type directly, use NewSiteCertificatesClient() instead.
-//
-// Generated from API version 2025-05-01
 type SiteCertificatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +43,8 @@ func NewSiteCertificatesClient(subscriptionID string, credential azcore.TokenCre
 //
 // Create or update a certificate under a given site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - certificateName - Name of the certificate.
@@ -97,8 +97,8 @@ func (client *SiteCertificatesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, certificateEnvelope); err != nil {
@@ -120,6 +120,8 @@ func (client *SiteCertificatesClient) createOrUpdateHandleResponse(resp *http.Re
 //
 // Create or update a certificate in a given site and deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
@@ -177,8 +179,8 @@ func (client *SiteCertificatesClient) createOrUpdateSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, certificateEnvelope); err != nil {
@@ -200,6 +202,8 @@ func (client *SiteCertificatesClient) createOrUpdateSlotHandleResponse(resp *htt
 //
 // Delete a certificate from the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - certificateName - Name of the certificate.
@@ -249,8 +253,8 @@ func (client *SiteCertificatesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -258,6 +262,8 @@ func (client *SiteCertificatesClient) deleteCreateRequest(ctx context.Context, r
 //
 // Delete a certificate for a given site and deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
@@ -313,8 +319,8 @@ func (client *SiteCertificatesClient) deleteSlotCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -322,6 +328,8 @@ func (client *SiteCertificatesClient) deleteSlotCreateRequest(ctx context.Contex
 //
 // Get a certificate belonging to a given site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - certificateName - Name of the certificate.
@@ -372,8 +380,8 @@ func (client *SiteCertificatesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -391,6 +399,8 @@ func (client *SiteCertificatesClient) getHandleResponse(resp *http.Response) (Si
 //
 // Get a certificate for a given site and deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
@@ -447,8 +457,8 @@ func (client *SiteCertificatesClient) getSlotCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -465,6 +475,8 @@ func (client *SiteCertificatesClient) getSlotHandleResponse(resp *http.Response)
 // NewListPager - Get all certificates in a resource group under a site.
 //
 // Get all certificates in a resource group under a site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - options - SiteCertificatesClientListOptions contains the optional parameters for the SiteCertificatesClient.NewListPager
@@ -512,8 +524,8 @@ func (client *SiteCertificatesClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -530,6 +542,8 @@ func (client *SiteCertificatesClient) listHandleResponse(resp *http.Response) (S
 // NewListSlotPager - Get all certificates in a resource group for a given site and a deployment slot.
 //
 // Get all certificates in a resource group for a given site and a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
@@ -582,8 +596,8 @@ func (client *SiteCertificatesClient) listSlotCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -601,6 +615,8 @@ func (client *SiteCertificatesClient) listSlotHandleResponse(resp *http.Response
 //
 // Create or update a certificate under a given site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - certificateName - Name of the certificate.
@@ -652,8 +668,8 @@ func (client *SiteCertificatesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, certificateEnvelope); err != nil {
@@ -675,6 +691,8 @@ func (client *SiteCertificatesClient) updateHandleResponse(resp *http.Response) 
 //
 // Create or update a certificate for a site and deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
@@ -732,8 +750,8 @@ func (client *SiteCertificatesClient) updateSlotCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, certificateEnvelope); err != nil {

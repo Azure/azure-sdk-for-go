@@ -11,9 +11,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 	"net/http"
-	"slices"
+	"net/url"
 )
 
 // AccessReviewScheduleDefinitionsAssignedForMyApprovalServer is a fake server for instances of the armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClient type.
@@ -52,7 +52,9 @@ func (a *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport) Do
 }
 
 func (a *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -68,7 +70,10 @@ func (a *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport) di
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -86,7 +91,11 @@ func (a *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport) di
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
 		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions
 		if filterParam != nil {
 			options = &armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions{
@@ -104,7 +113,7 @@ func (a *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport) di
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

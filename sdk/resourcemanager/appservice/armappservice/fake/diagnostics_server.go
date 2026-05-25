@@ -12,11 +12,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 	"time"
 )
 
@@ -156,7 +155,9 @@ func (d *DiagnosticsServerTransport) Do(req *http.Request) (*http.Response, erro
 }
 
 func (d *DiagnosticsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -214,7 +215,10 @@ func (d *DiagnosticsServerTransport) dispatchToMethodFake(req *http.Request, met
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -252,15 +256,27 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteAnalysis(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	startTimeParam, err := parseOptional(qp.Get("startTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
 	if err != nil {
 		return nil, err
 	}
-	endTimeParam, err := parseOptional(qp.Get("endTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeParam, err := parseOptional(startTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	timeGrainParam := getOptional(qp.Get("timeGrain"))
+	endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
+	if err != nil {
+		return nil, err
+	}
+	endTimeParam, err := parseOptional(endTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	timeGrainUnescaped, err := url.QueryUnescape(qp.Get("timeGrain"))
+	if err != nil {
+		return nil, err
+	}
+	timeGrainParam := getOptional(timeGrainUnescaped)
 	var options *armappservice.DiagnosticsClientExecuteSiteAnalysisOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientExecuteSiteAnalysisOptions{
@@ -274,7 +290,7 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteAnalysis(req *http.Reque
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticAnalysis, req)
@@ -315,15 +331,27 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteAnalysisSlot(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	startTimeParam, err := parseOptional(qp.Get("startTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
 	if err != nil {
 		return nil, err
 	}
-	endTimeParam, err := parseOptional(qp.Get("endTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeParam, err := parseOptional(startTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	timeGrainParam := getOptional(qp.Get("timeGrain"))
+	endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
+	if err != nil {
+		return nil, err
+	}
+	endTimeParam, err := parseOptional(endTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	timeGrainUnescaped, err := url.QueryUnescape(qp.Get("timeGrain"))
+	if err != nil {
+		return nil, err
+	}
+	timeGrainParam := getOptional(timeGrainUnescaped)
 	var options *armappservice.DiagnosticsClientExecuteSiteAnalysisSlotOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientExecuteSiteAnalysisSlotOptions{
@@ -337,7 +365,7 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteAnalysisSlot(req *http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticAnalysis, req)
@@ -374,15 +402,27 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteDetector(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	startTimeParam, err := parseOptional(qp.Get("startTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
 	if err != nil {
 		return nil, err
 	}
-	endTimeParam, err := parseOptional(qp.Get("endTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeParam, err := parseOptional(startTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	timeGrainParam := getOptional(qp.Get("timeGrain"))
+	endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
+	if err != nil {
+		return nil, err
+	}
+	endTimeParam, err := parseOptional(endTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	timeGrainUnescaped, err := url.QueryUnescape(qp.Get("timeGrain"))
+	if err != nil {
+		return nil, err
+	}
+	timeGrainParam := getOptional(timeGrainUnescaped)
 	var options *armappservice.DiagnosticsClientExecuteSiteDetectorOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientExecuteSiteDetectorOptions{
@@ -396,7 +436,7 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteDetector(req *http.Reque
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticDetectorResponse, req)
@@ -437,15 +477,27 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteDetectorSlot(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	startTimeParam, err := parseOptional(qp.Get("startTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
 	if err != nil {
 		return nil, err
 	}
-	endTimeParam, err := parseOptional(qp.Get("endTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeParam, err := parseOptional(startTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	timeGrainParam := getOptional(qp.Get("timeGrain"))
+	endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
+	if err != nil {
+		return nil, err
+	}
+	endTimeParam, err := parseOptional(endTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	timeGrainUnescaped, err := url.QueryUnescape(qp.Get("timeGrain"))
+	if err != nil {
+		return nil, err
+	}
+	timeGrainParam := getOptional(timeGrainUnescaped)
 	var options *armappservice.DiagnosticsClientExecuteSiteDetectorSlotOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientExecuteSiteDetectorSlotOptions{
@@ -459,7 +511,7 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteDetectorSlot(req *http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticDetectorResponse, req)
@@ -492,15 +544,27 @@ func (d *DiagnosticsServerTransport) dispatchGetHostingEnvironmentDetectorRespon
 	if err != nil {
 		return nil, err
 	}
-	startTimeParam, err := parseOptional(qp.Get("startTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
 	if err != nil {
 		return nil, err
 	}
-	endTimeParam, err := parseOptional(qp.Get("endTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeParam, err := parseOptional(startTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	timeGrainParam := getOptional(qp.Get("timeGrain"))
+	endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
+	if err != nil {
+		return nil, err
+	}
+	endTimeParam, err := parseOptional(endTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	timeGrainUnescaped, err := url.QueryUnescape(qp.Get("timeGrain"))
+	if err != nil {
+		return nil, err
+	}
+	timeGrainParam := getOptional(timeGrainUnescaped)
 	var options *armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions{
@@ -514,7 +578,7 @@ func (d *DiagnosticsServerTransport) dispatchGetHostingEnvironmentDetectorRespon
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DetectorResponse, req)
@@ -555,7 +619,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteAnalysis(req *http.Request) 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AnalysisDefinition, req)
@@ -600,7 +664,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteAnalysisSlot(req *http.Reque
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AnalysisDefinition, req)
@@ -641,7 +705,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetector(req *http.Request) 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DetectorDefinitionResource, req)
@@ -674,15 +738,27 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetectorResponse(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	startTimeParam, err := parseOptional(qp.Get("startTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
 	if err != nil {
 		return nil, err
 	}
-	endTimeParam, err := parseOptional(qp.Get("endTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeParam, err := parseOptional(startTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	timeGrainParam := getOptional(qp.Get("timeGrain"))
+	endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
+	if err != nil {
+		return nil, err
+	}
+	endTimeParam, err := parseOptional(endTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	timeGrainUnescaped, err := url.QueryUnescape(qp.Get("timeGrain"))
+	if err != nil {
+		return nil, err
+	}
+	timeGrainParam := getOptional(timeGrainUnescaped)
 	var options *armappservice.DiagnosticsClientGetSiteDetectorResponseOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientGetSiteDetectorResponseOptions{
@@ -696,7 +772,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetectorResponse(req *http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DetectorResponse, req)
@@ -733,15 +809,27 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetectorResponseSlot(req *ht
 	if err != nil {
 		return nil, err
 	}
-	startTimeParam, err := parseOptional(qp.Get("startTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
 	if err != nil {
 		return nil, err
 	}
-	endTimeParam, err := parseOptional(qp.Get("endTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	startTimeParam, err := parseOptional(startTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	timeGrainParam := getOptional(qp.Get("timeGrain"))
+	endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
+	if err != nil {
+		return nil, err
+	}
+	endTimeParam, err := parseOptional(endTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	timeGrainUnescaped, err := url.QueryUnescape(qp.Get("timeGrain"))
+	if err != nil {
+		return nil, err
+	}
+	timeGrainParam := getOptional(timeGrainUnescaped)
 	var options *armappservice.DiagnosticsClientGetSiteDetectorResponseSlotOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientGetSiteDetectorResponseSlotOptions{
@@ -755,7 +843,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetectorResponseSlot(req *ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DetectorResponse, req)
@@ -800,7 +888,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetectorSlot(req *http.Reque
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DetectorDefinitionResource, req)
@@ -837,7 +925,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDiagnosticCategory(req *http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticCategory, req)
@@ -878,7 +966,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDiagnosticCategorySlot(req *
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticCategory, req)
@@ -919,7 +1007,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListHostingEnvironmentDetectorRe
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListHostingEnvironmentDetectorResponsesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -964,7 +1052,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteAnalysesPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListSiteAnalysesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1013,7 +1101,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteAnalysesSlotPager(req *h
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListSiteAnalysesSlotPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1054,7 +1142,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDetectorResponsesPager(r
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListSiteDetectorResponsesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1099,7 +1187,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDetectorResponsesSlotPag
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListSiteDetectorResponsesSlotPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1144,7 +1232,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDetectorsPager(req *http
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListSiteDetectorsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1193,7 +1281,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDetectorsSlotPager(req *
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListSiteDetectorsSlotPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1234,7 +1322,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDiagnosticCategoriesPage
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListSiteDiagnosticCategoriesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1279,7 +1367,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDiagnosticCategoriesSlot
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListSiteDiagnosticCategoriesSlotPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

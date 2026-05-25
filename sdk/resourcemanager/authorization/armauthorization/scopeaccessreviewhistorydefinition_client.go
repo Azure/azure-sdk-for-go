@@ -18,8 +18,6 @@ import (
 
 // ScopeAccessReviewHistoryDefinitionClient contains the methods for the ScopeAccessReviewHistoryDefinition group.
 // Don't use this type directly, use NewScopeAccessReviewHistoryDefinitionClient() instead.
-//
-// Generated from API version 2021-12-01-preview
 type ScopeAccessReviewHistoryDefinitionClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewScopeAccessReviewHistoryDefinitionClient(credential azcore.TokenCredenti
 
 // Create - Create a scheduled or one-time Access Review History Definition
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - historyDefinitionID - The id of the access review history definition.
 //   - properties - Access review history definition properties.
@@ -83,8 +83,8 @@ func (client *ScopeAccessReviewHistoryDefinitionClient) createCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -104,6 +104,8 @@ func (client *ScopeAccessReviewHistoryDefinitionClient) createHandleResponse(res
 
 // DeleteByID - Delete an access review history definition
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - historyDefinitionID - The id of the access review history definition.
 //   - options - ScopeAccessReviewHistoryDefinitionClientDeleteByIDOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionClient.DeleteByID
@@ -145,7 +147,7 @@ func (client *ScopeAccessReviewHistoryDefinitionClient) deleteByIDCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

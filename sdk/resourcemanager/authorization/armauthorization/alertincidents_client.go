@@ -17,8 +17,6 @@ import (
 
 // AlertIncidentsClient contains the methods for the AlertIncidents group.
 // Don't use this type directly, use NewAlertIncidentsClient() instead.
-//
-// Generated from API version 2022-08-01-preview
 type AlertIncidentsClient struct {
 	internal *arm.Client
 }
@@ -39,6 +37,8 @@ func NewAlertIncidentsClient(credential azcore.TokenCredential, options *arm.Cli
 
 // Get - Get the specified alert incident.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - alertID - The name of the alert to get.
 //   - alertIncidentID - The name of the alert incident to get.
@@ -85,8 +85,8 @@ func (client *AlertIncidentsClient) getCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2022-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -101,6 +101,8 @@ func (client *AlertIncidentsClient) getHandleResponse(resp *http.Response) (Aler
 }
 
 // NewListForScopePager - Gets alert incidents for a resource scope.
+//
+// Generated from API version 2022-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - alertID - The name of the alert to get.
 //   - options - AlertIncidentsClientListForScopeOptions contains the optional parameters for the AlertIncidentsClient.NewListForScopePager
@@ -144,8 +146,8 @@ func (client *AlertIncidentsClient) listForScopeCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2022-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -161,6 +163,8 @@ func (client *AlertIncidentsClient) listForScopeHandleResponse(resp *http.Respon
 
 // Remediate - Remediate an alert incident.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - alertID - The name of the alert to get.
 //   - alertIncidentID - The name of the alert incident to get.
@@ -207,7 +211,7 @@ func (client *AlertIncidentsClient) remediateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2022-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

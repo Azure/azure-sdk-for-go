@@ -17,6 +17,8 @@ import (
 	"strings"
 )
 
+const defaultSavingsPlansClientVersion string = "2024-04-01"
+
 // SavingsPlansClient contains the methods for the SavingsPlans group.
 // Don't use this type directly, use NewSavingsPlansClient() instead.
 //
@@ -88,7 +90,7 @@ func (client *SavingsPlansClient) getByBillingAccountCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultSavingsPlansClientVersion)
 	if options != nil && options.Expand != nil {
 		reqQP.Set("expand", *options.Expand)
 	}
@@ -145,7 +147,7 @@ func (client *SavingsPlansClient) listByBillingAccountCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultSavingsPlansClientVersion)
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}
@@ -222,7 +224,7 @@ func (client *SavingsPlansClient) listBySavingsPlanOrderCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultSavingsPlansClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,7 +307,7 @@ func (client *SavingsPlansClient) updateByBillingAccountCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultSavingsPlansClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -365,7 +367,7 @@ func (client *SavingsPlansClient) validateUpdateByBillingAccountCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultSavingsPlansClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

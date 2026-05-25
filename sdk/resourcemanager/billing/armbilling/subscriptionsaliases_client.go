@@ -17,6 +17,8 @@ import (
 	"strings"
 )
 
+const defaultSubscriptionsAliasesClientVersion string = "2024-04-01"
+
 // SubscriptionsAliasesClient contains the methods for the SubscriptionsAliases group.
 // Don't use this type directly, use NewSubscriptionsAliasesClient() instead.
 //
@@ -104,7 +106,7 @@ func (client *SubscriptionsAliasesClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultSubscriptionsAliasesClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -158,7 +160,7 @@ func (client *SubscriptionsAliasesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultSubscriptionsAliasesClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,7 +215,7 @@ func (client *SubscriptionsAliasesClient) listByBillingAccountCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultSubscriptionsAliasesClientVersion)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatBool(*options.Count))
 	}

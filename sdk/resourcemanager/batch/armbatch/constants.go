@@ -4,10 +4,6 @@
 
 package armbatch
 
-const (
-	version20250601 string = "2025-06-01"
-)
-
 // AccessRuleDirection - Direction of Access Rule
 type AccessRuleDirection string
 

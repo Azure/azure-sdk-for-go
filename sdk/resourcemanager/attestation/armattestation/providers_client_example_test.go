@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation/v2"
 	"log"
 )
 
@@ -42,7 +42,7 @@ func ExampleProvidersClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armattestation.ProvidersClientCreateResponse{
-	// 	Provider: armattestation.Provider{
+	// 	Provider: &armattestation.Provider{
 	// 		Name: to.Ptr("myattestationprovider"),
 	// 		Type: to.Ptr("Microsoft.Attestation/attestationProviders"),
 	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MyResourceGroup/providers/Microsoft.Attestation/attestationProviders/myattestationprovider"),
@@ -104,7 +104,7 @@ func ExampleProvidersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armattestation.ProvidersClientGetResponse{
-	// 	Provider: armattestation.Provider{
+	// 	Provider: &armattestation.Provider{
 	// 		Name: to.Ptr("myattestationprovider"),
 	// 		Type: to.Ptr("Microsoft.Attestation/attestationProviders"),
 	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MyResourceGroup/providers/Microsoft.Attestation/attestationProviders/myattestationprovider"),
@@ -144,7 +144,7 @@ func ExampleProvidersClient_GetDefaultByLocation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armattestation.ProvidersClientGetDefaultByLocationResponse{
-	// 	Provider: armattestation.Provider{
+	// 	Provider: &armattestation.Provider{
 	// 		Name: to.Ptr("sharedcus"),
 	// 		Type: to.Ptr("Microsoft.Attestation/attestationProviders"),
 	// 		ID: to.Ptr("providers/Microsoft.Attestation/attestationProviders/sharedcus"),
@@ -179,7 +179,7 @@ func ExampleProvidersClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armattestation.ProvidersClientListResponse{
-	// 	ProviderListResult: armattestation.ProviderListResult{
+	// 	ProviderListResult: &armattestation.ProviderListResult{
 	// 		Value: []*armattestation.Provider{
 	// 			{
 	// 				Name: to.Ptr("myattestationprovider"),
@@ -223,7 +223,7 @@ func ExampleProvidersClient_ListByResourceGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armattestation.ProvidersClientListByResourceGroupResponse{
-	// 	ProviderListResult: armattestation.ProviderListResult{
+	// 	ProviderListResult: &armattestation.ProviderListResult{
 	// 		Value: []*armattestation.Provider{
 	// 			{
 	// 				Name: to.Ptr("myattestationprovider"),
@@ -267,7 +267,7 @@ func ExampleProvidersClient_ListDefault() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armattestation.ProvidersClientListDefaultResponse{
-	// 	ProviderListResult: armattestation.ProviderListResult{
+	// 	ProviderListResult: &armattestation.ProviderListResult{
 	// 		Value: []*armattestation.Provider{
 	// 			{
 	// 				Name: to.Ptr("sharedcus"),
@@ -329,7 +329,7 @@ func ExampleProvidersClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armattestation.ProvidersClientUpdateResponse{
-	// 	Provider: armattestation.Provider{
+	// 	Provider: &armattestation.Provider{
 	// 		Name: to.Ptr("myattestationprovider"),
 	// 		Type: to.Ptr("Microsoft.Attestation/attestationProviders"),
 	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MyResourceGroup/providers/Microsoft.Attestation/attestationProviders/myattestationprovider"),

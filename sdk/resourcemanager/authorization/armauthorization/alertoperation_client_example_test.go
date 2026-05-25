@@ -7,7 +7,7 @@ package armauthorization_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleAlertOperationClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.AlertOperationClientGetResponse{
-	// 	AlertOperationResult: armauthorization.AlertOperationResult{
+	// 	AlertOperationResult: &armauthorization.AlertOperationResult{
 	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-05T03:04:06.467+00:00"); return t}()),
 	// 		ID: to.Ptr("{operationId}"),
 	// 		LastActionDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-05T03:04:06.467+00:00"); return t}()),

@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling/v2"
 	"net/http"
 	"net/url"
 	"regexp"

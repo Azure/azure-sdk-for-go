@@ -18,8 +18,6 @@ import (
 
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
-//
-// Generated from API version 2021-06-01
 type PrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // ListByProvider - Gets the private link resources supported for the attestation provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Name of the attestation provider.
 //   - options - PrivateLinkResourcesClientListByProviderOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByProvider
@@ -89,8 +89,8 @@ func (client *PrivateLinkResourcesClient) listByProviderCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -18,8 +18,6 @@ import (
 
 // ScopeAccessReviewScheduleDefinitionsClient contains the methods for the ScopeAccessReviewScheduleDefinitions group.
 // Don't use this type directly, use NewScopeAccessReviewScheduleDefinitionsClient() instead.
-//
-// Generated from API version 2021-12-01-preview
 type ScopeAccessReviewScheduleDefinitionsClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewScopeAccessReviewScheduleDefinitionsClient(credential azcore.TokenCreden
 
 // CreateOrUpdateByID - Create or Update access review schedule definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - properties - Access review schedule definition properties.
@@ -83,8 +83,8 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) createOrUpdateByIDCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -104,6 +104,8 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) createOrUpdateByIDHand
 
 // DeleteByID - Delete access review schedule definition
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - options - ScopeAccessReviewScheduleDefinitionsClientDeleteByIDOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.DeleteByID
@@ -145,13 +147,15 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) deleteByIDCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // GetByID - Get single access review definition
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - options - ScopeAccessReviewScheduleDefinitionsClientGetByIDOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.GetByID
@@ -194,8 +198,8 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) getByIDCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -210,6 +214,8 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) getByIDHandleResponse(
 }
 
 // NewListPager - Get access review schedule definitions
+//
+// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - options - ScopeAccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.NewListPager
 //     method.
@@ -251,8 +257,8 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) listCreateRequest(ctx 
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -268,6 +274,8 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) listHandleResponse(res
 
 // Stop - Stop access review definition
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - options - ScopeAccessReviewScheduleDefinitionsClientStopOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.Stop
@@ -309,7 +317,7 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

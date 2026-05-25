@@ -19,8 +19,6 @@ import (
 
 // EnvironmentsClient contains the methods for the Environments group.
 // Don't use this type directly, use NewEnvironmentsClient() instead.
-//
-// Generated from API version 2025-05-01
 type EnvironmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,6 +44,8 @@ func NewEnvironmentsClient(subscriptionID string, credential azcore.TokenCredent
 //
 // Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - privateEndpointConnectionName - Name of the private endpoint connection.
@@ -72,6 +72,8 @@ func (client *EnvironmentsClient) BeginApproveOrRejectPrivateEndpointConnection(
 //
 // Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper RemotePrivateEndpointConnectionARMResource, options *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentsClient.BeginApproveOrRejectPrivateEndpointConnection"
@@ -117,8 +119,8 @@ func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnectionCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointWrapper); err != nil {
@@ -130,6 +132,8 @@ func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnectionCreate
 // BeginChangeVnet - Move an App Service Environment to a different VNET.
 //
 // Description for Move an App Service Environment to a different VNET.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - vnetInfo - Details for the new virtual network.
@@ -173,6 +177,8 @@ func (client *EnvironmentsClient) BeginChangeVnet(ctx context.Context, resourceG
 // ChangeVnet - Move an App Service Environment to a different VNET.
 //
 // Description for Move an App Service Environment to a different VNET.
+//
+// Generated from API version 2025-05-01
 func (client *EnvironmentsClient) changeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *EnvironmentsClientBeginChangeVnetOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentsClient.BeginChangeVnet"
@@ -214,8 +220,8 @@ func (client *EnvironmentsClient) changeVnetCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vnetInfo); err != nil {
@@ -237,6 +243,8 @@ func (client *EnvironmentsClient) changeVnetHandleResponse(resp *http.Response) 
 //
 // Description for Create or update an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - hostingEnvironmentEnvelope - Configuration details of the App Service Environment.
@@ -263,6 +271,8 @@ func (client *EnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resou
 //
 // Description for Create or update an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *EnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope EnvironmentResource, options *EnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentsClient.BeginCreateOrUpdate"
@@ -304,8 +314,8 @@ func (client *EnvironmentsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hostingEnvironmentEnvelope); err != nil {
@@ -318,6 +328,8 @@ func (client *EnvironmentsClient) createOrUpdateCreateRequest(ctx context.Contex
 //
 // Description for Create or update a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - multiRolePoolEnvelope - Properties of the multi-role pool.
@@ -344,6 +356,8 @@ func (client *EnvironmentsClient) BeginCreateOrUpdateMultiRolePool(ctx context.C
 //
 // Description for Create or update a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *EnvironmentsClient) createOrUpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentsClient.BeginCreateOrUpdateMultiRolePool"
@@ -385,8 +399,8 @@ func (client *EnvironmentsClient) createOrUpdateMultiRolePoolCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, multiRolePoolEnvelope); err != nil {
@@ -399,6 +413,8 @@ func (client *EnvironmentsClient) createOrUpdateMultiRolePoolCreateRequest(ctx c
 //
 // Description for Create or update a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - workerPoolName - Name of the worker pool.
@@ -426,6 +442,8 @@ func (client *EnvironmentsClient) BeginCreateOrUpdateWorkerPool(ctx context.Cont
 //
 // Description for Create or update a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *EnvironmentsClient) createOrUpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentsClient.BeginCreateOrUpdateWorkerPool"
@@ -471,8 +489,8 @@ func (client *EnvironmentsClient) createOrUpdateWorkerPoolCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workerPoolEnvelope); err != nil {
@@ -485,6 +503,8 @@ func (client *EnvironmentsClient) createOrUpdateWorkerPoolCreateRequest(ctx cont
 //
 // Description for Delete an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientBeginDeleteOptions contains the optional parameters for the EnvironmentsClient.BeginDelete
@@ -510,6 +530,8 @@ func (client *EnvironmentsClient) BeginDelete(ctx context.Context, resourceGroup
 //
 // Description for Delete an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *EnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentsClient.BeginDelete"
@@ -551,11 +573,11 @@ func (client *EnvironmentsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.ForceDelete != nil {
 		reqQP.Set("forceDelete", strconv.FormatBool(*options.ForceDelete))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -563,6 +585,8 @@ func (client *EnvironmentsClient) deleteCreateRequest(ctx context.Context, resou
 //
 // Delete Custom Dns Suffix configuration of an App Service Environment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationOptions contains the optional parameters for the EnvironmentsClient.DeleteAseCustomDNSSuffixConfiguration
@@ -609,8 +633,8 @@ func (client *EnvironmentsClient) deleteAseCustomDNSSuffixConfigurationCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -628,6 +652,8 @@ func (client *EnvironmentsClient) deleteAseCustomDNSSuffixConfigurationHandleRes
 //
 // Description for Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - privateEndpointConnectionName - Name of the private endpoint connection.
@@ -654,6 +680,8 @@ func (client *EnvironmentsClient) BeginDeletePrivateEndpointConnection(ctx conte
 //
 // Description for Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *EnvironmentsClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentsClient.BeginDeletePrivateEndpointConnection"
@@ -699,8 +727,8 @@ func (client *EnvironmentsClient) deletePrivateEndpointConnectionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -709,6 +737,8 @@ func (client *EnvironmentsClient) deletePrivateEndpointConnectionCreateRequest(c
 //
 // Description for Get the properties of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientGetOptions contains the optional parameters for the EnvironmentsClient.Get method.
@@ -754,8 +784,8 @@ func (client *EnvironmentsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -773,6 +803,8 @@ func (client *EnvironmentsClient) getHandleResponse(resp *http.Response) (Enviro
 //
 // Get Custom Dns Suffix configuration of an App Service Environment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientGetAseCustomDNSSuffixConfigurationOptions contains the optional parameters for the EnvironmentsClient.GetAseCustomDNSSuffixConfiguration
@@ -819,8 +851,8 @@ func (client *EnvironmentsClient) getAseCustomDNSSuffixConfigurationCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -838,6 +870,8 @@ func (client *EnvironmentsClient) getAseCustomDNSSuffixConfigurationHandleRespon
 //
 // Description for Get networking configuration of an App Service Environment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientGetAseV3NetworkingConfigurationOptions contains the optional parameters for the EnvironmentsClient.GetAseV3NetworkingConfiguration
@@ -884,8 +918,8 @@ func (client *EnvironmentsClient) getAseV3NetworkingConfigurationCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -903,6 +937,8 @@ func (client *EnvironmentsClient) getAseV3NetworkingConfigurationHandleResponse(
 //
 // Description for Get a diagnostics item for an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - EnvironmentsClientGetDiagnosticsItemOptions contains the optional parameters for the EnvironmentsClient.GetDiagnosticsItem
@@ -953,8 +989,8 @@ func (client *EnvironmentsClient) getDiagnosticsItemCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -972,6 +1008,8 @@ func (client *EnvironmentsClient) getDiagnosticsItemHandleResponse(resp *http.Re
 // Environment.
 //
 // Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager
@@ -1019,8 +1057,8 @@ func (client *EnvironmentsClient) getInboundNetworkDependenciesEndpointsCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1038,6 +1076,8 @@ func (client *EnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleRe
 //
 // Description for Get properties of a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientGetMultiRolePoolOptions contains the optional parameters for the EnvironmentsClient.GetMultiRolePool
@@ -1084,8 +1124,8 @@ func (client *EnvironmentsClient) getMultiRolePoolCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1103,6 +1143,8 @@ func (client *EnvironmentsClient) getMultiRolePoolHandleResponse(resp *http.Resp
 // Environment.
 //
 // Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager
@@ -1150,8 +1192,8 @@ func (client *EnvironmentsClient) getOutboundNetworkDependenciesEndpointsCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1169,6 +1211,8 @@ func (client *EnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleR
 //
 // Description for Gets a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - privateEndpointConnectionName - Name of the private endpoint connection.
@@ -1220,8 +1264,8 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1237,7 +1281,9 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionHandleResponse(res
 
 // NewGetPrivateEndpointConnectionListPager - Gets the list of private endpoints associated with a hosting environment
 //
-// Description for Gets the list of private endpoints associated with a hosting environment
+// # Description for Gets the list of private endpoints associated with a hosting environment
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the EnvironmentsClient.NewGetPrivateEndpointConnectionListPager
@@ -1285,8 +1331,8 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionListCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1304,6 +1350,8 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionListHandleResponse
 //
 // Description for Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientGetPrivateLinkResourcesOptions contains the optional parameters for the EnvironmentsClient.GetPrivateLinkResources
@@ -1350,8 +1398,8 @@ func (client *EnvironmentsClient) getPrivateLinkResourcesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1369,6 +1417,8 @@ func (client *EnvironmentsClient) getPrivateLinkResourcesHandleResponse(resp *ht
 //
 // Description for Get IP addresses assigned to an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientGetVipInfoOptions contains the optional parameters for the EnvironmentsClient.GetVipInfo method.
@@ -1414,8 +1464,8 @@ func (client *EnvironmentsClient) getVipInfoCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1433,6 +1483,8 @@ func (client *EnvironmentsClient) getVipInfoHandleResponse(resp *http.Response) 
 //
 // Description for Get properties of a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - workerPoolName - Name of the worker pool.
@@ -1484,8 +1536,8 @@ func (client *EnvironmentsClient) getWorkerPoolCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1502,6 +1554,8 @@ func (client *EnvironmentsClient) getWorkerPoolHandleResponse(resp *http.Respons
 // NewListPager - Get all App Service Environments for a subscription.
 //
 // Description for Get all App Service Environments for a subscription.
+//
+// Generated from API version 2025-05-01
 //   - options - EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.NewListPager method.
 func (client *EnvironmentsClient) NewListPager(options *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListResponse]{
@@ -1538,8 +1592,8 @@ func (client *EnvironmentsClient) listCreateRequest(ctx context.Context, _ *Envi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1556,6 +1610,8 @@ func (client *EnvironmentsClient) listHandleResponse(resp *http.Response) (Envir
 // NewListAppServicePlansPager - Get all App Service plans in an App Service Environment.
 //
 // Description for Get all App Service plans in an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListAppServicePlansOptions contains the optional parameters for the EnvironmentsClient.NewListAppServicePlansPager
@@ -1603,8 +1659,8 @@ func (client *EnvironmentsClient) listAppServicePlansCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1621,6 +1677,8 @@ func (client *EnvironmentsClient) listAppServicePlansHandleResponse(resp *http.R
 // NewListByResourceGroupPager - Get all App Service Environments in a resource group.
 //
 // Description for Get all App Service Environments in a resource group.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - EnvironmentsClientListByResourceGroupOptions contains the optional parameters for the EnvironmentsClient.NewListByResourceGroupPager
 //     method.
@@ -1663,8 +1721,8 @@ func (client *EnvironmentsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1681,6 +1739,8 @@ func (client *EnvironmentsClient) listByResourceGroupHandleResponse(resp *http.R
 // NewListCapacitiesPager - Get the used, available, and total worker capacity an App Service Environment.
 //
 // Description for Get the used, available, and total worker capacity an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListCapacitiesOptions contains the optional parameters for the EnvironmentsClient.NewListCapacitiesPager
@@ -1728,8 +1788,8 @@ func (client *EnvironmentsClient) listCapacitiesCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1747,6 +1807,8 @@ func (client *EnvironmentsClient) listCapacitiesHandleResponse(resp *http.Respon
 //
 // Description for Get diagnostic information for an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListDiagnosticsOptions contains the optional parameters for the EnvironmentsClient.ListDiagnostics
@@ -1793,8 +1855,8 @@ func (client *EnvironmentsClient) listDiagnosticsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1811,6 +1873,8 @@ func (client *EnvironmentsClient) listDiagnosticsHandleResponse(resp *http.Respo
 // NewListMultiRoleMetricDefinitionsPager - Get metric definitions for a multi-role pool of an App Service Environment.
 //
 // Description for Get metric definitions for a multi-role pool of an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListMultiRoleMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.NewListMultiRoleMetricDefinitionsPager
@@ -1858,8 +1922,8 @@ func (client *EnvironmentsClient) listMultiRoleMetricDefinitionsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1877,6 +1941,8 @@ func (client *EnvironmentsClient) listMultiRoleMetricDefinitionsHandleResponse(r
 // of an App Service Environment.
 //
 // Description for Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - instance - Name of the instance in the multi-role pool.
@@ -1929,8 +1995,8 @@ func (client *EnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1947,6 +2013,8 @@ func (client *EnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsHand
 // NewListMultiRolePoolSKUsPager - Get available SKUs for scaling a multi-role pool.
 //
 // Description for Get available SKUs for scaling a multi-role pool.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListMultiRolePoolSKUsOptions contains the optional parameters for the EnvironmentsClient.NewListMultiRolePoolSKUsPager
@@ -1994,8 +2062,8 @@ func (client *EnvironmentsClient) listMultiRolePoolSKUsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2012,6 +2080,8 @@ func (client *EnvironmentsClient) listMultiRolePoolSKUsHandleResponse(resp *http
 // NewListMultiRolePoolsPager - Get all multi-role pools.
 //
 // Description for Get all multi-role pools.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListMultiRolePoolsOptions contains the optional parameters for the EnvironmentsClient.NewListMultiRolePoolsPager
@@ -2059,8 +2129,8 @@ func (client *EnvironmentsClient) listMultiRolePoolsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2077,6 +2147,8 @@ func (client *EnvironmentsClient) listMultiRolePoolsHandleResponse(resp *http.Re
 // NewListMultiRoleUsagesPager - Get usage metrics for a multi-role pool of an App Service Environment.
 //
 // Description for Get usage metrics for a multi-role pool of an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListMultiRoleUsagesOptions contains the optional parameters for the EnvironmentsClient.NewListMultiRoleUsagesPager
@@ -2124,8 +2196,8 @@ func (client *EnvironmentsClient) listMultiRoleUsagesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2143,6 +2215,8 @@ func (client *EnvironmentsClient) listMultiRoleUsagesHandleResponse(resp *http.R
 //
 // Description for List all currently running operations on the App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListOperationsOptions contains the optional parameters for the EnvironmentsClient.ListOperations
@@ -2189,8 +2263,8 @@ func (client *EnvironmentsClient) listOperationsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2207,6 +2281,8 @@ func (client *EnvironmentsClient) listOperationsHandleResponse(resp *http.Respon
 // NewListUsagesPager - Get global usage metrics of an App Service Environment.
 //
 // Description for Get global usage metrics of an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListUsagesOptions contains the optional parameters for the EnvironmentsClient.NewListUsagesPager
@@ -2257,8 +2333,8 @@ func (client *EnvironmentsClient) listUsagesCreateRequest(ctx context.Context, r
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2275,6 +2351,8 @@ func (client *EnvironmentsClient) listUsagesHandleResponse(resp *http.Response) 
 // NewListWebAppsPager - Get all apps in an App Service Environment.
 //
 // Description for Get all apps in an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListWebAppsOptions contains the optional parameters for the EnvironmentsClient.NewListWebAppsPager
@@ -2322,11 +2400,11 @@ func (client *EnvironmentsClient) listWebAppsCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.PropertiesToInclude != nil {
 		reqQP.Set("propertiesToInclude", *options.PropertiesToInclude)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2343,6 +2421,8 @@ func (client *EnvironmentsClient) listWebAppsHandleResponse(resp *http.Response)
 // NewListWebWorkerMetricDefinitionsPager - Get metric definitions for a worker pool of an App Service Environment.
 //
 // Description for Get metric definitions for a worker pool of an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - workerPoolName - Name of the worker pool.
@@ -2395,8 +2475,8 @@ func (client *EnvironmentsClient) listWebWorkerMetricDefinitionsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2413,6 +2493,8 @@ func (client *EnvironmentsClient) listWebWorkerMetricDefinitionsHandleResponse(r
 // NewListWebWorkerUsagesPager - Get usage metrics for a worker pool of an App Service Environment.
 //
 // Description for Get usage metrics for a worker pool of an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - workerPoolName - Name of the worker pool.
@@ -2465,8 +2547,8 @@ func (client *EnvironmentsClient) listWebWorkerUsagesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2484,6 +2566,8 @@ func (client *EnvironmentsClient) listWebWorkerUsagesHandleResponse(resp *http.R
 // App Service Environment.
 //
 // Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - workerPoolName - Name of the worker pool.
@@ -2541,8 +2625,8 @@ func (client *EnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2559,6 +2643,8 @@ func (client *EnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsHandleR
 // NewListWorkerPoolSKUsPager - Get available SKUs for scaling a worker pool.
 //
 // Description for Get available SKUs for scaling a worker pool.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - workerPoolName - Name of the worker pool.
@@ -2611,8 +2697,8 @@ func (client *EnvironmentsClient) listWorkerPoolSKUsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2629,6 +2715,8 @@ func (client *EnvironmentsClient) listWorkerPoolSKUsHandleResponse(resp *http.Re
 // NewListWorkerPoolsPager - Get all worker pools of an App Service Environment.
 //
 // Description for Get all worker pools of an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientListWorkerPoolsOptions contains the optional parameters for the EnvironmentsClient.NewListWorkerPoolsPager
@@ -2676,8 +2764,8 @@ func (client *EnvironmentsClient) listWorkerPoolsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2695,6 +2783,8 @@ func (client *EnvironmentsClient) listWorkerPoolsHandleResponse(resp *http.Respo
 //
 // Description for Reboot all machines in an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientRebootOptions contains the optional parameters for the EnvironmentsClient.Reboot method.
@@ -2739,14 +2829,16 @@ func (client *EnvironmentsClient) rebootCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginResume - Resume an App Service Environment.
 //
 // Description for Resume an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientBeginResumeOptions contains the optional parameters for the EnvironmentsClient.BeginResume
@@ -2789,6 +2881,8 @@ func (client *EnvironmentsClient) BeginResume(ctx context.Context, resourceGroup
 // Resume - Resume an App Service Environment.
 //
 // Description for Resume an App Service Environment.
+//
+// Generated from API version 2025-05-01
 func (client *EnvironmentsClient) resume(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginResumeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentsClient.BeginResume"
@@ -2830,8 +2924,8 @@ func (client *EnvironmentsClient) resumeCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2848,6 +2942,8 @@ func (client *EnvironmentsClient) resumeHandleResponse(resp *http.Response) (Env
 // BeginSuspend - Suspend an App Service Environment.
 //
 // Description for Suspend an App Service Environment.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientBeginSuspendOptions contains the optional parameters for the EnvironmentsClient.BeginSuspend
@@ -2890,6 +2986,8 @@ func (client *EnvironmentsClient) BeginSuspend(ctx context.Context, resourceGrou
 // Suspend - Suspend an App Service Environment.
 //
 // Description for Suspend an App Service Environment.
+//
+// Generated from API version 2025-05-01
 func (client *EnvironmentsClient) suspend(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginSuspendOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentsClient.BeginSuspend"
@@ -2931,8 +3029,8 @@ func (client *EnvironmentsClient) suspendCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -2950,6 +3048,8 @@ func (client *EnvironmentsClient) suspendHandleResponse(resp *http.Response) (En
 //
 // Send a test notification that an upgrade is available for this App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientTestUpgradeAvailableNotificationOptions contains the optional parameters for the EnvironmentsClient.TestUpgradeAvailableNotification
@@ -2995,8 +3095,8 @@ func (client *EnvironmentsClient) testUpgradeAvailableNotificationCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -3004,6 +3104,8 @@ func (client *EnvironmentsClient) testUpgradeAvailableNotificationCreateRequest(
 //
 // Description for Create or update an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - hostingEnvironmentEnvelope - Configuration details of the App Service Environment.
@@ -3050,8 +3152,8 @@ func (client *EnvironmentsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hostingEnvironmentEnvelope); err != nil {
@@ -3073,6 +3175,8 @@ func (client *EnvironmentsClient) updateHandleResponse(resp *http.Response) (Env
 //
 // Update Custom Dns Suffix configuration of an App Service Environment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientUpdateAseCustomDNSSuffixConfigurationOptions contains the optional parameters for the EnvironmentsClient.UpdateAseCustomDNSSuffixConfiguration
@@ -3119,8 +3223,8 @@ func (client *EnvironmentsClient) updateAseCustomDNSSuffixConfigurationCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customDNSSuffixConfiguration); err != nil {
@@ -3142,6 +3246,8 @@ func (client *EnvironmentsClient) updateAseCustomDNSSuffixConfigurationHandleRes
 //
 // Description for Update networking configuration of an App Service Environment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientUpdateAseNetworkingConfigurationOptions contains the optional parameters for the EnvironmentsClient.UpdateAseNetworkingConfiguration
@@ -3188,8 +3294,8 @@ func (client *EnvironmentsClient) updateAseNetworkingConfigurationCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, aseNetworkingConfiguration); err != nil {
@@ -3211,6 +3317,8 @@ func (client *EnvironmentsClient) updateAseNetworkingConfigurationHandleResponse
 //
 // Description for Create or update a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - multiRolePoolEnvelope - Properties of the multi-role pool.
@@ -3258,8 +3366,8 @@ func (client *EnvironmentsClient) updateMultiRolePoolCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, multiRolePoolEnvelope); err != nil {
@@ -3281,6 +3389,8 @@ func (client *EnvironmentsClient) updateMultiRolePoolHandleResponse(resp *http.R
 //
 // Description for Create or update a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - workerPoolName - Name of the worker pool.
@@ -3333,8 +3443,8 @@ func (client *EnvironmentsClient) updateWorkerPoolCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workerPoolEnvelope); err != nil {
@@ -3356,6 +3466,8 @@ func (client *EnvironmentsClient) updateWorkerPoolHandleResponse(resp *http.Resp
 //
 // Description for Initiate an upgrade of an App Service Environment if one is available.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service Environment.
 //   - options - EnvironmentsClientBeginUpgradeOptions contains the optional parameters for the EnvironmentsClient.BeginUpgrade
@@ -3381,6 +3493,8 @@ func (client *EnvironmentsClient) BeginUpgrade(ctx context.Context, resourceGrou
 //
 // Description for Initiate an upgrade of an App Service Environment if one is available.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *EnvironmentsClient) upgrade(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentsClient.BeginUpgrade"
@@ -3422,7 +3536,7 @@ func (client *EnvironmentsClient) upgradeCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

@@ -18,8 +18,6 @@ import (
 
 // DeletedWebAppsClient contains the methods for the DeletedWebApps group.
 // Don't use this type directly, use NewDeletedWebAppsClient() instead.
-//
-// Generated from API version 2025-05-01
 type DeletedWebAppsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +43,8 @@ func NewDeletedWebAppsClient(subscriptionID string, credential azcore.TokenCrede
 //
 // Description for Get deleted app for a subscription at location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - location - The location name.
 //   - deletedSiteID - The numeric ID of the deleted app, e.g. 12345
 //   - options - DeletedWebAppsClientGetDeletedWebAppByLocationOptions contains the optional parameters for the DeletedWebAppsClient.GetDeletedWebAppByLocation
@@ -91,8 +91,8 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,6 +109,8 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationHandleResponse(res
 // NewListPager - Get all deleted apps for a subscription.
 //
 // Description for Get all deleted apps for a subscription.
+//
+// Generated from API version 2025-05-01
 //   - options - DeletedWebAppsClientListOptions contains the optional parameters for the DeletedWebAppsClient.NewListPager method.
 func (client *DeletedWebAppsClient) NewListPager(options *DeletedWebAppsClientListOptions) *runtime.Pager[DeletedWebAppsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeletedWebAppsClientListResponse]{
@@ -145,8 +147,8 @@ func (client *DeletedWebAppsClient) listCreateRequest(ctx context.Context, _ *De
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -162,7 +164,9 @@ func (client *DeletedWebAppsClient) listHandleResponse(resp *http.Response) (Del
 
 // NewListByLocationPager - Get all deleted apps for a subscription at location
 //
-// Description for Get all deleted apps for a subscription at location
+// # Description for Get all deleted apps for a subscription at location
+//
+// Generated from API version 2025-05-01
 //   - location - The location name.
 //   - options - DeletedWebAppsClientListByLocationOptions contains the optional parameters for the DeletedWebAppsClient.NewListByLocationPager
 //     method.
@@ -205,8 +209,8 @@ func (client *DeletedWebAppsClient) listByLocationCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

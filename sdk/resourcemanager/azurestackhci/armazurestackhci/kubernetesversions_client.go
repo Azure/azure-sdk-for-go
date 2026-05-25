@@ -18,8 +18,6 @@ import (
 
 // KubernetesVersionsClient contains the methods for the KubernetesVersions group.
 // Don't use this type directly, use NewKubernetesVersionsClient() instead.
-//
-// Generated from API version 2026-04-01-preview
 type KubernetesVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewKubernetesVersionsClient(subscriptionID string, credential azcore.TokenC
 }
 
 // NewListBySubscriptionLocationResourcePager - List all kubernetes versions.
+//
+// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - options - KubernetesVersionsClientListBySubscriptionLocationResourceOptions contains the optional parameters for the KubernetesVersionsClient.NewListBySubscriptionLocationResourcePager
 //     method.
@@ -84,8 +84,8 @@ func (client *KubernetesVersionsClient) listBySubscriptionLocationResourceCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

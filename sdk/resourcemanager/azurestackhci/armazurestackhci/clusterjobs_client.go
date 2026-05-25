@@ -18,8 +18,6 @@ import (
 
 // ClusterJobsClient - ClusterJobs operations
 // Don't use this type directly, use NewClusterJobsClient() instead.
-//
-// Generated from API version 2026-04-01-preview
 type ClusterJobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewClusterJobsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreateOrUpdate - Create a ClusterJob
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - jobsName - Name of ClusterJob
@@ -68,6 +68,8 @@ func (client *ClusterJobsClient) BeginCreateOrUpdate(ctx context.Context, resour
 
 // CreateOrUpdate - Create a ClusterJob
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-01-preview
 func (client *ClusterJobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, jobsName string, resource ClusterJob, options *ClusterJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClusterJobsClient.BeginCreateOrUpdate"
@@ -113,8 +115,8 @@ func (client *ClusterJobsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -125,6 +127,8 @@ func (client *ClusterJobsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Delete a ClusterJob
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - jobsName - Name of ClusterJob
@@ -148,6 +152,8 @@ func (client *ClusterJobsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Delete a ClusterJob
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-01-preview
 func (client *ClusterJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, jobsName string, options *ClusterJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClusterJobsClient.BeginDelete"
@@ -193,13 +199,15 @@ func (client *ClusterJobsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a ClusterJob
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - jobsName - Name of ClusterJob
@@ -250,8 +258,8 @@ func (client *ClusterJobsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -266,6 +274,8 @@ func (client *ClusterJobsClient) getHandleResponse(resp *http.Response) (Cluster
 }
 
 // NewListPager - List ClusterJob resources by Clusters
+//
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ClusterJobsClientListOptions contains the optional parameters for the ClusterJobsClient.NewListPager method.
@@ -312,8 +322,8 @@ func (client *ClusterJobsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

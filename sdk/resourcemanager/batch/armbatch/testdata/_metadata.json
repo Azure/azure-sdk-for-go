@@ -1,6 +1,4 @@
 {
-  "apiVersions": {
-    "Microsoft.Batch": "2025-06-01"
-  },
-  "emitterVersion": "0.14.0"
+  "apiVersion": "2025-06-01",
+  "emitterVersion": "0.9.2"
 }

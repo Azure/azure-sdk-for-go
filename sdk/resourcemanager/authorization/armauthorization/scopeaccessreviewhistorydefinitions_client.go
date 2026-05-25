@@ -18,8 +18,6 @@ import (
 
 // ScopeAccessReviewHistoryDefinitionsClient contains the methods for the ScopeAccessReviewHistoryDefinitions group.
 // Don't use this type directly, use NewScopeAccessReviewHistoryDefinitionsClient() instead.
-//
-// Generated from API version 2021-12-01-preview
 type ScopeAccessReviewHistoryDefinitionsClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewScopeAccessReviewHistoryDefinitionsClient(credential azcore.TokenCredent
 
 // GetByID - Get access review history definition by definition Id
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - historyDefinitionID - The id of the access review history definition.
 //   - options - ScopeAccessReviewHistoryDefinitionsClientGetByIDOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionsClient.GetByID
@@ -82,8 +82,8 @@ func (client *ScopeAccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,6 +99,8 @@ func (client *ScopeAccessReviewHistoryDefinitionsClient) getByIDHandleResponse(r
 
 // NewListPager - Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
 // for 30 days after creation.
+//
+// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - options - ScopeAccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionsClient.NewListPager
 //     method.
@@ -140,8 +142,8 @@ func (client *ScopeAccessReviewHistoryDefinitionsClient) listCreateRequest(ctx c
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

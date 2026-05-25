@@ -16,10 +16,10 @@ func unmarshalAccessReviewDecisionIdentityClassification(rawMsg json.RawMessage)
 	}
 	var b AccessReviewDecisionIdentityClassification
 	switch m["type"] {
-	case string(DecisionTargetTypeServicePrincipal):
-		b = &AccessReviewDecisionServicePrincipalIdentity{}
 	case string(DecisionTargetTypeUser):
 		b = &AccessReviewDecisionUserIdentity{}
+	case string(DecisionTargetTypeServicePrincipal):
+		b = &AccessReviewDecisionServicePrincipalIdentity{}
 	default:
 		b = &AccessReviewDecisionIdentity{}
 	}

@@ -16,6 +16,8 @@ import (
 	"strings"
 )
 
+const defaultAvailableBalancesClientVersion string = "2024-04-01"
+
 // AvailableBalancesClient contains the methods for the AvailableBalances group.
 // Don't use this type directly, use NewAvailableBalancesClient() instead.
 //
@@ -80,7 +82,7 @@ func (client *AvailableBalancesClient) getByBillingAccountCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultAvailableBalancesClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -141,7 +143,7 @@ func (client *AvailableBalancesClient) getByBillingProfileCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultAvailableBalancesClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

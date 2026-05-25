@@ -17,6 +17,8 @@ import (
 	"strings"
 )
 
+const defaultDepartmentsClientVersion string = "2024-04-01"
+
 // DepartmentsClient contains the methods for the Departments group.
 // Don't use this type directly, use NewDepartmentsClient() instead.
 //
@@ -82,7 +84,7 @@ func (client *DepartmentsClient) getCreateRequest(ctx context.Context, billingAc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultDepartmentsClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -137,7 +139,7 @@ func (client *DepartmentsClient) listByBillingAccountCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultDepartmentsClientVersion)
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}

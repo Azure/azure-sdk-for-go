@@ -18,8 +18,6 @@ import (
 
 // AccessReviewHistoryDefinitionsClient contains the methods for the AccessReviewHistoryDefinitions group.
 // Don't use this type directly, use NewAccessReviewHistoryDefinitionsClient() instead.
-//
-// Generated from API version 2021-12-01-preview
 type AccessReviewHistoryDefinitionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewAccessReviewHistoryDefinitionsClient(subscriptionID string, credential a
 
 // GetByID - Get access review history definition by definition Id
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-12-01-preview
 //   - historyDefinitionID - The id of the access review history definition.
 //   - options - AccessReviewHistoryDefinitionsClientGetByIDOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.GetByID
 //     method.
@@ -84,8 +84,8 @@ func (client *AccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -101,6 +101,8 @@ func (client *AccessReviewHistoryDefinitionsClient) getByIDHandleResponse(resp *
 
 // NewListPager - Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
 // for 30 days after creation.
+//
+// Generated from API version 2021-12-01-preview
 //   - options - AccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.NewListPager
 //     method.
 func (client *AccessReviewHistoryDefinitionsClient) NewListPager(options *AccessReviewHistoryDefinitionsClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionsClientListResponse] {
@@ -141,8 +143,8 @@ func (client *AccessReviewHistoryDefinitionsClient) listCreateRequest(ctx contex
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

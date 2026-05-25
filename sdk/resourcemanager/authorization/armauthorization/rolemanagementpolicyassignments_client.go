@@ -18,8 +18,6 @@ import (
 
 // RoleManagementPolicyAssignmentsClient contains the methods for the RoleManagementPolicyAssignments group.
 // Don't use this type directly, use NewRoleManagementPolicyAssignmentsClient() instead.
-//
-// Generated from API version 2024-09-01-preview
 type RoleManagementPolicyAssignmentsClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewRoleManagementPolicyAssignmentsClient(credential azcore.TokenCredential,
 
 // Create - Create a role management policy assignment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleManagementPolicyAssignmentName - The name of format {guid_guid} the role management policy assignment to get.
 //   - parameters - Parameters for the role management policy assignment.
@@ -83,8 +83,8 @@ func (client *RoleManagementPolicyAssignmentsClient) createCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -104,6 +104,8 @@ func (client *RoleManagementPolicyAssignmentsClient) createHandleResponse(resp *
 
 // Delete - Delete a role management policy assignment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleManagementPolicyAssignmentName - The name of format {guid_guid} the role management policy assignment to get.
 //   - options - RoleManagementPolicyAssignmentsClientDeleteOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Delete
@@ -145,13 +147,15 @@ func (client *RoleManagementPolicyAssignmentsClient) deleteCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get the specified role management policy assignment for a resource scope
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleManagementPolicyAssignmentName - The name of format {guid_guid} the role management policy assignment to get.
 //   - options - RoleManagementPolicyAssignmentsClientGetOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Get
@@ -194,8 +198,8 @@ func (client *RoleManagementPolicyAssignmentsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -210,6 +214,8 @@ func (client *RoleManagementPolicyAssignmentsClient) getHandleResponse(resp *htt
 }
 
 // NewListForScopePager - Gets role management assignment policies for a resource scope.
+//
+// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - RoleManagementPolicyAssignmentsClientListForScopeOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.NewListForScopePager
 //     method.
@@ -248,8 +254,8 @@ func (client *RoleManagementPolicyAssignmentsClient) listForScopeCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

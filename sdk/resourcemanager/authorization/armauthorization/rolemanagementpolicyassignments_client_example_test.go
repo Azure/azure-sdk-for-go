@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 	"log"
 )
 
@@ -76,7 +76,7 @@ func ExampleRoleManagementPolicyAssignmentsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleManagementPolicyAssignmentsClientGetResponse{
-	// 	RoleManagementPolicyAssignment: armauthorization.RoleManagementPolicyAssignment{
+	// 	RoleManagementPolicyAssignment: &armauthorization.RoleManagementPolicyAssignment{
 	// 		Name: to.Ptr("b959d571-f0b5-4042-88a7-01be6cb22db9_a1705bd2-3a8f-45a5-8683-466fcfd5cc24"),
 	// 		Type: to.Ptr("Microsoft.Authorization/RoleManagementPolicyAssignment"),
 	// 		ID: to.Ptr("/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicyAssignment/b959d571-f0b5-4042-88a7-01be6cb22db9_a1705bd2-3a8f-45a5-8683-466fcfd5cc24"),

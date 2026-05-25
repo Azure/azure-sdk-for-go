@@ -14,6 +14,8 @@ import (
 	"strings"
 )
 
+const defaultAddressClientVersion string = "2024-04-01"
+
 // AddressClient contains the methods for the Address group.
 // Don't use this type directly, use NewAddressClient() instead.
 //
@@ -70,7 +72,7 @@ func (client *AddressClient) validateCreateRequest(ctx context.Context, paramete
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultAddressClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

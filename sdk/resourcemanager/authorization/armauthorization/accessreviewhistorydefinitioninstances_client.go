@@ -18,8 +18,6 @@ import (
 
 // AccessReviewHistoryDefinitionInstancesClient contains the methods for the AccessReviewHistoryDefinitionInstances group.
 // Don't use this type directly, use NewAccessReviewHistoryDefinitionInstancesClient() instead.
-//
-// Generated from API version 2021-12-01-preview
 type AccessReviewHistoryDefinitionInstancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewAccessReviewHistoryDefinitionInstancesClient(subscriptionID string, cred
 }
 
 // NewListPager - Get access review history definition instances by definition Id
+//
+// Generated from API version 2021-12-01-preview
 //   - historyDefinitionID - The id of the access review history definition.
 //   - options - AccessReviewHistoryDefinitionInstancesClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionInstancesClient.NewListPager
 //     method.
@@ -84,8 +84,8 @@ func (client *AccessReviewHistoryDefinitionInstancesClient) listCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

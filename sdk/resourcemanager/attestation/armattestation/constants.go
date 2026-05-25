@@ -4,10 +4,6 @@
 
 package armattestation
 
-const (
-	version20210601 string = "2021-06-01"
-)
-
 // AttestationServiceStatus - Status of attestation service.
 type AttestationServiceStatus string
 

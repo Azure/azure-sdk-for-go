@@ -17,6 +17,8 @@ import (
 	"strings"
 )
 
+const defaultEnrollmentAccountsClientVersion string = "2024-04-01"
+
 // EnrollmentAccountsClient contains the methods for the EnrollmentAccounts group.
 // Don't use this type directly, use NewEnrollmentAccountsClient() instead.
 //
@@ -83,7 +85,7 @@ func (client *EnrollmentAccountsClient) getCreateRequest(ctx context.Context, bi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultEnrollmentAccountsClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -148,7 +150,7 @@ func (client *EnrollmentAccountsClient) getByDepartmentCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultEnrollmentAccountsClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -203,7 +205,7 @@ func (client *EnrollmentAccountsClient) listByBillingAccountCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultEnrollmentAccountsClientVersion)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatBool(*options.Count))
 	}
@@ -281,7 +283,7 @@ func (client *EnrollmentAccountsClient) listByDepartmentCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultEnrollmentAccountsClientVersion)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatBool(*options.Count))
 	}

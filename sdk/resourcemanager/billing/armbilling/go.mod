@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling/v2
 
 go 1.25.0
 

@@ -12,11 +12,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // AccessReviewHistoryDefinitionsServer is a fake server for instances of the armauthorization.AccessReviewHistoryDefinitionsClient type.
@@ -59,7 +58,9 @@ func (a *AccessReviewHistoryDefinitionsServerTransport) Do(req *http.Request) (*
 }
 
 func (a *AccessReviewHistoryDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -77,7 +78,10 @@ func (a *AccessReviewHistoryDefinitionsServerTransport) dispatchToMethodFake(req
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -107,7 +111,7 @@ func (a *AccessReviewHistoryDefinitionsServerTransport) dispatchGetByID(req *htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessReviewHistoryDefinition, req)
@@ -130,7 +134,11 @@ func (a *AccessReviewHistoryDefinitionsServerTransport) dispatchNewListPager(req
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armauthorization.AccessReviewHistoryDefinitionsClientListOptions
 		if filterParam != nil {
 			options = &armauthorization.AccessReviewHistoryDefinitionsClientListOptions{
@@ -148,7 +156,7 @@ func (a *AccessReviewHistoryDefinitionsServerTransport) dispatchNewListPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

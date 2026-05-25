@@ -7,7 +7,7 @@ package armauthorization_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleAlertIncidentsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.AlertIncidentsClientGetResponse{
-	// 	AlertIncident: armauthorization.AlertIncident{
+	// 	AlertIncident: &armauthorization.AlertIncident{
 	// 		Name: to.Ptr("5cf9ee65-d22e-4784-8b17-3de1c3b7bdcc"),
 	// 		Type: to.Ptr("Microsoft.Authorization/roleManagementAlerts/alertIncidents"),
 	// 		ID: to.Ptr("/subscriptions/afa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleManagementAlerts/TooManyOwnersAssignedToResource/alertIncidents/5cf9ee65-d22e-4784-8b17-3de1c3b7bdcc"),

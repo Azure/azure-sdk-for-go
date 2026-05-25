@@ -11,13 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
-	"strings"
 )
 
 // GlobalAdministratorClient contains the methods for the GlobalAdministrator group.
 // Don't use this type directly, use NewGlobalAdministratorClient() instead.
-//
-// Generated from API version 2015-07-01
 type GlobalAdministratorClient struct {
 	internal *arm.Client
 }
@@ -38,6 +35,8 @@ func NewGlobalAdministratorClient(credential azcore.TokenCredential, options *ar
 
 // ElevateAccess - Elevates access for a Global Administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2015-07-01
 //   - options - GlobalAdministratorClientElevateAccessOptions contains the optional parameters for the GlobalAdministratorClient.ElevateAccess
 //     method.
 func (client *GlobalAdministratorClient) ElevateAccess(ctx context.Context, options *GlobalAdministratorClientElevateAccessOptions) (GlobalAdministratorClientElevateAccessResponse, error) {
@@ -69,7 +68,7 @@ func (client *GlobalAdministratorClient) elevateAccessCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20150701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2015-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

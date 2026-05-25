@@ -12,11 +12,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 	"strconv"
 )
 
@@ -120,7 +119,9 @@ func (r *RecommendationsServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (r *RecommendationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -164,7 +165,10 @@ func (r *RecommendationsServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -194,12 +198,16 @@ func (r *RecommendationsServerTransport) dispatchDisableAllForHostingEnvironment
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.DisableAllForHostingEnvironment(req.Context(), resourceGroupNameParam, hostingEnvironmentNameParam, qp.Get("environmentName"), nil)
+	environmentNameParam, err := url.QueryUnescape(qp.Get("environmentName"))
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.DisableAllForHostingEnvironment(req.Context(), resourceGroupNameParam, hostingEnvironmentNameParam, environmentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -232,7 +240,7 @@ func (r *RecommendationsServerTransport) dispatchDisableAllForWebApp(req *http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -257,6 +265,10 @@ func (r *RecommendationsServerTransport) dispatchDisableRecommendationForHosting
 	if err != nil {
 		return nil, err
 	}
+	environmentNameParam, err := url.QueryUnescape(qp.Get("environmentName"))
+	if err != nil {
+		return nil, err
+	}
 	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
 	if err != nil {
 		return nil, err
@@ -265,12 +277,12 @@ func (r *RecommendationsServerTransport) dispatchDisableRecommendationForHosting
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.DisableRecommendationForHostingEnvironment(req.Context(), resourceGroupNameParam, qp.Get("environmentName"), nameParam, hostingEnvironmentNameParam, nil)
+	respr, errRespr := r.srv.DisableRecommendationForHostingEnvironment(req.Context(), resourceGroupNameParam, environmentNameParam, nameParam, hostingEnvironmentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -307,7 +319,7 @@ func (r *RecommendationsServerTransport) dispatchDisableRecommendationForSite(re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -336,7 +348,7 @@ func (r *RecommendationsServerTransport) dispatchDisableRecommendationForSubscri
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -369,11 +381,19 @@ func (r *RecommendationsServerTransport) dispatchGetRuleDetailsByHostingEnvironm
 	if err != nil {
 		return nil, err
 	}
-	updateSeenParam, err := parseOptional(qp.Get("updateSeen"), strconv.ParseBool)
+	updateSeenUnescaped, err := url.QueryUnescape(qp.Get("updateSeen"))
 	if err != nil {
 		return nil, err
 	}
-	recommendationIDParam := getOptional(qp.Get("recommendationId"))
+	updateSeenParam, err := parseOptional(updateSeenUnescaped, strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	recommendationIDUnescaped, err := url.QueryUnescape(qp.Get("recommendationId"))
+	if err != nil {
+		return nil, err
+	}
+	recommendationIDParam := getOptional(recommendationIDUnescaped)
 	var options *armappservice.RecommendationsClientGetRuleDetailsByHostingEnvironmentOptions
 	if updateSeenParam != nil || recommendationIDParam != nil {
 		options = &armappservice.RecommendationsClientGetRuleDetailsByHostingEnvironmentOptions{
@@ -386,7 +406,7 @@ func (r *RecommendationsServerTransport) dispatchGetRuleDetailsByHostingEnvironm
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecommendationRule, req)
@@ -419,11 +439,19 @@ func (r *RecommendationsServerTransport) dispatchGetRuleDetailsByWebApp(req *htt
 	if err != nil {
 		return nil, err
 	}
-	updateSeenParam, err := parseOptional(qp.Get("updateSeen"), strconv.ParseBool)
+	updateSeenUnescaped, err := url.QueryUnescape(qp.Get("updateSeen"))
 	if err != nil {
 		return nil, err
 	}
-	recommendationIDParam := getOptional(qp.Get("recommendationId"))
+	updateSeenParam, err := parseOptional(updateSeenUnescaped, strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	recommendationIDUnescaped, err := url.QueryUnescape(qp.Get("recommendationId"))
+	if err != nil {
+		return nil, err
+	}
+	recommendationIDParam := getOptional(recommendationIDUnescaped)
 	var options *armappservice.RecommendationsClientGetRuleDetailsByWebAppOptions
 	if updateSeenParam != nil || recommendationIDParam != nil {
 		options = &armappservice.RecommendationsClientGetRuleDetailsByWebAppOptions{
@@ -436,7 +464,7 @@ func (r *RecommendationsServerTransport) dispatchGetRuleDetailsByWebApp(req *htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecommendationRule, req)
@@ -459,11 +487,19 @@ func (r *RecommendationsServerTransport) dispatchNewListPager(req *http.Request)
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		featuredParam, err := parseOptional(qp.Get("featured"), strconv.ParseBool)
+		featuredUnescaped, err := url.QueryUnescape(qp.Get("featured"))
 		if err != nil {
 			return nil, err
 		}
-		filterParam := getOptional(qp.Get("$filter"))
+		featuredParam, err := parseOptional(featuredUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armappservice.RecommendationsClientListOptions
 		if featuredParam != nil || filterParam != nil {
 			options = &armappservice.RecommendationsClientListOptions{
@@ -482,7 +518,7 @@ func (r *RecommendationsServerTransport) dispatchNewListPager(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -513,11 +549,19 @@ func (r *RecommendationsServerTransport) dispatchNewListHistoryForHostingEnviron
 		if err != nil {
 			return nil, err
 		}
-		expiredOnlyParam, err := parseOptional(qp.Get("expiredOnly"), strconv.ParseBool)
+		expiredOnlyUnescaped, err := url.QueryUnescape(qp.Get("expiredOnly"))
 		if err != nil {
 			return nil, err
 		}
-		filterParam := getOptional(qp.Get("$filter"))
+		expiredOnlyParam, err := parseOptional(expiredOnlyUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armappservice.RecommendationsClientListHistoryForHostingEnvironmentOptions
 		if expiredOnlyParam != nil || filterParam != nil {
 			options = &armappservice.RecommendationsClientListHistoryForHostingEnvironmentOptions{
@@ -536,7 +580,7 @@ func (r *RecommendationsServerTransport) dispatchNewListHistoryForHostingEnviron
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListHistoryForHostingEnvironmentPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -567,11 +611,19 @@ func (r *RecommendationsServerTransport) dispatchNewListHistoryForWebAppPager(re
 		if err != nil {
 			return nil, err
 		}
-		expiredOnlyParam, err := parseOptional(qp.Get("expiredOnly"), strconv.ParseBool)
+		expiredOnlyUnescaped, err := url.QueryUnescape(qp.Get("expiredOnly"))
 		if err != nil {
 			return nil, err
 		}
-		filterParam := getOptional(qp.Get("$filter"))
+		expiredOnlyParam, err := parseOptional(expiredOnlyUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armappservice.RecommendationsClientListHistoryForWebAppOptions
 		if expiredOnlyParam != nil || filterParam != nil {
 			options = &armappservice.RecommendationsClientListHistoryForWebAppOptions{
@@ -590,7 +642,7 @@ func (r *RecommendationsServerTransport) dispatchNewListHistoryForWebAppPager(re
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListHistoryForWebAppPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -621,11 +673,19 @@ func (r *RecommendationsServerTransport) dispatchNewListRecommendedRulesForHosti
 		if err != nil {
 			return nil, err
 		}
-		featuredParam, err := parseOptional(qp.Get("featured"), strconv.ParseBool)
+		featuredUnescaped, err := url.QueryUnescape(qp.Get("featured"))
 		if err != nil {
 			return nil, err
 		}
-		filterParam := getOptional(qp.Get("$filter"))
+		featuredParam, err := parseOptional(featuredUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armappservice.RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions
 		if featuredParam != nil || filterParam != nil {
 			options = &armappservice.RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions{
@@ -644,7 +704,7 @@ func (r *RecommendationsServerTransport) dispatchNewListRecommendedRulesForHosti
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListRecommendedRulesForHostingEnvironmentPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -675,11 +735,19 @@ func (r *RecommendationsServerTransport) dispatchNewListRecommendedRulesForWebAp
 		if err != nil {
 			return nil, err
 		}
-		featuredParam, err := parseOptional(qp.Get("featured"), strconv.ParseBool)
+		featuredUnescaped, err := url.QueryUnescape(qp.Get("featured"))
 		if err != nil {
 			return nil, err
 		}
-		filterParam := getOptional(qp.Get("$filter"))
+		featuredParam, err := parseOptional(featuredUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armappservice.RecommendationsClientListRecommendedRulesForWebAppOptions
 		if featuredParam != nil || filterParam != nil {
 			options = &armappservice.RecommendationsClientListRecommendedRulesForWebAppOptions{
@@ -698,7 +766,7 @@ func (r *RecommendationsServerTransport) dispatchNewListRecommendedRulesForWebAp
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListRecommendedRulesForWebAppPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -723,7 +791,7 @@ func (r *RecommendationsServerTransport) dispatchResetAllFilters(req *http.Reque
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -752,12 +820,16 @@ func (r *RecommendationsServerTransport) dispatchResetAllFiltersForHostingEnviro
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.ResetAllFiltersForHostingEnvironment(req.Context(), resourceGroupNameParam, hostingEnvironmentNameParam, qp.Get("environmentName"), nil)
+	environmentNameParam, err := url.QueryUnescape(qp.Get("environmentName"))
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.ResetAllFiltersForHostingEnvironment(req.Context(), resourceGroupNameParam, hostingEnvironmentNameParam, environmentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -790,7 +862,7 @@ func (r *RecommendationsServerTransport) dispatchResetAllFiltersForWebApp(req *h
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)

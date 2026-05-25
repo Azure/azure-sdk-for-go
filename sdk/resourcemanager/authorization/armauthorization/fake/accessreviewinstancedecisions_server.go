@@ -11,11 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // AccessReviewInstanceDecisionsServer is a fake server for instances of the armauthorization.AccessReviewInstanceDecisionsClient type.
@@ -54,7 +53,9 @@ func (a *AccessReviewInstanceDecisionsServerTransport) Do(req *http.Request) (*h
 }
 
 func (a *AccessReviewInstanceDecisionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,7 +71,10 @@ func (a *AccessReviewInstanceDecisionsServerTransport) dispatchToMethodFake(req 
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -102,7 +106,11 @@ func (a *AccessReviewInstanceDecisionsServerTransport) dispatchNewListPager(req 
 		if err != nil {
 			return nil, err
 		}
-		filterParam := getOptional(qp.Get("$filter"))
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armauthorization.AccessReviewInstanceDecisionsClientListOptions
 		if filterParam != nil {
 			options = &armauthorization.AccessReviewInstanceDecisionsClientListOptions{
@@ -120,7 +128,7 @@ func (a *AccessReviewInstanceDecisionsServerTransport) dispatchNewListPager(req 
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -18,8 +18,6 @@ import (
 
 // PermissionsClient contains the methods for the Permissions group.
 // Don't use this type directly, use NewPermissionsClient() instead.
-//
-// Generated from API version 2022-05-01-preview
 type PermissionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewPermissionsClient(subscriptionID string, credential azcore.TokenCredenti
 }
 
 // NewListForResourcePager - Gets all permissions the caller has for a resource.
+//
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - parentResourcePath - The parent resource identity.
@@ -104,8 +104,8 @@ func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2022-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -120,6 +120,8 @@ func (client *PermissionsClient) listForResourceHandleResponse(resp *http.Respon
 }
 
 // NewListForResourceGroupPager - Gets all permissions the caller has for a resource group.
+//
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PermissionsClientListForResourceGroupOptions contains the optional parameters for the PermissionsClient.NewListForResourceGroupPager
 //     method.
@@ -162,8 +164,8 @@ func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2022-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

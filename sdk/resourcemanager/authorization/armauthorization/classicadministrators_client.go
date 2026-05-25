@@ -18,8 +18,6 @@ import (
 
 // ClassicAdministratorsClient contains the methods for the ClassicAdministrators group.
 // Don't use this type directly, use NewClassicAdministratorsClient() instead.
-//
-// Generated from API version 2015-07-01
 type ClassicAdministratorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewClassicAdministratorsClient(subscriptionID string, credential azcore.Tok
 }
 
 // NewListPager - Gets service administrator, account administrator, and co-administrators for the subscription.
+//
+// Generated from API version 2015-07-01
 //   - options - ClassicAdministratorsClientListOptions contains the optional parameters for the ClassicAdministratorsClient.NewListPager
 //     method.
 func (client *ClassicAdministratorsClient) NewListPager(options *ClassicAdministratorsClientListOptions) *runtime.Pager[ClassicAdministratorsClientListResponse] {
@@ -79,8 +79,8 @@ func (client *ClassicAdministratorsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20150701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2015-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

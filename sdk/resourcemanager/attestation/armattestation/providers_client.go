@@ -18,8 +18,6 @@ import (
 
 // ProvidersClient contains the methods for the Providers group.
 // Don't use this type directly, use NewProvidersClient() instead.
-//
-// Generated from API version 2021-06-01
 type ProvidersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewProvidersClient(subscriptionID string, credential azcore.TokenCredential
 
 // Create - Creates or updates an Attestation Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Name of the attestation provider.
 //   - creationParams - Client supplied parameters.
@@ -89,8 +89,8 @@ func (client *ProvidersClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, creationParams); err != nil {
@@ -110,6 +110,8 @@ func (client *ProvidersClient) createHandleResponse(resp *http.Response) (Provid
 
 // Delete - Delete Attestation Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Name of the attestation provider.
 //   - options - ProvidersClientDeleteOptions contains the optional parameters for the ProvidersClient.Delete method.
@@ -154,13 +156,15 @@ func (client *ProvidersClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get the status of Attestation Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Name of the attestation provider.
 //   - options - ProvidersClientGetOptions contains the optional parameters for the ProvidersClient.Get method.
@@ -206,8 +210,8 @@ func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -223,6 +227,8 @@ func (client *ProvidersClient) getHandleResponse(resp *http.Response) (Providers
 
 // GetDefaultByLocation - Get the default provider by location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-06-01
 //   - location - The name of the Azure region.
 //   - options - ProvidersClientGetDefaultByLocationOptions contains the optional parameters for the ProvidersClient.GetDefaultByLocation
 //     method.
@@ -264,8 +270,8 @@ func (client *ProvidersClient) getDefaultByLocationCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -281,6 +287,8 @@ func (client *ProvidersClient) getDefaultByLocationHandleResponse(resp *http.Res
 
 // List - Returns a list of attestation providers in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-06-01
 //   - options - ProvidersClientListOptions contains the optional parameters for the ProvidersClient.List method.
 func (client *ProvidersClient) List(ctx context.Context, options *ProvidersClientListOptions) (ProvidersClientListResponse, error) {
 	var err error
@@ -316,8 +324,8 @@ func (client *ProvidersClient) listCreateRequest(ctx context.Context, _ *Provide
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -333,6 +341,8 @@ func (client *ProvidersClient) listHandleResponse(resp *http.Response) (Provider
 
 // ListByResourceGroup - Returns attestation providers list in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProvidersClientListByResourceGroupOptions contains the optional parameters for the ProvidersClient.ListByResourceGroup
 //     method.
@@ -374,8 +384,8 @@ func (client *ProvidersClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -391,6 +401,8 @@ func (client *ProvidersClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // ListDefault - Get the default provider
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-06-01
 //   - options - ProvidersClientListDefaultOptions contains the optional parameters for the ProvidersClient.ListDefault method.
 func (client *ProvidersClient) ListDefault(ctx context.Context, options *ProvidersClientListDefaultOptions) (ProvidersClientListDefaultResponse, error) {
 	var err error
@@ -426,8 +438,8 @@ func (client *ProvidersClient) listDefaultCreateRequest(ctx context.Context, _ *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -443,6 +455,8 @@ func (client *ProvidersClient) listDefaultHandleResponse(resp *http.Response) (P
 
 // Update - Updates the Attestation Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Name of the attestation provider.
 //   - updateParams - Client supplied parameters.
@@ -489,8 +503,8 @@ func (client *ProvidersClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateParams); err != nil {

@@ -16,6 +16,8 @@ import (
 	"strings"
 )
 
+const defaultTransfersClientVersion string = "2024-04-01"
+
 // TransfersClient contains the methods for the Transfers group.
 // Don't use this type directly, use NewTransfersClient() instead.
 //
@@ -92,7 +94,7 @@ func (client *TransfersClient) cancelCreateRequest(ctx context.Context, billingA
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultTransfersClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -161,7 +163,7 @@ func (client *TransfersClient) getCreateRequest(ctx context.Context, billingAcco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultTransfersClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -231,7 +233,7 @@ func (client *TransfersClient) initiateCreateRequest(ctx context.Context, billin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultTransfersClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -299,7 +301,7 @@ func (client *TransfersClient) listCreateRequest(ctx context.Context, billingAcc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultTransfersClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

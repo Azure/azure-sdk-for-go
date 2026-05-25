@@ -17,6 +17,8 @@ import (
 	"strings"
 )
 
+const defaultPropertyClientVersion string = "2024-04-01"
+
 // PropertyClient contains the methods for the Property group.
 // Don't use this type directly, use NewPropertyClient() instead.
 //
@@ -79,7 +81,7 @@ func (client *PropertyClient) getCreateRequest(ctx context.Context, options *Pro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultPropertyClientVersion)
 	if options != nil && options.IncludeBillingCountry != nil {
 		reqQP.Set("includeBillingCountry", strconv.FormatBool(*options.IncludeBillingCountry))
 	}
@@ -140,7 +142,7 @@ func (client *PropertyClient) updateCreateRequest(ctx context.Context, parameter
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", defaultPropertyClientVersion)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

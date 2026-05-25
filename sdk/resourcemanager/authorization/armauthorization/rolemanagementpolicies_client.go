@@ -18,8 +18,6 @@ import (
 
 // RoleManagementPoliciesClient contains the methods for the RoleManagementPolicies group.
 // Don't use this type directly, use NewRoleManagementPoliciesClient() instead.
-//
-// Generated from API version 2024-09-01-preview
 type RoleManagementPoliciesClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewRoleManagementPoliciesClient(credential azcore.TokenCredential, options 
 
 // Delete - Delete a role management policy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleManagementPolicyName - The name (guid) of the role management policy to get.
 //   - options - RoleManagementPoliciesClientDeleteOptions contains the optional parameters for the RoleManagementPoliciesClient.Delete
@@ -81,13 +81,15 @@ func (client *RoleManagementPoliciesClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get the specified role management policy for a resource scope
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleManagementPolicyName - The name (guid) of the role management policy to get.
 //   - options - RoleManagementPoliciesClientGetOptions contains the optional parameters for the RoleManagementPoliciesClient.Get
@@ -130,8 +132,8 @@ func (client *RoleManagementPoliciesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -146,6 +148,8 @@ func (client *RoleManagementPoliciesClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListForScopePager - Gets role management policies for a resource scope.
+//
+// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - RoleManagementPoliciesClientListForScopeOptions contains the optional parameters for the RoleManagementPoliciesClient.NewListForScopePager
 //     method.
@@ -184,8 +188,8 @@ func (client *RoleManagementPoliciesClient) listForScopeCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -201,6 +205,8 @@ func (client *RoleManagementPoliciesClient) listForScopeHandleResponse(resp *htt
 
 // Update - Update a role management policy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleManagementPolicyName - The name (guid) of the role management policy to get.
 //   - parameters - Parameters for the role management policy.
@@ -244,8 +250,8 @@ func (client *RoleManagementPoliciesClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

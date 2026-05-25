@@ -11,11 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // ScopeAccessReviewInstanceDecisionsServer is a fake server for instances of the armauthorization.ScopeAccessReviewInstanceDecisionsClient type.
@@ -54,7 +53,9 @@ func (s *ScopeAccessReviewInstanceDecisionsServerTransport) Do(req *http.Request
 }
 
 func (s *ScopeAccessReviewInstanceDecisionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,7 +71,10 @@ func (s *ScopeAccessReviewInstanceDecisionsServerTransport) dispatchToMethodFake
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -106,7 +110,11 @@ func (s *ScopeAccessReviewInstanceDecisionsServerTransport) dispatchNewListPager
 		if err != nil {
 			return nil, err
 		}
-		filterParam := getOptional(qp.Get("$filter"))
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armauthorization.ScopeAccessReviewInstanceDecisionsClientListOptions
 		if filterParam != nil {
 			options = &armauthorization.ScopeAccessReviewInstanceDecisionsClientListOptions{
@@ -124,7 +132,7 @@ func (s *ScopeAccessReviewInstanceDecisionsServerTransport) dispatchNewListPager
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -19,8 +19,6 @@ import (
 
 // WebAppsClient contains the methods for the WebApps group.
 // Don't use this type directly, use NewWebAppsClient() instead.
-//
-// Generated from API version 2025-05-01
 type WebAppsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,6 +44,8 @@ func NewWebAppsClient(subscriptionID string, credential azcore.TokenCredential, 
 //
 // Description for Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - premierAddOnName - Add-on name.
@@ -97,8 +97,8 @@ func (client *WebAppsClient) addPremierAddOnCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, premierAddOn); err != nil {
@@ -120,6 +120,8 @@ func (client *WebAppsClient) addPremierAddOnHandleResponse(resp *http.Response) 
 //
 // Description for Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientAddPremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.AddPremierAddOnSlot
 //     method.
@@ -173,8 +175,8 @@ func (client *WebAppsClient) addPremierAddOnSlotCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, premierAddOn); err != nil {
@@ -196,6 +198,8 @@ func (client *WebAppsClient) addPremierAddOnSlotHandleResponse(resp *http.Respon
 //
 // Description for Analyze a custom hostname.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientAnalyzeCustomHostnameOptions contains the optional parameters for the WebAppsClient.AnalyzeCustomHostname
@@ -242,11 +246,11 @@ func (client *WebAppsClient) analyzeCustomHostnameCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.HostName != nil {
 		reqQP.Set("hostName", *options.HostName)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,6 +268,8 @@ func (client *WebAppsClient) analyzeCustomHostnameHandleResponse(resp *http.Resp
 //
 // Description for Analyze a custom hostname.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -315,11 +321,11 @@ func (client *WebAppsClient) analyzeCustomHostnameSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.HostName != nil {
 		reqQP.Set("hostName", *options.HostName)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -337,6 +343,8 @@ func (client *WebAppsClient) analyzeCustomHostnameSlotHandleResponse(resp *http.
 //
 // Description for Applies the configuration settings from the target slot onto the current slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slotSwapEntity - JSON object that contains the target slot name. See example.
@@ -383,8 +391,8 @@ func (client *WebAppsClient) applySlotConfigToProductionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, slotSwapEntity); err != nil {
 		return nil, err
@@ -396,6 +404,8 @@ func (client *WebAppsClient) applySlotConfigToProductionCreateRequest(ctx contex
 //
 // Description for Applies the configuration settings from the target slot onto the current slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -447,8 +457,8 @@ func (client *WebAppsClient) applySlotConfigurationSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, slotSwapEntity); err != nil {
 		return nil, err
@@ -460,6 +470,8 @@ func (client *WebAppsClient) applySlotConfigurationSlotCreateRequest(ctx context
 //
 // Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - privateEndpointConnectionName - Name of the private endpoint connection.
@@ -486,6 +498,8 @@ func (client *WebAppsClient) BeginApproveOrRejectPrivateEndpointConnection(ctx c
 //
 // Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper RemotePrivateEndpointConnectionARMResource, options *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection"
@@ -531,8 +545,8 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointWrapper); err != nil {
@@ -545,6 +559,8 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionCreateReque
 //
 // Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions contains the optional parameters for the
 //     WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot method.
@@ -569,6 +585,8 @@ func (client *WebAppsClient) BeginApproveOrRejectPrivateEndpointConnectionSlot(c
 //
 // Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionSlot(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, privateEndpointWrapper RemotePrivateEndpointConnectionARMResource, options *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot"
@@ -618,8 +636,8 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionSlotCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointWrapper); err != nil {
@@ -632,6 +650,8 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionSlotCreateR
 //
 // Description for Creates a backup of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - request - Backup configuration. You can use the JSON response from the POST action as input here.
@@ -678,8 +698,8 @@ func (client *WebAppsClient) backupCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -701,6 +721,8 @@ func (client *WebAppsClient) backupHandleResponse(resp *http.Response) (WebAppsC
 //
 // Description for Creates a backup of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -752,8 +774,8 @@ func (client *WebAppsClient) backupSlotCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -775,6 +797,8 @@ func (client *WebAppsClient) backupSlotHandleResponse(resp *http.Response) (WebA
 //
 // Description for Create a deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - id - Deployment ID.
@@ -827,8 +851,8 @@ func (client *WebAppsClient) createDeploymentCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, deployment); err != nil {
@@ -850,6 +874,8 @@ func (client *WebAppsClient) createDeploymentHandleResponse(resp *http.Response)
 //
 // Description for Create a deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientCreateDeploymentSlotOptions contains the optional parameters for the WebAppsClient.CreateDeploymentSlot
 //     method.
@@ -903,8 +929,8 @@ func (client *WebAppsClient) createDeploymentSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, deployment); err != nil {
@@ -926,6 +952,8 @@ func (client *WebAppsClient) createDeploymentSlotHandleResponse(resp *http.Respo
 //
 // Description for Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - functionName - Function name.
@@ -953,6 +981,8 @@ func (client *WebAppsClient) BeginCreateFunction(ctx context.Context, resourceGr
 //
 // Description for Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) createFunction(ctx context.Context, resourceGroupName string, name string, functionName string, functionEnvelope FunctionEnvelope, options *WebAppsClientBeginCreateFunctionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginCreateFunction"
@@ -998,8 +1028,8 @@ func (client *WebAppsClient) createFunctionCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, functionEnvelope); err != nil {
@@ -1012,6 +1042,8 @@ func (client *WebAppsClient) createFunctionCreateRequest(ctx context.Context, re
 //
 // Description for Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientBeginCreateInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateInstanceFunctionSlot
 //     method.
@@ -1036,6 +1068,8 @@ func (client *WebAppsClient) BeginCreateInstanceFunctionSlot(ctx context.Context
 //
 // Description for Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) createInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope FunctionEnvelope, options *WebAppsClientBeginCreateInstanceFunctionSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginCreateInstanceFunctionSlot"
@@ -1085,8 +1119,8 @@ func (client *WebAppsClient) createInstanceFunctionSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, functionEnvelope); err != nil {
@@ -1099,6 +1133,8 @@ func (client *WebAppsClient) createInstanceFunctionSlotCreateRequest(ctx context
 //
 // Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - instanceID - ID of web app instance.
@@ -1126,6 +1162,8 @@ func (client *WebAppsClient) BeginCreateInstanceMSDeployOperation(ctx context.Co
 //
 // Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) createInstanceMSDeployOperation(ctx context.Context, resourceGroupName string, name string, instanceID string, msDeploy MSDeploy, options *WebAppsClientBeginCreateInstanceMSDeployOperationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginCreateInstanceMSDeployOperation"
@@ -1171,8 +1209,8 @@ func (client *WebAppsClient) createInstanceMSDeployOperationCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, msDeploy); err != nil {
@@ -1185,6 +1223,8 @@ func (client *WebAppsClient) createInstanceMSDeployOperationCreateRequest(ctx co
 //
 // Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - slot - Name of web app slot. If not specified then will default to production slot.
@@ -1213,6 +1253,8 @@ func (client *WebAppsClient) BeginCreateInstanceMSDeployOperationSlot(ctx contex
 //
 // Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) createInstanceMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, msDeploy MSDeploy, options *WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginCreateInstanceMSDeployOperationSlot"
@@ -1262,8 +1304,8 @@ func (client *WebAppsClient) createInstanceMSDeployOperationSlotCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, msDeploy); err != nil {
@@ -1276,6 +1318,8 @@ func (client *WebAppsClient) createInstanceMSDeployOperationSlotCreateRequest(ct
 //
 // Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - msDeploy - Details of MSDeploy operation
@@ -1302,6 +1346,8 @@ func (client *WebAppsClient) BeginCreateMSDeployOperation(ctx context.Context, r
 //
 // Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) createMSDeployOperation(ctx context.Context, resourceGroupName string, name string, msDeploy MSDeploy, options *WebAppsClientBeginCreateMSDeployOperationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginCreateMSDeployOperation"
@@ -1343,8 +1389,8 @@ func (client *WebAppsClient) createMSDeployOperationCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, msDeploy); err != nil {
@@ -1357,6 +1403,8 @@ func (client *WebAppsClient) createMSDeployOperationCreateRequest(ctx context.Co
 //
 // Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - slot - Name of web app slot. If not specified then will default to production slot.
@@ -1384,6 +1432,8 @@ func (client *WebAppsClient) BeginCreateMSDeployOperationSlot(ctx context.Contex
 //
 // Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) createMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy MSDeploy, options *WebAppsClientBeginCreateMSDeployOperationSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginCreateMSDeployOperationSlot"
@@ -1429,8 +1479,8 @@ func (client *WebAppsClient) createMSDeployOperationSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, msDeploy); err != nil {
@@ -1443,6 +1493,8 @@ func (client *WebAppsClient) createMSDeployOperationSlotCreateRequest(ctx contex
 //
 // Description for Invoke the OneDeploy publish web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientCreateOneDeployOperationOptions contains the optional parameters for the WebAppsClient.CreateOneDeployOperation
@@ -1489,8 +1541,8 @@ func (client *WebAppsClient) createOneDeployOperationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1508,6 +1560,8 @@ func (client *WebAppsClient) createOneDeployOperationHandleResponse(resp *http.R
 //
 // Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - siteEnvelope - A JSON representation of the app properties. See example.
@@ -1534,6 +1588,8 @@ func (client *WebAppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 //
 // Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, options *WebAppsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginCreateOrUpdate"
@@ -1575,8 +1631,8 @@ func (client *WebAppsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteEnvelope); err != nil {
@@ -1589,6 +1645,8 @@ func (client *WebAppsClient) createOrUpdateCreateRequest(ctx context.Context, re
 //
 // Description for Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - siteConfig - JSON representation of a SiteConfig object. See example.
@@ -1636,8 +1694,8 @@ func (client *WebAppsClient) createOrUpdateConfigurationCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteConfig); err != nil {
@@ -1659,6 +1717,8 @@ func (client *WebAppsClient) createOrUpdateConfigurationHandleResponse(resp *htt
 //
 // Description for Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
@@ -1711,8 +1771,8 @@ func (client *WebAppsClient) createOrUpdateConfigurationSlotCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteConfig); err != nil {
@@ -1735,6 +1795,8 @@ func (client *WebAppsClient) createOrUpdateConfigurationSlotHandleResponse(resp 
 //
 // Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - domainOwnershipIdentifierName - Name of domain ownership identifier.
@@ -1787,8 +1849,8 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, domainOwnershipIdentifier); err != nil {
@@ -1811,6 +1873,8 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierHandleRespon
 //
 // Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateDomainOwnershipIdentifierSlot
 //     method.
@@ -1864,8 +1928,8 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, domainOwnershipIdentifier); err != nil {
@@ -1887,6 +1951,8 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotHandleRe
 //
 // Description for Add or update a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - key - The key to create or update
 //   - options - WebAppsClientCreateOrUpdateFunctionSecretOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateFunctionSecret
@@ -1941,8 +2007,8 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, key); err != nil {
@@ -1964,6 +2030,8 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretHandleResponse(resp *ht
 //
 // Description for Add or update a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientCreateOrUpdateFunctionSecretSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateFunctionSecretSlot
 //     method.
@@ -2021,8 +2089,8 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretSlotCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, key); err != nil {
@@ -2044,6 +2112,8 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretSlotHandleResponse(resp
 //
 // Description for Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - hostName - Hostname in the hostname binding.
@@ -2096,8 +2166,8 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hostNameBinding); err != nil {
@@ -2119,6 +2189,8 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingHandleResponse(resp *h
 //
 // Description for Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientCreateOrUpdateHostNameBindingSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostNameBindingSlot
 //     method.
@@ -2172,8 +2244,8 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingSlotCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hostNameBinding); err != nil {
@@ -2195,6 +2267,8 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingSlotHandleResponse(res
 //
 // Description for Add or update a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - keyType - The type of host key.
@@ -2252,8 +2326,8 @@ func (client *WebAppsClient) createOrUpdateHostSecretCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, key); err != nil {
@@ -2275,6 +2349,8 @@ func (client *WebAppsClient) createOrUpdateHostSecretHandleResponse(resp *http.R
 //
 // Description for Add or update a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientCreateOrUpdateHostSecretSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostSecretSlot
 //     method.
@@ -2332,8 +2408,8 @@ func (client *WebAppsClient) createOrUpdateHostSecretSlotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, key); err != nil {
@@ -2355,6 +2431,8 @@ func (client *WebAppsClient) createOrUpdateHostSecretSlotHandleResponse(resp *ht
 //
 // Description for Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the web app.
 //   - namespaceName - The namespace for this hybrid connection.
@@ -2412,8 +2490,8 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -2435,6 +2513,8 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionHandleResponse(resp *
 //
 // Description for Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientCreateOrUpdateHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHybridConnectionSlot
 //     method.
@@ -2492,8 +2572,8 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionSlotCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -2515,6 +2595,8 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionSlotHandleResponse(re
 //
 // Description for Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - publicCertificateName - Public certificate name.
@@ -2567,8 +2649,8 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, publicCertificate); err != nil {
@@ -2590,6 +2672,8 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateHandleResponse(resp 
 //
 // Description for Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientCreateOrUpdatePublicCertificateSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdatePublicCertificateSlot
 //     method.
@@ -2643,8 +2727,8 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateSlotCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, publicCertificate); err != nil {
@@ -2667,6 +2751,8 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateSlotHandleResponse(r
 //
 // Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - entityName - Name of the hybrid connection.
@@ -2719,8 +2805,8 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -2743,6 +2829,8 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionHandleResponse(
 //
 // Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateRelayServiceConnectionSlot
 //     method.
@@ -2796,8 +2884,8 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -2819,6 +2907,8 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotHandleRespo
 //
 // Creates or Updates a site container for a site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - containerName - Site Container Name
@@ -2871,8 +2961,8 @@ func (client *WebAppsClient) createOrUpdateSiteContainerCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -2894,6 +2984,8 @@ func (client *WebAppsClient) createOrUpdateSiteContainerHandleResponse(resp *htt
 //
 // Creates or Updates a site container for a site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the production
@@ -2952,8 +3044,8 @@ func (client *WebAppsClient) createOrUpdateSiteContainerSlotCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -2975,6 +3067,8 @@ func (client *WebAppsClient) createOrUpdateSiteContainerSlotHandleResponse(resp 
 //
 // Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -3002,6 +3096,8 @@ func (client *WebAppsClient) BeginCreateOrUpdateSlot(ctx context.Context, resour
 //
 // Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) createOrUpdateSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope Site, options *WebAppsClientBeginCreateOrUpdateSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginCreateOrUpdateSlot"
@@ -3047,8 +3143,8 @@ func (client *WebAppsClient) createOrUpdateSlotCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteEnvelope); err != nil {
@@ -3061,6 +3157,8 @@ func (client *WebAppsClient) createOrUpdateSlotCreateRequest(ctx context.Context
 //
 // Description for Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - siteSourceControl - JSON representation of a SiteSourceControl object. See example.
@@ -3087,6 +3185,8 @@ func (client *WebAppsClient) BeginCreateOrUpdateSourceControl(ctx context.Contex
 //
 // Description for Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) createOrUpdateSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, options *WebAppsClientBeginCreateOrUpdateSourceControlOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginCreateOrUpdateSourceControl"
@@ -3128,8 +3228,8 @@ func (client *WebAppsClient) createOrUpdateSourceControlCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteSourceControl); err != nil {
@@ -3142,6 +3242,8 @@ func (client *WebAppsClient) createOrUpdateSourceControlCreateRequest(ctx contex
 //
 // Description for Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the
@@ -3170,6 +3272,8 @@ func (client *WebAppsClient) BeginCreateOrUpdateSourceControlSlot(ctx context.Co
 //
 // Description for Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) createOrUpdateSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, options *WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginCreateOrUpdateSourceControlSlot"
@@ -3215,8 +3319,8 @@ func (client *WebAppsClient) createOrUpdateSourceControlSlotCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteSourceControl); err != nil {
@@ -3234,6 +3338,8 @@ func (client *WebAppsClient) createOrUpdateSourceControlSlotCreateRequest(ctx co
 // a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - connectionEnvelope - Properties of the Virtual Network connection. See example.
@@ -3281,8 +3387,8 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -3309,6 +3415,8 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 // a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual
@@ -3362,8 +3470,8 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -3386,6 +3494,8 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 //
 // Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - vnetName - Name of the virtual network.
@@ -3438,8 +3548,8 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -3461,6 +3571,8 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionHandleResponse(resp *ht
 //
 // Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - vnetName - Name of the Virtual Network.
@@ -3518,8 +3630,8 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -3541,6 +3653,8 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayHandleResponse(r
 //
 // Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionGatewaySlot
 //     method.
@@ -3598,8 +3712,8 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -3622,6 +3736,8 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotHandleRespon
 //
 // Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientCreateOrUpdateVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionSlot
 //     method.
@@ -3675,8 +3791,8 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionSlotCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -3698,6 +3814,8 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionSlotHandleResponse(resp
 //
 // Description for Deletes a web, mobile, or API app, or one of the deployment slots.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientDeleteOptions contains the optional parameters for the WebAppsClient.Delete method.
@@ -3742,14 +3860,14 @@ func (client *WebAppsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.DeleteEmptyServerFarm != nil {
 		reqQP.Set("deleteEmptyServerFarm", strconv.FormatBool(*options.DeleteEmptyServerFarm))
 	}
 	if options != nil && options.DeleteMetrics != nil {
 		reqQP.Set("deleteMetrics", strconv.FormatBool(*options.DeleteMetrics))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -3757,6 +3875,8 @@ func (client *WebAppsClient) deleteCreateRequest(ctx context.Context, resourceGr
 //
 // Description for Deletes a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - backupID - ID of the backup.
@@ -3806,8 +3926,8 @@ func (client *WebAppsClient) deleteBackupCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -3815,6 +3935,8 @@ func (client *WebAppsClient) deleteBackupCreateRequest(ctx context.Context, reso
 //
 // Description for Deletes the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientDeleteBackupConfigurationOptions contains the optional parameters for the WebAppsClient.DeleteBackupConfiguration
@@ -3860,8 +3982,8 @@ func (client *WebAppsClient) deleteBackupConfigurationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -3869,6 +3991,8 @@ func (client *WebAppsClient) deleteBackupConfigurationCreateRequest(ctx context.
 //
 // Description for Deletes the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -3919,8 +4043,8 @@ func (client *WebAppsClient) deleteBackupConfigurationSlotCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -3928,6 +4052,8 @@ func (client *WebAppsClient) deleteBackupConfigurationSlotCreateRequest(ctx cont
 //
 // Description for Deletes a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteBackupSlotOptions contains the optional parameters for the WebAppsClient.DeleteBackupSlot
 //     method.
@@ -3980,8 +4106,8 @@ func (client *WebAppsClient) deleteBackupSlotCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -3989,6 +4115,8 @@ func (client *WebAppsClient) deleteBackupSlotCreateRequest(ctx context.Context, 
 //
 // Description for Delete a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - webJobName - Name of Web Job.
@@ -4039,8 +4167,8 @@ func (client *WebAppsClient) deleteContinuousWebJobCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4048,6 +4176,8 @@ func (client *WebAppsClient) deleteContinuousWebJobCreateRequest(ctx context.Con
 //
 // Description for Delete a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.DeleteContinuousWebJobSlot
 //     method.
@@ -4100,8 +4230,8 @@ func (client *WebAppsClient) deleteContinuousWebJobSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4109,6 +4239,8 @@ func (client *WebAppsClient) deleteContinuousWebJobSlotCreateRequest(ctx context
 //
 // Description for Delete a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - id - Deployment ID.
@@ -4159,8 +4291,8 @@ func (client *WebAppsClient) deleteDeploymentCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4168,6 +4300,8 @@ func (client *WebAppsClient) deleteDeploymentCreateRequest(ctx context.Context, 
 //
 // Description for Delete a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteDeploymentSlotOptions contains the optional parameters for the WebAppsClient.DeleteDeploymentSlot
 //     method.
@@ -4220,8 +4354,8 @@ func (client *WebAppsClient) deleteDeploymentSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4229,6 +4363,8 @@ func (client *WebAppsClient) deleteDeploymentSlotCreateRequest(ctx context.Conte
 //
 // Description for Deletes a domain ownership identifier for a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - domainOwnershipIdentifierName - Name of domain ownership identifier.
@@ -4279,8 +4415,8 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4288,6 +4424,8 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierCreateRequest(ctx co
 //
 // Description for Deletes a domain ownership identifier for a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.DeleteDomainOwnershipIdentifierSlot
 //     method.
@@ -4340,8 +4478,8 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierSlotCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4349,6 +4487,8 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierSlotCreateRequest(ct
 //
 // Description for Delete a function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - functionName - Function name.
@@ -4398,8 +4538,8 @@ func (client *WebAppsClient) deleteFunctionCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4407,6 +4547,8 @@ func (client *WebAppsClient) deleteFunctionCreateRequest(ctx context.Context, re
 //
 // Description for Delete a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteFunctionSecretOptions contains the optional parameters for the WebAppsClient.DeleteFunctionSecret
 //     method.
@@ -4459,8 +4601,8 @@ func (client *WebAppsClient) deleteFunctionSecretCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4468,6 +4610,8 @@ func (client *WebAppsClient) deleteFunctionSecretCreateRequest(ctx context.Conte
 //
 // Description for Delete a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteFunctionSecretSlotOptions contains the optional parameters for the WebAppsClient.DeleteFunctionSecretSlot
 //     method.
@@ -4524,8 +4668,8 @@ func (client *WebAppsClient) deleteFunctionSecretSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4533,6 +4677,8 @@ func (client *WebAppsClient) deleteFunctionSecretSlotCreateRequest(ctx context.C
 //
 // Description for Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - hostName - Hostname in the hostname binding.
@@ -4583,8 +4729,8 @@ func (client *WebAppsClient) deleteHostNameBindingCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4592,6 +4738,8 @@ func (client *WebAppsClient) deleteHostNameBindingCreateRequest(ctx context.Cont
 //
 // Description for Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
@@ -4647,8 +4795,8 @@ func (client *WebAppsClient) deleteHostNameBindingSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4656,6 +4804,8 @@ func (client *WebAppsClient) deleteHostNameBindingSlotCreateRequest(ctx context.
 //
 // Description for Delete a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - keyType - The type of host key.
@@ -4711,8 +4861,8 @@ func (client *WebAppsClient) deleteHostSecretCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4720,6 +4870,8 @@ func (client *WebAppsClient) deleteHostSecretCreateRequest(ctx context.Context, 
 //
 // Description for Delete a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteHostSecretSlotOptions contains the optional parameters for the WebAppsClient.DeleteHostSecretSlot
 //     method.
@@ -4776,8 +4928,8 @@ func (client *WebAppsClient) deleteHostSecretSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4785,6 +4937,8 @@ func (client *WebAppsClient) deleteHostSecretSlotCreateRequest(ctx context.Conte
 //
 // Description for Removes a Hybrid Connection from this site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the web app.
 //   - namespaceName - The namespace for this hybrid connection.
@@ -4840,8 +4994,8 @@ func (client *WebAppsClient) deleteHybridConnectionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4849,6 +5003,8 @@ func (client *WebAppsClient) deleteHybridConnectionCreateRequest(ctx context.Con
 //
 // Description for Removes a Hybrid Connection from this site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteHybridConnectionSlot
 //     method.
@@ -4905,8 +5061,8 @@ func (client *WebAppsClient) deleteHybridConnectionSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4914,6 +5070,8 @@ func (client *WebAppsClient) deleteHybridConnectionSlotCreateRequest(ctx context
 //
 // Description for Delete a function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.DeleteInstanceFunctionSlot
 //     method.
@@ -4966,8 +5124,8 @@ func (client *WebAppsClient) deleteInstanceFunctionSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -4977,6 +5135,8 @@ func (client *WebAppsClient) deleteInstanceFunctionSlotCreateRequest(ctx context
 // Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in
 // a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteInstanceProcessOptions contains the optional parameters for the WebAppsClient.DeleteInstanceProcess
 //     method.
@@ -5029,8 +5189,8 @@ func (client *WebAppsClient) deleteInstanceProcessCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5040,6 +5200,8 @@ func (client *WebAppsClient) deleteInstanceProcessCreateRequest(ctx context.Cont
 // Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in
 // a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteInstanceProcessSlotOptions contains the optional parameters for the WebAppsClient.DeleteInstanceProcessSlot
 //     method.
@@ -5096,8 +5258,8 @@ func (client *WebAppsClient) deleteInstanceProcessSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5105,6 +5267,8 @@ func (client *WebAppsClient) deleteInstanceProcessSlotCreateRequest(ctx context.
 //
 // Description for Delete a premier add-on from an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - premierAddOnName - Add-on name.
@@ -5155,8 +5319,8 @@ func (client *WebAppsClient) deletePremierAddOnCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5164,6 +5328,8 @@ func (client *WebAppsClient) deletePremierAddOnCreateRequest(ctx context.Context
 //
 // Description for Delete a premier add-on from an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeletePremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.DeletePremierAddOnSlot
 //     method.
@@ -5216,8 +5382,8 @@ func (client *WebAppsClient) deletePremierAddOnSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5225,6 +5391,8 @@ func (client *WebAppsClient) deletePremierAddOnSlotCreateRequest(ctx context.Con
 //
 // Description for Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - privateEndpointConnectionName - Name of the private endpoint connection.
@@ -5251,6 +5419,8 @@ func (client *WebAppsClient) BeginDeletePrivateEndpointConnection(ctx context.Co
 //
 // Description for Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *WebAppsClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginDeletePrivateEndpointConnection"
@@ -5296,8 +5466,8 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -5306,6 +5476,8 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionCreateRequest(ctx co
 //
 // Description for Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions contains the optional parameters for the WebAppsClient.BeginDeletePrivateEndpointConnectionSlot
 //     method.
@@ -5330,6 +5502,8 @@ func (client *WebAppsClient) BeginDeletePrivateEndpointConnectionSlot(ctx contex
 //
 // Description for Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) deletePrivateEndpointConnectionSlot(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginDeletePrivateEndpointConnectionSlot"
@@ -5379,8 +5553,8 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionSlotCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -5391,6 +5565,8 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionSlotCreateRequest(ct
 // Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in
 // a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - processID - PID.
@@ -5440,8 +5616,8 @@ func (client *WebAppsClient) deleteProcessCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5451,6 +5627,8 @@ func (client *WebAppsClient) deleteProcessCreateRequest(ctx context.Context, res
 // Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in
 // a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteProcessSlotOptions contains the optional parameters for the WebAppsClient.DeleteProcessSlot
 //     method.
@@ -5503,8 +5681,8 @@ func (client *WebAppsClient) deleteProcessSlotCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5512,6 +5690,8 @@ func (client *WebAppsClient) deleteProcessSlotCreateRequest(ctx context.Context,
 //
 // Description for Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - publicCertificateName - Public certificate name.
@@ -5562,8 +5742,8 @@ func (client *WebAppsClient) deletePublicCertificateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5571,6 +5751,8 @@ func (client *WebAppsClient) deletePublicCertificateCreateRequest(ctx context.Co
 //
 // Description for Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
@@ -5626,8 +5808,8 @@ func (client *WebAppsClient) deletePublicCertificateSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5635,6 +5817,8 @@ func (client *WebAppsClient) deletePublicCertificateSlotCreateRequest(ctx contex
 //
 // Description for Deletes a relay service connection by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - entityName - Name of the hybrid connection.
@@ -5685,8 +5869,8 @@ func (client *WebAppsClient) deleteRelayServiceConnectionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5694,6 +5878,8 @@ func (client *WebAppsClient) deleteRelayServiceConnectionCreateRequest(ctx conte
 //
 // Description for Deletes a relay service connection by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteRelayServiceConnectionSlot
 //     method.
@@ -5746,8 +5932,8 @@ func (client *WebAppsClient) deleteRelayServiceConnectionSlotCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5755,6 +5941,8 @@ func (client *WebAppsClient) deleteRelayServiceConnectionSlotCreateRequest(ctx c
 //
 // Deletes a site container for a site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - containerName - Site Container Name
@@ -5805,8 +5993,8 @@ func (client *WebAppsClient) deleteSiteContainerCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5814,6 +6002,8 @@ func (client *WebAppsClient) deleteSiteContainerCreateRequest(ctx context.Contex
 //
 // Deletes a site container for a site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the production
@@ -5870,8 +6060,8 @@ func (client *WebAppsClient) deleteSiteContainerSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5879,6 +6069,8 @@ func (client *WebAppsClient) deleteSiteContainerSlotCreateRequest(ctx context.Co
 //
 // Description for Remove a site extension from a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - siteExtensionID - Site extension name.
@@ -5929,8 +6121,8 @@ func (client *WebAppsClient) deleteSiteExtensionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5938,6 +6130,8 @@ func (client *WebAppsClient) deleteSiteExtensionCreateRequest(ctx context.Contex
 //
 // Description for Remove a site extension from a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.DeleteSiteExtensionSlot
 //     method.
@@ -5990,8 +6184,8 @@ func (client *WebAppsClient) deleteSiteExtensionSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -5999,6 +6193,8 @@ func (client *WebAppsClient) deleteSiteExtensionSlotCreateRequest(ctx context.Co
 //
 // Description for Deletes a web, mobile, or API app, or one of the deployment slots.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -6048,14 +6244,14 @@ func (client *WebAppsClient) deleteSlotCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.DeleteEmptyServerFarm != nil {
 		reqQP.Set("deleteEmptyServerFarm", strconv.FormatBool(*options.DeleteEmptyServerFarm))
 	}
 	if options != nil && options.DeleteMetrics != nil {
 		reqQP.Set("deleteMetrics", strconv.FormatBool(*options.DeleteMetrics))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6063,6 +6259,8 @@ func (client *WebAppsClient) deleteSlotCreateRequest(ctx context.Context, resour
 //
 // Description for Deletes the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientDeleteSourceControlOptions contains the optional parameters for the WebAppsClient.DeleteSourceControl
@@ -6111,8 +6309,8 @@ func (client *WebAppsClient) deleteSourceControlCreateRequest(ctx context.Contex
 	if options != nil && options.AdditionalFlags != nil {
 		reqQP.Set("additionalFlags", *options.AdditionalFlags)
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6120,6 +6318,8 @@ func (client *WebAppsClient) deleteSourceControlCreateRequest(ctx context.Contex
 //
 // Description for Deletes the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the
@@ -6174,8 +6374,8 @@ func (client *WebAppsClient) deleteSourceControlSlotCreateRequest(ctx context.Co
 	if options != nil && options.AdditionalFlags != nil {
 		reqQP.Set("additionalFlags", *options.AdditionalFlags)
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6183,6 +6383,8 @@ func (client *WebAppsClient) deleteSourceControlSlotCreateRequest(ctx context.Co
 //
 // Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientDeleteSwiftVirtualNetworkOptions contains the optional parameters for the WebAppsClient.DeleteSwiftVirtualNetwork
@@ -6228,8 +6430,8 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6237,6 +6439,8 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkCreateRequest(ctx context.
 //
 // Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual
@@ -6288,8 +6492,8 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkSlotCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6297,6 +6501,8 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkSlotCreateRequest(ctx cont
 //
 // Description for Delete a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - webJobName - Name of Web Job.
@@ -6347,8 +6553,8 @@ func (client *WebAppsClient) deleteTriggeredWebJobCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6356,6 +6562,8 @@ func (client *WebAppsClient) deleteTriggeredWebJobCreateRequest(ctx context.Cont
 //
 // Description for Delete a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.DeleteTriggeredWebJobSlot
 //     method.
@@ -6408,8 +6616,8 @@ func (client *WebAppsClient) deleteTriggeredWebJobSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6417,6 +6625,8 @@ func (client *WebAppsClient) deleteTriggeredWebJobSlotCreateRequest(ctx context.
 //
 // Description for Deletes a connection from an app (or deployment slot to a named virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - vnetName - Name of the virtual network.
@@ -6467,8 +6677,8 @@ func (client *WebAppsClient) deleteVnetConnectionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6476,6 +6686,8 @@ func (client *WebAppsClient) deleteVnetConnectionCreateRequest(ctx context.Conte
 //
 // Description for Deletes a connection from an app (or deployment slot to a named virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientDeleteVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteVnetConnectionSlot
 //     method.
@@ -6528,8 +6740,8 @@ func (client *WebAppsClient) deleteVnetConnectionSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6537,6 +6749,8 @@ func (client *WebAppsClient) deleteVnetConnectionSlotCreateRequest(ctx context.C
 //
 // Description for Creates the artifacts for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientDeployWorkflowArtifactsOptions contains the optional parameters for the WebAppsClient.DeployWorkflowArtifacts
@@ -6582,8 +6796,8 @@ func (client *WebAppsClient) deployWorkflowArtifactsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.WorkflowArtifacts != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.WorkflowArtifacts); err != nil {
@@ -6598,6 +6812,8 @@ func (client *WebAppsClient) deployWorkflowArtifactsCreateRequest(ctx context.Co
 //
 // Description for Creates the artifacts for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -6648,8 +6864,8 @@ func (client *WebAppsClient) deployWorkflowArtifactsSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.WorkflowArtifacts != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.WorkflowArtifacts); err != nil {
@@ -6666,6 +6882,8 @@ func (client *WebAppsClient) deployWorkflowArtifactsSlotCreateRequest(ctx contex
 // Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
 // about the databases stored in a backup.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - request - A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
@@ -6712,8 +6930,8 @@ func (client *WebAppsClient) discoverBackupCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -6737,6 +6955,8 @@ func (client *WebAppsClient) discoverBackupHandleResponse(resp *http.Response) (
 // Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
 // about the databases stored in a backup.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -6789,8 +7009,8 @@ func (client *WebAppsClient) discoverBackupSlotCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -6812,6 +7032,8 @@ func (client *WebAppsClient) discoverBackupSlotHandleResponse(resp *http.Respons
 //
 // Description for Generates a new publishing password for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGenerateNewSitePublishingPasswordOptions contains the optional parameters for the WebAppsClient.GenerateNewSitePublishingPassword
@@ -6857,8 +7079,8 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6866,6 +7088,8 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordCreateRequest(ctx 
 //
 // Description for Generates a new publishing password for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -6916,8 +7140,8 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordSlotCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -6925,6 +7149,8 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordSlotCreateRequest(
 //
 // Description for Gets the details of a web, mobile, or API app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetOptions contains the optional parameters for the WebAppsClient.Get method.
@@ -6970,8 +7196,8 @@ func (client *WebAppsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -6989,6 +7215,8 @@ func (client *WebAppsClient) getHandleResponse(resp *http.Response) (WebAppsClie
 //
 // Description for Gets the config reference and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - appSettingKey - App Setting key name.
@@ -7040,8 +7268,8 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7059,6 +7287,8 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceHandleResponse(resp *
 //
 // Description for Gets the config reference and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetAppSettingKeyVaultReferenceSlotOptions contains the optional parameters for the WebAppsClient.GetAppSettingKeyVaultReferenceSlot
 //     method.
@@ -7112,8 +7342,8 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7129,7 +7359,9 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotHandleResponse(re
 
 // NewGetAppSettingsKeyVaultReferencesPager - Gets the config reference app settings and status of an app
 //
-// Description for Gets the config reference app settings and status of an app
+// # Description for Gets the config reference app settings and status of an app
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetAppSettingsKeyVaultReferencesOptions contains the optional parameters for the WebAppsClient.NewGetAppSettingsKeyVaultReferencesPager
@@ -7177,8 +7409,8 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7194,7 +7426,9 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesHandleResponse(resp
 
 // NewGetAppSettingsKeyVaultReferencesSlotPager - Gets the config reference app settings and status of an app
 //
-// Description for Gets the config reference app settings and status of an app
+// # Description for Gets the config reference app settings and status of an app
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions contains the optional parameters for the WebAppsClient.NewGetAppSettingsKeyVaultReferencesSlotPager
@@ -7246,8 +7480,8 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7265,6 +7499,8 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotHandleResponse(
 //
 // Description for Gets the Authentication/Authorization settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetAuthSettingsOptions contains the optional parameters for the WebAppsClient.GetAuthSettings method.
@@ -7310,8 +7546,8 @@ func (client *WebAppsClient) getAuthSettingsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7329,6 +7565,8 @@ func (client *WebAppsClient) getAuthSettingsHandleResponse(resp *http.Response) 
 //
 // Description for Gets the Authentication/Authorization settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -7380,8 +7618,8 @@ func (client *WebAppsClient) getAuthSettingsSlotCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7399,6 +7637,8 @@ func (client *WebAppsClient) getAuthSettingsSlotHandleResponse(resp *http.Respon
 //
 // Description for Gets site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetAuthSettingsV2Options contains the optional parameters for the WebAppsClient.GetAuthSettingsV2
@@ -7445,8 +7685,8 @@ func (client *WebAppsClient) getAuthSettingsV2CreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7464,6 +7704,8 @@ func (client *WebAppsClient) getAuthSettingsV2HandleResponse(resp *http.Response
 //
 // Description for Gets site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the settings for the production slot.
@@ -7515,8 +7757,8 @@ func (client *WebAppsClient) getAuthSettingsV2SlotCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7534,6 +7776,8 @@ func (client *WebAppsClient) getAuthSettingsV2SlotHandleResponse(resp *http.Resp
 //
 // Description for Gets site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetAuthSettingsV2WithoutSecretsOptions contains the optional parameters for the WebAppsClient.GetAuthSettingsV2WithoutSecrets
@@ -7580,8 +7824,8 @@ func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7599,6 +7843,8 @@ func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsHandleResponse(resp 
 //
 // Gets site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the settings for the production slot.
@@ -7650,8 +7896,8 @@ func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsSlotCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7669,6 +7915,8 @@ func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsSlotHandleResponse(r
 //
 // Description for Gets the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetBackupConfigurationOptions contains the optional parameters for the WebAppsClient.GetBackupConfiguration
@@ -7715,8 +7963,8 @@ func (client *WebAppsClient) getBackupConfigurationCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7734,6 +7982,8 @@ func (client *WebAppsClient) getBackupConfigurationHandleResponse(resp *http.Res
 //
 // Description for Gets the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -7785,8 +8035,8 @@ func (client *WebAppsClient) getBackupConfigurationSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7804,6 +8054,8 @@ func (client *WebAppsClient) getBackupConfigurationSlotHandleResponse(resp *http
 //
 // Description for Gets a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - backupID - ID of the backup.
@@ -7854,8 +8106,8 @@ func (client *WebAppsClient) getBackupStatusCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7873,6 +8125,8 @@ func (client *WebAppsClient) getBackupStatusHandleResponse(resp *http.Response) 
 //
 // Description for Gets a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetBackupStatusSlotOptions contains the optional parameters for the WebAppsClient.GetBackupStatusSlot
 //     method.
@@ -7926,8 +8180,8 @@ func (client *WebAppsClient) getBackupStatusSlotCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -7947,6 +8201,8 @@ func (client *WebAppsClient) getBackupStatusSlotHandleResponse(resp *http.Respon
 // Description for Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
 // Always On, etc.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetConfigurationOptions contains the optional parameters for the WebAppsClient.GetConfiguration
@@ -7993,8 +8249,8 @@ func (client *WebAppsClient) getConfigurationCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8014,6 +8270,8 @@ func (client *WebAppsClient) getConfigurationHandleResponse(resp *http.Response)
 // Description for Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
 // Always On, etc.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
@@ -8065,8 +8323,8 @@ func (client *WebAppsClient) getConfigurationSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8084,6 +8342,8 @@ func (client *WebAppsClient) getConfigurationSlotHandleResponse(resp *http.Respo
 //
 // Description for Gets a snapshot of the configuration of an app at a previous point in time.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - snapshotID - The ID of the snapshot to read.
@@ -8135,8 +8395,8 @@ func (client *WebAppsClient) getConfigurationSnapshotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8154,6 +8414,8 @@ func (client *WebAppsClient) getConfigurationSnapshotHandleResponse(resp *http.R
 //
 // Description for Gets a snapshot of the configuration of an app at a previous point in time.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetConfigurationSnapshotSlotOptions contains the optional parameters for the WebAppsClient.GetConfigurationSnapshotSlot
 //     method.
@@ -8207,8 +8469,8 @@ func (client *WebAppsClient) getConfigurationSnapshotSlotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8226,6 +8488,8 @@ func (client *WebAppsClient) getConfigurationSnapshotSlotHandleResponse(resp *ht
 //
 // Description for Gets the ZIP archived docker log files for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetContainerLogsZipOptions contains the optional parameters for the WebAppsClient.GetContainerLogsZip
@@ -8272,8 +8536,8 @@ func (client *WebAppsClient) getContainerLogsZipCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/zip"}
 	return req, nil
@@ -8292,6 +8556,8 @@ func (client *WebAppsClient) getContainerLogsZipHandleResponse(resp *http.Respon
 //
 // Description for Gets the ZIP archived docker log files for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -8343,8 +8609,8 @@ func (client *WebAppsClient) getContainerLogsZipSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/zip"}
 	return req, nil
@@ -8363,6 +8629,8 @@ func (client *WebAppsClient) getContainerLogsZipSlotHandleResponse(resp *http.Re
 //
 // Description for Gets a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - webJobName - Name of Web Job.
@@ -8414,8 +8682,8 @@ func (client *WebAppsClient) getContinuousWebJobCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8433,6 +8701,8 @@ func (client *WebAppsClient) getContinuousWebJobHandleResponse(resp *http.Respon
 //
 // Description for Gets a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetContinuousWebJobSlot
 //     method.
@@ -8486,8 +8756,8 @@ func (client *WebAppsClient) getContinuousWebJobSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8505,6 +8775,8 @@ func (client *WebAppsClient) getContinuousWebJobSlotHandleResponse(resp *http.Re
 //
 // Description for Get a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - id - Deployment ID.
@@ -8555,8 +8827,8 @@ func (client *WebAppsClient) getDeploymentCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8574,6 +8846,8 @@ func (client *WebAppsClient) getDeploymentHandleResponse(resp *http.Response) (W
 //
 // Description for Get a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetDeploymentSlotOptions contains the optional parameters for the WebAppsClient.GetDeploymentSlot
 //     method.
@@ -8627,8 +8901,8 @@ func (client *WebAppsClient) getDeploymentSlotCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8646,6 +8920,8 @@ func (client *WebAppsClient) getDeploymentSlotHandleResponse(resp *http.Response
 //
 // Description for Gets the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetDiagnosticLogsConfigurationOptions contains the optional parameters for the WebAppsClient.GetDiagnosticLogsConfiguration
@@ -8692,8 +8968,8 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8711,6 +8987,8 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationHandleResponse(resp *
 //
 // Description for Gets the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the logging configuration for the production
@@ -8763,8 +9041,8 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8782,6 +9060,8 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotHandleResponse(re
 //
 // Description for Get domain ownership identifier for web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - domainOwnershipIdentifierName - Name of domain ownership identifier.
@@ -8833,8 +9113,8 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8852,6 +9132,8 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierHandleResponse(resp *ht
 //
 // Description for Get domain ownership identifier for web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.GetDomainOwnershipIdentifierSlot
 //     method.
@@ -8905,8 +9187,8 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierSlotCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8924,6 +9206,8 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierSlotHandleResponse(resp
 //
 // Description for Returns whether FTP is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetFtpAllowedOptions contains the optional parameters for the WebAppsClient.GetFtpAllowed method.
@@ -8969,8 +9253,8 @@ func (client *WebAppsClient) getFtpAllowedCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -8988,6 +9272,8 @@ func (client *WebAppsClient) getFtpAllowedHandleResponse(resp *http.Response) (W
 //
 // Description for Returns whether FTP is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetFtpAllowedSlotOptions contains the optional parameters for the WebAppsClient.GetFtpAllowedSlot
@@ -9038,8 +9324,8 @@ func (client *WebAppsClient) getFtpAllowedSlotCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9057,6 +9343,8 @@ func (client *WebAppsClient) getFtpAllowedSlotHandleResponse(resp *http.Response
 //
 // Description for Get function information by its ID for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - functionName - Function name.
@@ -9107,8 +9395,8 @@ func (client *WebAppsClient) getFunctionCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9126,6 +9414,8 @@ func (client *WebAppsClient) getFunctionHandleResponse(resp *http.Response) (Web
 //
 // Description for Fetch a short lived token that can be exchanged for a master key.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetFunctionsAdminTokenOptions contains the optional parameters for the WebAppsClient.GetFunctionsAdminToken
@@ -9172,8 +9462,8 @@ func (client *WebAppsClient) getFunctionsAdminTokenCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9191,6 +9481,8 @@ func (client *WebAppsClient) getFunctionsAdminTokenHandleResponse(resp *http.Res
 //
 // Description for Fetch a short lived token that can be exchanged for a master key.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -9242,8 +9534,8 @@ func (client *WebAppsClient) getFunctionsAdminTokenSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9261,6 +9553,8 @@ func (client *WebAppsClient) getFunctionsAdminTokenSlotHandleResponse(resp *http
 //
 // Description for Get the named hostname binding for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - hostName - Hostname in the hostname binding.
@@ -9312,8 +9606,8 @@ func (client *WebAppsClient) getHostNameBindingCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9331,6 +9625,8 @@ func (client *WebAppsClient) getHostNameBindingHandleResponse(resp *http.Respons
 //
 // Description for Get the named hostname binding for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
@@ -9387,8 +9683,8 @@ func (client *WebAppsClient) getHostNameBindingSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9406,6 +9702,8 @@ func (client *WebAppsClient) getHostNameBindingSlotHandleResponse(resp *http.Res
 //
 // Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the web app.
 //   - namespaceName - The namespace for this hybrid connection.
@@ -9462,8 +9760,8 @@ func (client *WebAppsClient) getHybridConnectionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9481,6 +9779,8 @@ func (client *WebAppsClient) getHybridConnectionHandleResponse(resp *http.Respon
 //
 // Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetHybridConnectionSlot
 //     method.
@@ -9538,8 +9838,8 @@ func (client *WebAppsClient) getHybridConnectionSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9557,6 +9857,8 @@ func (client *WebAppsClient) getHybridConnectionSlotHandleResponse(resp *http.Re
 //
 // Description for Get function information by its ID for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceFunctionSlot
 //     method.
@@ -9610,8 +9912,8 @@ func (client *WebAppsClient) getInstanceFunctionSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9629,6 +9931,8 @@ func (client *WebAppsClient) getInstanceFunctionSlotHandleResponse(resp *http.Re
 //
 // Description for Gets all scale-out instances of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetInstanceInfoOptions contains the optional parameters for the WebAppsClient.GetInstanceInfo method.
@@ -9678,8 +9982,8 @@ func (client *WebAppsClient) getInstanceInfoCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9697,6 +10001,8 @@ func (client *WebAppsClient) getInstanceInfoHandleResponse(resp *http.Response) 
 //
 // Description for Gets all scale-out instances of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetInstanceInfoSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceInfoSlot
 //     method.
@@ -9750,8 +10056,8 @@ func (client *WebAppsClient) getInstanceInfoSlotCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9769,6 +10075,8 @@ func (client *WebAppsClient) getInstanceInfoSlotHandleResponse(resp *http.Respon
 //
 // Description for Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - instanceID - ID of web app instance.
@@ -9820,8 +10128,8 @@ func (client *WebAppsClient) getInstanceMSDeployLogCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9839,6 +10147,8 @@ func (client *WebAppsClient) getInstanceMSDeployLogHandleResponse(resp *http.Res
 //
 // Description for Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - slot - Name of web app slot. If not specified then will default to production slot.
@@ -9895,8 +10205,8 @@ func (client *WebAppsClient) getInstanceMSDeployLogSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9914,6 +10224,8 @@ func (client *WebAppsClient) getInstanceMSDeployLogSlotHandleResponse(resp *http
 //
 // Description for Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - instanceID - ID of web app instance.
@@ -9965,8 +10277,8 @@ func (client *WebAppsClient) getInstanceMsDeployStatusCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -9984,6 +10296,8 @@ func (client *WebAppsClient) getInstanceMsDeployStatusHandleResponse(resp *http.
 //
 // Description for Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - slot - Name of web app slot. If not specified then will default to production slot.
@@ -10040,8 +10354,8 @@ func (client *WebAppsClient) getInstanceMsDeployStatusSlotCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10059,6 +10373,8 @@ func (client *WebAppsClient) getInstanceMsDeployStatusSlotHandleResponse(resp *h
 //
 // Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetInstanceProcessOptions contains the optional parameters for the WebAppsClient.GetInstanceProcess
 //     method.
@@ -10112,8 +10428,8 @@ func (client *WebAppsClient) getInstanceProcessCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10131,6 +10447,8 @@ func (client *WebAppsClient) getInstanceProcessHandleResponse(resp *http.Respons
 //
 // Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetInstanceProcessDumpOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessDump
 //     method.
@@ -10184,8 +10502,8 @@ func (client *WebAppsClient) getInstanceProcessDumpCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"*/*"}
 	return req, nil
@@ -10204,6 +10522,8 @@ func (client *WebAppsClient) getInstanceProcessDumpHandleResponse(resp *http.Res
 //
 // Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetInstanceProcessDumpSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessDumpSlot
 //     method.
@@ -10261,8 +10581,8 @@ func (client *WebAppsClient) getInstanceProcessDumpSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"*/*"}
 	return req, nil
@@ -10281,6 +10601,8 @@ func (client *WebAppsClient) getInstanceProcessDumpSlotHandleResponse(resp *http
 //
 // Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetInstanceProcessModuleOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessModule
 //     method.
@@ -10338,8 +10660,8 @@ func (client *WebAppsClient) getInstanceProcessModuleCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10357,6 +10679,8 @@ func (client *WebAppsClient) getInstanceProcessModuleHandleResponse(resp *http.R
 //
 // Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetInstanceProcessModuleSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessModuleSlot
 //     method.
@@ -10418,8 +10742,8 @@ func (client *WebAppsClient) getInstanceProcessModuleSlotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10437,6 +10761,8 @@ func (client *WebAppsClient) getInstanceProcessModuleSlotHandleResponse(resp *ht
 //
 // Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetInstanceProcessSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessSlot
 //     method.
@@ -10494,8 +10820,8 @@ func (client *WebAppsClient) getInstanceProcessSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10513,6 +10839,8 @@ func (client *WebAppsClient) getInstanceProcessSlotHandleResponse(resp *http.Res
 //
 // Get workflow information by its ID for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - slot - Name of the deployment slot.
@@ -10569,8 +10897,8 @@ func (client *WebAppsClient) getInstanceWorkflowSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10588,6 +10916,8 @@ func (client *WebAppsClient) getInstanceWorkflowSlotHandleResponse(resp *http.Re
 //
 // Description for Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - options - WebAppsClientGetMSDeployLogOptions contains the optional parameters for the WebAppsClient.GetMSDeployLog method.
@@ -10633,8 +10963,8 @@ func (client *WebAppsClient) getMSDeployLogCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10652,6 +10982,8 @@ func (client *WebAppsClient) getMSDeployLogHandleResponse(resp *http.Response) (
 //
 // Description for Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - slot - Name of web app slot. If not specified then will default to production slot.
@@ -10703,8 +11035,8 @@ func (client *WebAppsClient) getMSDeployLogSlotCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10722,6 +11054,8 @@ func (client *WebAppsClient) getMSDeployLogSlotHandleResponse(resp *http.Respons
 //
 // Description for Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - options - WebAppsClientGetMSDeployStatusOptions contains the optional parameters for the WebAppsClient.GetMSDeployStatus
@@ -10768,8 +11102,8 @@ func (client *WebAppsClient) getMSDeployStatusCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10787,6 +11121,8 @@ func (client *WebAppsClient) getMSDeployStatusHandleResponse(resp *http.Response
 //
 // Description for Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - slot - Name of web app slot. If not specified then will default to production slot.
@@ -10838,8 +11174,8 @@ func (client *WebAppsClient) getMSDeployStatusSlotCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10858,6 +11194,8 @@ func (client *WebAppsClient) getMSDeployStatusSlotHandleResponse(resp *http.Resp
 //
 // Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - options - WebAppsClientGetMigrateMySQLStatusOptions contains the optional parameters for the WebAppsClient.GetMigrateMySQLStatus
@@ -10904,8 +11242,8 @@ func (client *WebAppsClient) getMigrateMySQLStatusCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10924,6 +11262,8 @@ func (client *WebAppsClient) getMigrateMySQLStatusHandleResponse(resp *http.Resp
 //
 // Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of web app.
 //   - slot - Name of the deployment slot.
@@ -10975,8 +11315,8 @@ func (client *WebAppsClient) getMigrateMySQLStatusSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -10994,6 +11334,8 @@ func (client *WebAppsClient) getMigrateMySQLStatusSlotHandleResponse(resp *http.
 //
 // Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - operationID - GUID of the operation.
@@ -11045,8 +11387,8 @@ func (client *WebAppsClient) getNetworkTraceOperationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11064,6 +11406,8 @@ func (client *WebAppsClient) getNetworkTraceOperationHandleResponse(resp *http.R
 //
 // Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetNetworkTraceOperationSlotOptions contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationSlot
 //     method.
@@ -11117,8 +11461,8 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11136,6 +11480,8 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotHandleResponse(resp *ht
 //
 // Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetNetworkTraceOperationSlotV2Options contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationSlotV2
 //     method.
@@ -11189,8 +11535,8 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotV2CreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11208,6 +11554,8 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotV2HandleResponse(resp *
 //
 // Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - operationID - GUID of the operation.
@@ -11259,8 +11607,8 @@ func (client *WebAppsClient) getNetworkTraceOperationV2CreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11278,6 +11626,8 @@ func (client *WebAppsClient) getNetworkTraceOperationV2HandleResponse(resp *http
 //
 // Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - operationID - GUID of the operation.
@@ -11329,8 +11679,8 @@ func (client *WebAppsClient) getNetworkTracesCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11348,6 +11698,8 @@ func (client *WebAppsClient) getNetworkTracesHandleResponse(resp *http.Response)
 //
 // Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetNetworkTracesSlotOptions contains the optional parameters for the WebAppsClient.GetNetworkTracesSlot
 //     method.
@@ -11401,8 +11753,8 @@ func (client *WebAppsClient) getNetworkTracesSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11420,6 +11772,8 @@ func (client *WebAppsClient) getNetworkTracesSlotHandleResponse(resp *http.Respo
 //
 // Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetNetworkTracesSlotV2Options contains the optional parameters for the WebAppsClient.GetNetworkTracesSlotV2
 //     method.
@@ -11473,8 +11827,8 @@ func (client *WebAppsClient) getNetworkTracesSlotV2CreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11492,6 +11846,8 @@ func (client *WebAppsClient) getNetworkTracesSlotV2HandleResponse(resp *http.Res
 //
 // Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - operationID - GUID of the operation.
@@ -11543,8 +11899,8 @@ func (client *WebAppsClient) getNetworkTracesV2CreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11562,6 +11918,8 @@ func (client *WebAppsClient) getNetworkTracesV2HandleResponse(resp *http.Respons
 //
 // Description for Invoke onedeploy status API /api/deployments and gets the deployment status for the site
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetOneDeployStatusOptions contains the optional parameters for the WebAppsClient.GetOneDeployStatus
@@ -11608,8 +11966,8 @@ func (client *WebAppsClient) getOneDeployStatusCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11627,6 +11985,8 @@ func (client *WebAppsClient) getOneDeployStatusHandleResponse(resp *http.Respons
 //
 // Description for Gets a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - premierAddOnName - Add-on name.
@@ -11677,8 +12037,8 @@ func (client *WebAppsClient) getPremierAddOnCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11696,6 +12056,8 @@ func (client *WebAppsClient) getPremierAddOnHandleResponse(resp *http.Response) 
 //
 // Description for Gets a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetPremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.GetPremierAddOnSlot
 //     method.
@@ -11749,8 +12111,8 @@ func (client *WebAppsClient) getPremierAddOnSlotCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11769,6 +12131,8 @@ func (client *WebAppsClient) getPremierAddOnSlotHandleResponse(resp *http.Respon
 //
 // Description for Gets data around private site access enablement and authorized Virtual Networks that can access the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the web app.
 //   - options - WebAppsClientGetPrivateAccessOptions contains the optional parameters for the WebAppsClient.GetPrivateAccess
@@ -11815,8 +12179,8 @@ func (client *WebAppsClient) getPrivateAccessCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11835,6 +12199,8 @@ func (client *WebAppsClient) getPrivateAccessHandleResponse(resp *http.Response)
 //
 // Description for Gets data around private site access enablement and authorized Virtual Networks that can access the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the web app.
 //   - slot - The name of the slot for the web app.
@@ -11886,8 +12252,8 @@ func (client *WebAppsClient) getPrivateAccessSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11905,6 +12271,8 @@ func (client *WebAppsClient) getPrivateAccessSlotHandleResponse(resp *http.Respo
 //
 // Description for Gets a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - privateEndpointConnectionName - Name of the private endpoint connection.
@@ -11956,8 +12324,8 @@ func (client *WebAppsClient) getPrivateEndpointConnectionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -11973,7 +12341,9 @@ func (client *WebAppsClient) getPrivateEndpointConnectionHandleResponse(resp *ht
 
 // NewGetPrivateEndpointConnectionListPager - Gets the list of private endpoint connections associated with a site
 //
-// Description for Gets the list of private endpoint connections associated with a site
+// # Description for Gets the list of private endpoint connections associated with a site
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - options - WebAppsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the WebAppsClient.NewGetPrivateEndpointConnectionListPager
@@ -12021,8 +12391,8 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12038,7 +12408,9 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListHandleResponse(resp
 
 // NewGetPrivateEndpointConnectionListSlotPager - Gets the list of private endpoint connections associated with a site
 //
-// Description for Gets the list of private endpoint connections associated with a site
+// # Description for Gets the list of private endpoint connections associated with a site
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the site.
 //   - slot - Name of the site deployment slot.
@@ -12091,8 +12463,8 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListSlotCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12110,6 +12482,8 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListSlotHandleResponse(
 //
 // Description for Gets a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetPrivateEndpointConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetPrivateEndpointConnectionSlot
 //     method.
@@ -12163,8 +12537,8 @@ func (client *WebAppsClient) getPrivateEndpointConnectionSlotCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12182,6 +12556,8 @@ func (client *WebAppsClient) getPrivateEndpointConnectionSlotHandleResponse(resp
 //
 // Description for Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetPrivateLinkResourcesOptions contains the optional parameters for the WebAppsClient.GetPrivateLinkResources
@@ -12228,8 +12604,8 @@ func (client *WebAppsClient) getPrivateLinkResourcesCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12247,6 +12623,8 @@ func (client *WebAppsClient) getPrivateLinkResourcesHandleResponse(resp *http.Re
 //
 // Description for Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -12298,8 +12676,8 @@ func (client *WebAppsClient) getPrivateLinkResourcesSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12317,6 +12695,8 @@ func (client *WebAppsClient) getPrivateLinkResourcesSlotHandleResponse(resp *htt
 //
 // Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - processID - PID.
@@ -12367,8 +12747,8 @@ func (client *WebAppsClient) getProcessCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12386,6 +12766,8 @@ func (client *WebAppsClient) getProcessHandleResponse(resp *http.Response) (WebA
 //
 // Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - processID - PID.
@@ -12436,8 +12818,8 @@ func (client *WebAppsClient) getProcessDumpCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"*/*"}
 	return req, nil
@@ -12456,6 +12838,8 @@ func (client *WebAppsClient) getProcessDumpHandleResponse(resp *http.Response) (
 //
 // Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetProcessDumpSlotOptions contains the optional parameters for the WebAppsClient.GetProcessDumpSlot
 //     method.
@@ -12509,8 +12893,8 @@ func (client *WebAppsClient) getProcessDumpSlotCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"*/*"}
 	return req, nil
@@ -12529,6 +12913,8 @@ func (client *WebAppsClient) getProcessDumpSlotHandleResponse(resp *http.Respons
 //
 // Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - processID - PID.
@@ -12585,8 +12971,8 @@ func (client *WebAppsClient) getProcessModuleCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12604,6 +12990,8 @@ func (client *WebAppsClient) getProcessModuleHandleResponse(resp *http.Response)
 //
 // Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetProcessModuleSlotOptions contains the optional parameters for the WebAppsClient.GetProcessModuleSlot
 //     method.
@@ -12661,8 +13049,8 @@ func (client *WebAppsClient) getProcessModuleSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12680,6 +13068,8 @@ func (client *WebAppsClient) getProcessModuleSlotHandleResponse(resp *http.Respo
 //
 // Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetProcessSlotOptions contains the optional parameters for the WebAppsClient.GetProcessSlot method.
 func (client *WebAppsClient) GetProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *WebAppsClientGetProcessSlotOptions) (WebAppsClientGetProcessSlotResponse, error) {
@@ -12732,8 +13122,8 @@ func (client *WebAppsClient) getProcessSlotCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12751,6 +13141,8 @@ func (client *WebAppsClient) getProcessSlotHandleResponse(resp *http.Response) (
 //
 // Gets the deployment status for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - deploymentStatusID - GUID of the deployment operation.
@@ -12777,6 +13169,8 @@ func (client *WebAppsClient) BeginGetProductionSiteDeploymentStatus(ctx context.
 //
 // Gets the deployment status for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) getProductionSiteDeploymentStatus(ctx context.Context, resourceGroupName string, name string, deploymentStatusID string, options *WebAppsClientBeginGetProductionSiteDeploymentStatusOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginGetProductionSiteDeploymentStatus"
@@ -12822,8 +13216,8 @@ func (client *WebAppsClient) getProductionSiteDeploymentStatusCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12832,6 +13226,8 @@ func (client *WebAppsClient) getProductionSiteDeploymentStatusCreateRequest(ctx 
 //
 // Description for Get the named public certificate for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - publicCertificateName - Public certificate name.
@@ -12883,8 +13279,8 @@ func (client *WebAppsClient) getPublicCertificateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12902,6 +13298,8 @@ func (client *WebAppsClient) getPublicCertificateHandleResponse(resp *http.Respo
 //
 // Description for Get the named public certificate for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
@@ -12958,8 +13356,8 @@ func (client *WebAppsClient) getPublicCertificateSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -12977,6 +13375,8 @@ func (client *WebAppsClient) getPublicCertificateSlotHandleResponse(resp *http.R
 //
 // Description for Gets a hybrid connection configuration by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - entityName - Name of the hybrid connection.
@@ -13028,8 +13428,8 @@ func (client *WebAppsClient) getRelayServiceConnectionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13047,6 +13447,8 @@ func (client *WebAppsClient) getRelayServiceConnectionHandleResponse(resp *http.
 //
 // Description for Gets a hybrid connection configuration by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetRelayServiceConnectionSlot
 //     method.
@@ -13100,8 +13502,8 @@ func (client *WebAppsClient) getRelayServiceConnectionSlotCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13119,6 +13521,8 @@ func (client *WebAppsClient) getRelayServiceConnectionSlotHandleResponse(resp *h
 //
 // Description for Returns whether Scm basic auth is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetScmAllowedOptions contains the optional parameters for the WebAppsClient.GetScmAllowed method.
@@ -13164,8 +13568,8 @@ func (client *WebAppsClient) getScmAllowedCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13183,6 +13587,8 @@ func (client *WebAppsClient) getScmAllowedHandleResponse(resp *http.Response) (W
 //
 // Description for Returns whether Scm basic auth is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetScmAllowedSlotOptions contains the optional parameters for the WebAppsClient.GetScmAllowedSlot
@@ -13233,8 +13639,8 @@ func (client *WebAppsClient) getScmAllowedSlotCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13252,6 +13658,8 @@ func (client *WebAppsClient) getScmAllowedSlotHandleResponse(resp *http.Response
 //
 // Description for Gets the config reference and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetSiteConnectionStringKeyVaultReferenceOptions contains the optional parameters for the WebAppsClient.GetSiteConnectionStringKeyVaultReference
@@ -13302,8 +13710,8 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13321,6 +13729,8 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceHandleRespo
 //
 // Description for Gets the config reference and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotOptions contains the optional parameters for the WebAppsClient.GetSiteConnectionStringKeyVaultReferenceSlot
 //     method.
@@ -13374,8 +13784,8 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13391,7 +13801,9 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotHandleR
 
 // NewGetSiteConnectionStringKeyVaultReferencesPager - Gets the config reference app settings and status of an app
 //
-// Description for Gets the config reference app settings and status of an app
+// # Description for Gets the config reference app settings and status of an app
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions contains the optional parameters for the WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesPager
@@ -13439,8 +13851,8 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13456,7 +13868,9 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesHandleResp
 
 // NewGetSiteConnectionStringKeyVaultReferencesSlotPager - Gets the config reference app settings and status of an app
 //
-// Description for Gets the config reference app settings and status of an app
+// # Description for Gets the config reference app settings and status of an app
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions contains the optional parameters for the WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesSlotPager
@@ -13508,8 +13922,8 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13527,6 +13941,8 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotHandle
 //
 // Gets a site container of a site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - containerName - Site Container Name
@@ -13578,8 +13994,8 @@ func (client *WebAppsClient) getSiteContainerCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13597,6 +14013,8 @@ func (client *WebAppsClient) getSiteContainerHandleResponse(resp *http.Response)
 //
 // Gets a site container of a site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the production
@@ -13654,8 +14072,8 @@ func (client *WebAppsClient) getSiteContainerSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13673,6 +14091,8 @@ func (client *WebAppsClient) getSiteContainerSlotHandleResponse(resp *http.Respo
 //
 // Description for Get site extension information by its ID for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - siteExtensionID - Site extension name.
@@ -13724,8 +14144,8 @@ func (client *WebAppsClient) getSiteExtensionCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13743,6 +14163,8 @@ func (client *WebAppsClient) getSiteExtensionHandleResponse(resp *http.Response)
 //
 // Description for Get site extension information by its ID for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.GetSiteExtensionSlot
 //     method.
@@ -13796,8 +14218,8 @@ func (client *WebAppsClient) getSiteExtensionSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13815,6 +14237,8 @@ func (client *WebAppsClient) getSiteExtensionSlotHandleResponse(resp *http.Respo
 //
 // Description for Gets web app's event logs.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetSitePhpErrorLogFlagOptions contains the optional parameters for the WebAppsClient.GetSitePhpErrorLogFlag
@@ -13861,8 +14285,8 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13880,6 +14304,8 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagHandleResponse(resp *http.Res
 //
 // Description for Gets web app's event logs.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -13931,8 +14357,8 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -13950,6 +14376,8 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagSlotHandleResponse(resp *http
 //
 // Description for Gets the details of a web, mobile, or API app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -14000,8 +14428,8 @@ func (client *WebAppsClient) getSlotCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14019,6 +14447,8 @@ func (client *WebAppsClient) getSlotHandleResponse(resp *http.Response) (WebApps
 //
 // Gets the deployment status for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the deployment status for the production
@@ -14047,6 +14477,8 @@ func (client *WebAppsClient) BeginGetSlotSiteDeploymentStatusSlot(ctx context.Co
 //
 // Gets the deployment status for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) getSlotSiteDeploymentStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, deploymentStatusID string, options *WebAppsClientBeginGetSlotSiteDeploymentStatusSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginGetSlotSiteDeploymentStatusSlot"
@@ -14096,8 +14528,8 @@ func (client *WebAppsClient) getSlotSiteDeploymentStatusSlotCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14106,6 +14538,8 @@ func (client *WebAppsClient) getSlotSiteDeploymentStatusSlotCreateRequest(ctx co
 //
 // Description for Gets the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetSourceControlOptions contains the optional parameters for the WebAppsClient.GetSourceControl
@@ -14152,8 +14586,8 @@ func (client *WebAppsClient) getSourceControlCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14171,6 +14605,8 @@ func (client *WebAppsClient) getSourceControlHandleResponse(resp *http.Response)
 //
 // Description for Gets the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the
@@ -14223,8 +14659,8 @@ func (client *WebAppsClient) getSourceControlSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14242,6 +14678,8 @@ func (client *WebAppsClient) getSourceControlSlotHandleResponse(resp *http.Respo
 //
 // Description for Gets a Swift Virtual Network connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetSwiftVirtualNetworkConnectionOptions contains the optional parameters for the WebAppsClient.GetSwiftVirtualNetworkConnection
@@ -14288,8 +14726,8 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14307,6 +14745,8 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionHandleResponse(resp
 //
 // Description for Gets a Swift Virtual Network connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual
@@ -14359,8 +14799,8 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14378,6 +14818,8 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotHandleResponse(
 //
 // Description for Gets a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - webJobName - Name of Web Job.
@@ -14429,8 +14871,8 @@ func (client *WebAppsClient) getTriggeredWebJobCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14448,6 +14890,8 @@ func (client *WebAppsClient) getTriggeredWebJobHandleResponse(resp *http.Respons
 //
 // Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - webJobName - Name of Web Job.
@@ -14504,8 +14948,8 @@ func (client *WebAppsClient) getTriggeredWebJobHistoryCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14523,6 +14967,8 @@ func (client *WebAppsClient) getTriggeredWebJobHistoryHandleResponse(resp *http.
 //
 // Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobHistorySlot
 //     method.
@@ -14580,8 +15026,8 @@ func (client *WebAppsClient) getTriggeredWebJobHistorySlotCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14599,6 +15045,8 @@ func (client *WebAppsClient) getTriggeredWebJobHistorySlotHandleResponse(resp *h
 //
 // Description for Gets a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobSlot
 //     method.
@@ -14652,8 +15100,8 @@ func (client *WebAppsClient) getTriggeredWebJobSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14671,6 +15119,8 @@ func (client *WebAppsClient) getTriggeredWebJobSlotHandleResponse(resp *http.Res
 //
 // Description for Gets a virtual network the app (or deployment slot) is connected to by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - vnetName - Name of the virtual network.
@@ -14722,8 +15172,8 @@ func (client *WebAppsClient) getVnetConnectionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14741,6 +15191,8 @@ func (client *WebAppsClient) getVnetConnectionHandleResponse(resp *http.Response
 //
 // Description for Gets an app's Virtual Network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - vnetName - Name of the Virtual Network.
@@ -14797,8 +15249,8 @@ func (client *WebAppsClient) getVnetConnectionGatewayCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14816,6 +15268,8 @@ func (client *WebAppsClient) getVnetConnectionGatewayHandleResponse(resp *http.R
 //
 // Description for Gets an app's Virtual Network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionGatewaySlot
 //     method.
@@ -14873,8 +15327,8 @@ func (client *WebAppsClient) getVnetConnectionGatewaySlotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14892,6 +15346,8 @@ func (client *WebAppsClient) getVnetConnectionGatewaySlotHandleResponse(resp *ht
 //
 // Description for Gets a virtual network the app (or deployment slot) is connected to by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionSlot
 //     method.
@@ -14945,8 +15401,8 @@ func (client *WebAppsClient) getVnetConnectionSlotCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -14964,6 +15420,8 @@ func (client *WebAppsClient) getVnetConnectionSlotHandleResponse(resp *http.Resp
 //
 // Description for Get webjob information for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - webJobName - Name of the web job.
@@ -15014,8 +15472,8 @@ func (client *WebAppsClient) getWebJobCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15033,6 +15491,8 @@ func (client *WebAppsClient) getWebJobHandleResponse(resp *http.Response) (WebAp
 //
 // Description for Get webjob information for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientGetWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetWebJobSlot method.
 func (client *WebAppsClient) GetWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientGetWebJobSlotOptions) (WebAppsClientGetWebJobSlotResponse, error) {
@@ -15085,8 +15545,8 @@ func (client *WebAppsClient) getWebJobSlotCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15104,6 +15564,8 @@ func (client *WebAppsClient) getWebJobSlotHandleResponse(resp *http.Response) (W
 //
 // Description for Gets the last lines of docker logs for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientGetWebSiteContainerLogsOptions contains the optional parameters for the WebAppsClient.GetWebSiteContainerLogs
@@ -15150,8 +15612,8 @@ func (client *WebAppsClient) getWebSiteContainerLogsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/octet-stream"}
 	return req, nil
@@ -15170,6 +15632,8 @@ func (client *WebAppsClient) getWebSiteContainerLogsHandleResponse(resp *http.Re
 //
 // Description for Gets the last lines of docker logs for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -15221,8 +15685,8 @@ func (client *WebAppsClient) getWebSiteContainerLogsSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/octet-stream"}
 	return req, nil
@@ -15241,6 +15705,8 @@ func (client *WebAppsClient) getWebSiteContainerLogsSlotHandleResponse(resp *htt
 //
 // Get workflow information by its ID for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - workflowName - Workflow name.
@@ -15291,8 +15757,8 @@ func (client *WebAppsClient) getWorkflowCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15310,6 +15776,8 @@ func (client *WebAppsClient) getWorkflowHandleResponse(resp *http.Response) (Web
 //
 // Description for Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - siteExtensionID - Site extension name.
@@ -15336,6 +15804,8 @@ func (client *WebAppsClient) BeginInstallSiteExtension(ctx context.Context, reso
 //
 // Description for Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) installSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsClientBeginInstallSiteExtensionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginInstallSiteExtension"
@@ -15381,8 +15851,8 @@ func (client *WebAppsClient) installSiteExtensionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15391,6 +15861,8 @@ func (client *WebAppsClient) installSiteExtensionCreateRequest(ctx context.Conte
 //
 // Description for Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientBeginInstallSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.BeginInstallSiteExtensionSlot
 //     method.
@@ -15415,6 +15887,8 @@ func (client *WebAppsClient) BeginInstallSiteExtensionSlot(ctx context.Context, 
 //
 // Description for Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) installSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsClientBeginInstallSiteExtensionSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginInstallSiteExtensionSlot"
@@ -15464,8 +15938,8 @@ func (client *WebAppsClient) installSiteExtensionSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15474,6 +15948,8 @@ func (client *WebAppsClient) installSiteExtensionSlotCreateRequest(ctx context.C
 //
 // Description for Shows whether an app can be cloned to another resource group or subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientIsCloneableOptions contains the optional parameters for the WebAppsClient.IsCloneable method.
@@ -15519,8 +15995,8 @@ func (client *WebAppsClient) isCloneableCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15538,6 +16014,8 @@ func (client *WebAppsClient) isCloneableHandleResponse(resp *http.Response) (Web
 //
 // Description for Shows whether an app can be cloned to another resource group or subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -15588,8 +16066,8 @@ func (client *WebAppsClient) isCloneableSlotCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15606,6 +16084,8 @@ func (client *WebAppsClient) isCloneableSlotHandleResponse(resp *http.Response) 
 // NewListPager - Get all apps for a subscription.
 //
 // Description for Get all apps for a subscription.
+//
+// Generated from API version 2025-05-01
 //   - options - WebAppsClientListOptions contains the optional parameters for the WebAppsClient.NewListPager method.
 func (client *WebAppsClient) NewListPager(options *WebAppsClientListOptions) *runtime.Pager[WebAppsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListResponse]{
@@ -15642,8 +16122,8 @@ func (client *WebAppsClient) listCreateRequest(ctx context.Context, _ *WebAppsCl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15661,6 +16141,8 @@ func (client *WebAppsClient) listHandleResponse(resp *http.Response) (WebAppsCli
 //
 // Description for Gets the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListApplicationSettingsOptions contains the optional parameters for the WebAppsClient.ListApplicationSettings
@@ -15707,8 +16189,8 @@ func (client *WebAppsClient) listApplicationSettingsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15726,6 +16208,8 @@ func (client *WebAppsClient) listApplicationSettingsHandleResponse(resp *http.Re
 //
 // Description for Gets the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -15777,8 +16261,8 @@ func (client *WebAppsClient) listApplicationSettingsSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15796,6 +16280,8 @@ func (client *WebAppsClient) listApplicationSettingsSlotHandleResponse(resp *htt
 //
 // Description for Gets the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListAzureStorageAccountsOptions contains the optional parameters for the WebAppsClient.ListAzureStorageAccounts
@@ -15842,8 +16328,8 @@ func (client *WebAppsClient) listAzureStorageAccountsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15861,6 +16347,8 @@ func (client *WebAppsClient) listAzureStorageAccountsHandleResponse(resp *http.R
 //
 // Description for Gets the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -15912,8 +16400,8 @@ func (client *WebAppsClient) listAzureStorageAccountsSlotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -15935,6 +16423,8 @@ func (client *WebAppsClient) listAzureStorageAccountsSlotHandleResponse(resp *ht
 // such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the
 // request body.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - backupID - ID of the backup.
@@ -15987,8 +16477,8 @@ func (client *WebAppsClient) listBackupStatusSecretsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -16014,6 +16504,8 @@ func (client *WebAppsClient) listBackupStatusSecretsHandleResponse(resp *http.Re
 // such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the
 // request body.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListBackupStatusSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListBackupStatusSecretsSlot
 //     method.
@@ -16067,8 +16559,8 @@ func (client *WebAppsClient) listBackupStatusSecretsSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -16089,6 +16581,8 @@ func (client *WebAppsClient) listBackupStatusSecretsSlotHandleResponse(resp *htt
 // NewListBackupsPager - Gets existing backups of an app.
 //
 // Description for Gets existing backups of an app.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListBackupsOptions contains the optional parameters for the WebAppsClient.NewListBackupsPager method.
@@ -16135,8 +16629,8 @@ func (client *WebAppsClient) listBackupsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16153,6 +16647,8 @@ func (client *WebAppsClient) listBackupsHandleResponse(resp *http.Response) (Web
 // NewListBackupsSlotPager - Gets existing backups of an app.
 //
 // Description for Gets existing backups of an app.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get a backup of the production slot.
@@ -16205,8 +16701,8 @@ func (client *WebAppsClient) listBackupsSlotCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16224,6 +16720,8 @@ func (client *WebAppsClient) listBackupsSlotHandleResponse(resp *http.Response) 
 // a given site.
 //
 // Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListBasicPublishingCredentialsPoliciesOptions contains the optional parameters for the WebAppsClient.NewListBasicPublishingCredentialsPoliciesPager
@@ -16271,8 +16769,8 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16290,6 +16788,8 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesHandleRespons
 // for a given site.
 //
 // Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions contains the optional parameters for the WebAppsClient.NewListBasicPublishingCredentialsPoliciesSlotPager
@@ -16341,8 +16841,8 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16359,6 +16859,8 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotHandleRes
 // NewListByResourceGroupPager - Gets all web, mobile, and API apps in the specified resource group.
 //
 // Description for Gets all web, mobile, and API apps in the specified resource group.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListByResourceGroupOptions contains the optional parameters for the WebAppsClient.NewListByResourceGroupPager
 //     method.
@@ -16401,11 +16903,11 @@ func (client *WebAppsClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.IncludeSlots != nil {
 		reqQP.Set("includeSlots", strconv.FormatBool(*options.IncludeSlots))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16424,6 +16926,8 @@ func (client *WebAppsClient) listByResourceGroupHandleResponse(resp *http.Respon
 //
 // Description for Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp
 // and the ID of the snapshot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListConfigurationSnapshotInfoOptions contains the optional parameters for the WebAppsClient.NewListConfigurationSnapshotInfoPager
@@ -16471,8 +16975,8 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16491,6 +16995,8 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoHandleResponse(resp *h
 //
 // Description for Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp
 // and the ID of the snapshot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
@@ -16543,8 +17049,8 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoSlotCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16560,7 +17066,9 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoSlotHandleResponse(res
 
 // NewListConfigurationsPager - List the configurations of an app
 //
-// Description for List the configurations of an app
+// # Description for List the configurations of an app
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListConfigurationsOptions contains the optional parameters for the WebAppsClient.NewListConfigurationsPager
@@ -16608,8 +17116,8 @@ func (client *WebAppsClient) listConfigurationsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16625,7 +17133,9 @@ func (client *WebAppsClient) listConfigurationsHandleResponse(resp *http.Respons
 
 // NewListConfigurationsSlotPager - List the configurations of an app
 //
-// Description for List the configurations of an app
+// # Description for List the configurations of an app
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
@@ -16678,8 +17188,8 @@ func (client *WebAppsClient) listConfigurationsSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16697,6 +17207,8 @@ func (client *WebAppsClient) listConfigurationsSlotHandleResponse(resp *http.Res
 //
 // Description for Gets the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListConnectionStringsOptions contains the optional parameters for the WebAppsClient.ListConnectionStrings
@@ -16743,8 +17255,8 @@ func (client *WebAppsClient) listConnectionStringsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16762,6 +17274,8 @@ func (client *WebAppsClient) listConnectionStringsHandleResponse(resp *http.Resp
 //
 // Description for Gets the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -16813,8 +17327,8 @@ func (client *WebAppsClient) listConnectionStringsSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16831,6 +17345,8 @@ func (client *WebAppsClient) listConnectionStringsSlotHandleResponse(resp *http.
 // NewListContinuousWebJobsPager - List continuous web jobs for an app, or a deployment slot.
 //
 // Description for List continuous web jobs for an app, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - options - WebAppsClientListContinuousWebJobsOptions contains the optional parameters for the WebAppsClient.NewListContinuousWebJobsPager
@@ -16878,8 +17394,8 @@ func (client *WebAppsClient) listContinuousWebJobsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16896,6 +17412,8 @@ func (client *WebAppsClient) listContinuousWebJobsHandleResponse(resp *http.Resp
 // NewListContinuousWebJobsSlotPager - List continuous web jobs for an app, or a deployment slot.
 //
 // Description for List continuous web jobs for an app, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
@@ -16948,8 +17466,8 @@ func (client *WebAppsClient) listContinuousWebJobsSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -16967,6 +17485,8 @@ func (client *WebAppsClient) listContinuousWebJobsSlotHandleResponse(resp *http.
 //
 // Description for List deployment log for specific deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - id - Deployment ID.
@@ -17018,8 +17538,8 @@ func (client *WebAppsClient) listDeploymentLogCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17037,6 +17557,8 @@ func (client *WebAppsClient) listDeploymentLogHandleResponse(resp *http.Response
 //
 // Description for List deployment log for specific deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListDeploymentLogSlotOptions contains the optional parameters for the WebAppsClient.ListDeploymentLogSlot
 //     method.
@@ -17090,8 +17612,8 @@ func (client *WebAppsClient) listDeploymentLogSlotCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17108,6 +17630,8 @@ func (client *WebAppsClient) listDeploymentLogSlotHandleResponse(resp *http.Resp
 // NewListDeploymentsPager - List deployments for an app, or a deployment slot.
 //
 // Description for List deployments for an app, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListDeploymentsOptions contains the optional parameters for the WebAppsClient.NewListDeploymentsPager
@@ -17155,8 +17679,8 @@ func (client *WebAppsClient) listDeploymentsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17173,6 +17697,8 @@ func (client *WebAppsClient) listDeploymentsHandleResponse(resp *http.Response) 
 // NewListDeploymentsSlotPager - List deployments for an app, or a deployment slot.
 //
 // Description for List deployments for an app, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
@@ -17225,8 +17751,8 @@ func (client *WebAppsClient) listDeploymentsSlotCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17243,6 +17769,8 @@ func (client *WebAppsClient) listDeploymentsSlotHandleResponse(resp *http.Respon
 // NewListDomainOwnershipIdentifiersPager - Lists ownership identifiers for domain associated with web app.
 //
 // Description for Lists ownership identifiers for domain associated with web app.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListDomainOwnershipIdentifiersOptions contains the optional parameters for the WebAppsClient.NewListDomainOwnershipIdentifiersPager
@@ -17290,8 +17818,8 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17308,6 +17836,8 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersHandleResponse(resp *
 // NewListDomainOwnershipIdentifiersSlotPager - Lists ownership identifiers for domain associated with web app.
 //
 // Description for Lists ownership identifiers for domain associated with web app.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
@@ -17360,8 +17890,8 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17379,6 +17909,8 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotHandleResponse(re
 //
 // Description for Get function keys for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - functionName - Function name.
@@ -17430,8 +17962,8 @@ func (client *WebAppsClient) listFunctionKeysCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17449,6 +17981,8 @@ func (client *WebAppsClient) listFunctionKeysHandleResponse(resp *http.Response)
 //
 // Description for Get function keys for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListFunctionKeysSlotOptions contains the optional parameters for the WebAppsClient.ListFunctionKeysSlot
 //     method.
@@ -17502,8 +18036,8 @@ func (client *WebAppsClient) listFunctionKeysSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17521,6 +18055,8 @@ func (client *WebAppsClient) listFunctionKeysSlotHandleResponse(resp *http.Respo
 //
 // Description for Get function secrets for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - functionName - Function name.
@@ -17572,8 +18108,8 @@ func (client *WebAppsClient) listFunctionSecretsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17591,6 +18127,8 @@ func (client *WebAppsClient) listFunctionSecretsHandleResponse(resp *http.Respon
 //
 // Description for Get function secrets for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListFunctionSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListFunctionSecretsSlot
 //     method.
@@ -17644,8 +18182,8 @@ func (client *WebAppsClient) listFunctionSecretsSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17662,6 +18200,8 @@ func (client *WebAppsClient) listFunctionSecretsSlotHandleResponse(resp *http.Re
 // NewListFunctionsPager - List the functions for a web site, or a deployment slot.
 //
 // Description for List the functions for a web site, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - options - WebAppsClientListFunctionsOptions contains the optional parameters for the WebAppsClient.NewListFunctionsPager
@@ -17709,8 +18249,8 @@ func (client *WebAppsClient) listFunctionsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17728,6 +18268,8 @@ func (client *WebAppsClient) listFunctionsHandleResponse(resp *http.Response) (W
 //
 // Description for Get host secrets for a function app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListHostKeysOptions contains the optional parameters for the WebAppsClient.ListHostKeys method.
@@ -17773,8 +18315,8 @@ func (client *WebAppsClient) listHostKeysCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17792,6 +18334,8 @@ func (client *WebAppsClient) listHostKeysHandleResponse(resp *http.Response) (We
 //
 // Description for Get host secrets for a function app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -17843,8 +18387,8 @@ func (client *WebAppsClient) listHostKeysSlotCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17861,6 +18405,8 @@ func (client *WebAppsClient) listHostKeysSlotHandleResponse(resp *http.Response)
 // NewListHostNameBindingsPager - Get hostname bindings for an app or a deployment slot.
 //
 // Description for Get hostname bindings for an app or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListHostNameBindingsOptions contains the optional parameters for the WebAppsClient.NewListHostNameBindingsPager
@@ -17908,8 +18454,8 @@ func (client *WebAppsClient) listHostNameBindingsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17926,6 +18472,8 @@ func (client *WebAppsClient) listHostNameBindingsHandleResponse(resp *http.Respo
 // NewListHostNameBindingsSlotPager - Get hostname bindings for an app or a deployment slot.
 //
 // Description for Get hostname bindings for an app or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
@@ -17978,8 +18526,8 @@ func (client *WebAppsClient) listHostNameBindingsSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -17997,6 +18545,8 @@ func (client *WebAppsClient) listHostNameBindingsSlotHandleResponse(resp *http.R
 //
 // Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListHybridConnectionsOptions contains the optional parameters for the WebAppsClient.ListHybridConnections
@@ -18043,8 +18593,8 @@ func (client *WebAppsClient) listHybridConnectionsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18062,6 +18612,8 @@ func (client *WebAppsClient) listHybridConnectionsHandleResponse(resp *http.Resp
 //
 // Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -18113,8 +18665,8 @@ func (client *WebAppsClient) listHybridConnectionsSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18131,6 +18683,8 @@ func (client *WebAppsClient) listHybridConnectionsSlotHandleResponse(resp *http.
 // NewListInstanceFunctionsSlotPager - List the functions for a web site, or a deployment slot.
 //
 // Description for List the functions for a web site, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - slot - Name of the deployment slot.
@@ -18183,8 +18737,8 @@ func (client *WebAppsClient) listInstanceFunctionsSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18201,6 +18755,8 @@ func (client *WebAppsClient) listInstanceFunctionsSlotHandleResponse(resp *http.
 // NewListInstanceIdentifiersPager - Gets all scale-out instances of an app.
 //
 // Description for Gets all scale-out instances of an app.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListInstanceIdentifiersOptions contains the optional parameters for the WebAppsClient.NewListInstanceIdentifiersPager
@@ -18248,8 +18804,8 @@ func (client *WebAppsClient) listInstanceIdentifiersCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18266,6 +18822,8 @@ func (client *WebAppsClient) listInstanceIdentifiersHandleResponse(resp *http.Re
 // NewListInstanceIdentifiersSlotPager - Gets all scale-out instances of an app.
 //
 // Description for Gets all scale-out instances of an app.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
@@ -18318,8 +18876,8 @@ func (client *WebAppsClient) listInstanceIdentifiersSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18337,6 +18895,8 @@ func (client *WebAppsClient) listInstanceIdentifiersSlotHandleResponse(resp *htt
 // in a web site.
 //
 // Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListInstanceProcessModulesOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessModulesPager
 //     method.
@@ -18391,8 +18951,8 @@ func (client *WebAppsClient) listInstanceProcessModulesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18410,6 +18970,8 @@ func (client *WebAppsClient) listInstanceProcessModulesHandleResponse(resp *http
 // in a web site.
 //
 // Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListInstanceProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessModulesSlotPager
 //     method.
@@ -18468,8 +19030,8 @@ func (client *WebAppsClient) listInstanceProcessModulesSlotCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18487,6 +19049,8 @@ func (client *WebAppsClient) listInstanceProcessModulesSlotHandleResponse(resp *
 // site.
 //
 // Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListInstanceProcessThreadsOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessThreadsPager
 //     method.
@@ -18541,8 +19105,8 @@ func (client *WebAppsClient) listInstanceProcessThreadsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18560,6 +19124,8 @@ func (client *WebAppsClient) listInstanceProcessThreadsHandleResponse(resp *http
 // a web site.
 //
 // Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListInstanceProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessThreadsSlotPager
 //     method.
@@ -18618,8 +19184,8 @@ func (client *WebAppsClient) listInstanceProcessThreadsSlotCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18638,6 +19204,8 @@ func (client *WebAppsClient) listInstanceProcessThreadsSlotHandleResponse(resp *
 //
 // Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a
 // web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
@@ -18691,8 +19259,8 @@ func (client *WebAppsClient) listInstanceProcessesCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18711,6 +19279,8 @@ func (client *WebAppsClient) listInstanceProcessesHandleResponse(resp *http.Resp
 //
 // Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a
 // web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
@@ -18769,8 +19339,8 @@ func (client *WebAppsClient) listInstanceProcessesSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18787,6 +19357,8 @@ func (client *WebAppsClient) listInstanceProcessesSlotHandleResponse(resp *http.
 // NewListInstanceWorkflowsSlotPager - List the workflows for a web site, or a deployment slot.
 //
 // List the workflows for a web site, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - slot - Name of the deployment slot.
@@ -18839,8 +19411,8 @@ func (client *WebAppsClient) listInstanceWorkflowsSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18858,6 +19430,8 @@ func (client *WebAppsClient) listInstanceWorkflowsSlotHandleResponse(resp *http.
 //
 // Description for Gets the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListMetadataOptions contains the optional parameters for the WebAppsClient.ListMetadata method.
@@ -18903,8 +19477,8 @@ func (client *WebAppsClient) listMetadataCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18922,6 +19496,8 @@ func (client *WebAppsClient) listMetadataHandleResponse(resp *http.Response) (We
 //
 // Description for Gets the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -18973,8 +19549,8 @@ func (client *WebAppsClient) listMetadataSlotCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -18992,6 +19568,8 @@ func (client *WebAppsClient) listMetadataSlotHandleResponse(resp *http.Response)
 //
 // Description for Gets all network features used by the app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - view - The type of view. Only "summary" is supported at this time.
@@ -19043,8 +19621,8 @@ func (client *WebAppsClient) listNetworkFeaturesCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19062,6 +19640,8 @@ func (client *WebAppsClient) listNetworkFeaturesHandleResponse(resp *http.Respon
 //
 // Description for Gets all network features used by the app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListNetworkFeaturesSlotOptions contains the optional parameters for the WebAppsClient.ListNetworkFeaturesSlot
 //     method.
@@ -19115,8 +19695,8 @@ func (client *WebAppsClient) listNetworkFeaturesSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19133,6 +19713,8 @@ func (client *WebAppsClient) listNetworkFeaturesSlotHandleResponse(resp *http.Re
 // NewListPerfMonCountersPager - Gets perfmon counters for web app.
 //
 // Description for Gets perfmon counters for web app.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListPerfMonCountersOptions contains the optional parameters for the WebAppsClient.NewListPerfMonCountersPager
@@ -19183,8 +19765,8 @@ func (client *WebAppsClient) listPerfMonCountersCreateRequest(ctx context.Contex
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19201,6 +19783,8 @@ func (client *WebAppsClient) listPerfMonCountersHandleResponse(resp *http.Respon
 // NewListPerfMonCountersSlotPager - Gets perfmon counters for web app.
 //
 // Description for Gets perfmon counters for web app.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -19256,8 +19840,8 @@ func (client *WebAppsClient) listPerfMonCountersSlotCreateRequest(ctx context.Co
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19275,6 +19859,8 @@ func (client *WebAppsClient) listPerfMonCountersSlotHandleResponse(resp *http.Re
 //
 // Description for Gets the premier add-ons of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListPremierAddOnsOptions contains the optional parameters for the WebAppsClient.ListPremierAddOns
@@ -19321,8 +19907,8 @@ func (client *WebAppsClient) listPremierAddOnsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19340,6 +19926,8 @@ func (client *WebAppsClient) listPremierAddOnsHandleResponse(resp *http.Response
 //
 // Description for Gets the premier add-ons of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -19391,8 +19979,8 @@ func (client *WebAppsClient) listPremierAddOnsSlotCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19410,6 +19998,8 @@ func (client *WebAppsClient) listPremierAddOnsSlotHandleResponse(resp *http.Resp
 // site.
 //
 // Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - processID - PID.
@@ -19462,8 +20052,8 @@ func (client *WebAppsClient) listProcessModulesCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19481,6 +20071,8 @@ func (client *WebAppsClient) listProcessModulesHandleResponse(resp *http.Respons
 // a web site.
 //
 // Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessModulesSlotPager
 //     method.
@@ -19535,8 +20127,8 @@ func (client *WebAppsClient) listProcessModulesSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19553,6 +20145,8 @@ func (client *WebAppsClient) listProcessModulesSlotHandleResponse(resp *http.Res
 // NewListProcessThreadsPager - List the threads in a process by its ID for a specific scaled-out instance in a web site.
 //
 // Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - processID - PID.
@@ -19605,8 +20199,8 @@ func (client *WebAppsClient) listProcessThreadsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19623,6 +20217,8 @@ func (client *WebAppsClient) listProcessThreadsHandleResponse(resp *http.Respons
 // NewListProcessThreadsSlotPager - List the threads in a process by its ID for a specific scaled-out instance in a web site.
 //
 // Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessThreadsSlotPager
 //     method.
@@ -19677,8 +20273,8 @@ func (client *WebAppsClient) listProcessThreadsSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19697,6 +20293,8 @@ func (client *WebAppsClient) listProcessThreadsSlotHandleResponse(resp *http.Res
 //
 // Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a
 // web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - options - WebAppsClientListProcessesOptions contains the optional parameters for the WebAppsClient.NewListProcessesPager
@@ -19744,8 +20342,8 @@ func (client *WebAppsClient) listProcessesCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19764,6 +20362,8 @@ func (client *WebAppsClient) listProcessesHandleResponse(resp *http.Response) (W
 //
 // Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a
 // web site.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
@@ -19816,8 +20416,8 @@ func (client *WebAppsClient) listProcessesSlotCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19834,6 +20434,8 @@ func (client *WebAppsClient) listProcessesSlotHandleResponse(resp *http.Response
 // NewListProductionSiteDeploymentStatusesPager - List deployment statuses for an app (or deployment slot, if specified).
 //
 // List deployment statuses for an app (or deployment slot, if specified).
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListProductionSiteDeploymentStatusesOptions contains the optional parameters for the WebAppsClient.NewListProductionSiteDeploymentStatusesPager
@@ -19881,8 +20483,8 @@ func (client *WebAppsClient) listProductionSiteDeploymentStatusesCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19899,6 +20501,8 @@ func (client *WebAppsClient) listProductionSiteDeploymentStatusesHandleResponse(
 // NewListPublicCertificatesPager - Get public certificates for an app or a deployment slot.
 //
 // Description for Get public certificates for an app or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListPublicCertificatesOptions contains the optional parameters for the WebAppsClient.NewListPublicCertificatesPager
@@ -19946,8 +20550,8 @@ func (client *WebAppsClient) listPublicCertificatesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -19964,6 +20568,8 @@ func (client *WebAppsClient) listPublicCertificatesHandleResponse(resp *http.Res
 // NewListPublicCertificatesSlotPager - Get public certificates for an app or a deployment slot.
 //
 // Description for Get public certificates for an app or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
@@ -20016,8 +20622,8 @@ func (client *WebAppsClient) listPublicCertificatesSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20035,6 +20641,8 @@ func (client *WebAppsClient) listPublicCertificatesSlotHandleResponse(resp *http
 //
 // Description for Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientBeginListPublishingCredentialsOptions contains the optional parameters for the WebAppsClient.BeginListPublishingCredentials
@@ -20060,6 +20668,8 @@ func (client *WebAppsClient) BeginListPublishingCredentials(ctx context.Context,
 //
 // Description for Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) listPublishingCredentials(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginListPublishingCredentialsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginListPublishingCredentials"
@@ -20101,8 +20711,8 @@ func (client *WebAppsClient) listPublishingCredentialsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20111,6 +20721,8 @@ func (client *WebAppsClient) listPublishingCredentialsCreateRequest(ctx context.
 //
 // Description for Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - If true, the password is included in the response. The default is false.
@@ -20137,6 +20749,8 @@ func (client *WebAppsClient) BeginListPublishingCredentialsSlot(ctx context.Cont
 //
 // Description for Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) listPublishingCredentialsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginListPublishingCredentialsSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginListPublishingCredentialsSlot"
@@ -20182,8 +20796,8 @@ func (client *WebAppsClient) listPublishingCredentialsSlotCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20192,6 +20806,8 @@ func (client *WebAppsClient) listPublishingCredentialsSlotCreateRequest(ctx cont
 //
 // Description for Gets the publishing profile for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - publishingProfileOptions - Specifies publishingProfileOptions for publishing profile. For example, use {" format": "FileZilla3"}
@@ -20240,8 +20856,8 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -20264,6 +20880,8 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsHandleResponse(r
 //
 // Description for Gets the publishing profile for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -20317,8 +20935,8 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -20341,6 +20959,8 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotHandleRespon
 //
 // Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListRelayServiceConnectionsOptions contains the optional parameters for the WebAppsClient.ListRelayServiceConnections
@@ -20387,8 +21007,8 @@ func (client *WebAppsClient) listRelayServiceConnectionsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20406,6 +21026,8 @@ func (client *WebAppsClient) listRelayServiceConnectionsHandleResponse(resp *htt
 //
 // Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -20457,8 +21079,8 @@ func (client *WebAppsClient) listRelayServiceConnectionsSlotCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20475,6 +21097,8 @@ func (client *WebAppsClient) listRelayServiceConnectionsSlotHandleResponse(resp 
 // NewListSiteBackupsPager - Gets existing backups of an app.
 //
 // Description for Gets existing backups of an app.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListSiteBackupsOptions contains the optional parameters for the WebAppsClient.NewListSiteBackupsPager
@@ -20522,8 +21146,8 @@ func (client *WebAppsClient) listSiteBackupsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20540,6 +21164,8 @@ func (client *WebAppsClient) listSiteBackupsHandleResponse(resp *http.Response) 
 // NewListSiteBackupsSlotPager - Gets existing backups of an app.
 //
 // Description for Gets existing backups of an app.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -20592,8 +21218,8 @@ func (client *WebAppsClient) listSiteBackupsSlotCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20610,6 +21236,8 @@ func (client *WebAppsClient) listSiteBackupsSlotHandleResponse(resp *http.Respon
 // NewListSiteContainersPager - Lists all the site containers of a site, or a deployment slot.
 //
 // Lists all the site containers of a site, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListSiteContainersOptions contains the optional parameters for the WebAppsClient.NewListSiteContainersPager
@@ -20657,8 +21285,8 @@ func (client *WebAppsClient) listSiteContainersCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20675,6 +21303,8 @@ func (client *WebAppsClient) listSiteContainersHandleResponse(resp *http.Respons
 // NewListSiteContainersSlotPager - Lists all the site containers of a site, or a deployment slot.
 //
 // Lists all the site containers of a site, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the production
@@ -20728,8 +21358,8 @@ func (client *WebAppsClient) listSiteContainersSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20746,6 +21376,8 @@ func (client *WebAppsClient) listSiteContainersSlotHandleResponse(resp *http.Res
 // NewListSiteExtensionsPager - Get list of siteextensions for a web site, or a deployment slot.
 //
 // Description for Get list of siteextensions for a web site, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - options - WebAppsClientListSiteExtensionsOptions contains the optional parameters for the WebAppsClient.NewListSiteExtensionsPager
@@ -20793,8 +21425,8 @@ func (client *WebAppsClient) listSiteExtensionsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20811,6 +21443,8 @@ func (client *WebAppsClient) listSiteExtensionsHandleResponse(resp *http.Respons
 // NewListSiteExtensionsSlotPager - Get list of siteextensions for a web site, or a deployment slot.
 //
 // Description for Get list of siteextensions for a web site, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API uses the production slot.
@@ -20863,8 +21497,8 @@ func (client *WebAppsClient) listSiteExtensionsSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20882,6 +21516,8 @@ func (client *WebAppsClient) listSiteExtensionsSlotHandleResponse(resp *http.Res
 //
 // Description for Gets the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListSitePushSettingsOptions contains the optional parameters for the WebAppsClient.ListSitePushSettings
@@ -20928,8 +21564,8 @@ func (client *WebAppsClient) listSitePushSettingsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -20947,6 +21583,8 @@ func (client *WebAppsClient) listSitePushSettingsHandleResponse(resp *http.Respo
 //
 // Description for Gets the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -20998,8 +21636,8 @@ func (client *WebAppsClient) listSitePushSettingsSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21017,6 +21655,8 @@ func (client *WebAppsClient) listSitePushSettingsSlotHandleResponse(resp *http.R
 //
 // Description for Gets the names of app settings and connection strings that stick to the slot (not swapped).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListSlotConfigurationNamesOptions contains the optional parameters for the WebAppsClient.ListSlotConfigurationNames
@@ -21063,8 +21703,8 @@ func (client *WebAppsClient) listSlotConfigurationNamesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21081,6 +21721,8 @@ func (client *WebAppsClient) listSlotConfigurationNamesHandleResponse(resp *http
 // NewListSlotDifferencesFromProductionPager - Get the difference in configuration settings between two web app slots.
 //
 // Description for Get the difference in configuration settings between two web app slots.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slotSwapEntity - JSON object that contains the target slot name. See example.
@@ -21129,8 +21771,8 @@ func (client *WebAppsClient) listSlotDifferencesFromProductionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, slotSwapEntity); err != nil {
@@ -21151,6 +21793,8 @@ func (client *WebAppsClient) listSlotDifferencesFromProductionHandleResponse(res
 // NewListSlotDifferencesSlotPager - Get the difference in configuration settings between two web app slots.
 //
 // Description for Get the difference in configuration settings between two web app slots.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -21204,8 +21848,8 @@ func (client *WebAppsClient) listSlotDifferencesSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, slotSwapEntity); err != nil {
@@ -21226,6 +21870,8 @@ func (client *WebAppsClient) listSlotDifferencesSlotHandleResponse(resp *http.Re
 // NewListSlotSiteDeploymentStatusesSlotPager - List deployment statuses for an app (or deployment slot, if specified).
 //
 // List deployment statuses for an app (or deployment slot, if specified).
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the deployment status for the production
@@ -21279,8 +21925,8 @@ func (client *WebAppsClient) listSlotSiteDeploymentStatusesSlotCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21297,6 +21943,8 @@ func (client *WebAppsClient) listSlotSiteDeploymentStatusesSlotHandleResponse(re
 // NewListSlotsPager - Gets an app's deployment slots.
 //
 // Description for Gets an app's deployment slots.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListSlotsOptions contains the optional parameters for the WebAppsClient.NewListSlotsPager method.
@@ -21343,8 +21991,8 @@ func (client *WebAppsClient) listSlotsCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21361,6 +22009,8 @@ func (client *WebAppsClient) listSlotsHandleResponse(resp *http.Response) (WebAp
 // NewListSnapshotsPager - Returns all Snapshots to the user.
 //
 // Description for Returns all Snapshots to the user.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListSnapshotsOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsPager
@@ -21408,8 +22058,8 @@ func (client *WebAppsClient) listSnapshotsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21426,6 +22076,8 @@ func (client *WebAppsClient) listSnapshotsHandleResponse(resp *http.Response) (W
 // NewListSnapshotsFromDRSecondaryPager - Returns all Snapshots to the user from DRSecondary endpoint.
 //
 // Description for Returns all Snapshots to the user from DRSecondary endpoint.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListSnapshotsFromDRSecondaryOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsFromDRSecondaryPager
@@ -21473,8 +22125,8 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondaryCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21491,6 +22143,8 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondaryHandleResponse(resp *ht
 // NewListSnapshotsFromDRSecondarySlotPager - Returns all Snapshots to the user from DRSecondary endpoint.
 //
 // Description for Returns all Snapshots to the user from DRSecondary endpoint.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -21543,8 +22197,8 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21561,6 +22215,8 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotHandleResponse(resp
 // NewListSnapshotsSlotPager - Returns all Snapshots to the user.
 //
 // Description for Returns all Snapshots to the user.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -21613,8 +22269,8 @@ func (client *WebAppsClient) listSnapshotsSlotCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21632,6 +22288,8 @@ func (client *WebAppsClient) listSnapshotsSlotHandleResponse(resp *http.Response
 //
 // Description for This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListSyncFunctionTriggersOptions contains the optional parameters for the WebAppsClient.ListSyncFunctionTriggers
@@ -21678,8 +22336,8 @@ func (client *WebAppsClient) listSyncFunctionTriggersCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21697,6 +22355,8 @@ func (client *WebAppsClient) listSyncFunctionTriggersHandleResponse(resp *http.R
 //
 // Description for This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -21748,8 +22408,8 @@ func (client *WebAppsClient) listSyncFunctionTriggersSlotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21767,6 +22427,8 @@ func (client *WebAppsClient) listSyncFunctionTriggersSlotHandleResponse(resp *ht
 //
 // Description for This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListSyncStatusOptions contains the optional parameters for the WebAppsClient.ListSyncStatus method.
@@ -21811,8 +22473,8 @@ func (client *WebAppsClient) listSyncStatusCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -21820,6 +22482,8 @@ func (client *WebAppsClient) listSyncStatusCreateRequest(ctx context.Context, re
 //
 // Description for This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -21870,14 +22534,16 @@ func (client *WebAppsClient) listSyncStatusSlotCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // NewListTriggeredWebJobHistoryPager - List a triggered web job's history for an app, or a deployment slot.
 //
 // Description for List a triggered web job's history for an app, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - webJobName - Name of Web Job.
@@ -21930,8 +22596,8 @@ func (client *WebAppsClient) listTriggeredWebJobHistoryCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -21948,6 +22614,8 @@ func (client *WebAppsClient) listTriggeredWebJobHistoryHandleResponse(resp *http
 // NewListTriggeredWebJobHistorySlotPager - List a triggered web job's history for an app, or a deployment slot.
 //
 // Description for List a triggered web job's history for an app, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientListTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobHistorySlotPager
 //     method.
@@ -22002,8 +22670,8 @@ func (client *WebAppsClient) listTriggeredWebJobHistorySlotCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22020,6 +22688,8 @@ func (client *WebAppsClient) listTriggeredWebJobHistorySlotHandleResponse(resp *
 // NewListTriggeredWebJobsPager - List triggered web jobs for an app, or a deployment slot.
 //
 // Description for List triggered web jobs for an app, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - options - WebAppsClientListTriggeredWebJobsOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobsPager
@@ -22067,8 +22737,8 @@ func (client *WebAppsClient) listTriggeredWebJobsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22085,6 +22755,8 @@ func (client *WebAppsClient) listTriggeredWebJobsHandleResponse(resp *http.Respo
 // NewListTriggeredWebJobsSlotPager - List triggered web jobs for an app, or a deployment slot.
 //
 // Description for List triggered web jobs for an app, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API uses the production slot.
@@ -22137,8 +22809,8 @@ func (client *WebAppsClient) listTriggeredWebJobsSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22155,6 +22827,8 @@ func (client *WebAppsClient) listTriggeredWebJobsSlotHandleResponse(resp *http.R
 // NewListUsagesPager - Gets the quota usage information of an app (or deployment slot, if specified).
 //
 // Description for Gets the quota usage information of an app (or deployment slot, if specified).
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListUsagesOptions contains the optional parameters for the WebAppsClient.NewListUsagesPager method.
@@ -22204,8 +22878,8 @@ func (client *WebAppsClient) listUsagesCreateRequest(ctx context.Context, resour
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22222,6 +22896,8 @@ func (client *WebAppsClient) listUsagesHandleResponse(resp *http.Response) (WebA
 // NewListUsagesSlotPager - Gets the quota usage information of an app (or deployment slot, if specified).
 //
 // Description for Gets the quota usage information of an app (or deployment slot, if specified).
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -22277,8 +22953,8 @@ func (client *WebAppsClient) listUsagesSlotCreateRequest(ctx context.Context, re
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22296,6 +22972,8 @@ func (client *WebAppsClient) listUsagesSlotHandleResponse(resp *http.Response) (
 //
 // Description for Gets the virtual networks the app (or deployment slot) is connected to.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListVnetConnectionsOptions contains the optional parameters for the WebAppsClient.ListVnetConnections
@@ -22342,8 +23020,8 @@ func (client *WebAppsClient) listVnetConnectionsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22361,6 +23039,8 @@ func (client *WebAppsClient) listVnetConnectionsHandleResponse(resp *http.Respon
 //
 // Description for Gets the virtual networks the app (or deployment slot) is connected to.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the named virtual network for the production
@@ -22413,8 +23093,8 @@ func (client *WebAppsClient) listVnetConnectionsSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22431,6 +23111,8 @@ func (client *WebAppsClient) listVnetConnectionsSlotHandleResponse(resp *http.Re
 // NewListWebJobsPager - List webjobs for an app, or a deployment slot.
 //
 // Description for List webjobs for an app, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - options - WebAppsClientListWebJobsOptions contains the optional parameters for the WebAppsClient.NewListWebJobsPager method.
@@ -22477,8 +23159,8 @@ func (client *WebAppsClient) listWebJobsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22495,6 +23177,8 @@ func (client *WebAppsClient) listWebJobsHandleResponse(resp *http.Response) (Web
 // NewListWebJobsSlotPager - List webjobs for an app, or a deployment slot.
 //
 // Description for List webjobs for an app, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
@@ -22547,8 +23231,8 @@ func (client *WebAppsClient) listWebJobsSlotCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22565,6 +23249,8 @@ func (client *WebAppsClient) listWebJobsSlotHandleResponse(resp *http.Response) 
 // NewListWorkflowsPager - List the workflows for a web site, or a deployment slot.
 //
 // List the workflows for a web site, or a deployment slot.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - options - WebAppsClientListWorkflowsOptions contains the optional parameters for the WebAppsClient.NewListWorkflowsPager
@@ -22612,8 +23298,8 @@ func (client *WebAppsClient) listWorkflowsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22631,6 +23317,8 @@ func (client *WebAppsClient) listWorkflowsHandleResponse(resp *http.Response) (W
 //
 // Lists logic app's connections for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientListWorkflowsConnectionsOptions contains the optional parameters for the WebAppsClient.ListWorkflowsConnections
@@ -22677,8 +23365,8 @@ func (client *WebAppsClient) listWorkflowsConnectionsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22696,6 +23384,8 @@ func (client *WebAppsClient) listWorkflowsConnectionsHandleResponse(resp *http.R
 //
 // Lists logic app's connections for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -22747,8 +23437,8 @@ func (client *WebAppsClient) listWorkflowsConnectionsSlotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -22766,6 +23456,8 @@ func (client *WebAppsClient) listWorkflowsConnectionsSlotHandleResponse(resp *ht
 //
 // Description for Migrates a local (in-app) MySql database to a remote MySql database.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - migrationRequestEnvelope - MySql migration options.
@@ -22792,6 +23484,8 @@ func (client *WebAppsClient) BeginMigrateMySQL(ctx context.Context, resourceGrou
 //
 // Description for Migrates a local (in-app) MySql database to a remote MySql database.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) migrateMySQL(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope MigrateMySQLRequest, options *WebAppsClientBeginMigrateMySQLOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginMigrateMySQL"
@@ -22833,8 +23527,8 @@ func (client *WebAppsClient) migrateMySQLCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, migrationRequestEnvelope); err != nil {
@@ -22847,6 +23541,8 @@ func (client *WebAppsClient) migrateMySQLCreateRequest(ctx context.Context, reso
 //
 // Description for Restores a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientBeginMigrateStorageOptions contains the optional parameters for the WebAppsClient.BeginMigrateStorage
 //     method.
@@ -22871,6 +23567,8 @@ func (client *WebAppsClient) BeginMigrateStorage(ctx context.Context, subscripti
 //
 // Description for Restores a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) migrateStorage(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions StorageMigrationOptions, options *WebAppsClientBeginMigrateStorageOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginMigrateStorage"
@@ -22912,9 +23610,9 @@ func (client *WebAppsClient) migrateStorageCreateRequest(ctx context.Context, su
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	reqQP.Set("subscriptionName", subscriptionName)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, migrationOptions); err != nil {
@@ -22928,6 +23626,8 @@ func (client *WebAppsClient) migrateStorageCreateRequest(ctx context.Context, su
 //
 // Description for Sets data around private site access enablement and authorized Virtual Networks that can access the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the web app.
 //   - access - The information for the private access
@@ -22975,8 +23675,8 @@ func (client *WebAppsClient) putPrivateAccessVnetCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, access); err != nil {
@@ -22999,6 +23699,8 @@ func (client *WebAppsClient) putPrivateAccessVnetHandleResponse(resp *http.Respo
 //
 // Description for Sets data around private site access enablement and authorized Virtual Networks that can access the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the web app.
 //   - slot - The name of the slot for the web app.
@@ -23051,8 +23753,8 @@ func (client *WebAppsClient) putPrivateAccessVnetSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, access); err != nil {
@@ -23074,6 +23776,8 @@ func (client *WebAppsClient) putPrivateAccessVnetSlotHandleResponse(resp *http.R
 //
 // Description for Reverts the configuration of an app to a previous snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - snapshotID - The ID of the snapshot to read.
@@ -23124,8 +23828,8 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -23133,6 +23837,8 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotCreateRequest(ctx c
 //
 // Description for Reverts the configuration of an app to a previous snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions contains the optional parameters for the WebAppsClient.RecoverSiteConfigurationSnapshotSlot
 //     method.
@@ -23185,8 +23891,8 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotSlotCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -23196,6 +23902,8 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotSlotCreateRequest(c
 // Description for Resets the configuration settings of the current slot if they were previously modified by calling the API
 // with POST.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientResetProductionSlotConfigOptions contains the optional parameters for the WebAppsClient.ResetProductionSlotConfig
@@ -23241,8 +23949,8 @@ func (client *WebAppsClient) resetProductionSlotConfigCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -23252,6 +23960,8 @@ func (client *WebAppsClient) resetProductionSlotConfigCreateRequest(ctx context.
 // Description for Resets the configuration settings of the current slot if they were previously modified by calling the API
 // with POST.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -23302,8 +24012,8 @@ func (client *WebAppsClient) resetSlotConfigurationSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -23311,6 +24021,8 @@ func (client *WebAppsClient) resetSlotConfigurationSlotCreateRequest(ctx context
 //
 // Description for Restarts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientRestartOptions contains the optional parameters for the WebAppsClient.Restart method.
@@ -23355,14 +24067,14 @@ func (client *WebAppsClient) restartCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.SoftRestart != nil {
 		reqQP.Set("softRestart", strconv.FormatBool(*options.SoftRestart))
 	}
 	if options != nil && options.Synchronous != nil {
 		reqQP.Set("synchronous", strconv.FormatBool(*options.Synchronous))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -23370,6 +24082,8 @@ func (client *WebAppsClient) restartCreateRequest(ctx context.Context, resourceG
 //
 // Description for Restarts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -23419,14 +24133,14 @@ func (client *WebAppsClient) restartSlotCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.SoftRestart != nil {
 		reqQP.Set("softRestart", strconv.FormatBool(*options.SoftRestart))
 	}
 	if options != nil && options.Synchronous != nil {
 		reqQP.Set("synchronous", strconv.FormatBool(*options.Synchronous))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -23434,6 +24148,8 @@ func (client *WebAppsClient) restartSlotCreateRequest(ctx context.Context, resou
 //
 // Description for Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - backupID - ID of the backup.
@@ -23460,6 +24176,8 @@ func (client *WebAppsClient) BeginRestore(ctx context.Context, resourceGroupName
 //
 // Description for Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) restore(ctx context.Context, resourceGroupName string, name string, backupID string, request RestoreRequest, options *WebAppsClientBeginRestoreOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginRestore"
@@ -23505,8 +24223,8 @@ func (client *WebAppsClient) restoreCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
 		return nil, err
@@ -23518,6 +24236,8 @@ func (client *WebAppsClient) restoreCreateRequest(ctx context.Context, resourceG
 //
 // Description for Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - request - Information on restore request .
@@ -23544,6 +24264,8 @@ func (client *WebAppsClient) BeginRestoreFromBackupBlob(ctx context.Context, res
 //
 // Description for Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) restoreFromBackupBlob(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, options *WebAppsClientBeginRestoreFromBackupBlobOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginRestoreFromBackupBlob"
@@ -23585,8 +24307,8 @@ func (client *WebAppsClient) restoreFromBackupBlobCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
 		return nil, err
@@ -23598,6 +24320,8 @@ func (client *WebAppsClient) restoreFromBackupBlobCreateRequest(ctx context.Cont
 //
 // Description for Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -23625,6 +24349,8 @@ func (client *WebAppsClient) BeginRestoreFromBackupBlobSlot(ctx context.Context,
 //
 // Description for Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) restoreFromBackupBlobSlot(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, options *WebAppsClientBeginRestoreFromBackupBlobSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginRestoreFromBackupBlobSlot"
@@ -23670,8 +24396,8 @@ func (client *WebAppsClient) restoreFromBackupBlobSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
 		return nil, err
@@ -23683,6 +24409,8 @@ func (client *WebAppsClient) restoreFromBackupBlobSlotCreateRequest(ctx context.
 //
 // Description for Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - restoreRequest - Deleted web app restore information.
@@ -23709,6 +24437,8 @@ func (client *WebAppsClient) BeginRestoreFromDeletedApp(ctx context.Context, res
 //
 // Description for Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) restoreFromDeletedApp(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest, options *WebAppsClientBeginRestoreFromDeletedAppOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginRestoreFromDeletedApp"
@@ -23750,8 +24480,8 @@ func (client *WebAppsClient) restoreFromDeletedAppCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, restoreRequest); err != nil {
 		return nil, err
@@ -23763,6 +24493,8 @@ func (client *WebAppsClient) restoreFromDeletedAppCreateRequest(ctx context.Cont
 //
 // Description for Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -23790,6 +24522,8 @@ func (client *WebAppsClient) BeginRestoreFromDeletedAppSlot(ctx context.Context,
 //
 // Description for Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) restoreFromDeletedAppSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest DeletedAppRestoreRequest, options *WebAppsClientBeginRestoreFromDeletedAppSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginRestoreFromDeletedAppSlot"
@@ -23835,8 +24569,8 @@ func (client *WebAppsClient) restoreFromDeletedAppSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, restoreRequest); err != nil {
 		return nil, err
@@ -23848,6 +24582,8 @@ func (client *WebAppsClient) restoreFromDeletedAppSlotCreateRequest(ctx context.
 //
 // Description for Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientBeginRestoreSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreSlot
 //     method.
@@ -23872,6 +24608,8 @@ func (client *WebAppsClient) BeginRestoreSlot(ctx context.Context, resourceGroup
 //
 // Description for Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) restoreSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request RestoreRequest, options *WebAppsClientBeginRestoreSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginRestoreSlot"
@@ -23921,8 +24659,8 @@ func (client *WebAppsClient) restoreSlotCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
 		return nil, err
@@ -23934,6 +24672,8 @@ func (client *WebAppsClient) restoreSlotCreateRequest(ctx context.Context, resou
 //
 // Description for Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - restoreRequest - Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots
@@ -23961,6 +24701,8 @@ func (client *WebAppsClient) BeginRestoreSnapshot(ctx context.Context, resourceG
 //
 // Description for Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) restoreSnapshot(ctx context.Context, resourceGroupName string, name string, restoreRequest SnapshotRestoreRequest, options *WebAppsClientBeginRestoreSnapshotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginRestoreSnapshot"
@@ -24002,8 +24744,8 @@ func (client *WebAppsClient) restoreSnapshotCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, restoreRequest); err != nil {
 		return nil, err
@@ -24015,6 +24757,8 @@ func (client *WebAppsClient) restoreSnapshotCreateRequest(ctx context.Context, r
 //
 // Description for Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -24043,6 +24787,8 @@ func (client *WebAppsClient) BeginRestoreSnapshotSlot(ctx context.Context, resou
 //
 // Description for Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) restoreSnapshotSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest SnapshotRestoreRequest, options *WebAppsClientBeginRestoreSnapshotSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginRestoreSnapshotSlot"
@@ -24088,8 +24834,8 @@ func (client *WebAppsClient) restoreSnapshotSlotCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, restoreRequest); err != nil {
 		return nil, err
@@ -24101,6 +24847,8 @@ func (client *WebAppsClient) restoreSnapshotSlotCreateRequest(ctx context.Contex
 //
 // Description for Run a triggered web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - webJobName - Name of Web Job.
@@ -24151,8 +24899,8 @@ func (client *WebAppsClient) runTriggeredWebJobCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -24160,6 +24908,8 @@ func (client *WebAppsClient) runTriggeredWebJobCreateRequest(ctx context.Context
 //
 // Description for Run a triggered web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientRunTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.RunTriggeredWebJobSlot
 //     method.
@@ -24212,8 +24962,8 @@ func (client *WebAppsClient) runTriggeredWebJobSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -24221,6 +24971,8 @@ func (client *WebAppsClient) runTriggeredWebJobSlotCreateRequest(ctx context.Con
 //
 // Description for Starts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientStartOptions contains the optional parameters for the WebAppsClient.Start method.
@@ -24265,8 +25017,8 @@ func (client *WebAppsClient) startCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -24274,6 +25026,8 @@ func (client *WebAppsClient) startCreateRequest(ctx context.Context, resourceGro
 //
 // Description for Start a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - webJobName - Name of Web Job.
@@ -24324,8 +25078,8 @@ func (client *WebAppsClient) startContinuousWebJobCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -24333,6 +25087,8 @@ func (client *WebAppsClient) startContinuousWebJobCreateRequest(ctx context.Cont
 //
 // Description for Start a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientStartContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.StartContinuousWebJobSlot
 //     method.
@@ -24385,8 +25141,8 @@ func (client *WebAppsClient) startContinuousWebJobSlotCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -24394,6 +25150,8 @@ func (client *WebAppsClient) startContinuousWebJobSlotCreateRequest(ctx context.
 //
 // Description for Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientBeginStartNetworkTraceOptions contains the optional parameters for the WebAppsClient.BeginStartNetworkTrace
@@ -24419,6 +25177,8 @@ func (client *WebAppsClient) BeginStartNetworkTrace(ctx context.Context, resourc
 //
 // Description for Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) startNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginStartNetworkTraceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginStartNetworkTrace"
@@ -24460,7 +25220,7 @@ func (client *WebAppsClient) startNetworkTraceCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.DurationInSeconds != nil {
 		reqQP.Set("durationInSeconds", strconv.FormatInt(int64(*options.DurationInSeconds), 10))
 	}
@@ -24470,7 +25230,7 @@ func (client *WebAppsClient) startNetworkTraceCreateRequest(ctx context.Context,
 	if options != nil && options.SasURL != nil {
 		reqQP.Set("sasUrl", *options.SasURL)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -24479,6 +25239,8 @@ func (client *WebAppsClient) startNetworkTraceCreateRequest(ctx context.Context,
 //
 // Description for Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -24505,6 +25267,8 @@ func (client *WebAppsClient) BeginStartNetworkTraceSlot(ctx context.Context, res
 //
 // Description for Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) startNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginStartNetworkTraceSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginStartNetworkTraceSlot"
@@ -24550,7 +25314,7 @@ func (client *WebAppsClient) startNetworkTraceSlotCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.DurationInSeconds != nil {
 		reqQP.Set("durationInSeconds", strconv.FormatInt(int64(*options.DurationInSeconds), 10))
 	}
@@ -24560,7 +25324,7 @@ func (client *WebAppsClient) startNetworkTraceSlotCreateRequest(ctx context.Cont
 	if options != nil && options.SasURL != nil {
 		reqQP.Set("sasUrl", *options.SasURL)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -24569,6 +25333,8 @@ func (client *WebAppsClient) startNetworkTraceSlotCreateRequest(ctx context.Cont
 //
 // Description for Starts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -24618,8 +25384,8 @@ func (client *WebAppsClient) startSlotCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -24627,6 +25393,8 @@ func (client *WebAppsClient) startSlotCreateRequest(ctx context.Context, resourc
 //
 // Description for Start capturing network packets for the site (To be deprecated).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientStartWebSiteNetworkTraceOptions contains the optional parameters for the WebAppsClient.StartWebSiteNetworkTrace
@@ -24673,7 +25441,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.DurationInSeconds != nil {
 		reqQP.Set("durationInSeconds", strconv.FormatInt(int64(*options.DurationInSeconds), 10))
 	}
@@ -24683,7 +25451,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceCreateRequest(ctx context.C
 	if options != nil && options.SasURL != nil {
 		reqQP.Set("sasUrl", *options.SasURL)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -24701,6 +25469,8 @@ func (client *WebAppsClient) startWebSiteNetworkTraceHandleResponse(resp *http.R
 //
 // Description for Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions contains the optional parameters for the WebAppsClient.BeginStartWebSiteNetworkTraceOperation
@@ -24726,6 +25496,8 @@ func (client *WebAppsClient) BeginStartWebSiteNetworkTraceOperation(ctx context.
 //
 // Description for Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) startWebSiteNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginStartWebSiteNetworkTraceOperation"
@@ -24767,7 +25539,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.DurationInSeconds != nil {
 		reqQP.Set("durationInSeconds", strconv.FormatInt(int64(*options.DurationInSeconds), 10))
 	}
@@ -24777,7 +25549,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationCreateRequest(ctx 
 	if options != nil && options.SasURL != nil {
 		reqQP.Set("sasUrl", *options.SasURL)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -24786,6 +25558,8 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationCreateRequest(ctx 
 //
 // Description for Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -24812,6 +25586,8 @@ func (client *WebAppsClient) BeginStartWebSiteNetworkTraceOperationSlot(ctx cont
 //
 // Description for Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot"
@@ -24857,7 +25633,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlotCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.DurationInSeconds != nil {
 		reqQP.Set("durationInSeconds", strconv.FormatInt(int64(*options.DurationInSeconds), 10))
 	}
@@ -24867,7 +25643,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlotCreateRequest(
 	if options != nil && options.SasURL != nil {
 		reqQP.Set("sasUrl", *options.SasURL)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -24876,6 +25652,8 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlotCreateRequest(
 //
 // Description for Start capturing network packets for the site (To be deprecated).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -24927,7 +25705,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceSlotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.DurationInSeconds != nil {
 		reqQP.Set("durationInSeconds", strconv.FormatInt(int64(*options.DurationInSeconds), 10))
 	}
@@ -24937,7 +25715,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceSlotCreateRequest(ctx conte
 	if options != nil && options.SasURL != nil {
 		reqQP.Set("sasUrl", *options.SasURL)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -24955,6 +25733,8 @@ func (client *WebAppsClient) startWebSiteNetworkTraceSlotHandleResponse(resp *ht
 //
 // Description for Stops an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientStopOptions contains the optional parameters for the WebAppsClient.Stop method.
@@ -24999,8 +25779,8 @@ func (client *WebAppsClient) stopCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25008,6 +25788,8 @@ func (client *WebAppsClient) stopCreateRequest(ctx context.Context, resourceGrou
 //
 // Description for Stop a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - webJobName - Name of Web Job.
@@ -25058,8 +25840,8 @@ func (client *WebAppsClient) stopContinuousWebJobCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25067,6 +25849,8 @@ func (client *WebAppsClient) stopContinuousWebJobCreateRequest(ctx context.Conte
 //
 // Description for Stop a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientStopContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.StopContinuousWebJobSlot
 //     method.
@@ -25119,8 +25903,8 @@ func (client *WebAppsClient) stopContinuousWebJobSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25128,6 +25912,8 @@ func (client *WebAppsClient) stopContinuousWebJobSlotCreateRequest(ctx context.C
 //
 // Description for Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientStopNetworkTraceOptions contains the optional parameters for the WebAppsClient.StopNetworkTrace
@@ -25173,8 +25959,8 @@ func (client *WebAppsClient) stopNetworkTraceCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25182,6 +25968,8 @@ func (client *WebAppsClient) stopNetworkTraceCreateRequest(ctx context.Context, 
 //
 // Description for Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -25232,8 +26020,8 @@ func (client *WebAppsClient) stopNetworkTraceSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25241,6 +26029,8 @@ func (client *WebAppsClient) stopNetworkTraceSlotCreateRequest(ctx context.Conte
 //
 // Description for Stops an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -25290,8 +26080,8 @@ func (client *WebAppsClient) stopSlotCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25299,6 +26089,8 @@ func (client *WebAppsClient) stopSlotCreateRequest(ctx context.Context, resource
 //
 // Description for Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientStopWebSiteNetworkTraceOptions contains the optional parameters for the WebAppsClient.StopWebSiteNetworkTrace
@@ -25344,8 +26136,8 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25353,6 +26145,8 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceCreateRequest(ctx context.Co
 //
 // Description for Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -25403,8 +26197,8 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25412,6 +26206,8 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceSlotCreateRequest(ctx contex
 //
 // Description for Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -25438,6 +26234,8 @@ func (client *WebAppsClient) BeginSwapSlot(ctx context.Context, resourceGroupNam
 //
 // Description for Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) swapSlot(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsClientBeginSwapSlotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginSwapSlot"
@@ -25483,8 +26281,8 @@ func (client *WebAppsClient) swapSlotCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, slotSwapEntity); err != nil {
 		return nil, err
@@ -25496,6 +26294,8 @@ func (client *WebAppsClient) swapSlotCreateRequest(ctx context.Context, resource
 //
 // Description for Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slotSwapEntity - JSON object that contains the target slot name. See example.
@@ -25522,6 +26322,8 @@ func (client *WebAppsClient) BeginSwapSlotWithProduction(ctx context.Context, re
 //
 // Description for Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 func (client *WebAppsClient) swapSlotWithProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsClientBeginSwapSlotWithProductionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebAppsClient.BeginSwapSlotWithProduction"
@@ -25563,8 +26365,8 @@ func (client *WebAppsClient) swapSlotWithProductionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, slotSwapEntity); err != nil {
 		return nil, err
@@ -25576,6 +26378,8 @@ func (client *WebAppsClient) swapSlotWithProductionCreateRequest(ctx context.Con
 //
 // Description for Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientSyncFunctionTriggersOptions contains the optional parameters for the WebAppsClient.SyncFunctionTriggers
@@ -25621,8 +26425,8 @@ func (client *WebAppsClient) syncFunctionTriggersCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25630,6 +26434,8 @@ func (client *WebAppsClient) syncFunctionTriggersCreateRequest(ctx context.Conte
 //
 // Description for Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -25680,8 +26486,8 @@ func (client *WebAppsClient) syncFunctionTriggersSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25689,6 +26495,8 @@ func (client *WebAppsClient) syncFunctionTriggersSlotCreateRequest(ctx context.C
 //
 // Description for Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientSyncFunctionsOptions contains the optional parameters for the WebAppsClient.SyncFunctions method.
@@ -25733,8 +26541,8 @@ func (client *WebAppsClient) syncFunctionsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25742,6 +26550,8 @@ func (client *WebAppsClient) syncFunctionsCreateRequest(ctx context.Context, res
 //
 // Description for Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -25792,8 +26602,8 @@ func (client *WebAppsClient) syncFunctionsSlotCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25801,6 +26611,8 @@ func (client *WebAppsClient) syncFunctionsSlotCreateRequest(ctx context.Context,
 //
 // Description for Sync web app repository.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientSyncRepositoryOptions contains the optional parameters for the WebAppsClient.SyncRepository method.
@@ -25845,8 +26657,8 @@ func (client *WebAppsClient) syncRepositoryCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25854,6 +26666,8 @@ func (client *WebAppsClient) syncRepositoryCreateRequest(ctx context.Context, re
 //
 // Description for Sync web app repository.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -25904,8 +26718,8 @@ func (client *WebAppsClient) syncRepositorySlotCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -25913,6 +26727,8 @@ func (client *WebAppsClient) syncRepositorySlotCreateRequest(ctx context.Context
 //
 // Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - siteEnvelope - A JSON representation of the app properties. See example.
@@ -25959,8 +26775,8 @@ func (client *WebAppsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteEnvelope); err != nil {
@@ -25982,6 +26798,8 @@ func (client *WebAppsClient) updateHandleResponse(resp *http.Response) (WebAppsC
 //
 // Description for Replaces the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - appSettings - Application settings of the app.
@@ -26029,8 +26847,8 @@ func (client *WebAppsClient) updateApplicationSettingsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, appSettings); err != nil {
@@ -26052,6 +26870,8 @@ func (client *WebAppsClient) updateApplicationSettingsHandleResponse(resp *http.
 //
 // Description for Replaces the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -26104,8 +26924,8 @@ func (client *WebAppsClient) updateApplicationSettingsSlotCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, appSettings); err != nil {
@@ -26127,6 +26947,8 @@ func (client *WebAppsClient) updateApplicationSettingsSlotHandleResponse(resp *h
 //
 // Description for Updates the Authentication / Authorization settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - siteAuthSettings - Auth settings associated with web app.
@@ -26174,8 +26996,8 @@ func (client *WebAppsClient) updateAuthSettingsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteAuthSettings); err != nil {
@@ -26197,6 +27019,8 @@ func (client *WebAppsClient) updateAuthSettingsHandleResponse(resp *http.Respons
 //
 // Description for Updates the Authentication / Authorization settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -26249,8 +27073,8 @@ func (client *WebAppsClient) updateAuthSettingsSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteAuthSettings); err != nil {
@@ -26272,6 +27096,8 @@ func (client *WebAppsClient) updateAuthSettingsSlotHandleResponse(resp *http.Res
 //
 // Description for Updates site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - siteAuthSettingsV2 - Auth settings associated with web app.
@@ -26319,8 +27145,8 @@ func (client *WebAppsClient) updateAuthSettingsV2CreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteAuthSettingsV2); err != nil {
@@ -26342,6 +27168,8 @@ func (client *WebAppsClient) updateAuthSettingsV2HandleResponse(resp *http.Respo
 //
 // Description for Updates site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the settings for the production slot.
@@ -26394,8 +27222,8 @@ func (client *WebAppsClient) updateAuthSettingsV2SlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteAuthSettingsV2); err != nil {
@@ -26417,6 +27245,8 @@ func (client *WebAppsClient) updateAuthSettingsV2SlotHandleResponse(resp *http.R
 //
 // Description for Updates the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - azureStorageAccounts - Azure storage accounts of the app.
@@ -26464,8 +27294,8 @@ func (client *WebAppsClient) updateAzureStorageAccountsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, azureStorageAccounts); err != nil {
@@ -26487,6 +27317,8 @@ func (client *WebAppsClient) updateAzureStorageAccountsHandleResponse(resp *http
 //
 // Description for Updates the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -26539,8 +27371,8 @@ func (client *WebAppsClient) updateAzureStorageAccountsSlotCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, azureStorageAccounts); err != nil {
@@ -26562,6 +27394,8 @@ func (client *WebAppsClient) updateAzureStorageAccountsSlotHandleResponse(resp *
 //
 // Description for Updates the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - request - Edited backup configuration.
@@ -26609,8 +27443,8 @@ func (client *WebAppsClient) updateBackupConfigurationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -26632,6 +27466,8 @@ func (client *WebAppsClient) updateBackupConfigurationHandleResponse(resp *http.
 //
 // Description for Updates the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -26684,8 +27520,8 @@ func (client *WebAppsClient) updateBackupConfigurationSlotCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -26707,6 +27543,8 @@ func (client *WebAppsClient) updateBackupConfigurationSlotHandleResponse(resp *h
 //
 // Description for Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - siteConfig - JSON representation of a SiteConfig object. See example.
@@ -26754,8 +27592,8 @@ func (client *WebAppsClient) updateConfigurationCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteConfig); err != nil {
@@ -26777,6 +27615,8 @@ func (client *WebAppsClient) updateConfigurationHandleResponse(resp *http.Respon
 //
 // Description for Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
@@ -26829,8 +27669,8 @@ func (client *WebAppsClient) updateConfigurationSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteConfig); err != nil {
@@ -26852,6 +27692,8 @@ func (client *WebAppsClient) updateConfigurationSlotHandleResponse(resp *http.Re
 //
 // Description for Replaces the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - connectionStrings - Connection strings of the app or deployment slot. See example.
@@ -26899,8 +27741,8 @@ func (client *WebAppsClient) updateConnectionStringsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionStrings); err != nil {
@@ -26922,6 +27764,8 @@ func (client *WebAppsClient) updateConnectionStringsHandleResponse(resp *http.Re
 //
 // Description for Replaces the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -26974,8 +27818,8 @@ func (client *WebAppsClient) updateConnectionStringsSlotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionStrings); err != nil {
@@ -26997,6 +27841,8 @@ func (client *WebAppsClient) updateConnectionStringsSlotHandleResponse(resp *htt
 //
 // Description for Updates the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - siteLogsConfig - A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties"property
@@ -27044,8 +27890,8 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteLogsConfig); err != nil {
@@ -27067,6 +27913,8 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigHandleResponse(resp *http
 //
 // Description for Updates the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the logging configuration for the production
@@ -27120,8 +27968,8 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigSlotCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteLogsConfig); err != nil {
@@ -27143,6 +27991,8 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigSlotHandleResponse(resp *
 //
 // Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - domainOwnershipIdentifierName - Name of domain ownership identifier.
@@ -27195,8 +28045,8 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, domainOwnershipIdentifier); err != nil {
@@ -27219,6 +28069,8 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierHandleResponse(resp 
 //
 // Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.UpdateDomainOwnershipIdentifierSlot
 //     method.
@@ -27272,8 +28124,8 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, domainOwnershipIdentifier); err != nil {
@@ -27295,6 +28147,8 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotHandleResponse(r
 //
 // Description for Updates whether FTP is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientUpdateFtpAllowedOptions contains the optional parameters for the WebAppsClient.UpdateFtpAllowed
@@ -27341,8 +28195,8 @@ func (client *WebAppsClient) updateFtpAllowedCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, csmPublishingAccessPoliciesEntity); err != nil {
@@ -27364,6 +28218,8 @@ func (client *WebAppsClient) updateFtpAllowedHandleResponse(resp *http.Response)
 //
 // Description for Updates whether FTP is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientUpdateFtpAllowedSlotOptions contains the optional parameters for the WebAppsClient.UpdateFtpAllowedSlot
@@ -27414,8 +28270,8 @@ func (client *WebAppsClient) updateFtpAllowedSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, csmPublishingAccessPoliciesEntity); err != nil {
@@ -27437,6 +28293,8 @@ func (client *WebAppsClient) updateFtpAllowedSlotHandleResponse(resp *http.Respo
 //
 // Description for Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the web app.
 //   - namespaceName - The namespace for this hybrid connection.
@@ -27494,8 +28352,8 @@ func (client *WebAppsClient) updateHybridConnectionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -27517,6 +28375,8 @@ func (client *WebAppsClient) updateHybridConnectionHandleResponse(resp *http.Res
 //
 // Description for Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientUpdateHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateHybridConnectionSlot
 //     method.
@@ -27574,8 +28434,8 @@ func (client *WebAppsClient) updateHybridConnectionSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -27597,6 +28457,8 @@ func (client *WebAppsClient) updateHybridConnectionSlotHandleResponse(resp *http
 //
 // Updates the machine key of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientUpdateMachineKeyOptions contains the optional parameters for the WebAppsClient.UpdateMachineKey
@@ -27643,8 +28505,8 @@ func (client *WebAppsClient) updateMachineKeyCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -27662,6 +28524,8 @@ func (client *WebAppsClient) updateMachineKeyHandleResponse(resp *http.Response)
 //
 // Description for Replaces the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - metadata - Edited metadata of the app or deployment slot. See example.
@@ -27708,8 +28572,8 @@ func (client *WebAppsClient) updateMetadataCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, metadata); err != nil {
@@ -27731,6 +28595,8 @@ func (client *WebAppsClient) updateMetadataHandleResponse(resp *http.Response) (
 //
 // Description for Replaces the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -27783,8 +28649,8 @@ func (client *WebAppsClient) updateMetadataSlotCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, metadata); err != nil {
@@ -27806,6 +28672,8 @@ func (client *WebAppsClient) updateMetadataSlotHandleResponse(resp *http.Respons
 //
 // Description for Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - premierAddOnName - Add-on name.
@@ -27858,8 +28726,8 @@ func (client *WebAppsClient) updatePremierAddOnCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, premierAddOn); err != nil {
@@ -27881,6 +28749,8 @@ func (client *WebAppsClient) updatePremierAddOnHandleResponse(resp *http.Respons
 //
 // Description for Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientUpdatePremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.UpdatePremierAddOnSlot
 //     method.
@@ -27934,8 +28804,8 @@ func (client *WebAppsClient) updatePremierAddOnSlotCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, premierAddOn); err != nil {
@@ -27957,6 +28827,8 @@ func (client *WebAppsClient) updatePremierAddOnSlotHandleResponse(resp *http.Res
 //
 // Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - entityName - Name of the hybrid connection.
@@ -28009,8 +28881,8 @@ func (client *WebAppsClient) updateRelayServiceConnectionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -28032,6 +28904,8 @@ func (client *WebAppsClient) updateRelayServiceConnectionHandleResponse(resp *ht
 //
 // Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientUpdateRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateRelayServiceConnectionSlot
 //     method.
@@ -28085,8 +28959,8 @@ func (client *WebAppsClient) updateRelayServiceConnectionSlotCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -28108,6 +28982,8 @@ func (client *WebAppsClient) updateRelayServiceConnectionSlotHandleResponse(resp
 //
 // Description for Updates whether user publishing credentials are allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientUpdateScmAllowedOptions contains the optional parameters for the WebAppsClient.UpdateScmAllowed
@@ -28154,8 +29030,8 @@ func (client *WebAppsClient) updateScmAllowedCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, csmPublishingAccessPoliciesEntity); err != nil {
@@ -28177,6 +29053,8 @@ func (client *WebAppsClient) updateScmAllowedHandleResponse(resp *http.Response)
 //
 // Description for Updates whether user publishing credentials are allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - options - WebAppsClientUpdateScmAllowedSlotOptions contains the optional parameters for the WebAppsClient.UpdateScmAllowedSlot
@@ -28227,8 +29105,8 @@ func (client *WebAppsClient) updateScmAllowedSlotCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, csmPublishingAccessPoliciesEntity); err != nil {
@@ -28250,6 +29128,8 @@ func (client *WebAppsClient) updateScmAllowedSlotHandleResponse(resp *http.Respo
 //
 // Description for Updates the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - pushSettings - Push settings associated with web app.
@@ -28297,8 +29177,8 @@ func (client *WebAppsClient) updateSitePushSettingsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, pushSettings); err != nil {
@@ -28320,6 +29200,8 @@ func (client *WebAppsClient) updateSitePushSettingsHandleResponse(resp *http.Res
 //
 // Description for Updates the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -28372,8 +29254,8 @@ func (client *WebAppsClient) updateSitePushSettingsSlotCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, pushSettings); err != nil {
@@ -28395,6 +29277,8 @@ func (client *WebAppsClient) updateSitePushSettingsSlotHandleResponse(resp *http
 //
 // Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. By default, this API returns the production slot.
@@ -28446,8 +29330,8 @@ func (client *WebAppsClient) updateSlotCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteEnvelope); err != nil {
@@ -28470,6 +29354,8 @@ func (client *WebAppsClient) updateSlotHandleResponse(resp *http.Response) (WebA
 //
 // Description for Updates the names of application settings and connection string that remain with the slot during swap operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slotConfigNames - Names of application settings and connection strings. See example.
@@ -28517,8 +29403,8 @@ func (client *WebAppsClient) updateSlotConfigurationNamesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, slotConfigNames); err != nil {
@@ -28540,6 +29426,8 @@ func (client *WebAppsClient) updateSlotConfigurationNamesHandleResponse(resp *ht
 //
 // Description for Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - siteSourceControl - JSON representation of a SiteSourceControl object. See example.
@@ -28587,8 +29475,8 @@ func (client *WebAppsClient) updateSourceControlCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteSourceControl); err != nil {
@@ -28610,6 +29498,8 @@ func (client *WebAppsClient) updateSourceControlHandleResponse(resp *http.Respon
 //
 // Description for Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the
@@ -28663,8 +29553,8 @@ func (client *WebAppsClient) updateSourceControlSlotCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, siteSourceControl); err != nil {
@@ -28690,6 +29580,8 @@ func (client *WebAppsClient) updateSourceControlSlotHandleResponse(resp *http.Re
 // a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - connectionEnvelope - Properties of the Virtual Network connection. See example.
@@ -28737,8 +29629,8 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -28765,6 +29657,8 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckHandleR
 // a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - slot - Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual
@@ -28818,8 +29712,8 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -28841,6 +29735,8 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotHan
 //
 // Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - vnetName - Name of the virtual network.
@@ -28893,8 +29789,8 @@ func (client *WebAppsClient) updateVnetConnectionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -28916,6 +29812,8 @@ func (client *WebAppsClient) updateVnetConnectionHandleResponse(resp *http.Respo
 //
 // Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the app.
 //   - vnetName - Name of the Virtual Network.
@@ -28973,8 +29871,8 @@ func (client *WebAppsClient) updateVnetConnectionGatewayCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -28996,6 +29894,8 @@ func (client *WebAppsClient) updateVnetConnectionGatewayHandleResponse(resp *htt
 //
 // Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientUpdateVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionGatewaySlot
 //     method.
@@ -29053,8 +29953,8 @@ func (client *WebAppsClient) updateVnetConnectionGatewaySlotCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {
@@ -29077,6 +29977,8 @@ func (client *WebAppsClient) updateVnetConnectionGatewaySlotHandleResponse(resp 
 //
 // Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WebAppsClientUpdateVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionSlot
 //     method.
@@ -29130,8 +30032,8 @@ func (client *WebAppsClient) updateVnetConnectionSlotCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionEnvelope); err != nil {

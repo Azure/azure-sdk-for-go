@@ -12,11 +12,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 	"strconv"
 )
 
@@ -82,7 +81,9 @@ func (p *PoolServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (p *PoolServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -110,7 +111,10 @@ func (p *PoolServerTransport) dispatchToMethodFake(req *http.Request, method str
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -161,14 +165,14 @@ func (p *PoolServerTransport) dispatchCreate(req *http.Request) (*http.Response,
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Pool, req)
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).Etag; val != nil {
+	if val := server.GetResponse(respr).ETag; val != nil {
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil
@@ -211,7 +215,7 @@ func (p *PoolServerTransport) dispatchBeginDelete(req *http.Request) (*http.Resp
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -249,14 +253,14 @@ func (p *PoolServerTransport) dispatchDisableAutoScale(req *http.Request) (*http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Pool, req)
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).Etag; val != nil {
+	if val := server.GetResponse(respr).ETag; val != nil {
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil
@@ -289,14 +293,14 @@ func (p *PoolServerTransport) dispatchGet(req *http.Request) (*http.Response, er
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Pool, req)
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).Etag; val != nil {
+	if val := server.GetResponse(respr).ETag; val != nil {
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil
@@ -323,7 +327,11 @@ func (p *PoolServerTransport) dispatchNewListByBatchAccountPager(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		maxresultsParam, err := parseOptional(qp.Get("maxresults"), func(v string) (int32, error) {
+		maxresultsUnescaped, err := url.QueryUnescape(qp.Get("maxresults"))
+		if err != nil {
+			return nil, err
+		}
+		maxresultsParam, err := parseOptional(maxresultsUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -333,8 +341,16 @@ func (p *PoolServerTransport) dispatchNewListByBatchAccountPager(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		selectParam := getOptional(qp.Get("$select"))
-		filterParam := getOptional(qp.Get("$filter"))
+		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+		if err != nil {
+			return nil, err
+		}
+		selectParam := getOptional(selectUnescaped)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armbatch.PoolClientListByBatchAccountOptions
 		if maxresultsParam != nil || selectParam != nil || filterParam != nil {
 			options = &armbatch.PoolClientListByBatchAccountOptions{
@@ -354,7 +370,7 @@ func (p *PoolServerTransport) dispatchNewListByBatchAccountPager(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListByBatchAccountPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -391,14 +407,14 @@ func (p *PoolServerTransport) dispatchStopResize(req *http.Request) (*http.Respo
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Pool, req)
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).Etag; val != nil {
+	if val := server.GetResponse(respr).ETag; val != nil {
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil
@@ -442,14 +458,14 @@ func (p *PoolServerTransport) dispatchUpdate(req *http.Request) (*http.Response,
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Pool, req)
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).Etag; val != nil {
+	if val := server.GetResponse(respr).ETag; val != nil {
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil

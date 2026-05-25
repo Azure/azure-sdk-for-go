@@ -18,8 +18,6 @@ import (
 
 // RoleAssignmentScheduleInstancesClient contains the methods for the RoleAssignmentScheduleInstances group.
 // Don't use this type directly, use NewRoleAssignmentScheduleInstancesClient() instead.
-//
-// Generated from API version 2024-09-01-preview
 type RoleAssignmentScheduleInstancesClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewRoleAssignmentScheduleInstancesClient(credential azcore.TokenCredential,
 
 // Get - Gets the specified role assignment schedule instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleAssignmentScheduleInstanceName - The name (hash of schedule name + time) of the role assignment schedule to get.
 //   - options - RoleAssignmentScheduleInstancesClientGetOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.Get
@@ -82,8 +82,8 @@ func (client *RoleAssignmentScheduleInstancesClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -98,6 +98,8 @@ func (client *RoleAssignmentScheduleInstancesClient) getHandleResponse(resp *htt
 }
 
 // NewListForScopePager - Gets role assignment schedule instances of a role assignment schedule.
+//
+// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - RoleAssignmentScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.NewListForScopePager
 //     method.
@@ -139,8 +141,8 @@ func (client *RoleAssignmentScheduleInstancesClient) listForScopeCreateRequest(c
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20240901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

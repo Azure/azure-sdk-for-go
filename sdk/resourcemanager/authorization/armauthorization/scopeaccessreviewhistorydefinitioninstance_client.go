@@ -19,8 +19,6 @@ import (
 // ScopeAccessReviewHistoryDefinitionInstanceClient contains the methods for the ScopeAccessReviewHistoryDefinitionInstance
 // group.
 // Don't use this type directly, use NewScopeAccessReviewHistoryDefinitionInstanceClient() instead.
-//
-// Generated from API version 2021-12-01-preview
 type ScopeAccessReviewHistoryDefinitionInstanceClient struct {
 	internal *arm.Client
 }
@@ -42,6 +40,8 @@ func NewScopeAccessReviewHistoryDefinitionInstanceClient(credential azcore.Token
 // GenerateDownloadURI - Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and
 // can be retrieved by fetching the accessReviewHistoryDefinition object.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - historyDefinitionID - The id of the access review history definition.
 //   - instanceID - The id of the access review history definition instance to generate a URI for.
@@ -89,8 +89,8 @@ func (client *ScopeAccessReviewHistoryDefinitionInstanceClient) generateDownload
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-12-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -13,6 +13,7 @@ import (
 
 const (
 	// DefaultConcurrency is the legacy default concurrency value.
+	//
 	// Deprecated: Use DefaultConcurrencyValue() instead, which returns a value based on CPU core count.
 	DefaultConcurrency = 5
 )

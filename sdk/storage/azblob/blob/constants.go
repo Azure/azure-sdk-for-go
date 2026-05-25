@@ -18,6 +18,7 @@ const (
 	DefaultDownloadBlockSize = int64(4 * 1024 * 1024) // 4MB
 
 	// DefaultConcurrency is the legacy default number of blocks downloaded or uploaded in parallel.
+	//
 	// Deprecated: Use DefaultConcurrencyValue() instead, which returns a value based on CPU core count.
 	DefaultConcurrency = shared.DefaultConcurrency
 )

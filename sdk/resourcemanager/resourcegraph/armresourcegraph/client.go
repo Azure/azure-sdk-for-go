@@ -139,7 +139,7 @@ func (client *Client) resourcesHistoryCreateRequest(ctx context.Context, request
 // resourcesHistoryHandleResponse handles the ResourcesHistory response.
 func (client *Client) resourcesHistoryHandleResponse(resp *http.Response) (ClientResourcesHistoryResponse, error) {
 	result := ClientResourcesHistoryResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return ClientResourcesHistoryResponse{}, err
 	}
 	return result, nil

@@ -1,5 +1,15 @@
 # Release History
 
+## 0.10.0 (2026-05-25)
+### Breaking Changes
+
+- Field `Interface` of struct `ClientResourcesHistoryResponse` has been removed
+
+### Features Added
+
+- New field `Value` in struct `ClientResourcesHistoryResponse`
+
+
 ## 0.9.0 (2023-11-24)
 ### Features Added
 

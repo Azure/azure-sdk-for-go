@@ -10,8 +10,8 @@ package armresourcegraph
 
 // ClientResourcesHistoryResponse contains the response from method Client.ResourcesHistory.
 type ClientResourcesHistoryResponse struct {
-	// Anything
-	Interface any
+	// Dictionary of <any>
+	Value map[string]any
 }
 
 // ClientResourcesResponse contains the response from method Client.Resources.

@@ -21,6 +21,14 @@ import (
 
 // Server is a fake server for instances of the armresourcegraph.Client type.
 type Server struct {
+	// ResourceChangeDetails is the fake for method Client.ResourceChangeDetails
+	// HTTP status codes to indicate success: http.StatusOK
+	ResourceChangeDetails func(ctx context.Context, parameters armresourcegraph.ResourceChangeDetailsRequestParameters, options *armresourcegraph.ClientResourceChangeDetailsOptions) (resp azfake.Responder[armresourcegraph.ClientResourceChangeDetailsResponse], errResp azfake.ErrorResponder)
+
+	// ResourceChanges is the fake for method Client.ResourceChanges
+	// HTTP status codes to indicate success: http.StatusOK
+	ResourceChanges func(ctx context.Context, parameters armresourcegraph.ResourceChangesRequestParameters, options *armresourcegraph.ClientResourceChangesOptions) (resp azfake.Responder[armresourcegraph.ClientResourceChangesResponse], errResp azfake.ErrorResponder)
+
 	// Resources is the fake for method Client.Resources
 	// HTTP status codes to indicate success: http.StatusOK
 	Resources func(ctx context.Context, query armresourcegraph.QueryRequest, options *armresourcegraph.ClientResourcesOptions) (resp azfake.Responder[armresourcegraph.ClientResourcesResponse], errResp azfake.ErrorResponder)
@@ -55,6 +63,10 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch method {
+	case "Client.ResourceChangeDetails":
+		resp, err = s.dispatchResourceChangeDetails(req)
+	case "Client.ResourceChanges":
+		resp, err = s.dispatchResourceChanges(req)
 	case "Client.Resources":
 		resp, err = s.dispatchResources(req)
 	case "Client.ResourcesHistory":
@@ -67,6 +79,52 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchResourceChangeDetails(req *http.Request) (*http.Response, error) {
+	if s.srv.ResourceChangeDetails == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ResourceChangeDetails not implemented")}
+	}
+	body, err := server.UnmarshalRequestAsJSON[armresourcegraph.ResourceChangeDetailsRequestParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ResourceChangeDetails(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceChangeDataArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchResourceChanges(req *http.Request) (*http.Response, error) {
+	if s.srv.ResourceChanges == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ResourceChanges not implemented")}
+	}
+	body, err := server.UnmarshalRequestAsJSON[armresourcegraph.ResourceChangesRequestParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ResourceChanges(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceChangeList, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -109,7 +167,7 @@ func (s *ServerTransport) dispatchResourcesHistory(req *http.Request) (*http.Res
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Interface, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Value, req)
 	if err != nil {
 		return nil, err
 	}

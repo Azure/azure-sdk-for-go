@@ -8,6 +8,16 @@
 
 package armresourcegraph
 
+// ClientResourceChangeDetailsOptions contains the optional parameters for the Client.ResourceChangeDetails method.
+type ClientResourceChangeDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientResourceChangesOptions contains the optional parameters for the Client.ResourceChanges method.
+type ClientResourceChangesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClientResourcesHistoryOptions contains the optional parameters for the Client.ResourcesHistory method.
 type ClientResourcesHistoryOptions struct {
 	// placeholder for future optional parameters
@@ -20,5 +30,10 @@ type ClientResourcesOptions struct {
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryClientGenerateQueryOptions contains the optional parameters for the QueryClient.GenerateQuery method.
+type QueryClientGenerateQueryOptions struct {
 	// placeholder for future optional parameters
 }

@@ -46,3 +46,9 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
+
+// NewQueryClient creates a new instance of QueryClient.
+func (c *ClientFactory) NewQueryClient() *QueryClient {
+	subClient, _ := NewQueryClient(c.credential, c.options)
+	return subClient
+}

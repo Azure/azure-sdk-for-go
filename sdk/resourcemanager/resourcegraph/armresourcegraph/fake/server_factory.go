@@ -21,6 +21,7 @@ import (
 type ServerFactory struct {
 	Server           Server
 	OperationsServer OperationsServer
+	QueryServer      QueryServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -39,6 +40,7 @@ type ServerFactoryTransport struct {
 	trMu               sync.Mutex
 	trServer           *ServerTransport
 	trOperationsServer *OperationsServerTransport
+	trQueryServer      *QueryServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -60,6 +62,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "QueryClient":
+		initServer(s, &s.trQueryServer, func() *QueryServerTransport { return NewQueryServerTransport(&s.srv.QueryServer) })
+		resp, err = s.trQueryServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

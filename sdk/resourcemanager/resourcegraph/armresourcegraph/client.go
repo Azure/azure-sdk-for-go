@@ -37,10 +37,118 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 	return client, nil
 }
 
+// ResourceChangeDetails - Get resource change details.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2020-09-01-preview
+//   - parameters - The parameters for this request for resource change details.
+//   - options - ClientResourceChangeDetailsOptions contains the optional parameters for the Client.ResourceChangeDetails method.
+func (client *Client) ResourceChangeDetails(ctx context.Context, parameters ResourceChangeDetailsRequestParameters, options *ClientResourceChangeDetailsOptions) (ClientResourceChangeDetailsResponse, error) {
+	var err error
+	const operationName = "Client.ResourceChangeDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resourceChangeDetailsCreateRequest(ctx, parameters, options)
+	if err != nil {
+		return ClientResourceChangeDetailsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientResourceChangeDetailsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ClientResourceChangeDetailsResponse{}, err
+	}
+	resp, err := client.resourceChangeDetailsHandleResponse(httpResp)
+	return resp, err
+}
+
+// resourceChangeDetailsCreateRequest creates the ResourceChangeDetails request.
+func (client *Client) resourceChangeDetailsCreateRequest(ctx context.Context, parameters ResourceChangeDetailsRequestParameters, options *ClientResourceChangeDetailsOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.ResourceGraph/resourceChangeDetails"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2020-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// resourceChangeDetailsHandleResponse handles the ResourceChangeDetails response.
+func (client *Client) resourceChangeDetailsHandleResponse(resp *http.Response) (ClientResourceChangeDetailsResponse, error) {
+	result := ClientResourceChangeDetailsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceChangeDataArray); err != nil {
+		return ClientResourceChangeDetailsResponse{}, err
+	}
+	return result, nil
+}
+
+// ResourceChanges - List changes to a resource for a given time interval.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2020-09-01-preview
+//   - parameters - the parameters for this request for changes.
+//   - options - ClientResourceChangesOptions contains the optional parameters for the Client.ResourceChanges method.
+func (client *Client) ResourceChanges(ctx context.Context, parameters ResourceChangesRequestParameters, options *ClientResourceChangesOptions) (ClientResourceChangesResponse, error) {
+	var err error
+	const operationName = "Client.ResourceChanges"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resourceChangesCreateRequest(ctx, parameters, options)
+	if err != nil {
+		return ClientResourceChangesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientResourceChangesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ClientResourceChangesResponse{}, err
+	}
+	resp, err := client.resourceChangesHandleResponse(httpResp)
+	return resp, err
+}
+
+// resourceChangesCreateRequest creates the ResourceChanges request.
+func (client *Client) resourceChangesCreateRequest(ctx context.Context, parameters ResourceChangesRequestParameters, options *ClientResourceChangesOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.ResourceGraph/resourceChanges"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2020-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// resourceChangesHandleResponse handles the ResourceChanges response.
+func (client *Client) resourceChangesHandleResponse(resp *http.Response) (ClientResourceChangesResponse, error) {
+	result := ClientResourceChangesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceChangeList); err != nil {
+		return ClientResourceChangesResponse{}, err
+	}
+	return result, nil
+}
+
 // Resources - Queries the resources managed by Azure Resource Manager for scopes specified in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01-preview
+// Generated from API version 2023-09-01-preview
 //   - query - Request specifying query and its options.
 //   - options - ClientResourcesOptions contains the optional parameters for the Client.Resources method.
 func (client *Client) Resources(ctx context.Context, query QueryRequest, options *ClientResourcesOptions) (ClientResourcesResponse, error) {
@@ -73,7 +181,7 @@ func (client *Client) resourcesCreateRequest(ctx context.Context, query QueryReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2023-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, query); err != nil {
@@ -139,7 +247,7 @@ func (client *Client) resourcesHistoryCreateRequest(ctx context.Context, request
 // resourcesHistoryHandleResponse handles the ResourcesHistory response.
 func (client *Client) resourcesHistoryHandleResponse(resp *http.Response) (ClientResourcesHistoryResponse, error) {
 	result := ClientResourcesHistoryResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return ClientResourcesHistoryResponse{}, err
 	}
 	return result, nil

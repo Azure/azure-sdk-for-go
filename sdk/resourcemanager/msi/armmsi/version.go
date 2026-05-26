@@ -6,5 +6,5 @@ package armmsi
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi"
-	moduleVersion = "v1.3.0"
+	moduleVersion = "v1.4.0-beta.1"
 )

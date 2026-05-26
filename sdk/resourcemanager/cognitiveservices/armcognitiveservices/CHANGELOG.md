@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.2 (2026-05-22)
+## 4.0.0-beta.2 (2026-05-26)
 ### Breaking Changes
 
 - Function `*OutboundRulesClient.BeginPost` return value(s) have been changed from `(*runtime.Poller[OutboundRulesClientPostResponse], error)` to `(*runtime.Poller[*runtime.Pager[OutboundRulesClientPostResponse]], error)`

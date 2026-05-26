@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net"
 	"net/http"
@@ -598,7 +599,7 @@ func TestConnectionErrorReadFailsOverAfterThreeSameRegionAttempts(t *testing.T) 
 	// succeeded. After failover sameRegionRetryCount is reset and
 	// retryCount is incremented to pick a different endpoint.
 	assert.Equal(t, 0, rc.sameRegionRetryCount)
-	assert.Equal(t, 1, rc.retryCount)
+	assert.Equal(t, 0, rc.retryCount) // post-fix: retryCount not incremented on connection-error failover; demote-in-cache handles routing
 }
 
 // TestConnectionErrorReadFailsOverWhenGlobalEndpointIsUnreachable simulates
@@ -606,22 +607,46 @@ func TestConnectionErrorReadFailsOverAfterThreeSameRegionAttempts(t *testing.T) 
 // to the same regional FE pool that has been blocked (the common case for
 // single-region writes — global FQDN points at the write region's FE).
 //
-// Before the fix, attemptRetryOnNetworkError forced a synchronous
-// gem.Update(ctx, true) after MarkEndpointUnavailable*; the topology
-// refresh dialed the unreachable global endpoint, hit a connect timeout,
-// and the failover bailed with that error — surfacing the original
-// connection failure to the caller and never trying the next preferred
-// region whose state was already populated in the cache by
-// MarkEndpointUnavailable*.
+// Before the fix, attemptRetryOnNetworkError had three interlocking
+// problems that prevented the cross-region failover from ever taking effect:
+//  1. It forced a synchronous gem.Update(ctx, true) after
+//     MarkEndpointUnavailable*. With the global endpoint unreachable, the
+//     refresh dialed a blocked address, hit the connect timeout, and
+//     returned an error — causing the policy to surface the original
+//     connection failure without ever attempting the cross-region retry.
+//  2. It incremented retryCount after the mark. MarkEndpointUnavailable*
+//     demotes the bad endpoint to the TAIL of readEndpoints rather than
+//     removing it, so readEndpoints becomes [good, bad]. With retryCount
+//     bumped to 1, ResolveServiceEndpoint(1 % 2) returns the still-bad
+//     endpoint at the tail — the failover attempt would hit the same
+//     dead region again.
+//  3. MarkEndpointUnavailable* was called with the full request URL
+//     (path, query, etc. included) but the unavailability map and the
+//     cache's per-region endpoint lookup were keyed by base URLs
+//     (scheme+host). The marks were therefore written under keys nothing
+//     else looked up, so isEndpointUnavailableLocked always returned false
+//     and the demote silently did nothing.
 //
-// The fix removes the forced refresh; the cache mutation from
-// MarkEndpointUnavailable* is enough for the next ResolveServiceEndpoint
-// to pick the failover region.
+// The fix drops the forced refresh, leaves retryCount at 0 so the next
+// ResolveServiceEndpoint returns readEndpoints[0] (the just-promoted
+// preferred region), and normalizes URLs to scheme+host on both write
+// and read sides of the unavailability map.
+//
+// To actually exercise the routing this test wires up TWO distinct mock
+// servers (badSrv = original/unhealthy region, goodSrv = failover region)
+// and points the location cache's read endpoints at both. badSrv only
+// serves DNS errors; goodSrv serves the 200 the request needs. If the
+// resolver returns badSrv after failover (because of any of the three
+// pre-fix conditions) the test fails.
 func TestConnectionErrorReadFailsOverWhenGlobalEndpointIsUnreachable(t *testing.T) {
-	srv, srvClose := mock.NewTLSServer()
-	defer srvClose()
+	badSrv, badClose := mock.NewTLSServer()
+	defer badClose()
+	goodSrv, goodClose := mock.NewTLSServer()
+	defer goodClose()
 
-	defaultEndpoint, err := url.Parse(srv.URL())
+	badURL, err := url.Parse(badSrv.URL())
+	require.NoError(t, err)
+	goodURL, err := url.Parse(goodSrv.URL())
 	require.NoError(t, err)
 
 	gemServer, gemClose := mock.NewTLSServer()
@@ -632,42 +657,84 @@ func TestConnectionErrorReadFailsOverWhenGlobalEndpointIsUnreachable(t *testing.
 
 	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
 
-	lc := CreateMockLC(*defaultEndpoint, false /*single-master*/)
-	lc.enableCrossRegionRetries = true
+	// Build a location cache with TWO distinct regional endpoints so the
+	// routing decision after failover is observable. "East US" (badSrv)
+	// is the user's application region (index 0); "Central US" (goodSrv)
+	// is the next preferred.
+	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true /*enableCrossRegionRetries*/)
+	require.NoError(t, lc.update(
+		[]accountRegion{{Name: "East US", Endpoint: badSrv.URL()}},
+		[]accountRegion{
+			{Name: "East US", Endpoint: badSrv.URL()},
+			{Name: "Central US", Endpoint: goodSrv.URL()},
+		},
+		[]string{"East US", "Central US"},
+		nil,
+	))
 
 	gem := &globalEndpointManager{
 		clientEndpoint:      gemServer.URL(),
 		pipeline:            internalPipeline,
-		preferredLocations:  []string{},
+		preferredLocations:  []string{"East US", "Central US"},
 		locationCache:       lc,
 		refreshTimeInterval: defaultExpirationTime,
 		lastUpdateTime:      time.Time{},
 	}
 
+	// azcore needs to dispatch to whichever URL the policy resolves to,
+	// not a fixed Transport. routingMockTransport keys by host so a single
+	// client sees distinct backing servers per region.
+	routingTransport := routingMockTransport{
+		byHost: map[string]*mock.Server{
+			badURL.Host:  badSrv,
+			goodURL.Host: goodSrv,
+		},
+	}
+
 	retryPolicy := &clientRetryPolicy{gem: gem}
 	verifier := &clientRetryPolicyVerifier{}
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{verifier, retryPolicy}}, &policy.ClientOptions{Transport: &routingTransport})
+	client := &Client{endpoint: badSrv.URL(), endpointUrl: badURL, internal: internalClient, gem: gem}
 
 	dnsErr := &net.DNSError{}
-	// 1 initial + 3 same-region retries that all error, then the
-	// cross-region failover attempt should reach a healthy replica.
+	// 1 initial + 3 same-region retries on the bad region.
 	for i := 0; i < 4; i++ {
-		srv.AppendError(dnsErr)
+		badSrv.AppendError(dnsErr)
 	}
-	srv.AppendResponse(mock.WithStatusCode(200))
+	// Cross-region failover should hit the good region.
+	goodSrv.AppendResponse(mock.WithStatusCode(200))
 
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
 
-	require.NoError(t, err, "cross-region failover should not depend on a successful gem.Update")
+	require.NoError(t, err, "cross-region failover should reach the good region")
 	rc := verifier.requests[0].retryContext
 	assert.True(t, rc.crossRegionFailoverDone, "expected one cross-region failover")
-	assert.Equal(t, 1, rc.retryCount)
+	// retryCount stays at 0: MarkEndpointUnavailable* demoted the bad
+	// endpoint so ResolveServiceEndpoint(0) now returns the good region.
+	// Bumping retryCount to 1 would index back to the demoted-tail slot.
+	assert.Equal(t, 0, rc.retryCount)
 	assert.Equal(t, 0, rc.sameRegionRetryCount)
-	// 1 initial + 3 same-region retries + 1 cross-region failover.
-	assert.Equal(t, 5, srv.Requests())
+	// 1 initial + 3 same-region retries against badSrv.
+	assert.Equal(t, 4, badSrv.Requests())
+	// Exactly one request against the good region (the failover).
+	assert.Equal(t, 1, goodSrv.Requests())
+}
+
+// routingMockTransport routes each request to the mock server matching
+// the request URL's host. This lets a single client see distinct backing
+// servers per region without azcore short-circuiting to a fixed mock.
+type routingMockTransport struct {
+	byHost map[string]*mock.Server
+}
+
+func (r *routingMockTransport) Do(req *http.Request) (*http.Response, error) {
+	srv, ok := r.byHost[req.URL.Host]
+	if !ok {
+		return nil, fmt.Errorf("no mock server registered for host %q", req.URL.Host)
+	}
+	return srv.Do(req)
 }
 
 func TestNotSentConnectionErrorWriteFailsOver(t *testing.T) {
@@ -692,7 +759,7 @@ func TestNotSentConnectionErrorWriteFailsOver(t *testing.T) {
 	assert.NoError(t, err)
 	rc := verifier.requests[0].retryContext
 	assert.Equal(t, 0, rc.sameRegionRetryCount)
-	assert.Equal(t, 1, rc.retryCount)
+	assert.Equal(t, 0, rc.retryCount) // post-fix: retryCount not incremented on connection-error failover; demote-in-cache handles routing
 }
 
 // fakeAmbiguousNetError satisfies net.Error and wraps syscall.ECONNRESET
@@ -755,7 +822,7 @@ func TestAmbiguousConnectionErrorReadFailsOver(t *testing.T) {
 	assert.NoError(t, err)
 	rc := verifier.requests[0].retryContext
 	assert.Equal(t, 0, rc.sameRegionRetryCount)
-	assert.Equal(t, 1, rc.retryCount)
+	assert.Equal(t, 0, rc.retryCount) // post-fix: retryCount not incremented on connection-error failover; demote-in-cache handles routing
 }
 
 func TestCallerDeadlineExceededDoesNotRetry(t *testing.T) {
@@ -801,7 +868,7 @@ func TestNotSentConnectionErrorMultiMasterWriteFailsOver(t *testing.T) {
 	assert.NoError(t, err)
 	rc := verifier.requests[0].retryContext
 	assert.True(t, rc.crossRegionFailoverDone, "expected one cross-region failover")
-	assert.Equal(t, 1, rc.retryCount)
+	assert.Equal(t, 0, rc.retryCount) // post-fix: retryCount not incremented on connection-error failover; demote-in-cache handles routing
 	assert.Equal(t, 0, rc.sameRegionRetryCount)
 }
 
@@ -825,7 +892,7 @@ func TestConnectionErrorGivesUpAfterSingleCrossRegionFailover(t *testing.T) {
 	rc := verifier.requests[0].retryContext
 	// One cross-region failover happened and then we gave up.
 	assert.True(t, rc.crossRegionFailoverDone)
-	assert.Equal(t, 1, rc.retryCount)
+	assert.Equal(t, 0, rc.retryCount) // post-fix: retryCount not incremented on connection-error failover; demote-in-cache handles routing
 	// Mock server should have served exactly 5 requests:
 	// 1 initial + 3 same-region retries + 1 cross-region failover.
 	assert.Equal(t, 5, srv.Requests())

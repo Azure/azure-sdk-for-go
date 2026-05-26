@@ -239,11 +239,23 @@ func (lc *locationCache) CanUseMultipleWriteLocs() bool {
 }
 
 func (lc *locationCache) markEndpointUnavailableForRead(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
-	return lc.markEndpointUnavailable(endpoint, read)
+	return lc.markEndpointUnavailable(endpointKey(endpoint), read)
 }
 
 func (lc *locationCache) markEndpointUnavailableForWrite(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
-	return lc.markEndpointUnavailable(endpoint, write)
+	return lc.markEndpointUnavailable(endpointKey(endpoint), write)
+}
+
+// endpointKey normalizes a url.URL to the form used as a key in
+// locationUnavailabilityInfoMap and stored in availReadEndpointsByLocation
+// / availWriteEndpointsByLocation: scheme + host only. Callers of
+// MarkEndpointUnavailable* commonly pass the full request URL (including
+// path, query, fragment, RawPath, etc.), which would never struct-equal
+// the base URLs the cache uses; without normalization the marks are
+// recorded under keys nothing else ever looks up and the demote step in
+// getPrefAvailableEndpointsLocked silently does nothing.
+func endpointKey(u url.URL) url.URL {
+	return url.URL{Scheme: u.Scheme, Host: u.Host}
 }
 
 // markEndpointUnavailable atomically samples whether the endpoint was already
@@ -302,7 +314,7 @@ func (lc *locationCache) isEndpointUnavailable(endpoint url.URL, ops requestedOp
 }
 
 func (lc *locationCache) isEndpointUnavailableLocked(endpoint url.URL, ops requestedOperations) bool {
-	info, ok := lc.locationUnavailabilityInfoMap[endpoint]
+	info, ok := lc.locationUnavailabilityInfoMap[endpointKey(endpoint)]
 	if ops == none || !ok || ops&info.unavailableOps != ops {
 		return false
 	}

@@ -320,7 +320,14 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 	// changes when the global endpoint is reachable again.
 
 	retryContext.sameRegionRetryCount = 0
-	retryContext.retryCount += 1
+	// Intentionally do NOT increment retryCount. resolveServiceEndpoint
+	// uses retryCount as an index into readEndpoints / writeEndpoints,
+	// and getPrefAvailableEndpointsLocked appends unavailable endpoints
+	// to the TAIL of those slices rather than removing them. So after
+	// MarkEndpointUnavailable* the just-marked endpoint sits at index 1
+	// (or later) and the new preferred endpoint is at index 0. Doing
+	// retryCount += 1 here would index right back to the freshly-marked
+	// bad endpoint and the failover would not change destination at all.
 	retryContext.crossRegionFailoverDone = true
 	if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
 		return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)

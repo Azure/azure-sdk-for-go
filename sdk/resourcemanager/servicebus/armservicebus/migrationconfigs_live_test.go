@@ -5,8 +5,10 @@ package armservicebus_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -130,6 +132,20 @@ func (testsuite *MigrationconfigsTestSuite) TestMigrationConfigs() {
 
 	// From step MigrationConfigs_CompleteMigration
 	fmt.Println("Call operation: MigrationConfigs_CompleteMigration")
-	_, err = migrationConfigsClient.CompleteMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
+	// Revert triggers a BreakPairing DR operation on the namespace that can still be
+	// running asynchronously when this call is made, causing
+	// MetadataDROperationInProgressTooManyRequests (429). Retry with a backoff until
+	// the DR operation completes.
+	for i := 0; i < 30; i++ {
+		_, err = migrationConfigsClient.CompleteMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
+		if err == nil {
+			break
+		}
+		var respErr *azcore.ResponseError
+		if !errors.As(err, &respErr) || respErr.ErrorCode != "MetadataDROperationInProgressTooManyRequests" {
+			break
+		}
+		recording.Sleep(30 * time.Second)
+	}
 	testsuite.Require().NoError(err)
 }

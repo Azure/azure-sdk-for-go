@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/QueueOperationPut.json
+// Generated from example definition: 2025-08-01/QueueOperationPut.json
 func ExampleQueueClient_Create_queueOperationPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleQueueClient_Create_queueOperationPut() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.QueueClientCreateResponse{
-	// 	Queue: &armstorage.Queue{
+	// 	Queue: armstorage.Queue{
 	// 		Name: to.Ptr("queue6185"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/queueServices/queues"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/queueServices/default/queues/queue6185"),
@@ -39,7 +39,7 @@ func ExampleQueueClient_Create_queueOperationPut() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/QueueOperationPutWithMetadata.json
+// Generated from example definition: 2025-08-01/QueueOperationPutWithMetadata.json
 func ExampleQueueClient_Create_queueOperationPutWithMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleQueueClient_Create_queueOperationPutWithMetadata() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.QueueClientCreateResponse{
-	// 	Queue: &armstorage.Queue{
+	// 	Queue: armstorage.Queue{
 	// 		Name: to.Ptr("queue6185"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/queueServices/queues"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/queueServices/default/queues/queue6185"),
@@ -79,7 +79,7 @@ func ExampleQueueClient_Create_queueOperationPutWithMetadata() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/QueueOperationDelete.json
+// Generated from example definition: 2025-08-01/QueueOperationDelete.json
 func ExampleQueueClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleQueueClient_Delete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/QueueOperationGet.json
+// Generated from example definition: 2025-08-01/QueueOperationGet.json
 func ExampleQueueClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleQueueClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.QueueClientGetResponse{
-	// 	Queue: &armstorage.Queue{
+	// 	Queue: armstorage.Queue{
 	// 		Name: to.Ptr("queue6185"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/queueServices/queues"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/queueServices/default/queues/queue6185"),
@@ -129,7 +129,7 @@ func ExampleQueueClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/QueueOperationList.json
+// Generated from example definition: 2025-08-01/QueueOperationList.json
 func ExampleQueueClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleQueueClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/QueueOperationPatch.json
+// Generated from example definition: 2025-08-01/QueueOperationPatch.json
 func ExampleQueueClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleQueueClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.QueueClientUpdateResponse{
-	// 	Queue: &armstorage.Queue{
+	// 	Queue: armstorage.Queue{
 	// 		Name: to.Ptr("queue6185"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/queueServices/queues"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/queueServices/default/queues/queue6185"),

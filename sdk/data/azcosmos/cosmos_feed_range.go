@@ -3,7 +3,37 @@
 
 package azcosmos
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/epk"
+)
+
+// ErrFeedRangeUnresolved is returned when a customer-supplied FeedRange does not
+// overlap any current physical partition key range, even after a forced cache
+// refresh. Callers can use errors.Is to detect this and fall back to
+// re-deriving FeedRanges from GetFeedRanges.
+//
+// This typically indicates one of:
+//   - The FeedRange was constructed for a different container.
+//   - The container was deleted and recreated with different partitioning.
+//   - The FeedRange boundaries are malformed (outside [00, FF) or empty range).
+var ErrFeedRangeUnresolved = errors.New("feed range did not overlap any current partition key range")
+
+// feedRangeUnresolvedError wraps ErrFeedRangeUnresolved with diagnostic detail
+// about the unresolvable FeedRange so customers can identify which range failed.
+type feedRangeUnresolvedError struct {
+	feedRange FeedRange
+}
+
+func (e *feedRangeUnresolvedError) Error() string {
+	return fmt.Sprintf("%s: [%s, %s)", ErrFeedRangeUnresolved.Error(), e.feedRange.MinInclusive, e.feedRange.MaxExclusive)
+}
+
+func (e *feedRangeUnresolvedError) Unwrap() error {
+	return ErrFeedRangeUnresolved
+}
 
 // FeedRange represents a range of partition key values for a Cosmos container.
 // It is used to identify a specific range of documents for change feed processing.
@@ -22,13 +52,56 @@ func NewFeedRange(minInclusive, maxExclusive string) FeedRange {
 	}
 }
 
-// findPartitionKeyRangeID finds the partition key range ID that matches the given FeedRange.
-// Returns the ID if found, or an error if no match exists.
-func findPartitionKeyRangeID(feedRange FeedRange, partitionKeyRanges []partitionKeyRange) (string, error) {
+// overlappingPartitionKeyRanges returns the subset of partitionKeyRanges whose
+// boundaries overlap the given feedRange, preserving input order. Returns nil
+// on no overlap (no error).
+//
+// Note: O(n) linear scan. For routing-map-backed lookups, prefer
+// collectionRoutingMap.getOverlappingRanges (binary search). This helper exists
+// for paths that operate on a flat snapshot returned by getPartitionKeyRanges.
+func overlappingPartitionKeyRanges(feedRange FeedRange, partitionKeyRanges []partitionKeyRange) []partitionKeyRange {
+	if len(partitionKeyRanges) == 0 {
+		return nil
+	}
+
+	feedMin := feedRange.MinInclusive
+	feedMax := normalizeMaxBoundary(feedRange.MaxExclusive)
+	if epk.CompareEPK(feedMin, feedMax) >= 0 {
+		return nil
+	}
+
+	out := make([]partitionKeyRange, 0, 2)
 	for _, pkr := range partitionKeyRanges {
-		if feedRange.MinInclusive == pkr.MinInclusive && feedRange.MaxExclusive == pkr.MaxExclusive {
-			return pkr.ID, nil
+		if rangesOverlap(feedMin, feedMax, pkr.MinInclusive, normalizeMaxBoundary(pkr.MaxExclusive)) {
+			out = append(out, pkr)
 		}
 	}
-	return "", fmt.Errorf("no matching partition key range found for feed range [%s, %s)", feedRange.MinInclusive, feedRange.MaxExclusive)
+	return out
+}
+
+// rangesOverlap reports whether [aMin, aMax) intersects [bMin, bMax).
+// All four boundaries must be normalized hex EPK strings (with "FF" used
+// for the upper sentinel rather than ""); rangesOverlap does NOT treat
+// empty strings as open boundaries.
+func rangesOverlap(aMin, aMax, bMin, bMax string) bool {
+	// Standard half-open interval overlap test:
+	//   intersection is empty iff aMax <= bMin or bMax <= aMin.
+	if epk.CompareEPK(aMax, bMin) <= 0 {
+		return false
+	}
+	if epk.CompareEPK(bMax, aMin) <= 0 {
+		return false
+	}
+	return true
+}
+
+// normalizeMaxBoundary converts the open-top "" sentinel to "FF" so length-aware
+// EPK comparisons against finite ranges produce sensible answers. PK range
+// snapshots from the service usually use "FF" but customer-supplied FeedRanges
+// often use "". Min boundaries are NOT normalized — "" already sorts lowest.
+func normalizeMaxBoundary(maxExclusive string) string {
+	if maxExclusive == "" {
+		return "FF"
+	}
+	return maxExclusive
 }

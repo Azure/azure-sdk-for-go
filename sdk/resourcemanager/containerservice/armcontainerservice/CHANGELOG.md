@@ -1,6 +1,6 @@
 # Release History
 
-## 9.2.0-beta.1 (2026-04-21)
+## 9.3.0-beta.1 (2026-05-18)
 ### Features Added
 
 - New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`
@@ -12,6 +12,7 @@
 - New value `TransitEncryptionTypeMTLS` added to enum type `TransitEncryptionType`
 - New value `WorkloadRuntimeKataMshvVMIsolation` added to enum type `WorkloadRuntime`
 - New enum type `AddonAutoscaling` with values `AddonAutoscalingDisabled`, `AddonAutoscalingEnabled`
+- New enum type `AgentPoolNetworkInterfaceType` with values `AgentPoolNetworkInterfaceTypeDynamic`, `AgentPoolNetworkInterfaceTypeStandard`
 - New enum type `ClusterServiceLoadBalancerHealthProbeMode` with values `ClusterServiceLoadBalancerHealthProbeModeServiceNodePort`, `ClusterServiceLoadBalancerHealthProbeModeShared`
 - New enum type `ContainerNetworkLogs` with values `ContainerNetworkLogsDisabled`, `ContainerNetworkLogsEnabled`
 - New enum type `ControlPlaneScalingSize` with values `ControlPlaneScalingSizeH2`, `ControlPlaneScalingSizeH4`, `ControlPlaneScalingSizeH8`
@@ -26,6 +27,7 @@
 - New enum type `MeshMembershipProvisioningState` with values `MeshMembershipProvisioningStateCanceled`, `MeshMembershipProvisioningStateCreating`, `MeshMembershipProvisioningStateDeleting`, `MeshMembershipProvisioningStateFailed`, `MeshMembershipProvisioningStateSucceeded`, `MeshMembershipProvisioningStateUpdating`
 - New enum type `MigStrategy` with values `MigStrategyMixed`, `MigStrategyNone`, `MigStrategySingle`
 - New enum type `Mode` with values `ModeIPTABLES`, `ModeIPVS`, `ModeNFTABLES`
+- New enum type `NodeDisruptionPolicy` with values `NodeDisruptionPolicyAllow`, `NodeDisruptionPolicyAllowDuringMaintenanceWindow`, `NodeDisruptionPolicyBlock`
 - New enum type `Operator` with values `OperatorDoesNotExist`, `OperatorExists`, `OperatorIn`, `OperatorNotIn`
 - New enum type `PodLinkLocalAccess` with values `PodLinkLocalAccessIMDS`, `PodLinkLocalAccessNone`
 - New enum type `ResourceSKUCapacityScaleType` with values `ResourceSKUCapacityScaleTypeAutomatic`, `ResourceSKUCapacityScaleTypeManual`, `ResourceSKUCapacityScaleTypeNone`
@@ -86,8 +88,8 @@
 - New function `*OperationStatusResultClient.NewListPager(resourceGroupName string, resourceName string, options *OperationStatusResultClientListOptions) *runtime.Pager[OperationStatusResultClientListResponse]`
 - New function `NewVMSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VMSKUsClient, error)`
 - New function `*VMSKUsClient.NewListPager(location string, options *VMSKUsClientListOptions) *runtime.Pager[VMSKUsClientListResponse]`
-- New struct `AgentPoolArtifactStreamingProfile`
 - New struct `AgentPoolBlueGreenUpgradeSettings`
+- New struct `AgentPoolNetworkInterface`
 - New struct `AgentPoolRecentlyUsedVersion`
 - New struct `AutoScaleProfile`
 - New struct `Component`
@@ -95,6 +97,7 @@
 - New struct `GuardrailsAvailableVersion`
 - New struct `GuardrailsAvailableVersionsList`
 - New struct `GuardrailsAvailableVersionsProperties`
+- New struct `HardEvictionThreshold`
 - New struct `IdentityBinding`
 - New struct `IdentityBindingListResult`
 - New struct `IdentityBindingManagedIdentityProfile`
@@ -108,6 +111,7 @@
 - New struct `JWTAuthenticatorListResult`
 - New struct `JWTAuthenticatorProperties`
 - New struct `JWTAuthenticatorValidationRule`
+- New struct `KubeReserved`
 - New struct `KubernetesResourceObjectEncryptionProfile`
 - New struct `LabelSelector`
 - New struct `LabelSelectorRequirement`
@@ -146,6 +150,7 @@
 - New struct `NetworkProfileForSnapshot`
 - New struct `NetworkProfileKubeProxyConfig`
 - New struct `NetworkProfileKubeProxyConfigIpvsConfig`
+- New struct `NodeDisruptionProfile`
 - New struct `NodeImageVersion`
 - New struct `NodeImageVersionsListResult`
 - New struct `NvidiaGPUProfile`
@@ -169,15 +174,16 @@
 - New struct `SchedulerProfileSchedulerInstanceProfiles`
 - New struct `ServiceAccountImagePullProfile`
 - New struct `VMSKUsListResult`
+- New field `NodePublicIPPrefixIDs`, `SecondaryNetworkInterfaces` in struct `AgentPoolNetworkProfile`
 - New field `ComponentsByReleases`, `RecentlyUsedVersions` in struct `AgentPoolUpgradeProfileProperties`
 - New field `IsOutOfSupport` in struct `AgentPoolUpgradeProfilePropertiesUpgradesItem`
 - New field `MaxBlockedNodes` in struct `AgentPoolUpgradeSettings`
 - New field `DriverType`, `Nvidia` in struct `GPUProfile`
-- New field `SeccompDefault` in struct `KubeletConfig`
+- New field `HardEvictionThreshold`, `KubeReserved`, `SeccompDefault` in struct `KubeletConfig`
 - New field `EnableNodePublicIP`, `NodePublicIPPrefixID`, `NodePublicIPTags`, `PodSubnetID`, `VnetSubnetID` in struct `MachineNetworkProperties`
 - New field `Billing`, `ETag`, `EvictionPolicy`, `Hardware`, `Kubernetes`, `LocalDNSProfile`, `Mode`, `NodeImageVersion`, `OperatingSystem`, `Priority`, `ProvisioningState`, `Security`, `Status`, `Tags` in struct `MachineProperties`
-- New field `ArtifactStreamingProfile`, `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfile`
-- New field `ArtifactStreamingProfile`, `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfile`
+- New field `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfileProperties`
 - New field `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
 - New field `OpenTelemetryLogsAndTraces`, `OpenTelemetryMetrics` in struct `ManagedClusterAzureMonitorProfileAppMonitoring`
 - New field `ControlPlane` in struct `ManagedClusterAzureMonitorProfileMetrics`
@@ -189,14 +195,22 @@
 - New field `OutboundIPPrefixes`, `OutboundIPs` in struct `ManagedClusterNATGatewayProfile`
 - New field `ComponentsByReleases` in struct `ManagedClusterPoolUpgradeProfile`
 - New field `IsOutOfSupport` in struct `ManagedClusterPoolUpgradeProfileUpgradesItem`
-- New field `ControlPlaneScalingProfile`, `CreationData`, `EnableNamespaceResources`, `HealthMonitorProfile`, `SchedulerProfile` in struct `ManagedClusterProperties`
+- New field `ControlPlaneScalingProfile`, `CreationData`, `EnableFIPS`, `EnableNamespaceResources`, `HealthMonitorProfile`, `NodeDisruptionProfile`, `SchedulerProfile` in struct `ManagedClusterProperties`
 - New field `ImageIntegrity`, `KubernetesResourceObjectEncryptionProfile`, `NodeRestriction`, `ServiceAccountImagePullProfile` in struct `ManagedClusterSecurityProfile`
 - New field `SecurityGating` in struct `ManagedClusterSecurityProfileDefender`
-- New field `Version` in struct `ManagedClusterStorageProfileDiskCSIDriver`
 - New field `AddonAutoscaling` in struct `ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler`
 - New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
 - New field `KubeProxyConfig`, `PodLinkLocalAccess` in struct `NetworkProfile`
 - New field `Autoscale` in struct `ScaleProfile`
+
+
+## 9.2.0 (2026-05-09)
+### Features Added
+
+- New value `OSSKUAzureContainerLinux` added to enum type `OSSKU`
+- New struct `AgentPoolArtifactStreamingProfile`
+- New field `ArtifactStreamingProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `ArtifactStreamingProfile` in struct `ManagedClusterAgentPoolProfileProperties`
 
 
 ## 9.1.0 (2026-04-20)

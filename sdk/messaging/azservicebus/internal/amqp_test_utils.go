@@ -237,6 +237,10 @@ func (s *FakeAMQPSender) LinkName() string {
 	return "sender-link-name"
 }
 
+func (s *FakeAMQPSender) Properties() map[string]any {
+	return nil
+}
+
 func (s *FakeAMQPSender) Close(ctx context.Context) error {
 	s.Closed++
 	return nil

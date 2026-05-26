@@ -13,6 +13,7 @@ import (
 	"io"
 	"math/rand"
 	"os"
+	"slices"
 	"testing"
 	"time"
 
@@ -5096,6 +5097,117 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlobClientDefaultAudience() {
 
 	_, err = pbClientAudience.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Page blob data must be 512-byte aligned
+	contentSize := int64(1024) // 1 KB (2 pages)
+	pbClient := createNewPageBlobWithSize(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient, contentSize)
+
+	_, content := testcommon.GetDataAndReader(testName, int(contentSize))
+
+	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(content)),
+		blob.HTTPRange{Offset: 0, Count: contentSize}, &pageblob.UploadPagesOptions{
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+	_require.NoError(err)
+
+	// Download and verify data
+	downloadResp, err := pbClient.BlobClient().DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
+func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesDownloadRoundtripWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Page blob data must be 512-byte aligned
+	contentSize := int64(1024) // 1 KB (2 pages)
+	pbClient := createNewPageBlobWithSize(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient, contentSize)
+
+	_, content := testcommon.GetDataAndReader(testName, int(contentSize))
+
+	// Upload with SM CRC64
+	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(content)),
+		blob.HTTPRange{Offset: 0, Count: contentSize}, &pageblob.UploadPagesOptions{
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+	_require.NoError(err)
+
+	// Download with SM CRC64 validation
+	downloadResp, err := pbClient.BlobClient().DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
+func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesMultipleWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := int64(2048) // 2 KB (4 pages)
+	pbClient := createNewPageBlobWithSize(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient, contentSize)
+
+	// Upload two 1 KB page ranges with SM validation
+	page1 := make([]byte, 1024)
+	page2 := make([]byte, 1024)
+	for i := range page1 {
+		page1[i] = byte(i % 251)
+	}
+	for i := range page2 {
+		page2[i] = byte((i + 100) % 251)
+	}
+
+	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(page1)),
+		blob.HTTPRange{Offset: 0, Count: 1024}, &pageblob.UploadPagesOptions{
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+	_require.NoError(err)
+
+	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(page2)),
+		blob.HTTPRange{Offset: 1024, Count: 1024}, &pageblob.UploadPagesOptions{
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+	_require.NoError(err)
+
+	// Download and verify both pages
+	downloadResp, err := pbClient.BlobClient().DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+
+	expectedData := slices.Concat(page1, page2)
+	_require.Equal(expectedData, downloadedData)
 }
 
 func (s *PageBlobRecordedTestsSuite) TestPageBlobClientCustomAudience() {

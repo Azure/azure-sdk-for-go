@@ -5,6 +5,7 @@ package blob
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"os"
 	"sync"
@@ -389,7 +390,13 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 				return err
 			}
 			if computeReadLength {
-				atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+				if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
+					// For structured message responses, ContentLength reflects the encoded size.
+					// Use ContentRange to get the original data length.
+					atomic.AddInt64(&dataDownloaded, parseContentRangeLength(*dr.ContentRange))
+				} else {
+					atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+				}
 			}
 			err = body.Close()
 			return err
@@ -414,13 +421,20 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		return DownloadStreamResponse{}, err
 	}
 
+	// If the response contains a structured message body, wrap it with SMDecoder
+	// to validate CRC64 checksums and extract the raw data.
+	if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" {
+		dr.Body = shared.NewSMDecoder(dr.Body)
+	}
+
 	return DownloadStreamResponse{
-		client:                 b,
-		DownloadResponse:       dr,
-		getInfo:                httpGetterInfo{Range: o.Range, ETag: dr.ETag},
-		ObjectReplicationRules: deserializeORSPolicies(dr.ObjectReplicationRules),
-		cpkInfo:                o.CPKInfo,
-		cpkScope:               o.CPKScopeInfo,
+		client:                  b,
+		DownloadResponse:        dr,
+		getInfo:                 httpGetterInfo{Range: o.Range, ETag: dr.ETag},
+		ObjectReplicationRules:  deserializeORSPolicies(dr.ObjectReplicationRules),
+		cpkInfo:                 o.CPKInfo,
+		cpkScope:                o.CPKScopeInfo,
+		transactionalValidation: o.TransactionalValidation,
 	}, err
 }
 
@@ -473,4 +487,15 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}
+}
+
+// parseContentRangeLength parses the range length from a Content-Range header value.
+// Format: "bytes start-end/total" → returns end - start + 1.
+// Returns 0 if the header cannot be parsed.
+func parseContentRangeLength(contentRange string) int64 {
+	var start, end int64
+	if _, err := fmt.Sscanf(contentRange, "bytes %d-%d/", &start, &end); err != nil {
+		return 0
+	}
+	return end - start + 1
 }

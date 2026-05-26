@@ -127,25 +127,25 @@ func (testsuite *MigrationconfigsTestSuite) TestMigrationConfigs() {
 
 	// From step MigrationConfigs_Revert
 	fmt.Println("Call operation: MigrationConfigs_Revert")
-	_, err = migrationConfigsClient.Revert(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
-	testsuite.Require().NoError(err)
-
-	// From step MigrationConfigs_CompleteMigration
-	fmt.Println("Call operation: MigrationConfigs_CompleteMigration")
-	// Revert triggers a BreakPairing DR operation on the namespace that can still be
-	// running asynchronously when this call is made, causing
-	// MetadataDROperationInProgressTooManyRequests (429). Retry with a backoff until
-	// the DR operation completes.
+	// CreateAndStartMigration triggers a replication that may still be running, causing
+	// MigrationConfigOperationInProgressTooManyRequests (429). Retry until the
+	// replication operation completes.
 	for i := 0; i < 30; i++ {
-		_, err = migrationConfigsClient.CompleteMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
+		_, err = migrationConfigsClient.Revert(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
 		if err == nil {
 			break
 		}
 		var respErr *azcore.ResponseError
-		if !errors.As(err, &respErr) || respErr.ErrorCode != "MetadataDROperationInProgressTooManyRequests" {
+		if !errors.As(err, &respErr) || respErr.ErrorCode != "MigrationConfigOperationInProgressTooManyRequests" {
 			break
 		}
 		recording.Sleep(30 * time.Second)
 	}
 	testsuite.Require().NoError(err)
+
+	// Note: MigrationConfigs_CompleteMigration is intentionally omitted here.
+	// Revert and CompleteMigration are mutually exclusive terminal operations on a
+	// migration config: Revert breaks the pairing with the premium namespace, after
+	// which CompleteMigration fails with "Migration cannot be completed before pairing
+	// with a premium namespace".
 }

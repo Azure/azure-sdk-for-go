@@ -25,17 +25,14 @@ extends:
                 parameters:
                   npmrcPath: $(autoReleaseNpmrcPath)
 
-              - task: Npm@1
-                inputs:
-                  command: 'custom'
-                  customCommand: 'install -g autorest@latest'
+              - script: npm install -g autorest@latest
+                displayName: Install autorest from configured registry
                 env:
                   npm_config_userconfig: $(autoReleaseNpmrcPath)
 
-              - task: Npm@1
-                inputs:
-                  command: 'ci'
-                  workingDir: 'eng/common/tsp-client'
+              - script: npm ci
+                displayName: npm ci for tsp-client from configured registry
+                workingDirectory: eng/common/tsp-client
                 env:
                   npm_config_userconfig: $(autoReleaseNpmrcPath)
 

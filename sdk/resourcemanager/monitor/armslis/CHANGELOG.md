@@ -11,6 +11,7 @@
 ### Features Added
 
 - New values `SamplingTypeAverage` and `SamplingTypeCount` added to enum type `SamplingType`
+- Added `Condition.Values()` / `Condition.SetValues()` helpers and the `NewConditionWithValues` factory that transparently join/split list values on the wire `^^` separator used by the `in` and `notin` operators.
 
 
 ## 0.1.0 (2026-04-22)

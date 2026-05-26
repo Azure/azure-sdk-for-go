@@ -299,12 +299,25 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 			return false, err
 		}
 	}
-	// Force a refresh so the new unavailability is reflected in
-	// readEndpoints / writeEndpoints for both this request and any
-	// concurrent requests racing through resolveServiceEndpoint.
-	if err := p.gem.Update(req.Raw().Context(), true); err != nil {
-		return false, err
-	}
+	// Do NOT force a topology refresh here. MarkEndpointUnavailable* has
+	// already recomputed locationInfo.readEndpoints / writeEndpoints with
+	// the bad endpoint demoted, so the next ResolveServiceEndpoint call
+	// (with retryCount+1) will pick the next preferred region on its own.
+	//
+	// Gating the failover on a successful gem.Update(ctx, true) breaks the
+	// very scenario this retry exists for: when the regional gateway is
+	// unreachable, the account's *global* endpoint typically resolves to
+	// the same regional FE pool we just marked unavailable, so the forced
+	// refresh dials a blocked address, hits the connect timeout, and
+	// returns an error -- which would cause this function to return
+	// (false, err) and surface a connection error to the caller without
+	// ever attempting the cross-region retry.
+	//
+	// A connection error indicates regional unhealthiness, not a topology
+	// change, so skipping the synchronous metadata refresh here is safe.
+	// The invalidate() inside MarkEndpointUnavailable* ensures the next
+	// background or non-force Update will pick up any actual topology
+	// changes when the global endpoint is reachable again.
 
 	retryContext.sameRegionRetryCount = 0
 	retryContext.retryCount += 1

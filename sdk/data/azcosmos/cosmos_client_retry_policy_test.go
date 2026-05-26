@@ -601,6 +601,75 @@ func TestConnectionErrorReadFailsOverAfterThreeSameRegionAttempts(t *testing.T) 
 	assert.Equal(t, 1, rc.retryCount)
 }
 
+// TestConnectionErrorReadFailsOverWhenGlobalEndpointIsUnreachable simulates
+// a regional gateway outage where the global account endpoint also resolves
+// to the same regional FE pool that has been blocked (the common case for
+// single-region writes — global FQDN points at the write region's FE).
+//
+// Before the fix, attemptRetryOnNetworkError forced a synchronous
+// gem.Update(ctx, true) after MarkEndpointUnavailable*; the topology
+// refresh dialed the unreachable global endpoint, hit a connect timeout,
+// and the failover bailed with that error — surfacing the original
+// connection failure to the caller and never trying the next preferred
+// region whose state was already populated in the cache by
+// MarkEndpointUnavailable*.
+//
+// The fix removes the forced refresh; the cache mutation from
+// MarkEndpointUnavailable* is enough for the next ResolveServiceEndpoint
+// to pick the failover region.
+func TestConnectionErrorReadFailsOverWhenGlobalEndpointIsUnreachable(t *testing.T) {
+	srv, srvClose := mock.NewTLSServer()
+	defer srvClose()
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	require.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	// Simulate the global endpoint being unreachable for the duration of
+	// the regional outage. Any forced gem.Update will fail.
+	gemServer.SetError(&net.DNSError{})
+
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	lc := CreateMockLC(*defaultEndpoint, false /*single-master*/)
+	lc.enableCrossRegionRetries = true
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{},
+		locationCache:       lc,
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := &clientRetryPolicyVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	dnsErr := &net.DNSError{}
+	// 1 initial + 3 same-region retries that all error, then the
+	// cross-region failover attempt should reach a healthy replica.
+	for i := 0; i < 4; i++ {
+		srv.AppendError(dnsErr)
+	}
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+
+	require.NoError(t, err, "cross-region failover should not depend on a successful gem.Update")
+	rc := verifier.requests[0].retryContext
+	assert.True(t, rc.crossRegionFailoverDone, "expected one cross-region failover")
+	assert.Equal(t, 1, rc.retryCount)
+	assert.Equal(t, 0, rc.sameRegionRetryCount)
+	// 1 initial + 3 same-region retries + 1 cross-region failover.
+	assert.Equal(t, 5, srv.Requests())
+}
+
 func TestNotSentConnectionErrorWriteFailsOver(t *testing.T) {
 	// Multi-master account: writes can fail over to another write region
 	// when the failure is classified as not-sent (DNS in this case).

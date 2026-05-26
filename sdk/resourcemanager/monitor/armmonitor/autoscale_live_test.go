@@ -41,7 +41,7 @@ func (testsuite *AutoscaleTestSuite) SetupSuite() {
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.autoscaleSettingName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "autoscalesettingna", 24, false)
 	testsuite.adminPassword = recording.GetEnvVariable("ADMIN_PASSWORD", "000000000000")
-	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus2")
+	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
@@ -278,7 +278,7 @@ func (testsuite *AutoscaleTestSuite) Prepare() {
 					},
 				},
 				"sku": map[string]interface{}{
-					"name":     "Standard_D2s_v5",
+					"name":     "Standard_B2s",
 					"capacity": float64(2),
 					"tier":     "Standard",
 				},

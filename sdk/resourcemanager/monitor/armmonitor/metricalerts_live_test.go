@@ -216,7 +216,7 @@ func (testsuite *MetricalertsTestSuite) Prepare() {
 						},
 					},
 					"hardwareProfile": map[string]interface{}{
-						"vmSize": "Standard_D2s_v5",
+						"vmSize": "Standard_D2s_v3",
 					},
 					"networkProfile": map[string]interface{}{
 						"networkInterfaces": []interface{}{
@@ -265,9 +265,6 @@ func (testsuite *MetricalertsTestSuite) Prepare() {
 							"osType": "Windows",
 						},
 					},
-				},
-				"zones": []interface{}{
-					"1",
 				},
 			},
 		},

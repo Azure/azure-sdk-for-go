@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-05-20)
+## 0.12.0 (2026-05-20)
 ### Breaking Changes
 
 - Function `*DataCollectionEndpointsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, body DataCollectionEndpointResource, options *DataCollectionEndpointsClientCreateOptions)`

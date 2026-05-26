@@ -6,5 +6,5 @@ package armservicefabric
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric"
-	moduleVersion = "v3.0.0-beta.2"
+	moduleVersion = "v3.0.0-beta.1"
 )

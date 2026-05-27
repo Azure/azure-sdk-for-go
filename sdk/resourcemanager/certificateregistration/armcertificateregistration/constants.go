@@ -4,6 +4,10 @@
 
 package armcertificateregistration
 
+const (
+	version20241101 string = "2024-11-01"
+)
+
 // CertificateOrderActionType - Action type.
 type CertificateOrderActionType string
 

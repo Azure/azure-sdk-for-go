@@ -307,6 +307,9 @@ type ProfileProperties struct {
 	// The status of the Traffic Manager profile.
 	ProfileStatus *ProfileStatus
 
+	// When record type is set, a traffic manager profile will allow only endpoints that match this type.
+	RecordType *RecordType
+
 	// The traffic routing method of the Traffic Manager profile.
 	TrafficRoutingMethod *TrafficRoutingMethod
 

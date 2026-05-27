@@ -112,6 +112,7 @@ const (
 	TypeACSSMSDeliveryReportReceived                                  = "Microsoft.Communication.SMSDeliveryReportReceived"                                    // maps to ACSSMSDeliveryReportReceivedEventData
 	TypeACSSMSReceived                                                = "Microsoft.Communication.SMSReceived"                                                  // maps to ACSSMSReceivedEventData
 	TypeACSUserDisconnected                                           = "Microsoft.Communication.UserDisconnected"                                             // maps to ACSUserDisconnectedEventData
+	TypeLifecycleHookEvents                                           = "Microsoft.Compute.VirtualMachineScaleSets.LifecycleHookEvents"                        // maps to LifecycleHookEventsEventData
 	TypeContainerRegistryChartDeleted                                 = "Microsoft.ContainerRegistry.ChartDeleted"                                             // maps to ContainerRegistryChartDeletedEventData
 	TypeContainerRegistryChartPushed                                  = "Microsoft.ContainerRegistry.ChartPushed"                                              // maps to ContainerRegistryChartPushedEventData
 	TypeContainerRegistryImageDeleted                                 = "Microsoft.ContainerRegistry.ImageDeleted"                                             // maps to ContainerRegistryImageDeletedEventData

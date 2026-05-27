@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -50,9 +51,7 @@ func (h *HeatMapServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (h *HeatMapServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -68,10 +67,7 @@ func (h *HeatMapServerTransport) dispatchToMethodFake(req *http.Request, method 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -101,11 +97,7 @@ func (h *HeatMapServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	topLeftUnescaped, err := url.QueryUnescape(qp.Get("topLeft"))
-	if err != nil {
-		return nil, err
-	}
-	topLeftElements := splitHelper(topLeftUnescaped, ",")
+	topLeftElements := splitHelper(qp.Get("topLeft"), ",")
 	topLeftParam := make([]float64, len(topLeftElements))
 	for i := 0; i < len(topLeftElements); i++ {
 		parsedFloat64, parseErr := strconv.ParseFloat(topLeftElements[i], 64)
@@ -114,11 +106,7 @@ func (h *HeatMapServerTransport) dispatchGet(req *http.Request) (*http.Response,
 		}
 		topLeftParam[i] = float64(parsedFloat64)
 	}
-	botRightUnescaped, err := url.QueryUnescape(qp.Get("botRight"))
-	if err != nil {
-		return nil, err
-	}
-	botRightElements := splitHelper(botRightUnescaped, ",")
+	botRightElements := splitHelper(qp.Get("botRight"), ",")
 	botRightParam := make([]float64, len(botRightElements))
 	for i := 0; i < len(botRightElements); i++ {
 		parsedFloat64, parseErr := strconv.ParseFloat(botRightElements[i], 64)
@@ -139,7 +127,7 @@ func (h *HeatMapServerTransport) dispatchGet(req *http.Request) (*http.Response,
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HeatMapModel, req)

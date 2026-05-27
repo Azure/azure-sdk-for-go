@@ -1,14 +1,9 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.5.0 (2026-05-26)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Includes all changes from 1.5.0-beta.1.
 
 ## 1.5.0-beta.1 (2026-04-08)
 

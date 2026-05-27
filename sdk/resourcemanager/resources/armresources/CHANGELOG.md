@@ -1,5 +1,27 @@
 # Release History
 
+## 4.0.0-beta.1 (2026-05-20)
+### Breaking Changes
+
+- Struct `GenericResourceFilter` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceGroupFilter` has been removed
+- Struct `ResourceProviderOperationDisplayProperties` has been removed
+- Struct `SubResource` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New struct `SystemData`
+- New field `SystemData` in struct `GenericResource`
+- New field `SystemData` in struct `GenericResourceExpanded`
+- New field `ActionType`, `IsDataAction`, `Origin` in struct `Operation`
+- New field `SystemData` in struct `ResourceGroup`
+- New field `SystemData` in struct `TagsResource`
+
+
 ## 3.0.1 (2025-12-17)
 
 ### Other Changes

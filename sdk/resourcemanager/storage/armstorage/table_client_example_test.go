@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-06-01/TableOperationPut.json
+// Generated from example definition: 2025-08-01/TableOperationPut.json
 func ExampleTableClient_Create_tableOperationPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleTableClient_Create_tableOperationPut() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TableClientCreateResponse{
-	// 	Table: &armstorage.Table{
+	// 	Table: armstorage.Table{
 	// 		Name: to.Ptr("table6185"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/tableServices/tables"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/tableServices/default/tables/table6185"),
@@ -43,7 +43,7 @@ func ExampleTableClient_Create_tableOperationPut() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/TableOperationPutOrPatchAclsTableCreate.json
+// Generated from example definition: 2025-08-01/TableOperationPutOrPatchAclsTableCreate.json
 func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TableClientCreateResponse{
-	// 	Table: &armstorage.Table{
+	// 	Table: armstorage.Table{
 	// 		Name: to.Ptr("table6185"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/tableServices/tables"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/tableServices/default/tables/table6185"),
@@ -112,7 +112,7 @@ func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/TableOperationDelete.json
+// Generated from example definition: 2025-08-01/TableOperationDelete.json
 func ExampleTableClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleTableClient_Delete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/TableOperationGet.json
+// Generated from example definition: 2025-08-01/TableOperationGet.json
 func ExampleTableClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleTableClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TableClientGetResponse{
-	// 	Table: &armstorage.Table{
+	// 	Table: armstorage.Table{
 	// 		Name: to.Ptr("table6185"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/tableServices/tables"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/tableServices/default/tables/table6185"),
@@ -159,7 +159,7 @@ func ExampleTableClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/TableOperationList.json
+// Generated from example definition: 2025-08-01/TableOperationList.json
 func ExampleTableClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleTableClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/TableOperationPatch.json
+// Generated from example definition: 2025-08-01/TableOperationPatch.json
 func ExampleTableClient_Update_tableOperationPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleTableClient_Update_tableOperationPatch() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TableClientUpdateResponse{
-	// 	Table: &armstorage.Table{
+	// 	Table: armstorage.Table{
 	// 		Name: to.Ptr("table6185"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/tableServices/tables"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/tableServices/default/tables/table6185"),
@@ -237,7 +237,7 @@ func ExampleTableClient_Update_tableOperationPatch() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/TableOperationPutOrPatchAcls.json
+// Generated from example definition: 2025-08-01/TableOperationPutOrPatchAcls.json
 func ExampleTableClient_Update_tableOperationPutOrPatchAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,7 +277,7 @@ func ExampleTableClient_Update_tableOperationPutOrPatchAcls() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TableClientUpdateResponse{
-	// 	Table: &armstorage.Table{
+	// 	Table: armstorage.Table{
 	// 		Name: to.Ptr("table6185"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/tableServices/tables"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/tableServices/default/tables/table6185"),

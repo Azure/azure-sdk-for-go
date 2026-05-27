@@ -6,5 +6,5 @@ package armtrafficmanager
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v2.0.0-beta.1"
 )

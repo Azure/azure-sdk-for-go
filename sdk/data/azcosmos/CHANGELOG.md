@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 
+* 403/`WriteForbidden` retries refresh the global endpoint manager fire-and-forget (CAS-gated) instead of blocking on a synchronous `gem.Update`. See [PR 26889](https://github.com/Azure/azure-sdk-for-go/pull/26889).
 * Cross-region failover on a connection error now actually reaches the next preferred region. Three interlocking issues prevented `attemptRetryOnNetworkError` from ever routing to another region when the original region was unreachable, even though all the bookkeeping looked correct in tests:
   * After `MarkEndpointUnavailable*`, the policy forced a synchronous `gem.Update(ctx, true)` against the global account endpoint. The global FQDN typically resolves to the same regional FE pool as the write region, so a westus2 outage also took out the global endpoint — the refresh dialed an unreachable address, hit the connect timeout, and the failover returned that error instead of attempting the cross-region retry.
   * After the mark, the policy did `retryCount += 1`. `getPrefAvailableEndpointsLocked` demotes unavailable endpoints to the TAIL of `readEndpoints` / `writeEndpoints` rather than removing them, so with `readEndpoints = [healthy, unhealthy]` the bumped `retryCount=1` made `ResolveServiceEndpoint(1 % 2)` index right back to the just-marked unhealthy endpoint.

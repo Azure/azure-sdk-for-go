@@ -153,8 +153,9 @@ func TestFix2_ConcurrentUpdateCallersCoalesce(t *testing.T) {
 }
 
 // ----------------------------------------------------------------------------
-// F3: write-retry on 403/WriteForbidden force-refreshes the GEM on every
-// retry attempt so the client picks up topology changes immediately.
+// F3: write-retry on 403/WriteForbidden kicks off a GEM refresh per attempt
+// so the client eventually picks up topology changes -- but the refresh is
+// fire-and-forget so a stalled metadata endpoint cannot block the retry.
 // ----------------------------------------------------------------------------
 func TestFix3_WriteRetryForceRefreshesGEM(t *testing.T) {
 	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
@@ -186,12 +187,256 @@ func TestFix3_WriteRetryForceRefreshesGEM(t *testing.T) {
 	rc := &retryContext{}
 	for i := 0; i < writeRetries; i++ {
 		shouldRetry, err := retry.attemptRetryOnEndpointFailure(req, true, rc)
-		require.NoError(t, err)
-		require.True(t, shouldRetry)
+		require.NoError(t, err, "retry must not surface metadata-refresh errors")
+		require.True(t, shouldRetry, "write retries on 403/WriteForbidden must continue")
 		rc.retryCount++
 	}
-	require.Equal(t, int64(writeRetries), transport.count.Load(),
-		"write retries on 403/WriteForbidden must force-refresh the GEM on every attempt")
+	// The refresh is fire-and-forget, so wait for the detached goroutines
+	// to land at least one HTTP call. We require >=1 (not ==writeRetries)
+	// because gem.Update's single-in-flight pattern plus the policy's own
+	// asyncRefreshPending gate legitimately coalesces concurrent forced
+	// refreshes into a single GetDatabaseAccount call.
+	require.Eventually(t, func() bool {
+		return transport.count.Load() >= 1
+	}, 5*time.Second, 10*time.Millisecond,
+		"write retries on 403/WriteForbidden must kick off a GEM refresh")
+}
+
+// ----------------------------------------------------------------------------
+// F3a: 403/WriteForbidden retry must complete successfully even when the
+// asynchronous GEM refresh hits a hard failure (5xx, dial error, etc.).
+// Before the async-refresh change the policy did
+//
+//	if err := gem.Update(ctx, true); err != nil { return false, err }
+//
+// so any GEM-refresh failure short-circuited the retry and surfaced the
+// metadata error to the caller -- exactly the regression we're guarding
+// against here.
+// ----------------------------------------------------------------------------
+func TestFix3a_WriteRetrySucceedsWhenGEMRefreshFails(t *testing.T) {
+	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
+	require.NoError(t, err)
+
+	// Transport that always returns 500 -- gem.Update will fail every
+	// time. The retry must still return (true, nil).
+	transport := &countingTransport{status: http.StatusInternalServerError}
+	gemPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0",
+		azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: transport})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      defaultEndpoint.String(),
+		pipeline:            gemPipeline,
+		preferredLocations:  []string{"West US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Now(),
+	}
+	retry := &clientRetryPolicy{gem: gem}
+
+	req, err := azruntime.NewRequest(context.Background(), http.MethodPost, defaultEndpoint.String())
+	require.NoError(t, err)
+
+	rc := &retryContext{}
+	shouldRetry, err := retry.attemptRetryOnEndpointFailure(req, true, rc)
+	require.NoError(t, err, "GEM refresh failures must not surface to the retry caller")
+	require.True(t, shouldRetry, "retry must proceed regardless of GEM refresh outcome")
+}
+
+// ----------------------------------------------------------------------------
+// F3b: 408 read retry must NOT mark the request's endpoint unavailable.
+// A 408 is a per-request signal (the gateway accepted the request but
+// did not produce a response in time); demoting the whole region in the
+// location cache for unavailableLocationExpirationTime based on one
+// slow request would penalize concurrent reads against a region that
+// may be perfectly healthy.
+// ----------------------------------------------------------------------------
+func TestFix3b_RequestTimeoutDoesNotMarkEndpointUnavailable(t *testing.T) {
+	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
+	require.NoError(t, err)
+
+	transport := &countingTransport{status: http.StatusOK, body: []byte("{}")}
+	gemPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0",
+		azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: transport})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      defaultEndpoint.String(),
+		pipeline:            gemPipeline,
+		preferredLocations:  []string{"West US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Now(),
+	}
+	retry := &clientRetryPolicy{gem: gem}
+
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, defaultEndpoint.String())
+	require.NoError(t, err)
+
+	rc := &retryContext{}
+	shouldRetry, err := retry.attemptRetryOnRequestTimeout(req, false /*isWriteOperation*/, rc)
+	require.NoError(t, err)
+	require.True(t, shouldRetry)
+	require.True(t, rc.requestTimeoutRetryDone)
+
+	require.Empty(t, gem.locationCache.locationUnavailabilityInfoMap,
+		"408 must not record any endpoint as unavailable")
+	require.Equal(t, int64(0), transport.count.Load(),
+		"408 retry must not synchronously hit the GEM endpoint")
+}
+
+// ----------------------------------------------------------------------------
+// F3c: 408 read retry is non-blocking -- even a permanently-stalled GEM
+// endpoint cannot delay or fail the retry, because the 408 path no
+// longer calls gem.Update at all.
+// ----------------------------------------------------------------------------
+func TestFix3c_RequestTimeoutDoesNotBlockOnStalledGEM(t *testing.T) {
+	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
+	require.NoError(t, err)
+
+	// Hanging transport: any call would block effectively forever.
+	transport := &countingTransport{status: http.StatusOK, body: []byte("{}"), delay: 10 * time.Minute}
+	gemPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0",
+		azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: transport})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      defaultEndpoint.String(),
+		pipeline:            gemPipeline,
+		preferredLocations:  []string{"West US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Now(),
+	}
+	retry := &clientRetryPolicy{gem: gem}
+
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, defaultEndpoint.String())
+	require.NoError(t, err)
+
+	// defaultBackoff*time.Second is 1s, so give a comfortable upper bound.
+	done := make(chan struct{})
+	var shouldRetry bool
+	var retryErr error
+	go func() {
+		shouldRetry, retryErr = retry.attemptRetryOnRequestTimeout(req, false, &retryContext{})
+		close(done)
+	}()
+	select {
+	case <-done:
+	case <-time.After(5 * time.Second):
+		t.Fatal("attemptRetryOnRequestTimeout blocked on the stalled GEM endpoint")
+	}
+	require.NoError(t, retryErr)
+	require.True(t, shouldRetry)
+}
+
+// ----------------------------------------------------------------------------
+// F3d: asyncForceRefreshGEM's CAS gate (asyncRefreshPending) must coalesce
+// a retry storm. With N concurrent retries hitting a slow GEM endpoint,
+// only one refresh goroutine should reach gem.Update at a time; the GEM's
+// own single-in-flight pattern further coalesces to a single HTTP call.
+// Without the gate every retry would queue its own goroutine inside
+// gem.Update, wasting goroutine + channel overhead for no benefit.
+// ----------------------------------------------------------------------------
+func TestFix3d_AsyncRefreshCASGateCoalescesRetryStorm(t *testing.T) {
+	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
+	require.NoError(t, err)
+
+	westRegion := accountRegion{Name: "West US", Endpoint: defaultEndpoint.String()}
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{westRegion},
+		WriteRegions: []accountRegion{westRegion},
+	})
+	// Slow-but-successful GEM transport so refreshes overlap in time.
+	transport := &countingTransport{status: http.StatusOK, body: body, delay: 200 * time.Millisecond}
+	gemPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0",
+		azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: transport})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      defaultEndpoint.String(),
+		pipeline:            gemPipeline,
+		preferredLocations:  []string{"West US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Now(),
+	}
+	retry := &clientRetryPolicy{gem: gem}
+
+	const concurrency = 50
+	var wg sync.WaitGroup
+	wg.Add(concurrency)
+	for i := 0; i < concurrency; i++ {
+		go func() {
+			defer wg.Done()
+			retry.asyncForceRefreshGEM()
+		}()
+	}
+	wg.Wait()
+
+	// All asyncForceRefreshGEM callers have returned (the CAS gate is
+	// non-blocking). Wait for whichever refresh goroutine did get spawned
+	// to complete its HTTP call.
+	require.Eventually(t, func() bool {
+		return transport.count.Load() >= 1
+	}, 5*time.Second, 10*time.Millisecond,
+		"at least one refresh goroutine must reach gem.Update")
+
+	// Give any racing follow-up refresh a chance to land before we assert
+	// the upper bound. asyncRefreshPending clears in the spawned
+	// goroutine's defer, which runs AFTER gem.Update returns, so a second
+	// caller arriving in that tiny window could legitimately spawn a
+	// second refresh. The bound is "no goroutine-per-retry storm", not
+	// strictly one.
+	time.Sleep(100 * time.Millisecond)
+	require.Less(t, transport.count.Load(), int64(concurrency/2),
+		"CAS gate must coalesce concurrent retries; got %d HTTP calls for %d retries",
+		transport.count.Load(), concurrency)
+}
+
+// ----------------------------------------------------------------------------
+// F3e: asyncForceRefreshGEM must use a background context internally, not
+// the caller's context. If we threaded the caller's context (or any
+// derivative that inherits its deadline/cancellation) into gem.Update,
+// an already-cancelled or near-expired caller context would abort the
+// refresh immediately and defeat its purpose.
+// ----------------------------------------------------------------------------
+func TestFix3e_AsyncRefreshIgnoresCallerContextCancellation(t *testing.T) {
+	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
+	require.NoError(t, err)
+
+	westRegion := accountRegion{Name: "West US", Endpoint: defaultEndpoint.String()}
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{westRegion},
+		WriteRegions: []accountRegion{westRegion},
+	})
+	transport := &countingTransport{status: http.StatusOK, body: body}
+	gemPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0",
+		azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: transport})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      defaultEndpoint.String(),
+		pipeline:            gemPipeline,
+		preferredLocations:  []string{"West US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Now(),
+	}
+	retry := &clientRetryPolicy{gem: gem}
+
+	// Build a request whose context is already cancelled. The 403 path
+	// calls asyncForceRefreshGEM, which must still complete the
+	// background refresh.
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	req, err := azruntime.NewRequest(ctx, http.MethodPost, defaultEndpoint.String())
+	require.NoError(t, err)
+
+	rc := &retryContext{}
+	shouldRetry, retryErr := retry.attemptRetryOnEndpointFailure(req, true, rc)
+	require.NoError(t, retryErr)
+	require.True(t, shouldRetry)
+
+	require.Eventually(t, func() bool {
+		return transport.count.Load() >= 1
+	}, 5*time.Second, 10*time.Millisecond,
+		"cancelled caller context must not prevent the background GEM refresh")
 }
 
 // ----------------------------------------------------------------------------

@@ -145,6 +145,14 @@ func (lc *locationCache) updateLocked(writeLocations []accountRegion, readLocati
 }
 
 func (lc *locationCache) resolveServiceEndpoint(locationIndex int, resourceType resourceType, isWriteOperation, useWriteEndpoint bool) url.URL {
+	// Take a read lock for the duration of endpoint resolution. The
+	// fields read here (locationInfo, enableMultipleWriteLocations) are
+	// rewritten atomically under mapMutex.Lock() by update/updateLocked,
+	// and a concurrent forced refresh (e.g. from the retry policy's
+	// asyncForceRefreshGEM or the GEM policy's background refresh) can
+	// race with us without this lock.
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
 	if (isWriteOperation || useWriteEndpoint) && !lc.canUseMultipleWriteLocsToRoute(resourceType) {
 		if lc.enableCrossRegionRetries && len(lc.locationInfo.availWriteLocations) > 0 {
 			locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)

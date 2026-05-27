@@ -11,16 +11,71 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"runtime/debug"
+	"sync/atomic"
 	"syscall"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 type clientRetryPolicy struct {
 	gem *globalEndpointManager
+	// asyncRefreshPending gates the spawn of the async GEM refresh
+	// goroutine kicked off from HTTP-status retry paths (e.g.
+	// 403/WriteForbidden). See asyncForceRefreshGEM for rationale.
+	asyncRefreshPending atomic.Bool
+}
+
+// asyncForceRefreshGEM kicks off a forced GEM topology refresh in a
+// detached goroutine. We never want to block a data-plane retry on the
+// metadata refresh succeeding: during a regional outage the account's
+// global endpoint frequently resolves to the same regional FE pool we
+// just marked unavailable, so a synchronous Update can stall on a
+// connect timeout and prevent the failover from happening at all. The
+// invalidate() inside MarkEndpointUnavailable* already guarantees that
+// the next non-force Update will issue a real refresh once the global
+// endpoint is reachable; this goroutine just opportunistically tries to
+// pull fresh topology sooner.
+//
+// The asyncRefreshPending CAS gate prevents a retry storm (e.g. a
+// regional 403/WriteForbidden flap hitting hundreds of in-flight
+// requests at once) from spawning a goroutine per attempt. gem.Update's
+// internal singleflight collapses the actual HTTP calls into one, but
+// without this gate every queued waiter would still pay goroutine + GEM
+// channel overhead for no benefit.
+//
+// We deliberately do NOT thread the caller's context into the refresh:
+// the caller may already have burned most of its deadline budget on
+// prior retries, and inheriting a near-expired deadline would cause the
+// refresh's HTTP call to fail with DeadlineExceeded immediately,
+// defeating the "opportunistically pull fresh topology" intent.
+// gem.Update applies its own bounded timeout internally.
+func (p *clientRetryPolicy) asyncForceRefreshGEM() {
+	if !p.asyncRefreshPending.CompareAndSwap(false, true) {
+		return
+	}
+	go func() {
+		defer p.asyncRefreshPending.Store(false)
+		// gem.Update's panic-safe defer re-panics after cleanup. Recover
+		// here so a panic in the GEM pipeline does not bring down the
+		// host via this detached goroutine.
+		defer func() {
+			if r := recover(); r != nil {
+				log.Writef(azlog.EventResponse,
+					"panic in azcosmos retry-policy async GEM refresh: %v\n%s",
+					r, debug.Stack())
+			}
+		}()
+		if err := p.gem.Update(context.Background(), true); err != nil {
+			log.Writef(azlog.EventResponse,
+				"azcosmos retry-policy async GEM refresh failed: %v", err)
+		}
+	}()
 }
 
 // Retry context for the request
@@ -351,10 +406,14 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 		}
 	}
 
-	err := p.gem.Update(req.Raw().Context(), true)
-	if err != nil {
-		return false, err
-	}
+	// Fire-and-forget the topology refresh. We do NOT block the retry on
+	// its outcome: MarkEndpointUnavailable* has already invalidated the
+	// GEM cache and demoted the bad endpoint locally, so the next
+	// ResolveServiceEndpoint will pick the failover region whether or
+	// not the metadata refresh succeeds. Blocking here would surface a
+	// transient metadata failure to the caller and skip the very
+	// cross-region retry this function is supposed to perform.
+	p.asyncForceRefreshGEM()
 
 	time.Sleep(defaultBackoff * time.Second)
 	return true, nil
@@ -407,14 +466,6 @@ func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, is
 		return false, nil
 	}
 
-	if err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
-		return false, err
-	}
-	// Force a refresh so the unavailability is reflected in
-	// readEndpoints for this and concurrent requests.
-	if err := p.gem.Update(req.Raw().Context(), true); err != nil {
-		return false, err
-	}
 	retryContext.requestTimeoutRetryDone = true
 	// Preserve the caller's cancellation cause if their context fires
 	// during the backoff so errors.Is(returned, context.DeadlineExceeded)

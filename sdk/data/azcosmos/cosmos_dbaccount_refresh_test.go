@@ -153,11 +153,17 @@ func TestFix2_ConcurrentUpdateCallersCoalesce(t *testing.T) {
 }
 
 // ----------------------------------------------------------------------------
-// F3: write-retry on 403/WriteForbidden kicks off a GEM refresh per attempt
-// so the client eventually picks up topology changes -- but the refresh is
-// fire-and-forget so a stalled metadata endpoint cannot block the retry.
+// F3: write-retry on 403/WriteForbidden kicks off an opportunistic GEM
+// refresh on the FIRST mark for each endpoint and on subsequent marks
+// at most once per forcedRefreshMinInterval (rate-limited). It must
+// NOT issue one refresh per retry (that would storm
+// GetDatabaseAccount during a sustained 403 flap) and it must NOT
+// issue zero refreshes after the first (single-master writes need
+// recovery when the first refresh returns stale topology). The
+// refresh is fire-and-forget so a stalled metadata endpoint cannot
+// block the retry.
 // ----------------------------------------------------------------------------
-func TestFix3_WriteRetryForceRefreshesGEM(t *testing.T) {
+func TestFix3_WriteRetryKicksOffFireAndForgetRefresh(t *testing.T) {
 	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
 	require.NoError(t, err)
 
@@ -185,21 +191,33 @@ func TestFix3_WriteRetryForceRefreshesGEM(t *testing.T) {
 
 	const writeRetries = 5
 	rc := &retryContext{}
+	start := time.Now()
 	for i := 0; i < writeRetries; i++ {
 		shouldRetry, err := retry.attemptRetryOnEndpointFailure(req, true, rc)
 		require.NoError(t, err, "retry must not surface metadata-refresh errors")
 		require.True(t, shouldRetry, "write retries on 403/WriteForbidden must continue")
 		rc.retryCount++
 	}
-	// The refresh is fire-and-forget, so wait for the detached goroutines
-	// to land at least one HTTP call. We require >=1 (not ==writeRetries)
-	// because gem.Update's single-in-flight pattern plus the policy's own
-	// asyncRefreshPending gate legitimately coalesces concurrent forced
-	// refreshes into a single GetDatabaseAccount call.
+	elapsed := time.Since(start)
+
+	// At least one refresh must run (the first 403 always forces).
 	require.Eventually(t, func() bool {
 		return transport.count.Load() >= 1
 	}, 5*time.Second, 10*time.Millisecond,
-		"write retries on 403/WriteForbidden must kick off a GEM refresh")
+		"first 403 must kick off a GEM refresh")
+	// Give any racing follow-up refresh a chance to land.
+	time.Sleep(200 * time.Millisecond)
+
+	// Upper bound: rate-limited to at most one refresh per
+	// forcedRefreshMinInterval. With 5 retries each sleeping
+	// defaultBackoff*time.Second between attempts, elapsed ~= 5s.
+	// Expected refreshes: 1 (initial) + floor(elapsed /
+	// forcedRefreshMinInterval) at most. Allow +1 for boundary
+	// scheduling slack.
+	maxExpected := int64(1 + elapsed/forcedRefreshMinInterval) + 1
+	require.LessOrEqual(t, transport.count.Load(), maxExpected,
+		"sustained 403s against the same endpoint must be rate-limited (elapsed=%v got=%d max=%d)",
+		elapsed, transport.count.Load(), maxExpected)
 }
 
 // ----------------------------------------------------------------------------
@@ -240,6 +258,14 @@ func TestFix3a_WriteRetrySucceedsWhenGEMRefreshFails(t *testing.T) {
 	shouldRetry, err := retry.attemptRetryOnEndpointFailure(req, true, rc)
 	require.NoError(t, err, "GEM refresh failures must not surface to the retry caller")
 	require.True(t, shouldRetry, "retry must proceed regardless of GEM refresh outcome")
+
+	// Sanity check: the async refresh actually ran (and failed). Without
+	// this, a regression that made asyncForceRefreshGEM a no-op would
+	// still pass the (true, nil) assertions above.
+	require.Eventually(t, func() bool {
+		return transport.count.Load() >= 1
+	}, 5*time.Second, 10*time.Millisecond,
+		"async GEM refresh must run even though it fails")
 }
 
 // ----------------------------------------------------------------------------
@@ -420,23 +446,462 @@ func TestFix3e_AsyncRefreshIgnoresCallerContextCancellation(t *testing.T) {
 	}
 	retry := &clientRetryPolicy{gem: gem}
 
-	// Build a request whose context is already cancelled. The 403 path
-	// calls asyncForceRefreshGEM, which must still complete the
-	// background refresh.
-	ctx, cancel := context.WithCancel(context.Background())
-	cancel()
-	req, err := azruntime.NewRequest(ctx, http.MethodPost, defaultEndpoint.String())
-	require.NoError(t, err)
-
-	rc := &retryContext{}
-	shouldRetry, retryErr := retry.attemptRetryOnEndpointFailure(req, true, rc)
-	require.NoError(t, retryErr)
-	require.True(t, shouldRetry)
+	// Call asyncForceRefreshGEM directly. We deliberately bypass
+	// attemptRetryOnEndpointFailure here because that path now uses
+	// sleepWithContext for the backoff (so caller-cancellation correctly
+	// short-circuits the retry budget). The contract we're verifying is
+	// narrower: asyncForceRefreshGEM itself must not inherit any caller
+	// context -- it runs on context.Background() so an already-cancelled
+	// or near-expired caller deadline cannot abort the background HTTP
+	// call.
+	retry.asyncForceRefreshGEM()
 
 	require.Eventually(t, func() bool {
 		return transport.count.Load() >= 1
 	}, 5*time.Second, 10*time.Millisecond,
-		"cancelled caller context must not prevent the background GEM refresh")
+		"asyncForceRefreshGEM must run on context.Background() and complete its HTTP call")
+}
+
+// ----------------------------------------------------------------------------
+// F3f: when the first forced async refresh fails, a subsequent 403 on
+// the SAME endpoint must be allowed to spawn another forced refresh.
+// Before the fix the wasAlreadyUnavailable guard unconditionally
+// suppressed every subsequent forced refresh, which stranded
+// single-master writes on the failed write endpoint for the GEM
+// throttle window (refreshTimeInterval, default 5 min) after the
+// metadata endpoint recovered.
+//
+// We exercise this at the policy unit level by driving
+// asyncForceRefreshGEM's state machine directly: the first call must
+// land in asyncRefreshFailed, and the retry-policy's gating logic
+// (mirrored here) must permit a new refresh when state == Failed.
+// ----------------------------------------------------------------------------
+func TestFix3f_FailedAsyncRefreshIsRetriedOnNextSameEndpoint403(t *testing.T) {
+	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
+	require.NoError(t, err)
+
+	// A transport that returns an error on demand; we toggle errOn to
+	// flip between failing and succeeding refreshes.
+	var errOn atomic.Bool
+	errOn.Store(true)
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: defaultEndpoint.String()}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: defaultEndpoint.String()}},
+	})
+	transport := &countingTransport{
+		respFunc: func() (int, []byte) {
+			if errOn.Load() {
+				// Return 500 with a body that will not parse; pipeline
+				// surfaces this as an error and azcore retry does NOT
+				// retry a 500 with no Retry-After... wait, it does.
+				// Instead use a non-retriable status the GEM treats as
+				// an error: 400.
+				return http.StatusBadRequest, []byte(`{"code":"BadRequest"}`)
+			}
+			return http.StatusOK, body
+		},
+	}
+	gemPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0",
+		azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: transport})
+	gem := &globalEndpointManager{
+		clientEndpoint:      defaultEndpoint.String(),
+		pipeline:            gemPipeline,
+		preferredLocations:  []string{"West US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Now(),
+	}
+	retry := &clientRetryPolicy{gem: gem}
+
+	// First forced refresh: spawns goroutine, transport returns 400 ->
+	// gem.Update returns an error -> state should land at Failed.
+	require.True(t, retry.asyncForceRefreshGEM(), "first call must spawn the refresh goroutine")
+	deadline := time.Now().Add(5 * time.Second)
+	for time.Now().Before(deadline) {
+		if retry.asyncRefreshState.Load() == asyncRefreshFailed {
+			break
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	require.Equal(t, asyncRefreshFailed, retry.asyncRefreshState.Load(),
+		"first forced refresh must record Failed (count=%d)", transport.count.Load())
+	firstCount := transport.count.Load()
+	require.GreaterOrEqual(t, firstCount, int64(1), "first refresh must hit the transport")
+
+	// Now make the transport succeed and call asyncForceRefreshGEM
+	// again. With state == Failed it MUST spawn a new goroutine even
+	// though no fresh invalidation happened.
+	errOn.Store(false)
+	require.True(t, retry.asyncForceRefreshGEM(),
+		"second call must be allowed because previous refresh failed")
+	deadline = time.Now().Add(5 * time.Second)
+	for time.Now().Before(deadline) {
+		if retry.asyncRefreshState.Load() == asyncRefreshIdle && transport.count.Load() > firstCount {
+			break
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	require.Equal(t, asyncRefreshIdle, retry.asyncRefreshState.Load(),
+		"second forced refresh must succeed (count=%d)", transport.count.Load())
+	require.Greater(t, transport.count.Load(), firstCount,
+		"second refresh must hit the transport (first=%d total=%d)", firstCount, transport.count.Load())
+
+	// And once Idle, a third call (no failure, no invalidation) is
+	// allowed too (Idle state always permits a new refresh).
+	require.True(t, retry.asyncForceRefreshGEM(),
+		"third call from Idle state must be allowed")
+}
+
+// ----------------------------------------------------------------------------
+// F1c: a forced refresh request that arrives while a stale refresh is
+// in flight, where invalidate() fires WHILE the waiter is blocked on
+// the in-flight, must still trigger a fresh post-invalidation refresh.
+// Before the fix the waiter sampled invalidationGen before the wait,
+// so any invalidation during the wait was lost and the waiter returned
+// the stale (pre-invalidation) flight result.
+// ----------------------------------------------------------------------------
+func TestFix1c_ForceRefreshWaiterReReadsInvalidationGenAfterWait(t *testing.T) {
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+	})
+	transport := &countingTransport{status: http.StatusOK, body: body, delay: 250 * time.Millisecond}
+	gem := newGEMWithTransport(t, []string{"West US"}, transport, 5*time.Minute)
+
+	// 1) Kick off a refresh (becomes the leader/inflight).
+	leaderDone := make(chan struct{})
+	go func() {
+		defer close(leaderDone)
+		_ = gem.Update(context.Background(), false)
+	}()
+	require.Eventually(t, gem.hasInflight, 2*time.Second, 5*time.Millisecond,
+		"leader must enter the in-flight slot")
+
+	// 2) Start a forceRefresh waiter while the leader is still in flight.
+	waiterStart := make(chan struct{})
+	waiterDone := make(chan struct{})
+	go func() {
+		close(waiterStart)
+		_ = gem.Update(context.Background(), true)
+		close(waiterDone)
+	}()
+	<-waiterStart
+
+	// 3) While the waiter is blocked on <-leaderFlight.done, invalidate.
+	//    The leader will finish soon (delay=250ms); the waiter must
+	//    observe the post-invalidate genAtStart on re-read and loop.
+	time.Sleep(50 * time.Millisecond)
+	mark, _ := url.Parse("https://fake.documents.azure.com:443/")
+	_, markErr := gem.MarkEndpointUnavailableForWrite(*mark)
+	require.NoError(t, markErr)
+
+	// 4) Both goroutines must complete.
+	select {
+	case <-leaderDone:
+	case <-time.After(5 * time.Second):
+		t.Fatal("leader refresh did not complete")
+	}
+	select {
+	case <-waiterDone:
+	case <-time.After(5 * time.Second):
+		t.Fatal("waiter did not complete; likely stuck looping or never loops")
+	}
+
+	// 5) Expect exactly 2 HTTP calls: the leader's, plus the
+	//    post-invalidation refresh the waiter should have led after
+	//    looping. Without the fix this would be 1 (waiter returned the
+	//    stale flight without looping).
+	require.Equal(t, int64(2), transport.count.Load(),
+		"waiter must loop and lead a fresh refresh after invalidation during wait")
+}
+
+// ----------------------------------------------------------------------------
+// F1d: a forceRefresh LEADER (not waiter) whose flight gets invalidated
+// mid-flight must loop and lead a fresh refresh. Before the fix, only
+// waiters re-read invalidationGen after their wait; a leader whose own
+// genAtStart predated a mid-flight invalidate() would simply return,
+// leaving asyncRefreshState=Idle in the retry policy and silently
+// skipping the post-invalidation refresh the caller actually needed.
+// ----------------------------------------------------------------------------
+func TestFix1d_ForceRefreshLeaderLoopsOnMidFlightInvalidation(t *testing.T) {
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+	})
+	transport := &countingTransport{status: http.StatusOK, body: body, delay: 250 * time.Millisecond}
+	gem := newGEMWithTransport(t, []string{"West US"}, transport, 5*time.Minute)
+
+	// Kick off a forceRefresh as leader.
+	leaderDone := make(chan error, 1)
+	go func() {
+		leaderDone <- gem.Update(context.Background(), true /*forceRefresh*/)
+	}()
+	require.Eventually(t, gem.hasInflight, 2*time.Second, 5*time.Millisecond,
+		"leader must enter the in-flight slot")
+
+	// Fire invalidate() during the leader's flight.
+	time.Sleep(50 * time.Millisecond)
+	mark, _ := url.Parse("https://fake.documents.azure.com:443/")
+	_, err := gem.MarkEndpointUnavailableForWrite(*mark)
+	require.NoError(t, err)
+
+	// The leader's first flight will complete; the outer loop must
+	// detect latestGen > genAtStart and lead a second flight. Wait for
+	// the entire Update call to return.
+	select {
+	case updateErr := <-leaderDone:
+		require.NoError(t, updateErr)
+	case <-time.After(5 * time.Second):
+		t.Fatal("leader Update did not return; likely never loops")
+	}
+
+	// Expect exactly 2 HTTP calls: the original flight that predated
+	// the invalidation + the post-invalidation refresh the leader led
+	// after looping. Without the fix this would be 1.
+	require.Equal(t, int64(2), transport.count.Load(),
+		"leader must loop and lead a fresh refresh after mid-flight invalidation")
+}
+
+// ----------------------------------------------------------------------------
+// F3g: attemptRetryOnSessionUnavailable must snapshot
+// (enableMultipleWriteLocations, availReadLocations, availWriteLocations)
+// atomically. Otherwise a concurrent locationCache.update can flip the
+// multi-write decision between the CanUseMultipleWriteLocations() check
+// and the subsequent slice-length sampling, producing a routing decision
+// that mixes pre- and post-refresh topology state.
+// ----------------------------------------------------------------------------
+func TestFix3g_SessionUnavailableSnapshotIsAtomic(t *testing.T) {
+	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
+	require.NoError(t, err)
+	lc := CreateMockLC(*defaultEndpoint, true /*multiMaster*/)
+	multiWrite, readN, writeN := lc.sessionRetrySnapshot()
+	require.True(t, multiWrite, "multi-write must be reported")
+	require.Greater(t, readN, 0, "read count must be populated")
+	require.Greater(t, writeN, 0, "write count must be populated")
+
+	// Concurrent flip+snapshot race: a hostile updater toggles
+	// enableMultipleWriteLocations and rewrites the slices repeatedly
+	// while a reader takes snapshots. Each snapshot must be internally
+	// consistent: multiWrite == true => write/read slices are the
+	// multi-master shape that was current at the lock acquisition.
+	stop := make(chan struct{})
+	go func() {
+		toggle := true
+		for {
+			select {
+			case <-stop:
+				return
+			default:
+			}
+			toggle = !toggle
+			_ = lc.update(nil, nil, nil, &toggle)
+		}
+	}()
+	defer close(stop)
+
+	deadline := time.Now().Add(200 * time.Millisecond)
+	for time.Now().Before(deadline) {
+		mw, rN, wN := lc.sessionRetrySnapshot()
+		// The snapshot must come from a single locked read. We can't
+		// directly verify that without instrumentation, but at minimum
+		// the returned tuple must be a value (not a panic / negative).
+		require.GreaterOrEqual(t, rN, 0)
+		require.GreaterOrEqual(t, wN, 0)
+		_ = mw
+	}
+}
+
+// ----------------------------------------------------------------------------
+// F3h: when the first forced refresh returns successfully but the
+// metadata still reflects pre-failover topology (a common race during
+// single-master account failovers), the retry policy MUST be able to
+// force another refresh against the same already-unavailable endpoint
+// after forcedRefreshMinInterval. Otherwise the policy's wasAlreadyUnavailable
+// gate plus asyncRefreshState=Idle on success would suppress every
+// subsequent forced refresh and leave the client stuck on the bad
+// write endpoint until the GEM throttle expires (default 5 minutes).
+//
+// We verify the gating function staleForcedRefresh() and the spawn
+// decision directly rather than driving the full attemptRetryOnEndpointFailure
+// (which sleeps defaultBackoff between calls and would couple this
+// test to that timing).
+// ----------------------------------------------------------------------------
+func TestFix3h_RepeatWriteForbiddenForcesRefreshAfterRateWindow(t *testing.T) {
+	defaultEndpoint, err := url.Parse("https://fake.documents.azure.com:443/")
+	require.NoError(t, err)
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: defaultEndpoint.String()}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: defaultEndpoint.String()}},
+	})
+	transport := &countingTransport{status: http.StatusOK, body: body}
+	gemPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0",
+		azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: transport})
+	gem := &globalEndpointManager{
+		clientEndpoint:      defaultEndpoint.String(),
+		pipeline:            gemPipeline,
+		preferredLocations:  []string{"West US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Now(),
+	}
+	retry := &clientRetryPolicy{gem: gem}
+
+	// Before any refresh has run, staleForcedRefresh() must return true
+	// so the very first 403 unconditionally triggers a refresh.
+	require.True(t, retry.staleForcedRefresh(),
+		"with no recorded prior refresh, staleForcedRefresh must allow a spawn")
+
+	// Spawn a real refresh and wait for it to complete -- this populates
+	// lastForcedRefreshUnixNano with "now".
+	require.True(t, retry.asyncForceRefreshGEM())
+	require.Eventually(t, func() bool {
+		return retry.asyncRefreshState.Load() == asyncRefreshIdle && transport.count.Load() >= 1
+	}, 5*time.Second, 10*time.Millisecond, "first refresh must complete")
+	require.NotZero(t, retry.lastForcedRefreshUnixNano.Load(),
+		"the goroutine's defer must record completion time")
+
+	// Immediately after the first refresh completes, staleForcedRefresh()
+	// must return false so a follow-up 403 on the same endpoint does
+	// NOT spawn another refresh -- the rate-limit window has not
+	// elapsed and a tight 403 loop must not storm GetDatabaseAccount.
+	require.False(t, retry.staleForcedRefresh(),
+		"within forcedRefreshMinInterval of a completed refresh, follow-up 403s must be rate-limited")
+
+	// Simulate the rate window elapsing by rewinding the recorded
+	// timestamp by forcedRefreshMinInterval + a small slack. Now the
+	// gate must allow a new refresh.
+	retry.lastForcedRefreshUnixNano.Store(time.Now().Add(-forcedRefreshMinInterval - 50*time.Millisecond).UnixNano())
+	require.True(t, retry.staleForcedRefresh(),
+		"after forcedRefreshMinInterval has elapsed, repeat 403 must be allowed to spawn a new refresh")
+}
+
+// ----------------------------------------------------------------------------
+// F1e: the forceRefresh leader's mid-flight-invalidation loop must be
+// bounded. Under sustained invalidations the loop could otherwise spin
+// indefinitely inside a single Update call, monopolizing the inflight
+// slot. After maxForceRefreshRetries iterations the call returns; the
+// retry policy state machine then sees the outcome and the NEXT caller
+// can lead a fresh attempt.
+// ----------------------------------------------------------------------------
+func TestFix1e_ForceRefreshLeaderLoopIsBounded(t *testing.T) {
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+	})
+	// Slow transport so we have time to invalidate during each flight.
+	transport := &countingTransport{status: http.StatusOK, body: body, delay: 80 * time.Millisecond}
+	gem := newGEMWithTransport(t, []string{"West US"}, transport, 5*time.Minute)
+
+	// Hostile concurrent invalidator: keeps firing invalidate() so
+	// every leader iteration sees latestGen > genAtStart.
+	stop := make(chan struct{})
+	go func() {
+		mark, _ := url.Parse("https://fake.documents.azure.com:443/")
+		for {
+			select {
+			case <-stop:
+				return
+			case <-time.After(5 * time.Millisecond):
+				_, _ = gem.MarkEndpointUnavailableForWrite(*mark)
+			}
+		}
+	}()
+	defer close(stop)
+
+	start := time.Now()
+	err := gem.Update(context.Background(), true /*forceRefresh*/)
+	elapsed := time.Since(start)
+	require.NoError(t, err)
+
+	// 1 initial + maxForceRefreshRetries loop iterations = up to
+	// maxForceRefreshRetries+1 flights. Each takes ~80ms; total must
+	// be far less than runaway (multi-second). 80ms * (3+1) = 320ms
+	// nominal; allow up to 2s of scheduler slack.
+	require.LessOrEqual(t, transport.count.Load(), int64(maxForceRefreshRetries+1),
+		"leader loop must be bounded by maxForceRefreshRetries (count=%d)", transport.count.Load())
+	require.Less(t, elapsed, 2*time.Second,
+		"leader loop must return promptly under sustained invalidations (elapsed=%v count=%d)", elapsed, transport.count.Load())
+}
+
+// ----------------------------------------------------------------------------
+// F1f: a forceRefresh WAITER (one that joins an in-flight refresh
+// rather than leading) must also be bounded by maxForceRefreshRetries.
+// Before this fix, the waiter "continue" path did not increment the
+// retry counter, so a sustained leadership-churn pattern (other
+// goroutines repeatedly winning each subsequent flight while
+// invalidate() keeps firing) could keep one waiter joining stale
+// flights indefinitely. Now the leader and waiter paths share a
+// single budget.
+// ----------------------------------------------------------------------------
+func TestFix1f_ForceRefreshWaiterLoopIsBounded(t *testing.T) {
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+	})
+	// Each flight takes ~80ms.
+	transport := &countingTransport{status: http.StatusOK, body: body, delay: 80 * time.Millisecond}
+	gem := newGEMWithTransport(t, []string{"West US"}, transport, 5*time.Minute)
+
+	// 1) Kick off a long-running leader so the waiter under test will
+	//    arrive while inflight != nil.
+	leaderDone := make(chan struct{})
+	go func() {
+		defer close(leaderDone)
+		_ = gem.Update(context.Background(), false /*not force*/)
+	}()
+	require.Eventually(t, gem.hasInflight, 2*time.Second, 5*time.Millisecond,
+		"leader must enter the in-flight slot first")
+
+	// 2) Hostile background pattern: keep firing invalidate() so every
+	//    flight the waiter observes pre-dates a later invalidation,
+	//    AND keep starting new leaders the moment the previous
+	//    flight clears so the waiter never gets to lead itself.
+	stop := make(chan struct{})
+	defer close(stop)
+	mark, _ := url.Parse("https://fake.documents.azure.com:443/")
+	go func() {
+		for {
+			select {
+			case <-stop:
+				return
+			case <-time.After(5 * time.Millisecond):
+				_, _ = gem.MarkEndpointUnavailableForWrite(*mark)
+			}
+		}
+	}()
+	go func() {
+		for {
+			select {
+			case <-stop:
+				return
+			default:
+				_ = gem.Update(context.Background(), false)
+			}
+		}
+	}()
+
+	// 3) Now start a forceRefresh waiter and time how long it takes
+	//    to return. It should bail out after the shared retry budget
+	//    is exhausted, NOT spin indefinitely.
+	start := time.Now()
+	waiterDone := make(chan error, 1)
+	go func() {
+		waiterDone <- gem.Update(context.Background(), true /*forceRefresh*/)
+	}()
+	select {
+	case waiterErr := <-waiterDone:
+		require.NoError(t, waiterErr)
+	case <-time.After(5 * time.Second):
+		t.Fatalf("forceRefresh waiter did not return; likely unbounded")
+	}
+	elapsed := time.Since(start)
+	// 4 flights * 80ms each (leader's flight + 3 retry-budget loops) =
+	// ~320ms nominal upper bound. Allow scheduler slack but require
+	// significantly less than runaway (multi-second).
+	require.Less(t, elapsed, 2*time.Second,
+		"forceRefresh waiter must return promptly under leadership churn (elapsed=%v)", elapsed)
+
+	<-leaderDone
 }
 
 // ----------------------------------------------------------------------------
@@ -511,7 +976,7 @@ func TestFix3c_ConcurrentSameEndpointMarksAreBounded(t *testing.T) {
 	for i := 0; i < concurrency; i++ {
 		go func() {
 			defer wg.Done()
-			_ = gem.MarkEndpointUnavailableForWrite(*defaultEndpoint)
+			_, _ = gem.MarkEndpointUnavailableForWrite(*defaultEndpoint)
 		}()
 		go func() {
 			defer wg.Done()
@@ -955,7 +1420,8 @@ func TestFix7_InvalidateThenRefreshFailureDoesNotStallDataPlane(t *testing.T) {
 
 	// 2. Simulate a regional 403 -> MarkEndpointUnavailableForWrite -> invalidate.
 	west, _ := url.Parse("https://west-us.documents.azure.com:443/")
-	require.NoError(t, gem.MarkEndpointUnavailableForWrite(*west))
+	_, err = gem.MarkEndpointUnavailableForWrite(*west)
+	require.NoError(t, err)
 
 	// 3. populated() must remain true even though lastUpdateTime is zero.
 	require.True(t, gem.populated(),

@@ -1116,6 +1116,181 @@ func TestClassifyNetworkError(t *testing.T) {
 	}
 }
 
+// TestWriteForbiddenFailsOverToHealthyRegion is the routing-level
+// regression for the 403/WriteForbidden path. It mirrors
+// TestConnectionErrorReadFailsOverWhenGlobalEndpointIsUnreachable for
+// the network-error path: two distinct backend mock servers wired
+// through a host-routing transport, the first returns
+// 403/WriteForbidden, and the failover must reach the second.
+//
+// Before this PR also fixed the 403 path, MarkEndpointUnavailable*
+// demoted the bad write endpoint to the tail of writeEndpoints, then
+// the outer Do() loop bumped retryContext.retryCount += 1, and the
+// next ResolveServiceEndpoint(1 % 2) routed right back to the demoted
+// bad endpoint. The fix sets retryContext.resolveFromHead = true so
+// the next resolve uses locationIndex 0.
+func TestWriteForbiddenFailsOverToHealthyRegion(t *testing.T) {
+	badSrv, badClose := mock.NewTLSServer()
+	defer badClose()
+	goodSrv, goodClose := mock.NewTLSServer()
+	defer goodClose()
+
+	badURL, err := url.Parse(badSrv.URL())
+	require.NoError(t, err)
+	goodURL, err := url.Parse(goodSrv.URL())
+	require.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetError(&net.DNSError{})
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true /*enableCrossRegionRetries*/)
+	require.NoError(t, lc.update(
+		[]accountRegion{
+			{Name: "East US", Endpoint: badSrv.URL()},
+			{Name: "Central US", Endpoint: goodSrv.URL()},
+		},
+		[]accountRegion{
+			{Name: "East US", Endpoint: badSrv.URL()},
+			{Name: "Central US", Endpoint: goodSrv.URL()},
+		},
+		[]string{"East US", "Central US"},
+		boolPtr(true), // enable multi-master so writes can fail over
+	))
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{"East US", "Central US"},
+		locationCache:       lc,
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	routingTransport := routingMockTransport{
+		byHost: map[string]*mock.Server{
+			badURL.Host:  badSrv,
+			goodURL.Host: goodSrv,
+		},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := &clientRetryPolicyVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{verifier, retryPolicy}}, &policy.ClientOptions{Transport: &routingTransport})
+	client := &Client{endpoint: badSrv.URL(), endpointUrl: badURL, internal: internalClient, gem: gem}
+
+	// 1 initial 403/WriteForbidden on the bad region.
+	badSrv.AppendResponse(
+		mock.WithHeader("x-ms-substatus", subStatusWriteForbidden),
+		mock.WithStatusCode(http.StatusForbidden))
+	// Cross-region failover should hit the good region.
+	goodSrv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	item := map[string]interface{}{"id": "1", "value": "2"}
+	marshalled, mErr := json.Marshal(item)
+	require.NoError(t, mErr)
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+	require.NoError(t, err, "403/WriteForbidden must fail over to the healthy region")
+
+	// Exactly one request on each: 1 initial 403 against badSrv, 1
+	// failover success against goodSrv. A regression that re-routed to
+	// the demoted endpoint would show 2 requests on badSrv.
+	assert.Equal(t, 1, badSrv.Requests(), "no further requests should hit the demoted write endpoint")
+	assert.Equal(t, 1, goodSrv.Requests(), "the failover request must reach the healthy write endpoint")
+}
+
+// TestConnectionErrorFailoverResetsNonZeroRetryCount covers the mixed
+// failure sequence: a prior HTTP-status retry (e.g. 408) bumps
+// retryCount, then a connection error triggers the cross-region
+// failover. The failover must still land on the healthy region; if the
+// connection-error path merely "does not increment" retryCount instead
+// of forcing the next resolve to head, the inherited non-zero index
+// indexes back to the demoted-tail bad endpoint.
+func TestConnectionErrorFailoverResetsNonZeroRetryCount(t *testing.T) {
+	badSrv, badClose := mock.NewTLSServer()
+	defer badClose()
+	goodSrv, goodClose := mock.NewTLSServer()
+	defer goodClose()
+
+	badURL, err := url.Parse(badSrv.URL())
+	require.NoError(t, err)
+	goodURL, err := url.Parse(goodSrv.URL())
+	require.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetError(&net.DNSError{})
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true)
+	require.NoError(t, lc.update(
+		[]accountRegion{{Name: "East US", Endpoint: badSrv.URL()}},
+		[]accountRegion{
+			{Name: "East US", Endpoint: badSrv.URL()},
+			{Name: "Central US", Endpoint: goodSrv.URL()},
+		},
+		[]string{"East US", "Central US"},
+		nil,
+	))
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{"East US", "Central US"},
+		locationCache:       lc,
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	routingTransport := routingMockTransport{
+		byHost: map[string]*mock.Server{
+			badURL.Host:  badSrv,
+			goodURL.Host: goodSrv,
+		},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := &clientRetryPolicyVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{verifier, retryPolicy}}, &policy.ClientOptions{Transport: &routingTransport})
+	client := &Client{endpoint: badSrv.URL(), endpointUrl: badURL, internal: internalClient, gem: gem}
+
+	// Sequence on badSrv:
+	//   1) 408 (read) -> outer loop bumps retryCount to 1, picks
+	//      readEndpoints[1] = Central US for the next attempt.
+	// Sequence on goodSrv (now selected):
+	//   2) initial attempt: 4x DNSError (initial + 3 same-region) ->
+	//      triggers cross-region failover via attemptRetryOnNetworkError.
+	// After the failover the inherited retryCount is 1 (or higher).
+	// resolveFromHead must force the next resolve to index 0, which
+	// after demote-to-tail of Central US is East US (badSrv).
+	//   3) failover hits badSrv again: serve a 200.
+	badSrv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	badSrv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+
+	dnsErr := &net.DNSError{}
+	for i := 0; i < 4; i++ {
+		goodSrv.AppendError(dnsErr)
+	}
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	require.NoError(t, err, "mixed 408+connection-error sequence must still fail over to a healthy host")
+
+	rc := verifier.requests[0].retryContext
+	assert.True(t, rc.requestTimeoutRetryDone, "the 408 retry should have run")
+	assert.True(t, rc.crossRegionFailoverDone, "the connection-error failover should have run")
+	// 1 initial 408 + 1 final success against badSrv.
+	assert.Equal(t, 2, badSrv.Requests(), "expected initial 408 + post-failover success on the head-of-list endpoint")
+	// 1 initial + 3 same-region retries against goodSrv (the 408 routed us here, then DNS killed it).
+	assert.Equal(t, 4, goodSrv.Requests(), "expected initial + 3 same-region attempts before failover gave up on the bad region")
+}
+
+func boolPtr(b bool) *bool { return &b }
+
 func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
 	availableWriteLocs := []string{"East US"}
 	if isMultiMaster {

@@ -61,6 +61,11 @@ type globalEndpointManager struct {
 type updateFlight struct {
 	done chan struct{}
 	err  error
+	// genAtStart is the invalidationGen the leader observed when it
+	// claimed the flight. Waiters use it to decide whether the flight
+	// pre-dates a later invalidate() (in which case forceRefresh callers
+	// must loop and start a fresh flight after this one completes).
+	genAtStart uint64
 }
 
 func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableCrossRegionRetries bool) (*globalEndpointManager, error) {
@@ -93,7 +98,7 @@ func (gem *globalEndpointManager) GetReadEndpoints() ([]url.URL, error) {
 	return gem.locationCache.readEndpoints()
 }
 
-func (gem *globalEndpointManager) MarkEndpointUnavailableForWrite(endpoint url.URL) error {
+func (gem *globalEndpointManager) MarkEndpointUnavailableForWrite(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
 	// markEndpointUnavailableForWrite atomically reports whether the
 	// endpoint was already unavailable for write in the same critical
 	// section that performs the mark. This eliminates the check-then-act
@@ -104,25 +109,29 @@ func (gem *globalEndpointManager) MarkEndpointUnavailableForWrite(endpoint url.U
 	// may indicate a failover and we want to learn about new write
 	// regions promptly. Subsequent retries within the unavailability
 	// window do not invalidate.
-	wasAlreadyUnavailable, err := gem.locationCache.markEndpointUnavailableForWrite(endpoint)
+	//
+	// The caller receives wasAlreadyUnavailable so it can decide whether
+	// to additionally force a fresh refresh; the GEM-internal invalidate
+	// already arms the next non-force Update either way.
+	wasAlreadyUnavailable, err = gem.locationCache.markEndpointUnavailableForWrite(endpoint)
 	if err != nil {
-		return err
+		return false, err
 	}
 	if !wasAlreadyUnavailable {
 		gem.invalidate()
 	}
-	return nil
+	return wasAlreadyUnavailable, nil
 }
 
-func (gem *globalEndpointManager) MarkEndpointUnavailableForRead(endpoint url.URL) error {
-	wasAlreadyUnavailable, err := gem.locationCache.markEndpointUnavailableForRead(endpoint)
+func (gem *globalEndpointManager) MarkEndpointUnavailableForRead(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
+	wasAlreadyUnavailable, err = gem.locationCache.markEndpointUnavailableForRead(endpoint)
 	if err != nil {
-		return err
+		return false, err
 	}
 	if !wasAlreadyUnavailable {
 		gem.invalidate()
 	}
-	return nil
+	return wasAlreadyUnavailable, nil
 }
 
 // invalidate forces the next non-force Update to actually issue a refresh by
@@ -216,52 +225,132 @@ func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, reso
 // (GetAccountProperties applies its own 60s timeout). Waiters select between
 // flight completion and their own ctx.Done() so a caller-side timeout cannot
 // be exceeded by an unrelated stuck refresh.
-func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {
-	gem.gemMutex.Lock()
-	if !gem.shouldRefresh() && !forceRefresh {
-		// Throttled. Surface the cached error only if we have NEVER
-		// successfully populated the GEM -- otherwise the data plane has
-		// a valid cached topology and should continue working until the
-		// next refresh attempt succeeds. The cached error is shared across
-		// force=true and force=false callers: both want to surface
-		// "bootstrap is broken" and there's no caller-visible distinction.
-		var cached error
-		if !gem.everPopulated.Load() {
-			cached = gem.lastUpdateErr
-		}
-		gem.gemMutex.Unlock()
-		return cached
-	}
-	if gem.inflight != nil {
-		// Another goroutine is performing a refresh. Wait for it and share
-		// its result rather than spawning a duplicate HTTP call. The result
-		// lives on the per-flight struct so subsequent flights cannot
-		// overwrite it. Honour the waiter's ctx so a caller-side timeout
-		// is not extended by the leader's HTTP call duration.
-		flight := gem.inflight
-		gem.gemMutex.Unlock()
-		select {
-		case <-flight.done:
-			return flight.err
-		case <-ctx.Done():
-			return ctx.Err()
-		}
-	}
-	// We are the leader. Publish the inflight flight and snapshot the
-	// invalidation generation, then release the lock while we perform the
-	// HTTP call so ShouldRefresh and other non-Update paths don't block on
-	// a network round-trip.
-	flight := &updateFlight{done: make(chan struct{})}
-	gem.inflight = flight
-	genAtStart := gem.invalidationGen
-	gem.gemMutex.Unlock()
+// maxForceRefreshRetries bounds the total number of times a
+// forceRefresh caller may re-enter the leadership-or-wait loop after
+// observing that the last flight predates a later invalidation. The
+// cap covers BOTH paths: a leader whose own flight saw a mid-flight
+// invalidate(), and a waiter that joined a flight which turned out
+// to predate a later invalidate(). Without this combined cap, a
+// hostile invalidation+leadership-churn pattern could keep a single
+// goroutine bouncing between waiter and leader roles indefinitely.
+// After the cap is reached the call returns its last result; the
+// retry-policy state machine then sees the outcome (Idle on success,
+// Failed on error) and the NEXT request that needs a fresh refresh
+// will spawn a new goroutine, naturally rate-limiting the topology
+// poll while still making progress.
+const maxForceRefreshRetries = 3
 
+func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {
+	retries := 0
+	for {
+		var flight *updateFlight
+		var genAtStart uint64
+		// Acquire leadership or wait on an in-flight refresh.
+	leader:
+		for {
+			gem.gemMutex.Lock()
+			if !gem.shouldRefresh() && !forceRefresh {
+				// Throttled. Surface the cached error only if we have NEVER
+				// successfully populated the GEM -- otherwise the data plane has
+				// a valid cached topology and should continue working until the
+				// next refresh attempt succeeds. The cached error is shared across
+				// force=true and force=false callers: both want to surface
+				// "bootstrap is broken" and there's no caller-visible distinction.
+				var cached error
+				if !gem.everPopulated.Load() {
+					cached = gem.lastUpdateErr
+				}
+				gem.gemMutex.Unlock()
+				return cached
+			}
+			if gem.inflight != nil {
+				// Another goroutine is performing a refresh. Wait for it and share
+				// its result rather than spawning a duplicate HTTP call. The result
+				// lives on the per-flight struct so subsequent flights cannot
+				// overwrite it. Honour the waiter's ctx so a caller-side timeout
+				// is not extended by the leader's HTTP call duration.
+				waitFlight := gem.inflight
+				gem.gemMutex.Unlock()
+				select {
+				case <-waitFlight.done:
+					if forceRefresh {
+						// Re-read invalidationGen UNDER THE LOCK after the
+						// flight completes. Sampling it before the wait would
+						// miss any invalidate() that fires while we are
+						// blocked on <-waitFlight.done -- in which case the
+						// flight we waited on would still pre-date the
+						// latest invalidation but we would not know it, and
+						// we would return the stale result instead of
+						// looping to lead a fresh post-invalidation refresh.
+						gem.gemMutex.Lock()
+						latestGen := gem.invalidationGen
+						gem.gemMutex.Unlock()
+						// Consume one slot of the shared force-refresh
+						// retry budget so a waiter that keeps joining
+						// stale flights cannot loop forever.
+						if waitFlight.genAtStart < latestGen && retries < maxForceRefreshRetries {
+							retries++
+							continue
+						}
+					}
+					return waitFlight.err
+				case <-ctx.Done():
+					return ctx.Err()
+				}
+			}
+			// We are the leader. Publish the inflight flight and snapshot the
+			// invalidation generation BEFORE releasing the lock so the HTTP
+			// call below does not block ShouldRefresh and other non-Update
+			// callers on a network round-trip.
+			genAtStart = gem.invalidationGen
+			flight = &updateFlight{done: make(chan struct{}), genAtStart: genAtStart}
+			gem.inflight = flight
+			gem.gemMutex.Unlock()
+			break leader
+		}
+
+		err := gem.runLeaderFlight(ctx, flight, genAtStart)
+
+		// If we are a forceRefresh caller and an invalidate() fired during
+		// our flight, our flight's genAtStart predates the latest
+		// invalidation -- the topology we just learned does not reflect
+		// the most recent unavailability mark. Loop and either lead a
+		// fresh flight that covers it or coalesce into one another
+		// goroutine has already started. Without this, a 403 (or
+		// connection error) whose MarkEndpointUnavailable* invalidate()
+		// happened mid-flight would be silently coalesced into the
+		// in-progress refresh, leave asyncRefreshState=Idle in the retry
+		// policy, and not trigger another forced refresh.
+		//
+		// The same shared retries budget bounds this leader-side
+		// re-entry so a sustained invalidation storm cannot keep one
+		// goroutine spinning here forever.
+		if forceRefresh {
+			gem.gemMutex.Lock()
+			latestGen := gem.invalidationGen
+			gem.gemMutex.Unlock()
+			if latestGen > genAtStart && retries < maxForceRefreshRetries {
+				retries++
+				continue
+			}
+		}
+		return err
+	}
+}
+
+// runLeaderFlight performs the actual GetAccountProperties HTTP call as
+// the in-flight leader and runs the panic-safe defer that commits the
+// flight result and timestamps. It MUST be called only after the caller
+// has claimed leadership (set gem.inflight = flight). Returns the
+// flight's error (nil on success).
+func (gem *globalEndpointManager) runLeaderFlight(ctx context.Context, flight *updateFlight, genAtStart uint64) (err error) {
 	// Panic-safe cleanup: if refreshOnce (or anything it transitively calls
 	// -- the pipeline, JSON unmarshal, locationCache.update) panics, we
 	// MUST still clear gem.inflight and close flight.done, otherwise every
 	// subsequent Update caller blocks forever on <-flight.done. We capture
-	// any panic, record it as the flight error, and re-panic after cleanup.
-	var err error
+	// any panic, record it as the flight error, and re-panic after
+	// cleanup so the original stack trace is preserved for the host's
+	// panic handler.
 	defer func() {
 		r := recover()
 		gem.gemMutex.Lock()

@@ -13,7 +13,6 @@ import (
 	"strings"
 )
 
-
 type additionalProperties map[string]*string
 
 // MarshalXML implements the xml.Marshaler interface for additionalProperties.

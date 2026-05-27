@@ -6,86 +6,86 @@
 package generated
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"time"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // FileSystemClientCreateResponse contains the response from method FileSystemClient.Create.
 type FileSystemClientCreateResponse struct {
-// ClientRequestID contains the information returned from the x-ms-request-id header response.
+	// ClientRequestID contains the information returned from the x-ms-request-id header response.
 	ClientRequestID *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// NamespaceEnabled contains the information returned from the x-ms-namespace-enabled header response.
+	// NamespaceEnabled contains the information returned from the x-ms-namespace-enabled header response.
 	NamespaceEnabled *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // FileSystemClientDeleteResponse contains the response from method FileSystemClient.Delete.
 type FileSystemClientDeleteResponse struct {
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // FileSystemClientGetPropertiesResponse contains the response from method FileSystemClient.GetProperties.
 type FileSystemClientGetPropertiesResponse struct {
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// NamespaceEnabled contains the information returned from the x-ms-namespace-enabled header response.
+	// NamespaceEnabled contains the information returned from the x-ms-namespace-enabled header response.
 	NamespaceEnabled *string
 
-// Properties contains the information returned from the x-ms-properties header response.
+	// Properties contains the information returned from the x-ms-properties header response.
 	Properties *string
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // FileSystemClientListPathHierarchySegmentResponse contains the response from method FileSystemClient.NewListBlobHierarchySegmentPager.
 type FileSystemClientListPathHierarchySegmentResponse struct {
-// An enumeration of blobs
+	// An enumeration of blobs
 	ListPathsHierarchySegmentResponse
 
-// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
-// ContentType contains the information returned from the Content-Type header response.
+	// ContentType contains the information returned from the Content-Type header response.
 	ContentType *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
@@ -93,352 +93,352 @@ type FileSystemClientListPathHierarchySegmentResponse struct {
 type FileSystemClientListPathsResponse struct {
 	PathList
 
-// Continuation contains the information returned from the x-ms-continuation header response.
+	// Continuation contains the information returned from the x-ms-continuation header response.
 	Continuation *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // FileSystemClientSetPropertiesResponse contains the response from method FileSystemClient.SetProperties.
 type FileSystemClientSetPropertiesResponse struct {
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // PathClientAppendDataResponse contains the response from method PathClient.AppendData.
 type PathClientAppendDataResponse struct {
-// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
-// ContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	// ContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
 	ContentCRC64 []byte
 
-// ContentMD5 contains the information returned from the Content-MD5 header response.
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
 	ContentMD5 []byte
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
 
-// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
-// LeaseRenewed contains the information returned from the x-ms-lease-renewed header response.
+	// LeaseRenewed contains the information returned from the x-ms-lease-renewed header response.
 	LeaseRenewed *bool
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// StructuredBodyType contains the information returned from the x-ms-structured-body header response.
+	// StructuredBodyType contains the information returned from the x-ms-structured-body header response.
 	StructuredBodyType *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // PathClientCreateResponse contains the response from method PathClient.Create.
 type PathClientCreateResponse struct {
-// ContentLength contains the information returned from the Content-Length header response.
+	// ContentLength contains the information returned from the Content-Length header response.
 	ContentLength *int64
 
-// Continuation contains the information returned from the x-ms-continuation header response.
+	// Continuation contains the information returned from the x-ms-continuation header response.
 	Continuation *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
 
-// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // PathClientDeleteResponse contains the response from method PathClient.Delete.
 type PathClientDeleteResponse struct {
-// Continuation contains the information returned from the x-ms-continuation header response.
+	// Continuation contains the information returned from the x-ms-continuation header response.
 	Continuation *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// DeletionID contains the information returned from the x-ms-deletion-id header response.
+	// DeletionID contains the information returned from the x-ms-deletion-id header response.
 	DeletionID *string
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 
-// XMSContinuation contains the information returned from the x-ms-continuation header response.
+	// XMSContinuation contains the information returned from the x-ms-continuation header response.
 	XMSContinuation *string
 
-// XMSRequestID contains the information returned from the x-ms-request-id header response.
+	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
 
-// XMSVersion contains the information returned from the x-ms-version header response.
+	// XMSVersion contains the information returned from the x-ms-version header response.
 	XMSVersion *string
 }
 
 // PathClientFlushDataResponse contains the response from method PathClient.FlushData.
 type PathClientFlushDataResponse struct {
-// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
-// ContentLength contains the information returned from the Content-Length header response.
+	// ContentLength contains the information returned from the Content-Length header response.
 	ContentLength *int64
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
 
-// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// LeaseRenewed contains the information returned from the x-ms-lease-renewed header response.
+	// LeaseRenewed contains the information returned from the x-ms-lease-renewed header response.
 	LeaseRenewed *bool
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // PathClientGetPropertiesResponse contains the response from method PathClient.GetProperties.
 type PathClientGetPropertiesResponse struct {
-// ACL contains the information returned from the x-ms-acl header response.
+	// ACL contains the information returned from the x-ms-acl header response.
 	ACL *string
 
-// AcceptRanges contains the information returned from the Accept-Ranges header response.
+	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
-// CacheControl contains the information returned from the Cache-Control header response.
+	// CacheControl contains the information returned from the Cache-Control header response.
 	CacheControl *string
 
-// ContentDisposition contains the information returned from the Content-Disposition header response.
+	// ContentDisposition contains the information returned from the Content-Disposition header response.
 	ContentDisposition *string
 
-// ContentEncoding contains the information returned from the Content-Encoding header response.
+	// ContentEncoding contains the information returned from the Content-Encoding header response.
 	ContentEncoding *string
 
-// ContentLanguage contains the information returned from the Content-Language header response.
+	// ContentLanguage contains the information returned from the Content-Language header response.
 	ContentLanguage *string
 
-// ContentLength contains the information returned from the Content-Length header response.
+	// ContentLength contains the information returned from the Content-Length header response.
 	ContentLength *int64
 
-// ContentMD5 contains the information returned from the Content-MD5 header response.
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
 	ContentMD5 *string
 
-// ContentRange contains the information returned from the Content-Range header response.
+	// ContentRange contains the information returned from the Content-Range header response.
 	ContentRange *string
 
-// ContentType contains the information returned from the Content-Type header response.
+	// ContentType contains the information returned from the Content-Type header response.
 	ContentType *string
 
-// CreationTime contains the information returned from the x-ms-creation-time header response.
+	// CreationTime contains the information returned from the x-ms-creation-time header response.
 	CreationTime *time.Time
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
+	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
 	EncryptionContext *string
 
-// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
 
-// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
+	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
 	EncryptionScope *string
 
-// ExpiresOn contains the information returned from the x-ms-expiry-time header response.
+	// ExpiresOn contains the information returned from the x-ms-expiry-time header response.
 	ExpiresOn *time.Time
 
-// Group contains the information returned from the x-ms-group header response.
+	// Group contains the information returned from the x-ms-group header response.
 	Group *string
 
-// IsServerEncrypted contains the information returned from the x-ms-server-encrypted header response.
+	// IsServerEncrypted contains the information returned from the x-ms-server-encrypted header response.
 	IsServerEncrypted *bool
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
+	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
 	LeaseDuration *string
 
-// LeaseState contains the information returned from the x-ms-lease-state header response.
+	// LeaseState contains the information returned from the x-ms-lease-state header response.
 	LeaseState *string
 
-// LeaseStatus contains the information returned from the x-ms-lease-status header response.
+	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
 	LeaseStatus *string
 
-// Owner contains the information returned from the x-ms-owner header response.
+	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
 
-// Permissions contains the information returned from the x-ms-permissions header response.
+	// Permissions contains the information returned from the x-ms-permissions header response.
 	Permissions *string
 
-// Properties contains the information returned from the x-ms-properties header response.
+	// Properties contains the information returned from the x-ms-properties header response.
 	Properties *string
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// ResourceType contains the information returned from the x-ms-resource-type header response.
+	// ResourceType contains the information returned from the x-ms-resource-type header response.
 	ResourceType *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // PathClientLeaseResponse contains the response from method PathClient.Lease.
 type PathClientLeaseResponse struct {
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// LeaseID contains the information returned from the x-ms-lease-id header response.
+	// LeaseID contains the information returned from the x-ms-lease-id header response.
 	LeaseID *string
 
-// LeaseTime contains the information returned from the x-ms-lease-time header response.
+	// LeaseTime contains the information returned from the x-ms-lease-time header response.
 	LeaseTime *string
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // PathClientReadResponse contains the response from method PathClient.Read.
 type PathClientReadResponse struct {
-// AcceptRanges contains the information returned from the Accept-Ranges header response.
+	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
-// Body contains the streaming response.
+	// Body contains the streaming response.
 	Body io.ReadCloser
 
-// CacheControl contains the information returned from the Cache-Control header response.
+	// CacheControl contains the information returned from the Cache-Control header response.
 	CacheControl *string
 
-// ContentDisposition contains the information returned from the Content-Disposition header response.
+	// ContentDisposition contains the information returned from the Content-Disposition header response.
 	ContentDisposition *string
 
-// ContentEncoding contains the information returned from the Content-Encoding header response.
+	// ContentEncoding contains the information returned from the Content-Encoding header response.
 	ContentEncoding *string
 
-// ContentLanguage contains the information returned from the Content-Language header response.
+	// ContentLanguage contains the information returned from the Content-Language header response.
 	ContentLanguage *string
 
-// ContentLength contains the information returned from the Content-Length header response.
+	// ContentLength contains the information returned from the Content-Length header response.
 	ContentLength *int64
 
-// ContentMD5 contains the information returned from the Content-MD5 header response.
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
 	ContentMD5 *string
 
-// ContentRange contains the information returned from the Content-Range header response.
+	// ContentRange contains the information returned from the Content-Range header response.
 	ContentRange *string
 
-// ContentType contains the information returned from the Content-Type header response.
+	// ContentType contains the information returned from the Content-Type header response.
 	ContentType *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
 
-// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
+	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
 	LeaseDuration *string
 
-// LeaseState contains the information returned from the x-ms-lease-state header response.
+	// LeaseState contains the information returned from the x-ms-lease-state header response.
 	LeaseState *string
 
-// LeaseStatus contains the information returned from the x-ms-lease-status header response.
+	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
 	LeaseStatus *string
 
-// Properties contains the information returned from the x-ms-properties header response.
+	// Properties contains the information returned from the x-ms-properties header response.
 	Properties *string
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// ResourceType contains the information returned from the x-ms-resource-type header response.
+	// ResourceType contains the information returned from the x-ms-resource-type header response.
 	ResourceType *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 
-// XMSContentMD5 contains the information returned from the x-ms-content-md5 header response.
+	// XMSContentMD5 contains the information returned from the x-ms-content-md5 header response.
 	XMSContentMD5 *string
 }
 
@@ -446,79 +446,79 @@ type PathClientReadResponse struct {
 type PathClientSetAccessControlRecursiveResponse struct {
 	SetAccessControlRecursiveResponse
 
-// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
-// Continuation contains the information returned from the x-ms-continuation header response.
+	// Continuation contains the information returned from the x-ms-continuation header response.
 	Continuation *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // PathClientSetAccessControlResponse contains the response from method PathClient.SetAccessControl.
 type PathClientSetAccessControlResponse struct {
-// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // PathClientSetExpiryResponse contains the response from method PathClient.SetExpiry.
 type PathClientSetExpiryResponse struct {
-// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
 // PathClientUndeleteResponse contains the response from method PathClient.Undelete.
 type PathClientUndeleteResponse struct {
-// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// ResourceType contains the information returned from the x-ms-resource-type header response.
+	// ResourceType contains the information returned from the x-ms-resource-type header response.
 	ResourceType *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
 
@@ -526,55 +526,55 @@ type PathClientUndeleteResponse struct {
 type PathClientUpdateResponse struct {
 	SetAccessControlRecursiveResponse
 
-// AcceptRanges contains the information returned from the Accept-Ranges header response.
+	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
-// CacheControl contains the information returned from the Cache-Control header response.
+	// CacheControl contains the information returned from the Cache-Control header response.
 	CacheControl *string
 
-// ContentDisposition contains the information returned from the Content-Disposition header response.
+	// ContentDisposition contains the information returned from the Content-Disposition header response.
 	ContentDisposition *string
 
-// ContentEncoding contains the information returned from the Content-Encoding header response.
+	// ContentEncoding contains the information returned from the Content-Encoding header response.
 	ContentEncoding *string
 
-// ContentLanguage contains the information returned from the Content-Language header response.
+	// ContentLanguage contains the information returned from the Content-Language header response.
 	ContentLanguage *string
 
-// ContentLength contains the information returned from the Content-Length header response.
+	// ContentLength contains the information returned from the Content-Length header response.
 	ContentLength *int64
 
-// ContentMD5 contains the information returned from the Content-MD5 header response.
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
 	ContentMD5 *string
 
-// ContentRange contains the information returned from the Content-Range header response.
+	// ContentRange contains the information returned from the Content-Range header response.
 	ContentRange *string
 
-// ContentType contains the information returned from the Content-Type header response.
+	// ContentType contains the information returned from the Content-Type header response.
 	ContentType *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// ETag contains the information returned from the ETag header response.
+	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-// LastModified contains the information returned from the Last-Modified header response.
+	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-// Properties contains the information returned from the x-ms-properties header response.
+	// Properties contains the information returned from the x-ms-properties header response.
 	Properties *string
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// StructuredBodyType contains the information returned from the x-ms-structured-body header response.
+	// StructuredBodyType contains the information returned from the x-ms-structured-body header response.
 	StructuredBodyType *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 
-// XMSContinuation contains the information returned from the x-ms-continuation header response.
+	// XMSContinuation contains the information returned from the x-ms-continuation header response.
 	XMSContinuation *string
 }
 
@@ -582,19 +582,18 @@ type PathClientUpdateResponse struct {
 type ServiceClientListFileSystemsResponse struct {
 	FileSystemList
 
-// ContentType contains the information returned from the Content-Type header response.
+	// ContentType contains the information returned from the Content-Type header response.
 	ContentType *string
 
-// Continuation contains the information returned from the x-ms-continuation header response.
+	// Continuation contains the information returned from the x-ms-continuation header response.
 	Continuation *string
 
-// Date contains the information returned from the Date header response.
+	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
-// RequestID contains the information returned from the x-ms-request-id header response.
+	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-// Version contains the information returned from the x-ms-version header response.
+	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
-

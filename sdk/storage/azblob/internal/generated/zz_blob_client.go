@@ -24,7 +24,7 @@ import (
 type BlobClient struct {
 	internal *azcore.Client
 	endpoint string
-	version string
+	version  string
 }
 
 // AbortCopyFromURL - The Abort Copy From URL operation aborts a pending Copy From URL operation, and leaves a destination
@@ -2993,4 +2993,3 @@ func (client *BlobClient) undeleteHandleResponse(resp *http.Response) (BlobClien
 	}
 	return result, nil
 }
-

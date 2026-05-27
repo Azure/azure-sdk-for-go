@@ -23,7 +23,7 @@ import (
 type ServiceClient struct {
 	internal *azcore.Client
 	endpoint string
-	version string
+	version  string
 }
 
 // FilterBlobs - The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
@@ -565,4 +565,3 @@ func (client *ServiceClient) submitBatchHandleResponse(resp *http.Response) (Ser
 	}
 	return result, nil
 }
-

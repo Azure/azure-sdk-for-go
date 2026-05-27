@@ -58,8 +58,8 @@ func (b PathHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	type alias PathHierarchyListSegment
 	aux := &struct {
 		*alias
-		PathItems *[]*PathItemInternal `xml:"Blob"`
-		PathPrefixes *[]*PathPrefix `xml:"PathPrefixes"`
+		PathItems    *[]*PathItemInternal `xml:"Blob"`
+		PathPrefixes *[]*PathPrefix       `xml:"PathPrefix"`
 	}{
 		alias: (*alias)(&b),
 	}
@@ -91,24 +91,24 @@ func (b PathPropertiesInternal) MarshalXML(enc *xml.Encoder, start xml.StartElem
 	aux := &struct {
 		*alias
 		AccessTierChangeTime *datetime.RFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5 *string `xml:"Content-MD5"`
-		CopyCompletionTime *datetime.RFC1123 `xml:"CopyCompletionTime"`
-		CreationTime *datetime.RFC1123 `xml:"Creation-Time"`
-		DeleteTime *datetime.RFC1123 `xml:"DeleteTime"`
-		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
-		ExpiresOn *datetime.RFC1123 `xml:"Expiry-Time"`
-		LastAccessedOn *datetime.RFC1123 `xml:"LastAccessTime"`
-		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
+		ContentMD5           *string           `xml:"Content-MD5"`
+		CopyCompletionTime   *datetime.RFC1123 `xml:"CopyCompletionTime"`
+		CreationTime         *datetime.RFC1123 `xml:"Creation-Time"`
+		DeleteTime           *datetime.RFC1123 `xml:"DeleteTime"`
+		DeletedTime          *datetime.RFC1123 `xml:"DeletedTime"`
+		ExpiresOn            *datetime.RFC1123 `xml:"Expiry-Time"`
+		LastAccessedOn       *datetime.RFC1123 `xml:"LastAccessTime"`
+		LastModified         *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
-		alias: (*alias)(&b),
+		alias:                (*alias)(&b),
 		AccessTierChangeTime: (*datetime.RFC1123)(b.AccessTierChangeTime),
-		CopyCompletionTime: (*datetime.RFC1123)(b.CopyCompletionTime),
-		CreationTime: (*datetime.RFC1123)(b.CreationTime),
-		DeleteTime: (*datetime.RFC1123)(b.DeleteTime),
-		DeletedTime: (*datetime.RFC1123)(b.DeletedTime),
-		ExpiresOn: (*datetime.RFC1123)(b.ExpiresOn),
-		LastAccessedOn: (*datetime.RFC1123)(b.LastAccessedOn),
-		LastModified: (*datetime.RFC1123)(b.LastModified),
+		CopyCompletionTime:   (*datetime.RFC1123)(b.CopyCompletionTime),
+		CreationTime:         (*datetime.RFC1123)(b.CreationTime),
+		DeleteTime:           (*datetime.RFC1123)(b.DeleteTime),
+		DeletedTime:          (*datetime.RFC1123)(b.DeletedTime),
+		ExpiresOn:            (*datetime.RFC1123)(b.ExpiresOn),
+		LastAccessedOn:       (*datetime.RFC1123)(b.LastAccessedOn),
+		LastModified:         (*datetime.RFC1123)(b.LastModified),
 	}
 	if b.ContentMD5 != nil {
 		encodedContentMD5 := runtime.EncodeByteArray(b.ContentMD5, runtime.Base64StdFormat)
@@ -123,14 +123,14 @@ func (b *PathPropertiesInternal) UnmarshalXML(dec *xml.Decoder, start xml.StartE
 	aux := &struct {
 		*alias
 		AccessTierChangeTime *datetime.RFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5 *string `xml:"Content-MD5"`
-		CopyCompletionTime *datetime.RFC1123 `xml:"CopyCompletionTime"`
-		CreationTime *datetime.RFC1123 `xml:"Creation-Time"`
-		DeleteTime *datetime.RFC1123 `xml:"DeleteTime"`
-		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
-		ExpiresOn *datetime.RFC1123 `xml:"Expiry-Time"`
-		LastAccessedOn *datetime.RFC1123 `xml:"LastAccessTime"`
-		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
+		ContentMD5           *string           `xml:"Content-MD5"`
+		CopyCompletionTime   *datetime.RFC1123 `xml:"CopyCompletionTime"`
+		CreationTime         *datetime.RFC1123 `xml:"Creation-Time"`
+		DeleteTime           *datetime.RFC1123 `xml:"DeleteTime"`
+		DeletedTime          *datetime.RFC1123 `xml:"DeletedTime"`
+		ExpiresOn            *datetime.RFC1123 `xml:"Expiry-Time"`
+		LastAccessedOn       *datetime.RFC1123 `xml:"LastAccessTime"`
+		LastModified         *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(b),
 	}
@@ -272,9 +272,9 @@ func (p *Path) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "contentLength":
 			var rawVal string
-err = unpopulate(val, "ContentLength", &rawVal)
-intVal, _ := strconv.ParseInt(rawVal, 10, 64)
-p.ContentLength = &intVal
+			err = unpopulate(val, "ContentLength", &rawVal)
+			intVal, _ := strconv.ParseInt(rawVal, 10, 64)
+			p.ContentLength = &intVal
 			delete(rawMsg, key)
 		case "creationTime":
 			err = unpopulate(val, "CreationTime", &p.CreationTime)
@@ -296,9 +296,9 @@ p.ContentLength = &intVal
 			delete(rawMsg, key)
 		case "isDirectory":
 			var rawVal string
-err = unpopulate(val, "IsDirectory", &rawVal)
-boolVal, _ := strconv.ParseBool(rawVal)
-p.IsDirectory = &boolVal
+			err = unpopulate(val, "IsDirectory", &rawVal)
+			boolVal, _ := strconv.ParseBool(rawVal)
+			p.IsDirectory = &boolVal
 			delete(rawMsg, key)
 		case "lastModified":
 			err = unpopulate(val, "LastModified", &p.LastModified)
@@ -463,4 +463,3 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
-

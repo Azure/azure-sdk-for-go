@@ -24,7 +24,7 @@ import (
 type PageBlobClient struct {
 	internal *azcore.Client
 	endpoint string
-	version string
+	version  string
 }
 
 // ClearPages - The Clear Pages operation clears a set of pages from a page blob
@@ -461,7 +461,7 @@ func (client *PageBlobClient) createHandleResponse(resp *http.Response) (PageBlo
 //     method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
-func (client *PageBlobClient) NewGetPageRangesPager(options *PageBlobClientGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*runtime.Pager[PageBlobClientGetPageRangesResponse]) {
+func (client *PageBlobClient) NewGetPageRangesPager(options *PageBlobClientGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) *runtime.Pager[PageBlobClientGetPageRangesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PageBlobClientGetPageRangesResponse]{
 		More: func(page PageBlobClientGetPageRangesResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -580,7 +580,7 @@ func (client *PageBlobClient) GetPageRangesHandleResponse(resp *http.Response) (
 //     method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
-func (client *PageBlobClient) NewGetPageRangesDiffPager(options *PageBlobClientGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*runtime.Pager[PageBlobClientGetPageRangesDiffResponse]) {
+func (client *PageBlobClient) NewGetPageRangesDiffPager(options *PageBlobClientGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) *runtime.Pager[PageBlobClientGetPageRangesDiffResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PageBlobClientGetPageRangesDiffResponse]{
 		More: func(page PageBlobClientGetPageRangesDiffResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -1297,4 +1297,3 @@ func (client *PageBlobClient) uploadPagesFromURLHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
-

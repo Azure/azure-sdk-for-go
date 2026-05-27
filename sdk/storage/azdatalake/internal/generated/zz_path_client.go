@@ -22,9 +22,9 @@ import (
 // PathClient contains the methods for the Path group.
 // Don't use this type directly, use a constructor function instead.
 type PathClient struct {
-	internal *azcore.Client
-	endpoint string
-	version string
+	internal         *azcore.Client
+	endpoint         string
+	version          string
 	xmsLeaseDuration int32
 }
 
@@ -1653,4 +1653,3 @@ func (client *PathClient) updateHandleResponse(resp *http.Response) (PathClientU
 	}
 	return result, nil
 }
-

@@ -20,7 +20,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.79"
+use: "@autorest/go@4.0.0-preview.80"
 ```
 
 ### Add ListBlobsShowOnly value 'directories'
@@ -136,7 +136,7 @@ directive:
 ```
 
 ### Add Missing Imports to zz_service_client.go
-### NOTE: strings import is now included by @autorest/go@4.0.0-preview.79, so this directive is no longer needed.
+### NOTE: strings import is now included by @autorest/go@4.0.0-preview.80, so this directive is no longer needed.
 ### Add Missing Imports to zz_models_serde.go
 
 ``` yaml

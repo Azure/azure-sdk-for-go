@@ -26,7 +26,7 @@ import (
 type ContainerClient struct {
 	internal *azcore.Client
 	endpoint string
-	version string
+	version  string
 }
 
 // AcquireLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15
@@ -920,7 +920,7 @@ func (client *ContainerClient) ListBlobFlatSegmentHandleResponse(resp *http.Resp
 //     appearance of the delimiter character. The delimiter may be a single character or a string.
 //   - options - ContainerClientListBlobHierarchySegmentOptions contains the optional parameters for the ContainerClient.NewListBlobHierarchySegmentPager
 //     method.
-func (client *ContainerClient) NewListBlobHierarchySegmentPager(delimiter string, options *ContainerClientListBlobHierarchySegmentOptions) (*runtime.Pager[FileSystemClientListPathHierarchySegmentResponse]) {
+func (client *ContainerClient) NewListBlobHierarchySegmentPager(delimiter string, options *ContainerClientListBlobHierarchySegmentOptions) *runtime.Pager[FileSystemClientListPathHierarchySegmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FileSystemClientListPathHierarchySegmentResponse]{
 		More: func(page FileSystemClientListPathHierarchySegmentResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -1375,7 +1375,7 @@ func (client *ContainerClient) setAccessPolicyCreateRequest(ctx context.Context,
 	}
 	req.Raw().Header["x-ms-version"] = []string{client.version}
 	type wrapper struct {
-		XMLName xml.Name `xml:"SignedIdentifiers"`
+		XMLName      xml.Name             `xml:"SignedIdentifiers"`
 		ContainerACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	if err := runtime.MarshalAsXML(req, wrapper{ContainerACL: &containerACL}); err != nil {
@@ -1570,4 +1570,3 @@ func (client *ContainerClient) submitBatchHandleResponse(resp *http.Response) (C
 	}
 	return result, nil
 }
-

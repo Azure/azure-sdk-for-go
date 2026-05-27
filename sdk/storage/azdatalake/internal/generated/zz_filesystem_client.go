@@ -23,7 +23,7 @@ import (
 type FileSystemClient struct {
 	internal *azcore.Client
 	endpoint string
-	version string
+	version  string
 }
 
 // Create - Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails. This
@@ -485,4 +485,3 @@ func (client *FileSystemClient) setPropertiesHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
-

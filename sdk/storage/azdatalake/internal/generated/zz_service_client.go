@@ -21,7 +21,7 @@ import (
 type ServiceClient struct {
 	internal *azcore.Client
 	endpoint string
-	version string
+	version  string
 }
 
 // NewListFileSystemsPager - List filesystems and their properties in given account.
@@ -84,4 +84,3 @@ func (client *ServiceClient) ListFileSystemsHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
-

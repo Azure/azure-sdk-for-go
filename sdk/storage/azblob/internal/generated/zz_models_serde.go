@@ -22,11 +22,11 @@ func (a AccessPolicy) MarshalXML(enc *xml.Encoder, start xml.StartElement) error
 	aux := &struct {
 		*alias
 		Expiry *datetime.RFC3339 `xml:"Expiry"`
-		Start *datetime.RFC3339 `xml:"Start"`
+		Start  *datetime.RFC3339 `xml:"Start"`
 	}{
-		alias: (*alias)(&a),
+		alias:  (*alias)(&a),
 		Expiry: (*datetime.RFC3339)(a.Expiry),
-		Start: (*datetime.RFC3339)(a.Start),
+		Start:  (*datetime.RFC3339)(a.Start),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -37,7 +37,7 @@ func (a *AccessPolicy) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) er
 	aux := &struct {
 		*alias
 		Expiry *datetime.RFC3339 `xml:"Expiry"`
-		Start *datetime.RFC3339 `xml:"Start"`
+		Start  *datetime.RFC3339 `xml:"Start"`
 	}{
 		alias: (*alias)(a),
 	}
@@ -102,8 +102,8 @@ func (b BlobHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	type alias BlobHierarchyListSegment
 	aux := &struct {
 		*alias
-		BlobItems *[]*BlobItem `xml:"Blob"`
-		BlobPrefixes *[]*BlobPrefix `xml:"BlobPrefixes"`
+		BlobItems    *[]*BlobItem   `xml:"Blob"`
+		BlobPrefixes *[]*BlobPrefix `xml:"BlobPrefix"`
 	}{
 		alias: (*alias)(&b),
 	}
@@ -122,25 +122,25 @@ func (b BlobProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) err
 	type alias BlobProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime *datetime.RFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5 *string `xml:"Content-MD5"`
-		CopyCompletionTime *datetime.RFC1123 `xml:"CopyCompletionTime"`
-		CreationTime *datetime.RFC1123 `xml:"Creation-Time"`
-		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
-		ExpiresOn *datetime.RFC1123 `xml:"Expiry-Time"`
+		AccessTierChangeTime        *datetime.RFC1123 `xml:"AccessTierChangeTime"`
+		ContentMD5                  *string           `xml:"Content-MD5"`
+		CopyCompletionTime          *datetime.RFC1123 `xml:"CopyCompletionTime"`
+		CreationTime                *datetime.RFC1123 `xml:"Creation-Time"`
+		DeletedTime                 *datetime.RFC1123 `xml:"DeletedTime"`
+		ExpiresOn                   *datetime.RFC1123 `xml:"Expiry-Time"`
 		ImmutabilityPolicyExpiresOn *datetime.RFC1123 `xml:"ImmutabilityPolicyUntilDate"`
-		LastAccessedOn *datetime.RFC1123 `xml:"LastAccessTime"`
-		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
+		LastAccessedOn              *datetime.RFC1123 `xml:"LastAccessTime"`
+		LastModified                *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
-		alias: (*alias)(&b),
-		AccessTierChangeTime: (*datetime.RFC1123)(b.AccessTierChangeTime),
-		CopyCompletionTime: (*datetime.RFC1123)(b.CopyCompletionTime),
-		CreationTime: (*datetime.RFC1123)(b.CreationTime),
-		DeletedTime: (*datetime.RFC1123)(b.DeletedTime),
-		ExpiresOn: (*datetime.RFC1123)(b.ExpiresOn),
+		alias:                       (*alias)(&b),
+		AccessTierChangeTime:        (*datetime.RFC1123)(b.AccessTierChangeTime),
+		CopyCompletionTime:          (*datetime.RFC1123)(b.CopyCompletionTime),
+		CreationTime:                (*datetime.RFC1123)(b.CreationTime),
+		DeletedTime:                 (*datetime.RFC1123)(b.DeletedTime),
+		ExpiresOn:                   (*datetime.RFC1123)(b.ExpiresOn),
 		ImmutabilityPolicyExpiresOn: (*datetime.RFC1123)(b.ImmutabilityPolicyExpiresOn),
-		LastAccessedOn: (*datetime.RFC1123)(b.LastAccessedOn),
-		LastModified: (*datetime.RFC1123)(b.LastModified),
+		LastAccessedOn:              (*datetime.RFC1123)(b.LastAccessedOn),
+		LastModified:                (*datetime.RFC1123)(b.LastModified),
 	}
 	if b.ContentMD5 != nil {
 		encodedContentMD5 := runtime.EncodeByteArray(b.ContentMD5, runtime.Base64StdFormat)
@@ -154,15 +154,15 @@ func (b *BlobProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) 
 	type alias BlobProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime *datetime.RFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5 *string `xml:"Content-MD5"`
-		CopyCompletionTime *datetime.RFC1123 `xml:"CopyCompletionTime"`
-		CreationTime *datetime.RFC1123 `xml:"Creation-Time"`
-		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
-		ExpiresOn *datetime.RFC1123 `xml:"Expiry-Time"`
+		AccessTierChangeTime        *datetime.RFC1123 `xml:"AccessTierChangeTime"`
+		ContentMD5                  *string           `xml:"Content-MD5"`
+		CopyCompletionTime          *datetime.RFC1123 `xml:"CopyCompletionTime"`
+		CreationTime                *datetime.RFC1123 `xml:"Creation-Time"`
+		DeletedTime                 *datetime.RFC1123 `xml:"DeletedTime"`
+		ExpiresOn                   *datetime.RFC1123 `xml:"Expiry-Time"`
 		ImmutabilityPolicyExpiresOn *datetime.RFC1123 `xml:"ImmutabilityPolicyUntilDate"`
-		LastAccessedOn *datetime.RFC1123 `xml:"LastAccessTime"`
-		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
+		LastAccessedOn              *datetime.RFC1123 `xml:"LastAccessTime"`
+		LastModified                *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(b),
 	}
@@ -234,7 +234,7 @@ func (b BlockList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias BlockList
 	aux := &struct {
 		*alias
-		CommittedBlocks *[]*Block `xml:"CommittedBlocks>Block"`
+		CommittedBlocks   *[]*Block `xml:"CommittedBlocks>Block"`
 		UncommittedBlocks *[]*Block `xml:"UncommittedBlocks>Block"`
 	}{
 		alias: (*alias)(&b),
@@ -254,8 +254,8 @@ func (b BlockLookupList) MarshalXML(enc *xml.Encoder, start xml.StartElement) er
 	type alias BlockLookupList
 	aux := &struct {
 		*alias
-		Committed *[]*string `xml:"Committed"`
-		Latest *[]*string `xml:"Latest"`
+		Committed   *[]*string `xml:"Committed"`
+		Latest      *[]*string `xml:"Latest"`
 		Uncommitted *[]*string `xml:"Uncommitted"`
 	}{
 		alias: (*alias)(&b),
@@ -307,11 +307,11 @@ func (c ContainerProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement
 	type alias ContainerProperties
 	aux := &struct {
 		*alias
-		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
+		DeletedTime  *datetime.RFC1123 `xml:"DeletedTime"`
 		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
-		alias: (*alias)(&c),
-		DeletedTime: (*datetime.RFC1123)(c.DeletedTime),
+		alias:        (*alias)(&c),
+		DeletedTime:  (*datetime.RFC1123)(c.DeletedTime),
 		LastModified: (*datetime.RFC1123)(c.LastModified),
 	}
 	return enc.EncodeElement(aux, start)
@@ -322,7 +322,7 @@ func (c *ContainerProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElem
 	type alias ContainerProperties
 	aux := &struct {
 		*alias
-		DeletedTime *datetime.RFC1123 `xml:"DeletedTime"`
+		DeletedTime  *datetime.RFC1123 `xml:"DeletedTime"`
 		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(c),
@@ -374,7 +374,7 @@ func (g GeoReplication) MarshalXML(enc *xml.Encoder, start xml.StartElement) err
 		*alias
 		LastSyncTime *datetime.RFC1123 `xml:"LastSyncTime"`
 	}{
-		alias: (*alias)(&g),
+		alias:        (*alias)(&g),
 		LastSyncTime: (*datetime.RFC1123)(g.LastSyncTime),
 	}
 	return enc.EncodeElement(aux, start)
@@ -456,7 +456,7 @@ func (p PageList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		ClearRange *[]*ClearRange `xml:"ClearRange"`
-		PageRange *[]*PageRange `xml:"PageRange"`
+		PageRange  *[]*PageRange  `xml:"PageRange"`
 	}{
 		alias: (*alias)(&p),
 	}
@@ -529,11 +529,11 @@ func (u UserDelegationKey) MarshalXML(enc *xml.Encoder, start xml.StartElement) 
 	aux := &struct {
 		*alias
 		SignedExpiry *datetime.RFC3339 `xml:"SignedExpiry"`
-		SignedStart *datetime.RFC3339 `xml:"SignedStart"`
+		SignedStart  *datetime.RFC3339 `xml:"SignedStart"`
 	}{
-		alias: (*alias)(&u),
+		alias:        (*alias)(&u),
 		SignedExpiry: (*datetime.RFC3339)(u.SignedExpiry),
-		SignedStart: (*datetime.RFC3339)(u.SignedStart),
+		SignedStart:  (*datetime.RFC3339)(u.SignedStart),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -544,7 +544,7 @@ func (u *UserDelegationKey) UnmarshalXML(dec *xml.Decoder, start xml.StartElemen
 	aux := &struct {
 		*alias
 		SignedExpiry *datetime.RFC3339 `xml:"SignedExpiry"`
-		SignedStart *datetime.RFC3339 `xml:"SignedStart"`
+		SignedStart  *datetime.RFC3339 `xml:"SignedStart"`
 	}{
 		alias: (*alias)(u),
 	}
@@ -579,4 +579,3 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
-

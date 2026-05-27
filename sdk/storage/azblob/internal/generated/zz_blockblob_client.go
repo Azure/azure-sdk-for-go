@@ -24,7 +24,7 @@ import (
 type BlockBlobClient struct {
 	internal *azcore.Client
 	endpoint string
-	version string
+	version  string
 }
 
 // CommitBlockList - The Commit Block List operation writes a blob by specifying the list of block IDs that make up the blob.
@@ -1030,4 +1030,3 @@ func (client *BlockBlobClient) uploadHandleResponse(resp *http.Response) (BlockB
 	}
 	return result, nil
 }
-

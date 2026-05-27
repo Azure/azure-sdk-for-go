@@ -24,7 +24,7 @@ import (
 type AppendBlobClient struct {
 	internal *azcore.Client
 	endpoint string
-	version string
+	version  string
 }
 
 // AppendBlock - The Append Block operation commits a new block of data to the end of an existing append blob. The Append
@@ -674,4 +674,3 @@ func (client *AppendBlobClient) sealHandleResponse(resp *http.Response) (AppendB
 	}
 	return result, nil
 }
-

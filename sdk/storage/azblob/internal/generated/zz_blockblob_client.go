@@ -11,7 +11,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"io"
 	"net/http"
 	"strconv"
@@ -81,13 +80,13 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if options != nil && options.Tier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.Tier)}
@@ -135,7 +134,7 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 		req.Raw().Header["x-ms-immutability-policy-mode"] = []string{string(*options.ImmutabilityPolicyMode)}
 	}
 	if options != nil && options.ImmutabilityPolicyExpiry != nil {
-		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC1123(*options.ImmutabilityPolicyExpiry).String()}
+		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{(*options.ImmutabilityPolicyExpiry).In(gmt).Format(time.RFC1123)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
@@ -379,13 +378,13 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if options != nil && options.Tier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.Tier)}
@@ -466,7 +465,7 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfModifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC1123(*sourceModifiedAccessConditions.SourceIfModifiedSince).String()}
+		req.Raw().Header["x-ms-source-if-modified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfModifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
@@ -475,7 +474,7 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 		req.Raw().Header["x-ms-source-if-tags"] = []string{*sourceModifiedAccessConditions.SourceIfTags}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC1123(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).String()}
+		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
@@ -765,13 +764,13 @@ func (client *BlockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfModifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC1123(*sourceModifiedAccessConditions.SourceIfModifiedSince).String()}
+		req.Raw().Header["x-ms-source-if-modified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfModifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC1123(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).String()}
+		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if options != nil && options.SourceRange != nil {
 		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
@@ -880,13 +879,13 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*modifiedAccessConditions.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if options != nil && options.Tier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.Tier)}
@@ -935,7 +934,7 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 		req.Raw().Header["x-ms-immutability-policy-mode"] = []string{string(*options.ImmutabilityPolicyMode)}
 	}
 	if options != nil && options.ImmutabilityPolicyExpiry != nil {
-		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC1123(*options.ImmutabilityPolicyExpiry).String()}
+		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{(*options.ImmutabilityPolicyExpiry).In(gmt).Format(time.RFC1123)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}

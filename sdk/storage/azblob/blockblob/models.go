@@ -352,7 +352,7 @@ type UploadStreamOptions struct {
 
 func (u *UploadStreamOptions) setDefaults() {
 	if u.Concurrency == 0 {
-		u.Concurrency = int(shared.DefaultConcurrencyValue())
+		u.Concurrency = int(shared.DefaultStreamConcurrencyValue())
 	}
 
 	if u.BlockSize < _1MiB {

@@ -326,7 +326,7 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 
 func (u *UploadStreamOptions) setDefaults() {
 	if u.Concurrency == 0 {
-		u.Concurrency = shared.DefaultConcurrencyValue()
+		u.Concurrency = shared.DefaultStreamConcurrencyValue()
 	}
 
 	if u.ChunkSize < _1MiB {

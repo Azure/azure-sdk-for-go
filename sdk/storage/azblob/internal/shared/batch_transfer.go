@@ -28,6 +28,16 @@ func DefaultConcurrencyValue() uint16 {
 	return uint16(max(8, min(96, runtime.NumCPU())))
 }
 
+// DefaultStreamConcurrencyValue returns the default concurrency for streaming
+// uploads. Set the AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY environment
+// variable to "true" to revert to the previous default of 1.
+func DefaultStreamConcurrencyValue() uint16 {
+	if strings.EqualFold(os.Getenv("AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY"), "true") {
+		return 1
+	}
+	return uint16(max(8, min(96, runtime.NumCPU())))
+}
+
 // BatchTransferOptions identifies options used by doBatchTransfer.
 type BatchTransferOptions struct {
 	TransferSize  int64

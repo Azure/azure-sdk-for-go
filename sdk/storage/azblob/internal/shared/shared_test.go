@@ -253,3 +253,23 @@ func TestDefaultConcurrencyValue_LegacyEnvVar(t *testing.T) {
 	require.GreaterOrEqual(t, val, uint16(8))
 	require.LessOrEqual(t, val, uint16(96))
 }
+
+func TestDefaultStreamConcurrencyValue_InBounds(t *testing.T) {
+	t.Setenv("AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY", "")
+	val := DefaultStreamConcurrencyValue()
+	require.GreaterOrEqual(t, val, uint16(8))
+	require.LessOrEqual(t, val, uint16(96))
+}
+
+func TestDefaultStreamConcurrencyValue_LegacyEnvVar(t *testing.T) {
+	t.Setenv("AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY", "true")
+	require.Equal(t, uint16(1), DefaultStreamConcurrencyValue())
+
+	t.Setenv("AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY", "TRUE")
+	require.Equal(t, uint16(1), DefaultStreamConcurrencyValue())
+
+	t.Setenv("AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY", "false")
+	val := DefaultStreamConcurrencyValue()
+	require.GreaterOrEqual(t, val, uint16(8))
+	require.LessOrEqual(t, val, uint16(96))
+}

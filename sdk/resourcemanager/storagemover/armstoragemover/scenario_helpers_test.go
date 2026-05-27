@@ -34,6 +34,19 @@ const (
 	scenarioKeyVaultAccessKeyURI  = "https://examples-azureKeyVault.vault.azure.net/secrets/examples-accesskey"
 	scenarioKeyVaultSecretKeyURI  = "https://examples-azureKeyVault.vault.azure.net/secrets/examples-secretkey"
 	scenarioS3SourceURI           = "https://s3.example.com/bucket"
+
+	// Cross-subscription shared infrastructure for matrix rows #31 and #32. All of these live in
+	// the XDataMove-Synthetics subscription (b6b34ad8-…) and must not be recreated.
+	scenarioCrossSubID                       = "b6b34ad8-ca89-4f85-beb7-c2ec13702dac"
+	scenarioPrivateLinkServiceID             = "/subscriptions/b6b34ad8-ca89-4f85-beb7-c2ec13702dac/resourceGroups/E2E-Management-RGsyn/providers/Microsoft.Network/privateLinkServices/test-pls-wcs"
+	scenarioPrivateLinkServiceRG             = "E2E-Management-RGsyn"
+	scenarioPrivateLinkServiceName           = "test-pls-wcs"
+	scenarioAwsPrivateS3BucketID             = "/subscriptions/b6b34ad8-ca89-4f85-beb7-c2ec13702dac/resourceGroups/aws_640698235822/providers/Microsoft.AWSConnector/s3Buckets/e2e-sm-rp-private-bucket"
+	scenarioTestStorageAccountID             = "/subscriptions/b6b34ad8-ca89-4f85-beb7-c2ec13702dac/resourceGroups/CP_Mover_IN_WCUS/providers/Microsoft.Storage/storageAccounts/cpmoveraccount"
+	scenarioTestStorageAccountRG             = "CP_Mover_IN_WCUS"
+	scenarioTestStorageAccountName           = "cpmoveraccount"
+	scenarioWestCentralUSLocation            = "westcentralus"
+	scenarioStorageBlobDataContributorRoleID = "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
 )
 
 // scenarioBaseSuite holds the shared resource group, credentials, and client options used by every
@@ -50,9 +63,17 @@ type scenarioBaseSuite struct {
 	subscriptionID    string
 }
 
-// setupBase initializes recording, credentials, and a fresh resource group for the suite. Call from
-// SetupSuite. It writes results into the embedded scenarioBaseSuite fields.
+// setupBase initializes recording, credentials, and a fresh resource group for the suite in the
+// default location (`LOCATION` env, or `eastus`). Call from SetupSuite.
 func (b *scenarioBaseSuite) setupBase() {
+	b.setupBaseInLocation(recording.GetEnvVariable("LOCATION", "eastus"))
+}
+
+// setupBaseInLocation is the location-explicit form of setupBase used by suites that must run in a
+// specific region (e.g. matrix rows #31 and #32 need westcentralus because the shared
+// cross-subscription storage account `cpmoveraccount` and PrivateLinkService `test-pls-wcs` live
+// in WCUS).
+func (b *scenarioBaseSuite) setupBaseInLocation(location string) {
 	testutil.StartRecording(b.T(), pathToPackage)
 
 	// AZSDK3493 is the default Body Key Sanitizer that replaces "$..name" with "Sanitized" in every
@@ -70,7 +91,7 @@ func (b *scenarioBaseSuite) setupBase() {
 
 	b.ctx = context.Background()
 	b.cred, b.options = testutil.GetCredAndClientOptions(b.T())
-	b.location = recording.GetEnvVariable("LOCATION", "eastus")
+	b.location = location
 	b.subscriptionID = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
 	rg, _, err := testutil.CreateResourceGroup(b.ctx, b.subscriptionID, b.cred, b.options, b.location)

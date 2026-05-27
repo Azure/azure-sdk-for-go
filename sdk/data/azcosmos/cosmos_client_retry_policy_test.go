@@ -611,9 +611,11 @@ func TestConnectionErrorReadFailsOverAfterThreeSameRegionAttempts(t *testing.T) 
 // problems that prevented the cross-region failover from ever taking effect:
 //  1. It forced a synchronous gem.Update(ctx, true) after
 //     MarkEndpointUnavailable*. With the global endpoint unreachable, the
-//     refresh dialed a blocked address, hit the connect timeout, and
-//     returned an error — causing the policy to surface the original
-//     connection failure without ever attempting the cross-region retry.
+//     refresh failed (in production typically a connect timeout when the
+//     global FQDN resolves to a blocked regional FE pool; the test injects
+//     a net.DNSError as a deterministic stand-in for any gem.Update
+//     failure) — causing the policy to surface the original connection
+//     failure without ever attempting the cross-region retry.
 //  2. It incremented retryCount after the mark. MarkEndpointUnavailable*
 //     demotes the bad endpoint to the TAIL of readEndpoints rather than
 //     removing it, so readEndpoints becomes [good, bad]. With retryCount
@@ -652,7 +654,10 @@ func TestConnectionErrorReadFailsOverWhenGlobalEndpointIsUnreachable(t *testing.
 	gemServer, gemClose := mock.NewTLSServer()
 	defer gemClose()
 	// Simulate the global endpoint being unreachable for the duration of
-	// the regional outage. Any forced gem.Update will fail.
+	// the regional outage. In production this typically manifests as a
+	// connect timeout (global FQDN resolves to a blocked regional FE
+	// pool); a net.DNSError gives us the same gem.Update(ctx,true)
+	// failure deterministically and without test-time sleeps.
 	gemServer.SetError(&net.DNSError{})
 
 	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})

@@ -606,7 +606,6 @@ func (o *SetTagsOptions) format() *generated.BlobClientSetTagsOptions {
 		return nil
 	}
 
-	// Notes: no mapping for o.AccessConditions.ModifiedAccessConditions
 	opts := &generated.BlobClientSetTagsOptions{
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
@@ -644,7 +643,7 @@ func (o *GetTagsOptions) format() *generated.BlobClientGetTagsOptions {
 	if o == nil {
 		return nil
 	}
-	// Notes: no mapping for o.BlobModifiedAccessConditions
+
 	opts := &generated.BlobClientGetTagsOptions{
 		Snapshot:  o.Snapshot,
 		VersionID: o.VersionID,
@@ -678,7 +677,6 @@ func (o *SetImmutabilityPolicyOptions) format() *generated.BlobClientSetImmutabi
 	if o == nil {
 		return nil
 	}
-	// Notes: no mapping for most of o.ModifiedAccessConditions
 
 	opts := &generated.BlobClientSetImmutabilityPolicyOptions{ImmutabilityPolicyMode: o.Mode}
 	if o.ModifiedAccessConditions != nil {

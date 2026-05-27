@@ -370,7 +370,7 @@ func (o *BatchSetTierOptions) format() *generated.BlobClientSetTierOptions {
 	if o == nil {
 		return nil
 	}
-	// Notes: no mapping for o.AccessConditions.ModifiedAccessConditions
+
 	opts := &generated.BlobClientSetTierOptions{
 		RehydratePriority: o.RehydratePriority,
 		Snapshot:          o.Snapshot,

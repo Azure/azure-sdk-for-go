@@ -176,7 +176,6 @@ func (o *AppendBlockFromURLOptions) format() *generated.AppendBlobClientAppendBl
 		return nil
 	}
 
-	// Notes: no mapping for o.SourceModifiedAccessConditions.SourceIfTags
 	options := &generated.AppendBlobClientAppendBlockFromURLOptions{
 		CopySourceAuthorization: o.CopySourceAuthorization,
 		FileRequestIntent:       o.FileRequestIntent,

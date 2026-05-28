@@ -1,5 +1,7 @@
 # Release History
 
+<!-- cSpell:ignore documentdb unmarshalling -->
+
 ## 1.5.0-beta.7 (Unreleased)
 
 ### Features Added

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-15-preview/PutRaiPolicy.json
+// Generated from example definition: 2026-03-15-preview/PutRaiPolicy.json
 func ExampleRaiPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleRaiPoliciesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiPoliciesClientCreateOrUpdateResponse{
-	// 	RaiPolicy: &armcognitiveservices.RaiPolicy{
+	// 	RaiPolicy: armcognitiveservices.RaiPolicy{
 	// 		Name: to.Ptr("raiPolicyName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiPolicies/raiPolicyName"),
 	// 		Properties: &armcognitiveservices.RaiPolicyProperties{
@@ -211,7 +211,7 @@ func ExampleRaiPoliciesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/DeleteRaiPolicy.json
+// Generated from example definition: 2026-03-15-preview/DeleteRaiPolicy.json
 func ExampleRaiPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,11 +228,11 @@ func ExampleRaiPoliciesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/GetRaiPolicy.json
+// Generated from example definition: 2026-03-15-preview/GetRaiPolicy.json
 func ExampleRaiPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleRaiPoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiPoliciesClientGetResponse{
-	// 	RaiPolicy: &armcognitiveservices.RaiPolicy{
+	// 	RaiPolicy: armcognitiveservices.RaiPolicy{
 	// 		Name: to.Ptr("raiPolicyName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiPolicies/raiPolicyName"),
 	// 		Properties: &armcognitiveservices.RaiPolicyProperties{
@@ -344,7 +344,7 @@ func ExampleRaiPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/ListRaiPolicies.json
+// Generated from example definition: 2026-03-15-preview/ListRaiPolicies.json
 func ExampleRaiPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

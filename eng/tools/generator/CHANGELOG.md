@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.13 (2026-05-28)
+
+### Bugs Fixed
+
+- Updated `apiVersionConstRegex` to match the current `versionYYYYMMDD[Preview] string = "..."` constant pattern emitted by the generator, so preview packages are no longer misclassified as stable.
+
 ## 0.4.12 (2026-05-18)
 
 ### Features Added

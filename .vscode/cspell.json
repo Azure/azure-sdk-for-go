@@ -42,7 +42,11 @@
         "odata",
         "mgmt",
         "armkubernetesconfiguration",
-        "azruntime"
+        "azruntime",
+        "azlog",
+        "Writef",
+        "Retriable",
+        "unrecovered"
     ],
     "allowCompoundWords": true,
     "overrides": [

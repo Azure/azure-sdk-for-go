@@ -30,10 +30,9 @@ const (
 
 var (
 	versionLineRegex     = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
-	// Matches either the legacy `const defaultXxxVersion string = "..."` form
-	// or the current generator output `versionYYYYMMDD[Preview] string = "..."`
-	// (typically inside a `const ( ... )` block in constants.go).
-	apiVersionConstRegex = regexp.MustCompile(`(?:^|\s)(?:default\w+Version|version\d\w*)\s+string\s*=\s*"`)
+	// Matches the generator's API version constants in constants.go,
+	// e.g. `version20250525Preview string = "2025-05-25-preview"`.
+	apiVersionConstRegex = regexp.MustCompile(`(?:^|\s)version\d\w*\s+string\s*=\s*"`)
 )
 
 // UpdateAllVersionFiles updates all version-related files in the package

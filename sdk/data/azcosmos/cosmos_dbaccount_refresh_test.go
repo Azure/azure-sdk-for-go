@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// cSpell:ignore azcosmosgemtest azcosmostest retriable
+
 // Regression tests for excess GetDatabaseAccount calls observed with
 // preferred regions configured.
 //

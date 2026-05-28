@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// cSpell:ignore azcosmosgemtest azcosmostest
+// cSpell:ignore azcosmosgemtest azcosmostest retriable
 
 package azcosmos
 

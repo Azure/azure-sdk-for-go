@@ -216,7 +216,7 @@ func TestFix3_WriteRetryKicksOffFireAndForgetRefresh(t *testing.T) {
 	// Expected refreshes: 1 (initial) + floor(elapsed /
 	// forcedRefreshMinInterval) at most. Allow +1 for boundary
 	// scheduling slack.
-	maxExpected := int64(1 + elapsed/forcedRefreshMinInterval) + 1
+	maxExpected := int64(1+elapsed/forcedRefreshMinInterval) + 1
 	require.LessOrEqual(t, transport.count.Load(), maxExpected,
 		"sustained 403s against the same endpoint must be rate-limited (elapsed=%v got=%d max=%d)",
 		elapsed, transport.count.Load(), maxExpected)

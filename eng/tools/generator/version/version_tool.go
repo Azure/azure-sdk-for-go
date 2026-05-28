@@ -371,7 +371,7 @@ func containsPreviewAPIVersion(packagePath string) (bool, error) {
 						return true, nil
 					}
 				}
-				// Check const API version pattern: const defaultXxxClientVersion string = "2023-01-01-preview"
+				// Check const API version pattern: versionYYYYMMDD[Preview] string = "2023-01-01-preview"
 				if apiVersionConstRegex.MatchString(line) {
 					parts := strings.Split(line, "\"")
 					if len(parts) >= 2 && strings.Contains(parts[1], "preview") {

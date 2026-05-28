@@ -54,15 +54,6 @@
                 "gover",
                 "objx"
             ]
-        },
-        {
-            "filename": "sdk/data/azcosmos/**",
-            "words": [
-                "azlog",
-                "Retriable",
-                "unrecovered",
-                "Writef"
-            ]
         }
     ]
 }

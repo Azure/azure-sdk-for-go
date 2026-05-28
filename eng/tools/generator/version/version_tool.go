@@ -29,7 +29,7 @@ const (
 )
 
 var (
-	versionLineRegex     = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
+	versionLineRegex = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
 	// Matches the generator's API version constants in constants.go,
 	// e.g. `version20250525Preview string = "2025-05-25-preview"`.
 	apiVersionConstRegex = regexp.MustCompile(`(?:^|\s)version\d\w*\s+string\s*=\s*"`)

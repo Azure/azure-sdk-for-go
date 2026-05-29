@@ -208,17 +208,6 @@ directive:
     $["x-ms-client-name"] = "ContentCRC64"
 ```
 
-### Updating encoding URL, Golang adds '+' which disrupts encoding with service
-
-``` yaml
-directive:
-- from: zz_service_client.go
-  where: $
-  transform: >-
-    return $.
-      replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`);
-```
-
 ### Change `Duration` parameter in leases to be required
 
 ``` yaml

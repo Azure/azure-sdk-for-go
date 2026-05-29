@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.5-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0 (2026-05-14)
+
+### Features Added
+* Includes all features from `1.6.0-beta.1`
+
+## 1.7.0-beta.1 (2026-05-05)
+
+### Features Added
+* Added support for service version 2026-06-06.
+* Added support for uploading up to 4 MiB of data with Create File API.
+
+## 1.6.0-beta.1 (2026-04-23)
+
+### Features Added
+* Added support for service version 2026-04-06.
+* Added cross-tenant support for Principal-Bound User Delegation SAS.
+* Added support for Files Provisioned V2 Guardrails.
 
 ## 1.5.4 (2026-01-12)
 

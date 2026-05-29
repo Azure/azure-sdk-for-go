@@ -6,15 +6,14 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
+	"time"
 )
 
-// Generated from example definition: 2026-03-01-preview/DeleteUpdates.json
+// Generated from example definition: 2026-04-01-preview/DeleteUpdates.json
 func ExampleUpdatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +39,7 @@ func ExampleUpdatesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/GetUpdates.json
+// Generated from example definition: 2026-04-01-preview/GetUpdates.json
 func ExampleUpdatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +92,7 @@ func ExampleUpdatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListUpdates.json
+// Generated from example definition: 2026-04-01-preview/ListUpdates.json
 func ExampleUpdatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +154,7 @@ func ExampleUpdatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/PostUpdates.json
+// Generated from example definition: 2026-04-01-preview/PostUpdates.json
 func ExampleUpdatesClient_BeginPost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +180,7 @@ func ExampleUpdatesClient_BeginPost() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Updates_Prepare.json
+// Generated from example definition: 2026-04-01-preview/Updates_Prepare.json
 func ExampleUpdatesClient_BeginPrepare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +201,7 @@ func ExampleUpdatesClient_BeginPrepare() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/PutUpdates.json
+// Generated from example definition: 2026-04-01-preview/PutUpdates.json
 func ExampleUpdatesClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

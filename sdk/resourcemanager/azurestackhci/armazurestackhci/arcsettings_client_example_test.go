@@ -6,14 +6,13 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/ConsentAndInstallDefaultExtensions.json
+// Generated from example definition: 2026-04-01-preview/ConsentAndInstallDefaultExtensions.json
 func ExampleArcSettingsClient_ConsentAndInstallDefaultExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +74,7 @@ func ExampleArcSettingsClient_ConsentAndInstallDefaultExtensions() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/PutArcSetting.json
+// Generated from example definition: 2026-04-01-preview/PutArcSetting.json
 func ExampleArcSettingsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +136,7 @@ func ExampleArcSettingsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CreateArcIdentity.json
+// Generated from example definition: 2026-04-01-preview/CreateArcIdentity.json
 func ExampleArcSettingsClient_BeginCreateIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +170,7 @@ func ExampleArcSettingsClient_BeginCreateIdentity() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DeleteArcSetting.json
+// Generated from example definition: 2026-04-01-preview/DeleteArcSetting.json
 func ExampleArcSettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +196,7 @@ func ExampleArcSettingsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/GeneratePassword.json
+// Generated from example definition: 2026-04-01-preview/GeneratePassword.json
 func ExampleArcSettingsClient_GeneratePassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +224,7 @@ func ExampleArcSettingsClient_GeneratePassword() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/GetArcSetting.json
+// Generated from example definition: 2026-04-01-preview/GetArcSetting.json
 func ExampleArcSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,7 +293,7 @@ func ExampleArcSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/InitializeDisableProcess.json
+// Generated from example definition: 2026-04-01-preview/InitializeDisableProcess.json
 func ExampleArcSettingsClient_BeginInitializeDisableProcess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +319,7 @@ func ExampleArcSettingsClient_BeginInitializeDisableProcess() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListArcSettingsByCluster.json
+// Generated from example definition: 2026-04-01-preview/ListArcSettingsByCluster.json
 func ExampleArcSettingsClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -398,7 +397,7 @@ func ExampleArcSettingsClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/reconcileArcSettings.json
+// Generated from example definition: 2026-04-01-preview/reconcileArcSettings.json
 func ExampleArcSettingsClient_BeginReconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -480,7 +479,7 @@ func ExampleArcSettingsClient_BeginReconcile() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/PatchArcSetting.json
+// Generated from example definition: 2026-04-01-preview/PatchArcSetting.json
 func ExampleArcSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

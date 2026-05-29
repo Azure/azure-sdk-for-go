@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/CredentialSetCreate.json
+// Generated from example definition: 2026-01-01-preview/CredentialSetCreate.json
 func ExampleCredentialSetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,13 +43,13 @@ func ExampleCredentialSetsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.CredentialSetsClientCreateResponse{
-	// 	CredentialSet: &armcontainerregistry.CredentialSet{
+	// 	CredentialSet: armcontainerregistry.CredentialSet{
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/credentialSets"),
 	// 		Identity: &armcontainerregistry.IdentityProperties{
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -77,7 +77,7 @@ func ExampleCredentialSetsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/CredentialSetDelete.json
+// Generated from example definition: 2026-01-01-preview/CredentialSetDelete.json
 func ExampleCredentialSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,11 +94,11 @@ func ExampleCredentialSetsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01/CredentialSetGet.json
+// Generated from example definition: 2026-01-01-preview/CredentialSetGet.json
 func ExampleCredentialSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleCredentialSetsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.CredentialSetsClientGetResponse{
-	// 	CredentialSet: &armcontainerregistry.CredentialSet{
+	// 	CredentialSet: armcontainerregistry.CredentialSet{
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/credentialSets"),
 	// 		Identity: &armcontainerregistry.IdentityProperties{
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -145,7 +145,7 @@ func ExampleCredentialSetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/CredentialSetList.json
+// Generated from example definition: 2026-01-01-preview/CredentialSetList.json
 func ExampleCredentialSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleCredentialSetsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/CredentialSetUpdate.json
+// Generated from example definition: 2026-01-01-preview/CredentialSetUpdate.json
 func ExampleCredentialSetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,13 +228,13 @@ func ExampleCredentialSetsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.CredentialSetsClientUpdateResponse{
-	// 	CredentialSet: &armcontainerregistry.CredentialSet{
+	// 	CredentialSet: armcontainerregistry.CredentialSet{
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/credentialSets"),
 	// 		Identity: &armcontainerregistry.IdentityProperties{
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),

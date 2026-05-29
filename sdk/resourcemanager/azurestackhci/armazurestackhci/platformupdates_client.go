@@ -7,14 +7,13 @@ package armazurestackhci
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PlatformUpdatesClient contains the methods for the PlatformUpdates group.
@@ -43,7 +42,7 @@ func NewPlatformUpdatesClient(subscriptionID string, credential azcore.TokenCred
 // Get - Get a platform update.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - platformUpdateName - The name of the PlatformUpdate
 //   - options - PlatformUpdatesClientGetOptions contains the optional parameters for the PlatformUpdatesClient.Get method.
@@ -89,7 +88,7 @@ func (client *PlatformUpdatesClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,7 +105,7 @@ func (client *PlatformUpdatesClient) getHandleResponse(resp *http.Response) (Pla
 
 // NewListPager - List all platform updates.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - options - PlatformUpdatesClientListOptions contains the optional parameters for the PlatformUpdatesClient.NewListPager
 //     method.
@@ -149,7 +148,7 @@ func (client *PlatformUpdatesClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -6,14 +6,13 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ManagedClusterSnapshotsCreate.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsCreate.json
 func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +27,7 @@ func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 		Location: to.Ptr("westus"),
 		Properties: &armcontainerservice.ManagedClusterSnapshotProperties{
 			CreationData: &armcontainerservice.CreationData{
-				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 			},
 		},
 		Tags: map[string]*string{
@@ -43,14 +42,14 @@ func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.ManagedClusterSnapshotsClientCreateOrUpdateResponse{
-	// 	ManagedClusterSnapshot: &armcontainerservice.ManagedClusterSnapshot{
+	// 	ManagedClusterSnapshot: armcontainerservice.ManagedClusterSnapshot{
 	// 		Name: to.Ptr("snapshot1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/ManagedClusterSnapshots"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusterSnapshots"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armcontainerservice.ManagedClusterSnapshotProperties{
 	// 			CreationData: &armcontainerservice.CreationData{
-	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 	// 			},
 	// 			ManagedClusterPropertiesReadOnly: &armcontainerservice.ManagedClusterPropertiesForSnapshot{
 	// 				EnableRbac: to.Ptr(true),
@@ -81,7 +80,7 @@ func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedClusterSnapshotsDelete.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsDelete.json
 func ExampleManagedClusterSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +102,7 @@ func ExampleManagedClusterSnapshotsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedClusterSnapshotsGet.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsGet.json
 func ExampleManagedClusterSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,14 +121,14 @@ func ExampleManagedClusterSnapshotsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.ManagedClusterSnapshotsClientGetResponse{
-	// 	ManagedClusterSnapshot: &armcontainerservice.ManagedClusterSnapshot{
+	// 	ManagedClusterSnapshot: armcontainerservice.ManagedClusterSnapshot{
 	// 		Name: to.Ptr("snapshot1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/ManagedClusterSnapshots"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusterSnapshots"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armcontainerservice.ManagedClusterSnapshotProperties{
 	// 			CreationData: &armcontainerservice.CreationData{
-	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 	// 			},
 	// 			ManagedClusterPropertiesReadOnly: &armcontainerservice.ManagedClusterPropertiesForSnapshot{
 	// 				EnableRbac: to.Ptr(true),
@@ -160,7 +159,7 @@ func ExampleManagedClusterSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedClusterSnapshotsList.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsList.json
 func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,12 +186,12 @@ func ExampleManagedClusterSnapshotsClient_NewListPager() {
 		// 		Value: []*armcontainerservice.ManagedClusterSnapshot{
 		// 			{
 		// 				Name: to.Ptr("snapshot1"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/ManagedClusterSnapshots"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusterSnapshots"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armcontainerservice.ManagedClusterSnapshotProperties{
 		// 					CreationData: &armcontainerservice.CreationData{
-		// 						SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+		// 						SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 		// 					},
 		// 					ManagedClusterPropertiesReadOnly: &armcontainerservice.ManagedClusterPropertiesForSnapshot{
 		// 						EnableRbac: to.Ptr(true),
@@ -226,7 +225,7 @@ func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedClusterSnapshotsListByResourceGroup.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsListByResourceGroup.json
 func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,12 +252,12 @@ func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 		// 		Value: []*armcontainerservice.ManagedClusterSnapshot{
 		// 			{
 		// 				Name: to.Ptr("snapshot1"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/ManagedClusterSnapshots"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusterSnapshots"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armcontainerservice.ManagedClusterSnapshotProperties{
 		// 					CreationData: &armcontainerservice.CreationData{
-		// 						SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+		// 						SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 		// 					},
 		// 					ManagedClusterPropertiesReadOnly: &armcontainerservice.ManagedClusterPropertiesForSnapshot{
 		// 						EnableRbac: to.Ptr(true),
@@ -292,7 +291,7 @@ func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedClusterSnapshotsUpdateTags.json
+// Generated from example definition: 2026-03-02-preview/ManagedClusterSnapshotsUpdateTags.json
 func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,14 +315,14 @@ func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.ManagedClusterSnapshotsClientUpdateTagsResponse{
-	// 	ManagedClusterSnapshot: &armcontainerservice.ManagedClusterSnapshot{
+	// 	ManagedClusterSnapshot: armcontainerservice.ManagedClusterSnapshot{
 	// 		Name: to.Ptr("snapshot1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/ManagedClusterSnapshots"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusterSnapshots"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armcontainerservice.ManagedClusterSnapshotProperties{
 	// 			CreationData: &armcontainerservice.CreationData{
-	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 	// 			},
 	// 			ManagedClusterPropertiesReadOnly: &armcontainerservice.ManagedClusterPropertiesForSnapshot{
 	// 				EnableRbac: to.Ptr(true),
@@ -347,8 +346,8 @@ func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("val1"),
-	// 			"key2": to.Ptr("val2"),
+	// 			"key2": to.Ptr("new-val2"),
+	// 			"key3": to.Ptr("val3"),
 	// 		},
 	// 	},
 	// }

@@ -7,18 +7,19 @@ package armcontainerservice
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // JWTAuthenticatorsClient contains the methods for the JWTAuthenticators group.
 // Don't use this type directly, use NewJWTAuthenticatorsClient() instead.
+//
+// Generated from API version 2026-03-02-preview
 type JWTAuthenticatorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +44,6 @@ func NewJWTAuthenticatorsClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreateOrUpdate - Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply
 // the settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - jwtAuthenticatorName - The name of the JWT authenticator.
@@ -71,8 +70,6 @@ func (client *JWTAuthenticatorsClient) BeginCreateOrUpdate(ctx context.Context, 
 // CreateOrUpdate - Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
 // settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-02-preview
 func (client *JWTAuthenticatorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, parameters JWTAuthenticator, options *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JWTAuthenticatorsClient.BeginCreateOrUpdate"
@@ -118,8 +115,8 @@ func (client *JWTAuthenticatorsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -130,8 +127,6 @@ func (client *JWTAuthenticatorsClient) createOrUpdateCreateRequest(ctx context.C
 
 // BeginDelete - Deletes a JWT authenticator and updates the managed cluster to apply the settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - jwtAuthenticatorName - The name of the JWT authenticator.
@@ -156,8 +151,6 @@ func (client *JWTAuthenticatorsClient) BeginDelete(ctx context.Context, resource
 
 // Delete - Deletes a JWT authenticator and updates the managed cluster to apply the settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-02-preview
 func (client *JWTAuthenticatorsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, options *JWTAuthenticatorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JWTAuthenticatorsClient.BeginDelete"
@@ -203,15 +196,13 @@ func (client *JWTAuthenticatorsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the specified JWT authenticator of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - jwtAuthenticatorName - The name of the JWT authenticator.
@@ -262,8 +253,8 @@ func (client *JWTAuthenticatorsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -278,8 +269,6 @@ func (client *JWTAuthenticatorsClient) getHandleResponse(resp *http.Response) (J
 }
 
 // NewListByManagedClusterPager - Gets a list of JWT authenticators in the specified managed cluster.
-//
-// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - JWTAuthenticatorsClientListByManagedClusterOptions contains the optional parameters for the JWTAuthenticatorsClient.NewListByManagedClusterPager
@@ -327,8 +316,8 @@ func (client *JWTAuthenticatorsClient) listByManagedClusterCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -1,15 +1,37 @@
 # Release History
 
-## 1.4.5-beta.1 (Unreleased)
+## 1.6.0-beta.2 (Unreleased)
 
 ### Features Added
-* Added error code `PathIsTooDeep` which is returned when a path contains more than 63 path segments.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0 (2026-05-15)
+
+### Features Added
+* Includes all features from `1.5.0-beta.1`
+
+## 1.6.0-beta.1 (2026-05-05)
+
+### Features Added
+* Added support for service version 2026-06-06.
+* Added `GetSystemProperties` API to file and directory clients for retrieving system-defined properties using the `getStatus` action.
+* Added `GetTags` and `SetTags` API to file and directory clients.
+
+## 1.5.0-beta.1 (2026-04-23)
+
+### Features Added
+* Added support for service version 2026-04-06.
+* Added cross-tenant support for Principal-Bound User Delegation SAS.
+* Added support for Dynamic User Delegation SAS.
+* Added error code `PathIsTooDeep` which is returned when a path contains more than 63 path segments.
+
+### Bugs Fixed
+* Added support for error code `IncrementalCopyOfEarlierSnapshotNotAllowed`. This replaces `IncrementalCopyOfEarlierVersionSnapshotNotAllowed` which has been deprecated.
 
 ## 1.4.4 (2026-01-12)
 

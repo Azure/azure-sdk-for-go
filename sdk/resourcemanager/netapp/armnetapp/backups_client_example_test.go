@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2025-12-01/BackupsUnderBackupVault_Create.json
+// Generated from example definition: 2026-01-01/BackupsUnderBackupVault_Create.json
 func ExampleBackupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleBackupsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/BackupsUnderBackupVault_Delete.json
+// Generated from example definition: 2026-01-01/BackupsUnderBackupVault_Delete.json
 func ExampleBackupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleBackupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-12-01/BackupsUnderBackupVault_Get.json
+// Generated from example definition: 2026-01-01/BackupsUnderBackupVault_Get.json
 func ExampleBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleBackupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/Volumes_LatestBackupStatus.json
+// Generated from example definition: 2026-01-01/Volumes_LatestBackupStatus.json
 func ExampleBackupsClient_GetLatestStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleBackupsClient_GetLatestStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/Volumes_LatestRestoreStatus.json
+// Generated from example definition: 2026-01-01/Volumes_LatestRestoreStatus.json
 func ExampleBackupsClient_GetVolumeLatestRestoreStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleBackupsClient_GetVolumeLatestRestoreStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/BackupsUnderBackupVault_List.json
+// Generated from example definition: 2026-01-01/BackupsUnderBackupVault_List.json
 func ExampleBackupsClient_NewListByVaultPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleBackupsClient_NewListByVaultPager() {
 	}
 }
 
-// Generated from example definition: 2025-12-01/BackupsUnderBackupVault_Update.json
+// Generated from example definition: 2026-01-01/BackupsUnderBackupVault_Update.json
 func ExampleBackupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

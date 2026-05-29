@@ -7,14 +7,13 @@ package armazurestackhci
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // UpdateRunsClient contains the methods for the UpdateRuns group.
@@ -43,7 +42,7 @@ func NewUpdateRunsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginDelete - Delete specified Update Run
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -69,7 +68,7 @@ func (client *UpdateRunsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Delete specified Update Run
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 func (client *UpdateRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, updateName string, updateRunName string, options *UpdateRunsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UpdateRunsClient.BeginDelete"
@@ -119,7 +118,7 @@ func (client *UpdateRunsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -127,7 +126,7 @@ func (client *UpdateRunsClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Get the Update run for a specified update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -183,7 +182,7 @@ func (client *UpdateRunsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +199,7 @@ func (client *UpdateRunsClient) getHandleResponse(resp *http.Response) (UpdateRu
 
 // NewListPager - List all Update runs for a specified update
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -252,7 +251,7 @@ func (client *UpdateRunsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -270,7 +269,7 @@ func (client *UpdateRunsClient) listHandleResponse(resp *http.Response) (UpdateR
 // Put - Put Update runs for a specified update
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -327,7 +326,7 @@ func (client *UpdateRunsClient) putCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

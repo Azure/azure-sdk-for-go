@@ -6,13 +6,12 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/UpdateContents_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/UpdateContents_Get_MaximumSet_Gen.json
 func ExampleUpdateContentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +51,7 @@ func ExampleUpdateContentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/UpdateContents_ListByLocation_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/UpdateContents_ListByLocation_MaximumSet_Gen.json
 func ExampleUpdateContentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

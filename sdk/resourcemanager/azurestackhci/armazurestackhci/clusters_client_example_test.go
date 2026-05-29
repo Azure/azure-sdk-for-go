@@ -6,15 +6,14 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
+	"time"
 )
 
-// Generated from example definition: 2026-03-01-preview/ChangeClusterRing.json
+// Generated from example definition: 2026-04-01-preview/ChangeClusterRing.json
 func ExampleClustersClient_BeginChangeRing() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +105,7 @@ func ExampleClustersClient_BeginChangeRing() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ConfigureRemoteSupport.json
+// Generated from example definition: 2026-04-01-preview/ConfigureRemoteSupport.json
 func ExampleClustersClient_BeginConfigureRemoteSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,9 +183,11 @@ func ExampleClustersClient_BeginConfigureRemoteSupport() {
 	// 						NodeName: to.Ptr("arcNode0"),
 	// 						SessionEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 						SessionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 						TranscriptLocation: to.Ptr("//arcNode0/intNodeTranscriptStore/intNodeTranscriptStore/SRSTranscript"),
 	// 					},
 	// 				},
 	// 				RemoteSupportType: to.Ptr(armazurestackhci.RemoteSupportTypeEnable),
+	// 				RemoteSupportProvisioningState: to.Ptr(armazurestackhci.RemoteSupportProvisioningStateSucceeded),
 	// 			},
 	// 			ReportedProperties: &armazurestackhci.ClusterReportedProperties{
 	// 				ClusterID: to.Ptr("a76ac23a-1819-4e82-9410-e3e4ec3d1425"),
@@ -228,7 +229,7 @@ func ExampleClustersClient_BeginConfigureRemoteSupport() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CreateCluster.json
+// Generated from example definition: 2026-04-01-preview/CreateCluster.json
 func ExampleClustersClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +303,7 @@ func ExampleClustersClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CreateClusterIdentity.json
+// Generated from example definition: 2026-04-01-preview/CreateClusterIdentity.json
 func ExampleClustersClient_BeginCreateIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +337,7 @@ func ExampleClustersClient_BeginCreateIdentity() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DeleteCluster.json
+// Generated from example definition: 2026-04-01-preview/DeleteCluster.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,7 +363,7 @@ func ExampleClustersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ExtendSoftwareAssuranceBenefit.json
+// Generated from example definition: 2026-04-01-preview/ExtendSoftwareAssuranceBenefit.json
 func ExampleClustersClient_BeginExtendSoftwareAssuranceBenefit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -453,7 +454,7 @@ func ExampleClustersClient_BeginExtendSoftwareAssuranceBenefit() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/GetCluster.json
+// Generated from example definition: 2026-04-01-preview/GetCluster.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,6 +483,15 @@ func ExampleClustersClient_Get() {
 	// 			AADClientID: to.Ptr("24a6e53d-04e5-44d2-b7cc-1b732a847dfc"),
 	// 			AADTenantID: to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
 	// 			BillingModel: to.Ptr("Trial"),
+	// 			BillingProperties: &armazurestackhci.ClusterBillingProperties{
+	// 				NextBillingModel: &armazurestackhci.NextBillingModel{
+	// 					BillingModel: to.Ptr("L2"),
+	// 					CapabilitiesEnabled: []*string{
+	// 						to.Ptr("SAN"),
+	// 					},
+	// 					TrialDaysRemaining: to.Ptr[float32](30),
+	// 				},
+	// 			},
 	// 			CloudID: to.Ptr("a3c0468f-e38e-4dda-ac48-817f620536f0"),
 	// 			CloudManagementEndpoint: to.Ptr("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com"),
 	// 			ConnectivityStatus: to.Ptr(armazurestackhci.ConnectivityStatusConnected),
@@ -490,6 +500,7 @@ func ExampleClustersClient_Get() {
 	// 				WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionEnabled),
 	// 			},
 	// 			IdentityProvider: to.Ptr(armazurestackhci.IdentityProviderActiveDirectory),
+	// 			StorageType: to.Ptr(armazurestackhci.StorageTypeS2D),
 	// 			IsolatedVMAttestationConfiguration: &armazurestackhci.IsolatedVMAttestationConfiguration{
 	// 				AttestationResourceID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.Attestation/attestationProviders/testmaa"),
 	// 				AttestationServiceEndpoint: to.Ptr("https://dantestnoauth01.eus.attest.azure.net"),
@@ -589,7 +600,7 @@ func ExampleClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListClustersByResourceGroup.json
+// Generated from example definition: 2026-04-01-preview/ListClustersByResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -743,7 +754,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ListClustersBySubscription.json
+// Generated from example definition: 2026-04-01-preview/ListClustersBySubscription.json
 func ExampleClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -897,7 +908,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/TriggerLogCollection.json
+// Generated from example definition: 2026-04-01-preview/TriggerLogCollection.json
 func ExampleClustersClient_BeginTriggerLogCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1001,7 +1012,7 @@ func ExampleClustersClient_BeginTriggerLogCollection() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/UpdateCluster.json
+// Generated from example definition: 2026-04-01-preview/UpdateCluster.json
 func ExampleClustersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1135,7 +1146,7 @@ func ExampleClustersClient_Update() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Clusters_UpdateSecretsLocations.json
+// Generated from example definition: 2026-04-01-preview/Clusters_UpdateSecretsLocations.json
 func ExampleClustersClient_BeginUpdateSecretsLocations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1245,7 +1256,7 @@ func ExampleClustersClient_BeginUpdateSecretsLocations() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/UploadCertificate.json
+// Generated from example definition: 2026-04-01-preview/UploadCertificate.json
 func ExampleClustersClient_BeginUploadCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

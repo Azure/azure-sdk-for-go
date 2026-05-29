@@ -4,6 +4,10 @@
 
 package armcontainerservice
 
+const (
+	version20260302Preview string = "2026-03-02-preview"
+)
+
 // AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF
 // host routing. This can be enabled only with Cilium dataplane. If not specified, the default value is None (no acceleration).
 // The acceleration mode can be changed on a pre-existing cluster. See https://aka.ms/acnsperformance for a detailed explanation
@@ -119,6 +123,29 @@ func PossibleAgentPoolModeValues() []AgentPoolMode {
 		AgentPoolModeManagedSystem,
 		AgentPoolModeSystem,
 		AgentPoolModeUser,
+	}
+}
+
+// AgentPoolNetworkInterfaceType - Type of network interface to be provisioned on each virtual machine instance. For more
+// information, see https://aka.ms/aks/multi-nic
+type AgentPoolNetworkInterfaceType string
+
+const (
+	// AgentPoolNetworkInterfaceTypeDynamic - A secondary network interface created without IP configuration or subnet attachment.
+	// The interface is provisioned in an uninitialized state and the subnet is attached during workload creation. `vnetSubnetId`
+	// must be set to an empty string (`""`) or omitted.
+	AgentPoolNetworkInterfaceTypeDynamic AgentPoolNetworkInterfaceType = "Dynamic"
+	// AgentPoolNetworkInterfaceTypeStandard - A standard network interface programmed with an IP from a specified VNet subnet.
+	// Must be used with `vnetSubnetId` set in the AgentPoolNetworkInterface. IP address family (IPv4/IPv6/Dual-stack) is determined
+	// by the subnet.
+	AgentPoolNetworkInterfaceTypeStandard AgentPoolNetworkInterfaceType = "Standard"
+)
+
+// PossibleAgentPoolNetworkInterfaceTypeValues returns the possible values for the AgentPoolNetworkInterfaceType const type.
+func PossibleAgentPoolNetworkInterfaceTypeValues() []AgentPoolNetworkInterfaceType {
+	return []AgentPoolNetworkInterfaceType{
+		AgentPoolNetworkInterfaceTypeDynamic,
+		AgentPoolNetworkInterfaceTypeStandard,
 	}
 }
 
@@ -259,6 +286,51 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 		ConnectionStatusDisconnected,
 		ConnectionStatusPending,
 		ConnectionStatusRejected,
+	}
+}
+
+// ContainerNetworkLogs - Configures container network logs ingestion with Azure Monitor. Which network logs to ingest is
+// controlled by the CRD found in the following links. No network logs are ingested by default. More information on container
+// network logs can be found at https://aka.ms/ContainerNetworkLogsDoc. More information on configuring container network
+// log can be found at https://aka.ms/acns/howtoenablecnl. If not specified, the default is Disabled.
+type ContainerNetworkLogs string
+
+const (
+	// ContainerNetworkLogsDisabled - Azure monitor ingestion of container network logs is disabled
+	ContainerNetworkLogsDisabled ContainerNetworkLogs = "Disabled"
+	// ContainerNetworkLogsEnabled - Azure monitor ingestion of container network logs is enabled
+	ContainerNetworkLogsEnabled ContainerNetworkLogs = "Enabled"
+)
+
+// PossibleContainerNetworkLogsValues returns the possible values for the ContainerNetworkLogs const type.
+func PossibleContainerNetworkLogsValues() []ContainerNetworkLogs {
+	return []ContainerNetworkLogs{
+		ContainerNetworkLogsDisabled,
+		ContainerNetworkLogsEnabled,
+	}
+}
+
+// ControlPlaneScalingSize - The scaling size of the control plane. Scaling sizes offer guaranteed capacity and predictable
+// Kubernetes performance beyond standard tier defaults. Higher H sizes provide increased performance guarantees. See https://aka.ms/aks/hyperscale
+// for performance metrics details for each size.
+type ControlPlaneScalingSize string
+
+const (
+	// ControlPlaneScalingSizeH2 - H2 is the smallest scaling size with guaranteed capacity and predictable performance beyond
+	// standard tier defaults.
+	ControlPlaneScalingSizeH2 ControlPlaneScalingSize = "H2"
+	// ControlPlaneScalingSizeH4 - H4 scaling size provides increased guaranteed performance over H2.
+	ControlPlaneScalingSizeH4 ControlPlaneScalingSize = "H4"
+	// ControlPlaneScalingSizeH8 - H8 scaling size provides increased guaranteed performance over H4.
+	ControlPlaneScalingSizeH8 ControlPlaneScalingSize = "H8"
+)
+
+// PossibleControlPlaneScalingSizeValues returns the possible values for the ControlPlaneScalingSize const type.
+func PossibleControlPlaneScalingSizeValues() []ControlPlaneScalingSize {
+	return []ControlPlaneScalingSize{
+		ControlPlaneScalingSizeH2,
+		ControlPlaneScalingSizeH4,
+		ControlPlaneScalingSizeH8,
 	}
 }
 
@@ -450,6 +522,24 @@ func PossibleGPUInstanceProfileValues() []GPUInstanceProfile {
 		GPUInstanceProfileMIG3G,
 		GPUInstanceProfileMIG4G,
 		GPUInstanceProfileMIG7G,
+	}
+}
+
+// GatewayAPIIstioEnabled - Whether to enable Istio as a Gateway API implementation for managed ingress with App Routing.
+type GatewayAPIIstioEnabled string
+
+const (
+	// GatewayAPIIstioEnabledDisabled - Disables the sidecar-less istio control plane for managed ingress via the Gateway API.
+	GatewayAPIIstioEnabledDisabled GatewayAPIIstioEnabled = "Disabled"
+	// GatewayAPIIstioEnabledEnabled - Enables managed ingress via the Gateway API using a sidecar-less Istio controlplane.
+	GatewayAPIIstioEnabledEnabled GatewayAPIIstioEnabled = "Enabled"
+)
+
+// PossibleGatewayAPIIstioEnabledValues returns the possible values for the GatewayAPIIstioEnabled const type.
+func PossibleGatewayAPIIstioEnabledValues() []GatewayAPIIstioEnabled {
+	return []GatewayAPIIstioEnabled{
+		GatewayAPIIstioEnabledDisabled,
+		GatewayAPIIstioEnabledEnabled,
 	}
 }
 
@@ -933,8 +1023,8 @@ type ManagedGatewayType string
 const (
 	// ManagedGatewayTypeDisabled - Gateway API CRDs will not be reconciled on your cluster.
 	ManagedGatewayTypeDisabled ManagedGatewayType = "Disabled"
-	// ManagedGatewayTypeStandard - The latest Gateway CRD bundle from the standard channel that is compatible with your Kubernetes
-	// version will be reconciled onto your cluster. See https://gateway-api.sigs.k8s.io/concepts/versioning/ for more details.
+	// ManagedGatewayTypeStandard - Gateway API CRDs from the standard release channel will be reconciled onto your cluster. See
+	// https://aka.ms/gateway-api-versions to see which bundle will be installed for your Kubernetes version.
 	ManagedGatewayTypeStandard ManagedGatewayType = "Standard"
 )
 
@@ -943,6 +1033,25 @@ func PossibleManagedGatewayTypeValues() []ManagedGatewayType {
 	return []ManagedGatewayType{
 		ManagedGatewayTypeDisabled,
 		ManagedGatewayTypeStandard,
+	}
+}
+
+// ManagementMode - The Managed GPU experience installs additional components, such as the Data Center GPU Manager (DCGM)
+// metrics for monitoring, on top of the GPU driver for you. For more details of what is installed, check out aka.ms/aks/managed-gpu.
+type ManagementMode string
+
+const (
+	// ManagementModeManaged - Managed GPU experience is enabled for NVIDIA GPUs.
+	ManagementModeManaged ManagementMode = "Managed"
+	// ManagementModeUnmanaged - Managed GPU experience is disabled for NVIDIA GPUs.
+	ManagementModeUnmanaged ManagementMode = "Unmanaged"
+)
+
+// PossibleManagementModeValues returns the possible values for the ManagementMode const type.
+func PossibleManagementModeValues() []ManagementMode {
+	return []ManagementMode{
+		ManagementModeManaged,
+		ManagementModeUnmanaged,
 	}
 }
 
@@ -973,6 +1082,29 @@ func PossibleMeshMembershipProvisioningStateValues() []MeshMembershipProvisionin
 		MeshMembershipProvisioningStateFailed,
 		MeshMembershipProvisioningStateSucceeded,
 		MeshMembershipProvisioningStateUpdating,
+	}
+}
+
+// MigStrategy - Sets the MIG (Multi-Instance GPU) strategy that will be used for managed MIG support. For more information
+// about the different strategies, visit aka.ms/aks/managed-gpu. When not specified, the default is None.
+type MigStrategy string
+
+const (
+	// MigStrategyMixed - Set the MIG strategy for managed MIG as mixed.
+	MigStrategyMixed MigStrategy = "Mixed"
+	// MigStrategyNone - Don't set a MIG strategy. If you previously had one set, this will override it and set remove the set
+	// MIG strategy.
+	MigStrategyNone MigStrategy = "None"
+	// MigStrategySingle - Set the MIG strategy for managed MIG as single.
+	MigStrategySingle MigStrategy = "Single"
+)
+
+// PossibleMigStrategyValues returns the possible values for the MigStrategy const type.
+func PossibleMigStrategyValues() []MigStrategy {
+	return []MigStrategy{
+		MigStrategyMixed,
+		MigStrategyNone,
+		MigStrategySingle,
 	}
 }
 
@@ -1160,6 +1292,34 @@ func PossibleNginxIngressControllerTypeValues() []NginxIngressControllerType {
 	}
 }
 
+// NodeDisruptionPolicy - The policy configuration for when to allow certain operations which require node re-image and trigger
+// redeployment. For example, some operations, such as updating the .properties.ManagedClusterSecurityProfile.customCATrustCertificates
+// field on an existing managed cluster, trigger rolling updates of the nodes. This setting allows control over when such
+// updates are accepted. The default is 'Allow'. For a full list of covered operations see aka.ms/aks/nodedisruptionpolicy".
+type NodeDisruptionPolicy string
+
+const (
+	// NodeDisruptionPolicyAllow - Allows operations that will require node re-image and trigger redeployment.
+	NodeDisruptionPolicyAllow NodeDisruptionPolicy = "Allow"
+	// NodeDisruptionPolicyAllowDuringMaintenanceWindow - Blocks certain operations that will require node re-image and trigger
+	// redeployment unless within the aksManagedNodeOSUpgradeSchedule maintenance window. For a full list of covered operations
+	// see aka.ms/aks/nodedisruptionpolicy . For more information on using the aksManagedNodeOSUpgradeSchedule maintenance window,
+	// please see https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli
+	NodeDisruptionPolicyAllowDuringMaintenanceWindow NodeDisruptionPolicy = "AllowDuringMaintenanceWindow"
+	// NodeDisruptionPolicyBlock - Blocks certain operations that will require node re-image and trigger redeployment. For a full
+	// list of covered operations see aka.ms/aks/nodedisruptionpolicy
+	NodeDisruptionPolicyBlock NodeDisruptionPolicy = "Block"
+)
+
+// PossibleNodeDisruptionPolicyValues returns the possible values for the NodeDisruptionPolicy const type.
+func PossibleNodeDisruptionPolicyValues() []NodeDisruptionPolicy {
+	return []NodeDisruptionPolicy{
+		NodeDisruptionPolicyAllow,
+		NodeDisruptionPolicyAllowDuringMaintenanceWindow,
+		NodeDisruptionPolicyBlock,
+	}
+}
+
 // NodeOSUpgradeChannel - Node OS Upgrade Channel. Manner in which the OS on your nodes is updated. The default is NodeImage.
 type NodeOSUpgradeChannel string
 
@@ -1266,6 +1426,11 @@ func PossibleOSDiskTypeValues() []OSDiskType {
 type OSSKU string
 
 const (
+	// OSSKUAzureContainerLinux - Use Azure Container Linux as the OS for node images. Azure Container Linux is a container-optimized,
+	// security-focused Linux OS built on Azure Linux, with an immutable filesystem. ACL is derived from the Flatcar Container
+	// Linux project, building on Flatcar's proven container-first, immutable design, while adding Azure Linux packages, servicing,
+	// and deep integration with the Azure and AKS lifecycle. For more information, see https://aka.ms/azurecontainerlinux
+	OSSKUAzureContainerLinux OSSKU = "AzureContainerLinux"
 	// OSSKUAzureLinux - Use AzureLinux as the OS for node images. Azure Linux is a container-optimized Linux distro built by
 	// Microsoft, visit https://aka.ms/azurelinux for more information.
 	OSSKUAzureLinux OSSKU = "AzureLinux"
@@ -1306,6 +1471,7 @@ const (
 // PossibleOSSKUValues returns the possible values for the OSSKU const type.
 func PossibleOSSKUValues() []OSSKU {
 	return []OSSKU{
+		OSSKUAzureContainerLinux,
 		OSSKUAzureLinux,
 		OSSKUAzureLinux3,
 		OSSKUCBLMariner,
@@ -1373,6 +1539,8 @@ const (
 	OutboundTypeLoadBalancer OutboundType = "loadBalancer"
 	// OutboundTypeManagedNATGateway - The AKS-managed NAT gateway is used for egress.
 	OutboundTypeManagedNATGateway OutboundType = "managedNATGateway"
+	// OutboundTypeManagedNATGatewayV2 - The AKS-managed NAT gateway V2 is used for egress.
+	OutboundTypeManagedNATGatewayV2 OutboundType = "managedNATGatewayV2"
 	// OutboundTypeNone - The AKS cluster is not set with any outbound-type. All AKS nodes follows Azure VM default outbound behavior.
 	// Please refer to https://azure.microsoft.com/en-us/updates/default-outbound-access-for-vms-in-azure-will-be-retired-transition-to-a-new-method-of-internet-access/
 	OutboundTypeNone OutboundType = "none"
@@ -1389,6 +1557,7 @@ func PossibleOutboundTypeValues() []OutboundType {
 	return []OutboundType{
 		OutboundTypeLoadBalancer,
 		OutboundTypeManagedNATGateway,
+		OutboundTypeManagedNATGatewayV2,
 		OutboundTypeNone,
 		OutboundTypeUserAssignedNATGateway,
 		OutboundTypeUserDefinedRouting,
@@ -1570,6 +1739,63 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
+// ResourceSKUCapacityScaleType - The scale type applicable to the sku.
+type ResourceSKUCapacityScaleType string
+
+const (
+	// ResourceSKUCapacityScaleTypeAutomatic - Automatic scaling
+	ResourceSKUCapacityScaleTypeAutomatic ResourceSKUCapacityScaleType = "Automatic"
+	// ResourceSKUCapacityScaleTypeManual - Manual scaling
+	ResourceSKUCapacityScaleTypeManual ResourceSKUCapacityScaleType = "Manual"
+	// ResourceSKUCapacityScaleTypeNone - No scaling
+	ResourceSKUCapacityScaleTypeNone ResourceSKUCapacityScaleType = "None"
+)
+
+// PossibleResourceSKUCapacityScaleTypeValues returns the possible values for the ResourceSKUCapacityScaleType const type.
+func PossibleResourceSKUCapacityScaleTypeValues() []ResourceSKUCapacityScaleType {
+	return []ResourceSKUCapacityScaleType{
+		ResourceSKUCapacityScaleTypeAutomatic,
+		ResourceSKUCapacityScaleTypeManual,
+		ResourceSKUCapacityScaleTypeNone,
+	}
+}
+
+// ResourceSKURestrictionsReasonCode - The reason for restriction.
+type ResourceSKURestrictionsReasonCode string
+
+const (
+	// ResourceSKURestrictionsReasonCodeNotAvailableForSubscription - Not available for subscription
+	ResourceSKURestrictionsReasonCodeNotAvailableForSubscription ResourceSKURestrictionsReasonCode = "NotAvailableForSubscription"
+	// ResourceSKURestrictionsReasonCodeQuotaID - Quota ID restriction
+	ResourceSKURestrictionsReasonCodeQuotaID ResourceSKURestrictionsReasonCode = "QuotaId"
+)
+
+// PossibleResourceSKURestrictionsReasonCodeValues returns the possible values for the ResourceSKURestrictionsReasonCode const type.
+func PossibleResourceSKURestrictionsReasonCodeValues() []ResourceSKURestrictionsReasonCode {
+	return []ResourceSKURestrictionsReasonCode{
+		ResourceSKURestrictionsReasonCodeNotAvailableForSubscription,
+		ResourceSKURestrictionsReasonCodeQuotaID,
+	}
+}
+
+// ResourceSKURestrictionsType - The type of restrictions.
+type ResourceSKURestrictionsType string
+
+const (
+	// ResourceSKURestrictionsTypeLocation - Location restriction
+	ResourceSKURestrictionsTypeLocation ResourceSKURestrictionsType = "Location"
+	// ResourceSKURestrictionsTypeZone - Zone restriction
+	ResourceSKURestrictionsTypeZone ResourceSKURestrictionsType = "Zone"
+)
+
+// PossibleResourceSKURestrictionsTypeValues returns the possible values for the ResourceSKURestrictionsType const type.
+func PossibleResourceSKURestrictionsTypeValues() []ResourceSKURestrictionsType {
+	return []ResourceSKURestrictionsType{
+		ResourceSKURestrictionsTypeLocation,
+		ResourceSKURestrictionsTypeZone,
+	}
+}
+
 // RestrictionLevel - The restriction level applied to the cluster's node resource group. If not specified, the default is
 // 'Unrestricted'
 type RestrictionLevel string
@@ -1747,6 +1973,9 @@ func PossibleSnapshotTypeValues() []SnapshotType {
 type TransitEncryptionType string
 
 const (
+	// TransitEncryptionTypeMTLS - Enables mTLS authentication and encryption for pod-to-pod traffic within the cluster. Refer
+	// to https://aka.ms/acnsciliummtls for relevant documentation.
+	TransitEncryptionTypeMTLS TransitEncryptionType = "mTLS"
 	// TransitEncryptionTypeNone - Disable Transit encryption
 	TransitEncryptionTypeNone TransitEncryptionType = "None"
 	// TransitEncryptionTypeWireGuard - Enable WireGuard encryption. Refer to https://docs.cilium.io/en/latest/security/network/encryption-wireguard/
@@ -1757,6 +1986,7 @@ const (
 // PossibleTransitEncryptionTypeValues returns the possible values for the TransitEncryptionType const type.
 func PossibleTransitEncryptionTypeValues() []TransitEncryptionType {
 	return []TransitEncryptionType{
+		TransitEncryptionTypeMTLS,
 		TransitEncryptionTypeNone,
 		TransitEncryptionTypeWireGuard,
 	}

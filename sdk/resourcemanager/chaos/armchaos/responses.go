@@ -4,6 +4,30 @@
 
 package armchaos
 
+// ActionVersionsClientGetResponse contains the response from method ActionVersionsClient.Get.
+type ActionVersionsClientGetResponse struct {
+	// Model that represents an Action Version resource.
+	ActionVersion
+}
+
+// ActionVersionsClientListResponse contains the response from method ActionVersionsClient.NewListPager.
+type ActionVersionsClientListResponse struct {
+	// Model that represents a list of Action Version resources and a link for pagination.
+	ActionVersionListResult
+}
+
+// ActionsClientGetResponse contains the response from method ActionsClient.Get.
+type ActionsClientGetResponse struct {
+	// Model that represents an Action resource.
+	Action
+}
+
+// ActionsClientListResponse contains the response from method ActionsClient.NewListPager.
+type ActionsClientListResponse struct {
+	// Model that represents a list of Action resources and a link for pagination.
+	ActionListResult
+}
+
 // CapabilitiesClientCreateOrUpdateResponse contains the response from method CapabilitiesClient.CreateOrUpdate.
 type CapabilitiesClientCreateOrUpdateResponse struct {
 	// Model that represents a Capability resource.
@@ -37,6 +61,18 @@ type CapabilityTypesClientGetResponse struct {
 type CapabilityTypesClientListResponse struct {
 	// Model that represents a list of Capability Type resources and a link for pagination.
 	CapabilityTypeListResult
+}
+
+// DiscoveredResourcesClientGetResponse contains the response from method DiscoveredResourcesClient.Get.
+type DiscoveredResourcesClientGetResponse struct {
+	// Model that represents a discovered resource.
+	DiscoveredResource
+}
+
+// DiscoveredResourcesClientListByWorkspaceResponse contains the response from method DiscoveredResourcesClient.NewListByWorkspacePager.
+type DiscoveredResourcesClientListByWorkspaceResponse struct {
+	// Model that represents a list of discovered resources and a link for pagination.
+	DiscoveredResourceListResult
 }
 
 // ExperimentsClientCancelResponse contains the response from method ExperimentsClient.BeginCancel.
@@ -114,6 +150,158 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// PrivateAccessesClientCreateOrUpdateResponse contains the response from method PrivateAccessesClient.BeginCreateOrUpdate.
+type PrivateAccessesClientCreateOrUpdateResponse struct {
+	// PrivateAccesses tracked resource.
+	PrivateAccess
+}
+
+// PrivateAccessesClientDeleteAPrivateEndpointConnectionResponse contains the response from method PrivateAccessesClient.BeginDeleteAPrivateEndpointConnection.
+type PrivateAccessesClientDeleteAPrivateEndpointConnectionResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateAccessesClientDeleteResponse contains the response from method PrivateAccessesClient.BeginDelete.
+type PrivateAccessesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateAccessesClientGetAPrivateEndpointConnectionResponse contains the response from method PrivateAccessesClient.GetAPrivateEndpointConnection.
+type PrivateAccessesClientGetAPrivateEndpointConnectionResponse struct {
+	// The private endpoint connection resource.
+	PrivateEndpointConnection
+}
+
+// PrivateAccessesClientGetPrivateLinkResourcesResponse contains the response from method PrivateAccessesClient.GetPrivateLinkResources.
+type PrivateAccessesClientGetPrivateLinkResourcesResponse struct {
+	// A list of private link resources
+	PrivateLinkResourceListResult
+}
+
+// PrivateAccessesClientGetResponse contains the response from method PrivateAccessesClient.Get.
+type PrivateAccessesClientGetResponse struct {
+	// PrivateAccesses tracked resource.
+	PrivateAccess
+}
+
+// PrivateAccessesClientListAllResponse contains the response from method PrivateAccessesClient.NewListAllPager.
+type PrivateAccessesClientListAllResponse struct {
+	// Model that represents a list of private access resources and a link for pagination.
+	PrivateAccessListResult
+}
+
+// PrivateAccessesClientListPrivateEndpointConnectionsResponse contains the response from method PrivateAccessesClient.NewListPrivateEndpointConnectionsPager.
+type PrivateAccessesClientListPrivateEndpointConnectionsResponse struct {
+	// A list of private link resources
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateAccessesClientListResponse contains the response from method PrivateAccessesClient.NewListPager.
+type PrivateAccessesClientListResponse struct {
+	// Model that represents a list of private access resources and a link for pagination.
+	PrivateAccessListResult
+}
+
+// PrivateAccessesClientUpdateResponse contains the response from method PrivateAccessesClient.BeginUpdate.
+type PrivateAccessesClientUpdateResponse struct {
+	// PrivateAccesses tracked resource.
+	PrivateAccess
+}
+
+// ScenarioConfigurationsClientCreateOrUpdateResponse contains the response from method ScenarioConfigurationsClient.BeginCreateOrUpdate.
+type ScenarioConfigurationsClientCreateOrUpdateResponse struct {
+	// Model that represents the scenario.
+	ScenarioConfiguration
+}
+
+// ScenarioConfigurationsClientDeleteResponse contains the response from method ScenarioConfigurationsClient.BeginDelete.
+type ScenarioConfigurationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ScenarioConfigurationsClientExecuteResponse contains the response from method ScenarioConfigurationsClient.Execute.
+type ScenarioConfigurationsClientExecuteResponse struct {
+	// The Location header contains the URL where the status of the long running operation can be checked.
+	Location *string
+
+	// The Retry-After header can indicate how long the client should wait before polling the operation status.
+	RetryAfter *int32
+}
+
+// ScenarioConfigurationsClientFixResourcePermissionsResponse contains the response from method ScenarioConfigurationsClient.BeginFixResourcePermissions.
+type ScenarioConfigurationsClientFixResourcePermissionsResponse struct {
+	// Model that represents the fix resource permissions result.
+	PermissionsFix
+}
+
+// ScenarioConfigurationsClientGetResponse contains the response from method ScenarioConfigurationsClient.Get.
+type ScenarioConfigurationsClientGetResponse struct {
+	// Model that represents the scenario.
+	ScenarioConfiguration
+}
+
+// ScenarioConfigurationsClientListAllResponse contains the response from method ScenarioConfigurationsClient.NewListAllPager.
+type ScenarioConfigurationsClientListAllResponse struct {
+	// Model that represents a list of scenario configurations and a link for pagination.
+	ScenarioConfigurationListResult
+}
+
+// ScenarioConfigurationsClientValidateResponse contains the response from method ScenarioConfigurationsClient.BeginValidate.
+type ScenarioConfigurationsClientValidateResponse struct {
+	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
+	Validation
+}
+
+// ScenarioRunsClientCancelResponse contains the response from method ScenarioRunsClient.Cancel.
+type ScenarioRunsClientCancelResponse struct {
+	// The Location header contains the URL where the status of the long running operation can be checked.
+	Location *string
+
+	// The Retry-After header can indicate how long the client should wait before polling the operation status.
+	RetryAfter *int32
+}
+
+// ScenarioRunsClientGetResponse contains the response from method ScenarioRunsClient.Get.
+type ScenarioRunsClientGetResponse struct {
+	// Model that represents the scenario run.
+	ScenarioRun
+
+	// The Location header contains the URL where the status of the long running operation can be checked.
+	Location *string
+
+	// The Retry-After header can indicate how long the client should wait before polling the operation status.
+	RetryAfter *int32
+}
+
+// ScenarioRunsClientListAllResponse contains the response from method ScenarioRunsClient.NewListAllPager.
+type ScenarioRunsClientListAllResponse struct {
+	// Model that represents a list of scenario runs and a link for pagination.
+	ScenarioRunListResult
+}
+
+// ScenariosClientCreateOrUpdateResponse contains the response from method ScenariosClient.CreateOrUpdate.
+type ScenariosClientCreateOrUpdateResponse struct {
+	// Model that represents the scenario.
+	Scenario
+}
+
+// ScenariosClientDeleteResponse contains the response from method ScenariosClient.Delete.
+type ScenariosClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ScenariosClientGetResponse contains the response from method ScenariosClient.Get.
+type ScenariosClientGetResponse struct {
+	// Model that represents the scenario.
+	Scenario
+}
+
+// ScenariosClientListAllResponse contains the response from method ScenariosClient.NewListAllPager.
+type ScenariosClientListAllResponse struct {
+	// Model that represents a list of scenarios and a link for pagination.
+	ScenarioListResult
+}
+
 // TargetTypesClientGetResponse contains the response from method TargetTypesClient.Get.
 type TargetTypesClientGetResponse struct {
 	// Model that represents a Target Type resource.
@@ -147,4 +335,45 @@ type TargetsClientGetResponse struct {
 type TargetsClientListResponse struct {
 	// Model that represents a list of Target resources and a link for pagination.
 	TargetListResult
+}
+
+// WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.BeginCreateOrUpdate.
+type WorkspacesClientCreateOrUpdateResponse struct {
+	// Model that represents a Workspace resource.
+	Workspace
+}
+
+// WorkspacesClientDeleteResponse contains the response from method WorkspacesClient.BeginDelete.
+type WorkspacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// WorkspacesClientGetResponse contains the response from method WorkspacesClient.Get.
+type WorkspacesClientGetResponse struct {
+	// Model that represents a Workspace resource.
+	Workspace
+}
+
+// WorkspacesClientListAllResponse contains the response from method WorkspacesClient.NewListAllPager.
+type WorkspacesClientListAllResponse struct {
+	// Model that represents a list of Workspace resources and a link for pagination.
+	WorkspaceListResult
+}
+
+// WorkspacesClientListResponse contains the response from method WorkspacesClient.NewListPager.
+type WorkspacesClientListResponse struct {
+	// Model that represents a list of Workspace resources and a link for pagination.
+	WorkspaceListResult
+}
+
+// WorkspacesClientRefreshRecommendationsResponse contains the response from method WorkspacesClient.BeginRefreshRecommendations.
+type WorkspacesClientRefreshRecommendationsResponse struct {
+	// Model that represents the latest workspace evaluation result.
+	WorkspaceEvaluation
+}
+
+// WorkspacesClientUpdateResponse contains the response from method WorkspacesClient.BeginUpdate.
+type WorkspacesClientUpdateResponse struct {
+	// Model that represents a Workspace resource.
+	Workspace
 }

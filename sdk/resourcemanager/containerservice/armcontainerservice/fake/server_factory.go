@@ -7,11 +7,10 @@ package fake
 import (
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strings"
 	"sync"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ServerFactory is a fake server for instances of the armcontainerservice.ClientFactory type.
@@ -72,6 +71,9 @@ type ServerFactory struct {
 
 	// TrustedAccessRolesServer contains the fakes for client TrustedAccessRolesClient
 	TrustedAccessRolesServer TrustedAccessRolesServer
+
+	// VMSKUsServer contains the fakes for client VMSKUsClient
+	VMSKUsServer VMSKUsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -107,6 +109,7 @@ type ServerFactoryTransport struct {
 	trSnapshotsServer                   *SnapshotsServerTransport
 	trTrustedAccessRoleBindingsServer   *TrustedAccessRoleBindingsServerTransport
 	trTrustedAccessRolesServer          *TrustedAccessRolesServerTransport
+	trVMSKUsServer                      *VMSKUsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -207,6 +210,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewTrustedAccessRolesServerTransport(&s.srv.TrustedAccessRolesServer)
 		})
 		resp, err = s.trTrustedAccessRolesServer.Do(req)
+	case "VMSKUsClient":
+		initServer(&s.trMu, &s.trVMSKUsServer, func() *VMSKUsServerTransport { return NewVMSKUsServerTransport(&s.srv.VMSKUsServer) })
+		resp, err = s.trVMSKUsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

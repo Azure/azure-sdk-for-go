@@ -7,14 +7,13 @@ package armazurestackhci
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // KubernetesVersionsClient contains the methods for the KubernetesVersions group.
@@ -42,7 +41,7 @@ func NewKubernetesVersionsClient(subscriptionID string, credential azcore.TokenC
 
 // NewListBySubscriptionLocationResourcePager - List all kubernetes versions.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - options - KubernetesVersionsClientListBySubscriptionLocationResourceOptions contains the optional parameters for the KubernetesVersionsClient.NewListBySubscriptionLocationResourcePager
 //     method.
@@ -85,7 +84,7 @@ func (client *KubernetesVersionsClient) listBySubscriptionLocationResourceCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -87,7 +87,7 @@ func (testsuite *AutoscaleTestSuite) Prepare() {
 			map[string]interface{}{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2021-05-01",
+				"apiVersion": "2024-07-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]interface{}{
 					"addressSpace": map[string]interface{}{
@@ -99,7 +99,8 @@ func (testsuite *AutoscaleTestSuite) Prepare() {
 						map[string]interface{}{
 							"name": "vmsssubnet",
 							"properties": map[string]interface{}{
-								"addressPrefix": "10.0.0.0/24",
+								"addressPrefix":         "10.0.0.0/24",
+								"defaultOutboundAccess": false,
 							},
 						},
 					},
@@ -108,14 +109,14 @@ func (testsuite *AutoscaleTestSuite) Prepare() {
 			},
 		},
 	}
-	params := map[string]interface{}{
-		"location": map[string]interface{}{"value": testsuite.location},
+	params := map[string]*armdeployments.DeploymentParameter{
+		"location": {Value: testsuite.location},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "NetworkAndSubnet_Create", &deployment)
@@ -158,15 +159,15 @@ func (testsuite *AutoscaleTestSuite) Prepare() {
 			},
 		},
 	}
-	params = map[string]interface{}{
-		"location": map[string]interface{}{"value": testsuite.location},
-		"subnetId": map[string]interface{}{"value": testsuite.subnetId},
+	params = map[string]*armdeployments.DeploymentParameter{
+		"location": {Value: testsuite.location},
+		"subnetId": {Value: testsuite.subnetId},
 	}
-	deployment = armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment = armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "NetworkInterface_Create", &deployment)
@@ -277,7 +278,7 @@ func (testsuite *AutoscaleTestSuite) Prepare() {
 					},
 				},
 				"sku": map[string]interface{}{
-					"name":     "Standard_DS1_v2",
+					"name":     "Standard_B2s",
 					"capacity": float64(2),
 					"tier":     "Standard",
 				},
@@ -285,16 +286,16 @@ func (testsuite *AutoscaleTestSuite) Prepare() {
 		},
 		"variables": map[string]interface{}{},
 	}
-	params = map[string]interface{}{
-		"adminPassword": map[string]interface{}{"value": testsuite.adminPassword},
-		"location":      map[string]interface{}{"value": testsuite.location},
-		"subnetId":      map[string]interface{}{"value": testsuite.subnetId},
+	params = map[string]*armdeployments.DeploymentParameter{
+		"adminPassword": {Value: testsuite.adminPassword},
+		"location":      {Value: testsuite.location},
+		"subnetId":      {Value: testsuite.subnetId},
 	}
-	deployment = armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment = armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "VMSS_Create", &deployment)
@@ -395,15 +396,4 @@ func (testsuite *AutoscaleTestSuite) TestEventcategories() {
 		testsuite.Require().NoError(err)
 		break
 	}
-}
-
-// Microsoft.Insights/operations
-func (testsuite *AutoscaleTestSuite) TestOperations() {
-	var err error
-	// From step Operations_List
-	fmt.Println("Call operation: Operations_List")
-	operationsClient, err := armmonitor.NewOperationsClient(testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	_, err = operationsClient.List(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
 }

@@ -182,3 +182,11 @@ func (c *ClientFactory) NewTrustedAccessRolesClient() *TrustedAccessRolesClient 
 		internal:       c.internal,
 	}
 }
+
+// NewVMSKUsClient creates a new instance of VMSKUsClient.
+func (c *ClientFactory) NewVMSKUsClient() *VMSKUsClient {
+	return &VMSKUsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}

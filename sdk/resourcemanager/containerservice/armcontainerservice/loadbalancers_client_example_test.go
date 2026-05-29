@@ -6,14 +6,13 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/LoadBalancers_Create_Or_Update.json
+// Generated from example definition: 2026-03-02-preview/LoadBalancers_Create_Or_Update.json
 func ExampleLoadBalancersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,19 +36,19 @@ func ExampleLoadBalancersClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.LoadBalancersClientCreateOrUpdateResponse{
-	// 	LoadBalancer: &armcontainerservice.LoadBalancer{
+	// 	LoadBalancer: armcontainerservice.LoadBalancer{
 	// 		Name: to.Ptr("kubernetes"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/loadBalancers/kubernetes"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/loadBalancers/kubernetes"),
 	// 		Properties: &armcontainerservice.LoadBalancerProperties{
 	// 			AllowServicePlacement: to.Ptr(true),
-	// 			PrimaryAgentPoolName: to.Ptr("agentPool1"),
+	// 			PrimaryAgentPoolName: to.Ptr("agentpool1"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/LoadBalancers_Delete.json
+// Generated from example definition: 2026-03-02-preview/LoadBalancers_Delete.json
 func ExampleLoadBalancersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,11 +65,11 @@ func ExampleLoadBalancersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/LoadBalancers_Get.json
+// Generated from example definition: 2026-03-02-preview/LoadBalancers_Get.json
 func ExampleLoadBalancersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,9 +88,9 @@ func ExampleLoadBalancersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.LoadBalancersClientGetResponse{
-	// 	LoadBalancer: &armcontainerservice.LoadBalancer{
+	// 	LoadBalancer: armcontainerservice.LoadBalancer{
 	// 		Name: to.Ptr("kubernetes"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/loadBalancers/kubernetes"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/loadBalancers/kubernetes"),
 	// 		Properties: &armcontainerservice.LoadBalancerProperties{
 	// 			AllowServicePlacement: to.Ptr(true),
 	// 			PrimaryAgentPoolName: to.Ptr("agentPool1"),
@@ -101,7 +100,7 @@ func ExampleLoadBalancersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/LoadBalancers_List.json
+// Generated from example definition: 2026-03-02-preview/LoadBalancers_List.json
 func ExampleLoadBalancersClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +127,7 @@ func ExampleLoadBalancersClient_NewListByManagedClusterPager() {
 		// 		Value: []*armcontainerservice.LoadBalancer{
 		// 			{
 		// 				Name: to.Ptr("kubernetes"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/loadBalancers/kubernetes"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/loadBalancers/kubernetes"),
 		// 				Properties: &armcontainerservice.LoadBalancerProperties{
 		// 					AllowServicePlacement: to.Ptr(true),
 		// 					PrimaryAgentPoolName: to.Ptr("agentPool1"),

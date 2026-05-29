@@ -27,6 +27,9 @@ type ServerFactory struct {
 	// DefaultWafPolicyServer contains the fakes for client DefaultWafPolicyClient
 	DefaultWafPolicyServer DefaultWafPolicyServer
 
+	// DeploymentWafPoliciesServer contains the fakes for client DeploymentWafPoliciesClient
+	DeploymentWafPoliciesServer DeploymentWafPoliciesServer
+
 	// DeploymentsServer contains the fakes for client DeploymentsClient
 	DeploymentsServer DeploymentsServer
 
@@ -49,15 +52,16 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armnginx.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                      *ServerFactory
-	trMu                     sync.Mutex
-	trAPIKeysServer          *APIKeysServerTransport
-	trCertificatesServer     *CertificatesServerTransport
-	trConfigurationsServer   *ConfigurationsServerTransport
-	trDefaultWafPolicyServer *DefaultWafPolicyServerTransport
-	trDeploymentsServer      *DeploymentsServerTransport
-	trOperationsServer       *OperationsServerTransport
-	trWafPolicyServer        *WafPolicyServerTransport
+	srv                           *ServerFactory
+	trMu                          sync.Mutex
+	trAPIKeysServer               *APIKeysServerTransport
+	trCertificatesServer          *CertificatesServerTransport
+	trConfigurationsServer        *ConfigurationsServerTransport
+	trDefaultWafPolicyServer      *DefaultWafPolicyServerTransport
+	trDeploymentWafPoliciesServer *DeploymentWafPoliciesServerTransport
+	trDeploymentsServer           *DeploymentsServerTransport
+	trOperationsServer            *OperationsServerTransport
+	trWafPolicyServer             *WafPolicyServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -74,29 +78,34 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "APIKeysClient":
-		initServer(s, &s.trAPIKeysServer, func() *APIKeysServerTransport { return NewAPIKeysServerTransport(&s.srv.APIKeysServer) })
+		initServer(&s.trMu, &s.trAPIKeysServer, func() *APIKeysServerTransport { return NewAPIKeysServerTransport(&s.srv.APIKeysServer) })
 		resp, err = s.trAPIKeysServer.Do(req)
 	case "CertificatesClient":
-		initServer(s, &s.trCertificatesServer, func() *CertificatesServerTransport { return NewCertificatesServerTransport(&s.srv.CertificatesServer) })
+		initServer(&s.trMu, &s.trCertificatesServer, func() *CertificatesServerTransport { return NewCertificatesServerTransport(&s.srv.CertificatesServer) })
 		resp, err = s.trCertificatesServer.Do(req)
 	case "ConfigurationsClient":
-		initServer(s, &s.trConfigurationsServer, func() *ConfigurationsServerTransport {
+		initServer(&s.trMu, &s.trConfigurationsServer, func() *ConfigurationsServerTransport {
 			return NewConfigurationsServerTransport(&s.srv.ConfigurationsServer)
 		})
 		resp, err = s.trConfigurationsServer.Do(req)
 	case "DefaultWafPolicyClient":
-		initServer(s, &s.trDefaultWafPolicyServer, func() *DefaultWafPolicyServerTransport {
+		initServer(&s.trMu, &s.trDefaultWafPolicyServer, func() *DefaultWafPolicyServerTransport {
 			return NewDefaultWafPolicyServerTransport(&s.srv.DefaultWafPolicyServer)
 		})
 		resp, err = s.trDefaultWafPolicyServer.Do(req)
+	case "DeploymentWafPoliciesClient":
+		initServer(&s.trMu, &s.trDeploymentWafPoliciesServer, func() *DeploymentWafPoliciesServerTransport {
+			return NewDeploymentWafPoliciesServerTransport(&s.srv.DeploymentWafPoliciesServer)
+		})
+		resp, err = s.trDeploymentWafPoliciesServer.Do(req)
 	case "DeploymentsClient":
-		initServer(s, &s.trDeploymentsServer, func() *DeploymentsServerTransport { return NewDeploymentsServerTransport(&s.srv.DeploymentsServer) })
+		initServer(&s.trMu, &s.trDeploymentsServer, func() *DeploymentsServerTransport { return NewDeploymentsServerTransport(&s.srv.DeploymentsServer) })
 		resp, err = s.trDeploymentsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "WafPolicyClient":
-		initServer(s, &s.trWafPolicyServer, func() *WafPolicyServerTransport { return NewWafPolicyServerTransport(&s.srv.WafPolicyServer) })
+		initServer(&s.trMu, &s.trWafPolicyServer, func() *WafPolicyServerTransport { return NewWafPolicyServerTransport(&s.srv.WafPolicyServer) })
 		resp, err = s.trWafPolicyServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -107,12 +116,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

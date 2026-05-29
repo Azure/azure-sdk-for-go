@@ -7,14 +7,13 @@ package armazurestackhci
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // EdgeMachineJobsClient contains the methods for the EdgeMachineJobs group.
@@ -43,7 +42,7 @@ func NewEdgeMachineJobsClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreateOrUpdate - Create a EdgeMachineJob
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeMachineName - Name of Device
 //   - jobsName - Name of EdgeMachineJob
@@ -70,7 +69,7 @@ func (client *EdgeMachineJobsClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - Create a EdgeMachineJob
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 func (client *EdgeMachineJobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, jobsName string, resource EdgeMachineJob, options *EdgeMachineJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeMachineJobsClient.BeginCreateOrUpdate"
@@ -116,7 +115,7 @@ func (client *EdgeMachineJobsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -129,7 +128,7 @@ func (client *EdgeMachineJobsClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Delete a EdgeMachineJob
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeMachineName - Name of Device
 //   - jobsName - Name of EdgeMachineJob
@@ -155,7 +154,7 @@ func (client *EdgeMachineJobsClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete a EdgeMachineJob
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 func (client *EdgeMachineJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, edgeMachineName string, jobsName string, options *EdgeMachineJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeMachineJobsClient.BeginDelete"
@@ -201,7 +200,7 @@ func (client *EdgeMachineJobsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -209,7 +208,7 @@ func (client *EdgeMachineJobsClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get a EdgeMachineJob
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeMachineName - Name of Device
 //   - jobsName - Name of EdgeMachineJob
@@ -260,7 +259,7 @@ func (client *EdgeMachineJobsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +276,7 @@ func (client *EdgeMachineJobsClient) getHandleResponse(resp *http.Response) (Edg
 
 // NewListPager - List EdgeMachineJob resources by EdgeMachines
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeMachineName - Name of Device
 //   - options - EdgeMachineJobsClientListOptions contains the optional parameters for the EdgeMachineJobsClient.NewListPager
@@ -325,7 +324,7 @@ func (client *EdgeMachineJobsClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

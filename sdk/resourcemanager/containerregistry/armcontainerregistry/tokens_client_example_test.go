@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/TokenCreate.json
+// Generated from example definition: 2026-01-01-preview/TokenCreate.json
 func ExampleTokensClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,13 +42,13 @@ func ExampleTokensClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.TokensClientCreateResponse{
-	// 	Token: &armcontainerregistry.Token{
+	// 	Token: armcontainerregistry.Token{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/myToken"),
 	// 		Name: to.Ptr("myToken"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tokens"),
@@ -71,7 +71,7 @@ func ExampleTokensClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/TokenDelete.json
+// Generated from example definition: 2026-01-01-preview/TokenDelete.json
 func ExampleTokensClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleTokensClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -97,7 +97,7 @@ func ExampleTokensClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/TokenGet.json
+// Generated from example definition: 2026-01-01-preview/TokenGet.json
 func ExampleTokensClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleTokensClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.TokensClientGetResponse{
-	// 	Token: &armcontainerregistry.Token{
+	// 	Token: armcontainerregistry.Token{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/myToken"),
 	// 		Name: to.Ptr("myToken"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tokens"),
@@ -130,7 +130,7 @@ func ExampleTokensClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/TokenList.json
+// Generated from example definition: 2026-01-01-preview/TokenList.json
 func ExampleTokensClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleTokensClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/TokenUpdate.json
+// Generated from example definition: 2026-01-01-preview/TokenUpdate.json
 func ExampleTokensClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,13 +201,13 @@ func ExampleTokensClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.TokensClientUpdateResponse{
-	// 	Token: &armcontainerregistry.Token{
+	// 	Token: armcontainerregistry.Token{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/myToken"),
 	// 		Name: to.Ptr("myToken"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tokens"),

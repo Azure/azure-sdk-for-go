@@ -1,5 +1,88 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-03-27)
+### Features Added
+
+- New value `SKUNameServerless` added to enum type `SKUName`
+- New value `SearchBypassAzurePortal` added to enum type `SearchBypass`
+- New enum type `KnowledgeRetrieval` with values `KnowledgeRetrievalFree`, `KnowledgeRetrievalStandard`
+- New function `*ClientFactory.NewOfferingsClient() *OfferingsClient`
+- New function `*DataIdentity.GetDataIdentity() *DataIdentity`
+- New function `*DataNoneIdentity.GetDataIdentity() *DataIdentity`
+- New function `*DataUserAssignedIdentity.GetDataIdentity() *DataIdentity`
+- New function `NewOfferingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OfferingsClient, error)`
+- New function `*OfferingsClient.List(ctx context.Context, options *OfferingsClientListOptions) (OfferingsClientListResponse, error)`
+- New struct `AzureActiveDirectoryApplicationCredentials`
+- New struct `DataNoneIdentity`
+- New struct `DataUserAssignedIdentity`
+- New struct `FeatureOffering`
+- New struct `OfferingsByRegion`
+- New struct `OfferingsListResult`
+- New struct `ResourceEncryptionKey`
+- New struct `SKULimits`
+- New struct `SKUOffering`
+- New field `ServiceLevelEncryptionKey` in struct `EncryptionWithCmk`
+- New field `KnowledgeRetrieval` in struct `ServiceProperties`
+
+
+## 2.0.0-beta.1 (2026-03-09)
+### Breaking Changes
+
+- For migration help on parameter-group updates, see [SDK Breaking Changes Migration Guide - Parameter Group Changes](https://aka.ms/azsdk/go/breakingchanges/migration/parameter-group).
+
+- Function `*AdminKeysClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *AdminKeysClientGetOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, options *AdminKeysClientGetOptions)`
+- Function `*AdminKeysClient.Regenerate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, searchManagementRequestOptions *SearchManagementRequestOptions, options *AdminKeysClientRegenerateOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, options *AdminKeysClientRegenerateOptions)`
+- Function `*ManagementClient.UsageBySubscriptionSKU` parameter(s) have been changed from `(ctx context.Context, location string, skuName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *ManagementClientUsageBySubscriptionSKUOptions)` to `(ctx context.Context, location string, skuName string, options *ManagementClientUsageBySubscriptionSKUOptions)`
+- Function `*PrivateEndpointConnectionsClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, privateEndpointConnectionName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateEndpointConnectionsClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, privateEndpointConnectionName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateEndpointConnectionsClientGetOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.NewListByServicePager` parameter(s) have been changed from `(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateEndpointConnectionsClientListByServiceOptions)` to `(resourceGroupName string, searchServiceName string, options *PrivateEndpointConnectionsClientListByServiceOptions)`
+- Function `*PrivateEndpointConnectionsClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateEndpointConnectionsClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientUpdateOptions)`
+- Function `*PrivateLinkResourcesClient.NewListSupportedPager` parameter(s) have been changed from `(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateLinkResourcesClientListSupportedOptions)` to `(resourceGroupName string, searchServiceName string, options *PrivateLinkResourcesClientListSupportedOptions)`
+- Function `*QueryKeysClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, name string, searchManagementRequestOptions *SearchManagementRequestOptions, options *QueryKeysClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, name string, options *QueryKeysClientCreateOptions)`
+- Function `*QueryKeysClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, key string, searchManagementRequestOptions *SearchManagementRequestOptions, options *QueryKeysClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, key string, options *QueryKeysClientDeleteOptions)`
+- Function `*QueryKeysClient.NewListBySearchServicePager` parameter(s) have been changed from `(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *QueryKeysClientListBySearchServiceOptions)` to `(resourceGroupName string, searchServiceName string, options *QueryKeysClientListBySearchServiceOptions)`
+- Function `*ServicesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, service Service, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, resource Service, options *ServicesClientBeginCreateOrUpdateOptions)`
+- Function `*ServicesClient.CheckNameAvailability` parameter(s) have been changed from `(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientCheckNameAvailabilityOptions)` to `(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *ServicesClientCheckNameAvailabilityOptions)`
+- Function `*ServicesClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, options *ServicesClientDeleteOptions)`
+- Function `*ServicesClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientGetOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, options *ServicesClientGetOptions)`
+- Function `*ServicesClient.NewListByResourceGroupPager` parameter(s) have been changed from `(resourceGroupName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientListByResourceGroupOptions)` to `(resourceGroupName string, options *ServicesClientListByResourceGroupOptions)`
+- Function `*ServicesClient.NewListBySubscriptionPager` parameter(s) have been changed from `(searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientListBySubscriptionOptions)` to `(options *ServicesClientListBySubscriptionOptions)`
+- Function `*ServicesClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, service ServiceUpdate, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, properties ServiceUpdate, options *ServicesClientUpdateOptions)`
+- Function `*SharedPrivateLinkResourcesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, sharedPrivateLinkResource SharedPrivateLinkResource, searchManagementRequestOptions *SearchManagementRequestOptions, options *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, sharedPrivateLinkResource SharedPrivateLinkResource, options *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions)`
+- Function `*SharedPrivateLinkResourcesClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *SharedPrivateLinkResourcesClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, options *SharedPrivateLinkResourcesClientBeginDeleteOptions)`
+- Function `*SharedPrivateLinkResourcesClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *SharedPrivateLinkResourcesClientGetOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, options *SharedPrivateLinkResourcesClientGetOptions)`
+- Function `*SharedPrivateLinkResourcesClient.NewListByServicePager` parameter(s) have been changed from `(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *SharedPrivateLinkResourcesClientListByServiceOptions)` to `(resourceGroupName string, searchServiceName string, options *SharedPrivateLinkResourcesClientListByServiceOptions)`
+- Function `*UsagesClient.NewListBySubscriptionPager` parameter(s) have been changed from `(location string, searchManagementRequestOptions *SearchManagementRequestOptions, options *UsagesClientListBySubscriptionOptions)` to `(location string, options *UsagesClientListBySubscriptionOptions)`
+- Struct `SearchManagementRequestOptions` has been removed
+
+### Features Added
+
+- New field `ClientRequestID` in struct `AdminKeysClientGetOptions`
+- New field `ClientRequestID` in struct `AdminKeysClientRegenerateOptions`
+- New field `ClientRequestID` in struct `ManagementClientUsageBySubscriptionSKUOptions`
+- New field `ClientRequestID` in struct `PrivateEndpointConnectionsClientDeleteOptions`
+- New field `ClientRequestID` in struct `PrivateEndpointConnectionsClientGetOptions`
+- New field `ClientRequestID` in struct `PrivateEndpointConnectionsClientListByServiceOptions`
+- New field `ClientRequestID` in struct `PrivateEndpointConnectionsClientUpdateOptions`
+- New field `ClientRequestID` in struct `PrivateLinkResourcesClientListSupportedOptions`
+- New field `NextLink` in struct `PrivateLinkResourcesResult`
+- New field `ClientRequestID` in struct `QueryKeysClientCreateOptions`
+- New field `ClientRequestID` in struct `QueryKeysClientDeleteOptions`
+- New field `ClientRequestID` in struct `QueryKeysClientListBySearchServiceOptions`
+- New field `ClientRequestID` in struct `ServicesClientBeginCreateOrUpdateOptions`
+- New field `ClientRequestID` in struct `ServicesClientCheckNameAvailabilityOptions`
+- New field `ClientRequestID` in struct `ServicesClientDeleteOptions`
+- New field `ClientRequestID` in struct `ServicesClientGetOptions`
+- New field `ClientRequestID` in struct `ServicesClientListByResourceGroupOptions`
+- New field `ClientRequestID` in struct `ServicesClientListBySubscriptionOptions`
+- New field `ClientRequestID` in struct `ServicesClientUpdateOptions`
+- New field `ClientRequestID` in struct `SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions`
+- New field `ClientRequestID` in struct `SharedPrivateLinkResourcesClientBeginDeleteOptions`
+- New field `ClientRequestID` in struct `SharedPrivateLinkResourcesClientGetOptions`
+- New field `ClientRequestID` in struct `SharedPrivateLinkResourcesClientListByServiceOptions`
+- New field `ClientRequestID` in struct `UsagesClientListBySubscriptionOptions`
+
+
 ## 1.4.0 (2025-07-21)
 ### Features Added
 

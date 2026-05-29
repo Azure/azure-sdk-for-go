@@ -30,6 +30,9 @@ const (
 
 var (
 	versionLineRegex = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
+	// Matches the generator's API version constants in constants.go,
+	// e.g. `version20250525Preview string = "2025-05-25-preview"`.
+	apiVersionConstRegex = regexp.MustCompile(`(?:^|\s)version\d\w*\s+string\s*=\s*"`)
 )
 
 // UpdateAllVersionFiles updates all version-related files in the package
@@ -116,7 +119,9 @@ func UpdateVersionGoFile(modulePath string, version *semver.Version) error {
 	return os.WriteFile(path, []byte(contents), 0644)
 }
 
-// UpdateModuleDefinition updates module definition in go.mod file according to version
+// UpdateModuleDefinition updates module definition in go.mod file according to version.
+// When the major version changes (e.g., v2 to v3), it also removes any retract
+// directives since they reference the old major version and would be invalid.
 func UpdateModuleDefinition(modulePath string, version *semver.Version, sdkRepo repo.SDKRepository) error {
 	log.Printf("Update module definition if v2+...")
 
@@ -140,19 +145,57 @@ func UpdateModuleDefinition(modulePath string, version *semver.Version, sdkRepo 
 		return fmt.Errorf("cannot read go.mod: %v", err)
 	}
 
+	majorVersionChanged := false
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.HasPrefix(line, "module") {
-			line = strings.TrimRight(line, "\r")
-			parts := strings.Split(line, "/")
-			if parts[len(parts)-1] != fmt.Sprintf("v%d", version.Major()) {
-				lines[i] = fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/%s/v%d", moduleRelativePath, version.Major())
+			fields := strings.Fields(line)
+			if len(fields) >= 2 {
+				moduleDefinitionPath := fields[1]
+				parts := strings.Split(moduleDefinitionPath, "/")
+				if parts[len(parts)-1] != fmt.Sprintf("v%d", version.Major()) {
+					majorVersionChanged = true
+					lines[i] = fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/%s/v%d", moduleRelativePath, version.Major())
+				}
 			}
 			break
 		}
 	}
 
+	if majorVersionChanged {
+		lines = removeRetractStatements(lines)
+	}
+
 	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+}
+
+// removeRetractStatements removes all retract directives from go.mod lines.
+// This handles both single-line retract statements (e.g., "retract v1.0.0")
+// and block retract statements (e.g., "retract (\n  v1.0.0\n)").
+func removeRetractStatements(lines []string) []string {
+	var result []string
+	inRetractBlock := false
+	for _, line := range lines {
+		trimmed := strings.TrimSpace(line)
+		if inRetractBlock {
+			if trimmed == ")" || strings.HasPrefix(trimmed, ")") {
+				inRetractBlock = false
+			}
+			continue
+		}
+		if strings.HasPrefix(trimmed, "retract") {
+			// Check if this is the start of a block retract: "retract ("
+			rest := strings.TrimSpace(strings.TrimPrefix(trimmed, "retract"))
+			if strings.HasPrefix(rest, "(") {
+				inRetractBlock = true
+				continue
+			}
+			// Single-line retract statement, skip it
+			continue
+		}
+		result = append(result, line)
+	}
+	return result
 }
 
 // UpdateReadmeModule updates the module path in README.md according to current version
@@ -321,9 +364,17 @@ func containsPreviewAPIVersion(packagePath string) (bool, error) {
 
 			lines := strings.Split(string(b), "\n")
 			for _, line := range lines {
+				// Check inline API version pattern: reqQP.Set("api-version", "2023-01-01-preview")
 				if strings.Contains(line, "\"api-version\"") {
 					parts := strings.Split(line, "\"")
 					if len(parts) == 5 && strings.Contains(parts[3], "preview") {
+						return true, nil
+					}
+				}
+				// Check const API version pattern: versionYYYYMMDD[Preview] string = "2023-01-01-preview"
+				if apiVersionConstRegex.MatchString(line) {
+					parts := strings.Split(line, "\"")
+					if len(parts) >= 2 && strings.Contains(parts[1], "preview") {
 						return true, nil
 					}
 				}
@@ -370,17 +421,29 @@ func CalculateNewVersion(changelog *changelog.Changelog, previousVersion string,
 	} else {
 		if isCurrentPreview {
 			if strings.Contains(previousVersion, "beta") {
-				betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
-				if err != nil {
-					return nil, "", err
-				}
-				if newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1)); err != nil {
-					return nil, "", err
-				}
-				if changelog.HasBreakingChanges() {
+				if changelog.HasBreakingChanges() && (version.Minor() != 0 || version.Patch() != 0) {
+					// Breaking change on an existing major beta (e.g. 1.2.0-beta.1) requires major bump
+					newVersion = version.IncMajor()
+					if newVersion, err = newVersion.SetPrerelease("beta.1"); err != nil {
+						return nil, "", err
+					}
 					prl = utils.BetaBreakingChangeLabel
 				} else {
-					prl = utils.BetaLabel
+					// Either (1) no breaking change on any beta, or
+					// (2) breaking change on a new major beta (minor==0, patch==0, e.g. 2.0.0-beta.1)
+					// In both cases, just increment beta number
+					betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
+					if err != nil {
+						return nil, "", err
+					}
+					if newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1)); err != nil {
+						return nil, "", err
+					}
+					if changelog.HasBreakingChanges() {
+						prl = utils.BetaBreakingChangeLabel
+					} else {
+						prl = utils.BetaLabel
+					}
 				}
 			} else {
 				if changelog.HasBreakingChanges() {

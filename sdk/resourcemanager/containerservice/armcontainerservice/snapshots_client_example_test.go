@@ -6,14 +6,13 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/SnapshotsCreate.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsCreate.json
 func ExampleSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +27,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 		Location: to.Ptr("westus"),
 		Properties: &armcontainerservice.SnapshotProperties{
 			CreationData: &armcontainerservice.CreationData{
-				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 			},
 		},
 		Tags: map[string]*string{
@@ -43,14 +42,14 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.SnapshotsClientCreateOrUpdateResponse{
-	// 	Snapshot: &armcontainerservice.Snapshot{
+	// 	Snapshot: armcontainerservice.Snapshot{
 	// 		Name: to.Ptr("snapshot1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/Snapshots"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/snapshots"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armcontainerservice.SnapshotProperties{
 	// 			CreationData: &armcontainerservice.CreationData{
-	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 	// 			},
 	// 			EnableFIPS: to.Ptr(false),
 	// 			KubernetesVersion: to.Ptr("1.20.5"),
@@ -73,7 +72,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/SnapshotsDelete.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsDelete.json
 func ExampleSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +94,7 @@ func ExampleSnapshotsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/SnapshotsGet.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsGet.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,14 +113,14 @@ func ExampleSnapshotsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.SnapshotsClientGetResponse{
-	// 	Snapshot: &armcontainerservice.Snapshot{
+	// 	Snapshot: armcontainerservice.Snapshot{
 	// 		Name: to.Ptr("snapshot1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/Snapshots"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/snapshots"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armcontainerservice.SnapshotProperties{
 	// 			CreationData: &armcontainerservice.CreationData{
-	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 	// 			},
 	// 			EnableFIPS: to.Ptr(false),
 	// 			KubernetesVersion: to.Ptr("1.20.5"),
@@ -144,7 +143,7 @@ func ExampleSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/SnapshotsList.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsList.json
 func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,12 +170,12 @@ func ExampleSnapshotsClient_NewListPager() {
 		// 		Value: []*armcontainerservice.Snapshot{
 		// 			{
 		// 				Name: to.Ptr("snapshot1"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/Snapshots"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/snapshots"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armcontainerservice.SnapshotProperties{
 		// 					CreationData: &armcontainerservice.CreationData{
-		// 						SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+		// 						SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 		// 					},
 		// 					EnableFIPS: to.Ptr(false),
 		// 					KubernetesVersion: to.Ptr("1.20.5"),
@@ -202,7 +201,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/SnapshotsListByResourceGroup.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsListByResourceGroup.json
 func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,12 +228,12 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 		// 		Value: []*armcontainerservice.Snapshot{
 		// 			{
 		// 				Name: to.Ptr("snapshot1"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/Snapshots"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/snapshots"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armcontainerservice.SnapshotProperties{
 		// 					CreationData: &armcontainerservice.CreationData{
-		// 						SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+		// 						SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 		// 					},
 		// 					EnableFIPS: to.Ptr(false),
 		// 					KubernetesVersion: to.Ptr("1.20.5"),
@@ -260,7 +259,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/SnapshotsUpdateTags.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsUpdateTags.json
 func ExampleSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -284,14 +283,14 @@ func ExampleSnapshotsClient_UpdateTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.SnapshotsClientUpdateTagsResponse{
-	// 	Snapshot: &armcontainerservice.Snapshot{
+	// 	Snapshot: armcontainerservice.Snapshot{
 	// 		Name: to.Ptr("snapshot1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/Snapshots"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/snapshots"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armcontainerservice.SnapshotProperties{
 	// 			CreationData: &armcontainerservice.CreationData{
-	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+	// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 	// 			},
 	// 			EnableFIPS: to.Ptr(false),
 	// 			KubernetesVersion: to.Ptr("1.20.5"),
@@ -307,8 +306,8 @@ func ExampleSnapshotsClient_UpdateTags() {
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("val1"),
-	// 			"key2": to.Ptr("val2"),
+	// 			"key2": to.Ptr("new-val2"),
+	// 			"key3": to.Ptr("val3"),
 	// 		},
 	// 	},
 	// }

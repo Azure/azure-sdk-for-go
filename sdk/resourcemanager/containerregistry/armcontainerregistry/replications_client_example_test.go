@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/ReplicationCreate.json
+// Generated from example definition: 2026-01-01-preview/ReplicationCreate.json
 func ExampleReplicationsClient_BeginCreate_replicationCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,13 +34,13 @@ func ExampleReplicationsClient_BeginCreate_replicationCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ReplicationsClientCreateResponse{
-	// 	Replication: &armcontainerregistry.Replication{
+	// 	Replication: armcontainerregistry.Replication{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/replications/myReplication"),
 	// 		Name: to.Ptr("myReplication"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/replications"),
@@ -62,7 +62,7 @@ func ExampleReplicationsClient_BeginCreate_replicationCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ReplicationCreateZoneRedundant.json
+// Generated from example definition: 2026-01-01-preview/ReplicationCreateZoneRedundant.json
 func ExampleReplicationsClient_BeginCreate_replicationCreateZoneRedundant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,13 +88,13 @@ func ExampleReplicationsClient_BeginCreate_replicationCreateZoneRedundant() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ReplicationsClientCreateResponse{
-	// 	Replication: &armcontainerregistry.Replication{
+	// 	Replication: armcontainerregistry.Replication{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/replications/myReplication"),
 	// 		Name: to.Ptr("myReplication"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/replications"),
@@ -116,7 +116,7 @@ func ExampleReplicationsClient_BeginCreate_replicationCreateZoneRedundant() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ReplicationDelete.json
+// Generated from example definition: 2026-01-01-preview/ReplicationDelete.json
 func ExampleReplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleReplicationsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -142,7 +142,7 @@ func ExampleReplicationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ReplicationGet.json
+// Generated from example definition: 2026-01-01-preview/ReplicationGet.json
 func ExampleReplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleReplicationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ReplicationsClientGetResponse{
-	// 	Replication: &armcontainerregistry.Replication{
+	// 	Replication: armcontainerregistry.Replication{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/replications/myReplication"),
 	// 		Name: to.Ptr("myReplication"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/replications"),
@@ -183,7 +183,7 @@ func ExampleReplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ReplicationList.json
+// Generated from example definition: 2026-01-01-preview/ReplicationList.json
 func ExampleReplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleReplicationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/ReplicationUpdate.json
+// Generated from example definition: 2026-01-01-preview/ReplicationUpdate.json
 func ExampleReplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,13 +254,13 @@ func ExampleReplicationsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ReplicationsClientUpdateResponse{
-	// 	Replication: &armcontainerregistry.Replication{
+	// 	Replication: armcontainerregistry.Replication{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/replications/myReplication"),
 	// 		Name: to.Ptr("myReplication"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/replications"),

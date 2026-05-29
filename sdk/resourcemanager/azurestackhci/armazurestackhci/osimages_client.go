@@ -7,14 +7,13 @@ package armazurestackhci
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // OsImagesClient contains the methods for the OsImages group.
@@ -43,7 +42,7 @@ func NewOsImagesClient(subscriptionID string, credential azcore.TokenCredential,
 // Get - Get a os image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - osImageName - The name of the OsImage
 //   - options - OsImagesClientGetOptions contains the optional parameters for the OsImagesClient.Get method.
@@ -89,7 +88,7 @@ func (client *OsImagesClient) getCreateRequest(ctx context.Context, location str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,7 +105,7 @@ func (client *OsImagesClient) getHandleResponse(resp *http.Response) (OsImagesCl
 
 // NewListBySubscriptionLocationResourcePager - List all os images.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - location - The name of the Azure region.
 //   - options - OsImagesClientListBySubscriptionLocationResourceOptions contains the optional parameters for the OsImagesClient.NewListBySubscriptionLocationResourcePager
 //     method.
@@ -149,7 +148,7 @@ func (client *OsImagesClient) listBySubscriptionLocationResourceCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

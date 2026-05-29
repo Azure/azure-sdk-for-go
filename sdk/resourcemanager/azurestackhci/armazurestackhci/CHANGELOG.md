@@ -1,58 +1,41 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-03-09)
-### Breaking Changes
-
-- Type of `ArcSettingProperties.ConnectivityProperties` has been changed from `any` to `*ArcConnectivityProperties`
-- Type of `ArcSettingsPatchProperties.ConnectivityProperties` has been changed from `any` to `*ArcConnectivityProperties`
-- `StatusFailed`, `StatusInProgress`, `StatusSucceeded` from enum `Status` has been removed
-- Operation `*OperationsClient.List` has supported pagination, use `*OperationsClient.NewListPager` instead.
-
+## 3.1.0-beta.1 (2026-04-13)
 ### Features Added
 
 - New value `StateHealthCheckExpired`, `StatePendingOEMValidation` added to enum type `State`
-- New enum type `ClusterPattern` with values `ClusterPatternRackAware`, `ClusterPatternStandard`
 - New enum type `ConfidentialVMIntent` with values `ConfidentialVMIntentDisable`, `ConfidentialVMIntentEnable`
 - New enum type `ConfidentialVMStatus` with values `ConfidentialVMStatusDisabled`, `ConfidentialVMStatusEnabled`, `ConfidentialVMStatusPartiallyEnabled`
-- New enum type `DNSServerConfig` with values `DNSServerConfigUseDNSServer`, `DNSServerConfigUseForwarder`
-- New enum type `DeviceLogCollectionStatus` with values `DeviceLogCollectionStatusCanceled`, `DeviceLogCollectionStatusFailed`, `DeviceLogCollectionStatusNotStarted`, `DeviceLogCollectionStatusRunning`, `DeviceLogCollectionStatusSucceeded`
-- New enum type `EdgeDeviceKind` with values `EdgeDeviceKindHCI`
 - New enum type `EdgeMachineConnectivityStatus` with values `EdgeMachineConnectivityStatusConnected`, `EdgeMachineConnectivityStatusDisconnected`, `EdgeMachineConnectivityStatusNotSpecified`
 - New enum type `EdgeMachineJobType` with values `EdgeMachineJobTypeCollectLog`, `EdgeMachineJobTypeDownloadOs`, `EdgeMachineJobTypeProvisionOs`, `EdgeMachineJobTypeRemoteSupport`
 - New enum type `EdgeMachineKind` with values `EdgeMachineKindDedicated`, `EdgeMachineKindStandard`
 - New enum type `EdgeMachineState` with values `EdgeMachineStateCreated`, `EdgeMachineStateFailed`, `EdgeMachineStatePreparing`, `EdgeMachineStatePurposed`, `EdgeMachineStateRegistering`, `EdgeMachineStateResetting`, `EdgeMachineStateTransitioning`, `EdgeMachineStateUnpurposed`, `EdgeMachineStateUpdating`
-- New enum type `HardwareClass` with values `HardwareClassLarge`, `HardwareClassMedium`, `HardwareClassSmall`
-- New enum type `HciEdgeDeviceJobType` with values `HciEdgeDeviceJobTypeCollectLog`, `HciEdgeDeviceJobTypeRemoteSupport`
 - New enum type `HciJobType` with values `HciJobTypeConfigureCVM`, `HciJobTypeConfigureSdnIntegration`
 - New enum type `IPAssignmentType` with values `IPAssignmentTypeAutomatic`, `IPAssignmentTypeManual`
-- New enum type `IdentityProvider` with values `IdentityProviderActiveDirectory`, `IdentityProviderLocalIdentity`
 - New enum type `IgvmStatus` with values `IgvmStatusDisabled`, `IgvmStatusEnabled`, `IgvmStatusUnknown`
-- New enum type `JobStatus` with values `JobStatusCanceled`, `JobStatusDeploymentFailed`, `JobStatusDeploymentInProgress`, `JobStatusDeploymentSuccess`, `JobStatusFailed`, `JobStatusNotSpecified`, `JobStatusPaused`, `JobStatusScheduled`, `JobStatusSucceeded`, `JobStatusValidationFailed`, `JobStatusValidationInProgress`, `JobStatusValidationSuccess`
 - New enum type `OSOperationType` with values `OSOperationTypeProvision`, `OSOperationTypeReImage`, `OSOperationTypeUpdate`
 - New enum type `OnboardingResourceType` with values `OnboardingResourceTypeHybridComputeMachine`
+- New enum type `OverprovisioningRatio` with values `OverprovisioningRatioOne`, `OverprovisioningRatioTwo`, `OverprovisioningRatioZero`
 - New enum type `OwnerKeyType` with values `OwnerKeyTypeMicrosoftManaged`
 - New enum type `OwnershipVoucherValidationStatus` with values `OwnershipVoucherValidationStatusInvalid`, `OwnershipVoucherValidationStatusValid`
 - New enum type `ProvisioningOsType` with values `ProvisioningOsTypeAzureLinux`, `ProvisioningOsTypeHCI`
-- New enum type `RdmaCapability` with values `RdmaCapabilityDisabled`, `RdmaCapabilityEnabled`
-- New enum type `RemoteSupportAccessLevel` with values `RemoteSupportAccessLevelDiagnostics`, `RemoteSupportAccessLevelDiagnosticsAndRepair`, `RemoteSupportAccessLevelNone`
+- New enum type `RemoteSupportProvisioningState` with values `RemoteSupportProvisioningStateFailed`, `RemoteSupportProvisioningStateGrantInProgress`, `RemoteSupportProvisioningStateNone`, `RemoteSupportProvisioningStateRevokeInProgress`, `RemoteSupportProvisioningStateSucceeded`
 - New enum type `SdnIntegrationIntent` with values `SdnIntegrationIntentDisable`, `SdnIntegrationIntentEnable`
 - New enum type `SdnStatus` with values `SdnStatusDisabled`, `SdnStatusEnabled`, `SdnStatusUnknown`
 - New enum type `SecretType` with values `SecretTypeKeyVault`, `SecretTypeSSHPubKey`
-- New enum type `SecretsType` with values `SecretsTypeBackupSecrets`
-- New enum type `ServiceName` with values `ServiceNameWAC`
-- New function `*ArcSettingsClient.BeginReconcile(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest ReconcileArcSettingsRequest, options *ArcSettingsClientBeginReconcileOptions) (*runtime.Poller[ArcSettingsClientReconcileResponse], error)`
+- New enum type `StorageType` with values `StorageTypeS2D`, `StorageTypeSAN`, `StorageTypeSANS2D`
+- New enum type `VolumeType` with values `VolumeTypeFixed`, `VolumeTypeThinProvisioned`
 - New function `*ClientFactory.NewClusterJobsClient() *ClusterJobsClient`
 - New function `*ClientFactory.NewDevicePoolsClient() *DevicePoolsClient`
-- New function `*ClientFactory.NewEdgeDeviceJobsClient() *EdgeDeviceJobsClient`
 - New function `*ClientFactory.NewEdgeMachineJobsClient() *EdgeMachineJobsClient`
 - New function `*ClientFactory.NewEdgeMachinesClient() *EdgeMachinesClient`
 - New function `*ClientFactory.NewKubernetesVersionsClient() *KubernetesVersionsClient`
 - New function `*ClientFactory.NewOsImagesClient() *OsImagesClient`
 - New function `*ClientFactory.NewOwnershipVouchersClient() *OwnershipVouchersClient`
 - New function `*ClientFactory.NewPlatformUpdatesClient() *PlatformUpdatesClient`
+- New function `*ClientFactory.NewPublishersClient() *PublishersClient`
 - New function `*ClientFactory.NewUpdateContentsClient() *UpdateContentsClient`
 - New function `*ClientFactory.NewUpdateSummariesOperationGroupClient() *UpdateSummariesOperationGroupClient`
-- New function `*ClientFactory.NewValidatedSolutionRecipesClient() *ValidatedSolutionRecipesClient`
 - New function `*ClusterJobProperties.GetClusterJobProperties() *ClusterJobProperties`
 - New function `NewClusterJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterJobsClient, error)`
 - New function `*ClusterJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, jobsName string, resource ClusterJob, options *ClusterJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClusterJobsClientCreateOrUpdateResponse], error)`
@@ -60,7 +43,6 @@
 - New function `*ClusterJobsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, jobsName string, options *ClusterJobsClientGetOptions) (ClusterJobsClientGetResponse, error)`
 - New function `*ClusterJobsClient.NewListPager(resourceGroupName string, clusterName string, options *ClusterJobsClientListOptions) *runtime.Pager[ClusterJobsClientListResponse]`
 - New function `*ClustersClient.BeginChangeRing(ctx context.Context, resourceGroupName string, clusterName string, changeRingRequest ChangeRingRequest, options *ClustersClientBeginChangeRingOptions) (*runtime.Poller[ClustersClientChangeRingResponse], error)`
-- New function `*ClustersClient.BeginUpdateSecretsLocations(ctx context.Context, resourceGroupName string, clusterName string, body SecretsLocationsChangeRequest, options *ClustersClientBeginUpdateSecretsLocationsOptions) (*runtime.Poller[ClustersClientUpdateSecretsLocationsResponse], error)`
 - New function `NewDevicePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DevicePoolsClient, error)`
 - New function `*DevicePoolsClient.BeginClaimDevices(ctx context.Context, resourceGroupName string, devicePoolName string, body ClaimDeviceRequest, options *DevicePoolsClientBeginClaimDevicesOptions) (*runtime.Poller[DevicePoolsClientClaimDevicesResponse], error)`
 - New function `*DevicePoolsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, devicePoolName string, resource DevicePool, options *DevicePoolsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DevicePoolsClientCreateOrUpdateResponse], error)`
@@ -71,12 +53,6 @@
 - New function `*DevicePoolsClient.BeginReleaseDevices(ctx context.Context, resourceGroupName string, devicePoolName string, body ReleaseDeviceRequest, options *DevicePoolsClientBeginReleaseDevicesOptions) (*runtime.Poller[DevicePoolsClientReleaseDevicesResponse], error)`
 - New function `*DevicePoolsClient.BeginUpdate(ctx context.Context, resourceGroupName string, devicePoolName string, properties DevicePoolPatch, options *DevicePoolsClientBeginUpdateOptions) (*runtime.Poller[DevicePoolsClientUpdateResponse], error)`
 - New function `*DownloadOsJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
-- New function `*EdgeDeviceJob.GetEdgeDeviceJob() *EdgeDeviceJob`
-- New function `NewEdgeDeviceJobsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeDeviceJobsClient, error)`
-- New function `*EdgeDeviceJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, resource EdgeDeviceJobClassification, options *EdgeDeviceJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeDeviceJobsClientCreateOrUpdateResponse], error)`
-- New function `*EdgeDeviceJobsClient.BeginDelete(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, options *EdgeDeviceJobsClientBeginDeleteOptions) (*runtime.Poller[EdgeDeviceJobsClientDeleteResponse], error)`
-- New function `*EdgeDeviceJobsClient.Get(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, options *EdgeDeviceJobsClientGetOptions) (EdgeDeviceJobsClientGetResponse, error)`
-- New function `*EdgeDeviceJobsClient.NewListByEdgeDevicePager(resourceURI string, edgeDeviceName string, options *EdgeDeviceJobsClientListByEdgeDeviceOptions) *runtime.Pager[EdgeDeviceJobsClientListByEdgeDeviceResponse]`
 - New function `*EdgeMachineCollectLogJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
 - New function `*EdgeMachineJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
 - New function `NewEdgeMachineJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineJobsClient, error)`
@@ -92,12 +68,8 @@
 - New function `*EdgeMachinesClient.NewListByResourceGroupPager(resourceGroupName string, options *EdgeMachinesClientListByResourceGroupOptions) *runtime.Pager[EdgeMachinesClientListByResourceGroupResponse]`
 - New function `*EdgeMachinesClient.NewListBySubscriptionPager(options *EdgeMachinesClientListBySubscriptionOptions) *runtime.Pager[EdgeMachinesClientListBySubscriptionResponse]`
 - New function `*EdgeMachinesClient.BeginUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, properties EdgeMachinePatch, options *EdgeMachinesClientBeginUpdateOptions) (*runtime.Poller[EdgeMachinesClientUpdateResponse], error)`
-- New function `*HciCollectLogJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
 - New function `*HciConfigureCvmJobProperties.GetClusterJobProperties() *ClusterJobProperties`
 - New function `*HciConfigureSdnIntegrationJobProperties.GetClusterJobProperties() *ClusterJobProperties`
-- New function `*HciEdgeDeviceJob.GetEdgeDeviceJob() *EdgeDeviceJob`
-- New function `*HciEdgeDeviceJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
-- New function `*HciRemoteSupportJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
 - New function `NewKubernetesVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KubernetesVersionsClient, error)`
 - New function `*KubernetesVersionsClient.NewListBySubscriptionLocationResourcePager(location string, options *KubernetesVersionsClientListBySubscriptionLocationResourceOptions) *runtime.Pager[KubernetesVersionsClientListBySubscriptionLocationResourceResponse]`
 - New function `NewOsImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OsImagesClient, error)`
@@ -109,6 +81,9 @@
 - New function `*PlatformUpdatesClient.Get(ctx context.Context, location string, platformUpdateName string, options *PlatformUpdatesClientGetOptions) (PlatformUpdatesClientGetResponse, error)`
 - New function `*PlatformUpdatesClient.NewListPager(location string, options *PlatformUpdatesClientListOptions) *runtime.Pager[PlatformUpdatesClientListResponse]`
 - New function `*ProvisionOsJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `NewPublishersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublishersClient, error)`
+- New function `*PublishersClient.Get(ctx context.Context, resourceGroupName string, clusterName string, publisherName string, options *PublishersClientGetOptions) (PublishersClientGetResponse, error)`
+- New function `*PublishersClient.NewListByClusterPager(resourceGroupName string, clusterName string, options *PublishersClientListByClusterOptions) *runtime.Pager[PublishersClientListByClusterResponse]`
 - New function `NewUpdateContentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdateContentsClient, error)`
 - New function `*UpdateContentsClient.Get(ctx context.Context, location string, updateContentName string, options *UpdateContentsClientGetOptions) (UpdateContentsClientGetResponse, error)`
 - New function `*UpdateContentsClient.NewListPager(location string, options *UpdateContentsClientListOptions) *runtime.Pager[UpdateContentsClientListResponse]`
@@ -116,23 +91,17 @@
 - New function `*UpdateSummariesOperationGroupClient.BeginCheckHealth(ctx context.Context, resourceGroupName string, clusterName string, options *UpdateSummariesOperationGroupClientBeginCheckHealthOptions) (*runtime.Poller[UpdateSummariesOperationGroupClientCheckHealthResponse], error)`
 - New function `*UpdateSummariesOperationGroupClient.BeginCheckUpdates(ctx context.Context, resourceGroupName string, clusterName string, body CheckUpdatesRequest, options *UpdateSummariesOperationGroupClientBeginCheckUpdatesOptions) (*runtime.Poller[UpdateSummariesOperationGroupClientCheckUpdatesResponse], error)`
 - New function `*UpdatesClient.BeginPrepare(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPrepareOptions) (*runtime.Poller[UpdatesClientPrepareResponse], error)`
-- New function `NewValidatedSolutionRecipesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidatedSolutionRecipesClient, error)`
-- New function `*ValidatedSolutionRecipesClient.Get(ctx context.Context, location string, validatedSolutionRecipeName string, options *ValidatedSolutionRecipesClientGetOptions) (ValidatedSolutionRecipesClientGetResponse, error)`
-- New function `*ValidatedSolutionRecipesClient.NewListBySubscriptionLocationResourcePager(location string, options *ValidatedSolutionRecipesClientListBySubscriptionLocationResourceOptions) *runtime.Pager[ValidatedSolutionRecipesClientListBySubscriptionLocationResourceResponse]`
-- New struct `ArcConnectivityProperties`
-- New struct `AssemblyInfo`
-- New struct `AssemblyInfoPayload`
 - New struct `ChangeRingRequest`
 - New struct `ChangeRingRequestProperties`
 - New struct `CheckUpdatesRequest`
 - New struct `ClaimDeviceRequest`
+- New struct `ClusterBillingProperties`
 - New struct `ClusterJob`
 - New struct `ClusterJobListResult`
 - New struct `ClusterSdnProperties`
 - New struct `ConfidentialVMProfile`
 - New struct `ConfidentialVMProperties`
 - New struct `ContentPayload`
-- New struct `DNSZones`
 - New struct `DeviceDetail`
 - New struct `DevicePool`
 - New struct `DevicePoolListResult`
@@ -141,7 +110,7 @@
 - New struct `DownloadOsJobProperties`
 - New struct `DownloadOsProfile`
 - New struct `DownloadRequest`
-- New struct `EdgeDeviceJobListResult`
+- New struct `EdgeDeviceDisks`
 - New struct `EdgeMachine`
 - New struct `EdgeMachineCollectLogJobProperties`
 - New struct `EdgeMachineCollectLogJobReportedProperties`
@@ -159,24 +128,17 @@
 - New struct `ErrorAdditionalInfo`
 - New struct `ErrorDetail`
 - New struct `HardwareProfile`
-- New struct `HciCollectLogJobProperties`
 - New struct `HciConfigureCvmJobProperties`
 - New struct `HciConfigureSdnIntegrationJobProperties`
-- New struct `HciEdgeDeviceJob`
-- New struct `HciHardwareProfile`
-- New struct `HciRemoteSupportJobProperties`
-- New struct `HciStorageProfile`
 - New struct `IPAddressRange`
 - New struct `IgvmStatusDetail`
 - New struct `JobReportedProperties`
 - New struct `KubernetesVersion`
 - New struct `KubernetesVersionListResult`
 - New struct `KubernetesVersionProperties`
-- New struct `LocalAvailabilityZones`
-- New struct `LogCollectionJobSession`
-- New struct `LogCollectionReportedProperties`
 - New struct `NetworkAdapter`
 - New struct `NetworkConfiguration`
+- New struct `NextBillingModel`
 - New struct `OnboardingConfiguration`
 - New struct `OperationDetail`
 - New struct `OsImage`
@@ -195,19 +157,20 @@
 - New struct `ProvisionOsReportedProperties`
 - New struct `ProvisioningDetails`
 - New struct `ProvisioningRequest`
-- New struct `ReconcileArcSettingsRequest`
-- New struct `ReconcileArcSettingsRequestProperties`
+- New struct `Publisher`
+- New struct `PublisherList`
+- New struct `PublisherProperties`
 - New struct `ReleaseDeviceRequest`
-- New struct `RemoteSupportJobNodeSettings`
-- New struct `RemoteSupportJobReportedProperties`
-- New struct `RemoteSupportSession`
+- New struct `SanAdapterIPConfig`
+- New struct `SanAdapterProperties`
+- New struct `SanClusterNetworkConfig`
+- New struct `SanNetworks`
 - New struct `SdnProperties`
-- New struct `SecretsLocationDetails`
-- New struct `SecretsLocationsChangeRequest`
-- New struct `ServiceConfiguration`
 - New struct `SiteDetails`
 - New struct `StorageConfiguration`
 - New struct `StorageProfile`
+- New struct `StorageS2DConfig`
+- New struct `StorageSanConfig`
 - New struct `TargetDeviceConfiguration`
 - New struct `TimeConfiguration`
 - New struct `UpdateContent`
@@ -216,6 +179,85 @@
 - New struct `UserDetails`
 - New struct `ValidateOwnershipVouchersRequest`
 - New struct `ValidateOwnershipVouchersResponse`
+- New struct `WebProxyConfiguration`
+- New field `Kind` in struct `Cluster`
+- New field `BillingProperties`, `ConfidentialVMProperties`, `Ring`, `SdnProperties`, `StorageType` in struct `ClusterProperties`
+- New field `SanNetworks` in struct `DeploymentSettingHostNetwork`
+- New field `SdnProperties` in struct `HciNetworkProfile`
+- New field `ConfidentialVMProfile`, `LastSyncTimestamp` in struct `HciReportedProperties`
+- New field `Disks` in struct `HciStorageProfile`
+- New field `TranscriptLocation` in struct `PerNodeRemoteSupportSession`
+- New field `RemoteSupportProvisioningState` in struct `RemoteSupportProperties`
+- New field `S2D`, `San`, `StorageType` in struct `Storage`
+
+
+## 3.0.0 (2026-03-31)
+### Breaking Changes
+
+- Type of `ArcSettingProperties.ConnectivityProperties` has been changed from `any` to `*ArcConnectivityProperties`
+- Type of `ArcSettingsPatchProperties.ConnectivityProperties` has been changed from `any` to `*ArcConnectivityProperties`
+- `StatusFailed`, `StatusInProgress`, `StatusSucceeded` from enum `Status` has been removed
+- Function `*ClientFactory.NewPublishersClient` has been removed
+- Function `NewPublishersClient` has been removed
+- Function `*PublishersClient.Get` has been removed
+- Function `*PublishersClient.NewListByClusterPager` has been removed
+- Operation `*OperationsClient.List` has supported pagination, use `*OperationsClient.NewListPager` instead.
+- Struct `Publisher` has been removed
+- Struct `PublisherList` has been removed
+- Struct `PublisherProperties` has been removed
+
+### Features Added
+
+- New enum type `ClusterPattern` with values `ClusterPatternRackAware`, `ClusterPatternStandard`
+- New enum type `DNSServerConfig` with values `DNSServerConfigUseDNSServer`, `DNSServerConfigUseForwarder`
+- New enum type `DeviceLogCollectionStatus` with values `DeviceLogCollectionStatusCanceled`, `DeviceLogCollectionStatusFailed`, `DeviceLogCollectionStatusNotStarted`, `DeviceLogCollectionStatusRunning`, `DeviceLogCollectionStatusSucceeded`
+- New enum type `EdgeDeviceKind` with values `EdgeDeviceKindHCI`
+- New enum type `HardwareClass` with values `HardwareClassLarge`, `HardwareClassMedium`, `HardwareClassSmall`
+- New enum type `HciEdgeDeviceJobType` with values `HciEdgeDeviceJobTypeCollectLog`, `HciEdgeDeviceJobTypeRemoteSupport`
+- New enum type `IdentityProvider` with values `IdentityProviderActiveDirectory`, `IdentityProviderLocalIdentity`
+- New enum type `JobStatus` with values `JobStatusCanceled`, `JobStatusDeploymentFailed`, `JobStatusDeploymentInProgress`, `JobStatusDeploymentSuccess`, `JobStatusFailed`, `JobStatusNotSpecified`, `JobStatusPaused`, `JobStatusScheduled`, `JobStatusSucceeded`, `JobStatusValidationFailed`, `JobStatusValidationInProgress`, `JobStatusValidationSuccess`
+- New enum type `RdmaCapability` with values `RdmaCapabilityDisabled`, `RdmaCapabilityEnabled`
+- New enum type `RemoteSupportAccessLevel` with values `RemoteSupportAccessLevelDiagnostics`, `RemoteSupportAccessLevelDiagnosticsAndRepair`, `RemoteSupportAccessLevelNone`
+- New enum type `SecretsType` with values `SecretsTypeBackupSecrets`
+- New enum type `ServiceName` with values `ServiceNameWAC`
+- New function `*ArcSettingsClient.BeginReconcile(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest ReconcileArcSettingsRequest, options *ArcSettingsClientBeginReconcileOptions) (*runtime.Poller[ArcSettingsClientReconcileResponse], error)`
+- New function `*ClientFactory.NewEdgeDeviceJobsClient() *EdgeDeviceJobsClient`
+- New function `*ClientFactory.NewValidatedSolutionRecipesClient() *ValidatedSolutionRecipesClient`
+- New function `*ClustersClient.BeginUpdateSecretsLocations(ctx context.Context, resourceGroupName string, clusterName string, body SecretsLocationsChangeRequest, options *ClustersClientBeginUpdateSecretsLocationsOptions) (*runtime.Poller[ClustersClientUpdateSecretsLocationsResponse], error)`
+- New function `*EdgeDeviceJob.GetEdgeDeviceJob() *EdgeDeviceJob`
+- New function `NewEdgeDeviceJobsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeDeviceJobsClient, error)`
+- New function `*EdgeDeviceJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, resource EdgeDeviceJobClassification, options *EdgeDeviceJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeDeviceJobsClientCreateOrUpdateResponse], error)`
+- New function `*EdgeDeviceJobsClient.BeginDelete(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, options *EdgeDeviceJobsClientBeginDeleteOptions) (*runtime.Poller[EdgeDeviceJobsClientDeleteResponse], error)`
+- New function `*EdgeDeviceJobsClient.Get(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, options *EdgeDeviceJobsClientGetOptions) (EdgeDeviceJobsClientGetResponse, error)`
+- New function `*EdgeDeviceJobsClient.NewListByEdgeDevicePager(resourceURI string, edgeDeviceName string, options *EdgeDeviceJobsClientListByEdgeDeviceOptions) *runtime.Pager[EdgeDeviceJobsClientListByEdgeDeviceResponse]`
+- New function `*HciCollectLogJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
+- New function `*HciEdgeDeviceJob.GetEdgeDeviceJob() *EdgeDeviceJob`
+- New function `*HciEdgeDeviceJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
+- New function `*HciRemoteSupportJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
+- New function `NewValidatedSolutionRecipesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidatedSolutionRecipesClient, error)`
+- New function `*ValidatedSolutionRecipesClient.Get(ctx context.Context, location string, validatedSolutionRecipeName string, options *ValidatedSolutionRecipesClientGetOptions) (ValidatedSolutionRecipesClientGetResponse, error)`
+- New function `*ValidatedSolutionRecipesClient.NewListBySubscriptionLocationResourcePager(location string, options *ValidatedSolutionRecipesClientListBySubscriptionLocationResourceOptions) *runtime.Pager[ValidatedSolutionRecipesClientListBySubscriptionLocationResourceResponse]`
+- New struct `ArcConnectivityProperties`
+- New struct `AssemblyInfo`
+- New struct `AssemblyInfoPayload`
+- New struct `DNSZones`
+- New struct `EdgeDeviceJobListResult`
+- New struct `HciCollectLogJobProperties`
+- New struct `HciEdgeDeviceJob`
+- New struct `HciHardwareProfile`
+- New struct `HciRemoteSupportJobProperties`
+- New struct `HciStorageProfile`
+- New struct `LocalAvailabilityZones`
+- New struct `LogCollectionJobSession`
+- New struct `LogCollectionReportedProperties`
+- New struct `ReconcileArcSettingsRequest`
+- New struct `ReconcileArcSettingsRequestProperties`
+- New struct `RemoteSupportJobNodeSettings`
+- New struct `RemoteSupportJobReportedProperties`
+- New struct `RemoteSupportSession`
+- New struct `SecretsLocationDetails`
+- New struct `SecretsLocationsChangeRequest`
+- New struct `ServiceConfiguration`
 - New struct `ValidatedSolutionRecipe`
 - New struct `ValidatedSolutionRecipeCapabilities`
 - New struct `ValidatedSolutionRecipeCapability`
@@ -226,15 +268,12 @@
 - New struct `ValidatedSolutionRecipeInfo`
 - New struct `ValidatedSolutionRecipeListResult`
 - New struct `ValidatedSolutionRecipeProperties`
-- New struct `WebProxyConfiguration`
-- New field `Kind` in struct `Cluster`
-- New field `ClusterPattern`, `ConfidentialVMProperties`, `IdentityProvider`, `IsManagementCluster`, `LocalAvailabilityZones`, `Ring`, `SdnProperties`, `SecretsLocations` in struct `ClusterProperties`
+- New field `ClusterPattern`, `IdentityProvider`, `IsManagementCluster`, `LocalAvailabilityZones`, `SecretsLocations` in struct `ClusterProperties`
 - New field `HardwareClass`, `MsiExpirationTimeStamp` in struct `ClusterReportedProperties`
 - New field `ClusterPattern`, `HardwareClass` in struct `DeploymentCluster`
 - New field `AssemblyInfo`, `IdentityProvider`, `IsManagementCluster`, `LocalAvailabilityZones` in struct `DeploymentData`
-- New field `SdnProperties` in struct `HciNetworkProfile`
 - New field `RdmaCapability` in struct `HciNicDetail`
-- New field `ConfidentialVMProfile`, `HardwareProfile`, `LastSyncTimestamp`, `StorageProfile` in struct `HciReportedProperties`
+- New field `HardwareProfile`, `StorageProfile` in struct `HciReportedProperties`
 - New field `DNSServerConfig`, `DNSZones` in struct `InfrastructureNetwork`
 
 

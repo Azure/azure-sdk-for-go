@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_SchemaRegistry.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleSchemaRegistriesClient_BeginCreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_SchemaRegistry.json
+// Generated from example definition: 2026-03-01-preview/Delete_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleSchemaRegistriesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_SchemaRegistry.json
+// Generated from example definition: 2026-03-01-preview/Get_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleSchemaRegistriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_SchemaRegistries_ByResourceGroup.json
+// Generated from example definition: 2026-03-01-preview/List_SchemaRegistries_ByResourceGroup.json
 func ExampleSchemaRegistriesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleSchemaRegistriesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/List_SchemaRegistries_BySubscription.json
+// Generated from example definition: 2026-03-01-preview/List_SchemaRegistries_BySubscription.json
 func ExampleSchemaRegistriesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExampleSchemaRegistriesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Update_SchemaRegistry.json
+// Generated from example definition: 2026-03-01-preview/Update_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

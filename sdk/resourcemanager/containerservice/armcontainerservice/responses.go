@@ -582,3 +582,9 @@ type TrustedAccessRolesClientListResponse struct {
 	// List of trusted access roles
 	TrustedAccessRoleListResult
 }
+
+// VMSKUsClientListResponse contains the response from method VMSKUsClient.NewListPager.
+type VMSKUsClientListResponse struct {
+	// The List Resource Skus operation response.
+	VMSKUsListResult
+}

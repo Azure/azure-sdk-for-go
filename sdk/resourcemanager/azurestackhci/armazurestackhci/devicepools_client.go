@@ -7,14 +7,13 @@ package armazurestackhci
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DevicePoolsClient contains the methods for the DevicePools group.
@@ -43,7 +42,7 @@ func NewDevicePoolsClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginClaimDevices - Claiming devices of the pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devicePoolName - The name of the DevicePool
 //   - body - The content of the action request
@@ -69,7 +68,7 @@ func (client *DevicePoolsClient) BeginClaimDevices(ctx context.Context, resource
 // ClaimDevices - Claiming devices of the pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 func (client *DevicePoolsClient) claimDevices(ctx context.Context, resourceGroupName string, devicePoolName string, body ClaimDeviceRequest, options *DevicePoolsClientBeginClaimDevicesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DevicePoolsClient.BeginClaimDevices"
@@ -111,7 +110,7 @@ func (client *DevicePoolsClient) claimDevicesCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -123,7 +122,7 @@ func (client *DevicePoolsClient) claimDevicesCreateRequest(ctx context.Context, 
 // BeginCreateOrUpdate - Create a DevicePool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devicePoolName - The name of the DevicePool
 //   - resource - Resource create parameters.
@@ -149,7 +148,7 @@ func (client *DevicePoolsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // CreateOrUpdate - Create a DevicePool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 func (client *DevicePoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, devicePoolName string, resource DevicePool, options *DevicePoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DevicePoolsClient.BeginCreateOrUpdate"
@@ -191,7 +190,7 @@ func (client *DevicePoolsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -204,7 +203,7 @@ func (client *DevicePoolsClient) createOrUpdateCreateRequest(ctx context.Context
 // BeginDelete - Delete a DevicePool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devicePoolName - The name of the DevicePool
 //   - options - DevicePoolsClientBeginDeleteOptions contains the optional parameters for the DevicePoolsClient.BeginDelete method.
@@ -228,7 +227,7 @@ func (client *DevicePoolsClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Delete a DevicePool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 func (client *DevicePoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, devicePoolName string, options *DevicePoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DevicePoolsClient.BeginDelete"
@@ -270,7 +269,7 @@ func (client *DevicePoolsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -278,7 +277,7 @@ func (client *DevicePoolsClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Get a DevicePool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devicePoolName - The name of the DevicePool
 //   - options - DevicePoolsClientGetOptions contains the optional parameters for the DevicePoolsClient.Get method.
@@ -324,7 +323,7 @@ func (client *DevicePoolsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,7 +340,7 @@ func (client *DevicePoolsClient) getHandleResponse(resp *http.Response) (DeviceP
 
 // NewListByResourceGroupPager - List all device pools in a resource group.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DevicePoolsClientListByResourceGroupOptions contains the optional parameters for the DevicePoolsClient.NewListByResourceGroupPager
 //     method.
@@ -384,7 +383,7 @@ func (client *DevicePoolsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -401,7 +400,7 @@ func (client *DevicePoolsClient) listByResourceGroupHandleResponse(resp *http.Re
 
 // NewListBySubscriptionPager - List all device pools in a subscription.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - options - DevicePoolsClientListBySubscriptionOptions contains the optional parameters for the DevicePoolsClient.NewListBySubscriptionPager
 //     method.
 func (client *DevicePoolsClient) NewListBySubscriptionPager(options *DevicePoolsClientListBySubscriptionOptions) *runtime.Pager[DevicePoolsClientListBySubscriptionResponse] {
@@ -439,7 +438,7 @@ func (client *DevicePoolsClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -457,7 +456,7 @@ func (client *DevicePoolsClient) listBySubscriptionHandleResponse(resp *http.Res
 // BeginReleaseDevices - Releasing devices of the pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devicePoolName - The name of the DevicePool
 //   - body - The content of the action request
@@ -483,7 +482,7 @@ func (client *DevicePoolsClient) BeginReleaseDevices(ctx context.Context, resour
 // ReleaseDevices - Releasing devices of the pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 func (client *DevicePoolsClient) releaseDevices(ctx context.Context, resourceGroupName string, devicePoolName string, body ReleaseDeviceRequest, options *DevicePoolsClientBeginReleaseDevicesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DevicePoolsClient.BeginReleaseDevices"
@@ -525,7 +524,7 @@ func (client *DevicePoolsClient) releaseDevicesCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -537,7 +536,7 @@ func (client *DevicePoolsClient) releaseDevicesCreateRequest(ctx context.Context
 // BeginUpdate - Update a devicePool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devicePoolName - The name of the DevicePool
 //   - properties - The resource properties to be updated.
@@ -562,7 +561,7 @@ func (client *DevicePoolsClient) BeginUpdate(ctx context.Context, resourceGroupN
 // Update - Update a devicePool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-04-01-preview
 func (client *DevicePoolsClient) update(ctx context.Context, resourceGroupName string, devicePoolName string, properties DevicePoolPatch, options *DevicePoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DevicePoolsClient.BeginUpdate"
@@ -604,7 +603,7 @@ func (client *DevicePoolsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

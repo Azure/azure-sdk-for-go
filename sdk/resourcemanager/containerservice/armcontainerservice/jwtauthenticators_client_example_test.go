@@ -6,14 +6,13 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/JWTAuthenticators_Create_Or_Update.json
+// Generated from example definition: 2026-03-02-preview/JWTAuthenticators_Create_Or_Update.json
 func ExampleJWTAuthenticatorsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,16 +69,16 @@ func ExampleJWTAuthenticatorsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.JWTAuthenticatorsClientCreateOrUpdateResponse{
-	// 	JWTAuthenticator: &armcontainerservice.JWTAuthenticator{
+	// 	JWTAuthenticator: armcontainerservice.JWTAuthenticator{
 	// 		Name: to.Ptr("jwt1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/jwtAuthenticators"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/jwtAuthenticators/jwt1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/jwtAuthenticators/jwt1"),
 	// 		Properties: &armcontainerservice.JWTAuthenticatorProperties{
 	// 			ClaimMappings: &armcontainerservice.JWTAuthenticatorClaimMappings{
 	// 				Extra: []*armcontainerservice.JWTAuthenticatorExtraClaimMappingExpression{
@@ -124,7 +123,7 @@ func ExampleJWTAuthenticatorsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/JWTAuthenticators_Delete.json
+// Generated from example definition: 2026-03-02-preview/JWTAuthenticators_Delete.json
 func ExampleJWTAuthenticatorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,11 +140,11 @@ func ExampleJWTAuthenticatorsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/JWTAuthenticators_Get.json
+// Generated from example definition: 2026-03-02-preview/JWTAuthenticators_Get.json
 func ExampleJWTAuthenticatorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,10 +163,10 @@ func ExampleJWTAuthenticatorsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.JWTAuthenticatorsClientGetResponse{
-	// 	JWTAuthenticator: &armcontainerservice.JWTAuthenticator{
+	// 	JWTAuthenticator: armcontainerservice.JWTAuthenticator{
 	// 		Name: to.Ptr("jwt1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/jwtAuthenticators"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/jwtAuthenticators/jwt1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/jwtAuthenticators/jwt1"),
 	// 		Properties: &armcontainerservice.JWTAuthenticatorProperties{
 	// 			ClaimMappings: &armcontainerservice.JWTAuthenticatorClaimMappings{
 	// 				Extra: []*armcontainerservice.JWTAuthenticatorExtraClaimMappingExpression{
@@ -212,7 +211,7 @@ func ExampleJWTAuthenticatorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/JWTAuthenticators_List.json
+// Generated from example definition: 2026-03-02-preview/JWTAuthenticators_List.json
 func ExampleJWTAuthenticatorsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +239,7 @@ func ExampleJWTAuthenticatorsClient_NewListByManagedClusterPager() {
 		// 			{
 		// 				Name: to.Ptr("jwt1"),
 		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusters/jwtAuthenticators"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/jwtAuthenticators/jwt1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/jwtAuthenticators/jwt1"),
 		// 				Properties: &armcontainerservice.JWTAuthenticatorProperties{
 		// 					ClaimMappings: &armcontainerservice.JWTAuthenticatorClaimMappings{
 		// 						Extra: []*armcontainerservice.JWTAuthenticatorExtraClaimMappingExpression{

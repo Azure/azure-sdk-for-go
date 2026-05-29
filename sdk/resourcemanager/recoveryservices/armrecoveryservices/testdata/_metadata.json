@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.RecoveryServices": "2025-02-01"
+  },
+  "emitterVersion": "0.10.2"
+}

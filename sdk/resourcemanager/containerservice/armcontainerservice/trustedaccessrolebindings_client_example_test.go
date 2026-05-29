@@ -6,14 +6,13 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/TrustedAccessRoleBindings_CreateOrUpdate.json
+// Generated from example definition: 2026-03-02-preview/TrustedAccessRoleBindings_CreateOrUpdate.json
 func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,16 +37,16 @@ func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.TrustedAccessRoleBindingsClientCreateOrUpdateResponse{
-	// 	TrustedAccessRoleBinding: &armcontainerservice.TrustedAccessRoleBinding{
+	// 	TrustedAccessRoleBinding: armcontainerservice.TrustedAccessRoleBinding{
 	// 		Name: to.Ptr("binding1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
 	// 		Properties: &armcontainerservice.TrustedAccessRoleBindingProperties{
 	// 			Roles: []*string{
 	// 				to.Ptr("Microsoft.MachineLearningServices/workspaces/reader"),
@@ -59,7 +58,7 @@ func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/TrustedAccessRoleBindings_Delete.json
+// Generated from example definition: 2026-03-02-preview/TrustedAccessRoleBindings_Delete.json
 func ExampleTrustedAccessRoleBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,11 +75,11 @@ func ExampleTrustedAccessRoleBindingsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/TrustedAccessRoleBindings_Get.json
+// Generated from example definition: 2026-03-02-preview/TrustedAccessRoleBindings_Get.json
 func ExampleTrustedAccessRoleBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,10 +98,10 @@ func ExampleTrustedAccessRoleBindingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.TrustedAccessRoleBindingsClientGetResponse{
-	// 	TrustedAccessRoleBinding: &armcontainerservice.TrustedAccessRoleBinding{
+	// 	TrustedAccessRoleBinding: armcontainerservice.TrustedAccessRoleBinding{
 	// 		Name: to.Ptr("binding1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
 	// 		Properties: &armcontainerservice.TrustedAccessRoleBindingProperties{
 	// 			Roles: []*string{
 	// 				to.Ptr("Microsoft.MachineLearningServices/workspaces/reader"),
@@ -114,7 +113,7 @@ func ExampleTrustedAccessRoleBindingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/TrustedAccessRoleBindings_List.json
+// Generated from example definition: 2026-03-02-preview/TrustedAccessRoleBindings_List.json
 func ExampleTrustedAccessRoleBindingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +141,7 @@ func ExampleTrustedAccessRoleBindingsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("binding1"),
 		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
 		// 				Properties: &armcontainerservice.TrustedAccessRoleBindingProperties{
 		// 					Roles: []*string{
 		// 						to.Ptr("Microsoft.MachineLearningServices/workspaces/reader"),

@@ -6,15 +6,14 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
+	"time"
 )
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachineJobs_CreateOrUpdate_CollectLog.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachineJobs_CreateOrUpdate_CollectLog.json
 func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpdateCollectLog() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +68,7 @@ func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachineJobs_CreateOrUpdate_DownloadOs.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachineJobs_CreateOrUpdate_DownloadOs.json
 func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpdateDownloadOS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +193,7 @@ func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachineJobs_CreateOrUpdate_ProvisionOs.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachineJobs_CreateOrUpdate_ProvisionOs.json
 func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpdateProvisionOS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -425,7 +424,7 @@ func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachineJobs_CreateOrUpdate_RemoteSupport.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachineJobs_CreateOrUpdate_RemoteSupport.json
 func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpdateRemoteSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +476,7 @@ func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachineJobs_CreateOrUpdate_UpdateOs.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachineJobs_CreateOrUpdate_UpdateOs.json
 func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpdateOS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -702,7 +701,7 @@ func ExampleEdgeMachineJobsClient_BeginCreateOrUpdate_edgeMachineJobsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachineJobs_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachineJobs_Delete_MaximumSet_Gen.json
 func ExampleEdgeMachineJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -723,7 +722,7 @@ func ExampleEdgeMachineJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachineJobs_Get_CollectLog.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachineJobs_Get_CollectLog.json
 func ExampleEdgeMachineJobsClient_Get_edgeMachineJobsGetCollectLog() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -769,7 +768,7 @@ func ExampleEdgeMachineJobsClient_Get_edgeMachineJobsGetCollectLog() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachineJobs_Get_ProvisionOs.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachineJobs_Get_ProvisionOs.json
 func ExampleEdgeMachineJobsClient_Get_edgeMachineJobsGetProvisionOS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -915,7 +914,7 @@ func ExampleEdgeMachineJobsClient_Get_edgeMachineJobsGetProvisionOS() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachineJobs_Get_RemoteSupport.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachineJobs_Get_RemoteSupport.json
 func ExampleEdgeMachineJobsClient_Get_edgeMachineJobsGetRemoteSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -956,7 +955,7 @@ func ExampleEdgeMachineJobsClient_Get_edgeMachineJobsGetRemoteSupport() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachineJobs_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachineJobs_List_MaximumSet_Gen.json
 func ExampleEdgeMachineJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

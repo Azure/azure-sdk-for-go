@@ -6,14 +6,13 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/DevicePools_ClaimDevices_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/DevicePools_ClaimDevices_MaximumSet_Gen.json
 func ExampleDevicePoolsClient_BeginClaimDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +38,7 @@ func ExampleDevicePoolsClient_BeginClaimDevices() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/DevicePools_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01-preview/DevicePools_CreateOrUpdate.json
 func ExampleDevicePoolsClient_BeginCreateOrUpdate_devicePoolsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +91,7 @@ func ExampleDevicePoolsClient_BeginCreateOrUpdate_devicePoolsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DevicePools_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/DevicePools_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleDevicePoolsClient_BeginCreateOrUpdate_devicePoolsCreateOrUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +144,7 @@ func ExampleDevicePoolsClient_BeginCreateOrUpdate_devicePoolsCreateOrUpdateMaxim
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DevicePools_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/DevicePools_Delete_MaximumSet_Gen.json
 func ExampleDevicePoolsClient_BeginDelete_devicePoolsDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +165,7 @@ func ExampleDevicePoolsClient_BeginDelete_devicePoolsDeleteMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/DevicePools_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/DevicePools_Delete_MinimumSet_Gen.json
 func ExampleDevicePoolsClient_BeginDelete_devicePoolsDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +186,7 @@ func ExampleDevicePoolsClient_BeginDelete_devicePoolsDeleteMinimumSet() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/DevicePools_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/DevicePools_Get_MaximumSet_Gen.json
 func ExampleDevicePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +232,7 @@ func ExampleDevicePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DevicePools_ListByResourceGroup.json
+// Generated from example definition: 2026-04-01-preview/DevicePools_ListByResourceGroup.json
 func ExampleDevicePoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +287,7 @@ func ExampleDevicePoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/DevicePools_ListBySubscription.json
+// Generated from example definition: 2026-04-01-preview/DevicePools_ListBySubscription.json
 func ExampleDevicePoolsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +342,7 @@ func ExampleDevicePoolsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/DevicePools_ReleaseDevices_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/DevicePools_ReleaseDevices_MaximumSet_Gen.json
 func ExampleDevicePoolsClient_BeginReleaseDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -368,7 +367,7 @@ func ExampleDevicePoolsClient_BeginReleaseDevices() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/DevicePools_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01-preview/DevicePools_Update_MaximumSet_Gen.json
 func ExampleDevicePoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

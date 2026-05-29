@@ -6,14 +6,13 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CreateHciEdgeDevice.json
+// Generated from example definition: 2026-04-01-preview/CreateHciEdgeDevice.json
 func ExampleEdgeDevicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +165,7 @@ func ExampleEdgeDevicesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DeleteEdgeDevices.json
+// Generated from example definition: 2026-04-01-preview/DeleteEdgeDevices.json
 func ExampleEdgeDevicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +186,7 @@ func ExampleEdgeDevicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/GetEdgeDevices.json
+// Generated from example definition: 2026-04-01-preview/GetEdgeDevices.json
 func ExampleEdgeDevicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +243,7 @@ func ExampleEdgeDevicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListEdgeDevices.json
+// Generated from example definition: 2026-04-01-preview/ListEdgeDevices.json
 func ExampleEdgeDevicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,6 +325,21 @@ func ExampleEdgeDevicesClient_NewListPager() {
 		// 							Message: to.Ptr("The SBE package at path 'C:\\SBE' with version 4.1.2312.10 is published later than the latest SBE manifest published for online discovery. "),
 		// 							SbeManifest: to.Ptr("PEFwcGxpY2Fi"),
 		// 						},
+		// 						StorageProfile: &armazurestackhci.HciStorageProfile{
+		// 							PoolableDisksCount: to.Ptr[int64](4),
+		// 							Disks: []*armazurestackhci.EdgeDeviceDisks{
+		// 								{
+		// 									ID: to.Ptr("disk-1"),
+		// 									SizeInBytes: to.Ptr("1099511627776"),
+		// 									Type: to.Ptr("SSD"),
+		// 								},
+		// 								{
+		// 									ID: to.Ptr("disk-2"),
+		// 									SizeInBytes: to.Ptr("2199023255552"),
+		// 									Type: to.Ptr("HDD"),
+		// 								},
+		// 							},
+		// 						},
 		// 						LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
 		// 						ConfidentialVMProfile: &armazurestackhci.ConfidentialVMProfile{
 		// 							IgvmStatus: to.Ptr(armazurestackhci.IgvmStatusEnabled),
@@ -350,7 +364,7 @@ func ExampleEdgeDevicesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ValidateEdgeDevices.json
+// Generated from example definition: 2026-04-01-preview/ValidateEdgeDevices.json
 func ExampleEdgeDevicesClient_BeginValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

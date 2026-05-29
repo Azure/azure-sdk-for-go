@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureWorkload/ProtectionContainers_Get.json
+// Generated from example definition: 2026-01-31-preview/AzureWorkload/ProtectionContainers_Get.json
 func ExampleProtectionContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleProtectionContainersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.ProtectionContainersClientGetResponse{
-	// 	ProtectionContainerResource: &armrecoveryservicesbackup.ProtectionContainerResource{
+	// 	ProtectionContainerResource: armrecoveryservicesbackup.ProtectionContainerResource{
 	// 		Name: to.Ptr("VMAppContainer;Compute;testRG;testSQL"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers"),
 	// 		ID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.RecoveryServices/vaults/testVault/backupFabrics/Azure/protectionContainers/VMAppContainer;Compute;testRG;testSQL"),
@@ -76,7 +76,7 @@ func ExampleProtectionContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureStorage/ProtectionContainers_Inquire.json
+// Generated from example definition: 2026-01-31-preview/AzureStorage/ProtectionContainers_Inquire.json
 func ExampleProtectionContainersClient_Inquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleProtectionContainersClient_Inquire() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Common/RefreshContainers.json
+// Generated from example definition: 2026-01-31-preview/Common/RefreshContainers.json
 func ExampleProtectionContainersClient_Refresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleProtectionContainersClient_Refresh() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureStorage/ProtectionContainers_Register.json
+// Generated from example definition: 2026-01-31-preview/AzureStorage/ProtectionContainers_Register.json
 func ExampleProtectionContainersClient_BeginRegister() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,13 +135,13 @@ func ExampleProtectionContainersClient_BeginRegister() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse{
-	// 	ProtectionContainerResource: &armrecoveryservicesbackup.ProtectionContainerResource{
+	// 	ProtectionContainerResource: armrecoveryservicesbackup.ProtectionContainerResource{
 	// 		Name: to.Ptr("StorageContainer;Storage;SwaggerTestRg;swaggertestsa"),
 	// 		ID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/swaggertestvault/backupFabrics/Azure/protectionContainers/StorageContainer;Storage;SwaggerTestRg;swaggertestsa"),
 	// 		Properties: &armrecoveryservicesbackup.AzureStorageContainer{
@@ -158,7 +158,7 @@ func ExampleProtectionContainersClient_BeginRegister() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureWorkload/ProtectionContainers_Unregister.json
+// Generated from example definition: 2026-01-31-preview/AzureWorkload/ProtectionContainers_Unregister.json
 func ExampleProtectionContainersClient_Unregister() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/changelog"
@@ -21,19 +20,21 @@ import (
 
 // ChangelogResult represents the result of a changelog operation
 type ChangelogResult struct {
-	Success       bool   `json:"success"`
-	Message       string `json:"message"`
-	PackagePath   string `json:"package_path,omitempty"`
-	PackageStatus string `json:"package_status,omitempty"`
-	Version       string `json:"version,omitempty"`
-	ReleaseDate   string `json:"release_date,omitempty"`
-	ChangelogMD   string `json:"changelog_md,omitempty"`
+	Success           bool   `json:"success"`
+	Message           string `json:"message"`
+	PackagePath       string `json:"package_path,omitempty"`
+	PackageStatus     string `json:"package_status,omitempty"`
+	Version           string `json:"version,omitempty"`
+	ReleaseDate       string `json:"release_date,omitempty"`
+	HasBreakingChange bool   `json:"hasBreakingChange"`
+	ChangelogMD       string `json:"changelog_md,omitempty"`
 }
 
 // Command returns the changelog command
 func Command() *cobra.Command {
 	var outputFormat string
 	var verbose bool
+	var reportFile string
 
 	changelogCmd := &cobra.Command{
 		Use:   "changelog <package-path>",
@@ -48,6 +49,10 @@ This command will:
 
 The package path should be an absolute path to a Go module (containing go.mod file).
 
+When --report-file is provided, the command runs in report-only mode: it computes the
+SDK changes (including breaking change detection) and writes a JSON report to the given
+file path. CHANGELOG.md is NOT modified in this mode.
+
 Examples:
   # Update changelog for an existing package
   generator changelog /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
@@ -56,13 +61,16 @@ Examples:
   generator changelog /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --verbose
 
   # Generate changelog with JSON output
-  generator changelog /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --output json`,
+  generator changelog /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --output json
+
+  # Report-only mode: compute SDK changes and write JSON report without updating CHANGELOG.md
+  generator changelog /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --report-file /path/to/sdkchange.json`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			packagePath := args[0]
 
 			// Validate package path
-			if err := validatePackagePath(packagePath); err != nil {
+			if err := utils.ValidatePackagePath(packagePath); err != nil {
 				return fmt.Errorf("package path validation error: %v", err)
 			}
 
@@ -72,10 +80,25 @@ Examples:
 				return fmt.Errorf("failed to find SDK root: %v", err)
 			}
 
+			reportOnly := reportFile != ""
+
 			// Process changelog
-			result, err := processChangelog(sdkRoot, packagePath, verbose)
+			result, err := processChangelog(sdkRoot, packagePath, verbose, reportOnly)
 			if err != nil {
 				return fmt.Errorf("changelog operation failed: %v", err)
+			}
+
+			// In report-only mode, write JSON report to file and emit JSON to stdout.
+			if reportOnly {
+				jsonResult, err := json.MarshalIndent(result, "", "  ")
+				if err != nil {
+					return fmt.Errorf("failed to marshal result: %v", err)
+				}
+				fmt.Println(string(jsonResult))
+				if err := os.WriteFile(reportFile, jsonResult, 0644); err != nil {
+					return fmt.Errorf("failed to write report file: %v", err)
+				}
+				return nil
 			}
 
 			// Output result
@@ -111,29 +134,15 @@ Examples:
 
 	changelogCmd.Flags().StringVarP(&outputFormat, "output", "o", "text", "Output format (text|json)")
 	changelogCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose output")
+	changelogCmd.Flags().StringVar(&reportFile, "report-file", "", "Write SDK change report as JSON to the given file path. When set, CHANGELOG.md is not modified.")
 
 	return changelogCmd
 }
 
-// validatePackagePath validates that the provided package path exists and contains a go.mod file
-func validatePackagePath(packagePath string) error {
-	if info, err := os.Stat(packagePath); err != nil || !info.IsDir() {
-		return fmt.Errorf("package path '%s' does not exist or is not a directory", packagePath)
-	}
-
-	// Check if directory contains go.mod file
-	goModPath := filepath.Join(packagePath, "go.mod")
-	if _, err := os.Stat(goModPath); os.IsNotExist(err) {
-		return fmt.Errorf("package path '%s' does not contain a go.mod file", packagePath)
-	} else if err != nil {
-		return fmt.Errorf("failed to check for go.mod file: %v", err)
-	}
-
-	return nil
-}
-
-// processChangelog processes the changelog for the given package
-func processChangelog(sdkRoot, packagePath string, verbose bool) (*ChangelogResult, error) {
+// processChangelog processes the changelog for the given package.
+// When reportOnly is true, CHANGELOG.md is not modified; only the change report
+// (HasBreakingChange, ChangelogMD) is populated.
+func processChangelog(sdkRoot, packagePath string, verbose, reportOnly bool) (*ChangelogResult, error) {
 	result := &ChangelogResult{
 		PackagePath: packagePath,
 		ReleaseDate: time.Now().Format("2006-01-02"),
@@ -162,10 +171,10 @@ func processChangelog(sdkRoot, packagePath string, verbose bool) (*ChangelogResu
 	switch status {
 	case utils.PackageStatusNew:
 		result.PackageStatus = "New Package"
-		err = handleNewPackage(packagePath, sdkRepo, result, verbose)
+		err = handleNewPackage(packagePath, sdkRepo, result, verbose, reportOnly)
 	case utils.PackageStatusExisting:
 		result.PackageStatus = "Existing Package"
-		err = handleExistingPackage(packagePath, sdkRepo, result, verbose)
+		err = handleExistingPackage(packagePath, sdkRepo, result, verbose, reportOnly)
 	default:
 		result.Success = false
 		result.Message = fmt.Sprintf("Unknown package status: %v", status)
@@ -183,19 +192,22 @@ func processChangelog(sdkRoot, packagePath string, verbose bool) (*ChangelogResu
 	return result, nil
 }
 
-func handleNewPackage(modulePath string, sdkRepo repo.SDKRepository, result *ChangelogResult, verbose bool) error {
+func handleNewPackage(modulePath string, sdkRepo repo.SDKRepository, result *ChangelogResult, verbose, reportOnly bool) error {
 	if verbose {
 		log.Printf("Handling new package...")
 	}
 
 	result.Version = "0.1.0"
+	result.ChangelogMD = "New package"
+	result.HasBreakingChange = false
 
-	err := changelog.CreateNewChangelog(modulePath, sdkRepo, result.Version, result.ReleaseDate)
-	if err != nil {
-		return fmt.Errorf("failed to create new package changelog: %v", err)
+	if reportOnly {
+		return nil
 	}
 
-	result.ChangelogMD = "New package"
+	if err := changelog.CreateNewChangelog(modulePath, sdkRepo, result.Version, result.ReleaseDate); err != nil {
+		return fmt.Errorf("failed to create new package changelog: %v", err)
+	}
 
 	if verbose {
 		log.Printf("Created new package changelog for %s", modulePath)
@@ -204,7 +216,7 @@ func handleNewPackage(modulePath string, sdkRepo repo.SDKRepository, result *Cha
 	return nil
 }
 
-func handleExistingPackage(modulePath string, sdkRepo repo.SDKRepository, result *ChangelogResult, verbose bool) error {
+func handleExistingPackage(modulePath string, sdkRepo repo.SDKRepository, result *ChangelogResult, verbose, reportOnly bool) error {
 	if verbose {
 		log.Printf("Handling existing package...")
 	}
@@ -222,6 +234,14 @@ func handleExistingPackage(modulePath string, sdkRepo repo.SDKRepository, result
 	changelogResult, err := changelog.GenerateChangelog(modulePath, sdkRepo, isCurrentPreview)
 	if err != nil {
 		return fmt.Errorf("failed to generate changelog: %v", err)
+	}
+
+	result.HasBreakingChange = changelogResult.ChangelogData.HasBreakingChanges()
+
+	if reportOnly {
+		// In report-only mode, do not modify CHANGELOG.md or compute a new version.
+		result.ChangelogMD = changelogResult.ChangelogData.ToCompactMarkdown()
+		return nil
 	}
 
 	// Calculate new version

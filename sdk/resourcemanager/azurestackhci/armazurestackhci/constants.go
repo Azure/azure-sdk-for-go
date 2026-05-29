@@ -1208,6 +1208,27 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// OverprovisioningRatio - Overprovisioning ratio for S2D storage.
+type OverprovisioningRatio string
+
+const (
+	// OverprovisioningRatioOne - Overprovisioning ratio of 1.
+	OverprovisioningRatioOne OverprovisioningRatio = "1"
+	// OverprovisioningRatioTwo - Overprovisioning ratio of 2.
+	OverprovisioningRatioTwo OverprovisioningRatio = "2"
+	// OverprovisioningRatioZero - No overprovisioning.
+	OverprovisioningRatioZero OverprovisioningRatio = "0"
+)
+
+// PossibleOverprovisioningRatioValues returns the possible values for the OverprovisioningRatio const type.
+func PossibleOverprovisioningRatioValues() []OverprovisioningRatio {
+	return []OverprovisioningRatio{
+		OverprovisioningRatioOne,
+		OverprovisioningRatioTwo,
+		OverprovisioningRatioZero,
+	}
+}
+
 // OwnerKeyType - Type of owner key in the voucher
 type OwnerKeyType string
 
@@ -1383,6 +1404,33 @@ func PossibleRemoteSupportAccessLevelValues() []RemoteSupportAccessLevel {
 		RemoteSupportAccessLevelDiagnostics,
 		RemoteSupportAccessLevelDiagnosticsAndRepair,
 		RemoteSupportAccessLevelNone,
+	}
+}
+
+// RemoteSupportProvisioningState - Remote Support Provisioning State
+type RemoteSupportProvisioningState string
+
+const (
+	// RemoteSupportProvisioningStateFailed - The last operation failed.
+	RemoteSupportProvisioningStateFailed RemoteSupportProvisioningState = "Failed"
+	// RemoteSupportProvisioningStateGrantInProgress - A Grant (Enable) operation is in progress.
+	RemoteSupportProvisioningStateGrantInProgress RemoteSupportProvisioningState = "GrantInProgress"
+	// RemoteSupportProvisioningStateNone - No operation is in progress.
+	RemoteSupportProvisioningStateNone RemoteSupportProvisioningState = "None"
+	// RemoteSupportProvisioningStateRevokeInProgress - A Revoke operation is in progress.
+	RemoteSupportProvisioningStateRevokeInProgress RemoteSupportProvisioningState = "RevokeInProgress"
+	// RemoteSupportProvisioningStateSucceeded - The last operation completed successfully.
+	RemoteSupportProvisioningStateSucceeded RemoteSupportProvisioningState = "Succeeded"
+)
+
+// PossibleRemoteSupportProvisioningStateValues returns the possible values for the RemoteSupportProvisioningState const type.
+func PossibleRemoteSupportProvisioningStateValues() []RemoteSupportProvisioningState {
+	return []RemoteSupportProvisioningState{
+		RemoteSupportProvisioningStateFailed,
+		RemoteSupportProvisioningStateGrantInProgress,
+		RemoteSupportProvisioningStateNone,
+		RemoteSupportProvisioningStateRevokeInProgress,
+		RemoteSupportProvisioningStateSucceeded,
 	}
 }
 
@@ -1705,6 +1753,27 @@ func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 	}
 }
 
+// StorageType - Storage type supported for HCI Cluster.
+type StorageType string
+
+const (
+	// StorageTypeS2D - Storage Spaces Direct (S2D) storage type.
+	StorageTypeS2D StorageType = "S2D"
+	// StorageTypeSAN - Storage Area Network (SAN) storage type.
+	StorageTypeSAN StorageType = "SAN"
+	// StorageTypeSANS2D - Combined SAN and Storage Spaces Direct (SANS2D) storage type.
+	StorageTypeSANS2D StorageType = "SANS2D"
+)
+
+// PossibleStorageTypeValues returns the possible values for the StorageType const type.
+func PossibleStorageTypeValues() []StorageType {
+	return []StorageType{
+		StorageTypeS2D,
+		StorageTypeSAN,
+		StorageTypeSANS2D,
+	}
+}
+
 // UpdateRunPropertiesState - Represents the current state of the update run. Indicates whether the update is in progress,
 // has completed successfully, failed, or is in an unknown state.
 type UpdateRunPropertiesState string
@@ -1765,6 +1834,24 @@ func PossibleUpdateSummariesPropertiesStateValues() []UpdateSummariesPropertiesS
 		UpdateSummariesPropertiesStateUpdateAvailable,
 		UpdateSummariesPropertiesStateUpdateFailed,
 		UpdateSummariesPropertiesStateUpdateInProgress,
+	}
+}
+
+// VolumeType - Volume provisioning type for S2D storage.
+type VolumeType string
+
+const (
+	// VolumeTypeFixed - Fixed provisioning type.
+	VolumeTypeFixed VolumeType = "Fixed"
+	// VolumeTypeThinProvisioned - Thin provisioned provisioning type.
+	VolumeTypeThinProvisioned VolumeType = "ThinProvisioned"
+)
+
+// PossibleVolumeTypeValues returns the possible values for the VolumeType const type.
+func PossibleVolumeTypeValues() []VolumeType {
+	return []VolumeType{
+		VolumeTypeFixed,
+		VolumeTypeThinProvisioned,
 	}
 }
 

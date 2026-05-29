@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/Common/GetJobDetails.json
+// Generated from example definition: 2026-01-31-preview/Common/GetJobDetails.json
 func ExampleJobDetailsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleJobDetailsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.JobDetailsClientGetResponse{
-	// 	JobResource: &armrecoveryservicesbackup.JobResource{
+	// 	JobResource: armrecoveryservicesbackup.JobResource{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupJobs"),
 	// 		ID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupJobs/00000000-0000-0000-0000-000000000000"),

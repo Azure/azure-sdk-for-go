@@ -55,7 +55,7 @@ func (db *DatabaseClient) CreateContainer(
 	if err != nil {
 		return ContainerResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
+	ctx, endSpan := startSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &CreateContainerOptions{}
@@ -119,7 +119,7 @@ func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainer
 			if err != nil {
 				return QueryContainersResponse{}, err
 			}
-			ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.client.internal.Tracer(), &spanName.options)
+			ctx, endSpan := startSpan(ctx, spanName.name, c.client.internal.Tracer(), &spanName.options)
 			defer func() { endSpan(err) }()
 			if page != nil {
 				if page.ContinuationToken != nil {
@@ -157,7 +157,7 @@ func (db *DatabaseClient) Read(
 	if err != nil {
 		return DatabaseResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
+	ctx, endSpan := startSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ReadDatabaseOptions{}
@@ -198,7 +198,7 @@ func (db *DatabaseClient) ReadThroughput(
 	if err != nil {
 		return ThroughputResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
+	ctx, endSpan := startSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ThroughputOptions{}
@@ -227,7 +227,7 @@ func (db *DatabaseClient) ReplaceThroughput(
 	if err != nil {
 		return ThroughputResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
+	ctx, endSpan := startSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &ThroughputOptions{}
@@ -254,7 +254,7 @@ func (db *DatabaseClient) Delete(
 	if err != nil {
 		return DatabaseResponse{}, err
 	}
-	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
+	ctx, endSpan := startSpan(ctx, spanName.name, db.client.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 	if o == nil {
 		o = &DeleteDatabaseOptions{}

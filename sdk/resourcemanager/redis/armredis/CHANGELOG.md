@@ -1,5 +1,28 @@
 # Release History
 
+## 4.0.0-beta.1 (2026-03-16)
+### Breaking Changes
+
+- Type of `OperationStatus.PercentComplete` has been changed from `*float32` to `*float64`
+- Type of `OperationStatusResult.PercentComplete` has been changed from `*float32` to `*float64`
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New struct `SystemData`
+- New field `SystemData` in struct `CacheAccessPolicy`
+- New field `SystemData` in struct `CacheAccessPolicyAssignment`
+- New field `SystemData` in struct `FirewallRule`
+- New field `SystemData` in struct `LinkedServerWithProperties`
+- New field `SystemData` in struct `PatchSchedule`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `NextLink` in struct `PrivateEndpointConnectionListResult`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `NextLink` in struct `PrivateLinkResourceListResult`
+- New field `SystemData` in struct `ResourceInfo`
+
+
 ## 3.3.0 (2025-01-23)
 ### Features Added
 

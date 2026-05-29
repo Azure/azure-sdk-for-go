@@ -182,6 +182,12 @@ type Cluster struct {
 	Type *string
 }
 
+// ClusterBillingProperties - Billing properties of the cluster.
+type ClusterBillingProperties struct {
+	// The next billing model to be applied to the cluster.
+	NextBillingModel *NextBillingModel
+}
+
 // ClusterDesiredProperties - Desired properties of the cluster.
 type ClusterDesiredProperties struct {
 	// Desired level of diagnostic data emitted by the cluster.
@@ -383,6 +389,9 @@ type ClusterProperties struct {
 	// READ-ONLY; Type of billing applied to the resource.
 	BillingModel *string
 
+	// READ-ONLY; Billing properties of the cluster, including upcoming billing model details.
+	BillingProperties *ClusterBillingProperties
+
 	// READ-ONLY; Unique, immutable resource id.
 	CloudID *string
 
@@ -436,6 +445,9 @@ type ClusterProperties struct {
 	// READ-ONLY; Status of the cluster agent. Indicates the current connectivity, validation, and deployment state of the agent
 	// within the cluster.
 	Status *Status
+
+	// READ-ONLY; Storage type of the cluster. Indicates whether the cluster uses S2D, SAN, or a combination.
+	StorageType *StorageType
 
 	// READ-ONLY; Number of days remaining in the trial period.
 	TrialDaysRemaining *float32
@@ -739,6 +751,9 @@ type DeploymentSettingHostNetwork struct {
 	// The network intents assigned to the network reference pattern used for the deployment. Each intent will define its own
 	// name, traffic type, adapter names, and overrides as recommended by your OEM.
 	Intents []*DeploymentSettingIntents
+
+	// SAN network configuration for the host network. Applicable when StorageType is 'SAN' or 'SANS2D'.
+	SanNetworks *SanNetworks
 
 	// Defines how the storage adapters between nodes are connected either switch or switch less..
 	StorageConnectivitySwitchless *bool
@@ -1090,6 +1105,18 @@ type EdgeDevice struct {
 
 // GetEdgeDevice implements the EdgeDeviceClassification interface for type EdgeDevice.
 func (e *EdgeDevice) GetEdgeDevice() *EdgeDevice { return e }
+
+// EdgeDeviceDisks - Represents a storage disk on the device.
+type EdgeDeviceDisks struct {
+	// READ-ONLY; The unique identifier of the disk.
+	ID *string
+
+	// READ-ONLY; The size of the disk in bytes.
+	SizeInBytes *string
+
+	// READ-ONLY; The type of the disk. For example, S2D or SAN.
+	Type *string
+}
 
 // EdgeDeviceJob - EdgeDevice Jobs resource
 type EdgeDeviceJob struct {
@@ -2287,6 +2314,9 @@ type HciReportedProperties struct {
 
 // HciStorageProfile - Storage configurations for HCI device.
 type HciStorageProfile struct {
+	// READ-ONLY; List of storage disks on the device.
+	Disks []*EdgeDeviceDisks
+
 	// READ-ONLY; Number of storage disks in the device with $CanPool as true.
 	PoolableDisksCount *int64
 }
@@ -2588,6 +2618,18 @@ type NetworkController struct {
 	NetworkVirtualizationEnabled *bool
 }
 
+// NextBillingModel - Details of the next billing model for the cluster.
+type NextBillingModel struct {
+	// Type of billing model.
+	BillingModel *string
+
+	// Capabilities enabled under this billing model.
+	CapabilitiesEnabled []*string
+
+	// Number of days remaining in the trial period.
+	TrialDaysRemaining *float32
+}
+
 // NicDetail - The NIC Detail of a device.
 type NicDetail struct {
 	// Adapter Name of NIC
@@ -2878,6 +2920,9 @@ type OwnershipVoucherDetails struct {
 
 	// REQUIRED; Ownership voucher in base64 encoded format
 	OwnershipVoucher *string
+
+	// READ-ONLY; Ownership Voucher Validation Details
+	ValidationDetails *OwnershipVoucherValidationDetails
 }
 
 // OwnershipVoucherValidationDetails - Ownership Voucher Validation Details
@@ -2961,6 +3006,9 @@ type PerNodeRemoteSupportSession struct {
 
 	// READ-ONLY; Remote Support Session StartTime on the Node
 	SessionStartTime *time.Time
+
+	// READ-ONLY; The location where the session transcript is stored.
+	TranscriptLocation *string
 }
 
 // PerNodeState - Status of Arc agent for a particular node in HCI Cluster.
@@ -3333,6 +3381,9 @@ type RemoteSupportProperties struct {
 	// READ-ONLY
 	RemoteSupportNodeSettings []*RemoteSupportNodeSettings
 
+	// READ-ONLY; Remote Support Provisioning State
+	RemoteSupportProvisioningState *RemoteSupportProvisioningState
+
 	// READ-ONLY
 	RemoteSupportSessionDetails []*PerNodeRemoteSupportSession
 
@@ -3434,6 +3485,51 @@ type SKUProperties struct {
 
 	// READ-ONLY; Provisioning State
 	ProvisioningState *string
+}
+
+// SanAdapterIPConfig - Per-adapter IP configuration for SAN cluster network.
+type SanAdapterIPConfig struct {
+	// Subnet address prefix in CIDR notation (e.g., 10.10.30.0/24).
+	AddressPrefix *string
+
+	// Logical name of the adapter IP configuration (e.g., clusterNetwork-A).
+	Name *string
+
+	// Physical NIC name (e.g., ethernet 3).
+	NetworkAdapterName *string
+
+	// VLAN ID (0-4095). Value of 0 or omitted means untagged.
+	VlanID *int32
+}
+
+// SanAdapterProperties - QoS and adapter property overrides for SAN cluster network traffic.
+type SanAdapterProperties struct {
+	// SMB bandwidth percentage (1-97).
+	BandwidthPercentageSmb *int32
+
+	// Jumbo frame size in bytes.
+	JumboPacket *int32
+
+	// 802.1p priority value for cluster traffic.
+	PriorityValue8021ActionCluster *int32
+
+	// 802.1p priority value for SMB traffic.
+	PriorityValue8021ActionSmb *int32
+}
+
+// SanClusterNetworkConfig - Cluster network configuration for SAN deployments (CSV/LiveMig traffic).
+type SanClusterNetworkConfig struct {
+	// Per-adapter IP configuration for the cluster network.
+	AdapterIPConfig []*SanAdapterIPConfig
+
+	// QoS and adapter overrides for the cluster network.
+	AdapterProperties *SanAdapterProperties
+}
+
+// SanNetworks - SAN network configuration for host network of AzureStackHCI Cluster.
+type SanNetworks struct {
+	// Cluster (CSV/LiveMig) network configuration for SAN deployments.
+	ClusterNetworkConfig *SanClusterNetworkConfig
 }
 
 // SbeCredentials - secrets used for solution builder extension (SBE) partner extensibility.
@@ -3685,6 +3781,15 @@ type Storage struct {
 	// By default, this mode is set to Express and your storage is configured as per best practices based on the number of nodes
 	// in the cluster. Allowed values are 'Express','InfraOnly', 'KeepStorage'
 	ConfigurationMode *string
+
+	// S2D (Storage Spaces Direct) configuration. Applicable when StorageType is 'S2D' or 'SANS2D'.
+	S2D *StorageS2DConfig
+
+	// SAN (Storage Area Network) configuration. Applicable when StorageType is 'SAN' or 'SANS2D'.
+	San *StorageSanConfig
+
+	// Storage type for the HCI Cluster. Allowed values are 'S2D', 'SAN', 'SANS2D'.
+	StorageType *StorageType
 }
 
 // StorageConfiguration - Storage configuration.
@@ -3697,6 +3802,24 @@ type StorageConfiguration struct {
 type StorageProfile struct {
 	// READ-ONLY; Number of storage disks in the device with $CanPool as true.
 	PoolableDisksCount *int64
+}
+
+// StorageS2DConfig - The S2D (Storage Spaces Direct) configuration for AzureStackHCI Cluster storage.
+type StorageS2DConfig struct {
+	// Overprovisioning ratio for S2D storage. Allowed values are '0', '1', '2'.
+	OverprovisioningRatio *OverprovisioningRatio
+
+	// Volume provisioning type. Allowed values are 'Fixed', 'ThinProvisioned'.
+	VolumeType *VolumeType
+}
+
+// StorageSanConfig - The SAN (Storage Area Network) configuration for AzureStackHCI Cluster storage.
+type StorageSanConfig struct {
+	// Infrastructure performance LUN ID.
+	InfraPerfLunID *string
+
+	// Infrastructure volume LUN ID (e.g. PURE1234567890ABCDEF).
+	InfraVolLunID *string
 }
 
 // SwitchDetail - List of switch details for edge device.

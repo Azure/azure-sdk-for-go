@@ -6,15 +6,14 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
+	"time"
 )
 
-// Generated from example definition: 2026-03-01-preview/PutDeploymentSettings.json
+// Generated from example definition: 2026-04-01-preview/PutDeploymentSettings.json
 func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -493,7 +492,7 @@ func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSetting
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/PutDeploymentSettingsWithADLess.json
+// Generated from example definition: 2026-04-01-preview/PutDeploymentSettingsWithADLess.json
 func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSettingsWithoutActiveDirectoryIntegration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -976,7 +975,7 @@ func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSetting
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DeleteDeploymentSettings.json
+// Generated from example definition: 2026-04-01-preview/DeleteDeploymentSettings.json
 func ExampleDeploymentSettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -997,7 +996,7 @@ func ExampleDeploymentSettingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/GetDeploymentSettings.json
+// Generated from example definition: 2026-04-01-preview/GetDeploymentSettings.json
 func ExampleDeploymentSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1277,7 +1276,7 @@ func ExampleDeploymentSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListDeploymentSettingsByCluster.json
+// Generated from example definition: 2026-04-01-preview/ListDeploymentSettingsByCluster.json
 func ExampleDeploymentSettingsClient_NewListByClustersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

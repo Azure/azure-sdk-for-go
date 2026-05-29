@@ -6,14 +6,13 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/PutExtension.json
+// Generated from example definition: 2026-04-01-preview/PutExtension.json
 func ExampleExtensionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +119,7 @@ func ExampleExtensionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DeleteExtension.json
+// Generated from example definition: 2026-04-01-preview/DeleteExtension.json
 func ExampleExtensionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +145,7 @@ func ExampleExtensionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/GetExtension.json
+// Generated from example definition: 2026-04-01-preview/GetExtension.json
 func ExampleExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,7 +233,7 @@ func ExampleExtensionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListExtensionsByArcSetting.json
+// Generated from example definition: 2026-04-01-preview/ListExtensionsByArcSetting.json
 func ExampleExtensionsClient_NewListByArcSettingPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +342,7 @@ func ExampleExtensionsClient_NewListByArcSettingPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/PatchExtension.json
+// Generated from example definition: 2026-04-01-preview/PatchExtension.json
 func ExampleExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -448,7 +447,7 @@ func ExampleExtensionsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Extensions_Upgrade.json
+// Generated from example definition: 2026-04-01-preview/Extensions_Upgrade.json
 func ExampleExtensionsClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

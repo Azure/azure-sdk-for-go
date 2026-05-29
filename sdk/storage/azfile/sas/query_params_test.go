@@ -129,7 +129,7 @@ func TestIPRange_String(t *testing.T) {
 
 func TestSAS(t *testing.T) {
 	// Note: This is a totally invalid fake SAS, this is just testing our ability to parse different query parameters on a SAS
-	const sas = "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&ses=test&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"
+	const sas = "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&ses=test&skoid=oid&sktid=tid&skt=2111-01-09T01:42:34.936Z&ske=2222-03-09T01:42:34.936Z&sks=s&skv=v&saoid=oid&suoid=oid&scid=cid&sduoid=doid&skdutid=dtid&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"
 	_url := fmt.Sprintf("https://teststorageaccount.file.core.windows.net/testshare/testpath?%s", sas)
 	_uri, err := url.Parse(_url)
 	require.NoError(t, err)
@@ -180,6 +180,8 @@ func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 	require.Equal(t, parameters.ContentEncoding(), sasCompMap["rsce"])
 	require.Equal(t, parameters.ContentLanguage(), sasCompMap["rscl"])
 	require.Equal(t, parameters.ContentType(), sasCompMap["rsct"])
+	require.Equal(t, parameters.SignedDelegatedUserObjectID(), sasCompMap["sduoid"])
+	require.Equal(t, parameters.SignedDelegatedUserTenantID(), sasCompMap["skdutid"])
 }
 
 func TestSASInvalidQueryParameter(t *testing.T) {
@@ -195,8 +197,8 @@ func TestSASInvalidQueryParameter(t *testing.T) {
 
 func TestEncode(t *testing.T) {
 	// Note: This is a totally invalid fake SAS, this is just testing our ability to parse different query parameters on a SAS
-	expected := "rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&se=2222-03-09T01%3A42%3A34Z&si=myIdentifier&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&sip=168.1.5.60-168.1.5.70&sp=rw&spr=https%2Chttp&sr=b&srt=sco&ss=bf&st=2111-01-09T01%3A42%3A34Z&sv=2019-12-12"
-	randomOrder := "se=2222-03-09T01:42:34.936Z&rsce=ce&ss=bf&si=myIdentifier&sip=168.1.5.60-168.1.5.70&rscc=cc&srt=sco&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&rsct=ct&rscl=cl&sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&rscd=cd&sp=rw&spr=https,http"
+	expected := "rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&saoid=oid&scid=cid&sduoid=doid&se=2222-03-09T01%3A42%3A34Z&ses=test&si=myIdentifier&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&sip=168.1.5.60-168.1.5.70&skdutid=dtid&ske=2222-03-09T01%3A42%3A34Z&skoid=oid&sks=s&skt=2111-01-09T01%3A42%3A34Z&sktid=tid&skv=v&sp=rw&spr=https%2Chttp&sr=b&srt=sco&ss=bf&st=2111-01-09T01%3A42%3A34Z&suoid=oid&sv=2019-12-12"
+	randomOrder := "se=2222-03-09T01:42:34.936Z&rsce=ce&ss=bf&si=myIdentifier&sip=168.1.5.60-168.1.5.70&rscc=cc&srt=sco&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&rsct=ct&rscl=cl&sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&rscd=cd&sp=rw&spr=https,http&ses=test&skoid=oid&sktid=tid&skt=2111-01-09T01:42:34.936Z&ske=2222-03-09T01:42:34.936Z&sks=s&skv=v&saoid=oid&suoid=oid&scid=cid&sduoid=doid&skdutid=dtid"
 	testdata := []string{expected, randomOrder}
 
 	for _, sas := range testdata {

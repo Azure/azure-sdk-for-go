@@ -6,15 +6,14 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
+	"time"
 )
 
-// Generated from example definition: 2025-10-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+// Generated from example definition: 2026-03-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,10 +58,10 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.MaintenanceConfigurationsClientCreateOrUpdateResponse{
-	// 	MaintenanceConfiguration: &armcontainerservice.MaintenanceConfiguration{
+	// 	MaintenanceConfiguration: armcontainerservice.MaintenanceConfiguration{
 	// 		Name: to.Ptr("aksManagedAutoUpgradeSchedule"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/maintenanceConfigurations"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
 	// 		Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 	// 			MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 	// 				DurationHours: to.Ptr[int32](10),
@@ -99,7 +98,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/MaintenanceConfigurationsDelete_MaintenanceWindow.json
+// Generated from example definition: 2026-03-02-preview/MaintenanceConfigurationsDelete_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +120,7 @@ func ExampleMaintenanceConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
+// Generated from example definition: 2026-03-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,9 +139,9 @@ func ExampleMaintenanceConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.MaintenanceConfigurationsClientGetResponse{
-	// 	MaintenanceConfiguration: &armcontainerservice.MaintenanceConfiguration{
+	// 	MaintenanceConfiguration: armcontainerservice.MaintenanceConfiguration{
 	// 		Name: to.Ptr("aksManagedNodeOSUpgradeSchedule"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
 	// 		Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 	// 			MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 	// 				DurationHours: to.Ptr[int32](4),
@@ -178,7 +177,7 @@ func ExampleMaintenanceConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/MaintenanceConfigurationsList_MaintenanceWindow.json
+// Generated from example definition: 2026-03-02-preview/MaintenanceConfigurationsList_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +204,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 		// 		Value: []*armcontainerservice.MaintenanceConfiguration{
 		// 			{
 		// 				Name: to.Ptr("aksManagedNodeOSUpgradeSchedule"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
 		// 				Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 		// 					MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 		// 						DurationHours: to.Ptr[int32](10),
@@ -222,7 +221,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("aksManagedAutoUpgradeSchedule"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
 		// 				Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 		// 					MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 		// 						DurationHours: to.Ptr[int32](5),

@@ -48,13 +48,13 @@ func ExampleAppServiceCertificateOrdersClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcertificateregistration.AppServiceCertificateOrdersClientCreateOrUpdateResponse{
-	// 	AppServiceCertificateOrder: &armcertificateregistration.AppServiceCertificateOrder{
+	// 	AppServiceCertificateOrder: armcertificateregistration.AppServiceCertificateOrder{
 	// 		Name: to.Ptr("SampleCertificateOrderName"),
 	// 		Type: to.Ptr("Microsoft.CertificateRegistration/certificateOrders"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.CertificateRegistration/certificateOrders/SampleCertificateOrderName"),
@@ -153,13 +153,13 @@ func ExampleAppServiceCertificateOrdersClient_BeginCreateOrUpdateCertificate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcertificateregistration.AppServiceCertificateOrdersClientCreateOrUpdateCertificateResponse{
-	// 	AppServiceCertificateResource: &armcertificateregistration.AppServiceCertificateResource{
+	// 	AppServiceCertificateResource: armcertificateregistration.AppServiceCertificateResource{
 	// 		Name: to.Ptr("SampleCertName1"),
 	// 		Type: to.Ptr("Microsoft.CertificateRegistration/certificateOrders/certificates"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.CertificateRegistration/certificateOrders/SampleCertificateOrderName/certificates/SampleCertName1"),
@@ -236,7 +236,7 @@ func ExampleAppServiceCertificateOrdersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcertificateregistration.AppServiceCertificateOrdersClientGetResponse{
-	// 	AppServiceCertificateOrder: &armcertificateregistration.AppServiceCertificateOrder{
+	// 	AppServiceCertificateOrder: armcertificateregistration.AppServiceCertificateOrder{
 	// 		Name: to.Ptr("SampleCertificateOrderName"),
 	// 		Type: to.Ptr("Microsoft.CertificateRegistration/certificateOrders"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.CertificateRegistration/certificateOrders/SampleCertificateOrderName"),
@@ -331,7 +331,7 @@ func ExampleAppServiceCertificateOrdersClient_GetCertificate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcertificateregistration.AppServiceCertificateOrdersClientGetCertificateResponse{
-	// 	AppServiceCertificateResource: &armcertificateregistration.AppServiceCertificateResource{
+	// 	AppServiceCertificateResource: armcertificateregistration.AppServiceCertificateResource{
 	// 		Name: to.Ptr("SampleCertName1"),
 	// 		Type: to.Ptr("Microsoft.CertificateRegistration/certificateOrders/certificates"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.CertificateRegistration/certificateOrders/SampleCertificateOrderName/certificates/SampleCertName1"),
@@ -708,7 +708,7 @@ func ExampleAppServiceCertificateOrdersClient_RetrieveCertificateActions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcertificateregistration.AppServiceCertificateOrdersClientRetrieveCertificateActionsResponse{
-	// 	undefined: &[]*armcertificateregistration.CertificateOrderAction{
+	// 	CertificateOrderActionArray: []*armcertificateregistration.CertificateOrderAction{
 	// 		{
 	// 			ActionType: to.Ptr(armcertificateregistration.CertificateOrderActionTypeFraudDetected),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
@@ -744,7 +744,7 @@ func ExampleAppServiceCertificateOrdersClient_RetrieveCertificateEmailHistory() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcertificateregistration.AppServiceCertificateOrdersClientRetrieveCertificateEmailHistoryResponse{
-	// 	undefined: &[]*armcertificateregistration.CertificateEmail{
+	// 	CertificateEmailArray: []*armcertificateregistration.CertificateEmail{
 	// 		{
 	// 			EmailID: to.Ptr("customer@email.com"),
 	// 			TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
@@ -779,7 +779,7 @@ func ExampleAppServiceCertificateOrdersClient_RetrieveSiteSeal() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcertificateregistration.AppServiceCertificateOrdersClientRetrieveSiteSealResponse{
-	// 	SiteSeal: &armcertificateregistration.SiteSeal{
+	// 	SiteSeal: armcertificateregistration.SiteSeal{
 	// 		HTML: to.Ptr("<html>SiteSeal</html>"),
 	// 	},
 	// }
@@ -822,7 +822,7 @@ func ExampleAppServiceCertificateOrdersClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcertificateregistration.AppServiceCertificateOrdersClientUpdateResponse{
-	// 	AppServiceCertificateOrder: &armcertificateregistration.AppServiceCertificateOrder{
+	// 	AppServiceCertificateOrder: armcertificateregistration.AppServiceCertificateOrder{
 	// 		Name: to.Ptr("SampleCertificateOrderName"),
 	// 		Type: to.Ptr("Microsoft.CertificateRegistration/certificateOrders"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.CertificateRegistration/certificateOrders/SampleCertificateOrderName"),
@@ -922,7 +922,7 @@ func ExampleAppServiceCertificateOrdersClient_UpdateCertificate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcertificateregistration.AppServiceCertificateOrdersClientUpdateCertificateResponse{
-	// 	AppServiceCertificateResource: &armcertificateregistration.AppServiceCertificateResource{
+	// 	AppServiceCertificateResource: armcertificateregistration.AppServiceCertificateResource{
 	// 		Name: to.Ptr("SampleCertName1"),
 	// 		Type: to.Ptr("Microsoft.CertificateRegistration/certificateOrders/certificates"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.CertificateRegistration/certificateOrders/SampleCertificateOrderName/certificates/SampleCertName1"),

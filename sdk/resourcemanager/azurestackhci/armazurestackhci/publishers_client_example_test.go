@@ -6,13 +6,12 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/GetPublisher.json
+// Generated from example definition: 2026-04-01-preview/GetPublisher.json
 func ExamplePublishersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +38,7 @@ func ExamplePublishersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListPublishersByCluster.json
+// Generated from example definition: 2026-04-01-preview/ListPublishersByCluster.json
 func ExamplePublishersClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

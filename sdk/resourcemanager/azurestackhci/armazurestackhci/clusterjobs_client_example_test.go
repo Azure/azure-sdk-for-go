@@ -6,14 +6,13 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/ClusterJobs_CreateOrUpdate_ConfigureCVM.json
+// Generated from example definition: 2026-04-01-preview/ClusterJobs_CreateOrUpdate_ConfigureCVM.json
 func ExampleClusterJobsClient_BeginCreateOrUpdate_clusterJobsCreateOrUpdateConfigureCvmJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +130,7 @@ func ExampleClusterJobsClient_BeginCreateOrUpdate_clusterJobsCreateOrUpdateConfi
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ClusterJobs_CreateOrUpdate_ConfigureSdnIntegration_Enable.json
+// Generated from example definition: 2026-04-01-preview/ClusterJobs_CreateOrUpdate_ConfigureSdnIntegration_Enable.json
 func ExampleClusterJobsClient_BeginCreateOrUpdate_clusterJobsCreateOrUpdateConfigureSdnIntegrationEnable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +235,7 @@ func ExampleClusterJobsClient_BeginCreateOrUpdate_clusterJobsCreateOrUpdateConfi
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ClusterJobs_Delete.json
+// Generated from example definition: 2026-04-01-preview/ClusterJobs_Delete.json
 func ExampleClusterJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +256,7 @@ func ExampleClusterJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ClusterJobs_Get_ConfigureSdnIntegrationJob.json
+// Generated from example definition: 2026-04-01-preview/ClusterJobs_Get_ConfigureSdnIntegrationJob.json
 func ExampleClusterJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -365,7 +364,7 @@ func ExampleClusterJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ClusterJobs_List.json
+// Generated from example definition: 2026-04-01-preview/ClusterJobs_List.json
 func ExampleClusterJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

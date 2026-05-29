@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/DeleteResourceGuard.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/DeleteResourceGuard.json
 func ExampleResourceGuardsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleResourceGuardsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/GetResourceGuard.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/GetResourceGuard.json
 func ExampleResourceGuardsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleResourceGuardsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
 func ExampleResourceGuardsClient_NewGetBackupSecurityPINRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleResourceGuardsClient_NewGetBackupSecurityPINRequestsObjectsPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
 func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
 func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
 func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObjec
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
 func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
 func ExampleResourceGuardsClient_GetDefaultUpdateProtectedItemRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +253,7 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectedItemRequestsObject() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
 func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,7 +280,7 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject(
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
 func ExampleResourceGuardsClient_NewGetDeleteProtectedItemRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +316,7 @@ func ExampleResourceGuardsClient_NewGetDeleteProtectedItemRequestsObjectsPager()
 	}
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
 func ExampleResourceGuardsClient_NewGetDeleteResourceGuardProxyRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,7 +352,7 @@ func ExampleResourceGuardsClient_NewGetDeleteResourceGuardProxyRequestsObjectsPa
 	}
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
 func ExampleResourceGuardsClient_NewGetDisableSoftDeleteRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -388,7 +388,7 @@ func ExampleResourceGuardsClient_NewGetDisableSoftDeleteRequestsObjectsPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
 func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,7 +445,7 @@ func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
 func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,7 +502,7 @@ func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/ListUpdateProtectedItemRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/ListUpdateProtectedItemRequests.json
 func ExampleResourceGuardsClient_NewGetUpdateProtectedItemRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -538,7 +538,7 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectedItemRequestsObjectsPager()
 	}
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
 func ExampleResourceGuardsClient_NewGetUpdateProtectionPolicyRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -574,7 +574,7 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectionPolicyRequestsObjectsPage
 	}
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/PatchResourceGuard.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/PatchResourceGuard.json
 func ExampleResourceGuardsClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -624,7 +624,7 @@ func ExampleResourceGuardsClient_Patch() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardCRUD/PutResourceGuard.json
+// Generated from example definition: 2026-03-01/ResourceGuardCRUD/PutResourceGuard.json
 func ExampleResourceGuardsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

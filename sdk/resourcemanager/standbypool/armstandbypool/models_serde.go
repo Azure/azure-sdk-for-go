@@ -106,6 +106,33 @@ func (c *ContainerGroupProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DynamicSizing.
+func (d DynamicSizing) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "enabled", d.Enabled)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DynamicSizing.
+func (d *DynamicSizing) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "enabled":
+			err = unpopulate(val, "Enabled", &d.Enabled)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Operation.
 func (o Operation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -315,6 +342,7 @@ func (p *PoolVirtualMachineStateCount) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type StandbyContainerGroupPoolElasticityProfile.
 func (s StandbyContainerGroupPoolElasticityProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "dynamicSizing", s.DynamicSizing)
 	populate(objectMap, "maxReadyCapacity", s.MaxReadyCapacity)
 	populate(objectMap, "refillPolicy", s.RefillPolicy)
 	return json.Marshal(objectMap)
@@ -329,6 +357,9 @@ func (s *StandbyContainerGroupPoolElasticityProfile) UnmarshalJSON(data []byte) 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "dynamicSizing":
+			err = unpopulate(val, "DynamicSizing", &s.DynamicSizing)
+			delete(rawMsg, key)
 		case "maxReadyCapacity":
 			err = unpopulate(val, "MaxReadyCapacity", &s.MaxReadyCapacity)
 			delete(rawMsg, key)
@@ -708,8 +739,10 @@ func (s *StandbyContainerGroupPoolRuntimeViewResourceProperties) UnmarshalJSON(d
 // MarshalJSON implements the json.Marshaller interface for type StandbyVirtualMachinePoolElasticityProfile.
 func (s StandbyVirtualMachinePoolElasticityProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "dynamicSizing", s.DynamicSizing)
 	populate(objectMap, "maxReadyCapacity", s.MaxReadyCapacity)
 	populate(objectMap, "minReadyCapacity", s.MinReadyCapacity)
+	populate(objectMap, "postProvisioningDelay", s.PostProvisioningDelay)
 	return json.Marshal(objectMap)
 }
 
@@ -722,11 +755,17 @@ func (s *StandbyVirtualMachinePoolElasticityProfile) UnmarshalJSON(data []byte) 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "dynamicSizing":
+			err = unpopulate(val, "DynamicSizing", &s.DynamicSizing)
+			delete(rawMsg, key)
 		case "maxReadyCapacity":
 			err = unpopulate(val, "MaxReadyCapacity", &s.MaxReadyCapacity)
 			delete(rawMsg, key)
 		case "minReadyCapacity":
 			err = unpopulate(val, "MinReadyCapacity", &s.MinReadyCapacity)
+			delete(rawMsg, key)
+		case "postProvisioningDelay":
+			err = unpopulate(val, "PostProvisioningDelay", &s.PostProvisioningDelay)
 			delete(rawMsg, key)
 		}
 		if err != nil {

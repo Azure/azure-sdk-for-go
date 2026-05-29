@@ -6,13 +6,12 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/OperationStatusResultGet.json
+// Generated from example definition: 2026-03-02-preview/OperationStatusResultGet.json
 func ExampleOperationStatusResultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +30,7 @@ func ExampleOperationStatusResultClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.OperationStatusResultClientGetResponse{
-	// 	OperationStatusResult: &armcontainerservice.OperationStatusResult{
+	// 	OperationStatusResult: armcontainerservice.OperationStatusResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/operations/00000000-0000-0000-0000-000000000001"),
 	// 		PercentComplete: to.Ptr[float64](40),
@@ -41,7 +40,7 @@ func ExampleOperationStatusResultClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/OperationStatusResultGetByAgentPool.json
+// Generated from example definition: 2026-03-02-preview/OperationStatusResultGetByAgentPool.json
 func ExampleOperationStatusResultClient_GetByAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +59,7 @@ func ExampleOperationStatusResultClient_GetByAgentPool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.OperationStatusResultClientGetByAgentPoolResponse{
-	// 	OperationStatusResult: &armcontainerservice.OperationStatusResult{
+	// 	OperationStatusResult: armcontainerservice.OperationStatusResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/operations/00000000-0000-0000-0000-000000000001"),
 	// 		PercentComplete: to.Ptr[float64](40),
@@ -70,7 +69,7 @@ func ExampleOperationStatusResultClient_GetByAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/OperationStatusResultList.json
+// Generated from example definition: 2026-03-02-preview/OperationStatusResultList.json
 func ExampleOperationStatusResultClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +96,7 @@ func ExampleOperationStatusResultClient_NewListPager() {
 		// 		Value: []*armcontainerservice.OperationStatusResult{
 		// 			{
 		// 				Name: to.Ptr("d11edb09-6e27-429f-9fe5-17baf773bc4a"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/operations/d11edb09-6e27-429f-9fe5-17baf773bc4a"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/operations/d11edb09-6e27-429f-9fe5-17baf773bc4a"),
 		// 				PercentComplete: to.Ptr[float64](40),
 		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-26T12:14:26.3179428Z"); return t}()),
 		// 				Status: to.Ptr("InProgress"),
@@ -109,7 +108,7 @@ func ExampleOperationStatusResultClient_NewListPager() {
 		// 					Code: to.Ptr("ReconcileAgentPoolIdentityError"),
 		// 					Message: to.Ptr("Reconcile agent pool nodepool1 identity failed"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/operations/d11edb09-6e27-429f-9fe5-17baf773bc4b"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/operations/d11edb09-6e27-429f-9fe5-17baf773bc4b"),
 		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-26T12:14:26.3179428Z"); return t}()),
 		// 				Status: to.Ptr("Failed"),
 		// 			},

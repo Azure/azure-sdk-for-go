@@ -6,14 +6,13 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsAbortOperation.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsAbortOperation.json
 func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,11 +29,11 @@ func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCompleteUpgrade.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCompleteUpgrade.json
 func ExampleAgentPoolsClient_BeginCompleteUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,11 +50,11 @@ func ExampleAgentPoolsClient_BeginCompleteUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsAssociate_CRG.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsAssociate_CRG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +67,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityR
 	}
 	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-			CapacityReservationGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
+			CapacityReservationGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
 			Count:                      to.Ptr[int32](3),
 			OrchestratorVersion:        to.Ptr(""),
 			OSType:                     to.Ptr(armcontainerservice.OSTypeLinux),
@@ -80,18 +79,18 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityR
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-	// 			CapacityReservationGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
+	// 			CapacityReservationGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
 	// 			MaxPods: to.Ptr[int32](110),
@@ -104,7 +103,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityR
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_CustomNodeConfig.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_CustomNodeConfig.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfigAndLinuxOSConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,12 +122,21 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 					to.Ptr("kernel.msg*"),
 					to.Ptr("net.core.somaxconn"),
 				},
-				CPUCfsQuota:           to.Ptr(true),
-				CPUCfsQuotaPeriod:     to.Ptr("200ms"),
-				CPUManagerPolicy:      to.Ptr("static"),
-				FailSwapOn:            to.Ptr(false),
-				ImageGcHighThreshold:  to.Ptr[int32](90),
-				ImageGcLowThreshold:   to.Ptr[int32](70),
+				CPUCfsQuota:       to.Ptr(true),
+				CPUCfsQuotaPeriod: to.Ptr("200ms"),
+				CPUManagerPolicy:  to.Ptr("static"),
+				FailSwapOn:        to.Ptr(false),
+				HardEvictionThreshold: &armcontainerservice.HardEvictionThreshold{
+					MemoryAvailable:  to.Ptr("500Mi"),
+					NodeFsAvailable:  to.Ptr("15%"),
+					NodeFsInodesFree: to.Ptr("10%"),
+				},
+				ImageGcHighThreshold: to.Ptr[int32](90),
+				ImageGcLowThreshold:  to.Ptr[int32](70),
+				KubeReserved: &armcontainerservice.KubeReserved{
+					CPUMillicores: to.Ptr[int32](200),
+					MemoryMB:      to.Ptr[int32](1024),
+				},
 				TopologyManagerPolicy: to.Ptr("best-effort"),
 			},
 			LinuxOSConfig: &armcontainerservice.LinuxOSConfig{
@@ -152,16 +160,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -174,8 +182,17 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 	// 				CPUCfsQuotaPeriod: to.Ptr("200ms"),
 	// 				CPUManagerPolicy: to.Ptr("static"),
 	// 				FailSwapOn: to.Ptr(false),
+	// 				HardEvictionThreshold: &armcontainerservice.HardEvictionThreshold{
+	// 					MemoryAvailable: to.Ptr("500Mi"),
+	// 					NodeFsAvailable: to.Ptr("15%"),
+	// 					NodeFsInodesFree: to.Ptr("10%"),
+	// 				},
 	// 				ImageGcHighThreshold: to.Ptr[int32](90),
 	// 				ImageGcLowThreshold: to.Ptr[int32](70),
+	// 				KubeReserved: &armcontainerservice.KubeReserved{
+	// 					CPUMillicores: to.Ptr[int32](200),
+	// 					MemoryMB: to.Ptr[int32](1024),
+	// 				},
 	// 				SeccompDefault: to.Ptr(armcontainerservice.SeccompDefaultUnconfined),
 	// 				TopologyManagerPolicy: to.Ptr("best-effort"),
 	// 			},
@@ -200,7 +217,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_DedicatedHostGroup.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_DedicatedHostGroup.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +231,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count:               to.Ptr[int32](3),
-			HostGroupID:         to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
+			HostGroupID:         to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
 			OrchestratorVersion: to.Ptr(""),
 			OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
 			VMSize:              to.Ptr("Standard_DS2_v2"),
@@ -225,20 +242,20 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.19.6"),
-	// 			HostGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
+	// 			HostGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
 	// 			MaxPods: to.Ptr[int32](110),
 	// 			OrchestratorVersion: to.Ptr("1.19.6"),
 	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
@@ -249,7 +266,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_EnableEncryptionAtHost.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_EnableEncryptionAtHost.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAtHostEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,16 +291,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAt
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.13"),
@@ -298,7 +315,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAt
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_EnableFIPS.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_EnableFIPS.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledOS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,16 +340,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledO
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.19.6"),
@@ -347,7 +364,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledO
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_EnableUltraSSD.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_EnableUltraSSD.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,16 +389,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnab
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.13"),
@@ -396,7 +413,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnab
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_Ephemeral.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_Ephemeral.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOSDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,16 +439,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOSD
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -447,7 +464,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOSD
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_GPUMIG.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_GPUMIG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -496,16 +513,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -544,7 +561,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_MessageOfTheDay.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_MessageOfTheDay.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfTheDay() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -571,16 +588,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfThe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -597,7 +614,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfThe
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_OSSKU.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_OSSKU.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -646,16 +663,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -694,7 +711,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_PPG.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_PPG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -710,7 +727,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 			Count:                     to.Ptr[int32](3),
 			OrchestratorVersion:       to.Ptr(""),
 			OSType:                    to.Ptr(armcontainerservice.OSTypeLinux),
-			ProximityPlacementGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/proximityPlacementGroups/ppg1"),
+			ProximityPlacementGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/proximityPlacementGroups/ppg1"),
 			VMSize:                    to.Ptr("Standard_DS2_v2"),
 		},
 	}, nil)
@@ -719,16 +736,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -736,14 +753,14 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	// 			OrchestratorVersion: to.Ptr("1.9.6"),
 	// 			OSType: to.Ptr(armcontainerservice.OSTypeLinux),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			ProximityPlacementGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/proximityPlacementGroups/ppg1"),
+	// 			ProximityPlacementGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/proximityPlacementGroups/ppg1"),
 	// 			VMSize: to.Ptr("Standard_DS2_v2"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_Snapshot.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_Snapshot.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPoolSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -771,16 +788,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPool
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CreationData: &armcontainerservice.CreationData{
@@ -798,7 +815,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPool
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_Spot.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_Spot.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -833,16 +850,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -868,7 +885,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_TypeVirtualMachines.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_TypeVirtualMachines.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachinesPoolType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -914,16 +931,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachines),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -970,7 +987,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_TypeVirtualMachines_Autoscale.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_TypeVirtualMachines_Autoscale.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachinesPoolTypeWithAutoscalingEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -997,10 +1014,12 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 			},
 			VirtualMachinesProfile: &armcontainerservice.VirtualMachinesProfile{
 				Scale: &armcontainerservice.ScaleProfile{
-					Autoscale: &armcontainerservice.AutoScaleProfile{
-						MaxCount: to.Ptr[int32](5),
-						MinCount: to.Ptr[int32](1),
-						Size:     to.Ptr("Standard_D2_v2"),
+					Autoscale: []*armcontainerservice.AutoScaleProfile{
+						{
+							MaxCount: to.Ptr[int32](5),
+							MinCount: to.Ptr[int32](1),
+							Size:     to.Ptr("Standard_D2_v2"),
+						},
 					},
 				},
 			},
@@ -1011,16 +1030,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachines),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.29.0"),
@@ -1046,10 +1065,12 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	// 			},
 	// 			VirtualMachinesProfile: &armcontainerservice.VirtualMachinesProfile{
 	// 				Scale: &armcontainerservice.ScaleProfile{
-	// 					Autoscale: &armcontainerservice.AutoScaleProfile{
-	// 						MaxCount: to.Ptr[int32](5),
-	// 						MinCount: to.Ptr[int32](1),
-	// 						Size: to.Ptr("Standard_D2_v2"),
+	// 					Autoscale: []*armcontainerservice.AutoScaleProfile{
+	// 						{
+	// 							MaxCount: to.Ptr[int32](5),
+	// 							MinCount: to.Ptr[int32](1),
+	// 							Size: to.Ptr("Standard_D2_v2"),
+	// 						},
 	// 					},
 	// 				},
 	// 			},
@@ -1058,7 +1079,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_Update.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_Update.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1094,16 +1115,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			MaxPods: to.Ptr[int32](110),
@@ -1129,7 +1150,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_WasmWasi.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_WasmWasi.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndTheWasiRuntime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1156,16 +1177,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndT
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.17.8"),
@@ -1182,7 +1203,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndT
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_WindowsDisableOutboundNAT.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_WindowsDisableOutboundNAT.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisablingOutboundNat() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1210,16 +1231,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisab
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("wnp2"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/wnp2"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/wnp2"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.23.8"),
@@ -1237,7 +1258,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisab
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsCreate_WindowsOSSKU.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsCreate_WindowsOSSKU.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1262,16 +1283,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("wnp2"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/wnp2"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/wnp2"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.23.3"),
@@ -1286,7 +1307,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPools_Start.json
+// Generated from example definition: 2026-03-02-preview/AgentPools_Start.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1309,16 +1330,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](50),
 	// 			EnableAutoScaling: to.Ptr(true),
@@ -1333,7 +1354,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPools_Stop.json
+// Generated from example definition: 2026-03-02-preview/AgentPools_Stop.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1356,16 +1377,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](0),
 	// 			EnableAutoScaling: to.Ptr(false),
@@ -1378,7 +1399,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPools_Update.json
+// Generated from example definition: 2026-03-02-preview/AgentPools_Update.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1410,16 +1431,16 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -1441,7 +1462,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsDelete.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsDelete.json
 func ExampleAgentPoolsClient_BeginDelete_deleteAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1458,11 +1479,11 @@ func ExampleAgentPoolsClient_BeginDelete_deleteAgentPool() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsDelete_IgnorePodDisruptionBudget.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsDelete_IgnorePodDisruptionBudget.json
 func ExampleAgentPoolsClient_BeginDelete_deleteAgentPoolByIgnoringPodDisruptionBudget() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1473,17 +1494,18 @@ func ExampleAgentPoolsClient_BeginDelete_deleteAgentPoolByIgnoringPodDisruptionB
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginDelete(ctx, "rg1", "clustername1", "agentpool1", nil)
+	poller, err := clientFactory.NewAgentPoolsClient().BeginDelete(ctx, "rg1", "clustername1", "agentpool1", &armcontainerservice.AgentPoolsClientBeginDeleteOptions{
+		IgnorePodDisruptionBudget: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsDeleteMachines.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsDeleteMachines.json
 func ExampleAgentPoolsClient_BeginDeleteMachines() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1505,11 +1527,11 @@ func ExampleAgentPoolsClient_BeginDeleteMachines() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsGet.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsGet.json
 func ExampleAgentPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1528,9 +1550,9 @@ func ExampleAgentPoolsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientGetResponse{
-	// 	AgentPool: &armcontainerservice.AgentPool{
+	// 	AgentPool: armcontainerservice.AgentPool{
 	// 		Name: to.Ptr("agentpool1"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 			Count: to.Ptr[int32](3),
 	// 			CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -1549,7 +1571,7 @@ func ExampleAgentPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsGetAgentPoolAvailableVersions.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsGetAgentPoolAvailableVersions.json
 func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1568,10 +1590,10 @@ func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientGetAvailableAgentPoolVersionsResponse{
-	// 	AgentPoolAvailableVersions: &armcontainerservice.AgentPoolAvailableVersions{
+	// 	AgentPoolAvailableVersions: armcontainerservice.AgentPoolAvailableVersions{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/availableAgentpoolVersions"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/availableagentpoolversions"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/availableagentpoolversions"),
 	// 		Properties: &armcontainerservice.AgentPoolAvailableVersionsProperties{
 	// 			AgentPoolVersions: []*armcontainerservice.AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem{
 	// 				{
@@ -1591,7 +1613,7 @@ func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsGetUpgradeProfile.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsGetUpgradeProfile.json
 func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1610,10 +1632,10 @@ func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.AgentPoolsClientGetUpgradeProfileResponse{
-	// 	AgentPoolUpgradeProfile: &armcontainerservice.AgentPoolUpgradeProfile{
+	// 	AgentPoolUpgradeProfile: armcontainerservice.AgentPoolUpgradeProfile{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools/upgradeProfiles"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/upgradeprofiles/default"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/upgradeprofiles/default"),
 	// 		Properties: &armcontainerservice.AgentPoolUpgradeProfileProperties{
 	// 			KubernetesVersion: to.Ptr("1.12.8"),
 	// 			LatestNodeImageVersion: to.Ptr("AKSUbuntu:1604:2020.03.11"),
@@ -1628,7 +1650,7 @@ func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsList.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsList.json
 func ExampleAgentPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1655,7 +1677,7 @@ func ExampleAgentPoolsClient_NewListPager() {
 		// 		Value: []*armcontainerservice.AgentPool{
 		// 			{
 		// 				Name: to.Ptr("agentpool1"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 		// 				Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 		// 					Count: to.Ptr[int32](3),
 		// 					CurrentOrchestratorVersion: to.Ptr("1.9.6"),
@@ -1674,7 +1696,7 @@ func ExampleAgentPoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/AgentPoolsUpgradeNodeImageVersion.json
+// Generated from example definition: 2026-03-02-preview/AgentPoolsUpgradeNodeImageVersion.json
 func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1691,7 +1713,7 @@ func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

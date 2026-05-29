@@ -53,6 +53,12 @@ func StartRecording(t *testing.T, pathToPackage string) func() {
 	if err != nil {
 		t.Fatalf("Failed to start recording: %v", err)
 	}
+	err = recording.SetDefaultMatcher(t, &recording.SetDefaultMatcherOptions{
+		IgnoredQueryParameters: []string{"api-version"},
+	})
+	if err != nil {
+		t.Fatalf("Failed to set default matcher: %v", err)
+	}
 	return func() { StopRecording(t) }
 }
 

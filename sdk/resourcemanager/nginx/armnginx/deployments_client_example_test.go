@@ -7,11 +7,11 @@ package armnginx_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/Deployments_Create.json
+// Generated from example definition: 2025-11-01/Deployments_Create.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_Delete.json
+// Generated from example definition: 2025-11-01/Deployments_Delete.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_Get.json
+// Generated from example definition: 2025-11-01/Deployments_Get.json
 func ExampleDeploymentsClient_Get_deploymentsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleDeploymentsClient_Get_deploymentsGet() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_Get_AutoScale.json
+// Generated from example definition: 2025-11-01/Deployments_Get_AutoScale.json
 func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_List.json
+// Generated from example definition: 2025-11-01/Deployments_List.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +366,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_ListByResourceGroup.json
+// Generated from example definition: 2025-11-01/Deployments_ListByResourceGroup.json
 func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,7 +457,7 @@ func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_Update.json
+// Generated from example definition: 2025-11-01/Deployments_Update.json
 func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -549,7 +549,7 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_UpdateSubnet.json
+// Generated from example definition: 2025-11-01/Deployments_UpdateSubnet.json
 func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdateSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

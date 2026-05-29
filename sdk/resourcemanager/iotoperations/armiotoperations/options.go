@@ -4,6 +4,79 @@
 
 package armiotoperations
 
+// AkriConnectorClientBeginCreateOrUpdateOptions contains the optional parameters for the AkriConnectorClient.BeginCreateOrUpdate
+// method.
+type AkriConnectorClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AkriConnectorClientBeginDeleteOptions contains the optional parameters for the AkriConnectorClient.BeginDelete method.
+type AkriConnectorClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AkriConnectorClientGetOptions contains the optional parameters for the AkriConnectorClient.Get method.
+type AkriConnectorClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AkriConnectorClientListByTemplateOptions contains the optional parameters for the AkriConnectorClient.NewListByTemplatePager
+// method.
+type AkriConnectorClientListByTemplateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AkriConnectorTemplateClientBeginCreateOrUpdateOptions contains the optional parameters for the AkriConnectorTemplateClient.BeginCreateOrUpdate
+// method.
+type AkriConnectorTemplateClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AkriConnectorTemplateClientBeginDeleteOptions contains the optional parameters for the AkriConnectorTemplateClient.BeginDelete
+// method.
+type AkriConnectorTemplateClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AkriConnectorTemplateClientGetOptions contains the optional parameters for the AkriConnectorTemplateClient.Get method.
+type AkriConnectorTemplateClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AkriConnectorTemplateClientListByInstanceResourceOptions contains the optional parameters for the AkriConnectorTemplateClient.NewListByInstanceResourcePager
+// method.
+type AkriConnectorTemplateClientListByInstanceResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AkriServiceClientBeginCreateOrUpdateOptions contains the optional parameters for the AkriServiceClient.BeginCreateOrUpdate
+// method.
+type AkriServiceClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AkriServiceClientBeginDeleteOptions contains the optional parameters for the AkriServiceClient.BeginDelete method.
+type AkriServiceClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AkriServiceClientGetOptions contains the optional parameters for the AkriServiceClient.Get method.
+type AkriServiceClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AkriServiceClientListByInstanceResourceOptions contains the optional parameters for the AkriServiceClient.NewListByInstanceResourcePager
+// method.
+type AkriServiceClientListByInstanceResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
 // BrokerAuthenticationClientBeginCreateOrUpdateOptions contains the optional parameters for the BrokerAuthenticationClient.BeginCreateOrUpdate
 // method.
 type BrokerAuthenticationClientBeginCreateOrUpdateOptions struct {
@@ -148,6 +221,30 @@ type DataflowEndpointClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DataflowGraphClientBeginCreateOrUpdateOptions contains the optional parameters for the DataflowGraphClient.BeginCreateOrUpdate
+// method.
+type DataflowGraphClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DataflowGraphClientBeginDeleteOptions contains the optional parameters for the DataflowGraphClient.BeginDelete method.
+type DataflowGraphClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DataflowGraphClientGetOptions contains the optional parameters for the DataflowGraphClient.Get method.
+type DataflowGraphClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataflowGraphClientListByDataflowProfileOptions contains the optional parameters for the DataflowGraphClient.NewListByDataflowProfilePager
+// method.
+type DataflowGraphClientListByDataflowProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DataflowProfileClientBeginCreateOrUpdateOptions contains the optional parameters for the DataflowProfileClient.BeginCreateOrUpdate
 // method.
 type DataflowProfileClientBeginCreateOrUpdateOptions struct {
@@ -208,5 +305,29 @@ type InstanceClientUpdateOptions struct {
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryEndpointClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryEndpointClient.BeginCreateOrUpdate
+// method.
+type RegistryEndpointClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RegistryEndpointClientBeginDeleteOptions contains the optional parameters for the RegistryEndpointClient.BeginDelete method.
+type RegistryEndpointClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RegistryEndpointClientGetOptions contains the optional parameters for the RegistryEndpointClient.Get method.
+type RegistryEndpointClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryEndpointClientListByInstanceResourceOptions contains the optional parameters for the RegistryEndpointClient.NewListByInstanceResourcePager
+// method.
+type RegistryEndpointClientListByInstanceResourceOptions struct {
 	// placeholder for future optional parameters
 }

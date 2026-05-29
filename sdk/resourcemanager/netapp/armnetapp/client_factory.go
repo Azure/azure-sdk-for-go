@@ -88,6 +88,22 @@ func (c *ClientFactory) NewBackupsUnderVolumeClient() *BackupsUnderVolumeClient 
 	}
 }
 
+// NewBucketsClient creates a new instance of BucketsClient.
+func (c *ClientFactory) NewBucketsClient() *BucketsClient {
+	return &BucketsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewCachesClient creates a new instance of CachesClient.
+func (c *ClientFactory) NewCachesClient() *CachesClient {
+	return &CachesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{

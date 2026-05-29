@@ -68,6 +68,7 @@ const (
 	AccessTierP70     AccessTier = generated.AccessTierP70
 	AccessTierP80     AccessTier = generated.AccessTierP80
 	AccessTierPremium AccessTier = generated.AccessTierPremium
+	AccessTierSmart   AccessTier = generated.AccessTierSmart
 )
 
 // PossibleAccessTierValues returns the possible values for the AccessTier const type.
@@ -148,9 +149,10 @@ func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
 type ArchiveStatus = generated.ArchiveStatus
 
 const (
-	ArchiveStatusRehydratePendingToCool ArchiveStatus = generated.ArchiveStatusRehydratePendingToCool
-	ArchiveStatusRehydratePendingToHot  ArchiveStatus = generated.ArchiveStatusRehydratePendingToHot
-	ArchiveStatusRehydratePendingToCold ArchiveStatus = generated.ArchiveStatusRehydratePendingToCold
+	ArchiveStatusRehydratePendingToCool  ArchiveStatus = generated.ArchiveStatusRehydratePendingToCool
+	ArchiveStatusRehydratePendingToHot   ArchiveStatus = generated.ArchiveStatusRehydratePendingToHot
+	ArchiveStatusRehydratePendingToCold  ArchiveStatus = generated.ArchiveStatusRehydratePendingToCold
+	ArchiveStatusRehydratePendingToSmart ArchiveStatus = generated.ArchiveStatusRehydratePendingToSmart
 )
 
 // PossibleArchiveStatusValues returns the possible values for the ArchiveStatus const type.
@@ -199,6 +201,13 @@ func TransferValidationTypeComputeCRC64() TransferValidationType {
 
 // TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
 type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5
+
+// TransferValidationTypeComputeStructuredMessageCRC64 is a TransferValidationType that computes
+// per-segment CRC64 checksums using the structured message binary format.
+// segmentSize specifies the maximum segment size in bytes. Values <= 0 use the default (4 MB).
+func TransferValidationTypeComputeStructuredMessageCRC64(segmentSize int) TransferValidationType {
+	return exported.TransferValidationTypeComputeStructuredMessageCRC64(segmentSize)
+}
 
 // SourceContentValidationType abstracts the various mechanisms used to validate source content.
 // This interface is not publicly implementable.

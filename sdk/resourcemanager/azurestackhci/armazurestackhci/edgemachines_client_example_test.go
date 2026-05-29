@@ -6,14 +6,13 @@ package armazurestackhci_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachines_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachines_CreateOrUpdate.json
 func ExampleEdgeMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +120,7 @@ func ExampleEdgeMachinesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachines_Delete.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachines_Delete.json
 func ExampleEdgeMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +141,7 @@ func ExampleEdgeMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachines_Get.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachines_Get.json
 func ExampleEdgeMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,6 +165,26 @@ func ExampleEdgeMachinesClient_Get() {
 	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
 	// 			ArcMachineResourceGroupID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg"),
 	// 			ArcMachineResourceID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1"),
+	// 			OwnershipVoucherDetails: &armazurestackhci.OwnershipVoucherDetails{
+	// 				OwnerKeyType: to.Ptr(armazurestackhci.OwnerKeyTypeMicrosoftManaged),
+	// 				ValidationDetails: &armazurestackhci.OwnershipVoucherValidationDetails{
+	// 					ValidationStatus: to.Ptr(armazurestackhci.OwnershipVoucherValidationStatusValid),
+	// 					SerialNumber: to.Ptr("1234567890"),
+	// 					ID: to.Ptr("XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"),
+	// 					AzureMachineID: to.Ptr("6b92c606-8538-43f4-9c07-2a72fcafa260"),
+	// 					Manufacturer: to.Ptr("Lenovo"),
+	// 					ModelName: to.Ptr("ThinkPad X1 Carbon"),
+	// 					Version: to.Ptr("XXXX"),
+	// 					Error: &armazurestackhci.ErrorDetail{
+	// 						Code: to.Ptr("Success"),
+	// 						Target: to.Ptr("OwnershipVoucher"),
+	// 						Details: []*armazurestackhci.ErrorDetail{
+	// 						},
+	// 						AdditionalInfo: []*armazurestackhci.ErrorAdditionalInfo{
+	// 						},
+	// 					},
+	// 				},
+	// 			},
 	// 			DevicePoolResourceID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.AzureStackHCI/devicePools/pool-1"),
 	// 			ReportedProperties: &armazurestackhci.EdgeMachineReportedProperties{
 	// 				NetworkProfile: &armazurestackhci.EdgeMachineNetworkProfile{
@@ -240,7 +259,7 @@ func ExampleEdgeMachinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachines_ListByResourceGroup.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachines_ListByResourceGroup.json
 func ExampleEdgeMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -347,7 +366,7 @@ func ExampleEdgeMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachines_ListBySubscription.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachines_ListBySubscription.json
 func ExampleEdgeMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +473,7 @@ func ExampleEdgeMachinesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/EdgeMachines_Update.json
+// Generated from example definition: 2026-04-01-preview/EdgeMachines_Update.json
 func ExampleEdgeMachinesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

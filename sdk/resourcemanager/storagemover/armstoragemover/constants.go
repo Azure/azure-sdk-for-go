@@ -43,6 +43,28 @@ func PossibleAgentStatusValues() []AgentStatus {
 	}
 }
 
+// ConnectionStatus - The connection status.
+type ConnectionStatus string
+
+const (
+	ConnectionStatusApproved     ConnectionStatus = "Approved"
+	ConnectionStatusDisconnected ConnectionStatus = "Disconnected"
+	ConnectionStatusPending      ConnectionStatus = "Pending"
+	ConnectionStatusRejected     ConnectionStatus = "Rejected"
+	ConnectionStatusStale        ConnectionStatus = "Stale"
+)
+
+// PossibleConnectionStatusValues returns the possible values for the ConnectionStatus const type.
+func PossibleConnectionStatusValues() []ConnectionStatus {
+	return []ConnectionStatus{
+		ConnectionStatusApproved,
+		ConnectionStatusDisconnected,
+		ConnectionStatusPending,
+		ConnectionStatusRejected,
+		ConnectionStatusStale,
+	}
+}
+
 // CopyMode - Strategy to use for copy.
 type CopyMode string
 
@@ -87,13 +109,33 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type CredentialType string
 
 const (
-	CredentialTypeAzureKeyVaultSmb CredentialType = "AzureKeyVaultSmb"
+	CredentialTypeAzureKeyVaultS3WithHMAC CredentialType = "AzureKeyVaultS3WithHMAC"
+	CredentialTypeAzureKeyVaultSmb        CredentialType = "AzureKeyVaultSmb"
 )
 
 // PossibleCredentialTypeValues returns the possible values for the CredentialType const type.
 func PossibleCredentialTypeValues() []CredentialType {
 	return []CredentialType{
+		CredentialTypeAzureKeyVaultS3WithHMAC,
 		CredentialTypeAzureKeyVaultSmb,
+	}
+}
+
+// DataIntegrityValidation - The Data integrity validation mode.
+type DataIntegrityValidation string
+
+const (
+	DataIntegrityValidationNone              DataIntegrityValidation = "None"
+	DataIntegrityValidationSaveFileMD5       DataIntegrityValidation = "SaveFileMD5"
+	DataIntegrityValidationSaveVerifyFileMD5 DataIntegrityValidation = "SaveVerifyFileMD5"
+)
+
+// PossibleDataIntegrityValidationValues returns the possible values for the DataIntegrityValidation const type.
+func PossibleDataIntegrityValidationValues() []DataIntegrityValidation {
+	return []DataIntegrityValidation{
+		DataIntegrityValidationNone,
+		DataIntegrityValidationSaveFileMD5,
+		DataIntegrityValidationSaveVerifyFileMD5,
 	}
 }
 
@@ -123,6 +165,22 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 	}
 }
 
+// EndpointKind - The type of the endpoint source/target.
+type EndpointKind string
+
+const (
+	EndpointKindSource EndpointKind = "Source"
+	EndpointKindTarget EndpointKind = "Target"
+)
+
+// PossibleEndpointKindValues returns the possible values for the EndpointKind const type.
+func PossibleEndpointKindValues() []EndpointKind {
+	return []EndpointKind{
+		EndpointKindSource,
+		EndpointKindTarget,
+	}
+}
+
 // EndpointType - The Endpoint resource type.
 type EndpointType string
 
@@ -132,6 +190,7 @@ const (
 	EndpointTypeAzureStorageNfsFileShare  EndpointType = "AzureStorageNfsFileShare"
 	EndpointTypeAzureStorageSmbFileShare  EndpointType = "AzureStorageSmbFileShare"
 	EndpointTypeNfsMount                  EndpointType = "NfsMount"
+	EndpointTypeS3WithHmac                EndpointType = "S3WithHMAC"
 	EndpointTypeSmbMount                  EndpointType = "SmbMount"
 )
 
@@ -143,7 +202,31 @@ func PossibleEndpointTypeValues() []EndpointType {
 		EndpointTypeAzureStorageNfsFileShare,
 		EndpointTypeAzureStorageSmbFileShare,
 		EndpointTypeNfsMount,
+		EndpointTypeS3WithHmac,
 		EndpointTypeSmbMount,
+	}
+}
+
+// Frequency - Type of schedule — Monthly, Weekly, or Daily
+type Frequency string
+
+const (
+	FrequencyDaily   Frequency = "Daily"
+	FrequencyMonthly Frequency = "Monthly"
+	// FrequencyNone - No schedule frequency. The job definition will not run on a schedule.
+	FrequencyNone    Frequency = "None"
+	FrequencyOnetime Frequency = "Onetime"
+	FrequencyWeekly  Frequency = "Weekly"
+)
+
+// PossibleFrequencyValues returns the possible values for the Frequency const type.
+func PossibleFrequencyValues() []Frequency {
+	return []Frequency{
+		FrequencyDaily,
+		FrequencyMonthly,
+		FrequencyNone,
+		FrequencyOnetime,
+		FrequencyWeekly,
 	}
 }
 
@@ -308,5 +391,45 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
+	}
+}
+
+// S3WithHmacSourceType - The source type of S3WithHmac endpoint.
+type S3WithHmacSourceType string
+
+const (
+	S3WithHmacSourceTypeALIBABA S3WithHmacSourceType = "ALIBABA"
+	S3WithHmacSourceTypeDELLEMC S3WithHmacSourceType = "DELL_EMC"
+	S3WithHmacSourceTypeGCS     S3WithHmacSourceType = "GCS"
+	S3WithHmacSourceTypeIBM     S3WithHmacSourceType = "IBM"
+	S3WithHmacSourceTypeMINIO   S3WithHmacSourceType = "MINIO"
+	S3WithHmacSourceTypeOTHER   S3WithHmacSourceType = "OTHER"
+)
+
+// PossibleS3WithHmacSourceTypeValues returns the possible values for the S3WithHmacSourceType const type.
+func PossibleS3WithHmacSourceTypeValues() []S3WithHmacSourceType {
+	return []S3WithHmacSourceType{
+		S3WithHmacSourceTypeALIBABA,
+		S3WithHmacSourceTypeDELLEMC,
+		S3WithHmacSourceTypeGCS,
+		S3WithHmacSourceTypeIBM,
+		S3WithHmacSourceTypeMINIO,
+		S3WithHmacSourceTypeOTHER,
+	}
+}
+
+// TriggerType - The type of Job run trigger Manual or Scheduled.
+type TriggerType string
+
+const (
+	TriggerTypeManual    TriggerType = "Manual"
+	TriggerTypeScheduled TriggerType = "Scheduled"
+)
+
+// PossibleTriggerTypeValues returns the possible values for the TriggerType const type.
+func PossibleTriggerTypeValues() []TriggerType {
+	return []TriggerType{
+		TriggerTypeManual,
+		TriggerTypeScheduled,
 	}
 }

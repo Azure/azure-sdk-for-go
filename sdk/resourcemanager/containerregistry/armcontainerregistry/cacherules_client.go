@@ -18,6 +18,8 @@ import (
 
 // CacheRulesClient contains the methods for the CacheRules group.
 // Don't use this type directly, use NewCacheRulesClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type CacheRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCacheRulesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreate - Creates a cache rule for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - cacheRuleName - The name of the cache rule.
@@ -67,8 +67,6 @@ func (client *CacheRulesClient) BeginCreate(ctx context.Context, resourceGroupNa
 
 // Create - Creates a cache rule for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *CacheRulesClient) create(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, cacheRuleCreateParameters CacheRule, options *CacheRulesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CacheRulesClient.BeginCreate"
@@ -114,8 +112,8 @@ func (client *CacheRulesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cacheRuleCreateParameters); err != nil {
@@ -126,8 +124,6 @@ func (client *CacheRulesClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Deletes a cache rule resource from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - cacheRuleName - The name of the cache rule.
@@ -151,8 +147,6 @@ func (client *CacheRulesClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes a cache rule resource from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *CacheRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, options *CacheRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CacheRulesClient.BeginDelete"
@@ -198,15 +192,13 @@ func (client *CacheRulesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the properties of the specified cache rule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - cacheRuleName - The name of the cache rule.
@@ -257,8 +249,8 @@ func (client *CacheRulesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -273,8 +265,6 @@ func (client *CacheRulesClient) getHandleResponse(resp *http.Response) (CacheRul
 }
 
 // NewListPager - Lists all cache rule resources for the specified container registry.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - CacheRulesClientListOptions contains the optional parameters for the CacheRulesClient.NewListPager method.
@@ -321,8 +311,8 @@ func (client *CacheRulesClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -338,8 +328,6 @@ func (client *CacheRulesClient) listHandleResponse(resp *http.Response) (CacheRu
 
 // BeginUpdate - Updates a cache rule for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - cacheRuleName - The name of the cache rule.
@@ -364,8 +352,6 @@ func (client *CacheRulesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Updates a cache rule for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *CacheRulesClient) update(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, cacheRuleUpdateParameters CacheRuleUpdateParameters, options *CacheRulesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CacheRulesClient.BeginUpdate"
@@ -411,8 +397,8 @@ func (client *CacheRulesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cacheRuleUpdateParameters); err != nil {

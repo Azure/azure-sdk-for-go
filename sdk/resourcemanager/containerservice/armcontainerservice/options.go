@@ -629,3 +629,9 @@ type TrustedAccessRoleBindingsClientListOptions struct {
 type TrustedAccessRolesClientListOptions struct {
 	// placeholder for future optional parameters
 }
+
+// VMSKUsClientListOptions contains the optional parameters for the VMSKUsClient.NewListPager method.
+type VMSKUsClientListOptions struct {
+	// To Include Extended Locations information or not in the response.
+	IncludeExtendedLocations *bool
+}

@@ -7,7 +7,6 @@ package armcognitiveservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -19,6 +18,8 @@ import (
 
 // RaiExternalSafetyProviderClient contains the methods for the RaiExternalSafetyProvider group.
 // Don't use this type directly, use NewRaiExternalSafetyProviderClient() instead.
+//
+// Generated from API version 2026-03-15-preview
 type RaiExternalSafetyProviderClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +43,6 @@ func NewRaiExternalSafetyProviderClient(subscriptionID string, credential azcore
 
 // CreateOrUpdate - Create the rai safety provider associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - safetyProviderName - The name of the Rai External Safety Provider associated with the Cognitive Services Account
 //   - safetyProvider - Properties describing the rai external safety provider.
 //   - options - RaiExternalSafetyProviderClientCreateOrUpdateOptions contains the optional parameters for the RaiExternalSafetyProviderClient.CreateOrUpdate
@@ -86,8 +85,8 @@ func (client *RaiExternalSafetyProviderClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, safetyProvider); err != nil {
@@ -99,29 +98,14 @@ func (client *RaiExternalSafetyProviderClient) createOrUpdateCreateRequest(ctx c
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *RaiExternalSafetyProviderClient) createOrUpdateHandleResponse(resp *http.Response) (RaiExternalSafetyProviderClientCreateOrUpdateResponse, error) {
 	result := RaiExternalSafetyProviderClientCreateOrUpdateResponse{}
-	switch resp.StatusCode {
-	case http.StatusOK:
-		var val RaiExternalSafetyProviderSchema
-		if err := runtime.UnmarshalAsJSON(resp, &val); err != nil {
-			return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
-		}
-		result.Value = val
-	case http.StatusCreated:
-		var val RaiExternalSafetyProvider
-		if err := runtime.UnmarshalAsJSON(resp, &val); err != nil {
-			return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
-		}
-		result.Value = val
-	default:
-		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, fmt.Errorf("unhandled HTTP status code %d", resp.StatusCode)
+	if err := runtime.UnmarshalAsJSON(resp, &result.RaiExternalSafetyProviderSchema); err != nil {
+		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // BeginDelete - Deletes the specified custom topic associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - safetyProviderName - The name of the Rai External Safety Provider associated with the Cognitive Services Account
 //   - options - RaiExternalSafetyProviderClientBeginDeleteOptions contains the optional parameters for the RaiExternalSafetyProviderClient.BeginDelete
 //     method.
@@ -144,8 +128,6 @@ func (client *RaiExternalSafetyProviderClient) BeginDelete(ctx context.Context, 
 
 // Delete - Deletes the specified custom topic associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 func (client *RaiExternalSafetyProviderClient) deleteOperation(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiExternalSafetyProviderClient.BeginDelete"
@@ -183,15 +165,13 @@ func (client *RaiExternalSafetyProviderClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the specified external safety provider associated with the Subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - safetyProviderName - The name of the Rai External Safety Provider associated with the Cognitive Services Account
 //   - options - RaiExternalSafetyProviderClientGetOptions contains the optional parameters for the RaiExternalSafetyProviderClient.Get
 //     method.
@@ -233,8 +213,8 @@ func (client *RaiExternalSafetyProviderClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -4,6 +4,10 @@
 
 package armalertrulerecommendations
 
+const (
+	version20230801Preview string = "2023-08-01-preview"
+)
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

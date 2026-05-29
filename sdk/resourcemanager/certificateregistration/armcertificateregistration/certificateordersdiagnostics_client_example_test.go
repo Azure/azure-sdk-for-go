@@ -30,7 +30,7 @@ func ExampleCertificateOrdersDiagnosticsClient_GetAppServiceCertificateOrderDete
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcertificateregistration.CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{
-	// 	DetectorResponse: &armcertificateregistration.DetectorResponse{
+	// 	DetectorResponse: armcertificateregistration.DetectorResponse{
 	// 		Name: to.Ptr("AutoRenewStatus"),
 	// 		ID: to.Ptr("/subscriptions/5700fc96-77b4-4f8d-afce-c353d8c443bd/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.CertificateRegistration/certificateOrders/SampleCertificateOrderName/detectors/AutoRenewStatus"),
 	// 		Properties: &armcertificateregistration.DetectorResponseProperties{

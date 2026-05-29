@@ -10,6 +10,8 @@ extends:
           - template: /eng/pipelines/templates/variables/image.yml
         jobs:
           - job:
+            variables:
+              autoReleaseNpmrcPath: $(Agent.TempDirectory)/mgmt-auto-release/.npmrc
 
             pool:
               image: $(LINUXVMIMAGE)
@@ -19,22 +21,33 @@ extends:
 
             displayName: Go Auto Release
             steps:
-              - task: Npm@1
-                inputs:
-                  command: 'custom'
-                  customCommand: 'install -g autorest@latest'
+              - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+                parameters:
+                  npmrcPath: $(autoReleaseNpmrcPath)
 
-              - task: Npm@1
-                inputs:
-                  command: 'ci'
-                  workingDir: 'eng/common/tsp-client'
+              - script: npm install -g autorest@latest
+                displayName: Install autorest from configured registry
+                env:
+                  npm_config_userconfig: $(autoReleaseNpmrcPath)
+
+              - script: npm ci
+                displayName: npm ci for tsp-client from configured registry
+                workingDirectory: eng/common/tsp-client
+                env:
+                  npm_config_userconfig: $(autoReleaseNpmrcPath)
 
               - task: GoTool@0
                 inputs:
                   version: '1.25.4'
 
+              - template: /eng/common/pipelines/templates/steps/login-to-github.yml
+                parameters:
+                  TokenOwners:
+                    - azure
+
               - task: ShellScript@2
                 inputs:
                   scriptPath: 'eng/scripts/mgmt-auto-release.sh'
                   cwd: '$(System.DefaultWorkingDirectory)'
-                  args: '$(azuresdk-github-pat)'
+                env:
+                  GH_TOKEN: $(GH_TOKEN)

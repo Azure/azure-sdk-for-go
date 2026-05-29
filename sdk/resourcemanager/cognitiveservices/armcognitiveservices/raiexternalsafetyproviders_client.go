@@ -18,6 +18,8 @@ import (
 
 // RaiExternalSafetyProvidersClient contains the methods for the RaiExternalSafetyProviders group.
 // Don't use this type directly, use NewRaiExternalSafetyProvidersClient() instead.
+//
+// Generated from API version 2026-03-15-preview
 type RaiExternalSafetyProvidersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewRaiExternalSafetyProvidersClient(subscriptionID string, credential azcor
 }
 
 // NewListPager - Gets the safety providers associated with the subscription
-//
-// Generated from API version 2026-01-15-preview
 //   - options - RaiExternalSafetyProvidersClientListOptions contains the optional parameters for the RaiExternalSafetyProvidersClient.NewListPager
 //     method.
 func (client *RaiExternalSafetyProvidersClient) NewListPager(options *RaiExternalSafetyProvidersClientListOptions) *runtime.Pager[RaiExternalSafetyProvidersClientListResponse] {
@@ -79,8 +79,8 @@ func (client *RaiExternalSafetyProvidersClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

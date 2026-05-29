@@ -37,7 +37,7 @@ func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameAvailable() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientCheckNameAvailabilityResponse{
-	// 	RegistryNameStatus: &armcontainerregistry.RegistryNameStatus{
+	// 	RegistryNameStatus: armcontainerregistry.RegistryNameStatus{
 	// 		AvailableLoginServerName: to.Ptr("myregistry-a1b2c3d4e5f6.azurecr.io"),
 	// 		NameAvailable: to.Ptr(true),
 	// 	},
@@ -68,7 +68,7 @@ func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameNotAvailable
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientCheckNameAvailabilityResponse{
-	// 	RegistryNameStatus: &armcontainerregistry.RegistryNameStatus{
+	// 	RegistryNameStatus: armcontainerregistry.RegistryNameStatus{
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr("AlreadyExists"),
 	// 		Message: to.Ptr("The registry myRegistry is already in use."),
@@ -104,13 +104,13 @@ func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientCreateResponse{
-	// 	Registry: &armcontainerregistry.Registry{
+	// 	Registry: armcontainerregistry.Registry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry"),
 	// 		Name: to.Ptr("myRegistry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries"),
@@ -202,13 +202,13 @@ func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientCreateResponse{
-	// 	Registry: &armcontainerregistry.Registry{
+	// 	Registry: armcontainerregistry.Registry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry"),
 	// 		Name: to.Ptr("myRegistry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries"),
@@ -300,13 +300,13 @@ func ExampleRegistriesClient_BeginCreate_registryCreateDomainNameLabelScope() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientCreateResponse{
-	// 	Registry: &armcontainerregistry.Registry{
+	// 	Registry: armcontainerregistry.Registry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry"),
 	// 		Name: to.Ptr("myRegistry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries"),
@@ -398,13 +398,13 @@ func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientCreateResponse{
-	// 	Registry: &armcontainerregistry.Registry{
+	// 	Registry: armcontainerregistry.Registry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry"),
 	// 		Name: to.Ptr("myRegistry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries"),
@@ -485,7 +485,7 @@ func ExampleRegistriesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -514,13 +514,13 @@ func ExampleRegistriesClient_BeginGenerateCredentials() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientGenerateCredentialsResponse{
-	// 	GenerateCredentialsResult: &armcontainerregistry.GenerateCredentialsResult{
+	// 	GenerateCredentialsResult: armcontainerregistry.GenerateCredentialsResult{
 	// 		Username: to.Ptr("myToken"),
 	// 		Passwords: []*armcontainerregistry.TokenPassword{
 	// 			{
@@ -557,7 +557,7 @@ func ExampleRegistriesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientGetResponse{
-	// 	Registry: &armcontainerregistry.Registry{
+	// 	Registry: armcontainerregistry.Registry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry"),
 	// 		Name: to.Ptr("myRegistry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries"),
@@ -640,7 +640,7 @@ func ExampleRegistriesClient_GetPrivateLinkResource() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientGetPrivateLinkResourceResponse{
-	// 	PrivateLinkResource: &armcontainerregistry.PrivateLinkResource{
+	// 	PrivateLinkResource: armcontainerregistry.PrivateLinkResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/privateLinkResources/registry"),
 	// 		Name: to.Ptr("registry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/privateLinkResources"),
@@ -687,7 +687,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageByManifestDigest() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -725,7 +725,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageByTag() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -763,7 +763,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageFromPublicRegistry() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -975,7 +975,7 @@ func ExampleRegistriesClient_ListCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientListCredentialsResponse{
-	// 	RegistryListCredentialsResult: &armcontainerregistry.RegistryListCredentialsResult{
+	// 	RegistryListCredentialsResult: armcontainerregistry.RegistryListCredentialsResult{
 	// 		Username: to.Ptr("myRegistry"),
 	// 		Passwords: []*armcontainerregistry.RegistryPassword{
 	// 			{
@@ -1056,7 +1056,7 @@ func ExampleRegistriesClient_ListUsages() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientListUsagesResponse{
-	// 	RegistryUsageListResult: &armcontainerregistry.RegistryUsageListResult{
+	// 	RegistryUsageListResult: armcontainerregistry.RegistryUsageListResult{
 	// 		Value: []*armcontainerregistry.RegistryUsage{
 	// 			{
 	// 				Name: to.Ptr("Size"),
@@ -1096,7 +1096,7 @@ func ExampleRegistriesClient_RegenerateCredential() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientRegenerateCredentialResponse{
-	// 	RegistryListCredentialsResult: &armcontainerregistry.RegistryListCredentialsResult{
+	// 	RegistryListCredentialsResult: armcontainerregistry.RegistryListCredentialsResult{
 	// 		Username: to.Ptr("myRegistry"),
 	// 		Passwords: []*armcontainerregistry.RegistryPassword{
 	// 			{
@@ -1140,13 +1140,13 @@ func ExampleRegistriesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientUpdateResponse{
-	// 	Registry: &armcontainerregistry.Registry{
+	// 	Registry: armcontainerregistry.Registry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry"),
 	// 		Name: to.Ptr("myRegistry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries"),

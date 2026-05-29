@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
 	"log"
 )
 
@@ -60,7 +60,7 @@ func ExampleDatasetsClient_CreateOrUpdate_datasetsCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.DatasetsClientCreateOrUpdateResponse{
-	// 	DatasetResource: armdatafactory.DatasetResource{
+	// 	DatasetResource: &armdatafactory.DatasetResource{
 	// 		Name: to.Ptr("exampleDataset"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/datasets"),
 	// 		Etag: to.Ptr("0a0066d4-0000-0000-0000-5b245bd20000"),
@@ -158,7 +158,7 @@ func ExampleDatasetsClient_CreateOrUpdate_datasetsUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.DatasetsClientCreateOrUpdateResponse{
-	// 	DatasetResource: armdatafactory.DatasetResource{
+	// 	DatasetResource: &armdatafactory.DatasetResource{
 	// 		Name: to.Ptr("exampleDataset"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/datasets"),
 	// 		Etag: to.Ptr("0a0068d4-0000-0000-0000-5b245bd30000"),
@@ -237,7 +237,7 @@ func ExampleDatasetsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.DatasetsClientGetResponse{
-	// 	DatasetResource: armdatafactory.DatasetResource{
+	// 	DatasetResource: &armdatafactory.DatasetResource{
 	// 		Name: to.Ptr("exampleDataset"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/datasets"),
 	// 		Etag: to.Ptr("15004c4f-0000-0200-0000-5cbe090e0000"),

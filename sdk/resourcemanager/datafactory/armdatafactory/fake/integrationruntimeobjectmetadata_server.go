@@ -11,12 +11,11 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
 	"net/http"
 	"net/url"
 	"reflect"
 	"regexp"
-	"slices"
 )
 
 // IntegrationRuntimeObjectMetadataServer is a fake server for instances of the armdatafactory.IntegrationRuntimeObjectMetadataClient type.
@@ -59,7 +58,9 @@ func (i *IntegrationRuntimeObjectMetadataServerTransport) Do(req *http.Request) 
 }
 
 func (i *IntegrationRuntimeObjectMetadataServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -77,7 +78,10 @@ func (i *IntegrationRuntimeObjectMetadataServerTransport) dispatchToMethodFake(r
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -125,7 +129,7 @@ func (i *IntegrationRuntimeObjectMetadataServerTransport) dispatchGet(req *http.
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SsisObjectMetadataListResponse, req)
@@ -172,7 +176,7 @@ func (i *IntegrationRuntimeObjectMetadataServerTransport) dispatchBeginRefresh(r
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		i.beginRefresh.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

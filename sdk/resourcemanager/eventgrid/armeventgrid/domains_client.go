@@ -7,20 +7,19 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DomainsClient contains the methods for the Domains group.
 // Don't use this type directly, use NewDomainsClient() instead.
-//
-// Generated from API version 2025-07-15-preview
 type DomainsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,6 +45,8 @@ func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, 
 //
 // Asynchronously creates or updates a new domain with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the domain.
 //   - domainInfo - Domain information.
@@ -72,6 +73,8 @@ func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 //
 // Asynchronously creates or updates a new domain with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domainInfo Domain, options *DomainsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainsClient.BeginCreateOrUpdate"
@@ -113,8 +116,8 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, domainInfo); err != nil {
@@ -127,6 +130,8 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 //
 // Delete existing domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the domain.
 //   - options - DomainsClientBeginDeleteOptions contains the optional parameters for the DomainsClient.BeginDelete method.
@@ -151,6 +156,8 @@ func (client *DomainsClient) BeginDelete(ctx context.Context, resourceGroupName 
 //
 // Delete existing domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *DomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainsClient.BeginDelete"
@@ -192,8 +199,8 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -201,6 +208,8 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 //
 // Get properties of a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the domain.
 //   - options - DomainsClientGetOptions contains the optional parameters for the DomainsClient.Get method.
@@ -246,8 +255,8 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,6 +273,8 @@ func (client *DomainsClient) getHandleResponse(resp *http.Response) (DomainsClie
 // NewListByResourceGroupPager - List domains under a resource group.
 //
 // List all the domains under a resource group.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DomainsClientListByResourceGroupOptions contains the optional parameters for the DomainsClient.NewListByResourceGroupPager
 //     method.
@@ -312,8 +323,8 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -330,6 +341,8 @@ func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Respon
 // NewListBySubscriptionPager - List domains under an Azure subscription.
 //
 // List all the domains under an Azure subscription.
+//
+// Generated from API version 2025-07-15-preview
 //   - options - DomainsClientListBySubscriptionOptions contains the optional parameters for the DomainsClient.NewListBySubscriptionPager
 //     method.
 func (client *DomainsClient) NewListBySubscriptionPager(options *DomainsClientListBySubscriptionOptions) *runtime.Pager[DomainsClientListBySubscriptionResponse] {
@@ -373,8 +386,8 @@ func (client *DomainsClient) listBySubscriptionCreateRequest(ctx context.Context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -392,6 +405,8 @@ func (client *DomainsClient) listBySubscriptionHandleResponse(resp *http.Respons
 //
 // List the two keys used to publish to a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the domain.
 //   - options - DomainsClientListSharedAccessKeysOptions contains the optional parameters for the DomainsClient.ListSharedAccessKeys
@@ -438,8 +453,8 @@ func (client *DomainsClient) listSharedAccessKeysCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -457,6 +472,8 @@ func (client *DomainsClient) listSharedAccessKeysHandleResponse(resp *http.Respo
 //
 // Regenerate a shared access key for a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the domain.
 //   - regenerateKeyRequest - Request body to regenerate key.
@@ -503,8 +520,8 @@ func (client *DomainsClient) regenerateKeyCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, regenerateKeyRequest); err != nil {
@@ -526,6 +543,8 @@ func (client *DomainsClient) regenerateKeyHandleResponse(resp *http.Response) (D
 //
 // Asynchronously updates a domain with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the domain.
 //   - domainUpdateParameters - Domain update information.
@@ -551,6 +570,8 @@ func (client *DomainsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 //
 // Asynchronously updates a domain with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *DomainsClient) update(ctx context.Context, resourceGroupName string, domainName string, domainUpdateParameters DomainUpdateParameters, options *DomainsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainsClient.BeginUpdate"
@@ -592,8 +613,8 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, domainUpdateParameters); err != nil {

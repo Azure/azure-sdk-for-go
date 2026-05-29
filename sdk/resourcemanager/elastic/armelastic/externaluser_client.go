@@ -18,8 +18,6 @@ import (
 
 // ExternalUserClient contains the methods for the ExternalUser group.
 // Don't use this type directly, use NewExternalUserClient() instead.
-//
-// Generated from API version 2025-06-01
 type ExternalUserClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewExternalUserClient(subscriptionID string, credential azcore.TokenCredent
 // CreateOrUpdate - Create or update external user configurations for your Elastic monitor resource, enabling access and management
 // by external users.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - ExternalUserClientCreateOrUpdateOptions contains the optional parameters for the ExternalUserClient.CreateOrUpdate
@@ -90,8 +90,8 @@ func (client *ExternalUserClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

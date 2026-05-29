@@ -12,11 +12,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentstacks"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentstacks/v2"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 	"strconv"
 )
 
@@ -146,7 +145,9 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -196,7 +197,10 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -244,7 +248,7 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtManagementGroup(req *http
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		s.beginCreateOrUpdateAtManagementGroup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -292,7 +296,7 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtResourceGroup(req *http.R
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		s.beginCreateOrUpdateAtResourceGroup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -336,7 +340,7 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtSubscription(req *http.Re
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		s.beginCreateOrUpdateAtSubscription.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -368,11 +372,31 @@ func (s *ServerTransport) dispatchBeginDeleteAtManagementGroup(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourcesParam := getOptional(armdeploymentstacks.UnmanageActionResourceMode(qp.Get("unmanageAction.Resources")))
-		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(qp.Get("unmanageAction.ResourceGroups")))
-		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(qp.Get("unmanageAction.ManagementGroups")))
-		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.ResourcesWithoutDeleteSupportAction(qp.Get("unmanageAction.ResourcesWithoutDeleteSupport")))
-		bypassStackOutOfSyncErrorParam, err := parseOptional(qp.Get("bypassStackOutOfSyncError"), strconv.ParseBool)
+		unmanageActionResourcesUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.Resources"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionResourcesParam := getOptional(armdeploymentstacks.UnmanageActionResourceMode(unmanageActionResourcesUnescaped))
+		unmanageActionResourceGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourceGroups"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(unmanageActionResourceGroupsUnescaped))
+		unmanageActionManagementGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ManagementGroups"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(unmanageActionManagementGroupsUnescaped))
+		unmanageActionResourcesWithoutDeleteSupportUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourcesWithoutDeleteSupport"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.ResourcesWithoutDeleteSupportAction(unmanageActionResourcesWithoutDeleteSupportUnescaped))
+		bypassStackOutOfSyncErrorUnescaped, err := url.QueryUnescape(qp.Get("bypassStackOutOfSyncError"))
+		if err != nil {
+			return nil, err
+		}
+		bypassStackOutOfSyncErrorParam, err := parseOptional(bypassStackOutOfSyncErrorUnescaped, strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -399,7 +423,7 @@ func (s *ServerTransport) dispatchBeginDeleteAtManagementGroup(req *http.Request
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDeleteAtManagementGroup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -431,11 +455,31 @@ func (s *ServerTransport) dispatchBeginDeleteAtResourceGroup(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourcesParam := getOptional(armdeploymentstacks.UnmanageActionResourceMode(qp.Get("unmanageAction.Resources")))
-		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(qp.Get("unmanageAction.ResourceGroups")))
-		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(qp.Get("unmanageAction.ManagementGroups")))
-		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.ResourcesWithoutDeleteSupportAction(qp.Get("unmanageAction.ResourcesWithoutDeleteSupport")))
-		bypassStackOutOfSyncErrorParam, err := parseOptional(qp.Get("bypassStackOutOfSyncError"), strconv.ParseBool)
+		unmanageActionResourcesUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.Resources"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionResourcesParam := getOptional(armdeploymentstacks.UnmanageActionResourceMode(unmanageActionResourcesUnescaped))
+		unmanageActionResourceGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourceGroups"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(unmanageActionResourceGroupsUnescaped))
+		unmanageActionManagementGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ManagementGroups"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(unmanageActionManagementGroupsUnescaped))
+		unmanageActionResourcesWithoutDeleteSupportUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourcesWithoutDeleteSupport"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.ResourcesWithoutDeleteSupportAction(unmanageActionResourcesWithoutDeleteSupportUnescaped))
+		bypassStackOutOfSyncErrorUnescaped, err := url.QueryUnescape(qp.Get("bypassStackOutOfSyncError"))
+		if err != nil {
+			return nil, err
+		}
+		bypassStackOutOfSyncErrorParam, err := parseOptional(bypassStackOutOfSyncErrorUnescaped, strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -462,7 +506,7 @@ func (s *ServerTransport) dispatchBeginDeleteAtResourceGroup(req *http.Request) 
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDeleteAtResourceGroup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -490,11 +534,31 @@ func (s *ServerTransport) dispatchBeginDeleteAtSubscription(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourcesParam := getOptional(armdeploymentstacks.UnmanageActionResourceMode(qp.Get("unmanageAction.Resources")))
-		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(qp.Get("unmanageAction.ResourceGroups")))
-		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(qp.Get("unmanageAction.ManagementGroups")))
-		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.ResourcesWithoutDeleteSupportAction(qp.Get("unmanageAction.ResourcesWithoutDeleteSupport")))
-		bypassStackOutOfSyncErrorParam, err := parseOptional(qp.Get("bypassStackOutOfSyncError"), strconv.ParseBool)
+		unmanageActionResourcesUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.Resources"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionResourcesParam := getOptional(armdeploymentstacks.UnmanageActionResourceMode(unmanageActionResourcesUnescaped))
+		unmanageActionResourceGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourceGroups"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(unmanageActionResourceGroupsUnescaped))
+		unmanageActionManagementGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ManagementGroups"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(unmanageActionManagementGroupsUnescaped))
+		unmanageActionResourcesWithoutDeleteSupportUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourcesWithoutDeleteSupport"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.ResourcesWithoutDeleteSupportAction(unmanageActionResourcesWithoutDeleteSupportUnescaped))
+		bypassStackOutOfSyncErrorUnescaped, err := url.QueryUnescape(qp.Get("bypassStackOutOfSyncError"))
+		if err != nil {
+			return nil, err
+		}
+		bypassStackOutOfSyncErrorParam, err := parseOptional(bypassStackOutOfSyncErrorUnescaped, strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -521,7 +585,7 @@ func (s *ServerTransport) dispatchBeginDeleteAtSubscription(req *http.Request) (
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDeleteAtSubscription.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -555,7 +619,7 @@ func (s *ServerTransport) dispatchExportTemplateAtManagementGroup(req *http.Requ
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentStackTemplateDefinition, req)
@@ -588,7 +652,7 @@ func (s *ServerTransport) dispatchExportTemplateAtResourceGroup(req *http.Reques
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentStackTemplateDefinition, req)
@@ -617,7 +681,7 @@ func (s *ServerTransport) dispatchExportTemplateAtSubscription(req *http.Request
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentStackTemplateDefinition, req)
@@ -650,7 +714,7 @@ func (s *ServerTransport) dispatchGetAtManagementGroup(req *http.Request) (*http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentStack, req)
@@ -683,7 +747,7 @@ func (s *ServerTransport) dispatchGetAtResourceGroup(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentStack, req)
@@ -712,7 +776,7 @@ func (s *ServerTransport) dispatchGetAtSubscription(req *http.Request) (*http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentStack, req)
@@ -749,7 +813,7 @@ func (s *ServerTransport) dispatchNewListAtManagementGroupPager(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListAtManagementGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -786,7 +850,7 @@ func (s *ServerTransport) dispatchNewListAtResourceGroupPager(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListAtResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -819,7 +883,7 @@ func (s *ServerTransport) dispatchNewListAtSubscriptionPager(req *http.Request) 
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListAtSubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -866,7 +930,7 @@ func (s *ServerTransport) dispatchBeginValidateStackAtManagementGroup(req *http.
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
 		s.beginValidateStackAtManagementGroup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
@@ -914,7 +978,7 @@ func (s *ServerTransport) dispatchBeginValidateStackAtResourceGroup(req *http.Re
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
 		s.beginValidateStackAtResourceGroup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
@@ -958,7 +1022,7 @@ func (s *ServerTransport) dispatchBeginValidateStackAtSubscription(req *http.Req
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
 		s.beginValidateStackAtSubscription.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}

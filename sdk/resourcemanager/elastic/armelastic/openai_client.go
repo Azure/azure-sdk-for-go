@@ -18,8 +18,6 @@ import (
 
 // OpenAIClient contains the methods for the OpenAI group.
 // Don't use this type directly, use NewOpenAIClient() instead.
-//
-// Generated from API version 2025-06-01
 type OpenAIClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewOpenAIClient(subscriptionID string, credential azcore.TokenCredential, o
 // CreateOrUpdate - Create or update an OpenAI integration rule for a given Elastic monitor resource, enabling advanced AI-driven
 // observability and monitoring.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - OpenAIClientCreateOrUpdateOptions contains the optional parameters for the OpenAIClient.CreateOrUpdate method.
 func (client *OpenAIClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, integrationName string, body OpenAIIntegrationRPModel, options *OpenAIClientCreateOrUpdateOptions) (OpenAIClientCreateOrUpdateResponse, error) {
@@ -92,8 +92,8 @@ func (client *OpenAIClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -114,6 +114,8 @@ func (client *OpenAIClient) createOrUpdateHandleResponse(resp *http.Response) (O
 // Delete - Delete an OpenAI integration rule for a given Elastic monitor resource, removing AI-driven observability and monitoring
 // capabilities.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - integrationName - OpenAI Integration name
@@ -163,13 +165,15 @@ func (client *OpenAIClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get detailed information about OpenAI integration rules for a given Elastic monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - integrationName - OpenAI Integration name
@@ -220,8 +224,8 @@ func (client *OpenAIClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -238,6 +242,8 @@ func (client *OpenAIClient) getHandleResponse(resp *http.Response) (OpenAIClient
 // GetStatus - Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
 // performance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - integrationName - OpenAI Integration name
@@ -288,8 +294,8 @@ func (client *OpenAIClient) getStatusCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -305,6 +311,8 @@ func (client *OpenAIClient) getStatusHandleResponse(resp *http.Response) (OpenAI
 
 // NewListPager - List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven observability
 // and monitoring.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - OpenAIClientListOptions contains the optional parameters for the OpenAIClient.NewListPager method.
@@ -351,8 +359,8 @@ func (client *OpenAIClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

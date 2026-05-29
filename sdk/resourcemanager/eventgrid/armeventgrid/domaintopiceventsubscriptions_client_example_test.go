@@ -6,10 +6,11 @@ package armeventgrid_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
-	"log"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
 // Generated from example definition: 2025-07-15-preview/DomainTopicEventSubscriptions_CreateOrUpdate.json
@@ -43,13 +44,13 @@ func ExampleDomainTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.DomainTopicEventSubscriptionsClientCreateOrUpdateResponse{
-	// 	EventSubscription: armeventgrid.EventSubscription{
+	// 	EventSubscription: &armeventgrid.EventSubscription{
 	// 		Name: to.Ptr("exampleEventSubscriptionName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/domains/domainTopics/eventSubscriptions"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1/eventSubscriptions/exampleEventSubscriptionName1"),
@@ -94,7 +95,7 @@ func ExampleDomainTopicEventSubscriptionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -122,7 +123,7 @@ func ExampleDomainTopicEventSubscriptionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.DomainTopicEventSubscriptionsClientGetResponse{
-	// 	EventSubscription: armeventgrid.EventSubscription{
+	// 	EventSubscription: &armeventgrid.EventSubscription{
 	// 		Name: to.Ptr("examplesubscription1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/domains/domainTopics/eventSubscriptions"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1/eventSubscriptions/examplesubscription1"),
@@ -178,7 +179,7 @@ func ExampleDomainTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.DomainTopicEventSubscriptionsClientGetDeliveryAttributesResponse{
-	// 	DeliveryAttributeListResult: armeventgrid.DeliveryAttributeListResult{
+	// 	DeliveryAttributeListResult: &armeventgrid.DeliveryAttributeListResult{
 	// 		Value: []armeventgrid.DeliveryAttributeMappingClassification{
 	// 			&armeventgrid.StaticDeliveryAttributeMapping{
 	// 				Name: to.Ptr("header1"),
@@ -227,7 +228,7 @@ func ExampleDomainTopicEventSubscriptionsClient_GetFullURL() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.DomainTopicEventSubscriptionsClientGetFullURLResponse{
-	// 	EventSubscriptionFullURL: armeventgrid.EventSubscriptionFullURL{
+	// 	EventSubscriptionFullURL: &armeventgrid.EventSubscriptionFullURL{
 	// 		EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
 	// 	},
 	// }
@@ -331,6 +332,6 @@ func ExampleDomainTopicEventSubscriptionsClient_BeginUpdate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

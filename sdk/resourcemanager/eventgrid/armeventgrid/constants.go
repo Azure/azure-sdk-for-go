@@ -4,10 +4,6 @@
 
 package armeventgrid
 
-const (
-	version20250715Preview string = "2025-07-15-preview"
-)
-
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
 type AdvancedFilterOperatorType string
 

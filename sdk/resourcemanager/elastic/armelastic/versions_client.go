@@ -18,8 +18,6 @@ import (
 
 // VersionsClient contains the methods for the Versions group.
 // Don't use this type directly, use NewVersionsClient() instead.
-//
-// Generated from API version 2025-06-01
 type VersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,6 +44,8 @@ func NewVersionsClient(subscriptionID string, credential azcore.TokenCredential,
 //
 // Retrieve a list of all available Elastic versions for a specified region, helping you choose the best version for your
 // deployment.
+//
+// Generated from API version 2025-06-01
 //   - region - Region where elastic deployment will take place.
 //   - options - VersionsClientListOptions contains the optional parameters for the VersionsClient.NewListPager method.
 func (client *VersionsClient) NewListPager(region string, options *VersionsClientListOptions) *runtime.Pager[VersionsClientListResponse] {
@@ -83,9 +83,9 @@ func (client *VersionsClient) listCreateRequest(ctx context.Context, region stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", "2025-06-01")
 	reqQP.Set("region", region)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

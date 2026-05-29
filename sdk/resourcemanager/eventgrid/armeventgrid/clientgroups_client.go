@@ -7,20 +7,19 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ClientGroupsClient contains the methods for the ClientGroups group.
 // Don't use this type directly, use NewClientGroupsClient() instead.
-//
-// Generated from API version 2025-07-15-preview
 type ClientGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,6 +45,8 @@ func NewClientGroupsClient(subscriptionID string, credential azcore.TokenCredent
 //
 // Create or update a client group with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - clientGroupName - Name of the client group.
@@ -73,6 +74,8 @@ func (client *ClientGroupsClient) BeginCreateOrUpdate(ctx context.Context, resou
 //
 // Create or update a client group with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *ClientGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, clientGroupName string, clientGroupInfo ClientGroup, options *ClientGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClientGroupsClient.BeginCreateOrUpdate"
@@ -118,8 +121,8 @@ func (client *ClientGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clientGroupInfo); err != nil {
@@ -132,6 +135,8 @@ func (client *ClientGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 //
 // Delete an existing client group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - clientGroupName - Name of the client group.
@@ -158,6 +163,8 @@ func (client *ClientGroupsClient) BeginDelete(ctx context.Context, resourceGroup
 //
 // Delete an existing client group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *ClientGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, clientGroupName string, options *ClientGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClientGroupsClient.BeginDelete"
@@ -203,8 +210,8 @@ func (client *ClientGroupsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -212,6 +219,8 @@ func (client *ClientGroupsClient) deleteCreateRequest(ctx context.Context, resou
 //
 // Get properties of a client group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - clientGroupName - Name of the client group.
@@ -262,8 +271,8 @@ func (client *ClientGroupsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -280,6 +289,8 @@ func (client *ClientGroupsClient) getHandleResponse(resp *http.Response) (Client
 // NewListByNamespacePager - List all client groups under a namespace.
 //
 // Get all the client groups under a namespace.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - options - ClientGroupsClientListByNamespaceOptions contains the optional parameters for the ClientGroupsClient.NewListByNamespacePager
@@ -333,8 +344,8 @@ func (client *ClientGroupsClient) listByNamespaceCreateRequest(ctx context.Conte
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

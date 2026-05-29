@@ -7,20 +7,19 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TopicSpacesClient contains the methods for the TopicSpaces group.
 // Don't use this type directly, use NewTopicSpacesClient() instead.
-//
-// Generated from API version 2025-07-15-preview
 type TopicSpacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,6 +45,8 @@ func NewTopicSpacesClient(subscriptionID string, credential azcore.TokenCredenti
 //
 // Create or update a topic space with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - topicSpaceName - Name of the Topic space.
@@ -73,6 +74,8 @@ func (client *TopicSpacesClient) BeginCreateOrUpdate(ctx context.Context, resour
 //
 // Create or update a topic space with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *TopicSpacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, topicSpaceName string, topicSpaceInfo TopicSpace, options *TopicSpacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TopicSpacesClient.BeginCreateOrUpdate"
@@ -118,8 +121,8 @@ func (client *TopicSpacesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, topicSpaceInfo); err != nil {
@@ -132,6 +135,8 @@ func (client *TopicSpacesClient) createOrUpdateCreateRequest(ctx context.Context
 //
 // Delete an existing topic space.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - topicSpaceName - Name of the Topic space.
@@ -157,6 +162,8 @@ func (client *TopicSpacesClient) BeginDelete(ctx context.Context, resourceGroupN
 //
 // Delete an existing topic space.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *TopicSpacesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, topicSpaceName string, options *TopicSpacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TopicSpacesClient.BeginDelete"
@@ -202,8 +209,8 @@ func (client *TopicSpacesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -211,6 +218,8 @@ func (client *TopicSpacesClient) deleteCreateRequest(ctx context.Context, resour
 //
 // Get properties of a topic space.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - topicSpaceName - Name of the Topic space.
@@ -261,8 +270,8 @@ func (client *TopicSpacesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -279,6 +288,8 @@ func (client *TopicSpacesClient) getHandleResponse(resp *http.Response) (TopicSp
 // NewListByNamespacePager - List all topic spaces under a namespace.
 //
 // Get all the topic spaces under a namespace.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - options - TopicSpacesClientListByNamespaceOptions contains the optional parameters for the TopicSpacesClient.NewListByNamespacePager
@@ -332,8 +343,8 @@ func (client *TopicSpacesClient) listByNamespaceCreateRequest(ctx context.Contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

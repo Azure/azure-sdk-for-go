@@ -18,8 +18,6 @@ import (
 
 // FactoriesClient contains the methods for the Factories group.
 // Don't use this type directly, use NewFactoriesClient() instead.
-//
-// Generated from API version 2018-06-01
 type FactoriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewFactoriesClient(subscriptionID string, credential azcore.TokenCredential
 
 // ConfigureFactoryRepo - Updates a factory's repo information.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - locationID - The location identifier.
 //   - factoryRepoUpdate - The request body
 //   - options - FactoriesClientConfigureFactoryRepoOptions contains the optional parameters for the FactoriesClient.ConfigureFactoryRepo
@@ -85,8 +85,8 @@ func (client *FactoriesClient) configureFactoryRepoCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, factoryRepoUpdate); err != nil {
@@ -106,6 +106,8 @@ func (client *FactoriesClient) configureFactoryRepoHandleResponse(resp *http.Res
 
 // CreateOrUpdate - Creates or updates a factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - factory - Factory resource definition.
@@ -153,8 +155,8 @@ func (client *FactoriesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
@@ -177,6 +179,8 @@ func (client *FactoriesClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Deletes a factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - options - FactoriesClientDeleteOptions contains the optional parameters for the FactoriesClient.Delete method.
@@ -221,13 +225,16 @@ func (client *FactoriesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - options - FactoriesClientGetOptions contains the optional parameters for the FactoriesClient.Get method.
@@ -273,8 +280,8 @@ func (client *FactoriesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["if-none-match"] = []string{*options.IfNoneMatch}
@@ -293,6 +300,8 @@ func (client *FactoriesClient) getHandleResponse(resp *http.Response) (Factories
 
 // GetDataPlaneAccess - Get Data Plane access.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - policy - Data Plane user access policy definition.
@@ -340,8 +349,8 @@ func (client *FactoriesClient) getDataPlaneAccessCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, policy); err != nil {
@@ -361,6 +370,8 @@ func (client *FactoriesClient) getDataPlaneAccessHandleResponse(resp *http.Respo
 
 // GetGitHubAccessToken - Get GitHub Access Token.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - gitHubAccessTokenRequest - Get GitHub access token request definition.
@@ -408,8 +419,8 @@ func (client *FactoriesClient) getGitHubAccessTokenCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, gitHubAccessTokenRequest); err != nil {
@@ -428,6 +439,8 @@ func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *http.Res
 }
 
 // NewListPager - Lists factories under the specified subscription.
+//
+// Generated from API version 2018-06-01
 //   - options - FactoriesClientListOptions contains the optional parameters for the FactoriesClient.NewListPager method.
 func (client *FactoriesClient) NewListPager(options *FactoriesClientListOptions) *runtime.Pager[FactoriesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FactoriesClientListResponse]{
@@ -464,8 +477,8 @@ func (client *FactoriesClient) listCreateRequest(ctx context.Context, _ *Factori
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -480,6 +493,8 @@ func (client *FactoriesClient) listHandleResponse(resp *http.Response) (Factorie
 }
 
 // NewListByResourceGroupPager - Lists factories.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - FactoriesClientListByResourceGroupOptions contains the optional parameters for the FactoriesClient.NewListByResourceGroupPager
 //     method.
@@ -522,8 +537,8 @@ func (client *FactoriesClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -539,6 +554,8 @@ func (client *FactoriesClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // Update - Updates a factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - factoryUpdateParameters - The parameters for updating a factory.
@@ -585,8 +602,8 @@ func (client *FactoriesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, factoryUpdateParameters); err != nil {

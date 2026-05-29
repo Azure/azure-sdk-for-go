@@ -18,8 +18,6 @@ import (
 
 // PrivateEndpointConnectionClient contains the methods for the PrivateEndpointConnection group.
 // Don't use this type directly, use NewPrivateEndpointConnectionClient() instead.
-//
-// Generated from API version 2018-06-01
 type PrivateEndpointConnectionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore
 
 // CreateOrUpdate - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - privateEndpointConnectionName - The private endpoint connection name.
@@ -94,8 +94,8 @@ func (client *PrivateEndpointConnectionClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
@@ -118,6 +118,8 @@ func (client *PrivateEndpointConnectionClient) createOrUpdateHandleResponse(resp
 
 // Delete - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - privateEndpointConnectionName - The private endpoint connection name.
@@ -168,13 +170,16 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - privateEndpointConnectionName - The private endpoint connection name.
@@ -226,8 +231,8 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["if-none-match"] = []string{*options.IfNoneMatch}

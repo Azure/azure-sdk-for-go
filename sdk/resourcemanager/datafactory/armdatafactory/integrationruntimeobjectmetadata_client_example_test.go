@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
 	"log"
 )
 
@@ -34,7 +34,7 @@ func ExampleIntegrationRuntimeObjectMetadataClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimeObjectMetadataClientGetResponse{
-	// 	SsisObjectMetadataListResponse: armdatafactory.SsisObjectMetadataListResponse{
+	// 	SsisObjectMetadataListResponse: &armdatafactory.SsisObjectMetadataListResponse{
 	// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName/integrationRuntimes/testactivityv2/getObjectMetadata?api-version=2018-06-01&%24skipToken=https%3a%2f%2fwcu.frontend.clouddatahub.net%2fsubscriptions%2f12345678-1234-1234-1234-123456789012%2fdatafactories%2f6C8E7C90-FD45-4010-8B7C-B5227D0F0CB7%2fintegrationruntimes%2fTESTACTIVITYV2%2fgetSsisObjectMetadata%3f%24skipToken%3dc3Npc0ZvbGRlcnNAQDIwMTgtMTEtMjlUMDM6NTk6MzIuMDQ1Mzc1MiswMDowMEBAZm9sZGVyQEAwMDAwMDAwMDAwMDAwMDAwMTAx0%26api-version%3d1.0"),
 	// 		Value: []armdatafactory.SsisObjectMetadataClassification{
 	// 			&armdatafactory.SsisFolder{
@@ -563,13 +563,13 @@ func ExampleIntegrationRuntimeObjectMetadataClient_BeginRefresh() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimeObjectMetadataClientRefreshResponse{
-	// 	SsisObjectMetadataStatusResponse: armdatafactory.SsisObjectMetadataStatusResponse{
+	// 	SsisObjectMetadataStatusResponse: &armdatafactory.SsisObjectMetadataStatusResponse{
 	// 		Name: to.Ptr("ca63c855b72d44959653ffcc6eb0b96c"),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},

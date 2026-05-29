@@ -6,11 +6,12 @@ package armeventgrid_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
 	"log"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
 // Generated from example definition: 2025-07-15-preview/Channels_CreateOrUpdate.json
@@ -44,7 +45,7 @@ func ExampleChannelsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.ChannelsClientCreateOrUpdateResponse{
-	// 	Channel: armeventgrid.Channel{
+	// 	Channel: &armeventgrid.Channel{
 	// 		Name: to.Ptr("exampleChannelName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/partnerNamespaces/channels"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/examplePartnerNamespaceName1/changes/exampleChannelName1"),
@@ -80,7 +81,7 @@ func ExampleChannelsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -108,7 +109,7 @@ func ExampleChannelsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.ChannelsClientGetResponse{
-	// 	Channel: armeventgrid.Channel{
+	// 	Channel: &armeventgrid.Channel{
 	// 		Name: to.Ptr("exampleChannelName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/partnerNamespaces/channels"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/examplePartnerNamespaceName1/changes/exampleChannelName1"),
@@ -148,7 +149,7 @@ func ExampleChannelsClient_GetFullURL() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.ChannelsClientGetFullURLResponse{
-	// 	EventSubscriptionFullURL: armeventgrid.EventSubscriptionFullURL{
+	// 	EventSubscriptionFullURL: &armeventgrid.EventSubscriptionFullURL{
 	// 		EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
 	// 	},
 	// }

@@ -18,8 +18,6 @@ import (
 
 // MonitorClient contains the methods for the Monitor group.
 // Don't use this type directly, use NewMonitorClient() instead.
-//
-// Generated from API version 2025-06-01
 type MonitorClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewMonitorClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginUpgrade - Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorClientBeginUpgradeOptions contains the optional parameters for the MonitorClient.BeginUpgrade method.
@@ -65,6 +65,8 @@ func (client *MonitorClient) BeginUpgrade(ctx context.Context, resourceGroupName
 
 // Upgrade - Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 func (client *MonitorClient) upgrade(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorClient.BeginUpgrade"
@@ -106,8 +108,8 @@ func (client *MonitorClient) upgradeCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {

@@ -6,9 +6,10 @@ package armeventgrid_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
 	"log"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
 // Generated from example definition: 2025-07-15-preview/VerifiedPartners_Get.json
@@ -30,7 +31,7 @@ func ExampleVerifiedPartnersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.VerifiedPartnersClientGetResponse{
-	// 	VerifiedPartner: armeventgrid.VerifiedPartner{
+	// 	VerifiedPartner: &armeventgrid.VerifiedPartner{
 	// 		Name: to.Ptr("Contoso.Finance"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/verifiedPartners"),
 	// 		ID: to.Ptr("/providers/Microsoft.EventGrid/verifiedPartners/Contoso.Finance"),

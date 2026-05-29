@@ -18,8 +18,6 @@ import (
 
 // AssociateTrafficFilterClient contains the methods for the AssociateTrafficFilter group.
 // Don't use this type directly, use NewAssociateTrafficFilterClient() instead.
-//
-// Generated from API version 2025-06-01
 type AssociateTrafficFilterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewAssociateTrafficFilterClient(subscriptionID string, credential azcore.To
 
 // BeginAssociate - Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - AssociateTrafficFilterClientBeginAssociateOptions contains the optional parameters for the AssociateTrafficFilterClient.BeginAssociate
@@ -66,6 +66,8 @@ func (client *AssociateTrafficFilterClient) BeginAssociate(ctx context.Context, 
 
 // Associate - Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 func (client *AssociateTrafficFilterClient) associate(ctx context.Context, resourceGroupName string, monitorName string, options *AssociateTrafficFilterClientBeginAssociateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AssociateTrafficFilterClient.BeginAssociate"
@@ -107,10 +109,10 @@ func (client *AssociateTrafficFilterClient) associateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", "2025-06-01")
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

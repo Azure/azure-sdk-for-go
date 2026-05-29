@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
 	"log"
 )
 
@@ -41,7 +41,7 @@ func ExampleLinkedServicesClient_CreateOrUpdate_linkedServicesCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.LinkedServicesClientCreateOrUpdateResponse{
-	// 	LinkedServiceResource: armdatafactory.LinkedServiceResource{
+	// 	LinkedServiceResource: &armdatafactory.LinkedServiceResource{
 	// 		Name: to.Ptr("exampleLinkedService"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/linkedservices"),
 	// 		Etag: to.Ptr("0a0062d4-0000-0000-0000-5b245bcf0000"),
@@ -90,7 +90,7 @@ func ExampleLinkedServicesClient_CreateOrUpdate_linkedServicesUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.LinkedServicesClientCreateOrUpdateResponse{
-	// 	LinkedServiceResource: armdatafactory.LinkedServiceResource{
+	// 	LinkedServiceResource: &armdatafactory.LinkedServiceResource{
 	// 		Name: to.Ptr("exampleLinkedService"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/linkedservices"),
 	// 		Etag: to.Ptr("0a0064d4-0000-0000-0000-5b245bd00000"),
@@ -151,7 +151,7 @@ func ExampleLinkedServicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.LinkedServicesClientGetResponse{
-	// 	LinkedServiceResource: armdatafactory.LinkedServiceResource{
+	// 	LinkedServiceResource: &armdatafactory.LinkedServiceResource{
 	// 		Name: to.Ptr("exampleLinkedService"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/linkedservices"),
 	// 		Etag: to.Ptr("1500474f-0000-0200-0000-5cbe090d0000"),

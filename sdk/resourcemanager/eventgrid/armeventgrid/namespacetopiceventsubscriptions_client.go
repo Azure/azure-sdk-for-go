@@ -7,20 +7,19 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // NamespaceTopicEventSubscriptionsClient contains the methods for the NamespaceTopicEventSubscriptions group.
 // Don't use this type directly, use NewNamespaceTopicEventSubscriptionsClient() instead.
-//
-// Generated from API version 2025-07-15-preview
 type NamespaceTopicEventSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -47,6 +46,8 @@ func NewNamespaceTopicEventSubscriptionsClient(subscriptionID string, credential
 // Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters. Existing event
 // subscriptions will be updated with this API.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -76,6 +77,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) BeginCreateOrUpdate(ctx co
 // Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters. Existing event
 // subscriptions will be updated with this API.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *NamespaceTopicEventSubscriptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, eventSubscriptionInfo Subscription, options *NamespaceTopicEventSubscriptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicEventSubscriptionsClient.BeginCreateOrUpdate"
@@ -125,8 +128,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) createOrUpdateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, eventSubscriptionInfo); err != nil {
@@ -139,6 +142,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) createOrUpdateCreateReques
 //
 // Delete an existing event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -166,6 +171,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) BeginDelete(ctx context.Co
 //
 // Delete an existing event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *NamespaceTopicEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *NamespaceTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicEventSubscriptionsClient.BeginDelete"
@@ -215,8 +222,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) deleteCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -224,6 +231,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) deleteCreateRequest(ctx co
 //
 // Get properties of an event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -280,8 +289,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -299,6 +308,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) getHandleResponse(resp *ht
 //
 // Get all delivery attributes for an event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -355,8 +366,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) getDeliveryAttributesCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -374,6 +385,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) getDeliveryAttributesHandl
 //
 // Get the full endpoint URL for an event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -430,8 +443,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) getFullURLCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -448,6 +461,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) getFullURLHandleResponse(r
 // NewListByNamespaceTopicPager - List event subscriptions of a namespace topic.
 //
 // List event subscriptions that belong to a specific namespace topic.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -506,8 +521,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) listByNamespaceTopicCreate
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -525,6 +540,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) listByNamespaceTopicHandle
 //
 // Update an existing event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -554,6 +571,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) BeginUpdate(ctx context.Co
 //
 // Update an existing event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *NamespaceTopicEventSubscriptionsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters SubscriptionUpdateParameters, options *NamespaceTopicEventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicEventSubscriptionsClient.BeginUpdate"
@@ -603,8 +622,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) updateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters); err != nil {

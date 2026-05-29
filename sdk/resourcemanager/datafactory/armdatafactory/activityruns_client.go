@@ -18,8 +18,6 @@ import (
 
 // ActivityRunsClient contains the methods for the ActivityRuns group.
 // Don't use this type directly, use NewActivityRunsClient() instead.
-//
-// Generated from API version 2018-06-01
 type ActivityRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewActivityRunsClient(subscriptionID string, credential azcore.TokenCredent
 
 // QueryByPipelineRun - Query activity runs based on input filter conditions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - runID - The pipeline run identifier.
 //   - filterParameters - Parameters to filter the activity runs.
@@ -72,7 +72,7 @@ func (client *ActivityRunsClient) QueryByPipelineRun(ctx context.Context, resour
 
 // queryByPipelineRunCreateRequest creates the QueryByPipelineRun request.
 func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, filterParameters RunFilterParameters, _ *ActivityRunsClientQueryByPipelineRunOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -94,8 +94,8 @@ func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, filterParameters); err != nil {

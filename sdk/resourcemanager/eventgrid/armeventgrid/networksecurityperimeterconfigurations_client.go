@@ -7,19 +7,18 @@ package armeventgrid
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // NetworkSecurityPerimeterConfigurationsClient contains the methods for the NetworkSecurityPerimeterConfigurations group.
 // Don't use this type directly, use NewNetworkSecurityPerimeterConfigurationsClient() instead.
-//
-// Generated from API version 2025-07-15-preview
 type NetworkSecurityPerimeterConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +44,8 @@ func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, cred
 //
 // Get a specific network security perimeter configuration with a topic or domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceType - The type of the resource. This can be either \\'topics\\', or \\'domains\\'.
 //   - resourceName - The name of the resource group within the user's subscription.
@@ -106,8 +107,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -124,6 +125,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getHandleResponse(re
 // NewListPager - Get all network security perimeter configurations for resource.
 //
 // Get all network security perimeter configurations associated with a topic or domain.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceType - The type of the resource. This can be either \\'topics\\', or \\'domains\\'.
 //   - resourceName - The name of the resource group within the user's subscription.
@@ -176,8 +179,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -196,6 +199,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listHandleResponse(r
 // Reconcile a specific network security perimeter configuration for a given network security perimeter association with a
 // topic or domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceType - The type of the resource. This can be either \\'topics\\', or \\'domains\\'.
 //   - resourceName - The name of the resource group within the user's subscription.
@@ -225,6 +230,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginReconcile(ctx c
 // Reconcile a specific network security perimeter configuration for a given network security perimeter association with a
 // topic or domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *NetworkSecurityPerimeterConfigurationsClient) reconcile(ctx context.Context, resourceGroupName string, resourceType NetworkSecurityPerimeterResourceType, resourceName string, perimeterGUID string, associationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginReconcile"
@@ -278,8 +285,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

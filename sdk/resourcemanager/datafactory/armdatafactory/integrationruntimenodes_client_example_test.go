@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
 	"log"
 )
 
@@ -53,7 +53,7 @@ func ExampleIntegrationRuntimeNodesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimeNodesClientGetResponse{
-	// 	SelfHostedIntegrationRuntimeNode: armdatafactory.SelfHostedIntegrationRuntimeNode{
+	// 	SelfHostedIntegrationRuntimeNode: &armdatafactory.SelfHostedIntegrationRuntimeNode{
 	// 		Capabilities: map[string]*string{
 	// 			"connectedToResourceManager": to.Ptr("True"),
 	// 			"credentialInSync": to.Ptr("True"),
@@ -96,7 +96,7 @@ func ExampleIntegrationRuntimeNodesClient_GetIPAddress() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimeNodesClientGetIPAddressResponse{
-	// 	IntegrationRuntimeNodeIPAddress: armdatafactory.IntegrationRuntimeNodeIPAddress{
+	// 	IntegrationRuntimeNodeIPAddress: &armdatafactory.IntegrationRuntimeNodeIPAddress{
 	// 		IPAddress: to.Ptr("**********"),
 	// 	},
 	// }
@@ -123,7 +123,7 @@ func ExampleIntegrationRuntimeNodesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimeNodesClientUpdateResponse{
-	// 	SelfHostedIntegrationRuntimeNode: armdatafactory.SelfHostedIntegrationRuntimeNode{
+	// 	SelfHostedIntegrationRuntimeNode: &armdatafactory.SelfHostedIntegrationRuntimeNode{
 	// 		Capabilities: map[string]*string{
 	// 			"connectedToResourceManager": to.Ptr("True"),
 	// 			"credentialInSync": to.Ptr("True"),

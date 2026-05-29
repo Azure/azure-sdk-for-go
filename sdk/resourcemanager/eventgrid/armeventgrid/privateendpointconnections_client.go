@@ -7,20 +7,19 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
-//
-// Generated from API version 2025-07-15-preview
 type PrivateEndpointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,6 +45,8 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 //
 // Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentType - The type of the parent resource. This can be either \\'topics\\', \\'domains\\', or \\'partnerNamespaces\\'
 //     or \\'namespaces\\'.
@@ -76,6 +77,8 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 //
 // Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -125,8 +128,8 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -134,6 +137,8 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 //
 // Get a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentType - The type of the parent resource. This can be either \\'topics\\', \\'domains\\', or \\'partnerNamespaces\\'
 //     or \\'namespaces\\'.
@@ -193,8 +198,8 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -211,6 +216,8 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 // NewListByResourcePager - Lists all private endpoint connections under a resource.
 //
 // Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentType - The type of the parent resource. This can be either \\'topics\\', \\'domains\\', or \\'partnerNamespaces\\'
 //     or \\'namespaces\\'.
@@ -271,8 +278,8 @@ func (client *PrivateEndpointConnectionsClient) listByResourceCreateRequest(ctx 
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -290,6 +297,8 @@ func (client *PrivateEndpointConnectionsClient) listByResourceHandleResponse(res
 //
 // Update a specific private endpoint connection under a topic, domain or partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentType - The type of the parent resource. This can be either \\'topics\\', \\'domains\\', or \\'partnerNamespaces\\'
 //     or \\'namespaces\\'.
@@ -321,6 +330,8 @@ func (client *PrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context,
 //
 // Update a specific private endpoint connection under a topic, domain or partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *PrivateEndpointConnectionsClient) update(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginUpdate"
@@ -370,8 +381,8 @@ func (client *PrivateEndpointConnectionsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointConnection); err != nil {

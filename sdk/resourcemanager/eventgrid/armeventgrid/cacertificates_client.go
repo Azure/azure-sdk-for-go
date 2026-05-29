@@ -7,20 +7,19 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CaCertificatesClient contains the methods for the CaCertificates group.
 // Don't use this type directly, use NewCaCertificatesClient() instead.
-//
-// Generated from API version 2025-07-15-preview
 type CaCertificatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,6 +45,8 @@ func NewCaCertificatesClient(subscriptionID string, credential azcore.TokenCrede
 //
 // Create or update a CA certificate with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - caCertificateName - Name of the CA certificate.
@@ -73,6 +74,8 @@ func (client *CaCertificatesClient) BeginCreateOrUpdate(ctx context.Context, res
 //
 // Create or update a CA certificate with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *CaCertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, caCertificateName string, caCertificateInfo CaCertificate, options *CaCertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CaCertificatesClient.BeginCreateOrUpdate"
@@ -118,8 +121,8 @@ func (client *CaCertificatesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, caCertificateInfo); err != nil {
@@ -132,6 +135,8 @@ func (client *CaCertificatesClient) createOrUpdateCreateRequest(ctx context.Cont
 //
 // Delete an existing CA certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - caCertificateName - Name of the CA certificate.
@@ -158,6 +163,8 @@ func (client *CaCertificatesClient) BeginDelete(ctx context.Context, resourceGro
 //
 // Delete an existing CA certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 func (client *CaCertificatesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, caCertificateName string, options *CaCertificatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CaCertificatesClient.BeginDelete"
@@ -203,8 +210,8 @@ func (client *CaCertificatesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -212,6 +219,8 @@ func (client *CaCertificatesClient) deleteCreateRequest(ctx context.Context, res
 //
 // Get properties of a CA certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - caCertificateName - Name of the CA certificate.
@@ -262,8 +271,8 @@ func (client *CaCertificatesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -280,6 +289,8 @@ func (client *CaCertificatesClient) getHandleResponse(resp *http.Response) (CaCe
 // NewListByNamespacePager - List all CA certificates under a namespace.
 //
 // Get all the CA certificates under a namespace.
+//
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - options - CaCertificatesClientListByNamespaceOptions contains the optional parameters for the CaCertificatesClient.NewListByNamespacePager
@@ -333,8 +344,8 @@ func (client *CaCertificatesClient) listByNamespaceCreateRequest(ctx context.Con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

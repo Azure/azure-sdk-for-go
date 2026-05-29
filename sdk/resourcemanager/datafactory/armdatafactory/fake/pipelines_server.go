@@ -12,12 +12,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
 	"net/http"
 	"net/url"
 	"reflect"
 	"regexp"
-	"slices"
 	"strconv"
 )
 
@@ -73,7 +72,9 @@ func (p *PipelinesServerTransport) Do(req *http.Request) (*http.Response, error)
 }
 
 func (p *PipelinesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -97,7 +98,10 @@ func (p *PipelinesServerTransport) dispatchToMethodFake(req *http.Request, metho
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -146,7 +150,7 @@ func (p *PipelinesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PipelineResource, req)
@@ -183,13 +187,29 @@ func (p *PipelinesServerTransport) dispatchCreateRun(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	referencePipelineRunIDParam := getOptional(qp.Get("referencePipelineRunId"))
-	isRecoveryParam, err := parseOptional(qp.Get("isRecovery"), strconv.ParseBool)
+	referencePipelineRunIDUnescaped, err := url.QueryUnescape(qp.Get("referencePipelineRunId"))
 	if err != nil {
 		return nil, err
 	}
-	startActivityNameParam := getOptional(qp.Get("startActivityName"))
-	startFromFailureParam, err := parseOptional(qp.Get("startFromFailure"), strconv.ParseBool)
+	referencePipelineRunIDParam := getOptional(referencePipelineRunIDUnescaped)
+	isRecoveryUnescaped, err := url.QueryUnescape(qp.Get("isRecovery"))
+	if err != nil {
+		return nil, err
+	}
+	isRecoveryParam, err := parseOptional(isRecoveryUnescaped, strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	startActivityNameUnescaped, err := url.QueryUnescape(qp.Get("startActivityName"))
+	if err != nil {
+		return nil, err
+	}
+	startActivityNameParam := getOptional(startActivityNameUnescaped)
+	startFromFailureUnescaped, err := url.QueryUnescape(qp.Get("startFromFailure"))
+	if err != nil {
+		return nil, err
+	}
+	startFromFailureParam, err := parseOptional(startFromFailureUnescaped, strconv.ParseBool)
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +228,7 @@ func (p *PipelinesServerTransport) dispatchCreateRun(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CreateRunResponse, req)
@@ -245,7 +265,7 @@ func (p *PipelinesServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -289,7 +309,7 @@ func (p *PipelinesServerTransport) dispatchGet(req *http.Request) (*http.Respons
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNotModified}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK, http.StatusNotModified}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNotModified", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PipelineResource, req)
@@ -330,7 +350,7 @@ func (p *PipelinesServerTransport) dispatchNewListByFactoryPager(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListByFactoryPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

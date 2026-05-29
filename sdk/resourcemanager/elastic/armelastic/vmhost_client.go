@@ -18,8 +18,6 @@ import (
 
 // VMHostClient contains the methods for the VMHost group.
 // Don't use this type directly, use NewVMHostClient() instead.
-//
-// Generated from API version 2025-06-01
 type VMHostClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewVMHostClient(subscriptionID string, credential azcore.TokenCredential, o
 }
 
 // NewListPager - List all VM resources currently being monitored by the Elastic monitor resource, helping you manage observability.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - VMHostClientListOptions contains the optional parameters for the VMHostClient.NewListPager method.
@@ -88,8 +88,8 @@ func (client *VMHostClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

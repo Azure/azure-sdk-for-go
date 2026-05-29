@@ -18,8 +18,6 @@ import (
 
 // GlobalParametersClient contains the methods for the GlobalParameters group.
 // Don't use this type directly, use NewGlobalParametersClient() instead.
-//
-// Generated from API version 2018-06-01
 type GlobalParametersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewGlobalParametersClient(subscriptionID string, credential azcore.TokenCre
 
 // CreateOrUpdate - Creates or updates a Global parameter
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - globalParameterName - The global parameter name.
@@ -95,8 +95,8 @@ func (client *GlobalParametersClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, defaultParam); err != nil {
@@ -116,6 +116,8 @@ func (client *GlobalParametersClient) createOrUpdateHandleResponse(resp *http.Re
 
 // Delete - Deletes a Global parameter
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - globalParameterName - The global parameter name.
@@ -165,13 +167,16 @@ func (client *GlobalParametersClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a Global parameter
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - globalParameterName - The global parameter name.
@@ -222,8 +227,8 @@ func (client *GlobalParametersClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -238,6 +243,8 @@ func (client *GlobalParametersClient) getHandleResponse(resp *http.Response) (Gl
 }
 
 // NewListByFactoryPager - Lists Global parameters
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - options - GlobalParametersClientListByFactoryOptions contains the optional parameters for the GlobalParametersClient.NewListByFactoryPager
@@ -285,8 +292,8 @@ func (client *GlobalParametersClient) listByFactoryCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

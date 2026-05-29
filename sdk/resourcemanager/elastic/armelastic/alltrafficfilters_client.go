@@ -18,8 +18,6 @@ import (
 
 // AllTrafficFiltersClient contains the methods for the AllTrafficFilters group.
 // Don't use this type directly, use NewAllTrafficFiltersClient() instead.
-//
-// Generated from API version 2025-06-01
 type AllTrafficFiltersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewAllTrafficFiltersClient(subscriptionID string, credential azcore.TokenCr
 
 // List - List all traffic filters associated with your Elastic monitor resource, helping you manage network traffic control.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - AllTrafficFiltersClientListOptions contains the optional parameters for the AllTrafficFiltersClient.List method.
@@ -88,8 +88,8 @@ func (client *AllTrafficFiltersClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

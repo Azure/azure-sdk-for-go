@@ -19,8 +19,6 @@ import (
 
 // WhatIfResultsAtResourceGroupClient contains the methods for the WhatIfResultsAtResourceGroup group.
 // Don't use this type directly, use NewWhatIfResultsAtResourceGroupClient() instead.
-//
-// Generated from API version 2025-07-01
 type WhatIfResultsAtResourceGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewWhatIfResultsAtResourceGroupClient(subscriptionID string, credential azc
 
 // BeginCreateOrUpdate - Creates or updates a Deployment stack at the specified scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
 //   - resource - Resource create parameters.
@@ -68,6 +68,8 @@ func (client *WhatIfResultsAtResourceGroupClient) BeginCreateOrUpdate(ctx contex
 
 // CreateOrUpdate - Creates or updates a Deployment stack at the specified scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
 func (client *WhatIfResultsAtResourceGroupClient) createOrUpdate(ctx context.Context, resourceGroupName string, deploymentStacksWhatIfResultName string, resource WhatIfResult, options *WhatIfResultsAtResourceGroupClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WhatIfResultsAtResourceGroupClient.BeginCreateOrUpdate"
@@ -109,8 +111,8 @@ func (client *WhatIfResultsAtResourceGroupClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,6 +124,8 @@ func (client *WhatIfResultsAtResourceGroupClient) createOrUpdateCreateRequest(ct
 // Delete - Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
 // without content.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
 //   - options - WhatIfResultsAtResourceGroupClientDeleteOptions contains the optional parameters for the WhatIfResultsAtResourceGroupClient.Delete
@@ -167,7 +171,7 @@ func (client *WhatIfResultsAtResourceGroupClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", "2025-07-01")
 	if options != nil && options.BypassStackOutOfSyncError != nil {
 		reqQP.Set("bypassStackOutOfSyncError", strconv.FormatBool(*options.BypassStackOutOfSyncError))
 	}
@@ -183,12 +187,14 @@ func (client *WhatIfResultsAtResourceGroupClient) deleteCreateRequest(ctx contex
 	if options != nil && options.UnmanageActionResourcesWithoutDeleteSupport != nil {
 		reqQP.Set("unmanageAction.ResourcesWithoutDeleteSupport", string(*options.UnmanageActionResourcesWithoutDeleteSupport))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the Deployment stack with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
 //   - options - WhatIfResultsAtResourceGroupClientGetOptions contains the optional parameters for the WhatIfResultsAtResourceGroupClient.Get
@@ -235,8 +241,8 @@ func (client *WhatIfResultsAtResourceGroupClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -251,6 +257,8 @@ func (client *WhatIfResultsAtResourceGroupClient) getHandleResponse(resp *http.R
 }
 
 // NewListPager - Lists Deployment stacks at the specified scope.
+//
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WhatIfResultsAtResourceGroupClientListOptions contains the optional parameters for the WhatIfResultsAtResourceGroupClient.NewListPager
 //     method.
@@ -293,8 +301,8 @@ func (client *WhatIfResultsAtResourceGroupClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -310,6 +318,8 @@ func (client *WhatIfResultsAtResourceGroupClient) listHandleResponse(resp *http.
 
 // BeginWhatIf - Returns property-level changes that will be made by the deployment if executed.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
 //   - options - WhatIfResultsAtResourceGroupClientBeginWhatIfOptions contains the optional parameters for the WhatIfResultsAtResourceGroupClient.BeginWhatIf
@@ -333,6 +343,8 @@ func (client *WhatIfResultsAtResourceGroupClient) BeginWhatIf(ctx context.Contex
 
 // WhatIf - Returns property-level changes that will be made by the deployment if executed.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
 func (client *WhatIfResultsAtResourceGroupClient) whatIf(ctx context.Context, resourceGroupName string, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtResourceGroupClientBeginWhatIfOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WhatIfResultsAtResourceGroupClient.BeginWhatIf"
@@ -374,8 +386,8 @@ func (client *WhatIfResultsAtResourceGroupClient) whatIfCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

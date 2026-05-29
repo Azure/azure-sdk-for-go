@@ -18,8 +18,6 @@ import (
 
 // ManagedVirtualNetworksClient contains the methods for the ManagedVirtualNetworks group.
 // Don't use this type directly, use NewManagedVirtualNetworksClient() instead.
-//
-// Generated from API version 2018-06-01
 type ManagedVirtualNetworksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewManagedVirtualNetworksClient(subscriptionID string, credential azcore.To
 
 // CreateOrUpdate - Creates or updates a managed Virtual Network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - managedVirtualNetworkName - Managed virtual network name
@@ -95,8 +95,8 @@ func (client *ManagedVirtualNetworksClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
@@ -119,6 +119,8 @@ func (client *ManagedVirtualNetworksClient) createOrUpdateHandleResponse(resp *h
 
 // Get - Gets a managed Virtual Network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - managedVirtualNetworkName - Managed virtual network name
@@ -170,8 +172,8 @@ func (client *ManagedVirtualNetworksClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["if-none-match"] = []string{*options.IfNoneMatch}
@@ -189,6 +191,8 @@ func (client *ManagedVirtualNetworksClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByFactoryPager - Lists managed Virtual Networks.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - options - ManagedVirtualNetworksClientListByFactoryOptions contains the optional parameters for the ManagedVirtualNetworksClient.NewListByFactoryPager
@@ -236,8 +240,8 @@ func (client *ManagedVirtualNetworksClient) listByFactoryCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

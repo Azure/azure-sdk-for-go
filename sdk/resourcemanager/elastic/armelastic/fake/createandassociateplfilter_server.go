@@ -11,11 +11,10 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v3"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // CreateAndAssociatePLFilterServer is a fake server for instances of the armelastic.CreateAndAssociatePLFilterClient type.
@@ -54,7 +53,9 @@ func (c *CreateAndAssociatePLFilterServerTransport) Do(req *http.Request) (*http
 }
 
 func (c *CreateAndAssociatePLFilterServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,7 +71,10 @@ func (c *CreateAndAssociatePLFilterServerTransport) dispatchToMethodFake(req *ht
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -102,9 +106,21 @@ func (c *CreateAndAssociatePLFilterServerTransport) dispatchBeginCreate(req *htt
 		if err != nil {
 			return nil, err
 		}
-		nameParam := getOptional(qp.Get("name"))
-		privateEndpointGUIDParam := getOptional(qp.Get("privateEndpointGuid"))
-		privateEndpointNameParam := getOptional(qp.Get("privateEndpointName"))
+		nameUnescaped, err := url.QueryUnescape(qp.Get("name"))
+		if err != nil {
+			return nil, err
+		}
+		nameParam := getOptional(nameUnescaped)
+		privateEndpointGUIDUnescaped, err := url.QueryUnescape(qp.Get("privateEndpointGuid"))
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointGUIDParam := getOptional(privateEndpointGUIDUnescaped)
+		privateEndpointNameUnescaped, err := url.QueryUnescape(qp.Get("privateEndpointName"))
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointNameParam := getOptional(privateEndpointNameUnescaped)
 		var options *armelastic.CreateAndAssociatePLFilterClientBeginCreateOptions
 		if nameParam != nil || privateEndpointGUIDParam != nil || privateEndpointNameParam != nil {
 			options = &armelastic.CreateAndAssociatePLFilterClientBeginCreateOptions{
@@ -126,7 +142,7 @@ func (c *CreateAndAssociatePLFilterServerTransport) dispatchBeginCreate(req *htt
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}

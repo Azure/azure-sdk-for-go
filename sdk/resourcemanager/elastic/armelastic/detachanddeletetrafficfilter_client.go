@@ -18,8 +18,6 @@ import (
 
 // DetachAndDeleteTrafficFilterClient contains the methods for the DetachAndDeleteTrafficFilter group.
 // Don't use this type directly, use NewDetachAndDeleteTrafficFilterClient() instead.
-//
-// Generated from API version 2025-06-01
 type DetachAndDeleteTrafficFilterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewDetachAndDeleteTrafficFilterClient(subscriptionID string, credential azc
 // Delete - Detach and delete an existing traffic filter from your Elastic monitor resource, removing its network traffic
 // control capabilities.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - DetachAndDeleteTrafficFilterClientDeleteOptions contains the optional parameters for the DetachAndDeleteTrafficFilterClient.Delete
@@ -89,10 +89,10 @@ func (client *DetachAndDeleteTrafficFilterClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", "2025-06-01")
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

@@ -19,8 +19,6 @@ import (
 
 // PipelineRunsClient contains the methods for the PipelineRuns group.
 // Don't use this type directly, use NewPipelineRunsClient() instead.
-//
-// Generated from API version 2018-06-01
 type PipelineRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewPipelineRunsClient(subscriptionID string, credential azcore.TokenCredent
 
 // Cancel - Cancel a pipeline run by its run ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - runID - The pipeline run identifier.
 //   - options - PipelineRunsClientCancelOptions contains the optional parameters for the PipelineRunsClient.Cancel method.
@@ -70,7 +70,7 @@ func (client *PipelineRunsClient) Cancel(ctx context.Context, resourceGroupName 
 
 // cancelCreateRequest creates the Cancel request.
 func (client *PipelineRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, options *PipelineRunsClientCancelOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/cancel"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -92,16 +92,19 @@ func (client *PipelineRunsClient) cancelCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
+	reqQP.Set("api-version", "2018-06-01")
 	if options != nil && options.IsRecursive != nil {
 		reqQP.Set("isRecursive", strconv.FormatBool(*options.IsRecursive))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a pipeline run by its run ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - runID - The pipeline run identifier.
 //   - options - PipelineRunsClientGetOptions contains the optional parameters for the PipelineRunsClient.Get method.
@@ -129,7 +132,7 @@ func (client *PipelineRunsClient) Get(ctx context.Context, resourceGroupName str
 
 // getCreateRequest creates the Get request.
 func (client *PipelineRunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, _ *PipelineRunsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -151,8 +154,8 @@ func (client *PipelineRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -168,6 +171,8 @@ func (client *PipelineRunsClient) getHandleResponse(resp *http.Response) (Pipeli
 
 // QueryByFactory - Query pipeline runs in the factory based on input filter conditions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - filterParameters - Parameters to filter the pipeline run.
@@ -215,8 +220,8 @@ func (client *PipelineRunsClient) queryByFactoryCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, filterParameters); err != nil {

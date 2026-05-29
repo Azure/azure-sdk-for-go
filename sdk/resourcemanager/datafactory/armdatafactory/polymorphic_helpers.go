@@ -1349,14 +1349,14 @@ func unmarshalSsisObjectMetadataClassification(rawMsg json.RawMessage) (SsisObje
 	}
 	var b SsisObjectMetadataClassification
 	switch m["type"] {
-	case string(SsisObjectMetadataTypeEnvironment):
-		b = &SsisEnvironment{}
 	case string(SsisObjectMetadataTypeFolder):
 		b = &SsisFolder{}
-	case string(SsisObjectMetadataTypePackage):
-		b = &SsisPackage{}
 	case string(SsisObjectMetadataTypeProject):
 		b = &SsisProject{}
+	case string(SsisObjectMetadataTypePackage):
+		b = &SsisPackage{}
+	case string(SsisObjectMetadataTypeEnvironment):
+		b = &SsisEnvironment{}
 	default:
 		b = &SsisObjectMetadata{}
 	}

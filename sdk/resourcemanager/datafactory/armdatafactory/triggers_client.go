@@ -18,8 +18,6 @@ import (
 
 // TriggersClient contains the methods for the Triggers group.
 // Don't use this type directly, use NewTriggersClient() instead.
-//
-// Generated from API version 2018-06-01
 type TriggersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Creates or updates a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - triggerName - The trigger name.
@@ -94,8 +94,8 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
@@ -118,6 +118,8 @@ func (client *TriggersClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - triggerName - The trigger name.
@@ -167,13 +169,16 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - triggerName - The trigger name.
@@ -224,8 +229,8 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["if-none-match"] = []string{*options.IfNoneMatch}
@@ -244,6 +249,8 @@ func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersCl
 
 // GetEventSubscriptionStatus - Get a trigger's event subscription status.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - triggerName - The trigger name.
@@ -295,8 +302,8 @@ func (client *TriggersClient) getEventSubscriptionStatusCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -311,6 +318,8 @@ func (client *TriggersClient) getEventSubscriptionStatusHandleResponse(resp *htt
 }
 
 // NewListByFactoryPager - Lists triggers.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - options - TriggersClientListByFactoryOptions contains the optional parameters for the TriggersClient.NewListByFactoryPager
@@ -358,8 +367,8 @@ func (client *TriggersClient) listByFactoryCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -375,6 +384,8 @@ func (client *TriggersClient) listByFactoryHandleResponse(resp *http.Response) (
 
 // QueryByFactory - Query triggers.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - filterParameters - Parameters to filter the triggers.
@@ -421,8 +432,8 @@ func (client *TriggersClient) queryByFactoryCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, filterParameters); err != nil {
@@ -442,6 +453,8 @@ func (client *TriggersClient) queryByFactoryHandleResponse(resp *http.Response) 
 
 // BeginStart - Starts a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - triggerName - The trigger name.
@@ -465,6 +478,8 @@ func (client *TriggersClient) BeginStart(ctx context.Context, resourceGroupName 
 
 // Start - Starts a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 func (client *TriggersClient) start(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TriggersClient.BeginStart"
@@ -510,13 +525,16 @@ func (client *TriggersClient) startCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Stops a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - triggerName - The trigger name.
@@ -540,6 +558,8 @@ func (client *TriggersClient) BeginStop(ctx context.Context, resourceGroupName s
 
 // Stop - Stops a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 func (client *TriggersClient) stop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStopOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TriggersClient.BeginStop"
@@ -585,13 +605,16 @@ func (client *TriggersClient) stopCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginSubscribeToEvents - Subscribe event trigger to events.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - triggerName - The trigger name.
@@ -616,6 +639,8 @@ func (client *TriggersClient) BeginSubscribeToEvents(ctx context.Context, resour
 
 // SubscribeToEvents - Subscribe event trigger to events.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 func (client *TriggersClient) subscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginSubscribeToEventsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TriggersClient.BeginSubscribeToEvents"
@@ -661,14 +686,16 @@ func (client *TriggersClient) subscribeToEventsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUnsubscribeFromEvents - Unsubscribe event trigger from events.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - triggerName - The trigger name.
@@ -693,6 +720,8 @@ func (client *TriggersClient) BeginUnsubscribeFromEvents(ctx context.Context, re
 
 // UnsubscribeFromEvents - Unsubscribe event trigger from events.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2018-06-01
 func (client *TriggersClient) unsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginUnsubscribeFromEventsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TriggersClient.BeginUnsubscribeFromEvents"
@@ -738,8 +767,8 @@ func (client *TriggersClient) unsubscribeFromEventsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2018-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
 	"log"
 )
 
@@ -43,7 +43,7 @@ func ExampleFactoriesClient_ConfigureFactoryRepo() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.FactoriesClientConfigureFactoryRepoResponse{
-	// 	Factory: armdatafactory.Factory{
+	// 	Factory: &armdatafactory.Factory{
 	// 		Name: to.Ptr("exampleFactoryName"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories"),
 	// 		ETag: to.Ptr("\"00004004-0000-0000-0000-5b28979e0000\""),
@@ -92,7 +92,7 @@ func ExampleFactoriesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.FactoriesClientCreateOrUpdateResponse{
-	// 	Factory: armdatafactory.Factory{
+	// 	Factory: &armdatafactory.Factory{
 	// 		Name: to.Ptr("exampleFactoryName"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories"),
 	// 		ETag: to.Ptr("\"00003e04-0000-0000-0000-5b28979e0000\""),
@@ -150,7 +150,7 @@ func ExampleFactoriesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.FactoriesClientGetResponse{
-	// 	Factory: armdatafactory.Factory{
+	// 	Factory: &armdatafactory.Factory{
 	// 		Name: to.Ptr("exampleFactoryName"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories"),
 	// 		ETag: to.Ptr("\"00004004-0000-0000-0000-5b28979e0000\""),
@@ -206,7 +206,7 @@ func ExampleFactoriesClient_GetDataPlaneAccess() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.FactoriesClientGetDataPlaneAccessResponse{
-	// 	AccessPolicyResponse: armdatafactory.AccessPolicyResponse{
+	// 	AccessPolicyResponse: &armdatafactory.AccessPolicyResponse{
 	// 		AccessToken: to.Ptr("**********"),
 	// 		DataPlaneURL: to.Ptr("https://rpeastus.svc.datafactory.azure.com:4433"),
 	// 		Policy: &armdatafactory.UserAccessPolicy{
@@ -243,7 +243,7 @@ func ExampleFactoriesClient_GetGitHubAccessToken() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.FactoriesClientGetGitHubAccessTokenResponse{
-	// 	GitHubAccessTokenResponse: armdatafactory.GitHubAccessTokenResponse{
+	// 	GitHubAccessTokenResponse: &armdatafactory.GitHubAccessTokenResponse{
 	// 		GitHubAccessToken: to.Ptr("myAccessTokenExample"),
 	// 	},
 	// }
@@ -590,7 +590,7 @@ func ExampleFactoriesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.FactoriesClientUpdateResponse{
-	// 	Factory: armdatafactory.Factory{
+	// 	Factory: &armdatafactory.Factory{
 	// 		Name: to.Ptr("exampleFactoryName"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories"),
 	// 		ETag: to.Ptr("\"00003f04-0000-0000-0000-5b28979e0000\""),

@@ -6,10 +6,9 @@ package generated
 
 import (
 	"encoding/xml"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
+	"time"
 )
 
 // MarshalXML implements the xml.Marshaller interface for type AccessPolicy.
@@ -489,13 +488,6 @@ func (s StorageServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartEl
 		aux.CORS = &s.CORS
 	}
 	return enc.EncodeElement(aux, start)
-}
-
-// toMultipartFormData converts SubmitBatchResponse to multipart/form data.
-func (s SubmitBatchResponse) toMultipartFormData() (map[string]any, error) {
-	objectMap := make(map[string]any)
-	objectMap["body"] = s.Body
-	return objectMap, nil
 }
 
 // MarshalXML implements the xml.Marshaller interface for type UserDelegationKey.

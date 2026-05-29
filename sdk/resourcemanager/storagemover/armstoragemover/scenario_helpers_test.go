@@ -190,10 +190,9 @@ func (b *scenarioBaseSuite) placeholderStorageAccountResourceID() string {
 
 // expectResponseError unwraps err as *azcore.ResponseError and asserts the HTTP status is non-2xx.
 // We deliberately do not lock to specific RP error codes since they drift across api-versions.
-func (b *scenarioBaseSuite) expectResponseError(err error) *azcore.ResponseError {
+func (b *scenarioBaseSuite) expectResponseError(err error) {
 	b.Require().Error(err)
 	var respErr *azcore.ResponseError
 	b.Require().True(errors.As(err, &respErr), "expected azcore.ResponseError, got %T: %v", err, err)
 	b.Require().GreaterOrEqual(respErr.StatusCode, http.StatusBadRequest, "expected non-2xx status, got %d", respErr.StatusCode)
-	return respErr
 }

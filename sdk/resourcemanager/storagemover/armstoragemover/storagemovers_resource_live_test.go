@@ -18,10 +18,10 @@ import (
 type StorageMoverResourceScenarioSuite struct {
 	scenarioBaseSuite
 
-	storageMoverName  string
-	projectName       string
-	endpointName      string
-	mutableMoverName  string
+	storageMoverName string
+	projectName      string
+	endpointName     string
+	mutableMoverName string
 }
 
 func TestStorageMoverResourceScenarioSuite(t *testing.T) {

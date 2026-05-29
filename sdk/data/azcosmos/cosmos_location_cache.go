@@ -145,6 +145,14 @@ func (lc *locationCache) updateLocked(writeLocations []accountRegion, readLocati
 }
 
 func (lc *locationCache) resolveServiceEndpoint(locationIndex int, resourceType resourceType, isWriteOperation, useWriteEndpoint bool) url.URL {
+	// Take a read lock for the duration of endpoint resolution. The
+	// fields read here (locationInfo, enableMultipleWriteLocations) are
+	// rewritten atomically under mapMutex.Lock() by update/updateLocked,
+	// and a concurrent forced refresh (e.g. from the retry policy's
+	// asyncForceRefreshGEM or the GEM policy's background refresh) can
+	// race with us without this lock.
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
 	if (isWriteOperation || useWriteEndpoint) && !lc.canUseMultipleWriteLocsToRoute(resourceType) {
 		if lc.enableCrossRegionRetries && len(lc.locationInfo.availWriteLocations) > 0 {
 			locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)
@@ -201,6 +209,14 @@ func (lc *locationCache) writeEndpoints() ([]url.URL, error) {
 }
 
 func (lc *locationCache) getLocation(endpoint url.URL) string {
+	// Take a read lock for the duration of the lookup. The reads of
+	// locationInfo.availWriteEndpointsByLocation /
+	// availReadEndpointsByLocation and enableMultipleWriteLocations race
+	// the writes in update / updateLocked, especially now that the retry
+	// policy's asyncForceRefreshGEM can trigger a refresh concurrently
+	// with the data-plane lookup that calls into here.
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
 	firstLoc := ""
 	for location, uri := range lc.locationInfo.availWriteEndpointsByLocation {
 		if uri == endpoint {
@@ -238,12 +254,39 @@ func (lc *locationCache) CanUseMultipleWriteLocs() bool {
 	return lc.enableMultipleWriteLocations
 }
 
+// sessionRetrySnapshot returns a coherent snapshot of the fields the
+// session-unavailable retry path needs to make a routing decision:
+// (canUseMultipleWriteLocs, availReadLocationCount, availWriteLocationCount).
+// Taking these reads under a single RLock prevents a concurrent
+// locationCache.update (e.g. from an async GEM refresh) from rewriting
+// enableMultipleWriteLocations between the multi-write branch decision
+// and the slice-length sampling that follows it.
+func (lc *locationCache) sessionRetrySnapshot() (multiWrite bool, readN, writeN int) {
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
+	return lc.enableMultipleWriteLocations,
+		len(lc.locationInfo.availReadLocations),
+		len(lc.locationInfo.availWriteLocations)
+}
+
 func (lc *locationCache) markEndpointUnavailableForRead(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
-	return lc.markEndpointUnavailable(endpoint, read)
+	return lc.markEndpointUnavailable(endpointKey(endpoint), read)
 }
 
 func (lc *locationCache) markEndpointUnavailableForWrite(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
-	return lc.markEndpointUnavailable(endpoint, write)
+	return lc.markEndpointUnavailable(endpointKey(endpoint), write)
+}
+
+// endpointKey normalizes a url.URL to the form used as a key in
+// locationUnavailabilityInfoMap and stored in availReadEndpointsByLocation
+// / availWriteEndpointsByLocation: scheme + host only. Callers of
+// MarkEndpointUnavailable* commonly pass the full request URL (including
+// path, query, fragment, RawPath, etc.), which would never struct-equal
+// the base URLs the cache uses; without normalization the marks are
+// recorded under keys nothing else ever looks up and the demote step in
+// getPrefAvailableEndpointsLocked silently does nothing.
+func endpointKey(u url.URL) url.URL {
+	return url.URL{Scheme: u.Scheme, Host: u.Host}
 }
 
 // markEndpointUnavailable atomically samples whether the endpoint was already
@@ -302,7 +345,7 @@ func (lc *locationCache) isEndpointUnavailable(endpoint url.URL, ops requestedOp
 }
 
 func (lc *locationCache) isEndpointUnavailableLocked(endpoint url.URL, ops requestedOperations) bool {
-	info, ok := lc.locationUnavailabilityInfoMap[endpoint]
+	info, ok := lc.locationUnavailabilityInfoMap[endpointKey(endpoint)]
 	if ops == none || !ok || ops&info.unavailableOps != ops {
 		return false
 	}

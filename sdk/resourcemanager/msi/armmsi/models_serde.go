@@ -13,6 +13,64 @@ import (
 	"time"
 )
 
+// MarshalJSON implements the json.Marshaller interface for type AssignmentRestrictions.
+func (a AssignmentRestrictions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "providers", a.Providers)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AssignmentRestrictions.
+func (a *AssignmentRestrictions) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "providers":
+			err = unpopulate(val, "Providers", &a.Providers)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ClaimsMatchingExpression.
+func (c ClaimsMatchingExpression) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "languageVersion", c.LanguageVersion)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ClaimsMatchingExpression.
+func (c *ClaimsMatchingExpression) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "languageVersion":
+			err = unpopulate(val, "LanguageVersion", &c.LanguageVersion)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &c.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type FederatedIdentityCredential.
 func (f FederatedIdentityCredential) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -60,6 +118,7 @@ func (f *FederatedIdentityCredential) UnmarshalJSON(data []byte) error {
 func (f FederatedIdentityCredentialProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "audiences", f.Audiences)
+	populate(objectMap, "claimsMatchingExpression", f.ClaimsMatchingExpression)
 	populate(objectMap, "issuer", f.Issuer)
 	populate(objectMap, "subject", f.Subject)
 	return json.Marshal(objectMap)
@@ -76,6 +135,9 @@ func (f *FederatedIdentityCredentialProperties) UnmarshalJSON(data []byte) error
 		switch key {
 		case "audiences":
 			err = unpopulate(val, "Audiences", &f.Audiences)
+			delete(rawMsg, key)
+		case "claimsMatchingExpression":
+			err = unpopulate(val, "ClaimsMatchingExpression", &f.ClaimsMatchingExpression)
 			delete(rawMsg, key)
 		case "issuer":
 			err = unpopulate(val, "Issuer", &f.Issuer)
@@ -496,6 +558,7 @@ func (u *UserAssignedIdentitiesListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type UserAssignedIdentityProperties.
 func (u UserAssignedIdentityProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "assignmentRestrictions", u.AssignmentRestrictions)
 	populate(objectMap, "clientId", u.ClientID)
 	populate(objectMap, "isolationScope", u.IsolationScope)
 	populate(objectMap, "principalId", u.PrincipalID)
@@ -512,6 +575,9 @@ func (u *UserAssignedIdentityProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "assignmentRestrictions":
+			err = unpopulate(val, "AssignmentRestrictions", &u.AssignmentRestrictions)
+			delete(rawMsg, key)
 		case "clientId":
 			err = unpopulate(val, "ClientID", &u.ClientID)
 			delete(rawMsg, key)

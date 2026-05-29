@@ -907,6 +907,38 @@ type CheckSKUAvailabilityParameter struct {
 	Type *string
 }
 
+// ClusterComputeProperties - Properties for a Cluster (AKS-backed) compute resource.
+type ClusterComputeProperties struct {
+	// CONSTANT; The type of compute resource.
+	// Field has constant value ComputeTypeCluster, any specified value is ignored.
+	ComputeType *ComputeType
+
+	// REQUIRED; Pools attached to this compute cluster.
+	Pools []*Pool
+
+	// ARM ID of the subnet used for compute.
+	SubnetArmID *string
+
+	// READ-ONLY; Creation time of the compute resource.
+	CreationTime *time.Time
+
+	// READ-ONLY; Error details for the compute resource.
+	Errors []*ErrorDetail
+
+	// READ-ONLY; Provisioning state of the compute resource.
+	ProvisioningState *ComputeProvisioningState
+}
+
+// GetComputeProperties implements the ComputePropertiesClassification interface for type ClusterComputeProperties.
+func (c *ClusterComputeProperties) GetComputeProperties() *ComputeProperties {
+	return &ComputeProperties{
+		ComputeType:       c.ComputeType,
+		CreationTime:      c.CreationTime,
+		Errors:            c.Errors,
+		ProvisioningState: c.ProvisioningState,
+	}
+}
+
 // CommitmentCost - Cognitive Services account commitment cost.
 type CommitmentCost struct {
 	// Commitment meter Id.
@@ -1100,6 +1132,49 @@ type CommitmentTierListResult struct {
 	Value []*CommitmentTier
 }
 
+// Compute - Cognitive Services compute resource. Supports polymorphic compute types
+// (Cluster, ContainerInstance) via the computeType discriminator in properties.
+type Compute struct {
+	// REQUIRED; Polymorphic properties of the compute resource. Use computeType to select Cluster or ContainerInstance.
+	Properties ComputePropertiesClassification
+
+	// Identity for the resource.
+	Identity *Identity
+
+	// The kind (type) of compute resource.
+	Kind *string
+
+	// The location of the compute resource.
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ComputeListResult - The list of cognitive services computes operation response.
+type ComputeListResult struct {
+	// The link used to get the next page of compute list.
+	NextLink *string
+
+	// Gets the list of computes.
+	Value []*Compute
+}
+
 // ComputeOperationStatus - The status of an async compute operation.
 type ComputeOperationStatus struct {
 	// The properties of the compute operation status.
@@ -1132,6 +1207,25 @@ type ComputeOperationStatusProperties struct {
 	// READ-ONLY; The start time of the operation.
 	StartTime *time.Time
 }
+
+// ComputeProperties - Base properties for all compute resource types.
+// The computeType discriminator determines the concrete property shape.
+type ComputeProperties struct {
+	// REQUIRED; The type of compute resource.
+	ComputeType *ComputeType
+
+	// READ-ONLY; Creation time of the compute resource.
+	CreationTime *time.Time
+
+	// READ-ONLY; Error details for the compute resource.
+	Errors []*ErrorDetail
+
+	// READ-ONLY; Provisioning state of the compute resource.
+	ProvisioningState *ComputeProvisioningState
+}
+
+// GetComputeProperties implements the ComputePropertiesClassification interface for type ComputeProperties.
+func (c *ComputeProperties) GetComputeProperties() *ComputeProperties { return c }
 
 // ConnectionAPIKey - Api key object for connection credential.
 type ConnectionAPIKey struct {
@@ -1267,6 +1361,56 @@ type ConnectionUsernamePassword struct {
 	Username      *string
 }
 
+// ConnectivityEndpoints - Network connectivity endpoints for a Container Instance compute.
+type ConnectivityEndpoints struct {
+	// READ-ONLY; The public IP address of the compute instance.
+	PublicIPAddress *string
+
+	// READ-ONLY; The SSH port for the compute instance.
+	SSHPort *int32
+}
+
+// ContainerInstanceComputeProperties - Properties for a Container Instance compute resource.
+type ContainerInstanceComputeProperties struct {
+	// CONSTANT; The type of compute resource.
+	// Field has constant value ComputeTypeContainerInstance, any specified value is ignored.
+	ComputeType *ComputeType
+
+	// REQUIRED; Container image URI (e.g., MCR or ACR image path) for the container instance.
+	ImageLink *string
+
+	// REQUIRED; ARM resource ID of the parent cluster that hosts this container instance.
+	TargetClusterID *string
+
+	// ISO 8601 duration before the idle instance is automatically shut down (e.g., 'PT30M').
+	IdleTimeBeforeShutdown *string
+
+	// SSH configuration for remote access to the container instance.
+	SSHSettings *SSHSettings
+
+	// READ-ONLY; Network connectivity endpoints assigned to the container instance.
+	ConnectivityEndpoints *ConnectivityEndpoints
+
+	// READ-ONLY; Creation time of the compute resource.
+	CreationTime *time.Time
+
+	// READ-ONLY; Error details for the compute resource.
+	Errors []*ErrorDetail
+
+	// READ-ONLY; Provisioning state of the compute resource.
+	ProvisioningState *ComputeProvisioningState
+}
+
+// GetComputeProperties implements the ComputePropertiesClassification interface for type ContainerInstanceComputeProperties.
+func (c *ContainerInstanceComputeProperties) GetComputeProperties() *ComputeProperties {
+	return &ComputeProperties{
+		ComputeType:       c.ComputeType,
+		CreationTime:      c.CreationTime,
+		Errors:            c.Errors,
+		ProvisioningState: c.ProvisioningState,
+	}
+}
+
 // CustomBlocklistConfig - Gets or sets the source to which filter applies.
 type CustomBlocklistConfig struct {
 	// If blocking would occur.
@@ -1344,18 +1488,6 @@ func (c *CustomKeysConnectionProperties) GetConnectionPropertiesV2() *Connection
 		Target:                      c.Target,
 		UseWorkspaceManagedIdentity: c.UseWorkspaceManagedIdentity,
 	}
-}
-
-// CustomTopicConfig - Gets or sets the source to which filter applies.
-type CustomTopicConfig struct {
-	// If blocking would occur.
-	Blocking *bool
-
-	// Content source to apply the Content Filters.
-	Source *RaiPolicyContentSource
-
-	// Name of RAI topic.
-	TopicName *string
 }
 
 // DefenderForAISetting - The Defender for AI resource.
@@ -1468,6 +1600,18 @@ type DeploymentModel struct {
 	CallRateLimit *CallRateLimit
 }
 
+// DeploymentPolicyEvaluationResult - Policy evaluation result for a single deployment.
+type DeploymentPolicyEvaluationResult struct {
+	// Error message if the evaluation outcome is Error.
+	ErrorMessage *string
+
+	// The evaluation outcome.
+	EvaluationOutcome *PolicyEvaluationOutcome
+
+	// Details of non-compliant policy assignments.
+	NonCompliantAssignments []*PolicyAssignmentEvaluationDetails
+}
+
 // DeploymentProperties - Properties of Cognitive Services account deployment.
 type DeploymentProperties struct {
 	// Internal use only.
@@ -1489,9 +1633,9 @@ type DeploymentProperties struct {
 	// The name of RAI policy.
 	RaiPolicyName *string
 
-	// Routing configuration for the deployment. This property is only applicable when the deployed model is 'model-router' version
-	// 2025-11-18 or later. Allows you to select the models subset for routing and the routing mode (balanced, accuracy, cost)
-	// for routing across all supported models or the model subset.
+	// Routing configuration for the model-router deployment. This property is only applicable when the deployed model is 'model-router'
+	// version 2025-11-18 or later. Allows you to select the models subset for routing and the routing mode (balanced, quality,
+	// cost) for routing across all supported models or the model subset.
 	Routing *DeploymentRouting
 
 	// Properties of Cognitive Services account deployment model. (Deprecated, please use Deployment.sku instead.)
@@ -1525,13 +1669,14 @@ type DeploymentProperties struct {
 	RateLimits []*ThrottlingRule
 }
 
-// DeploymentRouting - Routing configuration for the deployment. Specifies how requests are routed across multiple models.
+// DeploymentRouting - Routing configuration for the model-router deployment. Specifies how requests are routed across multiple
+// models.
 type DeploymentRouting struct {
-	// The routing mode that determines how requests are distributed across models.
+	// The model-router routing mode that determines how requests are distributed across models.
 	Mode *RoutingMode
 
-	// Optional. The list of models that the model router can use to route requests across. If not specified, the model router
-	// will route to all available models specified in the model-router version.
+	// Optional. The list of model-router supported models that the model router can use to route requests across. If not specified,
+	// the model router will route to all available models specified in the model-router version.
 	Models []*DeploymentModel
 }
 
@@ -1555,6 +1700,18 @@ type DeploymentScaleSettings struct {
 
 	// READ-ONLY; Deployment active capacity. This value might be different from `capacity` if customer recently updated `capacity`.
 	ActiveCapacity *int32
+}
+
+// DeploymentSizeCapacity - Capacity information for a specific deployment size.
+type DeploymentSizeCapacity struct {
+	// READ-ONLY; The largest contiguous deployment capacity available for this deployment size.
+	LargestDeploymentCapacity *int32
+
+	// READ-ONLY; The number of accelerators required per model instance.
+	ModelInstanceAcceleratorCount *int32
+
+	// READ-ONLY; The total available capacity for this deployment size.
+	TotalAvailableCapacity *int32
 }
 
 // DomainAvailability - Domain availability.
@@ -1657,6 +1814,36 @@ type ErrorDetail struct {
 
 	// READ-ONLY; The error target.
 	Target *string
+}
+
+// EvaluateDeploymentPoliciesDeployment - A hypothetical deployment definition used for policy dry-run evaluation.
+type EvaluateDeploymentPoliciesDeployment struct {
+	// REQUIRED; The name of the hypothetical deployment.
+	Name *string
+
+	// REQUIRED; Properties of the hypothetical deployment.
+	Properties *EvaluateDeploymentPoliciesDeploymentProperties
+}
+
+// EvaluateDeploymentPoliciesDeploymentProperties - Properties of a hypothetical deployment for policy evaluation.
+type EvaluateDeploymentPoliciesDeploymentProperties struct {
+	// REQUIRED; The model to evaluate.
+	Model *DeploymentModel
+
+	// The name of the RAI policy to evaluate.
+	RaiPolicyName *string
+}
+
+// EvaluateDeploymentPoliciesRequest - Request body for the evaluateDeploymentPolicies action.
+type EvaluateDeploymentPoliciesRequest struct {
+	// REQUIRED; The list of hypothetical deployments to evaluate against Azure Policy.
+	Deployments []*EvaluateDeploymentPoliciesDeployment
+}
+
+// EvaluateDeploymentPoliciesResponse - Response body for the evaluateDeploymentPolicies action.
+type EvaluateDeploymentPoliciesResponse struct {
+	// Per-deployment policy evaluation results, keyed by deployment name.
+	Results map[string]*DeploymentPolicyEvaluationResult
 }
 
 // FoundryAutoUpgrade - Represents the foundry auto-upgrade configuration for a Cognitive Services account.
@@ -1840,6 +2027,198 @@ func (m *ManagedAgentDeployment) GetAgentDeploymentProperties() *AgentDeployment
 		State:             m.State,
 		Tags:              m.Tags,
 	}
+}
+
+// ManagedComputeCapacity - Managed compute capacity information for Cognitive Services managed compute deployments.
+// Provides available accelerator capacity per type and region at the subscription level.
+type ManagedComputeCapacity struct {
+	// Properties of the managed compute capacity resource.
+	Properties *ManagedComputeCapacityProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ManagedComputeCapacityListResult - The list of managed compute capacities response.
+type ManagedComputeCapacityListResult struct {
+	// The link used to get the next page of managed compute capacities.
+	NextLink *string
+
+	// READ-ONLY; Gets the list of managed compute capacities.
+	Value []*ManagedComputeCapacity
+}
+
+// ManagedComputeCapacityProperties - Properties of a managed compute capacity resource.
+type ManagedComputeCapacityProperties struct {
+	// READ-ONLY; The type of accelerator (e.g., Azure.A100, Azure.H100).
+	AcceleratorType *string
+
+	// READ-ONLY; The number of available accelerators in the region.
+	AvailableAccelerators *int32
+
+	// READ-ONLY; Capacity information broken down by deployment size.
+	DeploymentSizeCapacities []*DeploymentSizeCapacity
+
+	// READ-ONLY; The Azure region where the capacity is available.
+	Location *string
+}
+
+// ManagedComputeDeployment - Cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
+type ManagedComputeDeployment struct {
+	// Properties of the Cognitive Services managed compute deployment.
+	Properties *ManagedComputeDeploymentProperties
+
+	// The resource model definition representing SKU
+	SKU *SKU
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ManagedComputeDeploymentInfo - Deployment detail within a managed compute usage entry.
+type ManagedComputeDeploymentInfo struct {
+	// Number of GPUs consumed by this deployment.
+	AcceleratorCount *int64
+
+	// Full ARM resource ID of the deployment.
+	DeploymentID *string
+
+	// Number of instances for this deployment.
+	InstanceCount *int32
+
+	// Model name (e.g., 'azureml://registries//models//versions/gpt-4o').
+	ModelID *string
+
+	// Full ARM resource ID of the account/project.
+	ProjectID *string
+}
+
+// ManagedComputeDeploymentListResult - The list of managed compute deployments.
+type ManagedComputeDeploymentListResult struct {
+	// The link used to get the next page of managed compute deployments.
+	NextLink *string
+
+	// READ-ONLY; Gets the list of managed compute deployments and their properties.
+	Value []*ManagedComputeDeployment
+}
+
+// ManagedComputeDeploymentProperties - Properties of a Cognitive Services managed compute deployment.
+type ManagedComputeDeploymentProperties struct {
+	// REQUIRED; AzureML Registry model asset URI. Required on creation; immutable after creation.
+	// Example: azureml://registries/{registry}/models/{model}/versions/{version}
+	Model *string
+
+	// Accelerator type (e.g., H100_80GB). Optional on creation; immutable after creation.
+	AcceleratorType *string
+
+	// Foundry compute ARM resource ID for VM-backed managed compute deployments. Required when sku.name is VmManagedCompute;
+	// immutable after creation.
+	ComputeID *string
+
+	// Deployment template identifier. Optional on creation.
+	// Accepts an AzureML Registry deployment template URI or a project-scoped deployment template path for VmManagedCompute.
+	// Examples: azureml://registries/{registry}/deploymenttemplates/{template}/versions/{version}, projects/{project}/deploymentTemplates/{template}/versions/{version}
+	DeploymentTemplate *string
+
+	// Scheduling priority for VM-backed managed compute deployments. Immutable after creation.
+	Priority *string
+
+	// Template auto-upgrade policy. Defaults to OnceNewDefaultVersionAvailable.
+	VersionUpgradeOption *DeploymentModelVersionUpgradeOption
+
+	// READ-ONLY; Read-only. Number of accelerators (GPUs) consumed by each model instance, sourced from the deployment template.
+	AcceleratorsPerInstance *int32
+
+	// READ-ONLY; Read-only. Status message and timestamp from the last provisioning operation.
+	ProvisioningDetails *ManagedComputeDeploymentProvisioningDetails
+
+	// READ-ONLY; Read-only. Current provisioning state.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Read-only. Inference route paths relative to the account endpoint. Populated when provisioningState is Succeeded.
+	Routes *ManagedComputeDeploymentRoutes
+
+	// READ-ONLY; Read-only. Total accelerators allocated: sku.capacity (instances) x acceleratorsPerInstance.
+	TotalAccelerators *int32
+}
+
+// ManagedComputeDeploymentProvisioningDetails - Provisioning status details for a managed compute deployment.
+type ManagedComputeDeploymentProvisioningDetails struct {
+	// Timestamp of the last provisioning operation.
+	LastOperationTimestamp *time.Time
+
+	// A human-readable status message from the last provisioning operation.
+	Message *string
+}
+
+// ManagedComputeDeploymentRoutes - Inference route paths for a managed compute deployment, relative to the account endpoint.
+// Populated when provisioningState is Succeeded.
+type ManagedComputeDeploymentRoutes struct {
+	// Relative path to the chat completions scoring endpoint.
+	ChatCompletionsScoringPath *string
+
+	// Relative path to the messages API scoring endpoint.
+	MessagesAPIScoringPath *string
+
+	// Relative path to the Swagger/OpenAPI endpoint.
+	Swagger *string
+}
+
+// ManagedComputeUsage - Managed compute quota usage for a specific SKU.
+type ManagedComputeUsage struct {
+	// Current value for this metric.
+	CurrentValue *float64
+
+	// Deployments consuming this managed compute quota.
+	Deployments []*ManagedComputeDeploymentInfo
+
+	// Maximum value for this metric.
+	Limit *float64
+
+	// Offer scope (e.g., 'Global', 'Datazone-US').
+	OfferScope *string
+
+	// The unit of the metric.
+	Unit *UnitType
+
+	// READ-ONLY; Fully qualified resource ID for the managed compute usage.
+	ID *string
+
+	// READ-ONLY; The name information for the metric.
+	Name *MetricName
+
+	// READ-ONLY; The resource type.
+	Type *string
+}
+
+// ManagedComputeUsageListResult - List of managed compute quota entries.
+type ManagedComputeUsageListResult struct {
+	// The link used to get the next page of managed compute usages.
+	NextLink *string
+
+	// Per-SKU managed compute quota usage entries.
+	Value []*ManagedComputeUsage
 }
 
 type ManagedIdentityAuthTypeConnectionProperties struct {
@@ -2588,6 +2967,12 @@ func (p *PATAuthTypeConnectionProperties) GetConnectionPropertiesV2() *Connectio
 	}
 }
 
+// PatchResourceSKU - The object being used to update sku of a resource, in general used for PATCH operations.
+type PatchResourceSKU struct {
+	// The resource model definition representing SKU
+	SKU *SKU
+}
+
 // PatchResourceTagsAndSKU - The object being used to update tags and sku of a resource, in general used for PATCH operations.
 type PatchResourceTagsAndSKU struct {
 	// The resource model definition representing SKU
@@ -2595,6 +2980,66 @@ type PatchResourceTagsAndSKU struct {
 
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// PolicyAssignmentEvaluationDetails - Details of a non-compliant policy assignment.
+type PolicyAssignmentEvaluationDetails struct {
+	// The policy assignment ID.
+	AssignmentID *string
+
+	// The policy effect (e.g., Deny, Audit).
+	Effect *string
+
+	// The evaluation outcome for this assignment.
+	EvaluationOutcome *PolicyEvaluationOutcome
+
+	// Expression-level evaluation details.
+	ExpressionEvaluations []*PolicyExpressionEvaluationDetails
+
+	// The reason for non-compliance.
+	NonComplianceReason *string
+
+	// The policy definition ID.
+	PolicyDefinitionID *string
+
+	// The policy set definition ID.
+	PolicySetDefinitionID *string
+}
+
+// PolicyExpressionEvaluationDetails - Details of a policy expression evaluation.
+type PolicyExpressionEvaluationDetails struct {
+	// The policy expression.
+	Expression *string
+
+	// The kind of expression.
+	ExpressionKind *string
+
+	// The actual value of the expression.
+	ExpressionValue *string
+
+	// The operator used in evaluation.
+	Operator *string
+
+	// The evaluation result.
+	Result *string
+
+	// The target value of the expression.
+	TargetValue *string
+}
+
+// Pool - A compute pool configuration.
+type Pool struct {
+	// REQUIRED; The instance type (VM SKU) used in the pool.
+	InstanceType *string
+
+	// REQUIRED; The name of the pool.
+	Name *string
+
+	// REQUIRED; The number of nodes in the pool.
+	NodeCount *int32
+
+	// REQUIRED; The VM priority of the pool.
+	VMPriority *VMPriority
 }
 
 // PrivateEndpoint - The private endpoint resource.
@@ -3065,51 +3510,6 @@ type RaiContentFilterProperties struct {
 	Source *RaiPolicyContentSource
 }
 
-// RaiExternalSafetyProvider - Cognitive Services Rai External Safety provider.
-type RaiExternalSafetyProvider struct {
-	// Properties of Cognitive Services Rai External Safety provider.
-	Properties *RaiExternalSafetyProviderProperties
-
-	// READ-ONLY; Resource Etag.
-	Etag *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// RaiExternalSafetyProviderProperties - RAI External SafetyProvider properties.
-type RaiExternalSafetyProviderProperties struct {
-	// Creation time of the safety provider.
-	CreatedAt *time.Time
-
-	// Last modified time of the safety provider.
-	LastModifiedAt *time.Time
-
-	// Safety provider mode sync/async.
-	Mode *string
-
-	// The unique identifier of the safety provider.
-	ProviderID *string
-
-	// Name of the safety provider.
-	ProviderName *string
-
-	// Webhook URL for the safety provider.
-	URL *string
-}
-
 // RaiExternalSafetyProviderResult - The list of cognitive services RAI External Safety Providers.
 type RaiExternalSafetyProviderResult struct {
 	// The link used to get the next page of Rai External Safety Provider.
@@ -3246,9 +3646,6 @@ type RaiPolicyProperties struct {
 
 	// The list of custom Blocklist.
 	CustomBlocklists []*CustomBlocklistConfig
-
-	// The list of custom rai topics.
-	CustomTopics []*CustomTopicConfig
 
 	// Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronous_filter =3. Please
 	// use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in previous version.
@@ -3622,6 +4019,15 @@ type SKUResource struct {
 	SKU *SKU
 }
 
+// SSHSettings - SSH configuration for a Container Instance compute.
+type SSHSettings struct {
+	// Whether SSH admin access is enabled.
+	AdminEnabled *bool
+
+	// The SSH public key for authenticating to the compute instance.
+	SSHPublicKey *string
+}
+
 // SafetyProviderConfig - Gets or sets the source to which safety providers applies.
 type SafetyProviderConfig struct {
 	// If blocking would occur.
@@ -3925,4 +4331,77 @@ type VirtualNetworkRule struct {
 
 	// Gets the state of virtual network rule.
 	State *string
+}
+
+// Workbench resource under a Cognitive Services project.
+// Provides interactive compute with data access for AI development.
+type Workbench struct {
+	// REQUIRED; Properties of the workbench resource.
+	Properties *WorkbenchProperties
+
+	// Identity for the resource.
+	Identity *Identity
+
+	// The location of the workbench resource.
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkbenchListResult - The list of workbenches operation response.
+type WorkbenchListResult struct {
+	// The link used to get the next page of workbench list.
+	NextLink *string
+
+	// Gets the list of workbenches.
+	Value []*Workbench
+}
+
+// WorkbenchProperties - Properties for a Workbench resource.
+type WorkbenchProperties struct {
+	// REQUIRED; Container image URI (e.g., MCR or ACR image path) for the workbench.
+	ImageLink *string
+
+	// REQUIRED; ARM resource ID of the parent cluster that hosts this workbench.
+	TargetClusterID *string
+
+	// The dataset ID to mount for the workbench.
+	DatasetID *string
+
+	// ISO 8601 duration before the idle workbench is automatically shut down (e.g., 'PT30M').
+	IdleTimeBeforeShutdown *string
+
+	// SSH configuration for remote access to the workbench.
+	SSHSettings *SSHSettings
+
+	// READ-ONLY; Network connectivity endpoints assigned to the workbench.
+	ConnectivityEndpoints *ConnectivityEndpoints
+
+	// READ-ONLY; Creation time of the workbench resource.
+	CreationTime *time.Time
+
+	// READ-ONLY; Error details for the workbench resource.
+	Errors []*ErrorDetail
+
+	// READ-ONLY; Provisioning state of the workbench resource.
+	ProvisioningState *ComputeProvisioningState
+
+	// READ-ONLY; The web endpoint URL for accessing the workbench.
+	WebEndpoint *string
 }

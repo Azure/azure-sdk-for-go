@@ -18,6 +18,8 @@ import (
 
 // ExportPipelinesClient contains the methods for the ExportPipelines group.
 // Don't use this type directly, use NewExportPipelinesClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type ExportPipelinesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewExportPipelinesClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreate - Creates an export pipeline for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - exportPipelineName - The name of the export pipeline.
@@ -68,8 +68,6 @@ func (client *ExportPipelinesClient) BeginCreate(ctx context.Context, resourceGr
 
 // Create - Creates an export pipeline for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *ExportPipelinesClient) create(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, exportPipelineCreateParameters ExportPipeline, options *ExportPipelinesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExportPipelinesClient.BeginCreate"
@@ -115,8 +113,8 @@ func (client *ExportPipelinesClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, exportPipelineCreateParameters); err != nil {
@@ -127,8 +125,6 @@ func (client *ExportPipelinesClient) createCreateRequest(ctx context.Context, re
 
 // BeginDelete - Deletes an export pipeline from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - exportPipelineName - The name of the export pipeline.
@@ -153,8 +149,6 @@ func (client *ExportPipelinesClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Deletes an export pipeline from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *ExportPipelinesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExportPipelinesClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *ExportPipelinesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the properties of the export pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - exportPipelineName - The name of the export pipeline.
@@ -259,8 +251,8 @@ func (client *ExportPipelinesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *ExportPipelinesClient) getHandleResponse(resp *http.Response) (Exp
 }
 
 // NewListPager - Lists all export pipelines for the specified container registry.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - ExportPipelinesClientListOptions contains the optional parameters for the ExportPipelinesClient.NewListPager
@@ -324,8 +314,8 @@ func (client *ExportPipelinesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

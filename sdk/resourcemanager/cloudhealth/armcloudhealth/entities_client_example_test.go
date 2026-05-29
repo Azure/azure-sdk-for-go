@@ -107,7 +107,7 @@ func ExampleEntitiesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.EntitiesClientCreateOrUpdateResponse{
-	// 	Entity: &armcloudhealth.Entity{
+	// 	Entity: armcloudhealth.Entity{
 	// 		Properties: &armcloudhealth.EntityProperties{
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 	// 			DisplayName: to.Ptr("My entity"),
@@ -230,7 +230,7 @@ func ExampleEntitiesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.EntitiesClientGetResponse{
-	// 	Entity: &armcloudhealth.Entity{
+	// 	Entity: armcloudhealth.Entity{
 	// 		Properties: &armcloudhealth.EntityProperties{
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 	// 			DisplayName: to.Ptr("olsaxmichzpzqzpdworuxbvucaazeoxvnaujlvbpjijarbnfdmskksgdtyfdlfuftoecrgmmenvvgfkzlfcogkyhk"),

@@ -37,7 +37,7 @@ func ExampleAuthenticationSettingsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.AuthenticationSettingsClientCreateOrUpdateResponse{
-	// 	AuthenticationSetting: &armcloudhealth.AuthenticationSetting{
+	// 	AuthenticationSetting: armcloudhealth.AuthenticationSetting{
 	// 		Properties: &armcloudhealth.ManagedIdentityAuthenticationSettingProperties{
 	// 			ManagedIdentityName: to.Ptr("SystemAssigned"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
@@ -100,7 +100,7 @@ func ExampleAuthenticationSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.AuthenticationSettingsClientGetResponse{
-	// 	AuthenticationSetting: &armcloudhealth.AuthenticationSetting{
+	// 	AuthenticationSetting: armcloudhealth.AuthenticationSetting{
 	// 		Properties: &armcloudhealth.ManagedIdentityAuthenticationSettingProperties{
 	// 			ManagedIdentityName: to.Ptr("SystemAssigned"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),

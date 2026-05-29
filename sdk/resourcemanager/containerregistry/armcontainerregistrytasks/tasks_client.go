@@ -18,6 +18,8 @@ import (
 
 // TasksClient contains the methods for the Tasks group.
 // Don't use this type directly, use NewTasksClient() instead.
+//
+// Generated from API version 2025-03-01-preview
 type TasksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewTasksClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // Create - Creates a task for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - taskName - The name of the container registry task.
@@ -94,8 +94,8 @@ func (client *TasksClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, taskCreateParameters); err != nil {
@@ -115,8 +115,6 @@ func (client *TasksClient) createHandleResponse(resp *http.Response) (TasksClien
 
 // Delete - Deletes a specified task.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - taskName - The name of the container registry task.
@@ -166,15 +164,13 @@ func (client *TasksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the properties of a specified task.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - taskName - The name of the container registry task.
@@ -225,8 +221,8 @@ func (client *TasksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -242,8 +238,6 @@ func (client *TasksClient) getHandleResponse(resp *http.Response) (TasksClientGe
 
 // GetDetails - Returns a task with extended information that includes all secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - taskName - The name of the container registry task.
@@ -294,8 +288,8 @@ func (client *TasksClient) getDetailsCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -310,8 +304,6 @@ func (client *TasksClient) getDetailsHandleResponse(resp *http.Response) (TasksC
 }
 
 // NewListPager - Lists all the tasks for a specified container registry.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - options - TasksClientListOptions contains the optional parameters for the TasksClient.NewListPager method.
@@ -358,8 +350,8 @@ func (client *TasksClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -375,8 +367,6 @@ func (client *TasksClient) listHandleResponse(resp *http.Response) (TasksClientL
 
 // Update - Updates a task with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - taskName - The name of the container registry task.
@@ -428,8 +418,8 @@ func (client *TasksClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, taskUpdateParameters); err != nil {

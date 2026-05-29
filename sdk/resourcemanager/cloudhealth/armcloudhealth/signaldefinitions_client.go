@@ -11,14 +11,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // SignalDefinitionsClient contains the methods for the SignalDefinitions group.
 // Don't use this type directly, use NewSignalDefinitionsClient() instead.
+//
+// Generated from API version 2025-05-01-preview
 type SignalDefinitionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewSignalDefinitionsClient(subscriptionID string, credential azcore.TokenCr
 
 // CreateOrUpdate - Create a SignalDefinition
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - signalDefinitionName - Name of the signal definition. Must be unique within a health model.
@@ -96,8 +96,8 @@ func (client *SignalDefinitionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -117,8 +117,6 @@ func (client *SignalDefinitionsClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Delete a SignalDefinition
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - signalDefinitionName - Name of the signal definition. Must be unique within a health model.
@@ -169,15 +167,13 @@ func (client *SignalDefinitionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a SignalDefinition
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - signalDefinitionName - Name of the signal definition. Must be unique within a health model.
@@ -228,8 +224,8 @@ func (client *SignalDefinitionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -244,8 +240,6 @@ func (client *SignalDefinitionsClient) getHandleResponse(resp *http.Response) (S
 }
 
 // NewListByHealthModelPager - List SignalDefinition resources by HealthModel
-//
-// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - options - SignalDefinitionsClientListByHealthModelOptions contains the optional parameters for the SignalDefinitionsClient.NewListByHealthModelPager
@@ -293,11 +287,11 @@ func (client *SignalDefinitionsClient) listByHealthModelCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
+	reqQP.Set("api-version", version20250501Preview)
 	if options != nil && options.Timestamp != nil {
-		reqQP.Set("timestamp", options.Timestamp.Format(time.RFC3339Nano))
+		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

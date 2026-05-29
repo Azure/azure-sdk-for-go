@@ -13,11 +13,11 @@
 
 Testing is built into the Go toolchain as well with the `testing` library. The testing infrastructure located in the `sdk/internal/recording` directory takes care of generating recordings, establishing the mode a test is being run in (options are "record" or "playback") and reading environment variables. The HTTP traffic is intercepted by a custom [test-proxy][test_proxy_docs] in both the "recording" and "playback" case to either persist or read HTTP interactions from a file. There is one small step that needs to be added to you client creation to route traffic to this test proxy. All three of these modes are specified in the `AZURE_RECORD_MODE` environment variable:
 
-| Mode | Powershell Command | Usage |
-| ---- | ------------------ | ----- |
-| record | `$ENV:AZURE_RECORD_MODE="record"` | Running against a live service and recording HTTP interactions |
-| playback | `$ENV:AZURE_RECORD_MODE="playback"` | Running tests against recording HTTP interactiosn |
-| live | `$ENV:AZURE_RECORD_MODE="live"` | Bypassing test proxy, running against live service, and not recording HTTP interactions (used by live pipelines) |
+| Mode     | Powershell Command                  | Usage                                                                                                            |
+|----------|-------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| record   | `$ENV:AZURE_RECORD_MODE="record"`   | Running against a live service and recording HTTP interactions                                                   |
+| playback | `$ENV:AZURE_RECORD_MODE="playback"` | Running tests against recording HTTP interactiosn                                                                |
+| live     | `$ENV:AZURE_RECORD_MODE="live"`     | Bypassing test proxy, running against live service, and not recording HTTP interactions (used by live pipelines) |
 
 By default the recording package will automatically install and run the test proxy server. If there are issues with auto-install or the proxy needs to be run standalone, it can be run manually instead. To get started first [install test-proxy][test_proxy_install] via the standalone executable, then to start the proxy, from the root of the repository, run the command `test-proxy start`. When invoking tests, set the environment variable `PROXY_MANUAL_START` to `true`.
 

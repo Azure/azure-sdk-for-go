@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/Fleets_CreateOrUpdate.json
+// Generated from example definition: 2026-03-02-preview/Fleets_CreateOrUpdate.json
 func ExampleFleetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,13 +54,13 @@ func ExampleFleetsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetsClientCreateResponse{
-	// 	Fleet: &armcontainerservicefleet.Fleet{
+	// 	Fleet: armcontainerservicefleet.Fleet{
 	// 		Tags: map[string]*string{
 	// 		},
 	// 		Location: to.Ptr("East US"),
@@ -109,7 +109,7 @@ func ExampleFleetsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_Delete.json
+// Generated from example definition: 2026-03-02-preview/Fleets_Delete.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleFleetsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -135,7 +135,7 @@ func ExampleFleetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_Get.json
+// Generated from example definition: 2026-03-02-preview/Fleets_Get.json
 func ExampleFleetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleFleetsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetsClientGetResponse{
-	// 	Fleet: &armcontainerservicefleet.Fleet{
+	// 	Fleet: armcontainerservicefleet.Fleet{
 	// 		Tags: map[string]*string{
 	// 		},
 	// 		Location: to.Ptr("East US"),
@@ -203,7 +203,7 @@ func ExampleFleetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_ListByResourceGroup.json
+// Generated from example definition: 2026-03-02-preview/Fleets_ListByResourceGroup.json
 func ExampleFleetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_ListBySub.json
+// Generated from example definition: 2026-03-02-preview/Fleets_ListBySub.json
 func ExampleFleetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -359,7 +359,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_ListCredentialsResult.json
+// Generated from example definition: 2026-03-02-preview/Fleets_ListCredentialsResult.json
 func ExampleFleetsClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,7 +378,7 @@ func ExampleFleetsClient_ListCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetsClientListCredentialsResponse{
-	// 	FleetCredentialResults: &armcontainerservicefleet.FleetCredentialResults{
+	// 	FleetCredentialResults: armcontainerservicefleet.FleetCredentialResults{
 	// 		Kubeconfigs: []*armcontainerservicefleet.FleetCredentialResult{
 	// 			{
 	// 				Name: to.Ptr("credentialName1"),
@@ -389,7 +389,7 @@ func ExampleFleetsClient_ListCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_PatchTags.json
+// Generated from example definition: 2026-03-02-preview/Fleets_PatchTags.json
 func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -412,13 +412,13 @@ func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetsClientUpdateAsyncResponse{
-	// 	Fleet: &armcontainerservicefleet.Fleet{
+	// 	Fleet: armcontainerservicefleet.Fleet{
 	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1"),
 	// 		Name: to.Ptr("fleet-1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/fleets"),
@@ -459,7 +459,7 @@ func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Fleets_Update.json
+// Generated from example definition: 2026-03-02-preview/Fleets_Update.json
 func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,13 +485,13 @@ func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetsClientUpdateAsyncResponse{
-	// 	Fleet: &armcontainerservicefleet.Fleet{
+	// 	Fleet: armcontainerservicefleet.Fleet{
 	// 		Tags: map[string]*string{
 	// 		},
 	// 		Location: to.Ptr("East US"),

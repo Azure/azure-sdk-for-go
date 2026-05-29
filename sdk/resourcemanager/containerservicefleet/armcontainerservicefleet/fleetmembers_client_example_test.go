@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/FleetMembers_Create.json
+// Generated from example definition: 2026-03-02-preview/FleetMembers_Create.json
 func ExampleFleetMembersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,13 +33,13 @@ func ExampleFleetMembersClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetMembersClientCreateResponse{
-	// 	FleetMember: &armcontainerservicefleet.FleetMember{
+	// 	FleetMember: armcontainerservicefleet.FleetMember{
 	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1/members/member-1"),
 	// 		Name: to.Ptr("member-1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/members"),
@@ -67,7 +67,7 @@ func ExampleFleetMembersClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/FleetMembers_Delete.json
+// Generated from example definition: 2026-03-02-preview/FleetMembers_Delete.json
 func ExampleFleetMembersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleFleetMembersClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -93,7 +93,7 @@ func ExampleFleetMembersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/FleetMembers_Get.json
+// Generated from example definition: 2026-03-02-preview/FleetMembers_Get.json
 func ExampleFleetMembersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleFleetMembersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewFleetMembersClient().Get(ctx, "rgfleets", "fleet1", "fleet1", nil)
+	res, err := clientFactory.NewFleetMembersClient().Get(ctx, "rgfleets", "fleet1", "member1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -112,11 +112,33 @@ func ExampleFleetMembersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetMembersClientGetResponse{
-	// 	FleetMember: &armcontainerservicefleet.FleetMember{
+	// 	FleetMember: armcontainerservicefleet.FleetMember{
 	// 		Properties: &armcontainerservicefleet.FleetMemberProperties{
 	// 			ClusterResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster-1"),
 	// 			Group: to.Ptr("fleet1"),
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.FleetMemberProvisioningStateSucceeded),
+	// 			Labels: map[string]*string{
+	// 				"env": to.Ptr("production"),
+	// 				"fleet.azure.com/cluster-name": to.Ptr("cluster1"),
+	// 				"fleet.azure.com/location": to.Ptr("East US"),
+	// 				"fleet.azure.com/member-name": to.Ptr("member1"),
+	// 				"fleet.azure.com/resource-group": to.Ptr("rgfleets"),
+	// 				"fleet.azure.com/subscription-id": to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			},
+	// 			Status: &armcontainerservicefleet.FleetMemberStatus{
+	// 				LastOperationID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 			},
+	// 			MeshProperties: &armcontainerservicefleet.MeshProperties{
+	// 				CiliumProperties: &armcontainerservicefleet.CiliumProperties{
+	// 					ID: to.Ptr[int32](1),
+	// 					Name: to.Ptr("cilium-1"),
+	// 				},
+	// 				Status: &armcontainerservicefleet.MeshMemberStatus{
+	// 					State: to.Ptr(armcontainerservicefleet.MeshMemberStateConnected),
+	// 					LastOperationID: to.Ptr("abcdef78-1234-1234-1234-123456789012"),
+	// 				},
+	// 				ClusterMeshProfileResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet/clusterMeshProfiles/clusterMeshProfile-1"),
+	// 			},
 	// 		},
 	// 		ETag: to.Ptr("kd30rkdfo49="),
 	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1/members/member-1"),
@@ -134,7 +156,7 @@ func ExampleFleetMembersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/FleetMembers_ListByFleet.json
+// Generated from example definition: 2026-03-02-preview/FleetMembers_ListByFleet.json
 func ExampleFleetMembersClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +212,7 @@ func ExampleFleetMembersClient_NewListByFleetPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/FleetMembers_Update.json
+// Generated from example definition: 2026-03-02-preview/FleetMembers_Update.json
 func ExampleFleetMembersClient_BeginUpdateAsync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,13 +233,13 @@ func ExampleFleetMembersClient_BeginUpdateAsync() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetMembersClientUpdateAsyncResponse{
-	// 	FleetMember: &armcontainerservicefleet.FleetMember{
+	// 	FleetMember: armcontainerservicefleet.FleetMember{
 	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1/members/member-1"),
 	// 		Name: to.Ptr("member-1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/members"),

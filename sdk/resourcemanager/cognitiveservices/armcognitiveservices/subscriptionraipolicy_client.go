@@ -18,6 +18,8 @@ import (
 
 // SubscriptionRaiPolicyClient contains the methods for the SubscriptionRaiPolicy group.
 // Don't use this type directly, use NewSubscriptionRaiPolicyClient() instead.
+//
+// Generated from API version 2026-03-15-preview
 type SubscriptionRaiPolicyClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSubscriptionRaiPolicyClient(subscriptionID string, credential azcore.Tok
 
 // CreateOrUpdate - Update the state of specified Content Filters associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
 //   - raiPolicy - Properties describing the Content Filters.
 //   - options - SubscriptionRaiPolicyClientCreateOrUpdateOptions contains the optional parameters for the SubscriptionRaiPolicyClient.CreateOrUpdate
@@ -85,8 +85,8 @@ func (client *SubscriptionRaiPolicyClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, raiPolicy); err != nil {
@@ -106,8 +106,6 @@ func (client *SubscriptionRaiPolicyClient) createOrUpdateHandleResponse(resp *ht
 
 // BeginDelete - Deletes the specified Content Filters associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
 //   - options - SubscriptionRaiPolicyClientBeginDeleteOptions contains the optional parameters for the SubscriptionRaiPolicyClient.BeginDelete
 //     method.
@@ -130,8 +128,6 @@ func (client *SubscriptionRaiPolicyClient) BeginDelete(ctx context.Context, raiP
 
 // Delete - Deletes the specified Content Filters associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 func (client *SubscriptionRaiPolicyClient) deleteOperation(ctx context.Context, raiPolicyName string, options *SubscriptionRaiPolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SubscriptionRaiPolicyClient.BeginDelete"
@@ -169,15 +165,13 @@ func (client *SubscriptionRaiPolicyClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the specified Content Filters associated with the Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
 //   - options - SubscriptionRaiPolicyClientGetOptions contains the optional parameters for the SubscriptionRaiPolicyClient.Get
 //     method.
@@ -219,8 +213,8 @@ func (client *SubscriptionRaiPolicyClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

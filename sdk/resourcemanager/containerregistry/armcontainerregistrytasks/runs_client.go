@@ -19,6 +19,8 @@ import (
 
 // RunsClient contains the methods for the Runs group.
 // Don't use this type directly, use NewRunsClient() instead.
+//
+// Generated from API version 2025-03-01-preview
 type RunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // Cancel - Cancel an existing run.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - runID - The run ID.
@@ -93,15 +93,13 @@ func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the detailed information for a given run.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - runID - The run ID.
@@ -152,8 +150,8 @@ func (client *RunsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -169,8 +167,6 @@ func (client *RunsClient) getHandleResponse(resp *http.Response) (RunsClientGetR
 
 // GetLogSasURL - Gets a link to download the run logs.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - runID - The run ID.
@@ -221,8 +217,8 @@ func (client *RunsClient) getLogSasURLCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -237,8 +233,6 @@ func (client *RunsClient) getLogSasURLHandleResponse(resp *http.Response) (RunsC
 }
 
 // NewListPager - Gets all the runs for a registry.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - options - RunsClientListOptions contains the optional parameters for the RunsClient.NewListPager method.
@@ -291,8 +285,8 @@ func (client *RunsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -308,8 +302,6 @@ func (client *RunsClient) listHandleResponse(resp *http.Response) (RunsClientLis
 
 // Update - Patch the run properties.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - runID - The run ID.
@@ -361,8 +353,8 @@ func (client *RunsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, runUpdateParameters); err != nil {

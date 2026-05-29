@@ -1,0 +1,20 @@
+{
+  "succeed_to_regenerate": [
+    "armcloudhealth",
+    "armcommerce",
+    "armcomputebulkactions",
+    "armcomputefleet",
+    "armcomputelimit",
+    "armcomputerecommender",
+    "armcomputeschedule",
+    "armconnectedcache",
+    "armcontainerorchestratorruntime",
+    "armcontainerregistry",
+    "armcontainerregistrytasks",
+    "armcontainerservicefleet"
+  ],
+  "fail_to_regenerate": [],
+  "not_found_api_version": [],
+  "time_to_regenerate": "2026-05-29 02:02:13.980038",
+  "typespec_go_commit_hash": "6740d80591b2c9e4b93357842cf799156a6fec91"
+}

@@ -8,17 +8,16 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
-	"io"
-	"net/http"
-	"strconv"
-	"strings"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"io"
+	"net/http"
+	"strconv"
+	"strings"
+	"time"
 )
 
 // ContainerClient contains the methods for the Container group.
@@ -1517,7 +1516,6 @@ func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, mul
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"multipart/mixed"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
-	req.Raw().Header["Content-Type"] = []string{multipartContentType}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}

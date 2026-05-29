@@ -217,31 +217,14 @@ func (c *ContainerClient) executeOneChunk(
 			localOpts.ContinuationToken = &continuation
 		}
 
-		rangeID := chunk.rangeID
-		azResponse, err := c.database.client.sendQueryRequest(
-			path,
-			ctx,
-			chunk.query,
-			chunk.params,
-			operationContext,
-			&localOpts,
-			func(req *policy.Request) {
-				req.Raw().Header.Set(cosmosHeaderPartitionKeyRangeId, rangeID)
-			},
-		)
+		items, charge, ct, err := c.executeOneChunkPage(ctx, chunk, &localOpts, operationContext, path)
+		totalCharge += charge
 		if err != nil {
 			return nil, totalCharge, err
 		}
 
-		qResp, err := newQueryResponse(azResponse)
-		if err != nil {
-			return nil, totalCharge, err
-		}
+		allItems = append(allItems, items...)
 
-		totalCharge += qResp.RequestCharge
-		allItems = append(allItems, qResp.Items...)
-
-		ct := azResponse.Header.Get(cosmosHeaderContinuationToken)
 		if ct == "" {
 			break
 		}
@@ -249,6 +232,49 @@ func (c *ContainerClient) executeOneChunk(
 	}
 
 	return allItems, totalCharge, nil
+}
+
+// executeOneChunkPage sends a single page request for a chunk, creating an
+// OTel span for each HTTP round-trip. This matches the per-page span that
+// NewQueryItemsPager creates so that the internal queries issued by
+// ReadManyItems are visible in distributed traces.
+func (c *ContainerClient) executeOneChunkPage(
+	ctx context.Context,
+	chunk queryChunk,
+	queryOpts *QueryOptions,
+	operationContext pipelineRequestOptions,
+	path string,
+) ([][]byte, float32, string, error) {
+	var err error
+	spanName, err := c.getSpanForItems(operationTypeQuery)
+	if err != nil {
+		return nil, 0, "", err
+	}
+	ctx, endSpan := startSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
+	defer func() { endSpan(err) }()
+
+	rangeID := chunk.rangeID
+	azResponse, err := c.database.client.sendQueryRequest(
+		path,
+		ctx,
+		chunk.query,
+		chunk.params,
+		operationContext,
+		queryOpts,
+		func(req *policy.Request) {
+			req.Raw().Header.Set(cosmosHeaderPartitionKeyRangeId, rangeID)
+		},
+	)
+	if err != nil {
+		return nil, 0, "", err
+	}
+
+	qResp, err := newQueryResponse(azResponse)
+	if err != nil {
+		return nil, 0, "", err
+	}
+
+	return qResp.Items, qResp.RequestCharge, azResponse.Header.Get(cosmosHeaderContinuationToken), nil
 }
 
 // collectChunkResults merges per-chunk results into a single ReadManyItemsResponse.

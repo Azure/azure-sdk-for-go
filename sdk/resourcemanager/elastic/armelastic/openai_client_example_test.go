@@ -7,7 +7,7 @@ package armelastic_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleOpenAIClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelastic.OpenAIClientCreateOrUpdateResponse{
-	// 	OpenAIIntegrationRPModel: &armelastic.OpenAIIntegrationRPModel{
+	// 	OpenAIIntegrationRPModel: armelastic.OpenAIIntegrationRPModel{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Elastic/monitors/openAIIntegration"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Elastic/monitors/myMonitor/openAIIntegration/default"),
@@ -85,7 +85,7 @@ func ExampleOpenAIClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelastic.OpenAIClientGetResponse{
-	// 	OpenAIIntegrationRPModel: &armelastic.OpenAIIntegrationRPModel{
+	// 	OpenAIIntegrationRPModel: armelastic.OpenAIIntegrationRPModel{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Elastic/monitors/openAIIntegration"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Elastic/monitors/myMonitor/openAIIntegration/default"),
@@ -118,7 +118,7 @@ func ExampleOpenAIClient_GetStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelastic.OpenAIClientGetStatusResponse{
-	// 	OpenAIIntegrationStatusResponse: &armelastic.OpenAIIntegrationStatusResponse{
+	// 	OpenAIIntegrationStatusResponse: armelastic.OpenAIIntegrationStatusResponse{
 	// 		Properties: &armelastic.OpenAIIntegrationStatusResponseProperties{
 	// 			Status: to.Ptr("Succeeded"),
 	// 		},

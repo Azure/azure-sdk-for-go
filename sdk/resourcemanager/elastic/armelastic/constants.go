@@ -4,6 +4,10 @@
 
 package armelastic
 
+const (
+	version20250601 string = "2025-06-01"
+)
+
 // ConfigurationType - Configuration type of the Elasticsearch project
 type ConfigurationType string
 

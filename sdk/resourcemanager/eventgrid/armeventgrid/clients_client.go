@@ -7,19 +7,20 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // ClientsClient contains the methods for the Clients group.
 // Don't use this type directly, use NewClientsClient() instead.
+//
+// Generated from API version 2025-07-15-preview
 type ClientsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,8 +46,6 @@ func NewClientsClient(subscriptionID string, credential azcore.TokenCredential, 
 //
 // Create or update a client with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - clientName - Name of the client.
@@ -74,8 +73,6 @@ func (client *ClientsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 //
 // Create or update a client with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 func (client *ClientsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, clientInfo Client, options *ClientsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClientsClient.BeginCreateOrUpdate"
@@ -121,8 +118,8 @@ func (client *ClientsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clientInfo); err != nil {
@@ -135,8 +132,6 @@ func (client *ClientsClient) createOrUpdateCreateRequest(ctx context.Context, re
 //
 // Delete an existing client.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - clientName - Name of the client.
@@ -162,8 +157,6 @@ func (client *ClientsClient) BeginDelete(ctx context.Context, resourceGroupName 
 //
 // Delete an existing client.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 func (client *ClientsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, options *ClientsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClientsClient.BeginDelete"
@@ -209,8 +202,8 @@ func (client *ClientsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -218,8 +211,6 @@ func (client *ClientsClient) deleteCreateRequest(ctx context.Context, resourceGr
 //
 // Get properties of a client.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - clientName - Name of the client.
@@ -270,8 +261,8 @@ func (client *ClientsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -288,8 +279,6 @@ func (client *ClientsClient) getHandleResponse(resp *http.Response) (ClientsClie
 // NewListByNamespacePager - List all permission bindings under a namespace.
 //
 // Get all the permission bindings under a namespace.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Name of the namespace.
 //   - options - ClientsClientListByNamespaceOptions contains the optional parameters for the ClientsClient.NewListByNamespacePager
@@ -343,8 +332,8 @@ func (client *ClientsClient) listByNamespaceCreateRequest(ctx context.Context, r
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

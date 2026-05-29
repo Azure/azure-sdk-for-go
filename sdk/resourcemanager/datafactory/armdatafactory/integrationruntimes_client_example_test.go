@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
 	"log"
 )
 
@@ -36,7 +36,7 @@ func ExampleIntegrationRuntimesClient_CreateLinkedIntegrationRuntime() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse{
-	// 	IntegrationRuntimeStatusResponse: &armdatafactory.IntegrationRuntimeStatusResponse{
+	// 	IntegrationRuntimeStatusResponse: armdatafactory.IntegrationRuntimeStatusResponse{
 	// 		Name: to.Ptr("exampleIntegrationRuntime"),
 	// 		Properties: &armdatafactory.SelfHostedIntegrationRuntimeStatus{
 	// 			Type: to.Ptr(armdatafactory.IntegrationRuntimeTypeSelfHosted),
@@ -127,7 +127,7 @@ func ExampleIntegrationRuntimesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientCreateOrUpdateResponse{
-	// 	IntegrationRuntimeResource: &armdatafactory.IntegrationRuntimeResource{
+	// 	IntegrationRuntimeResource: armdatafactory.IntegrationRuntimeResource{
 	// 		Name: to.Ptr("exampleIntegrationRuntime"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/integrationruntimes"),
 	// 		Etag: to.Ptr("000046c4-0000-0000-0000-5b2198bf0000"),
@@ -181,7 +181,7 @@ func ExampleIntegrationRuntimesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientGetResponse{
-	// 	IntegrationRuntimeResource: &armdatafactory.IntegrationRuntimeResource{
+	// 	IntegrationRuntimeResource: armdatafactory.IntegrationRuntimeResource{
 	// 		Name: to.Ptr("exampleIntegrationRuntime"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/integrationruntimes"),
 	// 		Etag: to.Ptr("15003c4f-0000-0200-0000-5cbe090b0000"),
@@ -213,7 +213,7 @@ func ExampleIntegrationRuntimesClient_GetConnectionInfo() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientGetConnectionInfoResponse{
-	// 	IntegrationRuntimeConnectionInfo: &armdatafactory.IntegrationRuntimeConnectionInfo{
+	// 	IntegrationRuntimeConnectionInfo: armdatafactory.IntegrationRuntimeConnectionInfo{
 	// 		HostServiceURI: to.Ptr("https://yanzhang-dt.fareast.corp.microsoft.com:8050/HostServiceRemote.svc/"),
 	// 		IdentityCertThumbprint: to.Ptr("**********"),
 	// 		IsIdentityCertExprired: to.Ptr(false),
@@ -243,7 +243,7 @@ func ExampleIntegrationRuntimesClient_GetMonitoringData() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientGetMonitoringDataResponse{
-	// 	IntegrationRuntimeMonitoringData: &armdatafactory.IntegrationRuntimeMonitoringData{
+	// 	IntegrationRuntimeMonitoringData: armdatafactory.IntegrationRuntimeMonitoringData{
 	// 		Name: to.Ptr("exampleIntegrationRuntime"),
 	// 		Nodes: []*armdatafactory.IntegrationRuntimeNodeMonitoringData{
 	// 			{
@@ -279,7 +279,7 @@ func ExampleIntegrationRuntimesClient_GetStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientGetStatusResponse{
-	// 	IntegrationRuntimeStatusResponse: &armdatafactory.IntegrationRuntimeStatusResponse{
+	// 	IntegrationRuntimeStatusResponse: armdatafactory.IntegrationRuntimeStatusResponse{
 	// 		Name: to.Ptr("exampleIntegrationRuntime"),
 	// 		Properties: &armdatafactory.SelfHostedIntegrationRuntimeStatus{
 	// 			Type: to.Ptr(armdatafactory.IntegrationRuntimeTypeSelfHosted),
@@ -352,7 +352,7 @@ func ExampleIntegrationRuntimesClient_ListAuthKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientListAuthKeysResponse{
-	// 	IntegrationRuntimeAuthKeys: &armdatafactory.IntegrationRuntimeAuthKeys{
+	// 	IntegrationRuntimeAuthKeys: armdatafactory.IntegrationRuntimeAuthKeys{
 	// 		AuthKey1: to.Ptr("**********"),
 	// 		AuthKey2: to.Ptr("**********"),
 	// 	},
@@ -419,7 +419,7 @@ func ExampleIntegrationRuntimesClient_ListOutboundNetworkDependenciesEndpoints()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse{
-	// 	IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse: &armdatafactory.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse{
+	// 	IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse: armdatafactory.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse{
 	// 		Value: []*armdatafactory.IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint{
 	// 			{
 	// 				Category: to.Ptr("Azure Data Factory (Management)"),
@@ -523,7 +523,7 @@ func ExampleIntegrationRuntimesClient_RegenerateAuthKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientRegenerateAuthKeyResponse{
-	// 	IntegrationRuntimeAuthKeys: &armdatafactory.IntegrationRuntimeAuthKeys{
+	// 	IntegrationRuntimeAuthKeys: armdatafactory.IntegrationRuntimeAuthKeys{
 	// 		AuthKey2: to.Ptr("**********"),
 	// 	},
 	// }
@@ -570,13 +570,13 @@ func ExampleIntegrationRuntimesClient_BeginStart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientStartResponse{
-	// 	IntegrationRuntimeStatusResponse: &armdatafactory.IntegrationRuntimeStatusResponse{
+	// 	IntegrationRuntimeStatusResponse: armdatafactory.IntegrationRuntimeStatusResponse{
 	// 		Name: to.Ptr("exampleManagedIntegrationRuntime"),
 	// 		Properties: &armdatafactory.ManagedIntegrationRuntimeStatus{
 	// 			Type: to.Ptr(armdatafactory.IntegrationRuntimeTypeManaged),
@@ -611,7 +611,7 @@ func ExampleIntegrationRuntimesClient_BeginStop() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -664,7 +664,7 @@ func ExampleIntegrationRuntimesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimesClientUpdateResponse{
-	// 	IntegrationRuntimeResource: &armdatafactory.IntegrationRuntimeResource{
+	// 	IntegrationRuntimeResource: armdatafactory.IntegrationRuntimeResource{
 	// 		Name: to.Ptr("exampleIntegrationRuntime"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/integrationruntimes"),
 	// 		Etag: to.Ptr("0400f1a1-0000-0000-0000-5b2188640000"),

@@ -38,13 +38,13 @@ func ExampleSchemaRegistriesClient_BeginCreateOrReplace() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemaRegistriesClientCreateOrReplaceResponse{
-	// 	SchemaRegistry: &armdeviceregistry.SchemaRegistry{
+	// 	SchemaRegistry: armdeviceregistry.SchemaRegistry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
 	// 		Name: to.Ptr("my-schema-registry"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),
@@ -88,7 +88,7 @@ func ExampleSchemaRegistriesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -111,7 +111,7 @@ func ExampleSchemaRegistriesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemaRegistriesClientGetResponse{
-	// 	SchemaRegistry: &armdeviceregistry.SchemaRegistry{
+	// 	SchemaRegistry: armdeviceregistry.SchemaRegistry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
 	// 		Name: to.Ptr("my-schema-registry"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),
@@ -295,13 +295,13 @@ func ExampleSchemaRegistriesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemaRegistriesClientUpdateResponse{
-	// 	SchemaRegistry: &armdeviceregistry.SchemaRegistry{
+	// 	SchemaRegistry: armdeviceregistry.SchemaRegistry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
 	// 		Name: to.Ptr("my-schema-registry"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),

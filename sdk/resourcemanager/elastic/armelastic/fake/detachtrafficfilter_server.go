@@ -11,10 +11,11 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // DetachTrafficFilterServer is a fake server for instances of the armelastic.DetachTrafficFilterClient type.
@@ -53,9 +54,7 @@ func (d *DetachTrafficFilterServerTransport) Do(req *http.Request) (*http.Respon
 }
 
 func (d *DetachTrafficFilterServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (d *DetachTrafficFilterServerTransport) dispatchToMethodFake(req *http.Requ
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -106,11 +102,7 @@ func (d *DetachTrafficFilterServerTransport) dispatchBeginUpdate(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		rulesetIDUnescaped, err := url.QueryUnescape(qp.Get("rulesetId"))
-		if err != nil {
-			return nil, err
-		}
-		rulesetIDParam := getOptional(rulesetIDUnescaped)
+		rulesetIDParam := getOptional(qp.Get("rulesetId"))
 		var options *armelastic.DetachTrafficFilterClientBeginUpdateOptions
 		if rulesetIDParam != nil {
 			options = &armelastic.DetachTrafficFilterClientBeginUpdateOptions{
@@ -130,7 +122,7 @@ func (d *DetachTrafficFilterServerTransport) dispatchBeginUpdate(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		d.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}

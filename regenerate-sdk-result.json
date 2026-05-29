@@ -1,0 +1,30 @@
+{
+  "succeed_to_regenerate": [
+    "armdashboard",
+    "armdatabasewatcher",
+    "armdatafactory",
+    "armdataprotection",
+    "armdellstorage",
+    "armdependencymap",
+    "armdeploymentsafeguards",
+    "armdeploymentstacks",
+    "armdeviceprovisioningservices",
+    "armdeviceregistry",
+    "armdisconnectedoperations",
+    "armdns",
+    "armdnsresolver",
+    "armdomainregistration",
+    "armdurabletask",
+    "armdynatrace",
+    "armedgeactions",
+    "armedgezones",
+    "armelastic",
+    "armeventgrid"
+  ],
+  "fail_to_regenerate": [
+    "armelasticsan"
+  ],
+  "not_found_api_version": [],
+  "time_to_regenerate": "2026-05-29 05:55:23.524260",
+  "typespec_go_commit_hash": "6740d80591b2c9e4b93357842cf799156a6fec91"
+}

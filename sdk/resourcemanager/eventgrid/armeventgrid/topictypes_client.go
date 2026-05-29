@@ -7,18 +7,19 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // TopicTypesClient contains the methods for the TopicTypes group.
 // Don't use this type directly, use NewTopicTypesClient() instead.
+//
+// Generated from API version 2025-07-15-preview
 type TopicTypesClient struct {
 	internal *arm.Client
 }
@@ -41,8 +42,6 @@ func NewTopicTypesClient(credential azcore.TokenCredential, options *arm.ClientO
 //
 // Get information about a topic type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - topicTypeName - Name of the topic type.
 //   - options - TopicTypesClientGetOptions contains the optional parameters for the TopicTypesClient.Get method.
 func (client *TopicTypesClient) Get(ctx context.Context, topicTypeName string, options *TopicTypesClientGetOptions) (TopicTypesClientGetResponse, error) {
@@ -79,8 +78,8 @@ func (client *TopicTypesClient) getCreateRequest(ctx context.Context, topicTypeN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -97,8 +96,6 @@ func (client *TopicTypesClient) getHandleResponse(resp *http.Response) (TopicTyp
 // NewListPager - List topic types.
 //
 // List all registered topic types.
-//
-// Generated from API version 2025-07-15-preview
 //   - options - TopicTypesClientListOptions contains the optional parameters for the TopicTypesClient.NewListPager method.
 func (client *TopicTypesClient) NewListPager(options *TopicTypesClientListOptions) *runtime.Pager[TopicTypesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TopicTypesClientListResponse]{
@@ -131,8 +128,8 @@ func (client *TopicTypesClient) listCreateRequest(ctx context.Context, _ *TopicT
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -149,8 +146,6 @@ func (client *TopicTypesClient) listHandleResponse(resp *http.Response) (TopicTy
 // NewListEventTypesPager - List event types.
 //
 // List event types for a topic type.
-//
-// Generated from API version 2025-07-15-preview
 //   - topicTypeName - Name of the topic type.
 //   - options - TopicTypesClientListEventTypesOptions contains the optional parameters for the TopicTypesClient.NewListEventTypesPager
 //     method.
@@ -189,8 +184,8 @@ func (client *TopicTypesClient) listEventTypesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

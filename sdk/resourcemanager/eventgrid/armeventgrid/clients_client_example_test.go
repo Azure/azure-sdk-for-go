@@ -6,11 +6,10 @@ package armeventgrid_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
+	"log"
 )
 
 // Generated from example definition: 2025-07-15-preview/Clients_CreateOrUpdate.json
@@ -47,13 +46,13 @@ func ExampleClientsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.ClientsClientCreateOrUpdateResponse{
-	// 	Client: &armeventgrid.Client{
+	// 	Client: armeventgrid.Client{
 	// 		Name: to.Ptr("exampleClientName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/clients"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1/clients/exampleClientName1"),
@@ -94,7 +93,7 @@ func ExampleClientsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -122,7 +121,7 @@ func ExampleClientsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.ClientsClientGetResponse{
-	// 	Client: &armeventgrid.Client{
+	// 	Client: armeventgrid.Client{
 	// 		Name: to.Ptr("exampleClientName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/clients"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1/clients/exampleClientName1"),

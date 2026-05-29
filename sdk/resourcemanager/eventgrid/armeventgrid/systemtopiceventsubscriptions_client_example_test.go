@@ -6,11 +6,10 @@ package armeventgrid_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
+	"log"
 )
 
 // Generated from example definition: 2025-07-15-preview/SystemTopicEventSubscriptions_CreateOrUpdate.json
@@ -44,7 +43,7 @@ func ExampleSystemTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -65,7 +64,7 @@ func ExampleSystemTopicEventSubscriptionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -93,7 +92,7 @@ func ExampleSystemTopicEventSubscriptionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.SystemTopicEventSubscriptionsClientGetResponse{
-	// 	EventSubscription: &armeventgrid.EventSubscription{
+	// 	EventSubscription: armeventgrid.EventSubscription{
 	// 		Name: to.Ptr("examplesubscription1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/systemTopics/eventSubscriptions"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/systemTopics/exampleSystemTopic1/eventSubscriptions/examplesubscription1"),
@@ -149,7 +148,7 @@ func ExampleSystemTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.SystemTopicEventSubscriptionsClientGetDeliveryAttributesResponse{
-	// 	DeliveryAttributeListResult: &armeventgrid.DeliveryAttributeListResult{
+	// 	DeliveryAttributeListResult: armeventgrid.DeliveryAttributeListResult{
 	// 		Value: []armeventgrid.DeliveryAttributeMappingClassification{
 	// 			&armeventgrid.StaticDeliveryAttributeMapping{
 	// 				Name: to.Ptr("header1"),
@@ -198,7 +197,7 @@ func ExampleSystemTopicEventSubscriptionsClient_GetFullURL() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.SystemTopicEventSubscriptionsClientGetFullURLResponse{
-	// 	EventSubscriptionFullURL: &armeventgrid.EventSubscriptionFullURL{
+	// 	EventSubscriptionFullURL: armeventgrid.EventSubscriptionFullURL{
 	// 		EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
 	// 	},
 	// }
@@ -329,6 +328,6 @@ func ExampleSystemTopicEventSubscriptionsClient_BeginUpdate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

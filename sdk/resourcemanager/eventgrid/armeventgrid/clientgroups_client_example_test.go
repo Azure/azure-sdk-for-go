@@ -6,11 +6,10 @@ package armeventgrid_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
+	"log"
 )
 
 // Generated from example definition: 2025-07-15-preview/ClientGroups_CreateOrUpdate.json
@@ -35,13 +34,13 @@ func ExampleClientGroupsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.ClientGroupsClientCreateOrUpdateResponse{
-	// 	ClientGroup: &armeventgrid.ClientGroup{
+	// 	ClientGroup: armeventgrid.ClientGroup{
 	// 		Name: to.Ptr("exampleClientGroupName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/clientGroups"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1/clientGroups/exampleClientGroupName1"),
@@ -70,7 +69,7 @@ func ExampleClientGroupsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -98,7 +97,7 @@ func ExampleClientGroupsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.ClientGroupsClientGetResponse{
-	// 	ClientGroup: &armeventgrid.ClientGroup{
+	// 	ClientGroup: armeventgrid.ClientGroup{
 	// 		Name: to.Ptr("exampleClientGroupName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/clientGroups"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1/clientGroups/exampleClientGroupName1"),

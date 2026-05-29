@@ -31,7 +31,7 @@ func ExampleTopLevelDomainsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdomainregistration.TopLevelDomainsClientGetResponse{
-	// 	TopLevelDomain: &armdomainregistration.TopLevelDomain{
+	// 	TopLevelDomain: armdomainregistration.TopLevelDomain{
 	// 		Name: to.Ptr("com"),
 	// 		Type: to.Ptr("Microsoft.DomainRegistration/topLevelDomains"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/providers/Microsoft.DomainRegistration/topLevelDomains/com"),

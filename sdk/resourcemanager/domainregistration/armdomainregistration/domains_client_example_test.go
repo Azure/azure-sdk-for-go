@@ -34,7 +34,7 @@ func ExampleDomainsClient_CheckAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdomainregistration.DomainsClientCheckAvailabilityResponse{
-	// 	DomainAvailabilityCheckResult: &armdomainregistration.DomainAvailabilityCheckResult{
+	// 	DomainAvailabilityCheckResult: armdomainregistration.DomainAvailabilityCheckResult{
 	// 		Name: to.Ptr("abcd.com"),
 	// 		Available: to.Ptr(true),
 	// 		DomainType: to.Ptr(armdomainregistration.DomainTypeRegular),
@@ -143,13 +143,13 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdomainregistration.DomainsClientCreateOrUpdateResponse{
-	// 	Domain: &armdomainregistration.Domain{
+	// 	Domain: armdomainregistration.Domain{
 	// 		Name: to.Ptr("example.com"),
 	// 		Type: to.Ptr("Microsoft.DomainRegistration/domains"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.DomainRegistration/domains/example.com"),
@@ -278,7 +278,7 @@ func ExampleDomainsClient_CreateOrUpdateOwnershipIdentifier() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdomainregistration.DomainsClientCreateOrUpdateOwnershipIdentifierResponse{
-	// 	DomainOwnershipIdentifier: &armdomainregistration.DomainOwnershipIdentifier{
+	// 	DomainOwnershipIdentifier: armdomainregistration.DomainOwnershipIdentifier{
 	// 		Name: to.Ptr("SampleOwnershipId"),
 	// 		Type: to.Ptr("Microsoft.DomainRegistration/domains/domainownershipidentifiers"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.DomainRegistration/domains/example.com/domainownershipidentifiers/SampleOwnershipId"),
@@ -353,7 +353,7 @@ func ExampleDomainsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdomainregistration.DomainsClientGetResponse{
-	// 	Domain: &armdomainregistration.Domain{
+	// 	Domain: armdomainregistration.Domain{
 	// 		Name: to.Ptr("example.com"),
 	// 		Type: to.Ptr("Microsoft.DomainRegistration/domains"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.DomainRegistration/domains/example.com"),
@@ -478,7 +478,7 @@ func ExampleDomainsClient_GetControlCenterSsoRequest() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdomainregistration.DomainsClientGetControlCenterSsoRequestResponse{
-	// 	DomainControlCenterSsoRequest: &armdomainregistration.DomainControlCenterSsoRequest{
+	// 	DomainControlCenterSsoRequest: armdomainregistration.DomainControlCenterSsoRequest{
 	// 		PostParameterKey: to.Ptr("saml"),
 	// 		PostParameterValue: to.Ptr("1242sds|k1340"),
 	// 		URL: to.Ptr("https://Reseller.provider.com/?xRequestId=sdsdsds&app=dcc"),
@@ -505,7 +505,7 @@ func ExampleDomainsClient_GetOwnershipIdentifier() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdomainregistration.DomainsClientGetOwnershipIdentifierResponse{
-	// 	DomainOwnershipIdentifier: &armdomainregistration.DomainOwnershipIdentifier{
+	// 	DomainOwnershipIdentifier: armdomainregistration.DomainOwnershipIdentifier{
 	// 		Name: to.Ptr("SampleOwnershipId"),
 	// 		Type: to.Ptr("Microsoft.DomainRegistration/domains/domainownershipidentifiers"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.DomainRegistration/domains/example.com/domainownershipidentifiers/SampleOwnershipId"),
@@ -907,7 +907,7 @@ func ExampleDomainsClient_TransferOut() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdomainregistration.DomainsClientTransferOutResponse{
-	// 	Domain: &armdomainregistration.Domain{
+	// 	Domain: armdomainregistration.Domain{
 	// 		Name: to.Ptr("example.com"),
 	// 		Type: to.Ptr("Microsoft.DomainRegistration/domains"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.DomainRegistration/domains/example.com"),
@@ -1114,7 +1114,7 @@ func ExampleDomainsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdomainregistration.DomainsClientUpdateResponse{
-	// 	Domain: &armdomainregistration.Domain{
+	// 	Domain: armdomainregistration.Domain{
 	// 		Name: to.Ptr("example.com"),
 	// 		Type: to.Ptr("Microsoft.DomainRegistration/domains"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.DomainRegistration/domains/example.com"),
@@ -1243,7 +1243,7 @@ func ExampleDomainsClient_UpdateOwnershipIdentifier() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdomainregistration.DomainsClientUpdateOwnershipIdentifierResponse{
-	// 	DomainOwnershipIdentifier: &armdomainregistration.DomainOwnershipIdentifier{
+	// 	DomainOwnershipIdentifier: armdomainregistration.DomainOwnershipIdentifier{
 	// 		Name: to.Ptr("SampleOwnershipId"),
 	// 		Type: to.Ptr("Microsoft.DomainRegistration/domains/domainownershipidentifiers"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.DomainRegistration/domains/example.com/domainownershipidentifiers/SampleOwnershipId"),

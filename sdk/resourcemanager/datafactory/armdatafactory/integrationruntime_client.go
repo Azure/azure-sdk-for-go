@@ -18,6 +18,8 @@ import (
 
 // IntegrationRuntimeClient contains the methods for the IntegrationRuntime group.
 // Don't use this type directly, use NewIntegrationRuntimeClient() instead.
+//
+// Generated from API version 2018-06-01
 type IntegrationRuntimeClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewIntegrationRuntimeClient(subscriptionID string, credential azcore.TokenC
 
 // BeginDisableInteractiveQuery - Disable interactive authoring of Managed Virtual Network integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - integrationRuntimeName - The integration runtime name.
@@ -68,8 +68,6 @@ func (client *IntegrationRuntimeClient) BeginDisableInteractiveQuery(ctx context
 
 // DisableInteractiveQuery - Disable interactive authoring of Managed Virtual Network integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2018-06-01
 func (client *IntegrationRuntimeClient) disableInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeClientBeginDisableInteractiveQueryOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IntegrationRuntimeClient.BeginDisableInteractiveQuery"
@@ -115,16 +113,14 @@ func (client *IntegrationRuntimeClient) disableInteractiveQueryCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20180601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginEnableInteractiveQuery - Enable interactive authoring of Managed Virtual Network integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - integrationRuntimeName - The integration runtime name.
@@ -151,8 +147,6 @@ func (client *IntegrationRuntimeClient) BeginEnableInteractiveQuery(ctx context.
 
 // EnableInteractiveQuery - Enable interactive authoring of Managed Virtual Network integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2018-06-01
 func (client *IntegrationRuntimeClient) enableInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, enableInteractiveQueryRequest EnableInteractiveQueryRequest, options *IntegrationRuntimeClientBeginEnableInteractiveQueryOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IntegrationRuntimeClient.BeginEnableInteractiveQuery"
@@ -198,8 +192,8 @@ func (client *IntegrationRuntimeClient) enableInteractiveQueryCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20180601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, enableInteractiveQueryRequest); err != nil {

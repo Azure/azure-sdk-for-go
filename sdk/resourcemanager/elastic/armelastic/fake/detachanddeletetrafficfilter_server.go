@@ -11,10 +11,11 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // DetachAndDeleteTrafficFilterServer is a fake server for instances of the armelastic.DetachAndDeleteTrafficFilterClient type.
@@ -49,9 +50,7 @@ func (d *DetachAndDeleteTrafficFilterServerTransport) Do(req *http.Request) (*ht
 }
 
 func (d *DetachAndDeleteTrafficFilterServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -67,10 +66,7 @@ func (d *DetachAndDeleteTrafficFilterServerTransport) dispatchToMethodFake(req *
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -100,11 +96,7 @@ func (d *DetachAndDeleteTrafficFilterServerTransport) dispatchDelete(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	rulesetIDUnescaped, err := url.QueryUnescape(qp.Get("rulesetId"))
-	if err != nil {
-		return nil, err
-	}
-	rulesetIDParam := getOptional(rulesetIDUnescaped)
+	rulesetIDParam := getOptional(qp.Get("rulesetId"))
 	var options *armelastic.DetachAndDeleteTrafficFilterClientDeleteOptions
 	if rulesetIDParam != nil {
 		options = &armelastic.DetachAndDeleteTrafficFilterClientDeleteOptions{
@@ -116,7 +108,7 @@ func (d *DetachAndDeleteTrafficFilterServerTransport) dispatchDelete(req *http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)

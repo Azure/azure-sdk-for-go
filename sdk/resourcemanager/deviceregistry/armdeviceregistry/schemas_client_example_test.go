@@ -41,7 +41,7 @@ func ExampleSchemasClient_CreateOrReplace() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemasClientCreateOrReplaceResponse{
-	// 	Schema: &armdeviceregistry.Schema{
+	// 	Schema: armdeviceregistry.Schema{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry/schemas/my-schema"),
 	// 		Name: to.Ptr("my-schema"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries/schemas"),
@@ -85,7 +85,7 @@ func ExampleSchemasClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -108,7 +108,7 @@ func ExampleSchemasClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemasClientGetResponse{
-	// 	Schema: &armdeviceregistry.Schema{
+	// 	Schema: armdeviceregistry.Schema{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry/schemas/my-schema"),
 	// 		Name: to.Ptr("my-schema"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries/schemas"),

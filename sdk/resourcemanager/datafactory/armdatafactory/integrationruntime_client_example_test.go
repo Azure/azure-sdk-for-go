@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
 	"log"
 )
 
@@ -29,13 +29,13 @@ func ExampleIntegrationRuntimeClient_BeginDisableInteractiveQuery() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimeClientDisableInteractiveQueryResponse{
-	// 	IntegrationRuntimeResource: &armdatafactory.IntegrationRuntimeResource{
+	// 	IntegrationRuntimeResource: armdatafactory.IntegrationRuntimeResource{
 	// 		Name: to.Ptr("exampleIntegrationRuntime"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/integrationruntimes"),
 	// 		Etag: to.Ptr("0400f1a1-0000-0000-0000-5b2188640000"),
@@ -67,13 +67,13 @@ func ExampleIntegrationRuntimeClient_BeginEnableInteractiveQuery() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.IntegrationRuntimeClientEnableInteractiveQueryResponse{
-	// 	IntegrationRuntimeResource: &armdatafactory.IntegrationRuntimeResource{
+	// 	IntegrationRuntimeResource: armdatafactory.IntegrationRuntimeResource{
 	// 		Name: to.Ptr("exampleIntegrationRuntime"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/integrationruntimes"),
 	// 		Etag: to.Ptr("0400f1a1-0000-0000-0000-5b2188640000"),

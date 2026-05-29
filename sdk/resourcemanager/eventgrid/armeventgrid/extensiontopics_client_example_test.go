@@ -6,10 +6,9 @@ package armeventgrid_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
+	"log"
 )
 
 // Generated from example definition: 2025-07-15-preview/ExtensionTopics_Get.json
@@ -31,7 +30,7 @@ func ExampleExtensionTopicsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.ExtensionTopicsClientGetResponse{
-	// 	ExtensionTopic: &armeventgrid.ExtensionTopic{
+	// 	ExtensionTopic: armeventgrid.ExtensionTopic{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("providers/Microsoft.EventGrid/extensionTopics"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.storage/storageaccounts/exampleResourceName/providers/Microsoft.eventgrid/extensionTopics/default"),

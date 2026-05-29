@@ -6,11 +6,10 @@ package armeventgrid_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
+	"log"
 )
 
 // Generated from example definition: 2025-07-15-preview/TopicSpaces_CreateOrUpdate.json
@@ -37,13 +36,13 @@ func ExampleTopicSpacesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.TopicSpacesClientCreateOrUpdateResponse{
-	// 	TopicSpace: &armeventgrid.TopicSpace{
+	// 	TopicSpace: armeventgrid.TopicSpace{
 	// 		Name: to.Ptr("exampleTopicSpaceName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/topicSpaces"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1/topicSpaces/exampleTopicSpaceName1"),
@@ -75,7 +74,7 @@ func ExampleTopicSpacesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -103,7 +102,7 @@ func ExampleTopicSpacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.TopicSpacesClientGetResponse{
-	// 	TopicSpace: &armeventgrid.TopicSpace{
+	// 	TopicSpace: armeventgrid.TopicSpace{
 	// 		Name: to.Ptr("exampleTopicSpaceName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/topicSpaces"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1/topicSpaces/exampleTopicSpaceName1"),

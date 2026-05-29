@@ -18,6 +18,8 @@ import (
 
 // RestorableTimeRangesClient contains the methods for the RestorableTimeRanges group.
 // Don't use this type directly, use NewRestorableTimeRangesClient() instead.
+//
+// Generated from API version 2026-03-01
 type RestorableTimeRangesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRestorableTimeRangesClient(subscriptionID string, credential azcore.Toke
 
 // Find -
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - backupInstanceName - The name of the BackupInstanceResource
@@ -95,8 +95,8 @@ func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

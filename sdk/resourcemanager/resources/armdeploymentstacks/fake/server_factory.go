@@ -62,20 +62,20 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "Client":
-		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
+		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
 	case "WhatIfResultsAtManagementGroupClient":
-		initServer(s, &s.trWhatIfResultsAtManagementGroupServer, func() *WhatIfResultsAtManagementGroupServerTransport {
+		initServer(&s.trMu, &s.trWhatIfResultsAtManagementGroupServer, func() *WhatIfResultsAtManagementGroupServerTransport {
 			return NewWhatIfResultsAtManagementGroupServerTransport(&s.srv.WhatIfResultsAtManagementGroupServer)
 		})
 		resp, err = s.trWhatIfResultsAtManagementGroupServer.Do(req)
 	case "WhatIfResultsAtResourceGroupClient":
-		initServer(s, &s.trWhatIfResultsAtResourceGroupServer, func() *WhatIfResultsAtResourceGroupServerTransport {
+		initServer(&s.trMu, &s.trWhatIfResultsAtResourceGroupServer, func() *WhatIfResultsAtResourceGroupServerTransport {
 			return NewWhatIfResultsAtResourceGroupServerTransport(&s.srv.WhatIfResultsAtResourceGroupServer)
 		})
 		resp, err = s.trWhatIfResultsAtResourceGroupServer.Do(req)
 	case "WhatIfResultsAtSubscriptionClient":
-		initServer(s, &s.trWhatIfResultsAtSubscriptionServer, func() *WhatIfResultsAtSubscriptionServerTransport {
+		initServer(&s.trMu, &s.trWhatIfResultsAtSubscriptionServer, func() *WhatIfResultsAtSubscriptionServerTransport {
 			return NewWhatIfResultsAtSubscriptionServerTransport(&s.srv.WhatIfResultsAtSubscriptionServer)
 		})
 		resp, err = s.trWhatIfResultsAtSubscriptionServer.Do(req)
@@ -88,12 +88,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

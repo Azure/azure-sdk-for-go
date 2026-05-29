@@ -18,6 +18,8 @@ import (
 
 // ConnectedPartnerResourcesClient contains the methods for the ConnectedPartnerResources group.
 // Don't use this type directly, use NewConnectedPartnerResourcesClient() instead.
+//
+// Generated from API version 2025-06-01
 type ConnectedPartnerResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewConnectedPartnerResourcesClient(subscriptionID string, credential azcore
 
 // NewListPager - List all active deployments associated with the marketplace subscription linked to the given Elastic monitor
 // resource.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - ConnectedPartnerResourcesClientListOptions contains the optional parameters for the ConnectedPartnerResourcesClient.NewListPager
@@ -90,8 +90,8 @@ func (client *ConnectedPartnerResourcesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

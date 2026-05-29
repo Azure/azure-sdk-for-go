@@ -3,9 +3,7 @@
 ## 1.5.0-beta.2 (2026-05-18)
 ### Features Added
 
-- New struct `PlatformManaged`
-- New field `PlatformManaged` in struct `CertificatePolicy`
-- New function `NewPlatformManaged`
+- Added an experimental `PlatformManaged` property on `CertificatePolicy` for Azure Key Vault internal usage. Any calls using this property will fail and it is not recommended to be used at this point.
 
 
 ## 1.5.0-beta.1 (2026-04-08)

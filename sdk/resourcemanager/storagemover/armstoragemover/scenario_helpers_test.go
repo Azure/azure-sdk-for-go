@@ -84,10 +84,11 @@ func (b *scenarioBaseSuite) setupBaseInLocation(location string) {
 	//
 	// IMPORTANT: TestInstance must be set so the unregister applies to the already-opened recording
 	// session — without it, the unregister only modifies the global pool, leaving this session's
-	// already-snapshotted sanitizer set untouched.
-	if err := recording.RemoveRegisteredSanitizers([]string{"AZSDK3493", "AZSDK3430"}, &recording.RecordingOptions{UseHTTPS: true, TestInstance: b.T()}); err != nil {
-		b.T().Logf("warning: failed to remove name/id sanitizers: %v", err)
-	}
+	// already-snapshotted sanitizer set untouched. If this fails the recording will silently
+	// redact resource names / IDs that the suites assert on, causing playback to fail in
+	// hard-to-diagnose ways — so we fail loudly here.
+	err := recording.RemoveRegisteredSanitizers([]string{"AZSDK3493", "AZSDK3430"}, &recording.RecordingOptions{UseHTTPS: true, TestInstance: b.T()})
+	b.Require().NoError(err, "failed to remove default name/id sanitizers")
 
 	b.ctx = context.Background()
 	b.cred, b.options = testutil.GetCredAndClientOptions(b.T())

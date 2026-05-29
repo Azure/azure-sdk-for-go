@@ -32,7 +32,9 @@ func (s *ProjectResourceScenarioSuite) SetupSuite() {
 func (s *ProjectResourceScenarioSuite) TearDownSuite() { s.teardownBase() }
 
 // TestProjectGetUpdateDelete mirrors .NET ProjectResourceTests.GetUpdateDeleteTest. Creates a project,
-// verifies get-equivalence, PATCH-updates the description, then deletes it and confirms gone via 404.
+// verifies get-equivalence, PATCH-updates the description, then deletes it and confirms gone via a
+// non-success Get response (the broader assertion matches the helper's design — see
+// expectResponseError doc — rather than locking to a specific HTTP code).
 func (s *ProjectResourceScenarioSuite) TestProjectGetUpdateDelete() {
 	s.createStorageMover(s.moverName, nil, "")
 	created := s.createProject(s.moverName, s.projectName, "")

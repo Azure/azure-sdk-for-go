@@ -32,7 +32,8 @@ func (s *StorageMoverCollectionScenarioSuite) TearDownSuite() { s.teardownBase()
 
 // TestStorageMoverCreateUpdateGetExists mirrors .NET StorageMoverCollectionTests.CreateUpdateGetExistsTest.
 // It creates two Storage Movers in a fresh resource group, fetches one, lists all (expect >= 2), updates
-// the first, and verifies a non-existent name is reported as missing via Get returning a 404.
+// the first, and verifies a non-existent name is reported as missing via Get returning a non-success
+// response (broad assertion — see expectResponseError doc).
 func (s *StorageMoverCollectionScenarioSuite) TestStorageMoverCreateUpdateGetExists() {
 	tags := map[string]*string{"tag1": to.Ptr("value1")}
 
@@ -93,7 +94,8 @@ func (s *StorageMoverCollectionScenarioSuite) TestStorageMoverCreateUpdateGetExi
 	s.Require().NoError(err)
 	s.Equal("This is an updated storage mover", *updateResp.Properties.Description)
 
-	// Asserts the .NET ExistsAsync(notFound) -> false expectation by checking that Get returns 404.
+	// Asserts the .NET ExistsAsync(notFound) -> false expectation by checking that Get returns a
+	// non-success response on a synthetic name (broad assertion — see expectResponseError doc).
 	_, err = client.Get(s.ctx, s.resourceGroupName, s.moverName1+"missing", nil)
 	s.expectResponseError(err)
 }

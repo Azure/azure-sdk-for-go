@@ -5,6 +5,7 @@ package armstoragemover_test
 
 import (
 	"errors"
+	"fmt"
 	"path"
 	"strings"
 	"testing"
@@ -329,7 +330,7 @@ func (s *JobDefinitionJobRunC2CScenarioSuite) waitForJobRunSucceeded(jobRunName 
 		}
 		recording.Sleep(30 * time.Second)
 	}
-	s.FailNowf("JobRun did not reach a terminal status within 30 minutes", "last observed status: %q", lastStatus)
+	s.FailNow(fmt.Sprintf("JobRun did not reach a terminal status within 30 minutes (last observed status: %q)", lastStatus))
 }
 
 func isTerminalJobRunStatus(status armstoragemover.JobRunStatus) bool {

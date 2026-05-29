@@ -30,9 +30,10 @@ func (s *ProjectCollectionScenarioSuite) SetupSuite() {
 }
 func (s *ProjectCollectionScenarioSuite) TearDownSuite() { s.teardownBase() }
 
-// TestProjectCreateGetExist mirrors .NET ProjectCollectionTests.CrateGetExistTest. Verifies the
-// project resource type string is "microsoft.storagemover/storagemovers/projects" (case-insensitive,
-// since the RP returns the canonical-cased form).
+// TestProjectCreateGetExist mirrors .NET ProjectCollectionTests.CrateGetExistTest (sic — the .NET
+// method name is intentionally misspelled). Verifies the project resource type string is
+// "microsoft.storagemover/storagemovers/projects" (case-insensitive, since the RP returns the
+// canonical-cased form).
 func (s *ProjectCollectionScenarioSuite) TestProjectCreateGetExist() {
 	s.createStorageMover(s.moverName, nil, "")
 	created := s.createProject(s.moverName, s.projectName, "")

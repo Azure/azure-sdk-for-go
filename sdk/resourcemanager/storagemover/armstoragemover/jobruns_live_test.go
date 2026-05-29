@@ -13,7 +13,7 @@ import (
 
 // JobRunScenarioSuite mirrors .NET JobRunTests. Without a registered agent, no JobRun is ever
 // produced for a job definition. We exercise the read paths anyway: list returns empty, and Get on
-// any name returns 404 — matching the Python port's combined assertion strategy.
+// any name returns a non-success response — matching the Python port's combined assertion strategy.
 type JobRunScenarioSuite struct {
 	scenarioBaseSuite
 
@@ -55,7 +55,8 @@ func (s *JobRunScenarioSuite) SetupSuite() {
 func (s *JobRunScenarioSuite) TearDownSuite() { s.teardownBase() }
 
 // TestJobRunGetExist mirrors .NET JobRunTests.GetExistTest. With no agent registered, list returns
-// no JobRuns and Get on a synthetic name returns 404. We assert both behaviors as a combined test.
+// no JobRuns and Get on a synthetic name returns a non-success response. We assert both behaviors
+// as a combined test.
 func (s *JobRunScenarioSuite) TestJobRunGetExist() {
 	client, err := armstoragemover.NewJobRunsClient(s.subscriptionID, s.cred, s.options)
 	s.Require().NoError(err)

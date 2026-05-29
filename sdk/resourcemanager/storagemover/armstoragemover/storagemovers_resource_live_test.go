@@ -89,10 +89,11 @@ func (s *StorageMoverResourceScenarioSuite) TestGetStorageMoverProject() {
 	s.Equal(s.projectName, *resp.Name)
 }
 
-// TestStorageMoverUpdateTagsDelete mirrors .NET StorageMoverResourceTests.UpdateAddSetRemoveTagDeletTest.
-// Creates a private mover, exercises a description PATCH and three tag map mutations using
-// CreateOrUpdate (Go SDK does not provide AddTag/SetTags/RemoveTag helpers), then deletes the mover
-// and confirms it is gone via a 404 on Get.
+// TestStorageMoverUpdateTagsDelete mirrors .NET StorageMoverResourceTests.UpdateAddSetRemoveTagDeletTest
+// (sic — the .NET method name is intentionally misspelled). Creates a private mover, exercises a
+// description PATCH and three tag map mutations using CreateOrUpdate (Go SDK does not provide
+// AddTag/SetTags/RemoveTag helpers), then deletes the mover and confirms it is gone via a
+// non-success Get response.
 func (s *StorageMoverResourceScenarioSuite) TestStorageMoverUpdateTagsDelete() {
 	client, err := armstoragemover.NewStorageMoversClient(s.subscriptionID, s.cred, s.options)
 	s.Require().NoError(err)

@@ -172,6 +172,42 @@ func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlockBlobInChunksChecksum
 	performUploadStreamToBlockBlobTestWithChecksums(s.T(), _require, testName, blobSize, bufferSize, maxBuffers)
 }
 
+func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	client, err := testcommon.GetClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	_, err = client.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err := client.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
+
+	blobName := testcommon.GenerateBlobName(testName)
+
+	blobContentReader, blobData := testcommon.GenerateData(8 * 1024)
+
+	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
+		&blockblob.UploadStreamOptions{
+			BlockSize:               1024,
+			Concurrency:             3,
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+	_require.NoError(err)
+
+	// Download and verify data was persisted correctly
+	downloadResp, err := client.DownloadStream(context.Background(), containerName, blobName, nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(blobData, downloadedData)
+}
+
 func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertions, testName string, blobSize, bufferSize, maxBuffers int) {
 	client, err := testcommon.GetClient(t, testcommon.TestAccountDefault, nil)
 	_require.NoError(err)

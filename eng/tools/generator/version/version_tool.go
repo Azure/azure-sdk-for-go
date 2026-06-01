@@ -30,6 +30,9 @@ const (
 
 var (
 	versionLineRegex = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
+	// Matches the generator's API version constants in constants.go,
+	// e.g. `version20250525Preview string = "2025-05-25-preview"`.
+	apiVersionConstRegex = regexp.MustCompile(`(?:^|\s)version\d\w*\s+string\s*=\s*"`)
 )
 
 // UpdateAllVersionFiles updates all version-related files in the package
@@ -361,9 +364,17 @@ func containsPreviewAPIVersion(packagePath string) (bool, error) {
 
 			lines := strings.Split(string(b), "\n")
 			for _, line := range lines {
+				// Check inline API version pattern: reqQP.Set("api-version", "2023-01-01-preview")
 				if strings.Contains(line, "\"api-version\"") {
 					parts := strings.Split(line, "\"")
 					if len(parts) == 5 && strings.Contains(parts[3], "preview") {
+						return true, nil
+					}
+				}
+				// Check const API version pattern: versionYYYYMMDD[Preview] string = "2023-01-01-preview"
+				if apiVersionConstRegex.MatchString(line) {
+					parts := strings.Split(line, "\"")
+					if len(parts) >= 2 && strings.Contains(parts[1], "preview") {
 						return true, nil
 					}
 				}

@@ -3,12 +3,20 @@
 ## 1.8.0-beta.2 (Unreleased)
 
 ### Features Added
+* Added support for Structured Message CRC64 content validation on upload and download operations using `TransferValidationTypeComputeStructuredMessageCRC64`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Updated code generator to `@autorest/go@4.0.0-preview.80`.
+* Default upload/download concurrency is now based on CPU core count (clamped between 8 and 96) instead of the fixed value of 5. Set `AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true` to revert to previous defaults.
+
+## 1.7.0 (2026-05-14)
+
+### Features Added
+* Includes all features from `1.7.0-beta.1`
 
 ## 1.8.0-beta.1 (2026-05-05)
 

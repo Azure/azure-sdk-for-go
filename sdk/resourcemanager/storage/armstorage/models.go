@@ -283,6 +283,9 @@ type AccountProperties struct {
 	// The default value is null, which is equivalent to true.
 	AllowSharedKeyAccess *bool
 
+	// Indicate shared key access properties at service level
+	AllowSharedKeyAccessForServices *AccountSharedKeyAccessProperties
+
 	// Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
 	AllowedCopyScope *AllowedCopyScope
 
@@ -292,6 +295,9 @@ type AccountProperties struct {
 	// Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription,
 	// which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric DNS Zone identifier.
 	DNSEndpointType *DNSEndpointType
+
+	// Data Collaboration policy for the storage account.
+	DataCollaborationPolicyProperties *DataCollaborationPolicyProperties
 
 	// A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is false
 	// for this property.
@@ -329,6 +335,7 @@ type AccountProperties struct {
 	LargeFileSharesState *LargeFileSharesState
 
 	// Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property.
+	// Minimum TLS version 1.3 version is not supported.
 	MinimumTLSVersion *MinimumTLSVersion
 
 	// Allow, disallow, or let Network Security Perimeter configuration to evaluate public network access to Storage Account.
@@ -436,6 +443,9 @@ type AccountPropertiesCreateParameters struct {
 	// The default value is null, which is equivalent to true.
 	AllowSharedKeyAccess *bool
 
+	// Indicate shared key access properties at service level
+	AllowSharedKeyAccessForServices *AccountSharedKeyAccessProperties
+
 	// Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
 	AllowedCopyScope *AllowedCopyScope
 
@@ -449,6 +459,9 @@ type AccountPropertiesCreateParameters struct {
 	// Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription,
 	// which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric DNS Zone identifier.
 	DNSEndpointType *DNSEndpointType
+
+	// Data Collaboration policy for the storage account.
+	DataCollaborationPolicyProperties *DataCollaborationPolicyProperties
 
 	// A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is false
 	// for this property.
@@ -492,6 +505,7 @@ type AccountPropertiesCreateParameters struct {
 	LargeFileSharesState *LargeFileSharesState
 
 	// Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property.
+	// Minimum TLS version 1.3 version is not supported.
 	MinimumTLSVersion *MinimumTLSVersion
 
 	// Network rule set
@@ -529,6 +543,9 @@ type AccountPropertiesUpdateParameters struct {
 	// The default value is null, which is equivalent to true.
 	AllowSharedKeyAccess *bool
 
+	// Indicate shared key access properties at service level
+	AllowSharedKeyAccessForServices *AccountSharedKeyAccessProperties
+
 	// Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
 	AllowedCopyScope *AllowedCopyScope
 
@@ -542,6 +559,9 @@ type AccountPropertiesUpdateParameters struct {
 	// Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription,
 	// which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric DNS Zone identifier.
 	DNSEndpointType *DNSEndpointType
+
+	// Data Collaboration policy for the storage account.
+	DataCollaborationPolicyProperties *DataCollaborationPolicyProperties
 
 	// A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is false
 	// for this property.
@@ -579,6 +599,7 @@ type AccountPropertiesUpdateParameters struct {
 	LargeFileSharesState *LargeFileSharesState
 
 	// Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property.
+	// Minimum TLS version 1.3 version is not supported.
 	MinimumTLSVersion *MinimumTLSVersion
 
 	// Network rule set
@@ -645,6 +666,21 @@ type AccountSasParameters struct {
 
 	// The time at which the SAS becomes valid.
 	SharedAccessStartTime *time.Time
+}
+
+// AccountSharedKeyAccessProperties - Defines shared key access properties for a storage account.
+type AccountSharedKeyAccessProperties struct {
+	// Shared key access settings for Blob service.
+	Blob *ServiceSharedKeyAccessProperties
+
+	// Shared key access settings for File service.
+	File *ServiceSharedKeyAccessProperties
+
+	// Shared key access settings for Queue service.
+	Queue *ServiceSharedKeyAccessProperties
+
+	// Shared key access settings for Table service.
+	Table *ServiceSharedKeyAccessProperties
 }
 
 // AccountUpdateParameters - The parameters that can be provided when updating the storage account properties.
@@ -1003,6 +1039,9 @@ type BlobServicePropertiesProperties struct {
 
 	// The blob service properties for blob restore policy.
 	RestorePolicy *RestorePolicyProperties
+
+	// The static website properties for blob storage.
+	StaticWebsite *StaticWebsite
 }
 
 // BurstingConstants - Constants used for calculating included burst IOPS and maximum burst credits for IOPS for a file share
@@ -1040,6 +1079,155 @@ type CheckNameAvailabilityResult struct {
 	// READ-ONLY; Gets the reason that a storage account name could not be used. The Reason element is only returned if NameAvailable
 	// is false.
 	Reason *Reason
+}
+
+// Connector - A Connector is a tracked ARM resource modeled as a sub-resource of a Storage Account.
+type Connector struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The properties of the Storage Connector.
+	Properties *ConnectorProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ConnectorAuthProperties - The authentication properties of the backing data source
+type ConnectorAuthProperties struct {
+	// REQUIRED; Type of the authentication properties. Controls the type of the authProperties object
+	Type *StorageConnectorAuthType
+}
+
+// GetConnectorAuthProperties implements the ConnectorAuthPropertiesClassification interface for type ConnectorAuthProperties.
+func (c *ConnectorAuthProperties) GetConnectorAuthProperties() *ConnectorAuthProperties { return c }
+
+// ConnectorAuthPropertiesUpdate - The authentication properties of the backing data source
+type ConnectorAuthPropertiesUpdate struct {
+	// REQUIRED; Type of the authentication properties. Controls the type of the authProperties object
+	Type *StorageConnectorAuthType
+}
+
+// GetConnectorAuthPropertiesUpdate implements the ConnectorAuthPropertiesUpdateClassification interface for type ConnectorAuthPropertiesUpdate.
+func (c *ConnectorAuthPropertiesUpdate) GetConnectorAuthPropertiesUpdate() *ConnectorAuthPropertiesUpdate {
+	return c
+}
+
+// ConnectorConnection - The connection properties of the backing data source
+type ConnectorConnection struct {
+	// REQUIRED; Type of the connection. Controls the type of the connection object. Not mutable once the Storage Connector is
+	// created.
+	Type *StorageConnectorConnectionType
+}
+
+// GetConnectorConnection implements the ConnectorConnectionClassification interface for type ConnectorConnection.
+func (c *ConnectorConnection) GetConnectorConnection() *ConnectorConnection { return c }
+
+// ConnectorListResult - The response of a Connector list operation.
+type ConnectorListResult struct {
+	// REQUIRED; The Connector items on this page
+	Value []*Connector
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ConnectorProperties - The storage connector properties
+type ConnectorProperties struct {
+	// REQUIRED; The type of backing data source for this Storage Connector.
+	DataSourceType *StorageConnectorDataSourceType
+
+	// REQUIRED; Information about how to communicate with and authenticate to the backing data store.
+	Source ConnectorSourceClassification
+
+	// Arbitrary description of this Storage Connector. Max 250 characters.
+	Description *string
+
+	// State - Active or Inactive. Whether or not the Storage Connector should start as active (default: Active)
+	// (While set to false on the Storage Connector, all data plane requests using this Storage Connector fail, and this Storage
+	// Connector is not billed if it would be otherwise.
+	State *StorageConnectorState
+
+	// Test connection to backing data source before creating the storage connector.
+	TestConnection *bool
+
+	// READ-ONLY; System-generated creation time of the Storage Connector in ISO 8601 date-time format (YYYY-MM-DDTHH:mm:ssZ).
+	// Not a valid input parameter during creating.
+	CreationTime *string
+
+	// READ-ONLY; Represents the provisioning state of the storage connector.
+	ProvisioningState *NativeDataSharingProvisioningState
+
+	// READ-ONLY; System-generated GUID identifier for the Storage Connector. Not a valid input parameter when creating.
+	UniqueID *string
+}
+
+// ConnectorPropertiesUpdate - The storage connector properties
+type ConnectorPropertiesUpdate struct {
+	// Arbitrary description of this Storage Connector. Max 250 characters.
+	Description *string
+
+	// Information about how to communicate with and authenticate to the backing data store.
+	Source ConnectorSourceUpdateClassification
+
+	// State - Active or Inactive. Whether or not the Storage Connector should start as active (default: Active)
+	// (While set to false on the Storage Connector, all data plane requests using this Storage Connector fail, and this Storage
+	// Connector is not billed if it would be otherwise.
+	State *StorageConnectorState
+
+	// Test connection to backing data source before creating the storage connector.
+	TestConnection *bool
+}
+
+// ConnectorSource - The storage connector backing data source information
+type ConnectorSource struct {
+	// REQUIRED; Type of the Storage Connector. Not mutable once the Storage Connector is created."
+	Type *StorageConnectorSourceType
+}
+
+// GetConnectorSource implements the ConnectorSourceClassification interface for type ConnectorSource.
+func (c *ConnectorSource) GetConnectorSource() *ConnectorSource { return c }
+
+// ConnectorSourceUpdate - The storage connector backing data source information
+type ConnectorSourceUpdate struct {
+	// REQUIRED; Type of the Storage Connector. Not mutable once the Storage Connector is created."
+	Type *StorageConnectorSourceType
+}
+
+// GetConnectorSourceUpdate implements the ConnectorSourceUpdateClassification interface for type ConnectorSourceUpdate.
+func (c *ConnectorSourceUpdate) GetConnectorSourceUpdate() *ConnectorSourceUpdate { return c }
+
+// ConnectorUpdate - A Connector is a tracked ARM resource modeled as a sub-resource of a Storage Account.
+type ConnectorUpdate struct {
+	// The properties of the Storage Connector.
+	Properties *ConnectorPropertiesUpdate
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // ContainerProperties - The properties of a container.
@@ -1140,6 +1328,198 @@ type CustomDomain struct {
 
 	// Indicates whether indirect CName validation is enabled. Default value is false. This should only be set on updates.
 	UseSubDomainName *bool
+}
+
+// DataCollaborationPolicyProperties - Defines Data Collaboration Policy for a storage account.
+type DataCollaborationPolicyProperties struct {
+	// Indicates whether cross-entra tenant data sharing is allowed on the storage account.
+	AllowCrossTenantDataSharing *bool
+
+	// Indicates whether storage connectors are allowed to created or managed on the storage account.
+	AllowStorageConnectors *bool
+
+	// Indicates whether data shares are allowed to be created or managed on the storage account.
+	AllowStorageDataShares *bool
+}
+
+// DataShare - A DataShare is a tracked ARM resource modeled as a sub-resource of a Storage Account.
+type DataShare struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The properties of the Storage DataShare.
+	Properties *DataShareProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DataShareAccessPolicy - Policy that specify the permission allowed to a managed identity
+type DataShareAccessPolicy struct {
+	// REQUIRED; Allowed permissions. Currently, only supported value is Read.
+	Permission *StorageDataShareAccessPolicyPermission
+
+	// REQUIRED; The AAD principal ID of the Managed Identity.
+	PrincipalID *string
+
+	// REQUIRED; The AAD tenant ID of the Managed Identity.
+	TenantID *string
+}
+
+// DataShareAsset - Properties of a shared resource.
+type DataShareAsset struct {
+	// REQUIRED; Source Path to be shared. It can be a folder or a blob.
+	// The asset path should contain container name followed by path within the container, e.g. /container1/logs/external.
+	AssetPath *string
+
+	// REQUIRED; Consumer visible name of the original path.
+	DisplayName *string
+}
+
+// DataShareConnection - The connection details for Data Share source
+type DataShareConnection struct {
+	// REQUIRED; The URI of the backing DataShare. Must be in the format: azds://<region>:<DataShareName>:<DataShareIdentifier>
+	DataShareURI *string
+
+	// CONSTANT; The type for data share connection
+	// Field has constant value StorageConnectorConnectionTypeDataShare, any specified value is ignored.
+	Type *StorageConnectorConnectionType
+}
+
+// GetConnectorConnection implements the ConnectorConnectionClassification interface for type DataShareConnection.
+func (d *DataShareConnection) GetConnectorConnection() *ConnectorConnection {
+	return &ConnectorConnection{
+		Type: d.Type,
+	}
+}
+
+// DataShareListResult - The response of a DataShare list operation.
+type DataShareListResult struct {
+	// REQUIRED; The DataShare items on this page
+	Value []*DataShare
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DataShareProperties - The storage datashare properties
+type DataShareProperties struct {
+	// REQUIRED; List of access policies that specify the permission allowed to a managed identity.
+	// For Create - This property is required and cannot be null. If no access policies are provided at creation time, specify
+	// an empty array.
+	// For Update - This property is optional. If set to null or not passed, the existing access policies are left unchanged.
+	// If provided with a non-null value, the existing access policies are replaced with the specified list.
+	AccessPolicies []*DataShareAccessPolicy
+
+	// REQUIRED; List of assets that specify the properties of the shared resources.
+	// For Create - This property is required and cannot be null. If no assets are provided at creation time, specify an empty
+	// array.
+	// For Update - This property is optional. If set to null or not passed, the existing assets are left unchanged.
+	// If provided with a non-null value, the existing assets are replaced with the specified list.
+	Assets []*DataShareAsset
+
+	// Arbitrary description of this Data Share. Max 250 characters.
+	Description *string
+
+	// READ-ONLY; System-generated GUID identifier for the Storage DataShare. Not a valid input parameter when creating.
+	DataShareIdentifier *string
+
+	// READ-ONLY; The DataShare URI to be shared with the consumer.
+	// URI Format - 'azds://<location>:<dataShareName>:<dataShareIdentifier>'.
+	DataShareURI *string
+
+	// READ-ONLY; Represents the provisioning state of the storage datashare.
+	ProvisioningState *NativeDataSharingProvisioningState
+}
+
+// DataSharePropertiesUpdate - The storage datashare properties
+type DataSharePropertiesUpdate struct {
+	// List of access policies that specify the permission allowed to a managed identity.
+	// For Create - This property is required and cannot be null. If no access policies are provided at creation time, specify
+	// an empty array.
+	// For Update - This property is optional. If set to null or not passed, the existing access policies are left unchanged.
+	// If provided with a non-null value, the existing access policies are replaced with the specified list.
+	AccessPolicies []*DataShareAccessPolicy
+
+	// List of assets that specify the properties of the shared resources.
+	// For Create - This property is required and cannot be null. If no assets are provided at creation time, specify an empty
+	// array.
+	// For Update - This property is optional. If set to null or not passed, the existing assets are left unchanged.
+	// If provided with a non-null value, the existing assets are replaced with the specified list.
+	Assets []*DataShareAsset
+
+	// Arbitrary description of this Data Share. Max 250 characters.
+	Description *string
+}
+
+// DataShareSource - The properties of data share source
+type DataShareSource struct {
+	// REQUIRED; Details for how to authenticate to the backing data store.
+	AuthProperties ConnectorAuthPropertiesClassification
+
+	// REQUIRED; Details for how to connect to the backing data store.
+	Connection ConnectorConnectionClassification
+
+	// CONSTANT; The type for data share source
+	// Field has constant value StorageConnectorSourceTypeDataShare, any specified value is ignored.
+	Type *StorageConnectorSourceType
+}
+
+// GetConnectorSource implements the ConnectorSourceClassification interface for type DataShareSource.
+func (d *DataShareSource) GetConnectorSource() *ConnectorSource {
+	return &ConnectorSource{
+		Type: d.Type,
+	}
+}
+
+// DataShareSourceUpdate - The properties of data share source
+type DataShareSourceUpdate struct {
+	// CONSTANT; Discriminator value for DataShare
+	// Field has constant value StorageConnectorSourceTypeDataShare, any specified value is ignored.
+	Type *StorageConnectorSourceType
+
+	// Details for how to authenticate to the backing data store.
+	AuthProperties ConnectorAuthPropertiesUpdateClassification
+}
+
+// GetConnectorSourceUpdate implements the ConnectorSourceUpdateClassification interface for type DataShareSourceUpdate.
+func (d *DataShareSourceUpdate) GetConnectorSourceUpdate() *ConnectorSourceUpdate {
+	return &ConnectorSourceUpdate{
+		Type: d.Type,
+	}
+}
+
+// DataShareUpdate - A DataShare is a tracked ARM resource modeled as a sub-resource of a Storage Account.
+type DataShareUpdate struct {
+	// The properties of the Storage DataShare.
+	Properties *DataSharePropertiesUpdate
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // DateAfterCreation - Object to define snapshot and version action conditions.
@@ -2197,6 +2577,40 @@ type LocalUsers struct {
 	NextLink *string
 }
 
+// ManagedIdentityAuthProperties - The managed identity auth properties for dataShare connection.
+type ManagedIdentityAuthProperties struct {
+	// CONSTANT; The type of managed identity auth
+	// Field has constant value StorageConnectorAuthTypeManagedIdentity, any specified value is ignored.
+	Type *StorageConnectorAuthType
+
+	// ARM ResourceId of the managed identity that should be used to authenticate to the backing data source.
+	IdentityResourceID *string
+}
+
+// GetConnectorAuthProperties implements the ConnectorAuthPropertiesClassification interface for type ManagedIdentityAuthProperties.
+func (m *ManagedIdentityAuthProperties) GetConnectorAuthProperties() *ConnectorAuthProperties {
+	return &ConnectorAuthProperties{
+		Type: m.Type,
+	}
+}
+
+// ManagedIdentityAuthPropertiesUpdate - The managed identity auth properties for dataShare connection.
+type ManagedIdentityAuthPropertiesUpdate struct {
+	// CONSTANT; Discriminator value for ManagedIdentity
+	// Field has constant value StorageConnectorAuthTypeManagedIdentity, any specified value is ignored.
+	Type *StorageConnectorAuthType
+
+	// ARM ResourceId of the managed identity that should be used to authenticate to the backing data source.
+	IdentityResourceID *string
+}
+
+// GetConnectorAuthPropertiesUpdate implements the ConnectorAuthPropertiesUpdateClassification interface for type ManagedIdentityAuthPropertiesUpdate.
+func (m *ManagedIdentityAuthPropertiesUpdate) GetConnectorAuthPropertiesUpdate() *ConnectorAuthPropertiesUpdate {
+	return &ConnectorAuthPropertiesUpdate{
+		Type: m.Type,
+	}
+}
+
 // ManagementPolicy - The Get Storage Account ManagementPolicies operation response.
 type ManagementPolicy struct {
 	// Returns the Storage Account Data Policies Rules.
@@ -2574,6 +2988,9 @@ type ObjectReplicationPolicyProperties struct {
 	// The storage account object replication rules.
 	Rules []*ObjectReplicationPolicyRule
 
+	// Optional. The object replication policy tags replication feature options.
+	TagsReplication *ObjectReplicationPolicyPropertiesTagsReplication
+
 	// READ-ONLY; Indicates when the policy is enabled on the source account.
 	EnabledTime *time.Time
 
@@ -2591,6 +3008,12 @@ type ObjectReplicationPolicyPropertiesMetrics struct {
 // options.
 type ObjectReplicationPolicyPropertiesPriorityReplication struct {
 	// Indicates whether object replication priority replication feature is enabled for the policy.
+	Enabled *bool
+}
+
+// ObjectReplicationPolicyPropertiesTagsReplication - Optional. The object replication policy tags replication feature options.
+type ObjectReplicationPolicyPropertiesTagsReplication struct {
+	// Indicates whether object replication tags replication feature is enabled for the policy.
 	Enabled *bool
 }
 
@@ -3052,6 +3475,12 @@ type ServiceSasParameters struct {
 	SharedAccessStartTime *time.Time
 }
 
+// ServiceSharedKeyAccessProperties - Defines shared key access settings for an individual storage service.
+type ServiceSharedKeyAccessProperties struct {
+	// Indicates whether shared key access is enabled for the service.
+	Enabled *bool
+}
+
 // ServiceSpecification - One property of operation, include metric specifications.
 type ServiceSpecification struct {
 	// Metric specifications of operation.
@@ -3095,6 +3524,24 @@ type SmbSetting struct {
 	// SMB protocol versions supported by server. Valid values are SMB2.1, SMB3.0, SMB3.1.1. Should be passed as a string with
 	// delimiter ';'.
 	Versions *string
+}
+
+// StaticWebsite - The static website properties for blob storage.
+type StaticWebsite struct {
+	// REQUIRED; Indicates whether static website support is enabled for the specified account.
+	Enabled *bool
+
+	// The absolute path where the default index file is present. This absolute path is mutually exclusive to "indexDocument"
+	// and it is case-sensitive.
+	DefaultIndexDocumentPath *string
+
+	// The absolute path to a webpage that Azure Storage serves for requests that don't correspond to an existing file. The contents
+	// of the page are returned with HTTP 404 Not Found. Only a single custom 404 page is supported in each static website.
+	ErrorDocument404Path *string
+
+	// The webpage that Azure Storage serves for requests to the root of a website or any subfolder (for example, index.html).
+	// The value is case-sensitive.
+	IndexDocument *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -3223,7 +3670,7 @@ type TagProperty struct {
 
 // TaskAssignment - The storage task assignment.
 type TaskAssignment struct {
-	// REQUIRED; Properties of the storage task assignment.
+	// Properties of the storage task assignment.
 	Properties *TaskAssignmentProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -3231,6 +3678,9 @@ type TaskAssignment struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -3407,6 +3857,27 @@ type TaskReportSummary struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// TestConnectionResponse - Test connection response properties
+type TestConnectionResponse struct {
+	// REQUIRED; Indicates the method used to validate the connection to the backing data store.
+	// Valid values are `GetBlob` and `ListBlobs` for failure, and `TestExistingConnection` for success.
+	StorageConnectorMethodName *string
+
+	// REQUIRED; The request Id associated with the request sent to the backing data store for validation.
+	StorageConnectorRequestID *string
+
+	// A string representing the error received from the backing data store.
+	// Format will vary depending on the data store type and will be capped at 1 MB in size.
+	// The error message will be empty if the connection was successful.
+	StorageConnectorErrorMessage *string
+}
+
+// TestExistingConnectionRequest - Test existing connection request properties
+type TestExistingConnectionRequest struct {
+	// REQUIRED; The uniqueId of the storage connector as returned by the server.
+	UniqueID *string
 }
 
 // TriggerParameters - The trigger parameters update for the storage task assignment execution

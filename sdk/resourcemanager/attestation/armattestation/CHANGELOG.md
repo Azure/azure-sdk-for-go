@@ -1,5 +1,34 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-03-19)
+### Breaking Changes
+
+- Operation `*OperationsClient.List` has supported pagination, use `*OperationsClient.NewListPager` instead.
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New enum type `PublicNetworkAccessType` with values `PublicNetworkAccessTypeDisabled`, `PublicNetworkAccessTypeEnabled`
+- New enum type `TpmAttestationAuthenticationType` with values `TpmAttestationAuthenticationTypeDisabled`, `TpmAttestationAuthenticationTypeEnabled`
+- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
+- New function `NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error)`
+- New function `*PrivateLinkResourcesClient.ListByProvider(ctx context.Context, resourceGroupName string, providerName string, options *PrivateLinkResourcesClientListByProviderOptions) (PrivateLinkResourcesClientListByProviderResponse, error)`
+- New struct `LogSpecification`
+- New struct `OperationProperties`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New struct `ServicePatchSpecificParams`
+- New struct `ServiceSpecification`
+- New field `Properties` in struct `OperationsDefinition`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `NextLink` in struct `PrivateEndpointConnectionListResult`
+- New field `PublicNetworkAccess`, `TpmAttestationAuthentication` in struct `ServiceCreationSpecificParams`
+- New field `Properties` in struct `ServicePatchParams`
+- New field `PublicNetworkAccess`, `TpmAttestationAuthentication` in struct `StatusResult`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

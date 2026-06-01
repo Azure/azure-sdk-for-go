@@ -173,7 +173,11 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 	if o != nil && o.TransactionalValidation != nil {
 		body, err = o.TransactionalValidation.Apply(body, appendOptions)
 		if err != nil {
-			return AppendBlockResponse{}, nil
+			return AppendBlockResponse{}, err
+		}
+		count, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+		if err != nil {
+			return AppendBlockResponse{}, err
 		}
 	}
 

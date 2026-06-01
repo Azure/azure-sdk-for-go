@@ -74,7 +74,7 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 	adminClient := newAdminClientForTest(t, nil)
 	client := newServiceBusClientForTest(t, nil)
 
-	defer client.Close(context.Background())
+	defer func() { _ = client.Close(context.Background()) }()
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 	_, err := adminClient.CreateQueue(context.Background(), queueName, nil)

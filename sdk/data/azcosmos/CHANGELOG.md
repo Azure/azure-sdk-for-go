@@ -6,6 +6,8 @@
 
 ### Features Added
 
+* Added retry policy for transient `500`, `502`, and `504` server errors on read requests. The request is retried once in the current region and, if applicable, once against the next preferred region. Writes are not retried. This matches the behavior of the .NET, Java, and Python Cosmos SDKs. See [PR 26821](https://github.com/Azure/azure-sdk-for-go/pull/26821).
+
 ### Breaking Changes
 
 ### Bugs Fixed

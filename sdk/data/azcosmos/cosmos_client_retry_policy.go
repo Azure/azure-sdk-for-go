@@ -114,6 +114,10 @@ type retryContext struct {
 	retryCount             int
 	sessionRetryCount      int
 	preferredLocationIndex int
+	// serverErrorRetryCount tracks the number of retries attempted for a
+	// transient 5xx server error (500/502/504). Only reads are retried;
+	// the budget is one in-region retry followed by one cross-region retry.
+	serverErrorRetryCount int
 	// sameRegionRetryCount tracks the number of consecutive retries we have
 	// attempted against the currently-resolved endpoint for a connection
 	// error chain. It resets to 0 whenever we fail over to another region
@@ -137,6 +141,11 @@ type retryContext struct {
 
 const maxRetryCount = 120
 const defaultBackoff = 1
+
+// maxServerErrorRetryCount is the total number of retries attempted for a
+// transient 5xx server error: one in-region retry followed by one
+// cross-region retry.
+const maxServerErrorRetryCount = 2
 
 // sleepWithContext sleeps for d, but returns early with the context's error
 // if ctx is cancelled or its deadline expires. Use this in retry paths so
@@ -234,6 +243,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 		subStatus := response.Header.Get(cosmosHeaderSubstatus)
 		if p.shouldRetryStatus(response.StatusCode, subStatus) {
 			retryContext.useWriteEndpoint = false
+			// advanceLocation gates whether the post-switch logic advances
+			// retryCount (which moves the resolved endpoint to the next
+			// region). An in-region 5xx retry leaves it true=>false so the
+			// retry targets the same endpoint.
+			advanceLocation := true
 			switch response.StatusCode {
 			case http.StatusForbidden:
 				shouldRetry, err := p.attemptRetryOnEndpointFailure(req, o.isWriteOperation, &retryContext)
@@ -259,12 +273,25 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				if !shouldRetry {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
+			case http.StatusInternalServerError, http.StatusBadGateway, http.StatusGatewayTimeout:
+				shouldRetry, inRegion := p.attemptRetryOnServerError(o.isWriteOperation, &retryContext)
+				if !shouldRetry {
+					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
+				}
+				// The in-region retry targets the same endpoint, so do not
+				// advance retryCount. The cross-region retry advances the
+				// location via preferredLocationIndex and retryCount.
+				if inRegion {
+					advanceLocation = false
+				}
 			}
 			err = req.RewindBody()
 			if err != nil {
 				return response, err
 			}
-			retryContext.retryCount += 1
+			if advanceLocation {
+				retryContext.retryCount += 1
+			}
 			// HTTP-status retries can change the endpoint (via retryCount
 			// or preferredLocationIndex). Reset the connection-error
 			// same-region budget so a fresh chain of connection errors
@@ -283,7 +310,10 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 	if (status == http.StatusForbidden && (subStatus == subStatusWriteForbidden || subStatus == subStatusDatabaseAccountNotFound)) ||
 		(status == http.StatusNotFound && subStatus == subStatusReadSessionNotAvailable) ||
 		(status == http.StatusServiceUnavailable) ||
-		(status == http.StatusRequestTimeout) {
+		(status == http.StatusRequestTimeout) ||
+		(status == http.StatusInternalServerError) ||
+		(status == http.StatusBadGateway) ||
+		(status == http.StatusGatewayTimeout) {
 		return true
 	}
 	return false
@@ -508,6 +538,39 @@ func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(isWriteOperation bo
 	}
 	retryContext.preferredLocationIndex += 1
 	return true
+}
+
+// attemptRetryOnServerError applies the 5xx retry policy for transient server
+// errors (500 Internal Server Error, 502 Bad Gateway, 504 Gateway Timeout).
+// Consistent with the other Cosmos SDKs (.NET, Python, Java), only read
+// operations are retried. The retry budget is one in-region retry followed by
+// one cross-region retry, after which the error is surfaced to the caller. The
+// cross-region retry is only attempted when cross-region retries are enabled, a
+// preferred location is available to fail over to, and the location cache has
+// resolved more than one read endpoint -- otherwise the "cross-region" retry
+// would just hit the same endpoint as the in-region retry. The returned
+// inRegion flag tells the caller whether to keep targeting the current endpoint
+// (true) or to advance to the next preferred region (false).
+func (p *clientRetryPolicy) attemptRetryOnServerError(isWriteOperation bool, retryContext *retryContext) (shouldRetry bool, inRegion bool) {
+	if isWriteOperation {
+		return false, false
+	}
+	if retryContext.serverErrorRetryCount >= maxServerErrorRetryCount {
+		return false, false
+	}
+	if retryContext.serverErrorRetryCount == 0 {
+		retryContext.serverErrorRetryCount += 1
+		return true, true
+	}
+	if !p.gem.locationCache.enableCrossRegionRetries || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
+		return false, false
+	}
+	if p.gem.locationCache.readEndpointCount() <= 1 {
+		return false, false
+	}
+	retryContext.serverErrorRetryCount += 1
+	retryContext.preferredLocationIndex += 1
+	return true, false
 }
 
 // attemptRetryOnRequestTimeout handles an HTTP 408 from the service. A

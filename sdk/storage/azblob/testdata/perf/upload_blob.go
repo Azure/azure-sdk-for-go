@@ -61,7 +61,7 @@ func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 	// Validate memory budget before doing any I/O so the user gets a clear
 	// error instead of an OOM kill or a network call followed by a panic.
 	if uploadMethod == "buffer" {
-		if err := checkBufferUploadMemoryBudget(u.size, 1); err != nil {
+		if err := checkBufferMemoryBudget("--upload-method buffer", u.size); err != nil {
 			return nil, err
 		}
 	}

@@ -139,8 +139,8 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 		// available system memory. The total memory cost of the buffer
 		// download method is roughly size * parallel; we apply the same 80%
 		// budget check used by --upload-method=buffer.
-		if err := checkBufferUploadMemoryBudget(int64(g.size)*int64(perf.Parallel()), perf.Parallel()); err != nil {
-			return nil, fmt.Errorf("--download-method buffer: %w", err)
+		if err := checkBufferMemoryBudget("--download-method buffer", int64(g.size)*int64(perf.Parallel())); err != nil {
+			return nil, err
 		}
 		d.buffer = make([]byte, g.size)
 	}

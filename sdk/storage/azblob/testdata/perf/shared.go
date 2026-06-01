@@ -37,7 +37,13 @@ var (
 
 	// commonConcurrency is the SDK Concurrency (parallel blocks per operation)
 	// for chunked upload/download paths. 0 means "use the SDK default".
-	commonConcurrency uint
+	//
+	// Typed as uint16 because the strictest SDK option that consumes this
+	// value (blockblob.UploadBufferOptions.Concurrency,
+	// blob.DownloadBufferOptions.Concurrency) is uint16. Using uint16 here
+	// rules out silent truncation/overflow at the cast sites and lets the
+	// CLI fail fast (via uint16Flag.Set) for values outside [0, 65535].
+	commonConcurrency uint16
 
 	// uploadMethod selects which upload API the upload test exercises:
 	//   single  -> blockblob.Client.Upload       (single REST PUT; default)
@@ -56,10 +62,31 @@ var (
 
 func init() {
 	flag.Int64Var(&commonBlockSize, "block-size", 0, "Block/chunk size in bytes for chunked upload/download (0=SDK default).")
-	flag.UintVar(&commonConcurrency, "concurrency", 0, "Max number of blocks transferred in parallel per chunked upload/download operation (0=SDK default).")
+	flag.Var((*uint16Flag)(&commonConcurrency), "concurrency", "Max number of blocks transferred in parallel per chunked upload/download operation (0=SDK default; max 65535).")
 	flag.StringVar(&uploadMethod, "upload-method", "single", "Upload method: single|buffer|stream.")
 	flag.StringVar(&downloadMethod, "download-method", "stream", "Download method: stream|buffer.")
 	flag.IntVar(&listPageSize, "page-size", 5000, "MaxResults page size used by list operations.")
+}
+
+// uint16Flag is a flag.Value backed by a uint16 so the CLI rejects values
+// outside [0, 65535] at parse time instead of silently truncating at the
+// SDK option cast site.
+type uint16Flag uint16
+
+func (u *uint16Flag) String() string {
+	if u == nil {
+		return "0"
+	}
+	return strconv.FormatUint(uint64(*u), 10)
+}
+
+func (u *uint16Flag) Set(value string) error {
+	parsed, err := strconv.ParseUint(value, 10, 16)
+	if err != nil {
+		return fmt.Errorf("invalid --concurrency value %q (must be a uint16 in [0, 65535]): %w", value, err)
+	}
+	*u = uint16Flag(parsed)
+	return nil
 }
 
 // generateRandomBytes returns size bytes of random data, suitable for use as an
@@ -175,17 +202,21 @@ func availableSystemMemoryBytes() uint64 {
 	return 0
 }
 
-// checkBufferUploadMemoryBudget returns an error when the user requests an
-// in-memory buffer upload (--upload-method buffer) whose --size would exceed a
+// checkBufferMemoryBudget returns an error when the caller requests an
+// in-memory buffer for upload or download whose total size would exceed a
 // safe fraction (80%) of available system memory. This guards against the
-// runtime OOM that would otherwise abort the process inside
-// generateRandomBytes() before any HTTP request is made.
+// runtime OOM that would otherwise abort the process before any HTTP request
+// is made.
 //
-// parallel is the --parallel value: each parallel goroutine in the upload
-// test shares the same single payload (allocated once in NewUploadTest), so
-// the budget check is independent of parallel for the buffer path. The
-// parameter is accepted for symmetry / future use.
-func checkBufferUploadMemoryBudget(sizeBytes int64, _ int) error {
+// flagLabel is the flag-and-value pair that triggered the check (e.g.
+// "--upload-method buffer" or "--download-method buffer") and is embedded in
+// the error message so the text matches the invoked flag.
+//
+// sizeBytes is the total number of bytes the caller intends to allocate
+// across all goroutines (upload shares one payload across --parallel, so the
+// caller passes the per-payload size; download allocates one buffer per
+// goroutine, so the caller passes size * parallel).
+func checkBufferMemoryBudget(flagLabel string, sizeBytes int64) error {
 	if sizeBytes <= 0 {
 		return nil
 	}
@@ -197,10 +228,10 @@ func checkBufferUploadMemoryBudget(sizeBytes int64, _ int) error {
 	budget := uint64(float64(avail) * safetyFraction)
 	if uint64(sizeBytes) > budget {
 		return fmt.Errorf(
-			"--upload-method buffer requires materializing the full --size in RAM: "+
-				"requested %d bytes (%.2f GiB) exceeds %d%% of available system memory (%d bytes, %.2f GiB available). "+
-				"Use --upload-method stream for large payloads, or reduce --size",
-			sizeBytes, float64(sizeBytes)/(1<<30),
+			"%s requires materializing %d bytes (%.2f GiB) in RAM, "+
+				"which exceeds %d%% of available system memory (%d bytes, %.2f GiB available). "+
+				"Use a streaming method for large payloads, or reduce --size/--parallel",
+			flagLabel, sizeBytes, float64(sizeBytes)/(1<<30),
 			int(safetyFraction*100), avail, float64(avail)/(1<<30),
 		)
 	}

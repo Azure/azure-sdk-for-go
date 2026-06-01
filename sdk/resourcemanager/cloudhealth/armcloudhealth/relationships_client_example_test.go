@@ -44,7 +44,7 @@ func ExampleRelationshipsClient_BeginCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.RelationshipsClientCreateOrUpdateResponse{
-	// 	Relationship: &armcloudhealth.Relationship{
+	// 	Relationship: armcloudhealth.Relationship{
 	// 		Properties: &armcloudhealth.RelationshipProperties{
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 	// 			DisplayName: to.Ptr("My relationship"),
@@ -109,7 +109,7 @@ func ExampleRelationshipsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.RelationshipsClientGetResponse{
-	// 	Relationship: &armcloudhealth.Relationship{
+	// 	Relationship: armcloudhealth.Relationship{
 	// 		Properties: &armcloudhealth.RelationshipProperties{
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 	// 			DisplayName: to.Ptr("My relationship"),

@@ -43,7 +43,7 @@ func NewBucketsClient(subscriptionID string, credential azcore.TokenCredential, 
 // connect to the volume data contained in those buckets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -73,7 +73,7 @@ func (client *BucketsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 // to the volume data contained in those buckets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 func (client *BucketsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body Bucket, options *BucketsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BucketsClient.BeginCreateOrUpdate"
@@ -127,7 +127,7 @@ func (client *BucketsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-15-preview")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -140,7 +140,7 @@ func (client *BucketsClient) createOrUpdateCreateRequest(ctx context.Context, re
 // BeginDelete - Delete a volume's bucket.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -167,7 +167,7 @@ func (client *BucketsClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Delete a volume's bucket.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 func (client *BucketsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, options *BucketsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BucketsClient.BeginDelete"
@@ -221,7 +221,7 @@ func (client *BucketsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-15-preview")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -230,7 +230,7 @@ func (client *BucketsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // store in Azure Key Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -261,7 +261,7 @@ func (client *BucketsClient) BeginGenerateAkvCredentials(ctx context.Context, re
 // in Azure Key Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 func (client *BucketsClient) generateAkvCredentials(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body BucketCredentialsExpiry, options *BucketsClientBeginGenerateAkvCredentialsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BucketsClient.BeginGenerateAkvCredentials"
@@ -315,7 +315,7 @@ func (client *BucketsClient) generateAkvCredentialsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-15-preview")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -328,7 +328,7 @@ func (client *BucketsClient) generateAkvCredentialsCreateRequest(ctx context.Con
 // expiry date and time of key pair (in UTC).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -391,7 +391,7 @@ func (client *BucketsClient) generateCredentialsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-15-preview")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -414,7 +414,7 @@ func (client *BucketsClient) generateCredentialsHandleResponse(resp *http.Respon
 // to the volume data contained in those buckets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -475,7 +475,7 @@ func (client *BucketsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-15-preview")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -493,7 +493,7 @@ func (client *BucketsClient) getHandleResponse(resp *http.Response) (BucketsClie
 // NewListPager - Describes all buckets belonging to a volume. Buckets allow additional services, such as AI services, connect
 // to the volume data contained in those buckets.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -550,7 +550,7 @@ func (client *BucketsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-15-preview")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -568,7 +568,7 @@ func (client *BucketsClient) listHandleResponse(resp *http.Response) (BucketsCli
 // BeginRefreshCertificate - This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -597,7 +597,7 @@ func (client *BucketsClient) BeginRefreshCertificate(ctx context.Context, resour
 // RefreshCertificate - This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 func (client *BucketsClient) refreshCertificate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, options *BucketsClientBeginRefreshCertificateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BucketsClient.BeginRefreshCertificate"
@@ -651,7 +651,7 @@ func (client *BucketsClient) refreshCertificateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-15-preview")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -659,7 +659,7 @@ func (client *BucketsClient) refreshCertificateCreateRequest(ctx context.Context
 // BeginUpdate - Updates the details of a volume bucket.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -688,7 +688,7 @@ func (client *BucketsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 // Update - Updates the details of a volume bucket.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-12-15-preview
+// Generated from API version 2026-01-01
 func (client *BucketsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body BucketPatch, options *BucketsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BucketsClient.BeginUpdate"
@@ -742,7 +742,7 @@ func (client *BucketsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-15-preview")
+	reqQP.Set("api-version", "2026-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

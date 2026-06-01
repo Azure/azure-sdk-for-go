@@ -48,7 +48,7 @@ func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error)
 	if err != nil {
 		return nil, err
 	}
-	return &t, err
+	return &t, nil
 }
 
 func newTracker[T any]() *tracker[T] {

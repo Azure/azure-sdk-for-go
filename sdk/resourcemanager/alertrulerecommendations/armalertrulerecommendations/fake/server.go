@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // Server is a fake server for instances of the armalertrulerecommendations.Client type.
@@ -59,9 +60,7 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -79,10 +78,7 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -120,7 +116,7 @@ func (s *ServerTransport) dispatchNewListByResourcePager(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListByResourcePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -143,11 +139,7 @@ func (s *ServerTransport) dispatchNewListByTargetTypePager(req *http.Request) (*
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		targetTypeParam, err := url.QueryUnescape(qp.Get("targetType"))
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByTargetTypePager(targetTypeParam, nil)
+		resp := s.srv.NewListByTargetTypePager(qp.Get("targetType"), nil)
 		newListByTargetTypePager = &resp
 		s.newListByTargetTypePager.add(req, newListByTargetTypePager)
 		server.PagerResponderInjectNextLinks(newListByTargetTypePager, req, func(page *armalertrulerecommendations.ClientListByTargetTypeResponse, createLink func() string) {
@@ -158,7 +150,7 @@ func (s *ServerTransport) dispatchNewListByTargetTypePager(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListByTargetTypePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

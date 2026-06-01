@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/GetOffer.json
+// Generated from example definition: 2026-04-01-preview/GetOffer.json
 func ExampleOffersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleOffersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/ListOffersByCluster.json
+// Generated from example definition: 2026-04-01-preview/ListOffersByCluster.json
 func ExampleOffersClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleOffersClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/ListOffersByPublisher.json
+// Generated from example definition: 2026-04-01-preview/ListOffersByPublisher.json
 func ExampleOffersClient_NewListByPublisherPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -115,14 +115,14 @@ func TestComputeEffectivePartitionKey(t *testing.T) {
 	result := pk.computeEffectivePartitionKey(PartitionKeyKindHash, 1)
 	require.Equal(t, "000000000000000000000000FF69187F", result.EPK)
 
-	// V2 Hash: null → known hash
+	// V2 Hash: null → known hash (top 2 bits masked for routing: 0x77 & 0x3F = 0x37)
 	result = NullPartitionKey.computeEffectivePartitionKey(PartitionKeyKindHash, 2)
-	require.Equal(t, "778867E4430E67857ACE5C908374FE16", result.EPK)
+	require.Equal(t, "378867E4430E67857ACE5C908374FE16", result.EPK)
 
-	// V2 MultiHash: ["a", "b"] → per-component hashes concatenated
+	// V2 MultiHash: ["a", "b"] → per-component hashes concatenated (each masked)
 	multiPK := NewPartitionKey().AppendString("a").AppendString("b")
 	result = multiPK.computeEffectivePartitionKey(PartitionKeyKindMultiHash, 2)
-	require.Equal(t, "FA5381E1114EB8D3FCC90795045B49B7D95644569A78B1E22D200348AF9416CE", result.EPK)
+	require.Equal(t, "3A5381E1114EB8D3FCC90795045B49B7195644569A78B1E22D200348AF9416CE", result.EPK)
 
 	// Undefined partition key
 	emptyPK := NewPartitionKey()

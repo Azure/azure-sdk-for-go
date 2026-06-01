@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-02-01/DeleteUpdateSummaries.json
+// Generated from example definition: 2026-04-01-preview/DeleteUpdateSummaries.json
 func ExampleUpdateSummariesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleUpdateSummariesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/GetUpdateSummaries.json
+// Generated from example definition: 2026-04-01-preview/GetUpdateSummaries.json
 func ExampleUpdateSummariesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleUpdateSummariesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/ListUpdateSummaries.json
+// Generated from example definition: 2026-04-01-preview/ListUpdateSummaries.json
 func ExampleUpdateSummariesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleUpdateSummariesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/PutUpdateSummaries.json
+// Generated from example definition: 2026-04-01-preview/PutUpdateSummaries.json
 func ExampleUpdateSummariesClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

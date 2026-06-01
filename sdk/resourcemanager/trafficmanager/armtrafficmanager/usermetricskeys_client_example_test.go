@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-04-01/TrafficManagerUserMetricsKeys-PUT.json
+// Generated from example definition: 2024-04-01-preview/TrafficManagerUserMetricsKeys-PUT.json
 func ExampleUserMetricsKeysClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -28,14 +28,14 @@ func ExampleUserMetricsKeysClient_CreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2022-04-01/TrafficManagerUserMetricsKeys-DELETE.json
+// Generated from example definition: 2024-04-01-preview/TrafficManagerUserMetricsKeys-DELETE.json
 func ExampleUserMetricsKeysClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -47,19 +47,19 @@ func ExampleUserMetricsKeysClient_Delete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.UserMetricsKeysClientDeleteResponse{
-	// 	DeleteOperationResult: &armtrafficmanager.DeleteOperationResult{
+	// 	DeleteOperationResult: armtrafficmanager.DeleteOperationResult{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2022-04-01/TrafficManagerUserMetricsKeys-GET.json
+// Generated from example definition: 2024-04-01-preview/TrafficManagerUserMetricsKeys-GET.json
 func ExampleUserMetricsKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -71,7 +71,7 @@ func ExampleUserMetricsKeysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.UserMetricsKeysClientGetResponse{
-	// 	UserMetricsModel: &armtrafficmanager.UserMetricsModel{
+	// 	UserMetricsModel: armtrafficmanager.UserMetricsModel{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerUserMetricsKeys"),
 	// 		ID: to.Ptr("/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default"),

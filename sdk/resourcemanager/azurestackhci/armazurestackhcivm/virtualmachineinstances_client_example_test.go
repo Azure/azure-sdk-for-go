@@ -63,13 +63,13 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.VirtualMachineInstancesClientCreateOrUpdateResponse{
-	// 	VirtualMachineInstance: &armazurestackhcivm.VirtualMachineInstance{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
 	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
 	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
@@ -165,13 +165,13 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.VirtualMachineInstancesClientCreateOrUpdateResponse{
-	// 	VirtualMachineInstance: &armazurestackhcivm.VirtualMachineInstance{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
 	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
 	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
@@ -267,13 +267,13 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.VirtualMachineInstancesClientCreateOrUpdateResponse{
-	// 	VirtualMachineInstance: &armazurestackhcivm.VirtualMachineInstance{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
 	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
 	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
@@ -358,13 +358,13 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.VirtualMachineInstancesClientCreateOrUpdateResponse{
-	// 	VirtualMachineInstance: &armazurestackhcivm.VirtualMachineInstance{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
 	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
 	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
@@ -453,13 +453,13 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.VirtualMachineInstancesClientCreateOrUpdateResponse{
-	// 	VirtualMachineInstance: &armazurestackhcivm.VirtualMachineInstance{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
 	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
 	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
@@ -551,13 +551,13 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_createVirtualMachi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.VirtualMachineInstancesClientCreateOrUpdateResponse{
-	// 	VirtualMachineInstance: &armazurestackhcivm.VirtualMachineInstance{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
 	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
 	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
@@ -614,7 +614,7 @@ func ExampleVirtualMachineInstancesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -637,7 +637,7 @@ func ExampleVirtualMachineInstancesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.VirtualMachineInstancesClientGetResponse{
-	// 	VirtualMachineInstance: &armazurestackhcivm.VirtualMachineInstance{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/virtualMachineInstances"),
 	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
@@ -752,7 +752,7 @@ func ExampleVirtualMachineInstancesClient_BeginPause() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -773,7 +773,7 @@ func ExampleVirtualMachineInstancesClient_BeginRestart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -794,7 +794,7 @@ func ExampleVirtualMachineInstancesClient_BeginSave() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -815,7 +815,7 @@ func ExampleVirtualMachineInstancesClient_BeginStart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -836,7 +836,7 @@ func ExampleVirtualMachineInstancesClient_BeginStop() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -867,13 +867,13 @@ func ExampleVirtualMachineInstancesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.VirtualMachineInstancesClientUpdateResponse{
-	// 	VirtualMachineInstance: &armazurestackhcivm.VirtualMachineInstance{
+	// 	VirtualMachineInstance: armazurestackhcivm.VirtualMachineInstance{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/virtualMachineInstances"),
 	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{

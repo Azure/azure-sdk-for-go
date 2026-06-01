@@ -1,5 +1,11 @@
 # Release History
 
+## 0.6.1 (2026-05-18)
+### Other Changes
+
+- Deprecate: deprecate deploymentmanager as service has been decommissioned
+
+
 ## 0.6.0 (2023-11-24)
 ### Features Added
 

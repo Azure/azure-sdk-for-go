@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
+// Generated from example definition: 2026-01-31-preview/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
 func ExamplePrivateEndpointClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExamplePrivateEndpointClient_GetOperationStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.PrivateEndpointClientGetOperationStatusResponse{
-	// 	OperationStatus: &armrecoveryservicesbackup.OperationStatus{
+	// 	OperationStatus: armrecoveryservicesbackup.OperationStatus{
 	// 		Name: to.Ptr("0f48183b-0a44-4dca-aec1-bba5daab888a"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T11:59:47.5901592Z"); return t}()),
 	// 		ID: to.Ptr("0f48183b-0a44-4dca-aec1-bba5daab888a"),

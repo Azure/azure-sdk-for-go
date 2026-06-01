@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-15-preview/BackupsUnderVolume_Migrate.json
+// Generated from example definition: 2026-01-01/BackupsUnderVolume_Migrate.json
 func ExampleBackupsUnderVolumeClient_BeginMigrateBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

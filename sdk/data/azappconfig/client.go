@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/audience"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/querynormalization"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/synctoken"
 )
 
@@ -73,7 +74,7 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 
 	cache := synctoken.NewCache()
 	client, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache), audience.NewAudienceErrorHandlingPolicy(audienceConfigured)},
+		PerRetry: []policy.Policy{querynormalization.NewPolicy(), authPolicy, synctoken.NewPolicy(cache), audience.NewAudienceErrorHandlingPolicy(audienceConfigured)},
 		Tracing: runtime.TracingOptions{
 			Namespace: "Microsoft.AppConfig",
 		},
@@ -287,6 +288,35 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 				ETag:      (*azcore.ETag)(page.ETag),
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
+		},
+		Tracer: c.appConfigClient.Tracer(),
+	})
+}
+
+// NewCheckSettingsPager creates a pager that uses HEAD requests to efficiently check for changes
+// in configuration settings that match the specified setting selector.
+func (c *Client) NewCheckSettingsPager(selector SettingSelector, options *CheckSettingsOptions) *runtime.Pager[CheckSettingsPageResponse] {
+	if options == nil {
+		options = &CheckSettingsOptions{}
+	}
+	pagerInternal := c.appConfigClient.NewCheckKeyValuesPagerWithMatchConditions(options.MatchConditions, selector.toGeneratedCheckKeyValues())
+	return runtime.NewPager(runtime.PagingHandler[CheckSettingsPageResponse]{
+		More: func(CheckSettingsPageResponse) bool {
+			return pagerInternal.More()
+		},
+		Fetcher: func(ctx context.Context, cur *CheckSettingsPageResponse) (CheckSettingsPageResponse, error) {
+			page, err := pagerInternal.NextPage(ctx)
+			if err != nil {
+				return CheckSettingsPageResponse{}, err
+			}
+
+			resp := CheckSettingsPageResponse{
+				ETag: (*azcore.ETag)(page.ETag),
+			}
+			if page.SyncToken != nil {
+				resp.SyncToken = SyncToken(*page.SyncToken)
+			}
+			return resp, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
 	})

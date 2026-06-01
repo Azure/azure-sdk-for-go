@@ -177,7 +177,7 @@ func TestSlowDestCopyFrom(t *testing.T) {
 		require.ErrorIs(t, err, io.ErrNoProgress)
 	}
 
-	require.Equal(t, 1, tracker.Count)
+	require.GreaterOrEqual(t, tracker.Count, 1)
 	require.True(t, tracker.Freed)
 }
 

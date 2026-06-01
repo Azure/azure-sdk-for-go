@@ -50,13 +50,13 @@ func ExampleImportPipelinesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ImportPipelinesClientCreateResponse{
-	// 	ImportPipeline: &armcontainerregistry.ImportPipeline{
+	// 	ImportPipeline: armcontainerregistry.ImportPipeline{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/importPipelines/myImportPipeline"),
 	// 		Name: to.Ptr("myImportPipeline"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/importPipelines"),
@@ -110,7 +110,7 @@ func ExampleImportPipelinesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -138,7 +138,7 @@ func ExampleImportPipelinesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ImportPipelinesClientGetResponse{
-	// 	ImportPipeline: &armcontainerregistry.ImportPipeline{
+	// 	ImportPipeline: armcontainerregistry.ImportPipeline{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/importPipelines/myImportPipeline"),
 	// 		Name: to.Ptr("myImportPipeline"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/importPipelines"),

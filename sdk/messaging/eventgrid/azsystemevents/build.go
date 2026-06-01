@@ -9,3 +9,7 @@
 //go:generate gofmt -w .
 
 package azsystemevents
+
+// to silence the linter as these values aren't used (no pipeline)
+var _ = moduleName
+var _ = moduleVersion

@@ -1,10 +1,18 @@
 # Release History
 
-## 1.21.1-beta.1 (Unreleased)
+## 1.22.0 (Unreleased)
 
 ### Features Added
 
+* Added type `datetime.RFC7231` for date/time values in RFC 1123 format with a fixed GMT timezone.
+
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.21.1 (2026-04-16)
 
 ### Bugs Fixed
 
@@ -13,6 +21,9 @@
 * For `runtime.JoinPaths`, don't add a slash between root and paths when `paths` starts with `?` (query string).
 
 ### Other Changes
+
+* Upgraded to Go 1.25.0.
+* Upgraded dependencies.
 
 ## 1.21.0 (2026-01-12)
 

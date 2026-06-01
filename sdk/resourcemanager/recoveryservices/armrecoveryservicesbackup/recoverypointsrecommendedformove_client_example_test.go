@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
 func ExampleRecoveryPointsRecommendedForMoveClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

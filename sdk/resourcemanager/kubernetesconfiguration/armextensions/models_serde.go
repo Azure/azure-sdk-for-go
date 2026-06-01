@@ -7,12 +7,81 @@ package armextensions
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
+	"reflect"
+	"time"
 )
+
+// MarshalJSON implements the json.Marshaller interface for type AccessDetail.
+func (a AccessDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "allowedActions", a.AllowedActions)
+	populate(objectMap, "description", a.Description)
+	populate(objectMap, "entity", a.Entity)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccessDetail.
+func (a *AccessDetail) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "allowedActions":
+			err = unpopulate(val, "AllowedActions", &a.AllowedActions)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, "Description", &a.Description)
+			delete(rawMsg, key)
+		case "entity":
+			err = unpopulate(val, "Entity", &a.Entity)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AdditionalDetails.
+func (a AdditionalDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "docs", a.Docs)
+	populate(objectMap, "releaseNotes", a.ReleaseNotes)
+	populate(objectMap, "troubleshootingGuide", a.TroubleshootingGuide)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AdditionalDetails.
+func (a *AdditionalDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "docs":
+			err = unpopulate(val, "Docs", &a.Docs)
+			delete(rawMsg, key)
+		case "releaseNotes":
+			err = unpopulate(val, "ReleaseNotes", &a.ReleaseNotes)
+			delete(rawMsg, key)
+		case "troubleshootingGuide":
+			err = unpopulate(val, "TroubleshootingGuide", &a.TroubleshootingGuide)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
 
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
@@ -93,6 +162,7 @@ func (e Extension) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", e.ID)
 	populate(objectMap, "identity", e.Identity)
+	populate(objectMap, "managedBy", e.ManagedBy)
 	populate(objectMap, "name", e.Name)
 	populate(objectMap, "plan", e.Plan)
 	populate(objectMap, "properties", e.Properties)
@@ -115,6 +185,9 @@ func (e *Extension) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "identity":
 			err = unpopulate(val, "Identity", &e.Identity)
+			delete(rawMsg, key)
+		case "managedBy":
+			err = unpopulate(val, "ManagedBy", &e.ManagedBy)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &e.Name)
@@ -142,15 +215,19 @@ func (e *Extension) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExtensionProperties.
 func (e ExtensionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "additionalDetails", e.AdditionalDetails)
 	populate(objectMap, "aksAssignedIdentity", e.AksAssignedIdentity)
 	populate(objectMap, "autoUpgradeMinorVersion", e.AutoUpgradeMinorVersion)
+	populate(objectMap, "autoUpgradeMode", e.AutoUpgradeMode)
 	populate(objectMap, "configurationProtectedSettings", e.ConfigurationProtectedSettings)
 	populate(objectMap, "configurationSettings", e.ConfigurationSettings)
 	populate(objectMap, "currentVersion", e.CurrentVersion)
 	populate(objectMap, "customLocationSettings", e.CustomLocationSettings)
 	populate(objectMap, "errorInfo", e.ErrorInfo)
+	populate(objectMap, "extensionState", e.ExtensionState)
 	populate(objectMap, "extensionType", e.ExtensionType)
 	populate(objectMap, "isSystemExtension", e.IsSystemExtension)
+	populate(objectMap, "managementDetails", e.ManagementDetails)
 	populate(objectMap, "packageUri", e.PackageURI)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
 	populate(objectMap, "releaseTrain", e.ReleaseTrain)
@@ -169,11 +246,17 @@ func (e *ExtensionProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "additionalDetails":
+			err = unpopulate(val, "AdditionalDetails", &e.AdditionalDetails)
+			delete(rawMsg, key)
 		case "aksAssignedIdentity":
 			err = unpopulate(val, "AksAssignedIdentity", &e.AksAssignedIdentity)
 			delete(rawMsg, key)
 		case "autoUpgradeMinorVersion":
 			err = unpopulate(val, "AutoUpgradeMinorVersion", &e.AutoUpgradeMinorVersion)
+			delete(rawMsg, key)
+		case "autoUpgradeMode":
+			err = unpopulate(val, "AutoUpgradeMode", &e.AutoUpgradeMode)
 			delete(rawMsg, key)
 		case "configurationProtectedSettings":
 			err = unpopulate(val, "ConfigurationProtectedSettings", &e.ConfigurationProtectedSettings)
@@ -190,11 +273,17 @@ func (e *ExtensionProperties) UnmarshalJSON(data []byte) error {
 		case "errorInfo":
 			err = unpopulate(val, "ErrorInfo", &e.ErrorInfo)
 			delete(rawMsg, key)
+		case "extensionState":
+			err = unpopulate(val, "ExtensionState", &e.ExtensionState)
+			delete(rawMsg, key)
 		case "extensionType":
 			err = unpopulate(val, "ExtensionType", &e.ExtensionType)
 			delete(rawMsg, key)
 		case "isSystemExtension":
 			err = unpopulate(val, "IsSystemExtension", &e.IsSystemExtension)
+			delete(rawMsg, key)
+		case "managementDetails":
+			err = unpopulate(val, "ManagementDetails", &e.ManagementDetails)
 			delete(rawMsg, key)
 		case "packageUri":
 			err = unpopulate(val, "PackageURI", &e.PackageURI)
@@ -225,7 +314,10 @@ func (e *ExtensionProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExtensionPropertiesAksAssignedIdentity.
 func (e ExtensionPropertiesAksAssignedIdentity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "clientId", e.ClientID)
+	populate(objectMap, "objectId", e.ObjectID)
 	populate(objectMap, "principalId", e.PrincipalID)
+	populate(objectMap, "resourceId", e.ResourceID)
 	populate(objectMap, "tenantId", e.TenantID)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
@@ -240,8 +332,17 @@ func (e *ExtensionPropertiesAksAssignedIdentity) UnmarshalJSON(data []byte) erro
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "clientId":
+			err = unpopulate(val, "ClientID", &e.ClientID)
+			delete(rawMsg, key)
+		case "objectId":
+			err = unpopulate(val, "ObjectID", &e.ObjectID)
+			delete(rawMsg, key)
 		case "principalId":
 			err = unpopulate(val, "PrincipalID", &e.PrincipalID)
+			delete(rawMsg, key)
+		case "resourceId":
+			err = unpopulate(val, "ResourceID", &e.ResourceID)
 			delete(rawMsg, key)
 		case "tenantId":
 			err = unpopulate(val, "TenantID", &e.TenantID)
@@ -368,6 +469,37 @@ func (l *List) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ManagementDetails.
+func (m ManagementDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "accessDetails", m.AccessDetails)
+	populate(objectMap, "category", m.Category)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ManagementDetails.
+func (m *ManagementDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "accessDetails":
+			err = unpopulate(val, "AccessDetails", &m.AccessDetails)
+			delete(rawMsg, key)
+		case "category":
+			err = unpopulate(val, "Category", &m.Category)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type OperationStatusResult.
 func (o OperationStatusResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -442,6 +574,7 @@ func (p *PatchExtension) UnmarshalJSON(data []byte) error {
 func (p PatchExtensionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "autoUpgradeMinorVersion", p.AutoUpgradeMinorVersion)
+	populate(objectMap, "autoUpgradeMode", p.AutoUpgradeMode)
 	populate(objectMap, "configurationProtectedSettings", p.ConfigurationProtectedSettings)
 	populate(objectMap, "configurationSettings", p.ConfigurationSettings)
 	populate(objectMap, "releaseTrain", p.ReleaseTrain)
@@ -460,6 +593,9 @@ func (p *PatchExtensionProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "autoUpgradeMinorVersion":
 			err = unpopulate(val, "AutoUpgradeMinorVersion", &p.AutoUpgradeMinorVersion)
+			delete(rawMsg, key)
+		case "autoUpgradeMode":
+			err = unpopulate(val, "AutoUpgradeMode", &p.AutoUpgradeMode)
 			delete(rawMsg, key)
 		case "configurationProtectedSettings":
 			err = unpopulate(val, "ConfigurationProtectedSettings", &p.ConfigurationProtectedSettings)

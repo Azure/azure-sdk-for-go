@@ -42,7 +42,7 @@ func NewNamespaceDiscoveredAssetsClient(subscriptionID string, credential azcore
 // BeginCreateOrReplace - Create a NamespaceDiscoveredAsset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - discoveredAssetName - The name of the discovered asset.
@@ -69,7 +69,7 @@ func (client *NamespaceDiscoveredAssetsClient) BeginCreateOrReplace(ctx context.
 // CreateOrReplace - Create a NamespaceDiscoveredAsset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 func (client *NamespaceDiscoveredAssetsClient) createOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, resource NamespaceDiscoveredAsset, options *NamespaceDiscoveredAssetsClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceDiscoveredAssetsClient.BeginCreateOrReplace"
@@ -115,7 +115,7 @@ func (client *NamespaceDiscoveredAssetsClient) createOrReplaceCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *NamespaceDiscoveredAssetsClient) createOrReplaceCreateRequest(ctx 
 // BeginDelete - Delete a NamespaceDiscoveredAsset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - discoveredAssetName - The name of the discovered asset.
@@ -154,7 +154,7 @@ func (client *NamespaceDiscoveredAssetsClient) BeginDelete(ctx context.Context, 
 // Delete - Delete a NamespaceDiscoveredAsset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 func (client *NamespaceDiscoveredAssetsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, options *NamespaceDiscoveredAssetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceDiscoveredAssetsClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *NamespaceDiscoveredAssetsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *NamespaceDiscoveredAssetsClient) deleteCreateRequest(ctx context.C
 // Get - Get a NamespaceDiscoveredAsset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - discoveredAssetName - The name of the discovered asset.
@@ -260,7 +260,7 @@ func (client *NamespaceDiscoveredAssetsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *NamespaceDiscoveredAssetsClient) getHandleResponse(resp *http.Resp
 
 // NewListByResourceGroupPager - List NamespaceDiscoveredAsset resources by Namespace
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - options - NamespaceDiscoveredAssetsClientListByResourceGroupOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager
@@ -325,7 +325,7 @@ func (client *NamespaceDiscoveredAssetsClient) listByResourceGroupCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -343,7 +343,7 @@ func (client *NamespaceDiscoveredAssetsClient) listByResourceGroupHandleResponse
 // BeginUpdate - Update a NamespaceDiscoveredAsset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - discoveredAssetName - The name of the discovered asset.
@@ -370,7 +370,7 @@ func (client *NamespaceDiscoveredAssetsClient) BeginUpdate(ctx context.Context, 
 // Update - Update a NamespaceDiscoveredAsset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-01
+// Generated from API version 2026-03-01-preview
 func (client *NamespaceDiscoveredAssetsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, properties NamespaceDiscoveredAssetUpdate, options *NamespaceDiscoveredAssetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceDiscoveredAssetsClient.BeginUpdate"
@@ -416,7 +416,7 @@ func (client *NamespaceDiscoveredAssetsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", "2026-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

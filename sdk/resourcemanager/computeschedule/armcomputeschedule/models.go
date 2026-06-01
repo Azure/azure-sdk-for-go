@@ -214,8 +214,8 @@ type CancelOccurrenceRequest struct {
 	ResourceIDs []*string
 }
 
-// CancelOperationsContent - This is the request to cancel running operations in scheduled actions using the operation ids
-type CancelOperationsContent struct {
+// CancelOperationsRequest - This is the request to cancel running operations in scheduled actions using the operation ids
+type CancelOperationsRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -430,20 +430,8 @@ type EventGridAndResourceGraph struct {
 	ScheduledEventsAPIVersion *string
 }
 
-// ExecuteCreateContent - The ExecuteCreateRequest request for create operations
-type ExecuteCreateContent struct {
-	// REQUIRED; The execution parameters for the request
-	ExecutionParameters *ExecutionParameters
-
-	// REQUIRED; resource creation payload
-	ResourceConfigParameters *ResourceProvisionPayload
-
-	// CorrelationId item
-	Correlationid *string
-}
-
-// ExecuteCreateFlexContent - The ExecuteCreateFlexRequest request for executeCreateFlex operations
-type ExecuteCreateFlexContent struct {
+// ExecuteCreateFlexRequest - The ExecuteCreateFlexRequest request for executeCreateFlex operations
+type ExecuteCreateFlexRequest struct {
 	// REQUIRED; The execution parameters for the request
 	ExecutionParameters *ExecutionParameters
 
@@ -454,8 +442,20 @@ type ExecuteCreateFlexContent struct {
 	Correlationid *string
 }
 
-// ExecuteDeallocateContent - The ExecuteDeallocateRequest request for executeDeallocate operations
-type ExecuteDeallocateContent struct {
+// ExecuteCreateRequest - The ExecuteCreateRequest request for create operations
+type ExecuteCreateRequest struct {
+	// REQUIRED; The execution parameters for the request
+	ExecutionParameters *ExecutionParameters
+
+	// REQUIRED; resource creation payload
+	ResourceConfigParameters *ResourceProvisionPayload
+
+	// CorrelationId item
+	Correlationid *string
+}
+
+// ExecuteDeallocateRequest - The ExecuteDeallocateRequest request for executeDeallocate operations
+type ExecuteDeallocateRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -466,8 +466,8 @@ type ExecuteDeallocateContent struct {
 	Resources *Resources
 }
 
-// ExecuteDeleteContent - The ExecuteDeleteRequest for delete VM operation
-type ExecuteDeleteContent struct {
+// ExecuteDeleteRequest - The ExecuteDeleteRequest for delete VM operation
+type ExecuteDeleteRequest struct {
 	// REQUIRED; The execution parameters for the request
 	ExecutionParameters *ExecutionParameters
 
@@ -481,8 +481,8 @@ type ExecuteDeleteContent struct {
 	ForceDeletion *bool
 }
 
-// ExecuteHibernateContent - The ExecuteHibernateRequest request for executeHibernate operations
-type ExecuteHibernateContent struct {
+// ExecuteHibernateRequest - The ExecuteHibernateRequest request for executeHibernate operations
+type ExecuteHibernateRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -493,8 +493,8 @@ type ExecuteHibernateContent struct {
 	Resources *Resources
 }
 
-// ExecuteStartContent - The ExecuteStartRequest request for executeStart operations
-type ExecuteStartContent struct {
+// ExecuteStartRequest - The ExecuteStartRequest request for executeStart operations
+type ExecuteStartRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -550,8 +550,8 @@ type FlexProperties struct {
 	ZoneAllocationPolicy *ZoneAllocationPolicy
 }
 
-// GetOperationErrorsContent - This is the request to get errors per vm operations
-type GetOperationErrorsContent struct {
+// GetOperationErrorsRequest - This is the request to get errors per vm operations
+type GetOperationErrorsRequest struct {
 	// REQUIRED; The list of operation ids to query errors of
 	OperationIDs []*string
 }
@@ -562,8 +562,8 @@ type GetOperationErrorsResponse struct {
 	Results []*OperationErrorsResult
 }
 
-// GetOperationStatusContent - This is the request to get operation status using operationids
-type GetOperationStatusContent struct {
+// GetOperationStatusRequest - This is the request to get operation status using operationids
+type GetOperationStatusRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -1747,8 +1747,8 @@ type SubResource struct {
 	ID *string
 }
 
-// SubmitDeallocateContent - The deallocate request for resources
-type SubmitDeallocateContent struct {
+// SubmitDeallocateRequest - The deallocate request for resources
+type SubmitDeallocateRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -1762,8 +1762,8 @@ type SubmitDeallocateContent struct {
 	Schedule *Schedule
 }
 
-// SubmitHibernateContent - This is the request for hibernate
-type SubmitHibernateContent struct {
+// SubmitHibernateRequest - This is the request for hibernate
+type SubmitHibernateRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -1777,8 +1777,8 @@ type SubmitHibernateContent struct {
 	Schedule *Schedule
 }
 
-// SubmitStartContent - This is the request for start
-type SubmitStartContent struct {
+// SubmitStartRequest - This is the request for start
+type SubmitStartRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 

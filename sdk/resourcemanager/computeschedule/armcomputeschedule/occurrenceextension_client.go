@@ -17,6 +17,8 @@ import (
 
 // OccurrenceExtensionClient contains the methods for the OccurrenceExtension group.
 // Don't use this type directly, use NewOccurrenceExtensionClient() instead.
+//
+// Generated from API version 2026-04-15-preview
 type OccurrenceExtensionClient struct {
 	internal *arm.Client
 }
@@ -36,8 +38,6 @@ func NewOccurrenceExtensionClient(credential azcore.TokenCredential, options *ar
 }
 
 // NewListOccurrenceByVMsPager - List OccurrenceExtensionResource resources by parent
-//
-// Generated from API version 2026-04-15-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - OccurrenceExtensionClientListOccurrenceByVMsOptions contains the optional parameters for the OccurrenceExtensionClient.NewListOccurrenceByVMsPager
 //     method.
@@ -76,8 +76,8 @@ func (client *OccurrenceExtensionClient) listOccurrenceByVMsCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260415Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

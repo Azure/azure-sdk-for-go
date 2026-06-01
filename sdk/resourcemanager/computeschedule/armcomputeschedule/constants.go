@@ -5,7 +5,7 @@
 package armcomputeschedule
 
 const (
-	version20250415Preview string = "2025-04-15-preview"
+	version20260415Preview string = "2026-04-15-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

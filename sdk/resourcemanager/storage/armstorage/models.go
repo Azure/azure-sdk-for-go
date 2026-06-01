@@ -780,6 +780,63 @@ type ActiveDirectoryProperties struct {
 	SamAccountName *string
 }
 
+// AdvancedPlatformMetricsRule - The advanced platform metrics rule for the storage account.
+type AdvancedPlatformMetricsRule struct {
+	// Returns the advanced platform metrics rule.
+	Properties *AdvancedPlatformMetricsRuleProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AdvancedPlatformMetricsRuleConfig - Configuration for the advanced platform metrics rule.
+type AdvancedPlatformMetricsRuleConfig struct {
+	// The type of filter applied to the rule. Possible values include: AllContainersFilter, ContainerPrefixFilter, ContainerListFilter.
+	FilterType *AdvancedPlatformMetricsFilterType
+
+	// The values for the filter applied to the rule. If filter type is AllContainersFilter, filter values should be empty. If
+	// filter type is ContainerPrefixFilter, filter values should contain a list of container prefixes. If filter type is ContainerListFilter,
+	// filter values should contain a list of container names.
+	FilterValues []*string
+}
+
+// AdvancedPlatformMetricsRuleListResult - The response of a AdvancedPlatformMetricsRule list operation.
+type AdvancedPlatformMetricsRuleListResult struct {
+	// REQUIRED; The AdvancedPlatformMetricsRule items on this page
+	Value []*AdvancedPlatformMetricsRule
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AdvancedPlatformMetricsRuleProperties - An object that defines the advanced platform metrics rule.
+type AdvancedPlatformMetricsRuleProperties struct {
+	// REQUIRED; A boolean flag which enables the advanced platform metrics rule.
+	Enabled *bool
+
+	// REQUIRED; Configuration for the advanced platform metrics rule.
+	RuleConfig *AdvancedPlatformMetricsRuleConfig
+
+	// READ-ONLY; Gets the last modification date and time of the advanced platform metrics rule in UTC.
+	LastModifiedTime *time.Time
+
+	// READ-ONLY; The metrics emitted by the rule. Metrics are mapped according to the rule type from RuleTypeProperty. Rule type
+	// to metrics mapping: ContainerLevelCapacityMetrics => {ContainerUsedSize, ContainerBlobCount}.
+	MetricsEmitted []*MetricsEmitted
+
+	// READ-ONLY; Indicates the type of the advanced platform metrics rule. Possible values include: ContainerLevelCapacityMetrics.
+	RuleType *AdvancedPlatformMetricsRuleType
+}
+
 // AzureFilesIdentityBasedAuthentication - Settings for Azure Files identity based authentication.
 type AzureFilesIdentityBasedAuthentication struct {
 	// REQUIRED; Indicates the directory service used. Note that this enum may be extended in the future.
@@ -1976,6 +2033,12 @@ type FileShareItems struct {
 
 // FileShareLimits - Minimum and maximum provisioned storage, IOPS and bandwidth limits for a file share in the storage account.
 type FileShareLimits struct {
+	// READ-ONLY; The bandwidth scalar used for guardrail calculations for a file share in the storage account.
+	GuardrailBandwidthScalar *float64
+
+	// READ-ONLY; The IO scalar used for guardrail calculations for a file share in the storage account.
+	GuardrailIOScalar *float64
+
 	// READ-ONLY; The maximum provisioned bandwidth limit in mebibytes per second for a file share in the storage account.
 	MaxProvisionedBandwidthMiBPerSec *int32
 

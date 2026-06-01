@@ -40,6 +40,14 @@ func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	}
 }
 
+// NewAdvancedPlatformMetricsClient creates a new instance of AdvancedPlatformMetricsClient.
+func (c *ClientFactory) NewAdvancedPlatformMetricsClient() *AdvancedPlatformMetricsClient {
+	return &AdvancedPlatformMetricsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewBlobContainersClient creates a new instance of BlobContainersClient.
 func (c *ClientFactory) NewBlobContainersClient() *BlobContainersClient {
 	return &BlobContainersClient{

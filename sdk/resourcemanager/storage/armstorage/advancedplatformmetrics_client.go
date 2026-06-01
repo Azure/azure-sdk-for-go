@@ -16,65 +16,65 @@ import (
 	"strings"
 )
 
-// BlobInventoryPoliciesClient contains the methods for the BlobInventoryPolicies group.
-// Don't use this type directly, use NewBlobInventoryPoliciesClient() instead.
+// AdvancedPlatformMetricsClient contains the methods for the AdvancedPlatformMetrics group.
+// Don't use this type directly, use NewAdvancedPlatformMetricsClient() instead.
 //
 // Generated from API version 2026-04-01
-type BlobInventoryPoliciesClient struct {
+type AdvancedPlatformMetricsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewBlobInventoryPoliciesClient creates a new instance of BlobInventoryPoliciesClient with the specified values.
+// NewAdvancedPlatformMetricsClient creates a new instance of AdvancedPlatformMetricsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewBlobInventoryPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobInventoryPoliciesClient, error) {
+func NewAdvancedPlatformMetricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdvancedPlatformMetricsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &BlobInventoryPoliciesClient{
+	client := &AdvancedPlatformMetricsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate - Sets the blob inventory policy to the specified storage account.
+// CreateOrUpdate - Create or update the advanced platform metrics rule for the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - blobInventoryPolicyName - The name of the storage account blob inventory policy. It should always be 'default'
-//   - properties - The blob inventory policy set to a storage account.
-//   - options - BlobInventoryPoliciesClientCreateOrUpdateOptions contains the optional parameters for the BlobInventoryPoliciesClient.CreateOrUpdate
+//   - advancedPlatformMetricsRuleType - The type of the advanced platform metrics rule.
+//   - resource - Resource create parameters.
+//   - options - AdvancedPlatformMetricsClientCreateOrUpdateOptions contains the optional parameters for the AdvancedPlatformMetricsClient.CreateOrUpdate
 //     method.
-func (client *BlobInventoryPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, properties BlobInventoryPolicy, options *BlobInventoryPoliciesClientCreateOrUpdateOptions) (BlobInventoryPoliciesClientCreateOrUpdateResponse, error) {
+func (client *AdvancedPlatformMetricsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, resource AdvancedPlatformMetricsRule, options *AdvancedPlatformMetricsClientCreateOrUpdateOptions) (AdvancedPlatformMetricsClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "BlobInventoryPoliciesClient.CreateOrUpdate"
+	const operationName = "AdvancedPlatformMetricsClient.CreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, blobInventoryPolicyName, properties, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, advancedPlatformMetricsRuleType, resource, options)
 	if err != nil {
-		return BlobInventoryPoliciesClientCreateOrUpdateResponse{}, err
+		return AdvancedPlatformMetricsClientCreateOrUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return BlobInventoryPoliciesClientCreateOrUpdateResponse{}, err
+		return AdvancedPlatformMetricsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return BlobInventoryPoliciesClientCreateOrUpdateResponse{}, err
+		return AdvancedPlatformMetricsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.createOrUpdateHandleResponse(httpResp)
 	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *BlobInventoryPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, properties BlobInventoryPolicy, _ *BlobInventoryPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}"
+func (client *AdvancedPlatformMetricsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, resource AdvancedPlatformMetricsRule, _ *AdvancedPlatformMetricsClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics/{advancedPlatformMetricsRuleType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -87,10 +87,10 @@ func (client *BlobInventoryPoliciesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if blobInventoryPolicyName == "" {
-		return nil, errors.New("parameter blobInventoryPolicyName cannot be empty")
+	if advancedPlatformMetricsRuleType == "" {
+		return nil, errors.New("parameter advancedPlatformMetricsRuleType cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{blobInventoryPolicyName}", url.PathEscape(string(blobInventoryPolicyName)))
+	urlPath = strings.ReplaceAll(urlPath, "{advancedPlatformMetricsRuleType}", url.PathEscape(string(advancedPlatformMetricsRuleType)))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -100,53 +100,53 @@ func (client *BlobInventoryPoliciesClient) createOrUpdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *BlobInventoryPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (BlobInventoryPoliciesClientCreateOrUpdateResponse, error) {
-	result := BlobInventoryPoliciesClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.BlobInventoryPolicy); err != nil {
-		return BlobInventoryPoliciesClientCreateOrUpdateResponse{}, err
+func (client *AdvancedPlatformMetricsClient) createOrUpdateHandleResponse(resp *http.Response) (AdvancedPlatformMetricsClientCreateOrUpdateResponse, error) {
+	result := AdvancedPlatformMetricsClientCreateOrUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedPlatformMetricsRule); err != nil {
+		return AdvancedPlatformMetricsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete - Deletes the blob inventory policy associated with the specified storage account.
+// Delete - Delete the advanced platform metrics rule for the storage account by rule type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - blobInventoryPolicyName - The name of the storage account blob inventory policy. It should always be 'default'
-//   - options - BlobInventoryPoliciesClientDeleteOptions contains the optional parameters for the BlobInventoryPoliciesClient.Delete
+//   - advancedPlatformMetricsRuleType - The type of the advanced platform metrics rule.
+//   - options - AdvancedPlatformMetricsClientDeleteOptions contains the optional parameters for the AdvancedPlatformMetricsClient.Delete
 //     method.
-func (client *BlobInventoryPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, options *BlobInventoryPoliciesClientDeleteOptions) (BlobInventoryPoliciesClientDeleteResponse, error) {
+func (client *AdvancedPlatformMetricsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, options *AdvancedPlatformMetricsClientDeleteOptions) (AdvancedPlatformMetricsClientDeleteResponse, error) {
 	var err error
-	const operationName = "BlobInventoryPoliciesClient.Delete"
+	const operationName = "AdvancedPlatformMetricsClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, blobInventoryPolicyName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, advancedPlatformMetricsRuleType, options)
 	if err != nil {
-		return BlobInventoryPoliciesClientDeleteResponse{}, err
+		return AdvancedPlatformMetricsClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return BlobInventoryPoliciesClientDeleteResponse{}, err
+		return AdvancedPlatformMetricsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return BlobInventoryPoliciesClientDeleteResponse{}, err
+		return AdvancedPlatformMetricsClientDeleteResponse{}, err
 	}
-	return BlobInventoryPoliciesClientDeleteResponse{}, nil
+	return AdvancedPlatformMetricsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *BlobInventoryPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, _ *BlobInventoryPoliciesClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}"
+func (client *AdvancedPlatformMetricsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, _ *AdvancedPlatformMetricsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics/{advancedPlatformMetricsRuleType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -159,10 +159,10 @@ func (client *BlobInventoryPoliciesClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if blobInventoryPolicyName == "" {
-		return nil, errors.New("parameter blobInventoryPolicyName cannot be empty")
+	if advancedPlatformMetricsRuleType == "" {
+		return nil, errors.New("parameter advancedPlatformMetricsRuleType cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{blobInventoryPolicyName}", url.PathEscape(string(blobInventoryPolicyName)))
+	urlPath = strings.ReplaceAll(urlPath, "{advancedPlatformMetricsRuleType}", url.PathEscape(string(advancedPlatformMetricsRuleType)))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -173,39 +173,39 @@ func (client *BlobInventoryPoliciesClient) deleteCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// Get - Gets the blob inventory policy associated with the specified storage account.
+// Get - Get the advanced platform metrics rule for the storage account by rule type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - blobInventoryPolicyName - The name of the storage account blob inventory policy. It should always be 'default'
-//   - options - BlobInventoryPoliciesClientGetOptions contains the optional parameters for the BlobInventoryPoliciesClient.Get
+//   - advancedPlatformMetricsRuleType - The type of the advanced platform metrics rule.
+//   - options - AdvancedPlatformMetricsClientGetOptions contains the optional parameters for the AdvancedPlatformMetricsClient.Get
 //     method.
-func (client *BlobInventoryPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, options *BlobInventoryPoliciesClientGetOptions) (BlobInventoryPoliciesClientGetResponse, error) {
+func (client *AdvancedPlatformMetricsClient) Get(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, options *AdvancedPlatformMetricsClientGetOptions) (AdvancedPlatformMetricsClientGetResponse, error) {
 	var err error
-	const operationName = "BlobInventoryPoliciesClient.Get"
+	const operationName = "AdvancedPlatformMetricsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, blobInventoryPolicyName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, advancedPlatformMetricsRuleType, options)
 	if err != nil {
-		return BlobInventoryPoliciesClientGetResponse{}, err
+		return AdvancedPlatformMetricsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return BlobInventoryPoliciesClientGetResponse{}, err
+		return AdvancedPlatformMetricsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return BlobInventoryPoliciesClientGetResponse{}, err
+		return AdvancedPlatformMetricsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *BlobInventoryPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, _ *BlobInventoryPoliciesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}"
+func (client *AdvancedPlatformMetricsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, _ *AdvancedPlatformMetricsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics/{advancedPlatformMetricsRuleType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -218,10 +218,10 @@ func (client *BlobInventoryPoliciesClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if blobInventoryPolicyName == "" {
-		return nil, errors.New("parameter blobInventoryPolicyName cannot be empty")
+	if advancedPlatformMetricsRuleType == "" {
+		return nil, errors.New("parameter advancedPlatformMetricsRuleType cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{blobInventoryPolicyName}", url.PathEscape(string(blobInventoryPolicyName)))
+	urlPath = strings.ReplaceAll(urlPath, "{advancedPlatformMetricsRuleType}", url.PathEscape(string(advancedPlatformMetricsRuleType)))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -234,27 +234,27 @@ func (client *BlobInventoryPoliciesClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *BlobInventoryPoliciesClient) getHandleResponse(resp *http.Response) (BlobInventoryPoliciesClientGetResponse, error) {
-	result := BlobInventoryPoliciesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.BlobInventoryPolicy); err != nil {
-		return BlobInventoryPoliciesClientGetResponse{}, err
+func (client *AdvancedPlatformMetricsClient) getHandleResponse(resp *http.Response) (AdvancedPlatformMetricsClientGetResponse, error) {
+	result := AdvancedPlatformMetricsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedPlatformMetricsRule); err != nil {
+		return AdvancedPlatformMetricsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Gets the blob inventory policy associated with the specified storage account.
+// NewListPager - List the advanced platform metrics rules associated with the storage account.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - options - BlobInventoryPoliciesClientListOptions contains the optional parameters for the BlobInventoryPoliciesClient.NewListPager
+//   - options - AdvancedPlatformMetricsClientListOptions contains the optional parameters for the AdvancedPlatformMetricsClient.NewListPager
 //     method.
-func (client *BlobInventoryPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *BlobInventoryPoliciesClientListOptions) *runtime.Pager[BlobInventoryPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[BlobInventoryPoliciesClientListResponse]{
-		More: func(page BlobInventoryPoliciesClientListResponse) bool {
+func (client *AdvancedPlatformMetricsClient) NewListPager(resourceGroupName string, accountName string, options *AdvancedPlatformMetricsClientListOptions) *runtime.Pager[AdvancedPlatformMetricsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AdvancedPlatformMetricsClientListResponse]{
+		More: func(page AdvancedPlatformMetricsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *BlobInventoryPoliciesClientListResponse) (BlobInventoryPoliciesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BlobInventoryPoliciesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *AdvancedPlatformMetricsClientListResponse) (AdvancedPlatformMetricsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AdvancedPlatformMetricsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -263,7 +263,7 @@ func (client *BlobInventoryPoliciesClient) NewListPager(resourceGroupName string
 				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 			}, nil)
 			if err != nil {
-				return BlobInventoryPoliciesClientListResponse{}, err
+				return AdvancedPlatformMetricsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -272,8 +272,8 @@ func (client *BlobInventoryPoliciesClient) NewListPager(resourceGroupName string
 }
 
 // listCreateRequest creates the List request.
-func (client *BlobInventoryPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *BlobInventoryPoliciesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies"
+func (client *AdvancedPlatformMetricsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AdvancedPlatformMetricsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -298,10 +298,10 @@ func (client *BlobInventoryPoliciesClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *BlobInventoryPoliciesClient) listHandleResponse(resp *http.Response) (BlobInventoryPoliciesClientListResponse, error) {
-	result := BlobInventoryPoliciesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListBlobInventoryPolicy); err != nil {
-		return BlobInventoryPoliciesClientListResponse{}, err
+func (client *AdvancedPlatformMetricsClient) listHandleResponse(resp *http.Response) (AdvancedPlatformMetricsClientListResponse, error) {
+	result := AdvancedPlatformMetricsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedPlatformMetricsRuleListResult); err != nil {
+		return AdvancedPlatformMetricsClientListResponse{}, err
 	}
 	return result, nil
 }

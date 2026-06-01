@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/managedUnsupportedVMSizesGet_example.json
+// Generated from example definition: 2026-05-01-preview/managedUnsupportedVMSizesGet_example.json
 func ExampleManagedUnsupportedVMSizesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,10 +30,10 @@ func ExampleManagedUnsupportedVMSizesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedUnsupportedVMSizesClientGetResponse{
-	// 	ManagedVMSize: &armservicefabricmanagedclusters.ManagedVMSize{
+	// 	ManagedVMSize: armservicefabricmanagedclusters.ManagedVMSize{
 	// 		Name: to.Ptr("Standard_B1ls1"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B1ls1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B1ls1"),
 	// 		Properties: &armservicefabricmanagedclusters.VMSize{
 	// 			Size: to.Ptr("Standard_B1ls1"),
 	// 		},
@@ -41,7 +41,7 @@ func ExampleManagedUnsupportedVMSizesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/managedUnsupportedVMSizesList_example.json
+// Generated from example definition: 2026-05-01-preview/managedUnsupportedVMSizesList_example.json
 func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_B1ls1"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B1ls1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B1ls1"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_B1ls1"),
 		// 				},
@@ -77,7 +77,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_B1s"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B1s"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B1s"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_B1s"),
 		// 				},
@@ -85,7 +85,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_B1ms"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B1ms"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B1ms"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_B1ms"),
 		// 				},
@@ -93,7 +93,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_B2s"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B2s"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B2s"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_B2s"),
 		// 				},
@@ -101,7 +101,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_B2ms"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B2ms"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B2ms"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_B2ms"),
 		// 				},
@@ -109,7 +109,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_B4ms"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B4ms"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B4ms"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_B4ms"),
 		// 				},
@@ -117,7 +117,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_B8ms"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B8ms"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B8ms"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_B8ms"),
 		// 				},
@@ -125,7 +125,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_A1_v2"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A1_v2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A1_v2"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_A1_v2"),
 		// 				},
@@ -133,7 +133,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_A2_v2"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A2_v2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A2_v2"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_A2_v2"),
 		// 				},
@@ -141,7 +141,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_A4_v2"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A4_v2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A4_v2"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_A4_v2"),
 		// 				},
@@ -149,7 +149,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_A8_v2"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A8_v2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A8_v2"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_A8_v2"),
 		// 				},
@@ -157,7 +157,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_A2m_v2"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A2m_v2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A2m_v2"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_A2m_v2"),
 		// 				},
@@ -165,7 +165,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_A4m_v2"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A4m_v2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A4m_v2"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_A4m_v2"),
 		// 				},
@@ -173,7 +173,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_A8m_v2"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A8m_v2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A8m_v2"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_A8m_v2"),
 		// 				},
@@ -181,7 +181,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Basic_A0"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Basic_A0"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Basic_A0"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Basic_A0"),
 		// 				},
@@ -189,7 +189,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Basic_A1"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Basic_A1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Basic_A1"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Basic_A1"),
 		// 				},
@@ -197,7 +197,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Basic_A2"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Basic_A2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Basic_A2"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Basic_A2"),
 		// 				},
@@ -205,7 +205,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Basic_A3"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Basic_A3"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Basic_A3"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Basic_A3"),
 		// 				},
@@ -213,7 +213,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Basic_A4"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Basic_A4"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Basic_A4"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Basic_A4"),
 		// 				},
@@ -221,7 +221,7 @@ func ExampleManagedUnsupportedVMSizesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Standard_A0"),
 		// 				Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
-		// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A0"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_A0"),
 		// 				Properties: &armservicefabricmanagedclusters.VMSize{
 		// 					Size: to.Ptr("Standard_A0"),
 		// 				},

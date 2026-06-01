@@ -813,23 +813,80 @@ func TestAmbiguousConnectionErrorWriteDoesNotFailOver(t *testing.T) {
 }
 
 func TestAmbiguousConnectionErrorReadFailsOver(t *testing.T) {
-	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
-	defer cleanup()
+	// Verify the ambiguous-read failover actually routes the in-flight
+	// retry to a different region. The new mechanism (bump retryCount
+	// instead of mark + demote) must move us from badSrv to goodSrv
+	// without touching the location cache.
+	badSrv, badClose := mock.NewTLSServer()
+	defer badClose()
+	goodSrv, goodClose := mock.NewTLSServer()
+	defer goodClose()
+
+	badURL, err := url.Parse(badSrv.URL())
+	require.NoError(t, err)
+	goodURL, err := url.Parse(goodSrv.URL())
+	require.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetError(&net.DNSError{})
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true /*enableCrossRegionRetries*/)
+	require.NoError(t, lc.update(
+		[]accountRegion{{Name: "East US", Endpoint: badSrv.URL()}},
+		[]accountRegion{
+			{Name: "East US", Endpoint: badSrv.URL()},
+			{Name: "Central US", Endpoint: goodSrv.URL()},
+		},
+		[]string{"East US", "Central US"},
+		nil,
+	))
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{"East US", "Central US"},
+		locationCache:       lc,
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	routingTransport := routingMockTransport{
+		byHost: map[string]*mock.Server{
+			badURL.Host:  badSrv,
+			goodURL.Host: goodSrv,
+		},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := &clientRetryPolicyVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{verifier, retryPolicy}}, &policy.ClientOptions{Transport: &routingTransport})
+	client := &Client{endpoint: badSrv.URL(), endpointUrl: badURL, internal: internalClient, gem: gem}
 
 	ambErr := &fakeAmbiguousNetError{msg: "connection reset by peer"}
+	// 1 initial + 3 same-region retries on the bad region.
 	for i := 0; i < 4; i++ {
-		srv.AppendError(ambErr)
+		badSrv.AppendError(ambErr)
 	}
-	srv.AppendResponse(mock.WithStatusCode(200))
+	// Cross-region failover should hit the good region.
+	goodSrv.AppendResponse(mock.WithStatusCode(200))
 
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
-	_, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
 
-	assert.NoError(t, err)
+	require.NoError(t, err, "ambiguous-read failover should reach the good region")
 	rc := verifier.requests[0].retryContext
+	assert.True(t, rc.crossRegionFailoverDone)
+	// Ambiguous failover bumps retryCount instead of marking + demoting,
+	// so ResolveServiceEndpoint(1) returns the second preferred region.
+	assert.Equal(t, 1, rc.retryCount)
 	assert.Equal(t, 0, rc.sameRegionRetryCount)
-	assert.Equal(t, 0, rc.retryCount) // post-fix: retryCount not incremented on connection-error failover; demote-in-cache handles routing
+	assert.Equal(t, 4, badSrv.Requests())
+	assert.Equal(t, 1, goodSrv.Requests())
+	assert.Empty(t, lc.locationUnavailabilityInfoMap,
+		"ambiguous read failover must not mark any endpoint unavailable")
 }
 
 func TestCallerDeadlineExceededDoesNotRetry(t *testing.T) {
@@ -1003,10 +1060,10 @@ func TestSingleMasterWriteDoesNotFailoverOnConnectionError(t *testing.T) {
 	}
 }
 
-func TestAmbiguousWriteMarksEndpointUnavailableForRead(t *testing.T) {
-	// Multi-master write that gives up on an ambiguous transport error
-	// should still mark the endpoint unavailable for read so concurrent
-	// requests learn about the regional outage.
+func TestAmbiguousWriteDoesNotMarkEndpointUnavailable(t *testing.T) {
+	// Ambiguous transport errors are too weak a signal to mark the
+	// region unavailable; the request may even have been processed
+	// server-side.
 	client, srv, verifier, cleanup := setupRetryPolicyTestClient(t)
 	defer cleanup()
 
@@ -1022,20 +1079,11 @@ func TestAmbiguousWriteMarksEndpointUnavailableForRead(t *testing.T) {
 	require.NoError(t, err)
 	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
 
-	// At least one endpoint must have been marked unavailable for write
-	// (single-master would NOT do this; we use multi-master here).
 	require.Error(t, err)
 	rc := verifier.requests[0].retryContext
 	assert.False(t, rc.crossRegionFailoverDone)
-	// Marked unavailable for read for at least one endpoint.
-	var markedForRead bool
-	for _, info := range client.gem.locationCache.locationUnavailabilityInfoMap {
-		if info.unavailableOps == read || info.unavailableOps == all {
-			markedForRead = true
-			break
-		}
-	}
-	assert.True(t, markedForRead, "expected at least one endpoint marked unavailable for read")
+	assert.Empty(t, client.gem.locationCache.locationUnavailabilityInfoMap,
+		"ambiguous write must not mark any endpoint unavailable")
 }
 
 func TestConnectionErrorWithCrossRegionRetriesDisabledFailsFast(t *testing.T) {

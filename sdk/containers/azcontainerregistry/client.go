@@ -20,6 +20,8 @@ import (
 
 // Client contains the methods for the ContainerRegistry group.
 // Don't use this type directly, use a constructor function instead.
+//
+// Generated from API version 2021-07-01
 type Client struct {
 	internal *azcore.Client
 	endpoint string
@@ -27,8 +29,6 @@ type Client struct {
 
 // DeleteManifest - Delete the manifest identified by name and reference. Note that a manifest can only be deleted by digest.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - digest - Digest of a BLOB
 //   - options - ClientDeleteManifestOptions contains the optional parameters for the Client.DeleteManifest method.
@@ -72,8 +72,6 @@ func (client *Client) deleteManifestCreateRequest(ctx context.Context, name stri
 
 // DeleteRepository - Delete the repository identified by name
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - options - ClientDeleteRepositoryOptions contains the optional parameters for the Client.DeleteRepository method.
 func (client *Client) DeleteRepository(ctx context.Context, name string, options *ClientDeleteRepositoryOptions) (ClientDeleteRepositoryResponse, error) {
@@ -107,16 +105,14 @@ func (client *Client) deleteRepositoryCreateRequest(ctx context.Context, name st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DeleteTag - Delete tag
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - tag - Tag name
 //   - options - ClientDeleteTagOptions contains the optional parameters for the Client.DeleteTag method.
@@ -155,16 +151,14 @@ func (client *Client) deleteTagCreateRequest(ctx context.Context, name string, t
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GetManifest - Get the manifest identified by name and reference where reference can be a tag or digest.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - reference - A tag or a digest, pointing to a specific image
 //   - options - ClientGetManifestOptions contains the optional parameters for the Client.GetManifest method.
@@ -222,8 +216,6 @@ func (client *Client) getManifestHandleResponse(resp *http.Response) (ClientGetM
 
 // GetManifestProperties - Get manifest attributes
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - digest - Digest of a BLOB
 //   - options - ClientGetManifestPropertiesOptions contains the optional parameters for the Client.GetManifestProperties method.
@@ -263,8 +255,8 @@ func (client *Client) getManifestPropertiesCreateRequest(ctx context.Context, na
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -280,8 +272,6 @@ func (client *Client) getManifestPropertiesHandleResponse(resp *http.Response) (
 
 // GetRepositoryProperties - Get repository attributes
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - options - ClientGetRepositoryPropertiesOptions contains the optional parameters for the Client.GetRepositoryProperties
 //     method.
@@ -317,8 +307,8 @@ func (client *Client) getRepositoryPropertiesCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -334,8 +324,6 @@ func (client *Client) getRepositoryPropertiesHandleResponse(resp *http.Response)
 
 // GetTagProperties - Get tag attributes by tag
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - tag - Tag name
 //   - options - ClientGetTagPropertiesOptions contains the optional parameters for the Client.GetTagProperties method.
@@ -375,8 +363,8 @@ func (client *Client) getTagPropertiesCreateRequest(ctx context.Context, name st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -391,8 +379,6 @@ func (client *Client) getTagPropertiesHandleResponse(resp *http.Response) (Clien
 }
 
 // NewListManifestsPager - List manifests of a repository
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - options - ClientListManifestsOptions contains the optional parameters for the Client.NewListManifestsPager method.
 func (client *Client) NewListManifestsPager(name string, options *ClientListManifestsOptions) *runtime.Pager[ClientListManifestsResponse] {
@@ -429,7 +415,7 @@ func (client *Client) listManifestsCreateRequest(ctx context.Context, name strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", version20210701)
 	if options != nil && options.Last != nil {
 		reqQP.Set("last", *options.Last)
 	}
@@ -439,7 +425,7 @@ func (client *Client) listManifestsCreateRequest(ctx context.Context, name strin
 	if options != nil && options.OrderBy != nil {
 		reqQP.Set("orderby", string(*options.OrderBy))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -458,8 +444,6 @@ func (client *Client) listManifestsHandleResponse(resp *http.Response) (ClientLi
 }
 
 // NewListRepositoriesPager - List repositories
-//
-// Generated from API version 2021-07-01
 //   - options - ClientListRepositoriesOptions contains the optional parameters for the Client.NewListRepositoriesPager method.
 func (client *Client) NewListRepositoriesPager(options *ClientListRepositoriesOptions) *runtime.Pager[ClientListRepositoriesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListRepositoriesResponse]{
@@ -491,14 +475,14 @@ func (client *Client) listRepositoriesCreateRequest(ctx context.Context, options
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", version20210701)
 	if options != nil && options.Last != nil {
 		reqQP.Set("last", *options.Last)
 	}
 	if options != nil && options.MaxNum != nil {
 		reqQP.Set("n", strconv.FormatInt(int64(*options.MaxNum), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -517,8 +501,6 @@ func (client *Client) listRepositoriesHandleResponse(resp *http.Response) (Clien
 }
 
 // NewListTagsPager - List tags of a repository
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - options - ClientListTagsOptions contains the optional parameters for the Client.NewListTagsPager method.
 func (client *Client) NewListTagsPager(name string, options *ClientListTagsOptions) *runtime.Pager[ClientListTagsResponse] {
@@ -555,7 +537,7 @@ func (client *Client) listTagsCreateRequest(ctx context.Context, name string, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", version20210701)
 	if options != nil && options.Digest != nil {
 		reqQP.Set("digest", *options.Digest)
 	}
@@ -568,7 +550,7 @@ func (client *Client) listTagsCreateRequest(ctx context.Context, name string, op
 	if options != nil && options.OrderBy != nil {
 		reqQP.Set("orderby", string(*options.OrderBy))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -588,8 +570,6 @@ func (client *Client) listTagsHandleResponse(resp *http.Response) (ClientListTag
 
 // UpdateManifestProperties - Update properties of a manifest
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - digest - Digest of a BLOB
 //   - options - ClientUpdateManifestPropertiesOptions contains the optional parameters for the Client.UpdateManifestProperties
@@ -630,8 +610,8 @@ func (client *Client) updateManifestPropertiesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Value != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Value); err != nil {
@@ -653,8 +633,6 @@ func (client *Client) updateManifestPropertiesHandleResponse(resp *http.Response
 
 // UpdateRepositoryProperties - Update the attribute identified by name where reference is the name of the repository.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - options - ClientUpdateRepositoryPropertiesOptions contains the optional parameters for the Client.UpdateRepositoryProperties
 //     method.
@@ -690,8 +668,8 @@ func (client *Client) updateRepositoryPropertiesCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Value != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Value); err != nil {
@@ -713,8 +691,6 @@ func (client *Client) updateRepositoryPropertiesHandleResponse(resp *http.Respon
 
 // UpdateTagProperties - Update tag attributes
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - tag - Tag name
 //   - options - ClientUpdateTagPropertiesOptions contains the optional parameters for the Client.UpdateTagProperties method.
@@ -754,8 +730,8 @@ func (client *Client) updateTagPropertiesCreateRequest(ctx context.Context, name
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Value != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Value); err != nil {
@@ -777,8 +753,6 @@ func (client *Client) updateTagPropertiesHandleResponse(resp *http.Response) (Cl
 
 // UploadManifest - Put the manifest identified by name and reference where reference can be a tag or digest.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - reference - A tag or a digest, pointing to a specific image
 //   - contentType - Upload file type
@@ -820,7 +794,6 @@ func (client *Client) uploadManifestCreateRequest(ctx context.Context, name stri
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{string(contentType)}
 	if err := req.SetBody(manifestData, string(contentType)); err != nil {
 		return nil, err
 	}

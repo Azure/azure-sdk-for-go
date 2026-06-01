@@ -9,6 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
@@ -21,23 +22,25 @@ type listTestOptions struct {
 
 var listTestOpts = listTestOptions{count: 100}
 
-// uploadTestRegister is called once per process
+// listTestRegister is called once per process
 func listTestRegister() {
-	flag.IntVar(&listTestOpts.count, "num-blobs", 100, "Number of blobs to list.")
+	flag.IntVar(&listTestOpts.count, "num-blobs", 100, "Total number of blobs to create in the container and list during the test.")
 }
 
 type listTestGlobal struct {
 	perf.PerfTestOptions
 	containerName string
-	blobName      string
+	blobPrefix    string
 }
 
 // NewListTest is called once per process
 func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
 	l := &listTestGlobal{
 		PerfTestOptions: options,
-		containerName:   "listcontainer",
-		blobName:        "listblob",
+		// Suffix with a unique timestamp so concurrent runs and --no-cleanup
+		// leftovers from prior runs do not collide on container creation.
+		containerName: fmt.Sprintf("listcontainer-%d", time.Now().UnixNano()),
+		blobPrefix:    "listblob",
 	}
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
@@ -53,14 +56,13 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 		return nil, err
 	}
 
-	for i := 0; i < 100; i++ {
-		blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobName, i))
-		_, err = blobClient.Upload(
-			context.Background(),
-			NopCloser(bytes.NewReader([]byte(""))),
-			nil,
-		)
-		if err != nil {
+	// Seed the container with the requested number of empty blobs. The earlier
+	// implementation hard-coded 100 here, which meant matrix entries asking
+	// for thousands of blobs silently listed at most 100.
+	emptyBody := NopCloser(bytes.NewReader(nil))
+	for i := 0; i < listTestOpts.count; i++ {
+		blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobPrefix, i))
+		if _, err = blobClient.Upload(context.Background(), emptyBody, nil); err != nil {
 			return nil, err
 		}
 	}
@@ -119,13 +121,14 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 }
 
 func (m *listPerfTest) Run(ctx context.Context) error {
-	c := int32(listTestOpts.count)
-	pager := m.containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		MaxResults: &c,
-	})
+	opts := &container.ListBlobsFlatOptions{}
+	if listPageSize > 0 {
+		p := int32(listPageSize)
+		opts.MaxResults = &p
+	}
+	pager := m.containerClient.NewListBlobsFlatPager(opts)
 	for pager.More() {
-		_, err := pager.NextPage(context.Background())
-		if err != nil {
+		if _, err := pager.NextPage(ctx); err != nil {
 			return err
 		}
 	}

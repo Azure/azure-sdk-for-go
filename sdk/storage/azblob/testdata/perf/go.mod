@@ -13,4 +13,6 @@ require (
 	golang.org/x/text v0.36.0 // indirect
 )
 
+replace github.com/Azure/azure-sdk-for-go/sdk/internal => ../../../../internal
+
 replace github.com/Azure/azure-sdk-for-go/sdk/storage/azblob => ../../.

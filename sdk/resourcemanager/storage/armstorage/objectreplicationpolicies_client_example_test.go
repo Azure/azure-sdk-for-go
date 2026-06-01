@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/StorageAccountCreateObjectReplicationPolicyOnDestination.json
+// Generated from example definition: 2025-08-01/StorageAccountCreateObjectReplicationPolicyOnDestination.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateObjectReplicationPolicyOnDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,6 +45,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 				},
 			},
 			SourceAccount: to.Ptr("src1122"),
+			TagsReplication: &armstorage.ObjectReplicationPolicyPropertiesTagsReplication{
+				Enabled: to.Ptr(true),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -54,7 +57,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ObjectReplicationPoliciesClientCreateOrUpdateResponse{
-	// 	ObjectReplicationPolicy: &armstorage.ObjectReplicationPolicy{
+	// 	ObjectReplicationPolicy: armstorage.ObjectReplicationPolicy{
 	// 		Name: to.Ptr("2a20bb73-5717-4635-985a-5d4cf777438f"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/objectReplicationPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7687/providers/Microsoft.Storage/storageAccounts/dst112/objectReplicationPolicies/2a20bb73-5717-4635-985a-5d4cf777438f"),
@@ -81,12 +84,15 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 	// 				},
 	// 			},
 	// 			SourceAccount: to.Ptr("src1122"),
+	// 			TagsReplication: &armstorage.ObjectReplicationPolicyPropertiesTagsReplication{
+	// 				Enabled: to.Ptr(true),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountCreateObjectReplicationPolicyOnSource.json
+// Generated from example definition: 2025-08-01/StorageAccountCreateObjectReplicationPolicyOnSource.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateObjectReplicationPolicyOnSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,6 +127,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 				},
 			},
 			SourceAccount: to.Ptr("src1122"),
+			TagsReplication: &armstorage.ObjectReplicationPolicyPropertiesTagsReplication{
+				Enabled: to.Ptr(true),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -130,7 +139,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ObjectReplicationPoliciesClientCreateOrUpdateResponse{
-	// 	ObjectReplicationPolicy: &armstorage.ObjectReplicationPolicy{
+	// 	ObjectReplicationPolicy: armstorage.ObjectReplicationPolicy{
 	// 		Name: to.Ptr("2a20bb73-5717-4635-985a-5d4cf777438f"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/objectReplicationPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7687/providers/Microsoft.Storage/storageAccounts/src1122/objectReplicationPolicies/2a20bb73-5717-4635-985a-5d4cf777438f"),
@@ -159,12 +168,15 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 	// 				},
 	// 			},
 	// 			SourceAccount: to.Ptr("src1122"),
+	// 			TagsReplication: &armstorage.ObjectReplicationPolicyPropertiesTagsReplication{
+	// 				Enabled: to.Ptr(true),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
+// Generated from example definition: 2025-08-01/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateObjectReplicationPolicyOnDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,6 +214,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 				},
 			},
 			SourceAccount: to.Ptr("src1122"),
+			TagsReplication: &armstorage.ObjectReplicationPolicyPropertiesTagsReplication{
+				Enabled: to.Ptr(true),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -211,7 +226,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ObjectReplicationPoliciesClientCreateOrUpdateResponse{
-	// 	ObjectReplicationPolicy: &armstorage.ObjectReplicationPolicy{
+	// 	ObjectReplicationPolicy: armstorage.ObjectReplicationPolicy{
 	// 		Name: to.Ptr("2a20bb73-5717-4635-985a-5d4cf777438f"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/objectReplicationPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7687/providers/Microsoft.Storage/storageAccounts/dst112/objectReplicationPolicies/2a20bb73-5717-4635-985a-5d4cf777438f"),
@@ -243,12 +258,15 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 	// 				},
 	// 			},
 	// 			SourceAccount: to.Ptr("src1122"),
+	// 			TagsReplication: &armstorage.ObjectReplicationPolicyPropertiesTagsReplication{
+	// 				Enabled: to.Ptr(true),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountUpdateObjectReplicationPolicyOnSource.json
+// Generated from example definition: 2025-08-01/StorageAccountUpdateObjectReplicationPolicyOnSource.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateObjectReplicationPolicyOnSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,6 +305,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 				},
 			},
 			SourceAccount: to.Ptr("src1122"),
+			TagsReplication: &armstorage.ObjectReplicationPolicyPropertiesTagsReplication{
+				Enabled: to.Ptr(true),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -296,7 +317,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ObjectReplicationPoliciesClientCreateOrUpdateResponse{
-	// 	ObjectReplicationPolicy: &armstorage.ObjectReplicationPolicy{
+	// 	ObjectReplicationPolicy: armstorage.ObjectReplicationPolicy{
 	// 		Name: to.Ptr("2a20bb73-5717-4635-985a-5d4cf777438f"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/objectReplicationPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7687/providers/Microsoft.Storage/storageAccounts/src1122/objectReplicationPolicies/2a20bb73-5717-4635-985a-5d4cf777438f"),
@@ -329,12 +350,15 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 	// 				},
 	// 			},
 	// 			SourceAccount: to.Ptr("src1122"),
+	// 			TagsReplication: &armstorage.ObjectReplicationPolicyPropertiesTagsReplication{
+	// 				Enabled: to.Ptr(true),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountDeleteObjectReplicationPolicy.json
+// Generated from example definition: 2025-08-01/StorageAccountDeleteObjectReplicationPolicy.json
 func ExampleObjectReplicationPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -356,7 +380,7 @@ func ExampleObjectReplicationPoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountGetObjectReplicationPolicy.json
+// Generated from example definition: 2025-08-01/StorageAccountGetObjectReplicationPolicy.json
 func ExampleObjectReplicationPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,7 +399,7 @@ func ExampleObjectReplicationPoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ObjectReplicationPoliciesClientGetResponse{
-	// 	ObjectReplicationPolicy: &armstorage.ObjectReplicationPolicy{
+	// 	ObjectReplicationPolicy: armstorage.ObjectReplicationPolicy{
 	// 		Name: to.Ptr("{objectReplicationPolicy-Id}"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/objectReplicationPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6977/providers/Microsoft.Storage/storageAccounts/sto2527/objectReplicationPolicies/{objectReplicationPolicy-Id}"),
@@ -412,12 +436,15 @@ func ExampleObjectReplicationPoliciesClient_Get() {
 	// 				},
 	// 			},
 	// 			SourceAccount: to.Ptr("sto2527"),
+	// 			TagsReplication: &armstorage.ObjectReplicationPolicyPropertiesTagsReplication{
+	// 				Enabled: to.Ptr(true),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/StorageAccountListObjectReplicationPolicies.json
+// Generated from example definition: 2025-08-01/StorageAccountListObjectReplicationPolicies.json
 func ExampleObjectReplicationPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -464,6 +491,9 @@ func ExampleObjectReplicationPoliciesClient_NewListPager() {
 		// 						Enabled: to.Ptr(true),
 		// 					},
 		// 					SourceAccount: to.Ptr("sto2527"),
+		// 					TagsReplication: &armstorage.ObjectReplicationPolicyPropertiesTagsReplication{
+		// 						Enabled: to.Ptr(true),
+		// 					},
 		// 				},
 		// 			},
 		// 		},

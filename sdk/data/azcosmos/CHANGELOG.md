@@ -1,5 +1,7 @@
 # Release History
 
+<!-- cSpell:ignore documentdb unmarshalling -->
+
 ## 1.5.0-beta.7 (Unreleased)
 
 ### Features Added
@@ -10,7 +12,17 @@
 
 ### Bugs Fixed
 
+* Fixed missing OTel tracing spans for internal queries executed by `ReadManyItems`. Each per-partition query page now creates a `query_items` span, matching the tracing behavior of `NewQueryItemsPager`. See [PR 26813](https://github.com/Azure/azure-sdk-for-go/pull/26813).
+* 403/`WriteForbidden` retries refresh the global endpoint manager fire-and-forget (CAS-gated) instead of blocking on a synchronous `gem.Update`. See [PR 26889](https://github.com/Azure/azure-sdk-for-go/pull/26889).
+* Connection-error retry policy now attempts up to 3 retries against the current region before failing over, and performs at most one cross-region failover per call. Cross-region failover for writes only occurs when the error proves the request never reached the service (DNS, dial, TLS handshake, `ECONNREFUSED`, etc.); writes on ambiguous transport failures (e.g. `ECONNRESET`, `EOF`, transport-level timeouts) no longer fail over to another region, avoiding potential duplicate writes. Reads still fail over for any transport error. Caller-set context deadlines or cancellations short-circuit the policy without consuming the caller's budget with retries. See [PR 26858](https://github.com/Azure/azure-sdk-for-go/pull/26858).
+* HTTP `408 Request Timeout` responses are now handled by the Cosmos client retry policy: reads are retried exactly once against another region, and writes are returned to the caller immediately to avoid potential duplicates. See [PR 26858](https://github.com/Azure/azure-sdk-for-go/pull/26858).
+* Fixed excessive `GetDatabaseAccount` HTTP calls when using preferred regions, and stopped data-plane retries from trailing into the customer-supplied (default) endpoint once account topology is populated. See [PR 26815](https://github.com/Azure/azure-sdk-for-go/pull/26815).
+* Partition key range cache now serves concurrent callers from a single in-flight refresh per container, and the cached routing map remains readable while a refresh is in progress. The refresh runs on a detached background `context.Background()` so a caller's cancellation no longer aborts the shared fetch for other waiters; each caller continues to honor its own context deadline. See [PR 26855](https://github.com/Azure/azure-sdk-for-go/pull/26855).
+* Partition key range cache change-feed pagination is now resilient to mid-drain throttling. 429 responses are retried indefinitely (with capped linear backoff + jitter) since the service is explicitly asking the client to slow down, and the pages already accumulated are preserved instead of restarting the drain from page 1 on the next refresh. See [PR 26855](https://github.com/Azure/azure-sdk-for-go/pull/26855).
+
 ### Other Changes
+
+* Tightened the default HTTP client: 5s dial timeout (down from azcore's 30s), 65s `http.Client.Timeout` wall-clock cap per HTTP attempt (was unbounded), larger idle connection pool (1000 total / 100 per host, up from azcore's 100 / 10), and faster HTTP/2 health checks. Caller-supplied `Transport` and shorter `context` deadlines are unaffected. See [PR 26856](https://github.com/Azure/azure-sdk-for-go/pull/26856).
 
 ## 1.5.0-beta.6 (2026-05-15)
 

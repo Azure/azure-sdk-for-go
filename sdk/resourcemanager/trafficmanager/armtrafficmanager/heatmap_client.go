@@ -19,6 +19,8 @@ import (
 
 // HeatMapClient contains the methods for the HeatMap group.
 // Don't use this type directly, use NewHeatMapClient() instead.
+//
+// Generated from API version 2024-04-01-preview
 type HeatMapClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewHeatMapClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // Get - Gets latest heatmap for Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The name of the Traffic Manager profile.
 //   - options - HeatMapClientGetOptions contains the optional parameters for the HeatMapClient.Get method.
@@ -90,14 +90,14 @@ func (client *HeatMapClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
+	reqQP.Set("api-version", version20240401Preview)
 	if options != nil && options.BotRight != nil {
 		reqQP.Set("botRight", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.BotRight), "[]")), ","))
 	}
 	if options != nil && options.TopLeft != nil {
 		reqQP.Set("topLeft", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.TopLeft), "[]")), ","))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

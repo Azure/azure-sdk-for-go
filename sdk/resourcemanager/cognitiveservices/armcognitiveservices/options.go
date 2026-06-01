@@ -79,6 +79,12 @@ type AccountsClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
+// AccountsClientEvaluateDeploymentPoliciesOptions contains the optional parameters for the AccountsClient.EvaluateDeploymentPolicies
+// method.
+type AccountsClientEvaluateDeploymentPoliciesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
 type AccountsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -322,6 +328,52 @@ type ComputeOperationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ComputesClientBeginCreateOrUpdateOptions contains the optional parameters for the ComputesClient.BeginCreateOrUpdate method.
+type ComputesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ComputesClientBeginDeleteOptions contains the optional parameters for the ComputesClient.BeginDelete method.
+type ComputesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ComputesClientBeginRestartOptions contains the optional parameters for the ComputesClient.BeginRestart method.
+type ComputesClientBeginRestartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ComputesClientBeginStartOptions contains the optional parameters for the ComputesClient.BeginStart method.
+type ComputesClientBeginStartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ComputesClientBeginStopOptions contains the optional parameters for the ComputesClient.BeginStop method.
+type ComputesClientBeginStopOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ComputesClientBeginUpdateOptions contains the optional parameters for the ComputesClient.BeginUpdate method.
+type ComputesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ComputesClientGetOptions contains the optional parameters for the ComputesClient.Get method.
+type ComputesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComputesClientListOptions contains the optional parameters for the ComputesClient.NewListPager method.
+type ComputesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DefenderForAISettingsClientCreateOrUpdateOptions contains the optional parameters for the DefenderForAISettingsClient.CreateOrUpdate
 // method.
 type DefenderForAISettingsClientCreateOrUpdateOptions struct {
@@ -429,6 +481,56 @@ type EncryptionScopesClientListOptions struct {
 // LocationBasedModelCapacitiesClientListOptions contains the optional parameters for the LocationBasedModelCapacitiesClient.NewListPager
 // method.
 type LocationBasedModelCapacitiesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedComputeCapacitiesClientListOptions contains the optional parameters for the ManagedComputeCapacitiesClient.NewListPager
+// method.
+type ManagedComputeCapacitiesClientListOptions struct {
+	// Optional accelerator type filter to narrow results to a specific accelerator type.
+	AcceleratorType *string
+
+	// Optional deployment resource ID. When provided, returns capacity for the specific region
+	// where the deployment is hosted rather than the best available region.
+	DeploymentID *string
+}
+
+// ManagedComputeDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedComputeDeploymentsClient.BeginCreateOrUpdate
+// method.
+type ManagedComputeDeploymentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedComputeDeploymentsClientBeginDeleteOptions contains the optional parameters for the ManagedComputeDeploymentsClient.BeginDelete
+// method.
+type ManagedComputeDeploymentsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedComputeDeploymentsClientBeginUpdateOptions contains the optional parameters for the ManagedComputeDeploymentsClient.BeginUpdate
+// method.
+type ManagedComputeDeploymentsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedComputeDeploymentsClientGetOptions contains the optional parameters for the ManagedComputeDeploymentsClient.Get
+// method.
+type ManagedComputeDeploymentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedComputeDeploymentsClientListOptions contains the optional parameters for the ManagedComputeDeploymentsClient.NewListPager
+// method.
+type ManagedComputeDeploymentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedComputeUsagesOperationGroupClientListOptions contains the optional parameters for the ManagedComputeUsagesOperationGroupClient.NewListPager
+// method.
+type ManagedComputeUsagesOperationGroupClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -879,4 +981,51 @@ type UsagesClientListOptions struct {
 	// An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of
 	// the metric, can have an or of multiple names).
 	Filter *string
+}
+
+// WorkbenchesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkbenchesClient.BeginCreateOrUpdate
+// method.
+type WorkbenchesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkbenchesClientBeginDeleteOptions contains the optional parameters for the WorkbenchesClient.BeginDelete method.
+type WorkbenchesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkbenchesClientBeginRestartOptions contains the optional parameters for the WorkbenchesClient.BeginRestart method.
+type WorkbenchesClientBeginRestartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkbenchesClientBeginStartOptions contains the optional parameters for the WorkbenchesClient.BeginStart method.
+type WorkbenchesClientBeginStartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkbenchesClientBeginStopOptions contains the optional parameters for the WorkbenchesClient.BeginStop method.
+type WorkbenchesClientBeginStopOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkbenchesClientBeginUpdateOptions contains the optional parameters for the WorkbenchesClient.BeginUpdate method.
+type WorkbenchesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkbenchesClientGetOptions contains the optional parameters for the WorkbenchesClient.Get method.
+type WorkbenchesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbenchesClientListOptions contains the optional parameters for the WorkbenchesClient.NewListPager method.
+type WorkbenchesClientListOptions struct {
+	// placeholder for future optional parameters
 }

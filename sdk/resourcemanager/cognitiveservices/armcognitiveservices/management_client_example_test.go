@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-15-preview/CalculateModelCapacity.json
+// Generated from example definition: 2026-03-15-preview/CalculateModelCapacity.json
 func ExampleManagementClient_CalculateModelCapacity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleManagementClient_CalculateModelCapacity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ManagementClientCalculateModelCapacityResponse{
-	// 	CalculateModelCapacityResult: &armcognitiveservices.CalculateModelCapacityResult{
+	// 	CalculateModelCapacityResult: armcognitiveservices.CalculateModelCapacityResult{
 	// 		EstimatedCapacity: &armcognitiveservices.CalculateModelCapacityResultEstimatedCapacity{
 	// 			DeployableValue: to.Ptr[int32](400),
 	// 			Value: to.Ptr[int32](346),

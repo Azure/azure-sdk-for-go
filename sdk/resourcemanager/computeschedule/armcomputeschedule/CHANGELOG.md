@@ -1,5 +1,63 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-06-01)
+### Breaking Changes
+
+- Function `*ScheduledActionsClient.VirtualMachinesCancelOperations` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody CancelOperationsContent, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions)` to `(ctx context.Context, locationparameter string, requestBody CancelOperationsRequest, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesExecuteCreate` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody ExecuteCreateContent, options *ScheduledActionsClientVirtualMachinesExecuteCreateOptions)` to `(ctx context.Context, locationparameter string, requestBody ExecuteCreateRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesExecuteDeallocate` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateContent, options *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions)` to `(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateRequest, options *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesExecuteDelete` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody ExecuteDeleteContent, options *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions)` to `(ctx context.Context, locationparameter string, requestBody ExecuteDeleteRequest, options *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesExecuteHibernate` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody ExecuteHibernateContent, options *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions)` to `(ctx context.Context, locationparameter string, requestBody ExecuteHibernateRequest, options *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesExecuteStart` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody ExecuteStartContent, options *ScheduledActionsClientVirtualMachinesExecuteStartOptions)` to `(ctx context.Context, locationparameter string, requestBody ExecuteStartRequest, options *ScheduledActionsClientVirtualMachinesExecuteStartOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesGetOperationErrors` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody GetOperationErrorsContent, options *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions)` to `(ctx context.Context, locationparameter string, requestBody GetOperationErrorsRequest, options *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesGetOperationStatus` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody GetOperationStatusContent, options *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions)` to `(ctx context.Context, locationparameter string, requestBody GetOperationStatusRequest, options *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesSubmitDeallocate` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody SubmitDeallocateContent, options *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions)` to `(ctx context.Context, locationparameter string, requestBody SubmitDeallocateRequest, options *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesSubmitHibernate` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody SubmitHibernateContent, options *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions)` to `(ctx context.Context, locationparameter string, requestBody SubmitHibernateRequest, options *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesSubmitStart` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody SubmitStartContent, options *ScheduledActionsClientVirtualMachinesSubmitStartOptions)` to `(ctx context.Context, locationparameter string, requestBody SubmitStartRequest, options *ScheduledActionsClientVirtualMachinesSubmitStartOptions)`
+- Struct `CancelOperationsContent` has been removed
+- Struct `ExecuteCreateContent` has been removed
+- Struct `ExecuteDeallocateContent` has been removed
+- Struct `ExecuteDeleteContent` has been removed
+- Struct `ExecuteHibernateContent` has been removed
+- Struct `ExecuteStartContent` has been removed
+- Struct `GetOperationErrorsContent` has been removed
+- Struct `GetOperationStatusContent` has been removed
+- Struct `SubmitDeallocateContent` has been removed
+- Struct `SubmitHibernateContent` has been removed
+- Struct `SubmitStartContent` has been removed
+
+### Features Added
+
+- New value `ResourceOperationTypeCreate`, `ResourceOperationTypeDelete` added to enum type `ResourceOperationType`
+- New enum type `AllocationStrategy` with values `AllocationStrategyCapacityOptimized`, `AllocationStrategyLowestPrice`, `AllocationStrategyPrioritized`
+- New enum type `DistributionStrategy` with values `DistributionStrategyBestEffortBalanced`, `DistributionStrategyBestEffortSingleZone`, `DistributionStrategyPrioritized`, `DistributionStrategyStrictBalanced`
+- New enum type `OsType` with values `OsTypeLinux`, `OsTypeWindows`
+- New enum type `PriorityType` with values `PriorityTypeRegular`, `PriorityTypeSpot`
+- New function `*ScheduledActionsClient.VirtualMachinesExecuteCreateFlex(ctx context.Context, locationparameter string, body ExecuteCreateFlexRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse, error)`
+- New struct `CancelOperationsRequest`
+- New struct `CreateFlexResourceOperationResponse`
+- New struct `ExecuteCreateFlexRequest`
+- New struct `ExecuteCreateRequest`
+- New struct `ExecuteDeallocateRequest`
+- New struct `ExecuteDeleteRequest`
+- New struct `ExecuteHibernateRequest`
+- New struct `ExecuteStartRequest`
+- New struct `FallbackOperationInfo`
+- New struct `FlexProperties`
+- New struct `GetOperationErrorsRequest`
+- New struct `GetOperationStatusRequest`
+- New struct `PriorityProfile`
+- New struct `ResourceProvisionFlexPayload`
+- New struct `SubmitDeallocateRequest`
+- New struct `SubmitHibernateRequest`
+- New struct `SubmitStartRequest`
+- New struct `VMSizeProfile`
+- New struct `ZoneAllocationPolicy`
+- New struct `ZonePreference`
+- New field `FallbackOperationInfo` in struct `ResourceOperationDetails`
+- New field `OnFailureAction` in struct `RetryPolicy`
+
+
 ## 1.2.0-beta.2 (2026-04-03)
 ### Features Added
 

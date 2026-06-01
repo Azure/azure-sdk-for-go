@@ -13,8 +13,8 @@ type CancelOccurrenceRequest struct {
 	ResourceIDs []*string
 }
 
-// CancelOperationsContent - This is the request to cancel running operations in scheduled actions using the operation ids
-type CancelOperationsContent struct {
+// CancelOperationsRequest - This is the request to cancel running operations in scheduled actions using the operation ids
+type CancelOperationsRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -116,20 +116,8 @@ type Error struct {
 	Target *string
 }
 
-// ExecuteCreateContent - The ExecuteCreateRequest request for create operations
-type ExecuteCreateContent struct {
-	// REQUIRED; The execution parameters for the request
-	ExecutionParameters *ExecutionParameters
-
-	// REQUIRED; resource creation payload
-	ResourceConfigParameters *ResourceProvisionPayload
-
-	// CorrelationId item
-	Correlationid *string
-}
-
-// ExecuteCreateFlexContent - The ExecuteCreateFlexRequest request for executeCreateFlex operations
-type ExecuteCreateFlexContent struct {
+// ExecuteCreateFlexRequest - The ExecuteCreateFlexRequest request for executeCreateFlex operations
+type ExecuteCreateFlexRequest struct {
 	// REQUIRED; The execution parameters for the request
 	ExecutionParameters *ExecutionParameters
 
@@ -140,8 +128,20 @@ type ExecuteCreateFlexContent struct {
 	Correlationid *string
 }
 
-// ExecuteDeallocateContent - The ExecuteDeallocateRequest request for executeDeallocate operations
-type ExecuteDeallocateContent struct {
+// ExecuteCreateRequest - The ExecuteCreateRequest request for create operations
+type ExecuteCreateRequest struct {
+	// REQUIRED; The execution parameters for the request
+	ExecutionParameters *ExecutionParameters
+
+	// REQUIRED; resource creation payload
+	ResourceConfigParameters *ResourceProvisionPayload
+
+	// CorrelationId item
+	Correlationid *string
+}
+
+// ExecuteDeallocateRequest - The ExecuteDeallocateRequest request for executeDeallocate operations
+type ExecuteDeallocateRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -152,8 +152,8 @@ type ExecuteDeallocateContent struct {
 	Resources *Resources
 }
 
-// ExecuteDeleteContent - The ExecuteDeleteRequest for delete VM operation
-type ExecuteDeleteContent struct {
+// ExecuteDeleteRequest - The ExecuteDeleteRequest for delete VM operation
+type ExecuteDeleteRequest struct {
 	// REQUIRED; The execution parameters for the request
 	ExecutionParameters *ExecutionParameters
 
@@ -167,8 +167,8 @@ type ExecuteDeleteContent struct {
 	ForceDeletion *bool
 }
 
-// ExecuteHibernateContent - The ExecuteHibernateRequest request for executeHibernate operations
-type ExecuteHibernateContent struct {
+// ExecuteHibernateRequest - The ExecuteHibernateRequest request for executeHibernate operations
+type ExecuteHibernateRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -179,8 +179,8 @@ type ExecuteHibernateContent struct {
 	Resources *Resources
 }
 
-// ExecuteStartContent - The ExecuteStartRequest request for executeStart operations
-type ExecuteStartContent struct {
+// ExecuteStartRequest - The ExecuteStartRequest request for executeStart operations
+type ExecuteStartRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -227,8 +227,8 @@ type FlexProperties struct {
 	ZoneAllocationPolicy *ZoneAllocationPolicy
 }
 
-// GetOperationErrorsContent - This is the request to get errors per vm operations
-type GetOperationErrorsContent struct {
+// GetOperationErrorsRequest - This is the request to get errors per vm operations
+type GetOperationErrorsRequest struct {
 	// REQUIRED; The list of operation ids to query errors of
 	OperationIDs []*string
 }
@@ -239,8 +239,8 @@ type GetOperationErrorsResponse struct {
 	Results []*OperationErrorsResult
 }
 
-// GetOperationStatusContent - This is the request to get operation status using operationids
-type GetOperationStatusContent struct {
+// GetOperationStatusRequest - This is the request to get operation status using operationids
+type GetOperationStatusRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -658,13 +658,13 @@ type ResourceProvisionPayload struct {
 	// REQUIRED; Number of VMs to be created
 	ResourceCount *int32
 
-	// JSON object that contains VM properties that are common across all VMs in this batch (if you want to create 100 VMs in
-	// this request, and they all have same vmSize, then include vmSize in baseProfile)
+	// Virtual machine profile object that contains VM properties that are common across all VMs in this batch (if you want to
+	// create 100 VMs in this request, and they all have same vmSize, then include vmSize in baseProfile)
 	BaseProfile map[string]any
 
-	// JSON array, that contains VM properties that should to be overridden for each VM in the batch (if you want to create 100
-	// VMs, they all need a distinct computerName property, you pass computerNames for each VM in batch in this array), service
-	// will merge baseProfile with VM specific overrides and create a merged VMProfile.
+	// Virtual machine profile array that contains VM properties that needs to be overridden for each VM in the batch (if you
+	// want to create 100 VMs, they all need a distinct computerName property, you pass computerNames for each VM in batch in
+	// this array), service will merge baseProfile with VM specific overrides and create a merged VMProfile.
 	ResourceOverrides []map[string]any
 
 	// if resourceOverrides doesn't contain "name", service will create name based of prefix and ResourceCount e.g. resourceprefix-0,resourceprefix-1..
@@ -942,8 +942,8 @@ type StartResourceOperationResponse struct {
 	Results []*ResourceOperation
 }
 
-// SubmitDeallocateContent - The deallocate request for resources
-type SubmitDeallocateContent struct {
+// SubmitDeallocateRequest - The deallocate request for resources
+type SubmitDeallocateRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -957,8 +957,8 @@ type SubmitDeallocateContent struct {
 	Schedule *Schedule
 }
 
-// SubmitHibernateContent - This is the request for hibernate
-type SubmitHibernateContent struct {
+// SubmitHibernateRequest - This is the request for hibernate
+type SubmitHibernateRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -972,8 +972,8 @@ type SubmitHibernateContent struct {
 	Schedule *Schedule
 }
 
-// SubmitStartContent - This is the request for start
-type SubmitStartContent struct {
+// SubmitStartRequest - This is the request for start
+type SubmitStartRequest struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -1013,13 +1013,13 @@ type VMSizeProfile struct {
 	// REQUIRED; The name of the VM size, eg Standard_D2ads_v5
 	Name *string
 
-	// REQUIRED; The rank of this VM size in the priority order
+	// The rank of this VM size in the priority order
 	Rank *int32
 }
 
 // ZoneAllocationPolicy - The zone allocation policy for distributing VMs across availability zones
 type ZoneAllocationPolicy struct {
-	// The distribution strategy for zone allocation
+	// REQUIRED; The distribution strategy for zone allocation
 	DistributionStrategy *DistributionStrategy
 
 	// The zone preferences for allocation priority
@@ -1028,9 +1028,9 @@ type ZoneAllocationPolicy struct {
 
 // ZonePreference - A zone preference with a zone identifier and rank
 type ZonePreference struct {
-	// REQUIRED; The rank of this zone in the priority order
-	Rank *int32
-
 	// REQUIRED; The zone identifier
 	Zone *string
+
+	// The rank of this zone in the priority order
+	Rank *int32
 }

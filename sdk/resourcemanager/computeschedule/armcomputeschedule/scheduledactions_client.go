@@ -19,7 +19,7 @@ import (
 // ScheduledActionsClient contains the methods for the ScheduledActions group.
 // Don't use this type directly, use NewScheduledActionsClient() instead.
 //
-// Generated from API version 2025-04-15-preview
+// Generated from API version 2026-03-01-preview
 type ScheduledActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +43,6 @@ func NewScheduledActionsClient(subscriptionID string, credential azcore.TokenCre
 
 // AttachResources - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - body - The content of the action request
@@ -92,7 +90,7 @@ func (client *ScheduledActionsClient) attachResourcesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -113,8 +111,6 @@ func (client *ScheduledActionsClient) attachResourcesHandleResponse(resp *http.R
 
 // CancelNextOccurrence - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - body - The content of the action request
@@ -162,7 +158,7 @@ func (client *ScheduledActionsClient) cancelNextOccurrenceCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -183,8 +179,6 @@ func (client *ScheduledActionsClient) cancelNextOccurrenceHandleResponse(resp *h
 
 // BeginCreateOrUpdate - Create a ScheduledAction
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - resource - Resource create parameters.
@@ -209,8 +203,6 @@ func (client *ScheduledActionsClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Create a ScheduledAction
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *ScheduledActionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.BeginCreateOrUpdate"
@@ -252,7 +244,7 @@ func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -264,8 +256,6 @@ func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Delete a ScheduledAction
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - options - ScheduledActionsClientBeginDeleteOptions contains the optional parameters for the ScheduledActionsClient.BeginDelete
@@ -289,8 +279,6 @@ func (client *ScheduledActionsClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Delete a ScheduledAction
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *ScheduledActionsClient) deleteOperation(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.BeginDelete"
@@ -332,15 +320,13 @@ func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DetachResources - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - body - The content of the action request
@@ -388,7 +374,7 @@ func (client *ScheduledActionsClient) detachResourcesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -409,8 +395,6 @@ func (client *ScheduledActionsClient) detachResourcesHandleResponse(resp *http.R
 
 // Disable - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - options - ScheduledActionsClientDisableOptions contains the optional parameters for the ScheduledActionsClient.Disable
@@ -456,15 +440,13 @@ func (client *ScheduledActionsClient) disableCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Enable - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - options - ScheduledActionsClientEnableOptions contains the optional parameters for the ScheduledActionsClient.Enable method.
@@ -509,15 +491,13 @@ func (client *ScheduledActionsClient) enableCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a ScheduledAction
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - options - ScheduledActionsClientGetOptions contains the optional parameters for the ScheduledActionsClient.Get method.
@@ -563,7 +543,7 @@ func (client *ScheduledActionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -579,8 +559,6 @@ func (client *ScheduledActionsClient) getHandleResponse(resp *http.Response) (Sc
 }
 
 // NewListByResourceGroupPager - List ScheduledAction resources by resource group
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ScheduledActionsClientListByResourceGroupOptions contains the optional parameters for the ScheduledActionsClient.NewListByResourceGroupPager
 //     method.
@@ -623,7 +601,7 @@ func (client *ScheduledActionsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -639,8 +617,6 @@ func (client *ScheduledActionsClient) listByResourceGroupHandleResponse(resp *ht
 }
 
 // NewListBySubscriptionPager - List ScheduledAction resources by subscription ID
-//
-// Generated from API version 2026-03-01-preview
 //   - options - ScheduledActionsClientListBySubscriptionOptions contains the optional parameters for the ScheduledActionsClient.NewListBySubscriptionPager
 //     method.
 func (client *ScheduledActionsClient) NewListBySubscriptionPager(options *ScheduledActionsClientListBySubscriptionOptions) *runtime.Pager[ScheduledActionsClientListBySubscriptionResponse] {
@@ -678,7 +654,7 @@ func (client *ScheduledActionsClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -694,8 +670,6 @@ func (client *ScheduledActionsClient) listBySubscriptionHandleResponse(resp *htt
 }
 
 // NewListResourcesPager - List resources attached to Scheduled Actions
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - options - ScheduledActionsClientListResourcesOptions contains the optional parameters for the ScheduledActionsClient.NewListResourcesPager
@@ -743,7 +717,7 @@ func (client *ScheduledActionsClient) listResourcesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -760,8 +734,6 @@ func (client *ScheduledActionsClient) listResourcesHandleResponse(resp *http.Res
 
 // PatchResources - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - body - The content of the action request
@@ -809,7 +781,7 @@ func (client *ScheduledActionsClient) patchResourcesCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -830,8 +802,6 @@ func (client *ScheduledActionsClient) patchResourcesHandleResponse(resp *http.Re
 
 // TriggerManualOccurrence - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - options - ScheduledActionsClientTriggerManualOccurrenceOptions contains the optional parameters for the ScheduledActionsClient.TriggerManualOccurrence
@@ -878,7 +848,7 @@ func (client *ScheduledActionsClient) triggerManualOccurrenceCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -895,8 +865,6 @@ func (client *ScheduledActionsClient) triggerManualOccurrenceHandleResponse(resp
 
 // Update - Update a ScheduledAction
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - properties - The resource properties to be updated.
@@ -943,7 +911,7 @@ func (client *ScheduledActionsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -965,13 +933,11 @@ func (client *ScheduledActionsClient) updateHandleResponse(resp *http.Response) 
 // VirtualMachinesCancelOperations - VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate)
 // request
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesCancelOperationsOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesCancelOperations
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesCancelOperations(ctx context.Context, locationparameter string, requestBody CancelOperationsContent, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (ScheduledActionsClientVirtualMachinesCancelOperationsResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesCancelOperations(ctx context.Context, locationparameter string, requestBody CancelOperationsRequest, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (ScheduledActionsClientVirtualMachinesCancelOperationsResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesCancelOperations"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -994,7 +960,7 @@ func (client *ScheduledActionsClient) VirtualMachinesCancelOperations(ctx contex
 }
 
 // virtualMachinesCancelOperationsCreateRequest creates the VirtualMachinesCancelOperations request.
-func (client *ScheduledActionsClient) virtualMachinesCancelOperationsCreateRequest(ctx context.Context, locationparameter string, requestBody CancelOperationsContent, _ *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesCancelOperationsCreateRequest(ctx context.Context, locationparameter string, requestBody CancelOperationsRequest, _ *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesCancelOperations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1009,7 +975,7 @@ func (client *ScheduledActionsClient) virtualMachinesCancelOperationsCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1031,13 +997,11 @@ func (client *ScheduledActionsClient) virtualMachinesCancelOperationsHandleRespo
 // VirtualMachinesExecuteCreate - [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of
 // virtual machines, this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteCreateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteCreate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteCreate(ctx context.Context, locationparameter string, requestBody ExecuteCreateContent, options *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteCreate(ctx context.Context, locationparameter string, requestBody ExecuteCreateRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1060,7 +1024,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteCreate(ctx context.C
 }
 
 // virtualMachinesExecuteCreateCreateRequest creates the VirtualMachinesExecuteCreate request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteCreateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteCreateContent, _ *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteCreateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteCreateRequest, _ *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1075,7 +1039,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteCreateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1097,13 +1061,11 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteCreateHandleResponse
 // VirtualMachinesExecuteCreateFlex - VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines
 // with flex properties, this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - body - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteCreateFlex
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteCreateFlex(ctx context.Context, locationparameter string, body ExecuteCreateFlexContent, options *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteCreateFlex(ctx context.Context, locationparameter string, body ExecuteCreateFlexRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteCreateFlex"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1126,7 +1088,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteCreateFlex(ctx conte
 }
 
 // virtualMachinesExecuteCreateFlexCreateRequest creates the VirtualMachinesExecuteCreateFlex request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteCreateFlexCreateRequest(ctx context.Context, locationparameter string, body ExecuteCreateFlexContent, _ *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteCreateFlexCreateRequest(ctx context.Context, locationparameter string, body ExecuteCreateFlexRequest, _ *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreateFlex"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1141,8 +1103,8 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteCreateFlexCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -1163,13 +1125,11 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteCreateFlexHandleResp
 // VirtualMachinesExecuteDeallocate - VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual
 // machines, this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteDeallocate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteDeallocate(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateContent, options *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteDeallocate(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateRequest, options *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteDeallocate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1192,7 +1152,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteDeallocate(ctx conte
 }
 
 // virtualMachinesExecuteDeallocateCreateRequest creates the VirtualMachinesExecuteDeallocate request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateContent, _ *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateRequest, _ *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDeallocate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1207,7 +1167,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1229,13 +1189,11 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateHandleResp
 // VirtualMachinesExecuteDelete - [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of
 // virtual machines, this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteDeleteOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteDelete
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteDelete(ctx context.Context, locationparameter string, requestBody ExecuteDeleteContent, options *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (ScheduledActionsClientVirtualMachinesExecuteDeleteResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteDelete(ctx context.Context, locationparameter string, requestBody ExecuteDeleteRequest, options *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (ScheduledActionsClientVirtualMachinesExecuteDeleteResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1258,7 +1216,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteDelete(ctx context.C
 }
 
 // virtualMachinesExecuteDeleteCreateRequest creates the VirtualMachinesExecuteDelete request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeleteContent, _ *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeleteRequest, _ *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDelete"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1273,7 +1231,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1295,13 +1253,11 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteHandleResponse
 // VirtualMachinesExecuteHibernate - VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines,
 // this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteHibernateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteHibernate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteHibernate(ctx context.Context, locationparameter string, requestBody ExecuteHibernateContent, options *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (ScheduledActionsClientVirtualMachinesExecuteHibernateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteHibernate(ctx context.Context, locationparameter string, requestBody ExecuteHibernateRequest, options *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (ScheduledActionsClientVirtualMachinesExecuteHibernateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteHibernate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1324,7 +1280,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteHibernate(ctx contex
 }
 
 // virtualMachinesExecuteHibernateCreateRequest creates the VirtualMachinesExecuteHibernate request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteHibernateContent, _ *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteHibernateRequest, _ *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteHibernate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1339,7 +1295,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1361,13 +1317,11 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateHandleRespo
 // VirtualMachinesExecuteStart - VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this
 // operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteStartOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteStart
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteStart(ctx context.Context, locationparameter string, requestBody ExecuteStartContent, options *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (ScheduledActionsClientVirtualMachinesExecuteStartResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteStart(ctx context.Context, locationparameter string, requestBody ExecuteStartRequest, options *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (ScheduledActionsClientVirtualMachinesExecuteStartResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteStart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1390,7 +1344,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteStart(ctx context.Co
 }
 
 // virtualMachinesExecuteStartCreateRequest creates the VirtualMachinesExecuteStart request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteStartCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteStartContent, _ *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteStartCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteStartRequest, _ *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteStart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1405,7 +1359,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteStartCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1427,13 +1381,11 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteStartHandleResponse(
 // VirtualMachinesGetOperationErrors - VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient
 // errors encountered, additional logs) if they exist.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesGetOperationErrors
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesGetOperationErrors(ctx context.Context, locationparameter string, requestBody GetOperationErrorsContent, options *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (ScheduledActionsClientVirtualMachinesGetOperationErrorsResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesGetOperationErrors(ctx context.Context, locationparameter string, requestBody GetOperationErrorsRequest, options *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (ScheduledActionsClientVirtualMachinesGetOperationErrorsResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesGetOperationErrors"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1456,7 +1408,7 @@ func (client *ScheduledActionsClient) VirtualMachinesGetOperationErrors(ctx cont
 }
 
 // virtualMachinesGetOperationErrorsCreateRequest creates the VirtualMachinesGetOperationErrors request.
-func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationErrorsContent, _ *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationErrorsRequest, _ *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationErrors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1471,7 +1423,7 @@ func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1493,13 +1445,11 @@ func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsHandleRes
 // VirtualMachinesGetOperationStatus - VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed
 // on virtual machines
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesGetOperationStatusOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesGetOperationStatus
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesGetOperationStatus(ctx context.Context, locationparameter string, requestBody GetOperationStatusContent, options *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (ScheduledActionsClientVirtualMachinesGetOperationStatusResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesGetOperationStatus(ctx context.Context, locationparameter string, requestBody GetOperationStatusRequest, options *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (ScheduledActionsClientVirtualMachinesGetOperationStatusResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesGetOperationStatus"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1522,7 +1472,7 @@ func (client *ScheduledActionsClient) VirtualMachinesGetOperationStatus(ctx cont
 }
 
 // virtualMachinesGetOperationStatusCreateRequest creates the VirtualMachinesGetOperationStatus request.
-func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationStatusContent, _ *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationStatusRequest, _ *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationStatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1537,7 +1487,7 @@ func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1559,13 +1509,11 @@ func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusHandleRes
 // VirtualMachinesSubmitDeallocate - VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual
 // machines at datetime in future.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesSubmitDeallocate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesSubmitDeallocate(ctx context.Context, locationparameter string, requestBody SubmitDeallocateContent, options *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesSubmitDeallocate(ctx context.Context, locationparameter string, requestBody SubmitDeallocateRequest, options *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesSubmitDeallocate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1588,7 +1536,7 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitDeallocate(ctx contex
 }
 
 // virtualMachinesSubmitDeallocateCreateRequest creates the VirtualMachinesSubmitDeallocate request.
-func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitDeallocateContent, _ *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitDeallocateRequest, _ *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitDeallocate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1603,7 +1551,7 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1625,13 +1573,11 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateHandleRespo
 // VirtualMachinesSubmitHibernate - VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines
 // at datetime in future.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesSubmitHibernateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesSubmitHibernate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesSubmitHibernate(ctx context.Context, locationparameter string, requestBody SubmitHibernateContent, options *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (ScheduledActionsClientVirtualMachinesSubmitHibernateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesSubmitHibernate(ctx context.Context, locationparameter string, requestBody SubmitHibernateRequest, options *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (ScheduledActionsClientVirtualMachinesSubmitHibernateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesSubmitHibernate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1654,7 +1600,7 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitHibernate(ctx context
 }
 
 // virtualMachinesSubmitHibernateCreateRequest creates the VirtualMachinesSubmitHibernate request.
-func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitHibernateContent, _ *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitHibernateRequest, _ *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitHibernate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1669,7 +1615,7 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1691,13 +1637,11 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateHandleRespon
 // VirtualMachinesSubmitStart - VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime
 // in future.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - locationparameter - The location name.
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesSubmitStartOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesSubmitStart
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesSubmitStart(ctx context.Context, locationparameter string, requestBody SubmitStartContent, options *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (ScheduledActionsClientVirtualMachinesSubmitStartResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesSubmitStart(ctx context.Context, locationparameter string, requestBody SubmitStartRequest, options *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (ScheduledActionsClientVirtualMachinesSubmitStartResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesSubmitStart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1720,7 +1664,7 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitStart(ctx context.Con
 }
 
 // virtualMachinesSubmitStartCreateRequest creates the VirtualMachinesSubmitStart request.
-func (client *ScheduledActionsClient) virtualMachinesSubmitStartCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitStartContent, _ *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesSubmitStartCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitStartRequest, _ *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitStart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1735,7 +1679,7 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitStartCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

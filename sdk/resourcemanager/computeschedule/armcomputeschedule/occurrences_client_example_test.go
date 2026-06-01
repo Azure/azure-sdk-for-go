@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule/v2"
 	"log"
 	"time"
 )
@@ -36,7 +36,7 @@ func ExampleOccurrencesClient_Cancel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.OccurrencesClientCancelResponse{
-	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
+	// 	RecurringActionsResourceOperationResult: armcomputeschedule.RecurringActionsResourceOperationResult{
 	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
@@ -86,7 +86,7 @@ func ExampleOccurrencesClient_BeginDelay() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.OccurrencesClientDelayResponse{
-	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
+	// 	RecurringActionsResourceOperationResult: armcomputeschedule.RecurringActionsResourceOperationResult{
 	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{

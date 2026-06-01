@@ -17,7 +17,7 @@ import (
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 //
-// Generated from API version 2025-04-15-preview
+// Generated from API version 2026-03-01-preview
 type OperationsClient struct {
 	internal *arm.Client
 }
@@ -37,8 +37,6 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 }
 
 // NewListPager - List the operations for the provider
-//
-// Generated from API version 2026-03-01-preview
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
@@ -71,7 +69,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *Operat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

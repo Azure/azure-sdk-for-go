@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule/v2"
 	"log"
 	"time"
 )
@@ -46,7 +46,7 @@ func ExampleScheduledActionsClient_AttachResources() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientAttachResourcesResponse{
-	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
+	// 	RecurringActionsResourceOperationResult: armcomputeschedule.RecurringActionsResourceOperationResult{
 	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
@@ -91,7 +91,7 @@ func ExampleScheduledActionsClient_CancelNextOccurrence() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientCancelNextOccurrenceResponse{
-	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
+	// 	RecurringActionsResourceOperationResult: armcomputeschedule.RecurringActionsResourceOperationResult{
 	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
@@ -280,7 +280,7 @@ func ExampleScheduledActionsClient_DetachResources() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientDetachResourcesResponse{
-	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
+	// 	RecurringActionsResourceOperationResult: armcomputeschedule.RecurringActionsResourceOperationResult{
 	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
@@ -676,7 +676,7 @@ func ExampleScheduledActionsClient_PatchResources() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientPatchResourcesResponse{
-	// 	RecurringActionsResourceOperationResult: &armcomputeschedule.RecurringActionsResourceOperationResult{
+	// 	RecurringActionsResourceOperationResult: armcomputeschedule.RecurringActionsResourceOperationResult{
 	// 		TotalResources: to.Ptr[int32](4),
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
@@ -885,7 +885,7 @@ func ExampleScheduledActionsClient_VirtualMachinesCancelOperations() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "msbzqfwhqmtrxafwwh", armcomputeschedule.CancelOperationsContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "msbzqfwhqmtrxafwwh", armcomputeschedule.CancelOperationsRequest{
 		OperationIDs: []*string{
 			to.Ptr("xgnpiititgkgsewft"),
 		},
@@ -950,7 +950,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreate(ctx, "tcvpodlxbyg", armcomputeschedule.ExecuteCreateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreate(ctx, "tcvpodlxbyg", armcomputeschedule.ExecuteCreateRequest{
 		ResourceConfigParameters: &armcomputeschedule.ResourceProvisionPayload{
 			BaseProfile: map[string]any{},
 			ResourceOverrides: []map[string]any{
@@ -976,7 +976,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateResponse{
-	// 	CreateResourceOperationResponse: &armcomputeschedule.CreateResourceOperationResponse{
+	// 	CreateResourceOperationResponse: armcomputeschedule.CreateResourceOperationResponse{
 	// 		Description: to.Ptr("jen"),
 	// 		Type: to.Ptr("bepzxphnuwvbndhimjgjjxopkv"),
 	// 		Location: to.Ptr("ry"),
@@ -1031,7 +1031,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreateFlex() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreateFlex(ctx, "bnadpwmpjyfduxue", armcomputeschedule.ExecuteCreateFlexContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreateFlex(ctx, "bnadpwmpjyfduxue", armcomputeschedule.ExecuteCreateFlexRequest{
 		ResourceConfigParameters: &armcomputeschedule.ResourceProvisionFlexPayload{
 			BaseProfile: map[string]any{},
 			ResourceOverrides: []map[string]any{
@@ -1083,7 +1083,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreateFlex() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse{
-	// 	CreateFlexResourceOperationResponse: &armcomputeschedule.CreateFlexResourceOperationResponse{
+	// 	CreateFlexResourceOperationResponse: armcomputeschedule.CreateFlexResourceOperationResponse{
 	// 		Description: to.Ptr("ucdsygxzmassqmhessbwyiuwiq"),
 	// 		Type: to.Ptr("ooiwvuoi"),
 	// 		Location: to.Ptr("zmpdjv"),
@@ -1138,7 +1138,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "tobscvse", armcomputeschedule.ExecuteDeallocateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "tobscvse", armcomputeschedule.ExecuteDeallocateRequest{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
@@ -1161,7 +1161,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse{
-	// 	DeallocateResourceOperationResponse: &armcomputeschedule.DeallocateResourceOperationResponse{
+	// 	DeallocateResourceOperationResponse: armcomputeschedule.DeallocateResourceOperationResponse{
 	// 		Description: to.Ptr("kfsvvmqmuawwbauljkfwvkg"),
 	// 		Type: to.Ptr("uocvfgbwp"),
 	// 		Location: to.Ptr("ry"),
@@ -1216,7 +1216,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDelete(ctx, "swchjs", armcomputeschedule.ExecuteDeleteContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDelete(ctx, "swchjs", armcomputeschedule.ExecuteDeleteRequest{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
@@ -1240,7 +1240,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeleteResponse{
-	// 	DeleteResourceOperationResponse: &armcomputeschedule.DeleteResourceOperationResponse{
+	// 	DeleteResourceOperationResponse: armcomputeschedule.DeleteResourceOperationResponse{
 	// 		Description: to.Ptr("mvfsekcubcptb"),
 	// 		Type: to.Ptr("ncppybbwqiczo"),
 	// 		Location: to.Ptr("ry"),
@@ -1295,7 +1295,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "zydcprtgybcyilgugfwtfp", armcomputeschedule.ExecuteHibernateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "zydcprtgybcyilgugfwtfp", armcomputeschedule.ExecuteHibernateRequest{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
@@ -1318,7 +1318,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteHibernateResponse{
-	// 	HibernateResourceOperationResponse: &armcomputeschedule.HibernateResourceOperationResponse{
+	// 	HibernateResourceOperationResponse: armcomputeschedule.HibernateResourceOperationResponse{
 	// 		Description: to.Ptr("zaclotxbojh"),
 	// 		Type: to.Ptr("bchmqcvq"),
 	// 		Location: to.Ptr("ry"),
@@ -1373,7 +1373,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "vpcshwavxibrshqepqktfyu", armcomputeschedule.ExecuteStartContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "vpcshwavxibrshqepqktfyu", armcomputeschedule.ExecuteStartRequest{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
@@ -1396,7 +1396,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteStart() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteStartResponse{
-	// 	StartResourceOperationResponse: &armcomputeschedule.StartResourceOperationResponse{
+	// 	StartResourceOperationResponse: armcomputeschedule.StartResourceOperationResponse{
 	// 		Description: to.Ptr("yeujzzppceepmcpsnaes"),
 	// 		Type: to.Ptr("mi"),
 	// 		Location: to.Ptr("ry"),
@@ -1451,7 +1451,7 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledAc
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "hvevnodfnj", armcomputeschedule.GetOperationErrorsContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "hvevnodfnj", armcomputeschedule.GetOperationErrorsRequest{
 		OperationIDs: []*string{
 			to.Ptr("enrmeatzaw"),
 		},
@@ -1499,7 +1499,7 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledAc
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "vkkri", armcomputeschedule.GetOperationErrorsContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "vkkri", armcomputeschedule.GetOperationErrorsRequest{
 		OperationIDs: []*string{
 			to.Ptr("enrmeatzaw"),
 		},
@@ -1531,7 +1531,7 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "gcbtdawfspg", armcomputeschedule.GetOperationStatusContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "gcbtdawfspg", armcomputeschedule.GetOperationStatusRequest{
 		OperationIDs: []*string{
 			to.Ptr("ehesndkmbcncsvkqvxwkbmidmaxhx"),
 		},
@@ -1596,7 +1596,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "wtkfymadciksjsvamowmbiqdltdzw", armcomputeschedule.SubmitDeallocateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "wtkfymadciksjsvamowmbiqdltdzw", armcomputeschedule.SubmitDeallocateRequest{
 		Schedule: &armcomputeschedule.Schedule{
 			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
 			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
@@ -1626,7 +1626,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse{
-	// 	DeallocateResourceOperationResponse: &armcomputeschedule.DeallocateResourceOperationResponse{
+	// 	DeallocateResourceOperationResponse: armcomputeschedule.DeallocateResourceOperationResponse{
 	// 		Description: to.Ptr("kfsvvmqmuawwbauljkfwvkg"),
 	// 		Type: to.Ptr("uocvfgbwp"),
 	// 		Location: to.Ptr("ry"),
@@ -1681,7 +1681,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "aoewv", armcomputeschedule.SubmitHibernateContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "aoewv", armcomputeschedule.SubmitHibernateRequest{
 		Schedule: &armcomputeschedule.Schedule{
 			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
 			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
@@ -1711,7 +1711,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitHibernateResponse{
-	// 	HibernateResourceOperationResponse: &armcomputeschedule.HibernateResourceOperationResponse{
+	// 	HibernateResourceOperationResponse: armcomputeschedule.HibernateResourceOperationResponse{
 	// 		Description: to.Ptr("zaclotxbojh"),
 	// 		Type: to.Ptr("bchmqcvq"),
 	// 		Location: to.Ptr("ry"),
@@ -1766,7 +1766,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "cabm", armcomputeschedule.SubmitStartContent{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "cabm", armcomputeschedule.SubmitStartRequest{
 		Schedule: &armcomputeschedule.Schedule{
 			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
 			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:44.444Z"); return t }()),
@@ -1796,7 +1796,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitStart() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitStartResponse{
-	// 	StartResourceOperationResponse: &armcomputeschedule.StartResourceOperationResponse{
+	// 	StartResourceOperationResponse: armcomputeschedule.StartResourceOperationResponse{
 	// 		Description: to.Ptr("yeujzzppceepmcpsnaes"),
 	// 		Type: to.Ptr("mi"),
 	// 		Location: to.Ptr("ry"),

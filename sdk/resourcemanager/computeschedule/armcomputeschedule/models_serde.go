@@ -40,16 +40,16 @@ func (c *CancelOccurrenceRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CancelOperationsContent.
-func (c CancelOperationsContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type CancelOperationsRequest.
+func (c CancelOperationsRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", c.Correlationid)
 	populate(objectMap, "operationIds", c.OperationIDs)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CancelOperationsContent.
-func (c *CancelOperationsContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type CancelOperationsRequest.
+func (c *CancelOperationsRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -328,8 +328,8 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExecuteCreateContent.
-func (e ExecuteCreateContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ExecuteCreateFlexRequest.
+func (e ExecuteCreateFlexRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", e.Correlationid)
 	populate(objectMap, "executionParameters", e.ExecutionParameters)
@@ -337,8 +337,8 @@ func (e ExecuteCreateContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteCreateContent.
-func (e *ExecuteCreateContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteCreateFlexRequest.
+func (e *ExecuteCreateFlexRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -363,8 +363,8 @@ func (e *ExecuteCreateContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExecuteCreateFlexContent.
-func (e ExecuteCreateFlexContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ExecuteCreateRequest.
+func (e ExecuteCreateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", e.Correlationid)
 	populate(objectMap, "executionParameters", e.ExecutionParameters)
@@ -372,8 +372,8 @@ func (e ExecuteCreateFlexContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteCreateFlexContent.
-func (e *ExecuteCreateFlexContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteCreateRequest.
+func (e *ExecuteCreateRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -398,8 +398,8 @@ func (e *ExecuteCreateFlexContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExecuteDeallocateContent.
-func (e ExecuteDeallocateContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ExecuteDeallocateRequest.
+func (e ExecuteDeallocateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", e.Correlationid)
 	populate(objectMap, "executionParameters", e.ExecutionParameters)
@@ -407,8 +407,8 @@ func (e ExecuteDeallocateContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteDeallocateContent.
-func (e *ExecuteDeallocateContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteDeallocateRequest.
+func (e *ExecuteDeallocateRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -433,8 +433,8 @@ func (e *ExecuteDeallocateContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExecuteDeleteContent.
-func (e ExecuteDeleteContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ExecuteDeleteRequest.
+func (e ExecuteDeleteRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", e.Correlationid)
 	populate(objectMap, "executionParameters", e.ExecutionParameters)
@@ -443,8 +443,8 @@ func (e ExecuteDeleteContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteDeleteContent.
-func (e *ExecuteDeleteContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteDeleteRequest.
+func (e *ExecuteDeleteRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -472,8 +472,8 @@ func (e *ExecuteDeleteContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExecuteHibernateContent.
-func (e ExecuteHibernateContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ExecuteHibernateRequest.
+func (e ExecuteHibernateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", e.Correlationid)
 	populate(objectMap, "executionParameters", e.ExecutionParameters)
@@ -481,8 +481,8 @@ func (e ExecuteHibernateContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteHibernateContent.
-func (e *ExecuteHibernateContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteHibernateRequest.
+func (e *ExecuteHibernateRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -507,8 +507,8 @@ func (e *ExecuteHibernateContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExecuteStartContent.
-func (e ExecuteStartContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ExecuteStartRequest.
+func (e ExecuteStartRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", e.Correlationid)
 	populate(objectMap, "executionParameters", e.ExecutionParameters)
@@ -516,8 +516,8 @@ func (e ExecuteStartContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteStartContent.
-func (e *ExecuteStartContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExecuteStartRequest.
+func (e *ExecuteStartRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -647,15 +647,15 @@ func (f *FlexProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GetOperationErrorsContent.
-func (g GetOperationErrorsContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GetOperationErrorsRequest.
+func (g GetOperationErrorsRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "operationIds", g.OperationIDs)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GetOperationErrorsContent.
-func (g *GetOperationErrorsContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GetOperationErrorsRequest.
+func (g *GetOperationErrorsRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", g, err)
@@ -701,16 +701,16 @@ func (g *GetOperationErrorsResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GetOperationStatusContent.
-func (g GetOperationStatusContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GetOperationStatusRequest.
+func (g GetOperationStatusRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", g.Correlationid)
 	populate(objectMap, "operationIds", g.OperationIDs)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GetOperationStatusContent.
-func (g *GetOperationStatusContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GetOperationStatusRequest.
+func (g *GetOperationStatusRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", g, err)
@@ -2487,8 +2487,8 @@ func (s *StartResourceOperationResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubmitDeallocateContent.
-func (s SubmitDeallocateContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type SubmitDeallocateRequest.
+func (s SubmitDeallocateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", s.Correlationid)
 	populate(objectMap, "executionParameters", s.ExecutionParameters)
@@ -2497,8 +2497,8 @@ func (s SubmitDeallocateContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SubmitDeallocateContent.
-func (s *SubmitDeallocateContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SubmitDeallocateRequest.
+func (s *SubmitDeallocateRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -2526,8 +2526,8 @@ func (s *SubmitDeallocateContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubmitHibernateContent.
-func (s SubmitHibernateContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type SubmitHibernateRequest.
+func (s SubmitHibernateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", s.Correlationid)
 	populate(objectMap, "executionParameters", s.ExecutionParameters)
@@ -2536,8 +2536,8 @@ func (s SubmitHibernateContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SubmitHibernateContent.
-func (s *SubmitHibernateContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SubmitHibernateRequest.
+func (s *SubmitHibernateRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -2565,8 +2565,8 @@ func (s *SubmitHibernateContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubmitStartContent.
-func (s SubmitStartContent) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type SubmitStartRequest.
+func (s SubmitStartRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationid", s.Correlationid)
 	populate(objectMap, "executionParameters", s.ExecutionParameters)
@@ -2575,8 +2575,8 @@ func (s SubmitStartContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SubmitStartContent.
-func (s *SubmitStartContent) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SubmitStartRequest.
+func (s *SubmitStartRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", s, err)

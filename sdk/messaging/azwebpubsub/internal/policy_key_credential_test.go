@@ -51,5 +51,6 @@ func (f PolicyFunc) Do(req *policy.Request) (*http.Response, error) {
 }
 
 func newPipeline(plOpts runtime.PipelineOptions, options *policy.ClientOptions) runtime.Pipeline {
-	return runtime.NewPipeline("azwebpubsub.Client", "azwebpubsub", plOpts, options)
+	// values aren't germane to the test
+	return runtime.NewPipeline("azwebpubsub.Client", "v0.1.0", plOpts, options)
 }

@@ -40,13 +40,13 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerorchestratorruntime.LoadBalancersClientCreateOrUpdateResponse{
-	// 	LoadBalancer: &armcontainerorchestratorruntime.LoadBalancer{
+	// 	LoadBalancer: armcontainerorchestratorruntime.LoadBalancer{
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/example/providers/Microsoft.Kubernetes/connectedClusters/cluster1/providers/Microsoft.KubernetesRuntime/loadBalancers/testlb"),
 	// 		Name: to.Ptr("testlb"),
 	// 		Type: to.Ptr("Microsoft.KubernetesRuntime/loadBalancers"),
@@ -106,7 +106,7 @@ func ExampleLoadBalancersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerorchestratorruntime.LoadBalancersClientGetResponse{
-	// 	LoadBalancer: &armcontainerorchestratorruntime.LoadBalancer{
+	// 	LoadBalancer: armcontainerorchestratorruntime.LoadBalancer{
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/example/providers/Microsoft.Kubernetes/connectedClusters/cluster1/providers/Microsoft.KubernetesRuntime/loadBalancers/testlb"),
 	// 		Name: to.Ptr("testlb"),
 	// 		Type: to.Ptr("Microsoft.KubernetesRuntime/loadBalancers"),

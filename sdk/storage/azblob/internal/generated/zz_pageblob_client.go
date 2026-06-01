@@ -14,6 +14,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -22,12 +23,11 @@ import (
 type PageBlobClient struct {
 	internal *azcore.Client
 	endpoint string
+	version  string
 }
 
 // ClearPages - The Clear Pages operation clears a set of pages from a page blob
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - contentLength - The length of the request.
 //   - options - PageBlobClientClearPagesOptions contains the optional parameters for the PageBlobClient.ClearPages method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
@@ -65,7 +65,7 @@ func (client *PageBlobClient) clearPagesCreateRequest(ctx context.Context, conte
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
@@ -114,7 +114,7 @@ func (client *PageBlobClient) clearPagesCreateRequest(ctx context.Context, conte
 	if options != nil && options.Range != nil {
 		req.Raw().Header["x-ms-range"] = []string{*options.Range}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -177,8 +177,6 @@ func (client *PageBlobClient) clearPagesHandleResponse(resp *http.Response) (Pag
 // be read or copied from as usual. This API is supported since REST version
 // 2016-05-31.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - copySource - Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies
 //     a page blob snapshot. The value should be URL-encoded as it would appear in a request
 //     URI. The source blob must either be public or must be authenticated via a shared access signature.
@@ -214,7 +212,7 @@ func (client *PageBlobClient) copyIncrementalCreateRequest(ctx context.Context, 
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
@@ -235,7 +233,7 @@ func (client *PageBlobClient) copyIncrementalCreateRequest(ctx context.Context, 
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -279,8 +277,6 @@ func (client *PageBlobClient) copyIncrementalHandleResponse(resp *http.Response)
 
 // Create - The Create operation creates a new page blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - contentLength - The length of the request.
 //   - blobContentLength - This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned
 //     to a 512-byte boundary.
@@ -318,7 +314,7 @@ func (client *PageBlobClient) createCreateRequest(ctx context.Context, contentLe
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
@@ -399,7 +395,7 @@ func (client *PageBlobClient) createCreateRequest(ctx context.Context, contentLe
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -460,8 +456,6 @@ func (client *PageBlobClient) createHandleResponse(resp *http.Response) (PageBlo
 
 // NewGetPageRangesPager - The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot
 // of a page blob
-//
-// Generated from API version 2026-02-06
 //   - options - PageBlobClientGetPageRangesOptions contains the optional parameters for the PageBlobClient.NewGetPageRangesPager
 //     method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
@@ -507,7 +501,7 @@ func (client *PageBlobClient) GetPageRangesCreateRequest(ctx context.Context, op
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
@@ -533,7 +527,7 @@ func (client *PageBlobClient) GetPageRangesCreateRequest(ctx context.Context, op
 	if options != nil && options.Range != nil {
 		req.Raw().Header["x-ms-range"] = []string{*options.Range}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -581,8 +575,6 @@ func (client *PageBlobClient) GetPageRangesHandleResponse(resp *http.Response) (
 
 // NewGetPageRangesDiffPager - The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that
 // were changed between target blob and previous snapshot.
-//
-// Generated from API version 2026-02-06
 //   - options - PageBlobClientGetPageRangesDiffOptions contains the optional parameters for the PageBlobClient.NewGetPageRangesDiffPager
 //     method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
@@ -631,7 +623,7 @@ func (client *PageBlobClient) GetPageRangesDiffCreateRequest(ctx context.Context
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
@@ -660,7 +652,7 @@ func (client *PageBlobClient) GetPageRangesDiffCreateRequest(ctx context.Context
 	if options != nil && options.Range != nil {
 		req.Raw().Header["x-ms-range"] = []string{*options.Range}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -708,8 +700,6 @@ func (client *PageBlobClient) GetPageRangesDiffHandleResponse(resp *http.Respons
 
 // Resize - Resize the Blob
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - blobContentLength - This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned
 //     to a 512-byte boundary.
 //   - options - PageBlobClientResizeOptions contains the optional parameters for the PageBlobClient.Resize method.
@@ -746,7 +736,7 @@ func (client *PageBlobClient) resizeCreateRequest(ctx context.Context, blobConte
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
@@ -782,7 +772,7 @@ func (client *PageBlobClient) resizeCreateRequest(ctx context.Context, blobConte
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -827,8 +817,6 @@ func (client *PageBlobClient) resizeHandleResponse(resp *http.Response) (PageBlo
 
 // UpdateSequenceNumber - Update the sequence number of the blob
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - sequenceNumberAction - Required if the x-ms-blob-sequence-number header is set for the request. This property applies to
 //     page blobs only. This property indicates how the service should modify the blob's sequence number
 //   - options - PageBlobClientUpdateSequenceNumberOptions contains the optional parameters for the PageBlobClient.UpdateSequenceNumber
@@ -864,7 +852,7 @@ func (client *PageBlobClient) updateSequenceNumberCreateRequest(ctx context.Cont
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
@@ -891,7 +879,7 @@ func (client *PageBlobClient) updateSequenceNumberCreateRequest(ctx context.Cont
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	req.Raw().Header["x-ms-sequence-number-action"] = []string{string(sequenceNumberAction)}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -936,8 +924,6 @@ func (client *PageBlobClient) updateSequenceNumberHandleResponse(resp *http.Resp
 
 // UploadPages - The Upload Pages operation writes a range of pages to a page blob
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - contentLength - The length of the request.
 //   - body - Initial data
 //   - options - PageBlobClientUploadPagesOptions contains the optional parameters for the PageBlobClient.UploadPages method.
@@ -976,7 +962,7 @@ func (client *PageBlobClient) uploadPagesCreateRequest(ctx context.Context, cont
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.TransactionalContentMD5 != nil {
@@ -1037,7 +1023,7 @@ func (client *PageBlobClient) uploadPagesCreateRequest(ctx context.Context, cont
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
 	}
@@ -1116,8 +1102,6 @@ func (client *PageBlobClient) uploadPagesHandleResponse(resp *http.Response) (Pa
 // UploadPagesFromURL - The Upload Pages operation writes a range of pages to a page blob where the contents are read from
 // a URL
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - sourceURL - Specify a URL to the copy source.
 //   - sourceRange - Bytes of source data in the specified range. The length of this range should match the ContentLength header
 //     and x-ms-range/Range destination range header.
@@ -1134,9 +1118,10 @@ func (client *PageBlobClient) uploadPagesHandleResponse(resp *http.Response) (Pa
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
 //   - SourceModifiedAccessConditions - SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL
 //     method.
-func (client *PageBlobClient) UploadPagesFromURL(ctx context.Context, sourceURL string, sourceRange string, contentLength int64, rangeParam string, options *PageBlobClientUploadPagesFromURLOptions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, leaseAccessConditions *LeaseAccessConditions, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (PageBlobClientUploadPagesFromURLResponse, error) {
+//   - SourceCPKInfo - SourceCPKInfo contains a group of parameters for the PageBlobClient.UploadPagesFromURL method.
+func (client *PageBlobClient) UploadPagesFromURL(ctx context.Context, sourceURL string, sourceRange string, contentLength int64, rangeParam string, options *PageBlobClientUploadPagesFromURLOptions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, leaseAccessConditions *LeaseAccessConditions, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, sourceCPKInfo *SourceCPKInfo) (PageBlobClientUploadPagesFromURLResponse, error) {
 	var err error
-	req, err := client.uploadPagesFromURLCreateRequest(ctx, sourceURL, sourceRange, contentLength, rangeParam, options, cpkInfo, cpkScopeInfo, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
+	req, err := client.uploadPagesFromURLCreateRequest(ctx, sourceURL, sourceRange, contentLength, rangeParam, options, cpkInfo, cpkScopeInfo, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, sourceCPKInfo)
 	if err != nil {
 		return PageBlobClientUploadPagesFromURLResponse{}, err
 	}
@@ -1153,7 +1138,7 @@ func (client *PageBlobClient) UploadPagesFromURL(ctx context.Context, sourceURL 
 }
 
 // uploadPagesFromURLCreateRequest creates the UploadPagesFromURL request.
-func (client *PageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Context, sourceURL string, sourceRange string, contentLength int64, rangeParam string, options *PageBlobClientUploadPagesFromURLOptions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, leaseAccessConditions *LeaseAccessConditions, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (*policy.Request, error) {
+func (client *PageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Context, sourceURL string, sourceRange string, contentLength int64, rangeParam string, options *PageBlobClientUploadPagesFromURLOptions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, leaseAccessConditions *LeaseAccessConditions, sequenceNumberAccessConditions *SequenceNumberAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, sourceCPKInfo *SourceCPKInfo) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1163,7 +1148,7 @@ func (client *PageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Contex
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
@@ -1223,6 +1208,15 @@ func (client *PageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Contex
 	if options != nil && options.SourceContentMD5 != nil {
 		req.Raw().Header["x-ms-source-content-md5"] = []string{base64.StdEncoding.EncodeToString(options.SourceContentMD5)}
 	}
+	if sourceCPKInfo != nil && sourceCPKInfo.SourceEncryptionAlgorithm != nil {
+		req.Raw().Header["x-ms-source-encryption-algorithm"] = []string{string(*sourceCPKInfo.SourceEncryptionAlgorithm)}
+	}
+	if sourceCPKInfo != nil && sourceCPKInfo.SourceEncryptionKey != nil {
+		req.Raw().Header["x-ms-source-encryption-key"] = []string{*sourceCPKInfo.SourceEncryptionKey}
+	}
+	if sourceCPKInfo != nil && sourceCPKInfo.SourceEncryptionKeySHA256 != nil {
+		req.Raw().Header["x-ms-source-encryption-key-sha256"] = []string{*sourceCPKInfo.SourceEncryptionKeySHA256}
+	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfMatch != nil {
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
@@ -1236,7 +1230,7 @@ func (client *PageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Contex
 		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	req.Raw().Header["x-ms-source-range"] = []string{sourceRange}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 

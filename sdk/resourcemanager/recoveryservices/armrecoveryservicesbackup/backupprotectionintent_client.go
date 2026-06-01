@@ -41,7 +41,7 @@ func NewBackupProtectionIntentClient(subscriptionID string, credential azcore.To
 
 // NewListPager - Provides a pageable list of all intents that are present within a vault.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupProtectionIntentClientListOptions contains the optional parameters for the BackupProtectionIntentClient.NewListPager
@@ -95,7 +95,7 @@ func (client *BackupProtectionIntentClient) listCreateRequest(ctx context.Contex
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

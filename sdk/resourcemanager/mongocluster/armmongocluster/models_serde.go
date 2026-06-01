@@ -1231,6 +1231,7 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "encryption", p.Encryption)
 	populate(objectMap, "highAvailability", p.HighAvailability)
 	populate(objectMap, "infrastructureVersion", p.InfrastructureVersion)
+	populate(objectMap, "networkBypassMode", p.NetworkBypassMode)
 	populate(objectMap, "previewFeatures", p.PreviewFeatures)
 	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
@@ -1285,6 +1286,9 @@ func (p *Properties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "infrastructureVersion":
 			err = unpopulate(val, "InfrastructureVersion", &p.InfrastructureVersion)
+			delete(rawMsg, key)
+		case "networkBypassMode":
+			err = unpopulate(val, "NetworkBypassMode", &p.NetworkBypassMode)
 			delete(rawMsg, key)
 		case "previewFeatures":
 			err = unpopulate(val, "PreviewFeatures", &p.PreviewFeatures)
@@ -1645,6 +1649,7 @@ func (u UpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dataApi", u.DataAPI)
 	populate(objectMap, "encryption", u.Encryption)
 	populate(objectMap, "highAvailability", u.HighAvailability)
+	populate(objectMap, "networkBypassMode", u.NetworkBypassMode)
 	populate(objectMap, "previewFeatures", u.PreviewFeatures)
 	populate(objectMap, "publicNetworkAccess", u.PublicNetworkAccess)
 	populate(objectMap, "serverVersion", u.ServerVersion)
@@ -1682,6 +1687,9 @@ func (u *UpdateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "highAvailability":
 			err = unpopulate(val, "HighAvailability", &u.HighAvailability)
+			delete(rawMsg, key)
+		case "networkBypassMode":
+			err = unpopulate(val, "NetworkBypassMode", &u.NetworkBypassMode)
 			delete(rawMsg, key)
 		case "previewFeatures":
 			err = unpopulate(val, "PreviewFeatures", &u.PreviewFeatures)

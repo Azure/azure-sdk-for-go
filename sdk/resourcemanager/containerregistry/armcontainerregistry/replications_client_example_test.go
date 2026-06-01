@@ -34,13 +34,13 @@ func ExampleReplicationsClient_BeginCreate_replicationCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ReplicationsClientCreateResponse{
-	// 	Replication: &armcontainerregistry.Replication{
+	// 	Replication: armcontainerregistry.Replication{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/replications/myReplication"),
 	// 		Name: to.Ptr("myReplication"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/replications"),
@@ -88,13 +88,13 @@ func ExampleReplicationsClient_BeginCreate_replicationCreateZoneRedundant() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ReplicationsClientCreateResponse{
-	// 	Replication: &armcontainerregistry.Replication{
+	// 	Replication: armcontainerregistry.Replication{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/replications/myReplication"),
 	// 		Name: to.Ptr("myReplication"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/replications"),
@@ -133,7 +133,7 @@ func ExampleReplicationsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -161,7 +161,7 @@ func ExampleReplicationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ReplicationsClientGetResponse{
-	// 	Replication: &armcontainerregistry.Replication{
+	// 	Replication: armcontainerregistry.Replication{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/replications/myReplication"),
 	// 		Name: to.Ptr("myReplication"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/replications"),
@@ -254,13 +254,13 @@ func ExampleReplicationsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ReplicationsClientUpdateResponse{
-	// 	Replication: &armcontainerregistry.Replication{
+	// 	Replication: armcontainerregistry.Replication{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/replications/myReplication"),
 	// 		Name: to.Ptr("myReplication"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/replications"),

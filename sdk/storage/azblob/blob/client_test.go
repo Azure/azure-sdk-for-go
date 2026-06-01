@@ -28,6 +28,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -2067,6 +2068,319 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 	_require.Equal(*resp2.ErrorCode, string(bloberror.ConditionNotMet))
 }
 
+// makeDeterministicContent creates repeatable byte content for recorded tests.
+func makeDeterministicContent(size int) []byte {
+	content := make([]byte, size)
+	for i := range content {
+		content[i] = byte(i % 251)
+	}
+	return content
+}
+
+func (s *BlobRecordedTestsSuite) TestDownloadStreamWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	content := makeDeterministicContent(4 * 1024) // 4 KB
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
+func (s *BlobRecordedTestsSuite) TestDownloadStreamWithStructuredMessageCRC64RangeDownload() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	content := makeDeterministicContent(8 * 1024) // 8 KB
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		Range:                   blob.HTTPRange{Offset: 1024, Count: 2048},
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content[1024:1024+2048], downloadedData)
+}
+
+func (s *BlobRecordedTestsSuite) TestDownloadBufferWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	contentSize := 8 * 1024 // 8 KB
+	content := makeDeterministicContent(contentSize)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	blobClient := containerClient.NewBlobClient(blobName)
+	buff := make([]byte, contentSize)
+	n, err := blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		BlockSize:               4 * 1024,
+	})
+	_require.NoError(err)
+	_require.Equal(int64(contentSize), n)
+	_require.Equal(content, buff[:n])
+}
+
+func (s *BlobRecordedTestsSuite) TestDownloadStreamSMCRC64EmptyBlob() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte{})), nil)
+	_require.NoError(err)
+
+	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(0, len(downloadedData))
+}
+
+// Large multi-segment test stays unrecorded (5MB+ recording too large)
+func (s *BlobUnrecordedTestsSuite) TestDownloadStreamSMCRC64LargeMultiSegment() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	contentSize := 5*1024*1024 + 7 // 5MB + 7 bytes (non-aligned)
+	content := makeDeterministicContent(contentSize)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
+func (s *BlobRecordedTestsSuite) TestDownloadStreamSMCRC64NonAlignedRange() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	contentSize := 5 * 1024 // 5KB
+	content := makeDeterministicContent(contentSize)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		Range:                   blob.HTTPRange{Offset: 10, Count: 1000},
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content[10:10+1000], downloadedData)
+}
+
+func (s *BlobRecordedTestsSuite) TestDownloadBufferSMCRC64ParallelChunks() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	contentSize := 32 * 1024 // 32 KB
+	content := makeDeterministicContent(contentSize)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	blobClient := containerClient.NewBlobClient(blobName)
+	buff := make([]byte, contentSize)
+	n, err := blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		BlockSize:               4 * 1024, // 4 KB → 8 parallel chunks
+		Concurrency:             4,
+	})
+	_require.NoError(err)
+	_require.Equal(int64(contentSize), n)
+	_require.Equal(content, buff[:n])
+}
+
+// File download test stays unrecorded (temp file I/O)
+func (s *BlobUnrecordedTestsSuite) TestDownloadFileSMCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	contentSize := 16 * 1024 // 16 KB
+	content := makeDeterministicContent(contentSize)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	tmpFile, err := os.CreateTemp("", "sm-download-*.bin")
+	_require.NoError(err)
+	defer func() {
+		_ = tmpFile.Close()
+		_ = os.Remove(tmpFile.Name())
+	}()
+
+	blobClient := containerClient.NewBlobClient(blobName)
+	n, err := blobClient.DownloadFile(context.Background(), tmpFile, &blob.DownloadFileOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		BlockSize:               4 * 1024,
+	})
+	_require.NoError(err)
+	_require.Equal(int64(contentSize), n)
+
+	_, err = tmpFile.Seek(0, io.SeekStart)
+	_require.NoError(err)
+	fileContent, err := io.ReadAll(tmpFile)
+	_require.NoError(err)
+	_require.Equal(content, fileContent)
+}
+
+func (s *BlobRecordedTestsSuite) TestDownloadStreamSMCRC64WithRetryReader() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	contentSize := 8 * 1024 // 8 KB
+	content := makeDeterministicContent(contentSize)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+	_require.NoError(err)
+
+	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	retryReader := downloadResp.NewRetryReader(context.Background(), &blob.RetryReaderOptions{
+		MaxRetries: 3,
+	})
+	defer func() { _ = retryReader.Close() }()
+
+	downloadedData, err := io.ReadAll(retryReader)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
+func (s *BlobRecordedTestsSuite) TestDownloadStreamSMCRC64UploadDownloadRoundtrip() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	// Test various content sizes including edge cases
+	testSizes := []int{0, 1, 100, 4096, 8*1024 + 37}
+	for _, size := range testSizes {
+		content := makeDeterministicContent(size)
+
+		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(content)), nil)
+		_require.NoError(err)
+
+		downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+		_require.NoError(err)
+
+		downloadedData, err := io.ReadAll(downloadResp.Body)
+		_require.NoError(err)
+		_require.Equal(content, downloadedData, "Mismatch for size %d", size)
+	}
+}
+
 func (s *BlobRecordedTestsSuite) TestBlobDeleteNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2404,6 +2718,146 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteIfNoneMatchFalse() {
 	}
 	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(bbName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		Tier: to.Ptr(blob.AccessTierHot),
+	})
+	_require.NoError(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
+	tierChangeTime := *resp.AccessTierChangeTime
+	conditionTime := tierChangeTime.Add(-10 * time.Second)
+
+	deleteBlobOptions := blob.DeleteOptions{
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfModifiedSince: &conditionTime,
+		},
+	}
+	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
+	_require.NoError(err)
+
+	validateBlobDeleted(_require, bbClient)
+}
+
+func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(bbName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		Tier: to.Ptr(blob.AccessTierHot),
+	})
+	_require.NoError(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
+	tierChangeTime := *resp.AccessTierChangeTime
+	conditionTime := tierChangeTime.Add(10 * time.Second)
+
+	deleteBlobOptions := blob.DeleteOptions{
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfModifiedSince: &conditionTime,
+		},
+	}
+	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
+	testcommon.ValidateBlobErrorCode(_require, err, "AccessTierChangeTimeConditionNotMet")
+}
+
+func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfUnmodifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(bbName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		Tier: to.Ptr(blob.AccessTierHot),
+	})
+	_require.NoError(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
+	tierChangeTime := *resp.AccessTierChangeTime
+	conditionTime := tierChangeTime.Add(10 * time.Second)
+
+	deleteBlobOptions := blob.DeleteOptions{
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfUnmodifiedSince: &conditionTime,
+		},
+	}
+	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
+	_require.NoError(err)
+
+	validateBlobDeleted(_require, bbClient)
+}
+
+func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfUnmodifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(bbName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+		Tier: to.Ptr(blob.AccessTierHot),
+	})
+	_require.NoError(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
+	tierChangeTime := *resp.AccessTierChangeTime
+	conditionTime := tierChangeTime.Add(-10 * time.Second)
+
+	deleteBlobOptions := blob.DeleteOptions{
+		AccessTierConditions: &blob.AccessTierConditions{
+			IfUnmodifiedSince: &conditionTime,
+		},
+	}
+	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
+	testcommon.ValidateBlobErrorCode(_require, err, "AccessTierChangeTimeConditionNotMet")
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue() {
@@ -3559,7 +4013,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetExpiry() {
 	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	_, err = bbClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
@@ -3938,4 +4392,225 @@ func (s *BlobRecordedTestsSuite) TestGetSetTagsWithBlobModifiedAccessConditions(
 		}
 	}
 	_require.True(found, "Tag not found")
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDirectorySASAllPermissions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	dirPaths := []string{"foo", "foo/bar", "foo/bar/hello"}
+	for _, dirPath := range dirPaths {
+		permissions := sas.BlobPermissions{
+			Read: true, Add: true, Create: true, Write: true, Delete: true,
+			DeletePreviousVersion: true, List: true, Tag: true,
+			Move: true, SetImmutabilityPolicy: true,
+		}
+
+		sasQueryParams, err := sas.BlobSignatureValues{
+			Protocol:      sas.ProtocolHTTPS,
+			StartTime:     time.Now().UTC().Add(-10 * time.Second),
+			ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+			Permissions:   permissions.String(),
+			ContainerName: containerName,
+			Directory:     dirPath,
+		}.SignWithSharedKey(credential)
+		_require.NoError(err)
+		_require.Equal("d", sasQueryParams.Resource())
+
+		sasToken := sasQueryParams.Encode()
+		_require.Contains(sasToken, "sr=d")
+		_require.Contains(sasToken, "sdd=")
+
+		// Test using same name as SAS directory path
+		accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+		blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, dirPath, sasToken)
+		abClient, err := appendblob.NewClientWithNoCredential(blobURL, nil)
+		_require.NoError(err)
+
+		_, err = abClient.Create(context.Background(), nil)
+		_require.NoError(err)
+
+		// Test using SAS directory path + suffix (child blob)
+		childBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s/test?%s", accountName, containerName, dirPath, sasToken)
+		abClient2, err := appendblob.NewClientWithNoCredential(childBlobURL, nil)
+		_require.NoError(err)
+
+		_, err = abClient2.Create(context.Background(), nil)
+		_require.NoError(err)
+	}
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDirectorySASAllPermissionsFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	// Create a directory SAS for "foo/bar/hello"
+	permissions := sas.ContainerPermissions{
+		Read: true, Add: true, Create: true, Write: true, Delete: true, List: true,
+	}
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(-10 * time.Second),
+		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		Directory:     "foo/bar/hello",
+	}.SignWithSharedKey(credential)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+
+	// Try to access the parent path "foo/bar" using a SAS scoped to the child directory
+	// "foo/bar/hello" — it should fail because the target is outside the SAS directory scope.
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	failBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/foo/bar?%s", accountName, containerName, sasToken)
+	abClient, err := appendblob.NewClientWithNoCredential(failBlobURL, nil)
+	_require.NoError(err)
+
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDirectoryIdentitySASAllPermissions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	dirPaths := []string{"foo", "foo/bar", "foo/bar/hello"}
+	for _, dirPath := range dirPaths {
+		permissions := sas.BlobPermissions{
+			Read: true, Add: true, Create: true, Write: true, Delete: true,
+			DeletePreviousVersion: true, List: true, Tag: true,
+			Move: true, SetImmutabilityPolicy: true,
+		}
+
+		sasQueryParams, err := sas.BlobSignatureValues{
+			Protocol:      sas.ProtocolHTTPS,
+			StartTime:     time.Now().UTC().Add(-10 * time.Second),
+			ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+			Permissions:   permissions.String(),
+			ContainerName: containerName,
+			Directory:     dirPath,
+		}.SignWithUserDelegation(udc)
+		_require.NoError(err)
+		_require.Equal("d", sasQueryParams.Resource())
+
+		sasToken := sasQueryParams.Encode()
+		_require.Contains(sasToken, "sr=d")
+		_require.Contains(sasToken, "sdd=")
+
+		// Test using same name as SAS directory path
+		blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, dirPath, sasToken)
+		abClient, err := appendblob.NewClientWithNoCredential(blobURL, nil)
+		_require.NoError(err)
+
+		_, err = abClient.Create(context.Background(), nil)
+		_require.NoError(err)
+
+		// Test using SAS directory path + suffix (child blob)
+		childBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s/test?%s", accountName, containerName, dirPath, sasToken)
+		abClient2, err := appendblob.NewClientWithNoCredential(childBlobURL, nil)
+		_require.NoError(err)
+
+		_, err = abClient2.Create(context.Background(), nil)
+		_require.NoError(err)
+	}
+}
+
+func (s *BlobUnrecordedTestsSuite) TestDirectoryIdentitySASAllPermissionsFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Get user delegation key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create a directory SAS for "foo/bar/hello"
+	permissions := sas.ContainerPermissions{
+		Read: true, Add: true, Create: true, Write: true, Delete: true, List: true,
+	}
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(-10 * time.Second),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   permissions.String(),
+		ContainerName: containerName,
+		Directory:     "foo/bar/hello",
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+
+	// Try to access "foo/bar" which is NOT a prefix of "foo/bar/hello" — it should fail
+	failBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/foo/bar?%s", accountName, containerName, sasToken)
+	abClient, err := appendblob.NewClientWithNoCredential(failBlobURL, nil)
+	_require.NoError(err)
+
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }

@@ -4,6 +4,10 @@
 
 package armcomputelimit
 
+const (
+	version20260601 string = "2026-06-01"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -40,6 +44,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// FeatureState - The allowed states for a compute limit feature.
+type FeatureState string
+
+const (
+	// FeatureStateDisabled - The feature is disabled.
+	FeatureStateDisabled FeatureState = "Disabled"
+	// FeatureStateEnabled - The feature is enabled.
+	FeatureStateEnabled FeatureState = "Enabled"
+)
+
+// PossibleFeatureStateValues returns the possible values for the FeatureState const type.
+func PossibleFeatureStateValues() []FeatureState {
+	return []FeatureState{
+		FeatureStateDisabled,
+		FeatureStateEnabled,
 	}
 }
 

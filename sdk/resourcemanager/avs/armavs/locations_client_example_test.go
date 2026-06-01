@@ -31,7 +31,7 @@ func ExampleLocationsClient_CheckQuotaAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.LocationsClientCheckQuotaAvailabilityResponse{
-	// 	Quota: &armavs.Quota{
+	// 	Quota: armavs.Quota{
 	// 		HostsRemaining: map[string]*int32{
 	// 			"AV20": to.Ptr[int32](0),
 	// 			"AV36": to.Ptr[int32](999),
@@ -60,7 +60,7 @@ func ExampleLocationsClient_CheckTrialAvailability_locationsCheckTrialAvailabili
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.LocationsClientCheckTrialAvailabilityResponse{
-	// 	Trial: &armavs.Trial{
+	// 	Trial: armavs.Trial{
 	// 		Status: to.Ptr(armavs.TrialStatusTrialAvailable),
 	// 		AvailableHosts: to.Ptr[int32](4),
 	// 	},
@@ -89,7 +89,7 @@ func ExampleLocationsClient_CheckTrialAvailability_locationsCheckTrialAvailabili
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.LocationsClientCheckTrialAvailabilityResponse{
-	// 	Trial: &armavs.Trial{
+	// 	Trial: armavs.Trial{
 	// 		Status: to.Ptr(armavs.TrialStatusTrialAvailable),
 	// 		AvailableHosts: to.Ptr[int32](4),
 	// 	},

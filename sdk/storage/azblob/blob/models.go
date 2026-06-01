@@ -40,6 +40,10 @@ type CPKInfo = generated.CPKInfo
 // CPKScopeInfo contains a group of parameters for client provided encryption scope.
 type CPKScopeInfo = generated.CPKScopeInfo
 
+// SourceCPKInfo contains a group of parameters for the AppendBlobClient.AppendBlockFromURL,
+// BlockBlobClient.UploadBlobFromURL, BlockBlobClient.StageBlockFromURL and PageBlobClient.UploadPagesFromURL methods.
+type SourceCPKInfo = generated.SourceCPKInfo
+
 // HTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
 type HTTPHeaders = generated.BlobHTTPHeaders
 
@@ -65,6 +69,12 @@ type DownloadStreamOptions struct {
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	// When set to TransferValidationTypeComputeStructuredMessageCRC64, the service returns the
+	// blob data wrapped in a structured message with per-segment CRC64 checksums. The SDK
+	// automatically decodes the structured message and validates checksums before returning data.
+	TransactionalValidation TransferValidationType
+
 	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
@@ -75,9 +85,17 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 		return nil, nil, nil, nil
 	}
 
+	var smHeader *string
+	if o.TransactionalValidation != nil {
+		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
+			smHeader = &h
+		}
+	}
+
 	basics := generated.BlobClientDownloadOptions{
 		RangeGetContentMD5: o.RangeGetContentMD5,
 		Range:              exported.FormatHTTPRange(o.Range),
+		StructuredBodyType: smHeader,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
@@ -104,11 +122,15 @@ type downloadOptions struct {
 	CPKInfo      *CPKInfo
 	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of blocks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
@@ -126,11 +148,12 @@ func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContent
 		return nil
 	}
 	return &DownloadStreamOptions{
-		AccessConditions:   o.AccessConditions,
-		CPKInfo:            o.CPKInfo,
-		CPKScopeInfo:       o.CPKScopeInfo,
-		Range:              rnge,
-		RangeGetContentMD5: rangeGetContentMD5,
+		AccessConditions:        o.AccessConditions,
+		CPKInfo:                 o.CPKInfo,
+		CPKScopeInfo:            o.CPKScopeInfo,
+		Range:                   rnge,
+		RangeGetContentMD5:      rangeGetContentMD5,
+		TransactionalValidation: o.TransactionalValidation,
 	}
 }
 
@@ -154,11 +177,15 @@ type DownloadBufferOptions struct {
 	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of blocks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
@@ -179,14 +206,29 @@ type DownloadFileOptions struct {
 	CPKInfo      *CPKInfo
 	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel.  The default value is 5.
+	// Concurrency indicates the maximum number of blocks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
+
+// AccessTierConditions specifies conditions based on when the blob's access tier was last changed.
+// These conditions allow operations to be performed only if the access tier has or has not been
+// modified relative to the specified date/time.
+type AccessTierConditions struct {
+	// Specify this header value to operate only on a blob if the access-tier has been modified since the specified date/time.
+	IfModifiedSince *time.Time
+
+	// Specify this header value to operate only on a blob if the access-tier has not been modified since the specified date/time.
+	IfUnmodifiedSince *time.Time
+}
 
 // DeleteOptions contains the optional parameters for the Client.Delete method.
 type DeleteOptions struct {
@@ -199,6 +241,11 @@ type DeleteOptions struct {
 	// with caution.
 	// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob
 	BlobDeleteType *DeleteType
+
+	// AccessTierConditions specifies optional conditions based on when the blob's access tier was last changed.
+	// These conditions allow operations to be performed only if the access tier has or has not been
+	// modified relative to the specified date/time.
+	AccessTierConditions *AccessTierConditions
 }
 
 func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -209,6 +256,11 @@ func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated
 	basics := generated.BlobClientDeleteOptions{
 		DeleteSnapshots: o.DeleteSnapshots,
 		DeleteType:      o.BlobDeleteType, // None by default
+	}
+
+	if o.AccessTierConditions != nil {
+		basics.AccessTierIfModifiedSince = o.AccessTierConditions.IfModifiedSince
+		basics.AccessTierIfUnmodifiedSince = o.AccessTierConditions.IfUnmodifiedSince
 	}
 
 	if o.AccessConditions == nil {

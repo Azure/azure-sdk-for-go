@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/BlobServicesGet.json
+// Generated from example definition: 2025-08-01/BlobServicesGet.json
 func ExampleBlobServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleBlobServicesClient_GetServiceProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.BlobServicesClientGetServicePropertiesResponse{
-	// 	BlobServiceProperties: &armstorage.BlobServiceProperties{
+	// 	BlobServiceProperties: armstorage.BlobServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/blobServices/default"),
@@ -107,6 +107,11 @@ func ExampleBlobServicesClient_GetServiceProperties() {
 	// 				Enabled: to.Ptr(true),
 	// 			},
 	// 			IsVersioningEnabled: to.Ptr(true),
+	// 			StaticWebsite: &armstorage.StaticWebsite{
+	// 				Enabled: to.Ptr(true),
+	// 				IndexDocument: to.Ptr("home.html"),
+	// 				ErrorDocument404Path: to.Ptr("site/errors/not-found.html"),
+	// 			},
 	// 		},
 	// 		SKU: &armstorage.SKU{
 	// 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
@@ -116,7 +121,7 @@ func ExampleBlobServicesClient_GetServiceProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BlobServicesList.json
+// Generated from example definition: 2025-08-01/BlobServicesList.json
 func ExampleBlobServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,6 +222,11 @@ func ExampleBlobServicesClient_NewListPager() {
 		// 						Enabled: to.Ptr(true),
 		// 					},
 		// 					IsVersioningEnabled: to.Ptr(true),
+		// 					StaticWebsite: &armstorage.StaticWebsite{
+		// 						Enabled: to.Ptr(true),
+		// 						IndexDocument: to.Ptr("home.html"),
+		// 						ErrorDocument404Path: to.Ptr("site/errors/not-found.html"),
+		// 					},
 		// 				},
 		// 				SKU: &armstorage.SKU{
 		// 					Name: to.Ptr(armstorage.SKUNameStandardGRS),
@@ -229,7 +239,7 @@ func ExampleBlobServicesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/BlobServicesPut.json
+// Generated from example definition: 2025-08-01/BlobServicesPut.json
 func ExampleBlobServicesClient_SetServiceProperties_putBlobServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,6 +323,11 @@ func ExampleBlobServicesClient_SetServiceProperties_putBlobServices() {
 				Enabled: to.Ptr(true),
 			},
 			IsVersioningEnabled: to.Ptr(true),
+			StaticWebsite: &armstorage.StaticWebsite{
+				Enabled:              to.Ptr(true),
+				IndexDocument:        to.Ptr("home.html"),
+				ErrorDocument404Path: to.Ptr("site/errors/not-found.html"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -322,7 +337,7 @@ func ExampleBlobServicesClient_SetServiceProperties_putBlobServices() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.BlobServicesClientSetServicePropertiesResponse{
-	// 	BlobServiceProperties: &armstorage.BlobServiceProperties{
+	// 	BlobServiceProperties: armstorage.BlobServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/blobServices/default"),
@@ -398,6 +413,11 @@ func ExampleBlobServicesClient_SetServiceProperties_putBlobServices() {
 	// 				Enabled: to.Ptr(true),
 	// 			},
 	// 			IsVersioningEnabled: to.Ptr(true),
+	// 			StaticWebsite: &armstorage.StaticWebsite{
+	// 				Enabled: to.Ptr(true),
+	// 				IndexDocument: to.Ptr("home.html"),
+	// 				ErrorDocument404Path: to.Ptr("site/errors/not-found.html"),
+	// 			},
 	// 		},
 	// 		SKU: &armstorage.SKU{
 	// 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
@@ -407,7 +427,7 @@ func ExampleBlobServicesClient_SetServiceProperties_putBlobServices() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BlobServicesPutAllowPermanentDelete.json
+// Generated from example definition: 2025-08-01/BlobServicesPutAllowPermanentDelete.json
 func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutAllowPermanentDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -435,7 +455,7 @@ func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutAllowPermanen
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.BlobServicesClientSetServicePropertiesResponse{
-	// 	BlobServiceProperties: &armstorage.BlobServiceProperties{
+	// 	BlobServiceProperties: armstorage.BlobServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/blobServices/default"),
@@ -451,7 +471,7 @@ func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutAllowPermanen
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BlobServicesPutLastAccessTimeBasedTracking.json
+// Generated from example definition: 2025-08-01/BlobServicesPutLastAccessTimeBasedTracking.json
 func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutLastAccessTimeBasedTracking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,7 +501,7 @@ func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutLastAccessTim
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.BlobServicesClientSetServicePropertiesResponse{
-	// 	BlobServiceProperties: &armstorage.BlobServiceProperties{
+	// 	BlobServiceProperties: armstorage.BlobServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/blobServices/default"),

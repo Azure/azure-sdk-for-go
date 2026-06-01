@@ -3,12 +3,34 @@
 
 package generated
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+import (
+	"context"
+	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+)
 
 func (client *ServiceClient) Endpoint() string {
-	return client.endpoint
+	return client.url
 }
 
-func (client *ServiceClient) Pipeline() runtime.Pipeline {
-	return client.pl
+func (client *ServiceClient) InternalClient() *azcore.Client {
+	return client.internal
+}
+
+func (client *ServiceClient) ListQueuesSegmentCreateRequest(ctx context.Context, options *ServiceClientListQueuesSegmentOptions) (*policy.Request, error) {
+	return client.listQueuesSegmentCreateRequest(ctx, options)
+}
+
+func (client *ServiceClient) ListQueuesSegmentHandleResponse(resp *http.Response) (ServiceClientListQueuesSegmentResponse, error) {
+	return client.listQueuesSegmentHandleResponse(resp)
+}
+
+func NewServiceClient(url string, azClient *azcore.Client) *ServiceClient {
+	client := &ServiceClient{
+		internal: azClient,
+		url:      url,
+	}
+	return client
 }

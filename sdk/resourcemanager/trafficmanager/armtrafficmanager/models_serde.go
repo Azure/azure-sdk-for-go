@@ -716,6 +716,7 @@ func (p ProfileProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "maxReturn", p.MaxReturn)
 	populate(objectMap, "monitorConfig", p.MonitorConfig)
 	populate(objectMap, "profileStatus", p.ProfileStatus)
+	populate(objectMap, "recordType", p.RecordType)
 	populate(objectMap, "trafficRoutingMethod", p.TrafficRoutingMethod)
 	populate(objectMap, "trafficViewEnrollmentStatus", p.TrafficViewEnrollmentStatus)
 	return json.Marshal(objectMap)
@@ -747,6 +748,9 @@ func (p *ProfileProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "profileStatus":
 			err = unpopulate(val, "ProfileStatus", &p.ProfileStatus)
+			delete(rawMsg, key)
+		case "recordType":
+			err = unpopulate(val, "RecordType", &p.RecordType)
 			delete(rawMsg, key)
 		case "trafficRoutingMethod":
 			err = unpopulate(val, "TrafficRoutingMethod", &p.TrafficRoutingMethod)

@@ -29,7 +29,7 @@ func ExampleFleetsClient_BeginCancel() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -834,13 +834,13 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputefleet.FleetsClientCreateOrUpdateResponse{
-	// 	Fleet: &armcomputefleet.Fleet{
+	// 	Fleet: armcomputefleet.Fleet{
 	// 		Properties: &armcomputefleet.FleetProperties{
 	// 			SpotPriorityProfile: &armcomputefleet.SpotPriorityProfile{
 	// 				Capacity: to.Ptr[int32](20),
@@ -1665,7 +1665,7 @@ func ExampleFleetsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1688,7 +1688,7 @@ func ExampleFleetsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputefleet.FleetsClientGetResponse{
-	// 	Fleet: &armcomputefleet.Fleet{
+	// 	Fleet: armcomputefleet.Fleet{
 	// 		Properties: &armcomputefleet.FleetProperties{
 	// 			SpotPriorityProfile: &armcomputefleet.SpotPriorityProfile{
 	// 				Capacity: to.Ptr[int32](20),
@@ -4228,13 +4228,13 @@ func ExampleFleetsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputefleet.FleetsClientUpdateResponse{
-	// 	Fleet: &armcomputefleet.Fleet{
+	// 	Fleet: armcomputefleet.Fleet{
 	// 		Properties: &armcomputefleet.FleetProperties{
 	// 			SpotPriorityProfile: &armcomputefleet.SpotPriorityProfile{
 	// 				Capacity: to.Ptr[int32](20),

@@ -42,7 +42,7 @@ func NewGeoCatalogsClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCreate - Create a GeoCatalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-11-preview
+// Generated from API version 2026-04-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - The name of the catalog
 //   - resource - Resource create parameters.
@@ -67,7 +67,7 @@ func (client *GeoCatalogsClient) BeginCreate(ctx context.Context, resourceGroupN
 // Create - Create a GeoCatalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-11-preview
+// Generated from API version 2026-04-15
 func (client *GeoCatalogsClient) create(ctx context.Context, resourceGroupName string, catalogName string, resource GeoCatalog, options *GeoCatalogsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GeoCatalogsClient.BeginCreate"
@@ -109,7 +109,7 @@ func (client *GeoCatalogsClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-11-preview")
+	reqQP.Set("api-version", "2026-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -122,7 +122,7 @@ func (client *GeoCatalogsClient) createCreateRequest(ctx context.Context, resour
 // BeginDelete - Delete a GeoCatalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-11-preview
+// Generated from API version 2026-04-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - The name of the catalog
 //   - options - GeoCatalogsClientBeginDeleteOptions contains the optional parameters for the GeoCatalogsClient.BeginDelete method.
@@ -146,7 +146,7 @@ func (client *GeoCatalogsClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Delete a GeoCatalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-11-preview
+// Generated from API version 2026-04-15
 func (client *GeoCatalogsClient) deleteOperation(ctx context.Context, resourceGroupName string, catalogName string, options *GeoCatalogsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GeoCatalogsClient.BeginDelete"
@@ -188,7 +188,7 @@ func (client *GeoCatalogsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-11-preview")
+	reqQP.Set("api-version", "2026-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -196,7 +196,7 @@ func (client *GeoCatalogsClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Get a GeoCatalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-11-preview
+// Generated from API version 2026-04-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - The name of the catalog
 //   - options - GeoCatalogsClientGetOptions contains the optional parameters for the GeoCatalogsClient.Get method.
@@ -242,7 +242,7 @@ func (client *GeoCatalogsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-11-preview")
+	reqQP.Set("api-version", "2026-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,7 +259,7 @@ func (client *GeoCatalogsClient) getHandleResponse(resp *http.Response) (GeoCata
 
 // NewListByResourceGroupPager - List GeoCatalog resources by resource group
 //
-// Generated from API version 2025-02-11-preview
+// Generated from API version 2026-04-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - GeoCatalogsClientListByResourceGroupOptions contains the optional parameters for the GeoCatalogsClient.NewListByResourceGroupPager
 //     method.
@@ -302,7 +302,7 @@ func (client *GeoCatalogsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-11-preview")
+	reqQP.Set("api-version", "2026-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -319,7 +319,7 @@ func (client *GeoCatalogsClient) listByResourceGroupHandleResponse(resp *http.Re
 
 // NewListBySubscriptionPager - List GeoCatalog resources by subscription ID
 //
-// Generated from API version 2025-02-11-preview
+// Generated from API version 2026-04-15
 //   - options - GeoCatalogsClientListBySubscriptionOptions contains the optional parameters for the GeoCatalogsClient.NewListBySubscriptionPager
 //     method.
 func (client *GeoCatalogsClient) NewListBySubscriptionPager(options *GeoCatalogsClientListBySubscriptionOptions) *runtime.Pager[GeoCatalogsClientListBySubscriptionResponse] {
@@ -357,7 +357,7 @@ func (client *GeoCatalogsClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-11-preview")
+	reqQP.Set("api-version", "2026-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -375,7 +375,7 @@ func (client *GeoCatalogsClient) listBySubscriptionHandleResponse(resp *http.Res
 // BeginUpdate - Update a GeoCatalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-11-preview
+// Generated from API version 2026-04-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - catalogName - The name of the catalog
 //   - properties - The resource properties to be updated.
@@ -400,7 +400,7 @@ func (client *GeoCatalogsClient) BeginUpdate(ctx context.Context, resourceGroupN
 // Update - Update a GeoCatalog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-11-preview
+// Generated from API version 2026-04-15
 func (client *GeoCatalogsClient) update(ctx context.Context, resourceGroupName string, catalogName string, properties GeoCatalogUpdate, options *GeoCatalogsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GeoCatalogsClient.BeginUpdate"
@@ -442,7 +442,7 @@ func (client *GeoCatalogsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-11-preview")
+	reqQP.Set("api-version", "2026-04-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -35,6 +35,10 @@
       "command": "generator build {packagePath}",
       "path": ""
     },
+    "getSDKChangesScript":{
+      "command": "generator changelog {packagePath} --report-file {outputJsonFile}",
+      "path": ""
+    },
     "updateChangelogContentScript": {
       "command": "generator changelog {packagePath}",
       "path": ""

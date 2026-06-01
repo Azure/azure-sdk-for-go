@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureWorkload/BackupWorkloadItems_List.json
+// Generated from example definition: 2026-01-31-preview/AzureWorkload/BackupWorkloadItems_List.json
 func ExampleBackupWorkloadItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

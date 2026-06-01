@@ -32,7 +32,7 @@ func ExampleMaintenancesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.MaintenancesClientGetResponse{
-	// 	Maintenance: &armavs.Maintenance{
+	// 	Maintenance: armavs.Maintenance{
 	// 		ID: to.Ptr("/subscriptions/00000001-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/maintenances/maintenance1"),
 	// 		Name: to.Ptr("maintenance1"),
 	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/maintenances"),
@@ -178,7 +178,7 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.MaintenancesClientInitiateChecksResponse{
-	// 	Maintenance: &armavs.Maintenance{
+	// 	Maintenance: armavs.Maintenance{
 	// 		ID: to.Ptr("/subscriptions/00000001-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/maintenances/maintenance1"),
 	// 		Name: to.Ptr("maintenance1"),
 	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/maintenances"),
@@ -608,7 +608,7 @@ func ExampleMaintenancesClient_Reschedule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.MaintenancesClientRescheduleResponse{
-	// 	Maintenance: &armavs.Maintenance{
+	// 	Maintenance: armavs.Maintenance{
 	// 		ID: to.Ptr("/subscriptions/00000001-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/maintenances/maintenance1"),
 	// 		Name: to.Ptr("maintenance1"),
 	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/maintenances"),
@@ -757,7 +757,7 @@ func ExampleMaintenancesClient_Schedule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.MaintenancesClientScheduleResponse{
-	// 	Maintenance: &armavs.Maintenance{
+	// 	Maintenance: armavs.Maintenance{
 	// 		ID: to.Ptr("/subscriptions/00000001-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/maintenances/maintenance1"),
 	// 		Name: to.Ptr("maintenance1"),
 	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/maintenances"),

@@ -24,13 +24,12 @@ func (nonRetriableError) NonRetriable() {
 	// marker method
 }
 
-func contains[T comparable](s []T, v T) bool {
-	for _, vv := range s {
-		if vv == v {
-			return true
-		}
+func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {
+	mu.Lock()
+	if *dst == nil {
+		*dst = src()
 	}
-	return false
+	mu.Unlock()
 }
 
 func readRequestBody(req *http.Request) ([]byte, error) {

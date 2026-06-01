@@ -7,8 +7,9 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a30ef1ee2e9795f4d77e8c62fad52b33e60d4cb7/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-04-06/blob.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e1470c23ac1cb2a15cd5ef1e2b2dd187a3de13e9/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-06-06/blob.json"
 credential-scope: "https://storage.azure.com/.default"
+containing-module: github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
 output-folder: ../generated
 file-prefix: "zz_"
 openapi-type: "data-plane"
@@ -19,7 +20,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.65"
+use: "@autorest/go@4.0.0-preview.80"
 ```
 
 ### Add a Properties field to the BlobPrefix definition
@@ -351,7 +352,6 @@ directive:
   where: $
   transform: >-
     return $.
-      replace(/"github\.com\/Azure\/azure\-sdk\-for\-go\/sdk\/azcore\/policy"/, `"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"`).
       replace(/result\.ETag\s+=\s+&val/g, `result.ETag = (*azcore.ETag)(&val)`).
       replace(/\*modifiedAccessConditions.IfMatch/g, `string(*modifiedAccessConditions.IfMatch)`).
       replace(/\*modifiedAccessConditions.IfNoneMatch/g, `string(*modifiedAccessConditions.IfNoneMatch)`).
@@ -393,19 +393,6 @@ directive:
 - rename-model:
     from: BlobPropertiesInternal
     to: BlobProperties
-```
-
-### Updating encoding URL, Golang adds '+' which disrupts encoding with service
-
-``` yaml
-directive:
-- from: 
-  - zz_service_client.go
-  - zz_container_client.go
-  where: $
-  transform: >-
-    return $.
-      replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/g, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`);
 ```
 
 ### Change `where` parameter in blob filtering to be required
@@ -486,11 +473,11 @@ directive:
       `if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {\n\t\terr = runtime.NewResponseError(httpResp)\n\t\treturn ServiceClientSubmitBatchResponse{}, err\n\t}`);
 ```
 
-### Convert time to GMT for If-Modified-Since and If-Unmodified-Since request headers
+### Convert time to GMT for date-conditional request headers
 
 ``` yaml
 directive:
-- from: 
+- from:
   - zz_container_client.go
   - zz_blob_client.go
   - zz_appendblob_client.go
@@ -499,14 +486,6 @@ directive:
   where: $
   transform: >-
     return $.
-      replace (/req\.Raw\(\)\.Header\[\"If-Modified-Since\"\]\s+=\s+\[\]string\{modifiedAccessConditions\.IfModifiedSince\.Format\(time\.RFC1123\)\}/g, 
-      `req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}`).
-      replace (/req\.Raw\(\)\.Header\[\"If-Unmodified-Since\"\]\s+=\s+\[\]string\{modifiedAccessConditions\.IfUnmodifiedSince\.Format\(time\.RFC1123\)\}/g, 
-      `req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}`).
-      replace (/req\.Raw\(\)\.Header\[\"x-ms-source-if-modified-since\"\]\s+=\s+\[\]string\{sourceModifiedAccessConditions\.SourceIfModifiedSince\.Format\(time\.RFC1123\)\}/g, 
-      `req.Raw().Header["x-ms-source-if-modified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfModifiedSince).In(gmt).Format(time.RFC1123)}`).
-      replace (/req\.Raw\(\)\.Header\[\"x-ms-source-if-unmodified-since\"\]\s+=\s+\[\]string\{sourceModifiedAccessConditions\.SourceIfUnmodifiedSince\.Format\(time\.RFC1123\)\}/g, 
-      `req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).In(gmt).Format(time.RFC1123)}`).
-      replace (/req\.Raw\(\)\.Header\[\"x-ms-immutability-policy-until-date\"\]\s+=\s+\[\]string\{options\.ImmutabilityPolicyExpiry\.Format\(time\.RFC1123\)\}/g, 
-      `req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{(*options.ImmutabilityPolicyExpiry).In(gmt).Format(time.RFC1123)}`);
-      
+      replace (/datetime\.RFC1123\((\*[^)]+)\)\.String\(\)/g, `($1).In(gmt).Format(time.RFC1123)`).
+      replace (/\t"github\.com\/Azure\/azure-sdk-for-go\/sdk\/azcore\/runtime\/datetime"\n/g, ``);
+

@@ -82,13 +82,14 @@ generator changelog <package-path>
 
 - `-v, --verbose`: Enable verbose output
 - `-o, --output`: Output format, either "text" or "json" (default: "text")
+- `--report-file`: Write the SDK change report as JSON to the given file path. When set, the command runs in **report-only** mode: it computes the package status, generated changelog, and `hasBreakingChange` flag, but does **not** modify `CHANGELOG.md` or compute a new version.
 
 **What it does:**
 
 1. Determines the package status (new package vs. existing package)
 2. For new packages: generates changelog according to the template
 3. For existing packages: compares current package exports with previous released version and calculates the changelog
-4. Updates the CHANGELOG.md file, replacing existing version entry if it exists
+4. Updates the CHANGELOG.md file, replacing existing version entry if it exists (skipped when `--report-file` is provided)
 
 **Examples:**
 
@@ -101,6 +102,9 @@ generator changelog /path/to/package --verbose
 
 # Generate changelog with JSON output
 generator changelog /path/to/package --output json
+
+# Report-only mode: compute SDK changes and write a JSON report without modifying CHANGELOG.md
+generator changelog /path/to/package --report-file /path/to/sdkchange.json
 ```
 
 #### The `version` command

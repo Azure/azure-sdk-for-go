@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/Common/TriggerBackup_Post.json
+// Generated from example definition: 2026-01-31-preview/Common/TriggerBackup_Post.json
 func ExampleBackupsClient_Trigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

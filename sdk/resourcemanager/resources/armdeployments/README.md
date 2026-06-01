@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Resources module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments/v2
 ```
 
 ## Authorization

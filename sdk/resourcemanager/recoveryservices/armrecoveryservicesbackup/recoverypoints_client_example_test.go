@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/RecoveryPoints_Get.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/RecoveryPoints_Get.json
 func ExampleRecoveryPointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleRecoveryPointsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.RecoveryPointsClientGetResponse{
-	// 	RecoveryPointResource: &armrecoveryservicesbackup.RecoveryPointResource{
+	// 	RecoveryPointResource: armrecoveryservicesbackup.RecoveryPointResource{
 	// 		Name: to.Ptr("26083826328862"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rshhtestmdvmrg/providers/Microsoft.RecoveryServices/vaults/rshvault/backupFabrics/Azure/protectionContainers/IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall/protectedItems/VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall/recoveryPoints/26083826328862"),
@@ -67,7 +67,7 @@ func ExampleRecoveryPointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/RecoveryPoints_List.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/RecoveryPoints_List.json
 func ExampleRecoveryPointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleRecoveryPointsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Common/RecoveryPoints_Update.json
+// Generated from example definition: 2026-01-31-preview/Common/RecoveryPoints_Update.json
 func ExampleRecoveryPointsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleRecoveryPointsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.RecoveryPointsClientUpdateResponse{
-	// 	RecoveryPointResource: &armrecoveryservicesbackup.RecoveryPointResource{
+	// 	RecoveryPointResource: armrecoveryservicesbackup.RecoveryPointResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hanasnapshottesting/providers/Microsoft.RecoveryServices/vaults/HanaSnapshotTest/backupFabrics/Azure/protectionContainers/VMAppContainer;compute;hanasnapshottesting;hana-eacan-2/protectedItems/SAPHanaDatabase;hye;hye/recoveryPoints/2265668074516978193"),
 	// 		Name: to.Ptr("2265668074516978193"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints"),

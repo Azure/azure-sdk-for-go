@@ -22,6 +22,7 @@ stages:
           image: $(LINUXVMIMAGE)
           os: linux
         steps:
+          - template: /eng/common/pipelines/templates/steps/login-to-github.yml
           - task: PowerShell@2
             name: Verify
             inputs:
@@ -40,7 +41,7 @@ stages:
                   -workingDirectory $(System.DefaultWorkingDirectory)
               pwsh: true
             env:
-              GH_TOKEN: $(azuresdk-github-pat)
+              GH_TOKEN: $(GH_TOKEN)
 
   - stage: Release
     variables:
@@ -123,6 +124,7 @@ stages:
               ReleaseSha: $(Build.SourceVersion)
               RepoId: Azure/azure-sdk-for-go
               WorkingDirectory: $(System.DefaultWorkingDirectory)
+              AuthToken: ''
           - download: current
             artifact: 'packages'
           - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
@@ -175,3 +177,4 @@ stages:
                 CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
                 PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
                 CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                AuthToken: ''

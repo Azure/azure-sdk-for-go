@@ -4,6 +4,10 @@
 
 package armcontainerservice
 
+const (
+	version20260302Preview string = "2026-03-02-preview"
+)
+
 // AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF
 // host routing. This can be enabled only with Cilium dataplane. If not specified, the default value is None (no acceleration).
 // The acceleration mode can be changed on a pre-existing cluster. See https://aka.ms/acnsperformance for a detailed explanation
@@ -119,6 +123,29 @@ func PossibleAgentPoolModeValues() []AgentPoolMode {
 		AgentPoolModeManagedSystem,
 		AgentPoolModeSystem,
 		AgentPoolModeUser,
+	}
+}
+
+// AgentPoolNetworkInterfaceType - Type of network interface to be provisioned on each virtual machine instance. For more
+// information, see https://aka.ms/aks/multi-nic
+type AgentPoolNetworkInterfaceType string
+
+const (
+	// AgentPoolNetworkInterfaceTypeDynamic - A secondary network interface created without IP configuration or subnet attachment.
+	// The interface is provisioned in an uninitialized state and the subnet is attached during workload creation. `vnetSubnetId`
+	// must be set to an empty string (`""`) or omitted.
+	AgentPoolNetworkInterfaceTypeDynamic AgentPoolNetworkInterfaceType = "Dynamic"
+	// AgentPoolNetworkInterfaceTypeStandard - A standard network interface programmed with an IP from a specified VNet subnet.
+	// Must be used with `vnetSubnetId` set in the AgentPoolNetworkInterface. IP address family (IPv4/IPv6/Dual-stack) is determined
+	// by the subnet.
+	AgentPoolNetworkInterfaceTypeStandard AgentPoolNetworkInterfaceType = "Standard"
+)
+
+// PossibleAgentPoolNetworkInterfaceTypeValues returns the possible values for the AgentPoolNetworkInterfaceType const type.
+func PossibleAgentPoolNetworkInterfaceTypeValues() []AgentPoolNetworkInterfaceType {
+	return []AgentPoolNetworkInterfaceType{
+		AgentPoolNetworkInterfaceTypeDynamic,
+		AgentPoolNetworkInterfaceTypeStandard,
 	}
 }
 
@@ -1265,6 +1292,34 @@ func PossibleNginxIngressControllerTypeValues() []NginxIngressControllerType {
 	}
 }
 
+// NodeDisruptionPolicy - The policy configuration for when to allow certain operations which require node re-image and trigger
+// redeployment. For example, some operations, such as updating the .properties.ManagedClusterSecurityProfile.customCATrustCertificates
+// field on an existing managed cluster, trigger rolling updates of the nodes. This setting allows control over when such
+// updates are accepted. The default is 'Allow'. For a full list of covered operations see aka.ms/aks/nodedisruptionpolicy".
+type NodeDisruptionPolicy string
+
+const (
+	// NodeDisruptionPolicyAllow - Allows operations that will require node re-image and trigger redeployment.
+	NodeDisruptionPolicyAllow NodeDisruptionPolicy = "Allow"
+	// NodeDisruptionPolicyAllowDuringMaintenanceWindow - Blocks certain operations that will require node re-image and trigger
+	// redeployment unless within the aksManagedNodeOSUpgradeSchedule maintenance window. For a full list of covered operations
+	// see aka.ms/aks/nodedisruptionpolicy . For more information on using the aksManagedNodeOSUpgradeSchedule maintenance window,
+	// please see https://learn.microsoft.com/azure/aks/planned-maintenance?tabs=azure-cli
+	NodeDisruptionPolicyAllowDuringMaintenanceWindow NodeDisruptionPolicy = "AllowDuringMaintenanceWindow"
+	// NodeDisruptionPolicyBlock - Blocks certain operations that will require node re-image and trigger redeployment. For a full
+	// list of covered operations see aka.ms/aks/nodedisruptionpolicy
+	NodeDisruptionPolicyBlock NodeDisruptionPolicy = "Block"
+)
+
+// PossibleNodeDisruptionPolicyValues returns the possible values for the NodeDisruptionPolicy const type.
+func PossibleNodeDisruptionPolicyValues() []NodeDisruptionPolicy {
+	return []NodeDisruptionPolicy{
+		NodeDisruptionPolicyAllow,
+		NodeDisruptionPolicyAllowDuringMaintenanceWindow,
+		NodeDisruptionPolicyBlock,
+	}
+}
+
 // NodeOSUpgradeChannel - Node OS Upgrade Channel. Manner in which the OS on your nodes is updated. The default is NodeImage.
 type NodeOSUpgradeChannel string
 
@@ -1371,6 +1426,11 @@ func PossibleOSDiskTypeValues() []OSDiskType {
 type OSSKU string
 
 const (
+	// OSSKUAzureContainerLinux - Use Azure Container Linux as the OS for node images. Azure Container Linux is a container-optimized,
+	// security-focused Linux OS built on Azure Linux, with an immutable filesystem. ACL is derived from the Flatcar Container
+	// Linux project, building on Flatcar's proven container-first, immutable design, while adding Azure Linux packages, servicing,
+	// and deep integration with the Azure and AKS lifecycle. For more information, see https://aka.ms/azurecontainerlinux
+	OSSKUAzureContainerLinux OSSKU = "AzureContainerLinux"
 	// OSSKUAzureLinux - Use AzureLinux as the OS for node images. Azure Linux is a container-optimized Linux distro built by
 	// Microsoft, visit https://aka.ms/azurelinux for more information.
 	OSSKUAzureLinux OSSKU = "AzureLinux"
@@ -1411,6 +1471,7 @@ const (
 // PossibleOSSKUValues returns the possible values for the OSSKU const type.
 func PossibleOSSKUValues() []OSSKU {
 	return []OSSKU{
+		OSSKUAzureContainerLinux,
 		OSSKUAzureLinux,
 		OSSKUAzureLinux3,
 		OSSKUCBLMariner,

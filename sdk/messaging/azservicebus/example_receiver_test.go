@@ -24,7 +24,7 @@ func ExampleClient_NewReceiverForSubscription() {
 	exitOnError("Failed to create Receiver", err)
 
 	// close the receiver when it's no longer needed
-	defer receiver.Close(context.TODO())
+	defer func() { _ = receiver.Close(context.TODO()) }()
 }
 
 func ExampleClient_NewReceiverForQueue() {
@@ -37,7 +37,7 @@ func ExampleClient_NewReceiverForQueue() {
 	exitOnError("Failed to create Receiver", err)
 
 	// close the receiver when it's no longer needed
-	defer receiver.Close(context.TODO())
+	defer func() { _ = receiver.Close(context.TODO()) }()
 }
 
 func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
@@ -51,7 +51,7 @@ func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
 	exitOnError("Failed to create Receiver for DeadLetterQueue", err)
 
 	// close the receiver when it's no longer needed
-	defer receiver.Close(context.TODO())
+	defer func() { _ = receiver.Close(context.TODO()) }()
 }
 
 func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
@@ -66,7 +66,7 @@ func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
 	exitOnError("Failed to create Receiver for DeadLetterQueue", err)
 
 	// close the receiver when it's no longer needed
-	defer receiver.Close(context.TODO())
+	defer func() { _ = receiver.Close(context.TODO()) }()
 }
 
 func ExampleReceiver_ReceiveMessages() {
@@ -91,7 +91,7 @@ func ExampleReceiver_ReceiveMessages() {
 	for _, message := range messages {
 		// The message body is a []byte. For this example we're just assuming that the body
 		// was a string, converted to bytes but any []byte payload is valid.
-		var body []byte = message.Body
+		var body = message.Body
 		fmt.Printf("Message received with body: %s\n", string(body))
 
 		// For more information about settling messages:
@@ -133,7 +133,7 @@ func ExampleReceiver_ReceiveMessages_receiveAndDelete() {
 	for _, message := range messages {
 		// The message body is a []byte. For this example we're just assuming that the body
 		// was a string, converted to bytes but any []byte payload is valid.
-		var body []byte = message.Body
+		var body = message.Body
 		fmt.Printf("Message received with body: %s\n", string(body))
 		fmt.Printf("Received and completed the message\n")
 	}
@@ -158,7 +158,7 @@ func ExampleReceiver_ReceiveMessages_receiveAndDelete() {
 		} else {
 			// process messages
 			for _, message := range messages {
-				var body []byte = message.Body
+				var body = message.Body
 				fmt.Printf("Message received with body: %s\n", string(body))
 				fmt.Printf("Received and completed the message\n")
 			}
@@ -181,7 +181,7 @@ func ExampleReceiver_ReceiveMessages_amqpMessage() {
 	// NOTE: For this example we'll assume we received at least one message.
 
 	// Every received message carries a RawAMQPMessage.
-	var rawAMQPMessage *azservicebus.AMQPAnnotatedMessage = messages[0].RawAMQPMessage
+	var rawAMQPMessage = messages[0].RawAMQPMessage
 
 	// All the various body encodings available for AMQP messages are exposed via Body
 	_ = rawAMQPMessage.Body.Data
@@ -218,7 +218,7 @@ func ExampleReceiver_DeadLetterMessage() {
 	if err != nil {
 		panic(err)
 	}
-	defer receiver.Close(context.TODO())
+	defer func() { _ = receiver.Close(context.TODO()) }()
 	// Get the message from a queue
 	messages, err := receiver.ReceiveMessages(context.TODO(), 1, nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleReceiver_ReceiveMessages_second() {
 	if err != nil {
 		panic(err)
 	}
-	defer deadLetterReceiver.Close(context.TODO())
+	defer func() { _ = deadLetterReceiver.Close(context.TODO()) }()
 	// Get messages from the dead letter queue
 	deadLetterMessages, err := deadLetterReceiver.ReceiveMessages(context.TODO(), 1, nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func Example_settleWithLockToken() {
 	for _, message := range messages {
 		// The message body is a []byte. For this example we're just assuming that the body
 		// was a string, converted to bytes but any []byte payload is valid.
-		var body []byte = message.Body
+		var body = message.Body
 		fmt.Printf("Message received with body: %s\n", string(body))
 
 		// For more information about settling messages:

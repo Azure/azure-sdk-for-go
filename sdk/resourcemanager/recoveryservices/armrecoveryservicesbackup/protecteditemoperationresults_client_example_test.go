@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AzureIaasVm/ProtectedItemOperationResults.json
+// Generated from example definition: 2026-01-31-preview/AzureIaasVm/ProtectedItemOperationResults.json
 func ExampleProtectedItemOperationResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleProtectedItemOperationResultsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.ProtectedItemOperationResultsClientGetResponse{
-	// 	ProtectedItemResource: &armrecoveryservicesbackup.ProtectedItemResource{
+	// 	ProtectedItemResource: armrecoveryservicesbackup.ProtectedItemResource{
 	// 		Name: to.Ptr("VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/PythonSDKBackupTestRg/providers/Microsoft.RecoveryServices/vaults/PySDKBackupTestRsVault/backupFabrics/Azure/protectionContainers/IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1/protectedItems/VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1"),

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-02-preview/SnapshotsCreate.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsCreate.json
 func ExampleSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.SnapshotsClientCreateOrUpdateResponse{
-	// 	Snapshot: &armcontainerservice.Snapshot{
+	// 	Snapshot: armcontainerservice.Snapshot{
 	// 		Name: to.Ptr("snapshot1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/snapshots"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
@@ -72,7 +72,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/SnapshotsDelete.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsDelete.json
 func ExampleSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleSnapshotsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/SnapshotsGet.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsGet.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleSnapshotsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.SnapshotsClientGetResponse{
-	// 	Snapshot: &armcontainerservice.Snapshot{
+	// 	Snapshot: armcontainerservice.Snapshot{
 	// 		Name: to.Ptr("snapshot1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/snapshots"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
@@ -143,7 +143,7 @@ func ExampleSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-02-preview/SnapshotsList.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsList.json
 func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-02-preview/SnapshotsListByResourceGroup.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsListByResourceGroup.json
 func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,7 +259,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-02-preview/SnapshotsUpdateTags.json
+// Generated from example definition: 2026-03-02-preview/SnapshotsUpdateTags.json
 func ExampleSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleSnapshotsClient_UpdateTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.SnapshotsClientUpdateTagsResponse{
-	// 	Snapshot: &armcontainerservice.Snapshot{
+	// 	Snapshot: armcontainerservice.Snapshot{
 	// 		Name: to.Ptr("snapshot1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/snapshots"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),

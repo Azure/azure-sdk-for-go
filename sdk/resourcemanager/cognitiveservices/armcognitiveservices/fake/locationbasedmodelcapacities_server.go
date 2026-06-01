@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // LocationBasedModelCapacitiesServer is a fake server for instances of the armcognitiveservices.LocationBasedModelCapacitiesClient type.
@@ -53,9 +54,7 @@ func (l *LocationBasedModelCapacitiesServerTransport) Do(req *http.Request) (*ht
 }
 
 func (l *LocationBasedModelCapacitiesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (l *LocationBasedModelCapacitiesServerTransport) dispatchToMethodFake(req *
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -102,19 +98,7 @@ func (l *LocationBasedModelCapacitiesServerTransport) dispatchNewListPager(req *
 		if err != nil {
 			return nil, err
 		}
-		modelFormatParam, err := url.QueryUnescape(qp.Get("modelFormat"))
-		if err != nil {
-			return nil, err
-		}
-		modelNameParam, err := url.QueryUnescape(qp.Get("modelName"))
-		if err != nil {
-			return nil, err
-		}
-		modelVersionParam, err := url.QueryUnescape(qp.Get("modelVersion"))
-		if err != nil {
-			return nil, err
-		}
-		resp := l.srv.NewListPager(locationParam, modelFormatParam, modelNameParam, modelVersionParam, nil)
+		resp := l.srv.NewListPager(locationParam, qp.Get("modelFormat"), qp.Get("modelName"), qp.Get("modelVersion"), nil)
 		newListPager = &resp
 		l.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.LocationBasedModelCapacitiesClientListResponse, createLink func() string) {
@@ -125,7 +109,7 @@ func (l *LocationBasedModelCapacitiesServerTransport) dispatchNewListPager(req *
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		l.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

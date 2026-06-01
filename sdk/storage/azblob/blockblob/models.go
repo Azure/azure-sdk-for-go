@@ -273,7 +273,8 @@ type uploadFromReaderOptions struct {
 	CPKInfo      *blob.CPKInfo
 	CPKScopeInfo *blob.CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to upload in parallel (0=default)
+	// Concurrency indicates the maximum number of blocks to upload in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	TransactionalValidation blob.TransferValidationType
@@ -304,13 +305,14 @@ func (o *uploadFromReaderOptions) getStageBlockOptions() *StageBlockOptions {
 
 func (o *uploadFromReaderOptions) getUploadBlockBlobOptions() *UploadOptions {
 	return &UploadOptions{
-		Tags:             o.Tags,
-		Metadata:         o.Metadata,
-		Tier:             o.AccessTier,
-		HTTPHeaders:      o.HTTPHeaders,
-		AccessConditions: o.AccessConditions,
-		CPKInfo:          o.CPKInfo,
-		CPKScopeInfo:     o.CPKScopeInfo,
+		Tags:                    o.Tags,
+		Metadata:                o.Metadata,
+		Tier:                    o.AccessTier,
+		HTTPHeaders:             o.HTTPHeaders,
+		AccessConditions:        o.AccessConditions,
+		CPKInfo:                 o.CPKInfo,
+		CPKScopeInfo:            o.CPKScopeInfo,
+		TransactionalValidation: o.TransactionalValidation,
 	}
 }
 
@@ -333,7 +335,8 @@ type UploadStreamOptions struct {
 	BlockSize int64
 
 	// Concurrency defines the max number of concurrent uploads to be performed to upload the file.
-	// Each concurrent upload will create a buffer of size BlockSize.  The default value is one.
+	// Each concurrent upload will create a buffer of size BlockSize.  The default is based on
+	// CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency int
 
 	TransactionalValidation blob.TransferValidationType
@@ -349,7 +352,7 @@ type UploadStreamOptions struct {
 
 func (u *UploadStreamOptions) setDefaults() {
 	if u.Concurrency == 0 {
-		u.Concurrency = 1
+		u.Concurrency = int(shared.DefaultStreamConcurrencyValue())
 	}
 
 	if u.BlockSize < _1MiB {
@@ -393,13 +396,14 @@ func (u *UploadStreamOptions) getUploadOptions() *UploadOptions {
 	}
 
 	return &UploadOptions{
-		Tags:             u.Tags,
-		Metadata:         u.Metadata,
-		Tier:             u.AccessTier,
-		HTTPHeaders:      u.HTTPHeaders,
-		CPKInfo:          u.CPKInfo,
-		CPKScopeInfo:     u.CPKScopeInfo,
-		AccessConditions: u.AccessConditions,
+		Tags:                    u.Tags,
+		Metadata:                u.Metadata,
+		Tier:                    u.AccessTier,
+		HTTPHeaders:             u.HTTPHeaders,
+		CPKInfo:                 u.CPKInfo,
+		CPKScopeInfo:            u.CPKScopeInfo,
+		AccessConditions:        u.AccessConditions,
+		TransactionalValidation: u.TransactionalValidation,
 	}
 }
 

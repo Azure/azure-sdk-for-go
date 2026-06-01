@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/CapabilityTypes_Get.json
+// Generated from example definition: 2026-05-01-preview/CapabilityTypes_Get.json
 func ExampleCapabilityTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleCapabilityTypesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armchaos.CapabilityTypesClientGetResponse{
-	// 	CapabilityType: &armchaos.CapabilityType{
+	// 	CapabilityType: armchaos.CapabilityType{
 	// 		Name: to.Ptr("Shutdown-1.0"),
 	// 		Type: to.Ptr("Microsoft.Chaos/locations/targetTypes/capabilityTypes"),
 	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/targetTypes/Microsoft-VirtualMachine/capabilityTypes/Shutdown-1.0"),
@@ -40,27 +40,26 @@ func ExampleCapabilityTypesClient_Get() {
 	// 			Kind: to.Ptr("fault"),
 	// 			ParametersSchema: to.Ptr("https://schema.centralus.chaos-prod.azure.com/targets/Microsoft-VirtualMachine/capabilities/Shutdown-1.0.json"),
 	// 			Publisher: to.Ptr("Microsoft"),
+	// 			AzureRbacActions: []*string{
+	// 				to.Ptr("Microsoft.Compute/virtualMachines/powerOff/action"),
+	// 				to.Ptr("Microsoft.Compute/virtualMachines/read"),
+	// 			},
+	// 			AzureRbacDataActions: []*string{
+	// 			},
+	// 			RequiredAzureRoleDefinitionIDs: []*string{
+	// 				to.Ptr("9980e02c-c2be-4d73-94e8-173b1dc7cf3c"),
+	// 			},
 	// 			RuntimeProperties: &armchaos.CapabilityTypePropertiesRuntimeProperties{
 	// 				Kind: to.Ptr("continuous"),
 	// 			},
 	// 			TargetType: to.Ptr("VirtualMachine"),
 	// 			Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
-	// 			AzureRbacActions: []*string{
-	// 				to.Ptr("Microsoft.Compute/virtualMachines/poweroff/action"),
-	// 				to.Ptr("Microsoft.Compute/virtualMachines/start/action"),
-	// 				to.Ptr("Microsoft.Compute/virtualMachines/instanceView/read"),
-	// 				to.Ptr("Microsoft.Compute/virtualMachines/read"),
-	// 				to.Ptr("Microsoft.Compute/locations/operations/read"),
-	// 			},
-	// 			RequiredAzureRoleDefinitionIDs: []*string{
-	// 				to.Ptr("acdd72a7-3385-48ef-bd42-f606fba81ae0"),
-	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01/CapabilityTypes_List.json
+// Generated from example definition: 2026-05-01-preview/CapabilityTypes_List.json
 func ExampleCapabilityTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +83,7 @@ func ExampleCapabilityTypesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.CapabilityTypesClientListResponse{
 		// 	CapabilityTypeListResult: armchaos.CapabilityTypeListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/targetTypes/Microsoft-VirtualMachine/capabilityTypes?continuationToken=&api-version=2024-11-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/targetTypes/Microsoft-VirtualMachine/capabilityTypes?continuationToken=&api-version=2026-05-01-preview"),
 		// 		Value: []*armchaos.CapabilityType{
 		// 			{
 		// 				Name: to.Ptr("Shutdown-1.0"),
@@ -96,21 +95,20 @@ func ExampleCapabilityTypesClient_NewListPager() {
 		// 					Kind: to.Ptr("fault"),
 		// 					ParametersSchema: to.Ptr("https://schema.centralus.chaos-prod.azure.com/targets/Microsoft-VirtualMachine/capabilities/Shutdown-1.0.json"),
 		// 					Publisher: to.Ptr("Microsoft"),
+		// 					AzureRbacActions: []*string{
+		// 						to.Ptr("Microsoft.Compute/virtualMachines/powerOff/action"),
+		// 						to.Ptr("Microsoft.Compute/virtualMachines/read"),
+		// 					},
+		// 					AzureRbacDataActions: []*string{
+		// 					},
+		// 					RequiredAzureRoleDefinitionIDs: []*string{
+		// 						to.Ptr("9980e02c-c2be-4d73-94e8-173b1dc7cf3c"),
+		// 					},
 		// 					RuntimeProperties: &armchaos.CapabilityTypePropertiesRuntimeProperties{
 		// 						Kind: to.Ptr("continuous"),
 		// 					},
 		// 					TargetType: to.Ptr("VirtualMachine"),
 		// 					Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
-		// 					AzureRbacActions: []*string{
-		// 						to.Ptr("Microsoft.Compute/virtualMachines/poweroff/action"),
-		// 						to.Ptr("Microsoft.Compute/virtualMachines/start/action"),
-		// 						to.Ptr("Microsoft.Compute/virtualMachines/instanceView/read"),
-		// 						to.Ptr("Microsoft.Compute/virtualMachines/read"),
-		// 						to.Ptr("Microsoft.Compute/locations/operations/read"),
-		// 					},
-		// 					RequiredAzureRoleDefinitionIDs: []*string{
-		// 						to.Ptr("acdd72a7-3385-48ef-bd42-f606fba81ae0"),
-		// 					},
 		// 				},
 		// 			},
 		// 		},

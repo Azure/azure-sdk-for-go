@@ -97,6 +97,25 @@ type KeyValuesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.BeginReconcile
+// method.
+type NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NetworkSecurityPerimeterConfigurationsClientGetOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.Get
+// method.
+type NetworkSecurityPerimeterConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.NewListByConfigurationStorePager
+// method.
+type NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientCheckNameAvailabilityOptions contains the optional parameters for the OperationsClient.CheckNameAvailability
 // method.
 type OperationsClientCheckNameAvailabilityOptions struct {

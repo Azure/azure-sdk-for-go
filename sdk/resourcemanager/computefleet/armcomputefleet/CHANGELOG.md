@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.2 (2026-04-29)
+## 2.0.0-beta.2 (2026-06-01)
 ### Breaking Changes
 
 - `FleetModeInstance` from enum `FleetMode` has been removed

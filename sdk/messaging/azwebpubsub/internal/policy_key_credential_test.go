@@ -51,5 +51,5 @@ func (f PolicyFunc) Do(req *policy.Request) (*http.Response, error) {
 }
 
 func newPipeline(plOpts runtime.PipelineOptions, options *policy.ClientOptions) runtime.Pipeline {
-	return runtime.NewPipeline(ModuleName+".Client", ModuleVersion, plOpts, options)
+	return runtime.NewPipeline("azwebpubsub.Client", "azwebpubsub", plOpts, options)
 }

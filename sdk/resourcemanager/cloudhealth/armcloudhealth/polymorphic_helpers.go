@@ -37,10 +37,10 @@ func unmarshalDiscoveryRuleSpecificationClassification(rawMsg json.RawMessage) (
 	}
 	var b DiscoveryRuleSpecificationClassification
 	switch m["kind"] {
-	case string(DiscoveryRuleKindResourceGraphQuery):
-		b = &ResourceGraphQuerySpecification{}
 	case string(DiscoveryRuleKindApplicationInsightsTopology):
 		b = &ApplicationInsightsTopologySpecification{}
+	case string(DiscoveryRuleKindResourceGraphQuery):
+		b = &ResourceGraphQuerySpecification{}
 	default:
 		b = &DiscoveryRuleSpecification{}
 	}

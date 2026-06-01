@@ -154,7 +154,7 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -332,7 +332,7 @@ func ExampleEntitiesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -561,7 +561,7 @@ func ExampleEntitiesClient_GetHistory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.EntitiesClientGetHistoryResponse{
-	// 	EntityHistoryResponse: &armcloudhealth.EntityHistoryResponse{
+	// 	EntityHistoryResponse: armcloudhealth.EntityHistoryResponse{
 	// 		EntityName: to.Ptr("entity1"),
 	// 		History: []*armcloudhealth.HealthStateTransition{
 	// 			{
@@ -613,7 +613,7 @@ func ExampleEntitiesClient_GetSignalHistory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.EntitiesClientGetSignalHistoryResponse{
-	// 	SignalHistoryResponse: &armcloudhealth.SignalHistoryResponse{
+	// 	SignalHistoryResponse: armcloudhealth.SignalHistoryResponse{
 	// 		EntityName: to.Ptr("entity1"),
 	// 		SignalName: to.Ptr("uniqueSignalName1"),
 	// 		History: []*armcloudhealth.SignalHistoryDataPoint{

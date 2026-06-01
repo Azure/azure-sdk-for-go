@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"time"
 )
 
@@ -71,9 +72,7 @@ func (r *RelationshipsServerTransport) Do(req *http.Request) (*http.Response, er
 }
 
 func (r *RelationshipsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -95,10 +94,7 @@ func (r *RelationshipsServerTransport) dispatchToMethodFake(req *http.Request, m
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -150,7 +146,7 @@ func (r *RelationshipsServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		r.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -198,7 +194,7 @@ func (r *RelationshipsServerTransport) dispatchBeginDelete(req *http.Request) (*
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		r.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -236,7 +232,7 @@ func (r *RelationshipsServerTransport) dispatchGet(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Relationship, req)
@@ -263,11 +259,7 @@ func (r *RelationshipsServerTransport) dispatchNewListByHealthModelPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		timestampUnescaped, err := url.QueryUnescape(qp.Get("timestamp"))
-		if err != nil {
-			return nil, err
-		}
-		timestampParam, err := parseOptional(timestampUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		timestampParam, err := parseOptional(qp.Get("timestamp"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 		if err != nil {
 			return nil, err
 		}
@@ -292,7 +284,7 @@ func (r *RelationshipsServerTransport) dispatchNewListByHealthModelPager(req *ht
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListByHealthModelPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

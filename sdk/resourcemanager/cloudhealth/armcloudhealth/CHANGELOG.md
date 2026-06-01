@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2026-04-08)
+## 0.2.0 (2026-06-01)
 ### Breaking Changes
 
 - Type of `EvaluationRule.DegradedRule` has been changed from `*ThresholdRule` to `*ThresholdRuleV2`

@@ -11,14 +11,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // DiscoveryRulesClient contains the methods for the DiscoveryRules group.
 // Don't use this type directly, use NewDiscoveryRulesClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type DiscoveryRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewDiscoveryRulesClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Create a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - discoveryRuleName - Name of the discovery rule. Must be unique within a health model.
@@ -69,8 +69,6 @@ func (client *DiscoveryRulesClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // CreateOrUpdate - Create a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *DiscoveryRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource DiscoveryRule, options *DiscoveryRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiscoveryRulesClient.BeginCreateOrUpdate"
@@ -116,8 +114,8 @@ func (client *DiscoveryRulesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -128,8 +126,6 @@ func (client *DiscoveryRulesClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Delete a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - discoveryRuleName - Name of the discovery rule. Must be unique within a health model.
@@ -154,8 +150,6 @@ func (client *DiscoveryRulesClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Delete a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *DiscoveryRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, options *DiscoveryRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiscoveryRulesClient.BeginDelete"
@@ -201,15 +195,13 @@ func (client *DiscoveryRulesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - discoveryRuleName - Name of the discovery rule. Must be unique within a health model.
@@ -260,8 +252,8 @@ func (client *DiscoveryRulesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *DiscoveryRulesClient) getHandleResponse(resp *http.Response) (Disc
 }
 
 // NewListByHealthModelPager - List DiscoveryRule resources by HealthModel
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - options - DiscoveryRulesClientListByHealthModelOptions contains the optional parameters for the DiscoveryRulesClient.NewListByHealthModelPager
@@ -325,11 +315,11 @@ func (client *DiscoveryRulesClient) listByHealthModelCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", version20260101Preview)
 	if options != nil && options.Timestamp != nil {
-		reqQP.Set("timestamp", options.Timestamp.Format(time.RFC3339Nano))
+		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -11,14 +11,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // EntitiesClient contains the methods for the Entities group.
 // Don't use this type directly, use NewEntitiesClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type EntitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewEntitiesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Create a Entity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - entityName - Name of the entity. Must be unique within a health model.
@@ -69,8 +69,6 @@ func (client *EntitiesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Create a Entity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *EntitiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource Entity, options *EntitiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EntitiesClient.BeginCreateOrUpdate"
@@ -116,8 +114,8 @@ func (client *EntitiesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -128,8 +126,6 @@ func (client *EntitiesClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Delete a Entity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - entityName - Name of the entity. Must be unique within a health model.
@@ -153,8 +149,6 @@ func (client *EntitiesClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Delete a Entity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *EntitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *EntitiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EntitiesClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *EntitiesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Entity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - entityName - Name of the entity. Must be unique within a health model.
@@ -259,8 +251,8 @@ func (client *EntitiesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *EntitiesClient) getHandleResponse(resp *http.Response) (EntitiesCl
 
 // GetHistory - Retrieve the health state transition history for an entity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - entityName - Name of the entity. Must be unique within a health model.
@@ -329,8 +319,8 @@ func (client *EntitiesClient) getHistoryCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -350,8 +340,6 @@ func (client *EntitiesClient) getHistoryHandleResponse(resp *http.Response) (Ent
 
 // GetSignalHistory - Retrieve the time series history for a signal on an entity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - entityName - Name of the entity. Must be unique within a health model.
@@ -404,8 +392,8 @@ func (client *EntitiesClient) getSignalHistoryCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -425,8 +413,6 @@ func (client *EntitiesClient) getSignalHistoryHandleResponse(resp *http.Response
 
 // IngestHealthReport - Ingest a health report for a specific signal on an entity (the entity must already exist)
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - entityName - Name of the entity. Must be unique within a health model.
@@ -478,8 +464,8 @@ func (client *EntitiesClient) ingestHealthReportCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
@@ -488,8 +474,6 @@ func (client *EntitiesClient) ingestHealthReportCreateRequest(ctx context.Contex
 }
 
 // NewListByHealthModelPager - List Entity resources by HealthModel
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - options - EntitiesClientListByHealthModelOptions contains the optional parameters for the EntitiesClient.NewListByHealthModelPager
@@ -537,11 +521,11 @@ func (client *EntitiesClient) listByHealthModelCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", version20260101Preview)
 	if options != nil && options.Timestamp != nil {
-		reqQP.Set("timestamp", options.Timestamp.Format(time.RFC3339Nano))
+		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

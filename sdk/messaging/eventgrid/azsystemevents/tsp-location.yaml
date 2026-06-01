@@ -1,8 +1,3 @@
 directory: specification/eventgrid/data-plane/EventGridSystemEvents
-<<<<<<< HEAD
-commit: 964e827a2beb3838001819532f1bafac405c520f
-=======
 commit: 7089f3d2a4ed7e765d66f5f5e3be0b8b1eed6c1a
->>>>>>> origin/main
 repo: Azure/azure-rest-api-specs
-additionalDirectories: 

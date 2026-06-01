@@ -1360,6 +1360,110 @@ func multiReadEndpointLC(defaultEndpoint url.URL, isMultiMaster bool) *locationC
 	return lc
 }
 
+// hostRoutingTransport dispatches each request to a backing transport selected
+// by the request's URL host, and records the host of every attempt in order.
+// It lets a test prove that a cross-region retry actually changes the request
+// target endpoint (instead of merely advancing retry counters).
+type hostRoutingTransport struct {
+	routes    map[string]policy.Transporter
+	seenHosts []string
+}
+
+func (t *hostRoutingTransport) Do(req *http.Request) (*http.Response, error) {
+	t.seenHosts = append(t.seenHosts, req.URL.Host)
+	backing, ok := t.routes[req.URL.Host]
+	if !ok {
+		return nil, fmt.Errorf("no backing transport registered for host %q", req.URL.Host)
+	}
+	return backing.Do(req)
+}
+
+// TestReadServerError_CrossRegionRoutesToDifferentEndpoint proves that the
+// cross-region 5xx retry targets a genuinely different endpoint than the
+// in-region attempts. The in-region read endpoint and the next preferred
+// region are backed by two distinct mock servers, and a host-routing transport
+// records which endpoint each attempt actually hit. The in-region server fails
+// both the initial request and the in-region retry; the request only succeeds
+// once the cross-region retry routes to the second server.
+func TestReadServerError_CrossRegionRoutesToDifferentEndpoint(t *testing.T) {
+	for _, statusCode := range []int{
+		http.StatusInternalServerError,
+		http.StatusBadGateway,
+		http.StatusGatewayTimeout,
+	} {
+		t.Run(http.StatusText(statusCode), func(t *testing.T) {
+			// In-region endpoint: fails the initial request and the in-region retry.
+			srvA, closeA := mock.NewTLSServer()
+			defer closeA()
+			srvA.AppendResponse(mock.WithStatusCode(statusCode))
+			srvA.AppendResponse(mock.WithStatusCode(statusCode))
+
+			// Cross-region endpoint: succeeds once the failover routes here.
+			srvB, closeB := mock.NewTLSServer()
+			defer closeB()
+			srvB.AppendResponse(mock.WithStatusCode(200))
+
+			endpointA, err := url.Parse(srvA.URL())
+			assert.NoError(t, err)
+			endpointB, err := url.Parse(srvB.URL())
+			assert.NoError(t, err)
+			// Sanity: the two regions must be genuinely distinct endpoints,
+			// otherwise the routing assertion below would be meaningless.
+			assert.NotEqual(t, endpointA.Host, endpointB.Host)
+
+			gemServer, gemClose := mock.NewTLSServer()
+			defer gemClose()
+			gemServer.SetResponse(mock.WithStatusCode(200))
+
+			internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+			// Resolve read index 0 -> endpointA (in-region) and index 1 ->
+			// endpointB (next preferred region).
+			lc := CreateMockLC(*endpointA, false)
+			lc.locationInfo.readEndpoints = []url.URL{*endpointA, *endpointB}
+
+			gem := &globalEndpointManager{
+				clientEndpoint:      gemServer.URL(),
+				pipeline:            internalPipeline,
+				preferredLocations:  []string{"East US", "Central US"},
+				locationCache:       lc,
+				refreshTimeInterval: defaultExpirationTime,
+				lastUpdateTime:      time.Time{},
+			}
+
+			retryPolicy := &clientRetryPolicy{gem: gem}
+			verifier := clientRetryPolicyVerifier{}
+
+			transport := &hostRoutingTransport{
+				routes: map[string]policy.Transporter{
+					endpointA.Host: srvA,
+					endpointB.Host: srvB,
+				},
+			}
+
+			internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: transport})
+
+			client := &Client{endpoint: srvA.URL(), endpointUrl: endpointA, internal: internalClient, gem: gem}
+			db, _ := client.NewDatabase("database_id")
+			container, _ := db.NewContainer("container_id")
+
+			_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+			assert.NoError(t, err)
+
+			// Counter behavior: one in-region retry then one cross-region retry.
+			assert.Equal(t, 2, verifier.requests[0].retryContext.serverErrorRetryCount)
+			assert.Equal(t, 1, verifier.requests[0].retryContext.retryCount)
+			assert.Equal(t, 1, verifier.requests[0].retryContext.preferredLocationIndex)
+
+			// Routing behavior: the first two attempts hit the in-region
+			// endpoint and only the third (cross-region) attempt hit the
+			// second, distinct endpoint. This proves the failover changes the
+			// request target rather than only mutating counters.
+			assert.Equal(t, []string{endpointA.Host, endpointA.Host, endpointB.Host}, transport.seenHosts)
+		})
+	}
+}
+
 func TestReadServerError(t *testing.T) {
 	for _, statusCode := range []int{
 		http.StatusInternalServerError,

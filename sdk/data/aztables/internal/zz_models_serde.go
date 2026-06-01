@@ -10,6 +10,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
 	"time"
 )
@@ -19,12 +20,12 @@ func (a AccessPolicy) MarshalXML(enc *xml.Encoder, start xml.StartElement) error
 	type alias AccessPolicy
 	aux := &struct {
 		*alias
-		Expiry *dateTimeRFC3339 `xml:"Expiry"`
-		Start  *dateTimeRFC3339 `xml:"Start"`
+		Expiry *datetime.RFC3339 `xml:"Expiry"`
+		Start  *datetime.RFC3339 `xml:"Start"`
 	}{
 		alias:  (*alias)(&a),
-		Expiry: (*dateTimeRFC3339)(a.Expiry),
-		Start:  (*dateTimeRFC3339)(a.Start),
+		Expiry: (*datetime.RFC3339)(a.Expiry),
+		Start:  (*datetime.RFC3339)(a.Start),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -34,16 +35,20 @@ func (a *AccessPolicy) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) er
 	type alias AccessPolicy
 	aux := &struct {
 		*alias
-		Expiry *dateTimeRFC3339 `xml:"Expiry"`
-		Start  *dateTimeRFC3339 `xml:"Start"`
+		Expiry *datetime.RFC3339 `xml:"Expiry"`
+		Start  *datetime.RFC3339 `xml:"Start"`
 	}{
 		alias: (*alias)(a),
 	}
 	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
-	a.Expiry = (*time.Time)(aux.Expiry)
-	a.Start = (*time.Time)(aux.Start)
+	if aux.Expiry != nil && !(*time.Time)(aux.Expiry).IsZero() {
+		a.Expiry = (*time.Time)(aux.Expiry)
+	}
+	if aux.Start != nil && !(*time.Time)(aux.Start).IsZero() {
+		a.Start = (*time.Time)(aux.Start)
+	}
 	return nil
 }
 
@@ -52,10 +57,10 @@ func (g GeoReplication) MarshalXML(enc *xml.Encoder, start xml.StartElement) err
 	type alias GeoReplication
 	aux := &struct {
 		*alias
-		LastSyncTime *dateTimeRFC1123 `xml:"LastSyncTime"`
+		LastSyncTime *datetime.RFC1123 `xml:"LastSyncTime"`
 	}{
 		alias:        (*alias)(&g),
-		LastSyncTime: (*dateTimeRFC1123)(g.LastSyncTime),
+		LastSyncTime: (*datetime.RFC1123)(g.LastSyncTime),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -65,14 +70,16 @@ func (g *GeoReplication) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) 
 	type alias GeoReplication
 	aux := &struct {
 		*alias
-		LastSyncTime *dateTimeRFC1123 `xml:"LastSyncTime"`
+		LastSyncTime *datetime.RFC1123 `xml:"LastSyncTime"`
 	}{
 		alias: (*alias)(g),
 	}
 	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
-	g.LastSyncTime = (*time.Time)(aux.LastSyncTime)
+	if aux.LastSyncTime != nil && !(*time.Time)(aux.LastSyncTime).IsZero() {
+		g.LastSyncTime = (*time.Time)(aux.LastSyncTime)
+	}
 	return nil
 }
 
@@ -290,6 +297,18 @@ func (t TableServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartElem
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type TableServiceStats.
+func (t TableServiceStats) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "StorageServiceStats"
+	type alias TableServiceStats
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&t),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
@@ -301,7 +320,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

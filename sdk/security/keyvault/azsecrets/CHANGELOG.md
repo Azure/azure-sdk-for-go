@@ -1,24 +1,17 @@
 # Release History
 
-<<<<<<< HEAD
-## 1.5.0-beta.2 (2026-05-18)
-=======
 ## 1.5.1-beta.1 (Unreleased)
 
->>>>>>> origin/main
 ### Features Added
 
 * Added `ServiceVersion` constants and `ClientOptions.ServiceVersion` for selecting the Key Vault Secrets service API version.
 
 ### Other Changes
 
-<<<<<<< HEAD
-=======
 ## 1.5.0 (2026-05-26)
 
 ### Features Added
 * Includes all changes from 1.5.0-beta.1.
->>>>>>> origin/main
 
 ## 1.5.0-beta.1 (2026-04-08)
 

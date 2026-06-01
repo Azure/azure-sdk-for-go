@@ -213,6 +213,8 @@ type Frequency string
 const (
 	FrequencyDaily   Frequency = "Daily"
 	FrequencyMonthly Frequency = "Monthly"
+	// FrequencyNone - No schedule frequency. The job definition will not run on a schedule.
+	FrequencyNone    Frequency = "None"
 	FrequencyOnetime Frequency = "Onetime"
 	FrequencyWeekly  Frequency = "Weekly"
 )
@@ -222,6 +224,7 @@ func PossibleFrequencyValues() []Frequency {
 	return []Frequency{
 		FrequencyDaily,
 		FrequencyMonthly,
+		FrequencyNone,
 		FrequencyOnetime,
 		FrequencyWeekly,
 	}
@@ -395,21 +398,23 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type S3WithHmacSourceType string
 
 const (
-	S3WithHmacSourceTypeBACKBLAZE  S3WithHmacSourceType = "BACKBLAZE"
-	S3WithHmacSourceTypeCLOUDFLARE S3WithHmacSourceType = "CLOUDFLARE"
-	S3WithHmacSourceTypeGCS        S3WithHmacSourceType = "GCS"
-	S3WithHmacSourceTypeIBM        S3WithHmacSourceType = "IBM"
-	S3WithHmacSourceTypeMINIO      S3WithHmacSourceType = "MINIO"
+	S3WithHmacSourceTypeALIBABA S3WithHmacSourceType = "ALIBABA"
+	S3WithHmacSourceTypeDELLEMC S3WithHmacSourceType = "DELL_EMC"
+	S3WithHmacSourceTypeGCS     S3WithHmacSourceType = "GCS"
+	S3WithHmacSourceTypeIBM     S3WithHmacSourceType = "IBM"
+	S3WithHmacSourceTypeMINIO   S3WithHmacSourceType = "MINIO"
+	S3WithHmacSourceTypeOTHER   S3WithHmacSourceType = "OTHER"
 )
 
 // PossibleS3WithHmacSourceTypeValues returns the possible values for the S3WithHmacSourceType const type.
 func PossibleS3WithHmacSourceTypeValues() []S3WithHmacSourceType {
 	return []S3WithHmacSourceType{
-		S3WithHmacSourceTypeBACKBLAZE,
-		S3WithHmacSourceTypeCLOUDFLARE,
+		S3WithHmacSourceTypeALIBABA,
+		S3WithHmacSourceTypeDELLEMC,
 		S3WithHmacSourceTypeGCS,
 		S3WithHmacSourceTypeIBM,
 		S3WithHmacSourceTypeMINIO,
+		S3WithHmacSourceTypeOTHER,
 	}
 }
 

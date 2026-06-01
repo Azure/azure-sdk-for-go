@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/FileServicesGet.json
+// Generated from example definition: 2025-08-01/FileServicesGet.json
 func ExampleFileServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleFileServicesClient_GetServiceProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.FileServicesClientGetServicePropertiesResponse{
-	// 	FileServiceProperties: &armstorage.FileServiceProperties{
+	// 	FileServiceProperties: armstorage.FileServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/fileServices/default"),
@@ -106,7 +106,7 @@ func ExampleFileServicesClient_GetServiceProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/FileServicesGetUsage.json
+// Generated from example definition: 2025-08-01/FileServicesGetUsage.json
 func ExampleFileServicesClient_GetServiceUsage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleFileServicesClient_GetServiceUsage() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.FileServicesClientGetServiceUsageResponse{
-	// 	FileServiceUsage: &armstorage.FileServiceUsage{
+	// 	FileServiceUsage: armstorage.FileServiceUsage{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/usages"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/fileServices/default/usages/default"),
@@ -174,7 +174,7 @@ func ExampleFileServicesClient_GetServiceUsage() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/FileServicesList.json
+// Generated from example definition: 2025-08-01/FileServicesList.json
 func ExampleFileServicesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleFileServicesClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.FileServicesClientListResponse{
-	// 	FileServiceItems: &armstorage.FileServiceItems{
+	// 	FileServiceItems: armstorage.FileServiceItems{
 	// 		Value: []*armstorage.FileServiceProperties{
 	// 			{
 	// 				Name: to.Ptr("default"),
@@ -272,7 +272,7 @@ func ExampleFileServicesClient_List() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/FileServicesListUsages.json
+// Generated from example definition: 2025-08-01/FileServicesListUsages.json
 func ExampleFileServicesClient_NewListServiceUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,7 +349,7 @@ func ExampleFileServicesClient_NewListServiceUsagesPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/FileServicesPut.json
+// Generated from example definition: 2025-08-01/FileServicesPut.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -432,7 +432,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServices() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.FileServicesClientSetServicePropertiesResponse{
-	// 	FileServiceProperties: &armstorage.FileServiceProperties{
+	// 	FileServiceProperties: armstorage.FileServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/fileServices/default"),
@@ -507,7 +507,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServices() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/FileServicesPut_EnableSMBMultichannel.json
+// Generated from example definition: 2025-08-01/FileServicesPut_EnableSMBMultichannel.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSmbMultichannel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,7 +536,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSmbMult
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.FileServicesClientSetServicePropertiesResponse{
-	// 	FileServiceProperties: &armstorage.FileServiceProperties{
+	// 	FileServiceProperties: armstorage.FileServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/fileServices/default"),
@@ -557,7 +557,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSmbMult
 	// }
 }
 
-// Generated from example definition: 2025-06-01/FileServicesPut_EnableSecureSmbFeatures.json
+// Generated from example definition: 2025-08-01/FileServicesPut_EnableSecureSmbFeatures.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSecureSmbFeatures() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -587,7 +587,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSecureS
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.FileServicesClientSetServicePropertiesResponse{
-	// 	FileServiceProperties: &armstorage.FileServiceProperties{
+	// 	FileServiceProperties: armstorage.FileServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/fileServices/default"),
@@ -609,7 +609,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSecureS
 	// }
 }
 
-// Generated from example definition: 2025-06-01/FileServicesPut_EncryptionInTransitRequired.json
+// Generated from example definition: 2025-08-01/FileServicesPut_EncryptionInTransitRequired.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServicesEncryptionInTransitRequired() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -643,7 +643,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServicesEncryptionInT
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.FileServicesClientSetServicePropertiesResponse{
-	// 	FileServiceProperties: &armstorage.FileServiceProperties{
+	// 	FileServiceProperties: armstorage.FileServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/fileServices/default"),

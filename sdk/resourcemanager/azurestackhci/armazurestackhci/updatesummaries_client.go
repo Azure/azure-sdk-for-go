@@ -42,7 +42,7 @@ func NewUpdateSummariesClient(subscriptionID string, credential azcore.TokenCred
 // BeginDelete - Delete Update Summaries
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - UpdateSummariesClientBeginDeleteOptions contains the optional parameters for the UpdateSummariesClient.BeginDelete
@@ -67,7 +67,7 @@ func (client *UpdateSummariesClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete Update Summaries
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-04-01-preview
 func (client *UpdateSummariesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *UpdateSummariesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UpdateSummariesClient.BeginDelete"
@@ -109,7 +109,7 @@ func (client *UpdateSummariesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -117,7 +117,7 @@ func (client *UpdateSummariesClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get all Update summaries under the HCI cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - UpdateSummariesClientGetOptions contains the optional parameters for the UpdateSummariesClient.Get method.
@@ -163,7 +163,7 @@ func (client *UpdateSummariesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +180,7 @@ func (client *UpdateSummariesClient) getHandleResponse(resp *http.Response) (Upd
 
 // NewListPager - List all Update summaries under the HCI cluster
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - UpdateSummariesClientListOptions contains the optional parameters for the UpdateSummariesClient.NewListPager
@@ -228,7 +228,7 @@ func (client *UpdateSummariesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,7 +246,7 @@ func (client *UpdateSummariesClient) listHandleResponse(resp *http.Response) (Up
 // Put - Put Update summaries under the HCI cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateLocationProperties - Properties of the UpdateSummaries resource
@@ -293,7 +293,7 @@ func (client *UpdateSummariesClient) putCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
+	reqQP.Set("api-version", "2026-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

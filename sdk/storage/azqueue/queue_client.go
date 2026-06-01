@@ -29,15 +29,6 @@ func (q *QueueClient) queueClient() *generated.QueueClient {
 	return queue
 }
 
-func (q *QueueClient) messagesClient() *generated.MessagesClient {
-	_, messages := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient])(q))
-	return messages
-}
-
-func (q *QueueClient) getMessageIDURL(messageID string) string {
-	return runtime.JoinPaths(q.queueClient().Endpoint(), "messages", messageID)
-}
-
 func (q *QueueClient) sharedKey() *SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.QueueClient, generated.MessagesClient])(q))
 }
@@ -55,8 +46,11 @@ func NewQueueClient(queueURL string, cred azcore.TokenCredential, options *Clien
 	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
 	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &conOptions.ClientOptions)
-	return (*QueueClient)(base.NewQueueClient(queueURL, pl, nil)), nil
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return (*QueueClient)(base.NewQueueClient(queueURL, azClient, nil)), nil
 }
 
 // NewQueueClientWithNoCredential creates an instance of QueueClient with the specified values.
@@ -65,9 +59,12 @@ func NewQueueClient(queueURL string, cred azcore.TokenCredential, options *Clien
 //   - options - client options; pass nil to accept the default values
 func NewQueueClientWithNoCredential(queueURL string, options *ClientOptions) (*QueueClient, error) {
 	conOptions := shared.GetClientOptions(options)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*QueueClient)(base.NewQueueClient(queueURL, pl, nil)), nil
+	return (*QueueClient)(base.NewQueueClient(queueURL, azClient, nil)), nil
 }
 
 // NewQueueClientWithSharedKeyCredential creates an instance of ServiceClient with the specified values.
@@ -78,9 +75,12 @@ func NewQueueClientWithSharedKeyCredential(queueURL string, cred *SharedKeyCrede
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*QueueClient)(base.NewQueueClient(queueURL, pl, cred)), nil
+	return (*QueueClient)(base.NewQueueClient(queueURL, azClient, cred)), nil
 }
 
 // NewQueueClientFromConnectionString creates an instance of ServiceClient with the specified values.
@@ -160,69 +160,55 @@ func (q *QueueClient) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOpt
 // EnqueueMessage adds a message to the queue.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-message.
 func (q *QueueClient) EnqueueMessage(ctx context.Context, content string, o *EnqueueMessageOptions) (EnqueueMessagesResponse, error) {
-	opts := o.format()
 	message := generated.QueueMessage{MessageText: &content}
-	resp, err := q.messagesClient().Enqueue(ctx, message, opts)
-	return resp, err
+	return q.queueClient().SendMessage(ctx, message, o.format())
 }
 
 // DequeueMessage removes one message from the queue.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-messages.
 func (q *QueueClient) DequeueMessage(ctx context.Context, o *DequeueMessageOptions) (DequeueMessagesResponse, error) {
-	opts := o.format()
-	resp, err := q.messagesClient().Dequeue(ctx, opts)
-	return resp, err
+	return q.queueClient().ReceiveMessages(ctx, o.format())
 }
 
 // UpdateMessage updates a message from the queue with the given popReceipt.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/update-message.
 func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popReceipt string, content string, o *UpdateMessageOptions) (UpdateMessageResponse, error) {
-	opts := o.format()
+	visibilityTimeout := int32(0)
+	if o != nil && o.VisibilityTimeout != nil {
+		visibilityTimeout = *o.VisibilityTimeout
+	}
 	message := generated.QueueMessage{MessageText: &content}
-	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), q.queueClient().Pipeline())
-	resp, err := messageClient.Update(ctx, popReceipt, message, opts)
-	return resp, err
+	return q.queueClient().UpdateMessage(ctx, messageID, popReceipt, visibilityTimeout, message, o.format())
 }
 
 // DeleteMessage deletes message from queue with the given popReceipt.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-message2.
 func (q *QueueClient) DeleteMessage(ctx context.Context, messageID string, popReceipt string, o *DeleteMessageOptions) (DeleteMessageResponse, error) {
-	opts := o.format()
-	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), q.queueClient().Pipeline())
-	resp, err := messageClient.Delete(ctx, popReceipt, opts)
-	return resp, err
+	return q.queueClient().DeleteMessage(ctx, messageID, popReceipt, o.format())
 }
 
 // PeekMessage peeks the first message from the queue.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/peek-messages.
 func (q *QueueClient) PeekMessage(ctx context.Context, o *PeekMessageOptions) (PeekMessagesResponse, error) {
-	opts := o.format()
-	resp, err := q.messagesClient().Peek(ctx, opts)
-	return resp, err
+	return q.queueClient().PeekMessages(ctx, o.format())
 }
 
 // DequeueMessages removes one or more messages from the queue.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-messages.
 func (q *QueueClient) DequeueMessages(ctx context.Context, o *DequeueMessagesOptions) (DequeueMessagesResponse, error) {
-	opts := o.format()
-	resp, err := q.messagesClient().Dequeue(ctx, opts)
-	return resp, err
+	return q.queueClient().ReceiveMessages(ctx, o.format())
 }
 
 // PeekMessages peeks one or more messages from the queue
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/peek-messages.
 func (q *QueueClient) PeekMessages(ctx context.Context, o *PeekMessagesOptions) (PeekMessagesResponse, error) {
-	opts := o.format()
-	resp, err := q.messagesClient().Peek(ctx, opts)
-	return resp, err
+	return q.queueClient().PeekMessages(ctx, o.format())
 }
 
 // ClearMessages deletes all messages from the queue.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/clear-messages.
 func (q *QueueClient) ClearMessages(ctx context.Context, o *ClearMessagesOptions) (ClearMessagesResponse, error) {
-	opts := o.format()
-	resp, err := q.messagesClient().Clear(ctx, opts)
-	return resp, err
+	return q.queueClient().Clear(ctx, o.format())
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.

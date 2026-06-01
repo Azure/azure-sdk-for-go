@@ -1207,6 +1207,7 @@ func (j JobDefinitionUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "copyMode", j.CopyMode)
 	populate(objectMap, "dataIntegrityValidation", j.DataIntegrityValidation)
 	populate(objectMap, "description", j.Description)
+	populate(objectMap, "schedule", j.Schedule)
 	return json.Marshal(objectMap)
 }
 
@@ -1233,6 +1234,9 @@ func (j *JobDefinitionUpdateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &j.Description)
+			delete(rawMsg, key)
+		case "schedule":
+			err = unpopulate(val, "Schedule", &j.Schedule)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2151,6 +2155,37 @@ func (s *ScheduleInfo) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "startDate":
 			err = unpopulateTime[datetime.RFC3339](val, "StartDate", &s.StartDate)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SchedulerTime.
+func (s SchedulerTime) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "hour", s.Hour)
+	populate(objectMap, "minute", s.Minute)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SchedulerTime.
+func (s *SchedulerTime) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "hour":
+			err = unpopulate(val, "Hour", &s.Hour)
+			delete(rawMsg, key)
+		case "minute":
+			err = unpopulate(val, "Minute", &s.Minute)
 			delete(rawMsg, key)
 		}
 		if err != nil {

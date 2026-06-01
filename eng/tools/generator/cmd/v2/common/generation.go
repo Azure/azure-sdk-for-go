@@ -635,6 +635,22 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam) (
 	}, nil
 }
 
+func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) error {
+	// When migrating from Swagger to TypeSpec for the first time, the generated comment
+	// header in the previous swagger-generated files differs from the one written by the
+	// TypeSpec emitter, so the emitter's cleanup logic won't remove them. Detect this
+	// migration case via the presence of autorest.md and clean up the previously
+	// generated files before regenerating.
+	autorestMdPath := filepath.Join(t.PackagePath, "autorest.md")
+	if _, err := os.Stat(autorestMdPath); err == nil {
+		log.Printf("Detected migration from Swagger to TypeSpec, remove all the previously generated files ...")
+		if err := CleanSDKGeneratedFiles(t.PackagePath); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (t *TypeSpecUpdateGenerator) Generate(generateParam *GenerateParam) error {
 	err := t.TypeSpecCommonGenerator.Generate(generateParam)
 	if err != nil {
@@ -648,6 +664,14 @@ func (t *TypeSpecUpdateGenerator) Generate(generateParam *GenerateParam) error {
 		override = new(bool)
 		*override = true
 	case utils.SDKReleaseTypeStable:
+		isPreview, err := version.IsCurrentPreviewVersion(t.PackagePath, *t.SDKRepo, nil)
+		if err != nil {
+			return err
+		}
+		if isPreview {
+			return fmt.Errorf("SDK release type is stable, but the generated code contains preview API versions. " +
+				"Please specify a stable API version or use beta release type")
+		}
 		override = new(bool)
 		*override = false
 	}

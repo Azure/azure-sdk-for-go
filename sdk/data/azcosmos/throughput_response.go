@@ -58,7 +58,7 @@ func newThroughputResponse(resp *http.Response, extraRequestCharge *float32) (Th
 	properties := &ThroughputProperties{}
 	err := azruntime.UnmarshalAsJSON(resp, properties)
 	if err != nil {
-		return response, err
+		return response, wrapResponseError(err, response.Response)
 	}
 	response.ThroughputProperties = properties
 

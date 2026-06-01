@@ -1,10 +1,44 @@
 # Release History
 
+## 0.4.13 (2026-05-28)
+
+### Bugs Fixed
+
+- Updated `apiVersionConstRegex` to match the current `versionYYYYMMDD[Preview] string = "..."` constant pattern emitted by the generator, so preview packages are no longer misclassified as stable.
+
+## 0.4.12 (2026-05-18)
+
+### Features Added
+
+- Added `--report-file` flag to the `changelog` command. When provided, the command runs in report-only mode: it computes the SDK change report (including `hasBreakingChange` and the generated changelog markdown) and writes it as JSON to the given file path without modifying `CHANGELOG.md`.
+
+## 0.4.11 (2026-05-13)
+
+### Bugs Fixed
+
+- Fixed preview API version detection to recognize const-based API version declarations in newly generated code.
+
+## 0.4.10 (2026-05-12)
+
+### Bugs Fixed
+
+- Re-added cleanup of previously generated SDK files in the TypeSpec update flow for first-time migrations from Swagger to TypeSpec. The TypeSpec emitter's own cleanup does not remove Swagger-generated files because their generated-code header differs from the one written by the emitter.
+
+## 0.4.9 (2026-04-24)
+
+### Bugs Fixed
+
+- Fixed `UpdateModuleDefinition` to remove `retract` directives from `go.mod` when the major version changes, preventing invalid version errors.
+
 ## 0.4.8 (2026-04-07)
 
 ### Features Added
 
 - Added `metadata` command to create required metadata files (ci.yml, README.md) for packages in inner loop scenarios.
+
+### Other Changes
+
+- Removed the validation that required both `apiVersion` and `sdkReleaseType` to be provided together for self-serve SDK generation. Either parameter can now be omitted and will use its default value.
 
 ### Bugs Fixed
 

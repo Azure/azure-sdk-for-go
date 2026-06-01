@@ -42,7 +42,7 @@ func NewGetTieringCostOperationResultClient(subscriptionID string, credential az
 // Get - Gets the result of async operation for tiering cost
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
 //   - options - GetTieringCostOperationResultClientGetOptions contains the optional parameters for the GetTieringCostOperationResultClient.Get
@@ -93,7 +93,7 @@ func (client *GetTieringCostOperationResultClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", "2026-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

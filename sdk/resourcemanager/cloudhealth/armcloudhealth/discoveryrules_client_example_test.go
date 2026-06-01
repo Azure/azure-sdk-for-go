@@ -39,7 +39,7 @@ func ExampleDiscoveryRulesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.DiscoveryRulesClientCreateOrUpdateResponse{
-	// 	DiscoveryRule: &armcloudhealth.DiscoveryRule{
+	// 	DiscoveryRule: armcloudhealth.DiscoveryRule{
 	// 		Properties: &armcloudhealth.DiscoveryRuleProperties{
 	// 			AuthenticationSetting: to.Ptr("authSetting1"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
@@ -105,7 +105,7 @@ func ExampleDiscoveryRulesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.DiscoveryRulesClientGetResponse{
-	// 	DiscoveryRule: &armcloudhealth.DiscoveryRule{
+	// 	DiscoveryRule: armcloudhealth.DiscoveryRule{
 	// 		Properties: &armcloudhealth.DiscoveryRuleProperties{
 	// 			AuthenticationSetting: to.Ptr("authSetting1"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),

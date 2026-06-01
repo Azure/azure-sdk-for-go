@@ -68,6 +68,7 @@ The following section provides several code snippets covering some of the most c
 * [Create Database](#create-database "Create Database")
 * [Create Container](#create-container "Create Container")
 * [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
+* [Request diagnostics](#request-diagnostics "Request diagnostics")
 
 ### Create Cosmos DB Client
 
@@ -183,6 +184,33 @@ itemResponse, err = container.DeleteItem(context, pk, id, nil)
 handle(err)
 ```
 
+### Request diagnostics
+
+Responses include request diagnostics that can help investigate operation latency, retries, contacted regions, and backend failures.
+
+```go
+itemResponse, err := container.ReadItem(context, pk, id, nil)
+handle(err)
+
+log.Printf("Diagnostics: %s", itemResponse.Diagnostics.String())
+log.Printf("Client elapsed time: %s", itemResponse.Diagnostics.ClientElapsedTime())
+log.Printf("Failed backend requests: %d", itemResponse.Diagnostics.FailedRequestCount())
+```
+
+When an operation fails, use `DiagnosticsFromError` to retrieve diagnostics from the returned error.
+
+```go
+_, err := container.ReadItem(context, pk, id, nil)
+if err != nil {
+	diagnostics, ok := azcosmos.DiagnosticsFromError(err)
+	if ok {
+		log.Printf("Diagnostics: %s", diagnostics.String())
+	}
+
+	handle(err)
+}
+```
+
 ## Next steps
 
 - [Resource Model of Azure Cosmos DB Service](https://learn.microsoft.com/azure/cosmos-db/sql-api-resources)
@@ -213,5 +241,4 @@ do this once across all repos using our CLA.
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
 

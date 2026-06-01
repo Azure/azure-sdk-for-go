@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/Common/BackupStorageConfig_Get.json
+// Generated from example definition: 2026-01-31-preview/Common/BackupStorageConfig_Get.json
 func ExampleBackupResourceStorageConfigsNonCRRClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.BackupResourceStorageConfigsNonCRRClientGetResponse{
-	// 	BackupResourceConfigResource: &armrecoveryservicesbackup.BackupResourceConfigResource{
+	// 	BackupResourceConfigResource: armrecoveryservicesbackup.BackupResourceConfigResource{
 	// 		Name: to.Ptr("vaultstorageconfig"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupstorageconfig"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/PythonSDKBackupTestRg/providers/Microsoft.RecoveryServices/vaults/PySDKBackupTestRsVault/backupstorageconfig/vaultstorageconfig"),
@@ -44,7 +44,7 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Common/BackupStorageConfig_Patch.json
+// Generated from example definition: 2026-01-31-preview/Common/BackupStorageConfig_Patch.json
 func ExampleBackupResourceStorageConfigsNonCRRClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Patch() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Common/BackupStorageConfig_Put.json
+// Generated from example definition: 2026-01-31-preview/Common/BackupStorageConfig_Put.json
 func ExampleBackupResourceStorageConfigsNonCRRClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.BackupResourceStorageConfigsNonCRRClientUpdateResponse{
-	// 	BackupResourceConfigResource: &armrecoveryservicesbackup.BackupResourceConfigResource{
+	// 	BackupResourceConfigResource: armrecoveryservicesbackup.BackupResourceConfigResource{
 	// 		Name: to.Ptr("vaultstorageconfig"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupstorageconfig"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/PythonSDKBackupTestRg/providers/Microsoft.RecoveryServices/vaults/PySDKBackupTestRsVault/backupstorageconfig/vaultstorageconfig"),

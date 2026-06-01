@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Create.json
-func ExampleVolumesClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2026-05-01-preview/KubernetesVersions_Create.json
+func ExampleKubernetesVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,16 +23,13 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVolumesClient().BeginCreateOrUpdate(ctx, "resourceGroupName", "volumeName", armnetworkcloud.Volume{
+	poller, err := clientFactory.NewKubernetesVersionsClient().BeginCreateOrUpdate(ctx, "resourceGroupName", "default", armnetworkcloud.KubernetesVersion{
 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 			Type: to.Ptr("CustomLocation"),
 		},
-		Location: to.Ptr("location"),
-		Properties: &armnetworkcloud.VolumeProperties{
-			SizeMiB:            to.Ptr[int64](1048576),
-			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
-		},
+		Location:   to.Ptr("location"),
+		Properties: &armnetworkcloud.KubernetesVersionProperties{},
 		Tags: map[string]*string{
 			"key1": to.Ptr("myvalue1"),
 			"key2": to.Ptr("myvalue2"),
@@ -48,27 +45,27 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.VolumesClientCreateOrUpdateResponse{
-	// 	Volume: armnetworkcloud.Volume{
+	// res = armnetworkcloud.KubernetesVersionsClientCreateOrUpdateResponse{
+	// 	KubernetesVersion: armnetworkcloud.KubernetesVersion{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesVersions/default"),
 	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("volumeName"),
-	// 		Properties: &armnetworkcloud.VolumeProperties{
-	// 			AllocatedSizeMiB: to.Ptr[int64](1048576),
-	// 			AssignedStorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
-	// 			AttachedTo: []*string{
-	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
+	// 		Name: to.Ptr("default"),
+	// 		Properties: &armnetworkcloud.KubernetesVersionProperties{
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesVersionProvisioningStateSucceeded),
+	// 			Values: []*armnetworkcloud.KubernetesVersionValue{
+	// 				{
+	// 					Description: to.Ptr("Version Description"),
+	// 					Version: to.Ptr("1.28.3"),
+	// 				},
+	// 				{
+	// 					Description: to.Ptr("Version Description"),
+	// 					Version: to.Ptr("1.27.7"),
+	// 				},
 	// 			},
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.VolumeDetailedStatusActive),
-	// 			DetailedStatusMessage: to.Ptr("Volume is available"),
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
-	// 			SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
-	// 			SizeMiB: to.Ptr[int64](1048576),
-	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
@@ -82,13 +79,13 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// 			"key1": to.Ptr("myvalue1"),
 	// 			"key2": to.Ptr("myvalue2"),
 	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/volumes"),
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/kubernetesVersions"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Delete.json
-func ExampleVolumesClient_BeginDelete() {
+// Generated from example definition: 2026-05-01-preview/KubernetesVersions_Delete.json
+func ExampleKubernetesVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -98,7 +95,7 @@ func ExampleVolumesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVolumesClient().BeginDelete(ctx, "resourceGroupName", "volumeName", nil)
+	poller, err := clientFactory.NewKubernetesVersionsClient().BeginDelete(ctx, "resourceGroupName", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -108,8 +105,8 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Get.json
-func ExampleVolumesClient_Get() {
+// Generated from example definition: 2026-05-01-preview/KubernetesVersions_Get.json
+func ExampleKubernetesVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -119,34 +116,34 @@ func ExampleVolumesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVolumesClient().Get(ctx, "resourceGroupName", "volumeName", nil)
+	res, err := clientFactory.NewKubernetesVersionsClient().Get(ctx, "resourceGroupName", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.VolumesClientGetResponse{
-	// 	Volume: armnetworkcloud.Volume{
+	// res = armnetworkcloud.KubernetesVersionsClientGetResponse{
+	// 	KubernetesVersion: armnetworkcloud.KubernetesVersion{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesVersions/default"),
 	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("volumeName"),
-	// 		Properties: &armnetworkcloud.VolumeProperties{
-	// 			AllocatedSizeMiB: to.Ptr[int64](1048576),
-	// 			AssignedStorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
-	// 			AttachedTo: []*string{
-	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
+	// 		Name: to.Ptr("default"),
+	// 		Properties: &armnetworkcloud.KubernetesVersionProperties{
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesVersionProvisioningStateSucceeded),
+	// 			Values: []*armnetworkcloud.KubernetesVersionValue{
+	// 				{
+	// 					Description: to.Ptr("Version Description"),
+	// 					Version: to.Ptr("1.28.3"),
+	// 				},
+	// 				{
+	// 					Description: to.Ptr("Version Description"),
+	// 					Version: to.Ptr("1.27.7"),
+	// 				},
 	// 			},
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.VolumeDetailedStatusActive),
-	// 			DetailedStatusMessage: to.Ptr("Volume is available"),
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
-	// 			SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
-	// 			SizeMiB: to.Ptr[int64](1048576),
-	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
@@ -160,13 +157,13 @@ func ExampleVolumesClient_Get() {
 	// 			"key1": to.Ptr("myvalue1"),
 	// 			"key2": to.Ptr("myvalue2"),
 	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/volumes"),
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/kubernetesVersions"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_ListByResourceGroup.json
-func ExampleVolumesClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-05-01-preview/KubernetesVersions_ListByResourceGroup.json
+func ExampleKubernetesVersionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -176,7 +173,7 @@ func ExampleVolumesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVolumesClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewKubernetesVersionsClient().NewListByResourceGroupPager("resourceGroupName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -187,30 +184,30 @@ func ExampleVolumesClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetworkcloud.VolumesClientListByResourceGroupResponse{
-		// 	VolumeList: armnetworkcloud.VolumeList{
+		// page = armnetworkcloud.KubernetesVersionsClientListByResourceGroupResponse{
+		// 	KubernetesVersionList: armnetworkcloud.KubernetesVersionList{
 		// 		NextLink: to.Ptr("https://fully.qualified.hyperlink"),
-		// 		Value: []*armnetworkcloud.Volume{
+		// 		Value: []*armnetworkcloud.KubernetesVersion{
 		// 			{
 		// 				ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 		// 					Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 					Type: to.Ptr("CustomLocation"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+		// 				ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesVersions/default"),
 		// 				Location: to.Ptr("location"),
-		// 				Name: to.Ptr("volumeName"),
-		// 				Properties: &armnetworkcloud.VolumeProperties{
-		// 					AllocatedSizeMiB: to.Ptr[int64](1048576),
-		// 					AssignedStorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
-		// 					AttachedTo: []*string{
-		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
+		// 				Name: to.Ptr("default"),
+		// 				Properties: &armnetworkcloud.KubernetesVersionProperties{
+		// 					ProvisioningState: to.Ptr(armnetworkcloud.KubernetesVersionProvisioningStateSucceeded),
+		// 					Values: []*armnetworkcloud.KubernetesVersionValue{
+		// 						{
+		// 							Description: to.Ptr("Version Description"),
+		// 							Version: to.Ptr("1.28.3"),
+		// 						},
+		// 						{
+		// 							Description: to.Ptr("Version Description"),
+		// 							Version: to.Ptr("1.27.7"),
+		// 						},
 		// 					},
-		// 					DetailedStatus: to.Ptr(armnetworkcloud.VolumeDetailedStatusActive),
-		// 					DetailedStatusMessage: to.Ptr("Volume is available"),
-		// 					ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
-		// 					SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
-		// 					SizeMiB: to.Ptr[int64](1048576),
-		// 					StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
@@ -224,7 +221,7 @@ func ExampleVolumesClient_NewListByResourceGroupPager() {
 		// 					"key1": to.Ptr("myvalue1"),
 		// 					"key2": to.Ptr("myvalue2"),
 		// 				},
-		// 				Type: to.Ptr("Microsoft.NetworkCloud/volumes"),
+		// 				Type: to.Ptr("Microsoft.NetworkCloud/kubernetesVersions"),
 		// 			},
 		// 		},
 		// 	},
@@ -232,8 +229,8 @@ func ExampleVolumesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_ListBySubscription.json
-func ExampleVolumesClient_NewListBySubscriptionPager() {
+// Generated from example definition: 2026-05-01-preview/KubernetesVersions_ListBySubscription.json
+func ExampleKubernetesVersionsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -243,7 +240,7 @@ func ExampleVolumesClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVolumesClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewKubernetesVersionsClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -254,30 +251,30 @@ func ExampleVolumesClient_NewListBySubscriptionPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetworkcloud.VolumesClientListBySubscriptionResponse{
-		// 	VolumeList: armnetworkcloud.VolumeList{
+		// page = armnetworkcloud.KubernetesVersionsClientListBySubscriptionResponse{
+		// 	KubernetesVersionList: armnetworkcloud.KubernetesVersionList{
 		// 		NextLink: to.Ptr("https://fully.qualified.hyperlink"),
-		// 		Value: []*armnetworkcloud.Volume{
+		// 		Value: []*armnetworkcloud.KubernetesVersion{
 		// 			{
 		// 				ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 		// 					Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 					Type: to.Ptr("CustomLocation"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+		// 				ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesVersions/default"),
 		// 				Location: to.Ptr("location"),
-		// 				Name: to.Ptr("volumeName"),
-		// 				Properties: &armnetworkcloud.VolumeProperties{
-		// 					AllocatedSizeMiB: to.Ptr[int64](1048576),
-		// 					AssignedStorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
-		// 					AttachedTo: []*string{
-		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
+		// 				Name: to.Ptr("default"),
+		// 				Properties: &armnetworkcloud.KubernetesVersionProperties{
+		// 					ProvisioningState: to.Ptr(armnetworkcloud.KubernetesVersionProvisioningStateSucceeded),
+		// 					Values: []*armnetworkcloud.KubernetesVersionValue{
+		// 						{
+		// 							Description: to.Ptr("Version Description"),
+		// 							Version: to.Ptr("1.28.3"),
+		// 						},
+		// 						{
+		// 							Description: to.Ptr("Version Description"),
+		// 							Version: to.Ptr("1.27.7"),
+		// 						},
 		// 					},
-		// 					DetailedStatus: to.Ptr(armnetworkcloud.VolumeDetailedStatusActive),
-		// 					DetailedStatusMessage: to.Ptr("Volume is available"),
-		// 					ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
-		// 					SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
-		// 					SizeMiB: to.Ptr[int64](1048576),
-		// 					StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
@@ -291,7 +288,7 @@ func ExampleVolumesClient_NewListBySubscriptionPager() {
 		// 					"key1": to.Ptr("myvalue1"),
 		// 					"key2": to.Ptr("myvalue2"),
 		// 				},
-		// 				Type: to.Ptr("Microsoft.NetworkCloud/volumes"),
+		// 				Type: to.Ptr("Microsoft.NetworkCloud/kubernetesVersions"),
 		// 			},
 		// 		},
 		// 	},
@@ -299,8 +296,8 @@ func ExampleVolumesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Patch.json
-func ExampleVolumesClient_Update() {
+// Generated from example definition: 2026-05-01-preview/KubernetesVersions_UpdateTags.json
+func ExampleKubernetesVersionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -310,7 +307,7 @@ func ExampleVolumesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVolumesClient().Update(ctx, "resourceGroupName", "volumeName", armnetworkcloud.VolumePatchParameters{
+	poller, err := clientFactory.NewKubernetesVersionsClient().BeginUpdate(ctx, "resourceGroupName", "default", armnetworkcloud.KubernetesVersionPatchParameters{
 		Tags: map[string]*string{
 			"key1": to.Ptr("myvalue1"),
 			"key2": to.Ptr("myvalue2"),
@@ -319,30 +316,34 @@ func ExampleVolumesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.VolumesClientUpdateResponse{
-	// 	Volume: armnetworkcloud.Volume{
+	// res = armnetworkcloud.KubernetesVersionsClientUpdateResponse{
+	// 	KubernetesVersion: armnetworkcloud.KubernetesVersion{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesVersions/default"),
 	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("volumeName"),
-	// 		Properties: &armnetworkcloud.VolumeProperties{
-	// 			AllocatedSizeMiB: to.Ptr[int64](1048576),
-	// 			AssignedStorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
-	// 			AttachedTo: []*string{
-	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
+	// 		Name: to.Ptr("default"),
+	// 		Properties: &armnetworkcloud.KubernetesVersionProperties{
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesVersionProvisioningStateSucceeded),
+	// 			Values: []*armnetworkcloud.KubernetesVersionValue{
+	// 				{
+	// 					Description: to.Ptr("Version Description"),
+	// 					Version: to.Ptr("1.28.3"),
+	// 				},
+	// 				{
+	// 					Description: to.Ptr("Version Description"),
+	// 					Version: to.Ptr("1.27.7"),
+	// 				},
 	// 			},
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.VolumeDetailedStatusActive),
-	// 			DetailedStatusMessage: to.Ptr("Volume is available"),
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
-	// 			SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
-	// 			SizeMiB: to.Ptr[int64](1048576),
-	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
@@ -356,7 +357,7 @@ func ExampleVolumesClient_Update() {
 	// 			"key1": to.Ptr("myvalue1"),
 	// 			"key2": to.Ptr("myvalue2"),
 	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/volumes"),
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/kubernetesVersions"),
 	// 	},
 	// }
 }

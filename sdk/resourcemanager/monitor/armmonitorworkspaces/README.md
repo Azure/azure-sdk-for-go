@@ -1,6 +1,6 @@
-# Azure Monitor Module for Go
+# Azure Monitor Accounts Module for Go
 
-The `armmonitorworkspaces` module provides operations for working with Azure Monitor.
+The `armmonitorworkspaces` module provides operations for working with Azure Monitor Accounts.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/monitor/armmonitorworkspaces)
 
@@ -15,7 +15,7 @@ The `armmonitorworkspaces` module provides operations for working with Azure Mon
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Monitor module:
+Install the Azure Monitor Accounts module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitorworkspaces
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitorw
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Monitor.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Monitor Accounts.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Monitor module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Monitor Accounts module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armmonitorworkspaces.NewClientFactory(<subscription ID>, cred, nil)

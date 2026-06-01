@@ -751,3 +751,33 @@ func TestSubjectAlternativeNames(t *testing.T) {
 
 	testSerde(t, sans)
 }
+
+// TestPlatformManaged exercises the experimental PlatformManaged property on
+// CertificatePolicy. The feature is intended for internal Azure Key Vault usage
+// only; calls made by external customers are expected to fail. This test
+// confirms that the SDK serializes PlatformManaged correctly and that the
+// service responds with the documented 400 BadParameter error, which is
+// captured in the recording so the behavior is verifiable in playback.
+func TestPlatformManaged(t *testing.T) {
+	client := startTest(t)
+
+	certName := getName(t, "platformmanaged")
+	policy := azcertificates.CertificatePolicy{
+		IssuerParameters: &azcertificates.IssuerParameters{Name: to.Ptr("Self")},
+		PlatformManaged: azcertificates.NewPlatformManaged("serverAuth", map[string]any{
+			"sans": map[string]any{
+				"dns_names": []string{"example.contoso.com"},
+			},
+		}),
+	}
+	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &policy}
+	testSerde(t, &createParams)
+
+	_, err := client.CreateCertificate(ctx, certName, createParams, nil)
+	require.Error(t, err)
+
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusBadRequest, respErr.StatusCode)
+	require.Contains(t, respErr.Error(), "certificateUsage")
+}

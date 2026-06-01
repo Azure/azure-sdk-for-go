@@ -86,7 +86,7 @@ func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 	// random seed and tile it via randomStream so --size can be arbitrarily
 	// large without OOMing the process.
 	if uploadMethod == "buffer" {
-		payload, err := generateRandomBytes(uploadTestOpts.size)
+		payload, err := generateRandomBytes(int64(uploadTestOpts.size))
 		if err != nil {
 			return nil, err
 		}

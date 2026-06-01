@@ -56,7 +56,7 @@ func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Gl
 	if err != nil {
 		return nil, err
 	}
-	_, err = containerClient.Create(context.Background(), nil)
+	_, err = containerClient.Create(ctx, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Gl
 		return nil, err
 	}
 	_, err = blobClient.UploadStream(
-		context.Background(),
+		ctx,
 		newRandomStream(seed, int64(d.size)),
 		&blockblob.UploadStreamOptions{
 			BlockSize:   commonBlockSize,
@@ -98,7 +98,7 @@ func (d *downloadTestGlobal) GlobalCleanup(ctx context.Context) error {
 		return err
 	}
 
-	_, err = containerClient.Delete(context.Background(), nil)
+	_, err = containerClient.Delete(ctx, nil)
 	return err
 }
 

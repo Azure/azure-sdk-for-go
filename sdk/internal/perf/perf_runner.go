@@ -127,6 +127,10 @@ func (r *perfRunner) Run() error {
 		statusTick = time.Second
 	}
 	r.ticker = time.NewTicker(statusTick)
+	// Ensure the ticker is released even if the run returns early (e.g. a
+	// setup/bootstrap error short-circuits the function before r.done is
+	// signaled). time.Ticker.Stop is safe to call multiple times.
+	defer r.ticker.Stop()
 
 	// Poller for printing
 	go func() {

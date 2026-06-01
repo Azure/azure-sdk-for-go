@@ -51,7 +51,7 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 	if err != nil {
 		return nil, err
 	}
-	_, err = containerClient.Create(context.Background(), nil)
+	_, err = containerClient.Create(ctx, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 	emptyBody := NopCloser(bytes.NewReader(nil))
 	for i := 0; i < listTestOpts.count; i++ {
 		blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobPrefix, i))
-		if _, err = blobClient.Upload(context.Background(), emptyBody, nil); err != nil {
+		if _, err = blobClient.Upload(ctx, emptyBody, nil); err != nil {
 			return nil, err
 		}
 	}
@@ -81,7 +81,7 @@ func (l *listTestGlobal) GlobalCleanup(ctx context.Context) error {
 		return err
 	}
 
-	_, err = containerClient.Delete(context.Background(), nil)
+	_, err = containerClient.Delete(ctx, nil)
 	return err
 }
 

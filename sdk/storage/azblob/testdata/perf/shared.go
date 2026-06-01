@@ -9,6 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"runtime"
 	"strconv"
@@ -91,9 +92,17 @@ func (u *uint16Flag) Set(value string) error {
 
 // generateRandomBytes returns size bytes of random data, suitable for use as an
 // in-memory payload for upload tests.
-func generateRandomBytes(size int) ([]byte, error) {
+//
+// size is typed as int64 to match the rest of the perf code (e.g.
+// uploadTestGlobal.size) and to make overflow on 32-bit platforms (or from a
+// JSON workload-config value beyond math.MaxInt) a deterministic, actionable
+// error rather than a silent truncation inside make.
+func generateRandomBytes(size int64) ([]byte, error) {
 	if size < 0 {
 		return nil, fmt.Errorf("invalid size %d", size)
+	}
+	if size > int64(math.MaxInt) {
+		return nil, fmt.Errorf("size %d exceeds platform max int (%d); use a streaming method for payloads larger than %d bytes", size, int64(math.MaxInt), int64(math.MaxInt))
 	}
 	buf := make([]byte, size)
 	if size == 0 {

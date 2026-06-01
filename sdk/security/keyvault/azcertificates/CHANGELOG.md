@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+- Default service API version moved to `2026-03-01-preview`. Pin via `ClientOptions.APIVersion` to stay on `2025-07-01`.
+
 ## 1.5.0 (2026-05-26)
 
 ### Features Added

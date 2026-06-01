@@ -43,7 +43,7 @@ func NewClusterManagersClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreateOrUpdate - Create a new cluster manager or update properties of the cluster manager if it exists.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterManagerName - The name of the cluster manager.
 //   - clusterManagerParameters - The request body.
@@ -69,7 +69,7 @@ func (client *ClusterManagersClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - Create a new cluster manager or update properties of the cluster manager if it exists.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-05-01-preview
 func (client *ClusterManagersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterManagerName string, clusterManagerParameters ClusterManager, options *ClusterManagersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClusterManagersClient.BeginCreateOrUpdate"
@@ -111,7 +111,7 @@ func (client *ClusterManagersClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -130,7 +130,7 @@ func (client *ClusterManagersClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Delete the provided cluster manager.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterManagerName - The name of the cluster manager.
 //   - options - ClusterManagersClientBeginDeleteOptions contains the optional parameters for the ClusterManagersClient.BeginDelete
@@ -155,7 +155,7 @@ func (client *ClusterManagersClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete the provided cluster manager.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-05-01-preview
 func (client *ClusterManagersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClusterManagersClient.BeginDelete"
@@ -197,7 +197,7 @@ func (client *ClusterManagersClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -211,7 +211,7 @@ func (client *ClusterManagersClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get the properties of the provided cluster manager.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterManagerName - The name of the cluster manager.
 //   - options - ClusterManagersClientGetOptions contains the optional parameters for the ClusterManagersClient.Get method.
@@ -257,7 +257,7 @@ func (client *ClusterManagersClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -274,7 +274,7 @@ func (client *ClusterManagersClient) getHandleResponse(resp *http.Response) (Clu
 
 // NewListByResourceGroupPager - Get a list of cluster managers in the provided resource group.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClusterManagersClientListByResourceGroupOptions contains the optional parameters for the ClusterManagersClient.NewListByResourceGroupPager
 //     method.
@@ -323,7 +323,7 @@ func (client *ClusterManagersClient) listByResourceGroupCreateRequest(ctx contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -340,7 +340,7 @@ func (client *ClusterManagersClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - Get a list of cluster managers in the provided subscription.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-05-01-preview
 //   - options - ClusterManagersClientListBySubscriptionOptions contains the optional parameters for the ClusterManagersClient.NewListBySubscriptionPager
 //     method.
 func (client *ClusterManagersClient) NewListBySubscriptionPager(options *ClusterManagersClientListBySubscriptionOptions) *runtime.Pager[ClusterManagersClientListBySubscriptionResponse] {
@@ -384,7 +384,7 @@ func (client *ClusterManagersClient) listBySubscriptionCreateRequest(ctx context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -403,7 +403,7 @@ func (client *ClusterManagersClient) listBySubscriptionHandleResponse(resp *http
 // and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterManagerName - The name of the cluster manager.
 //   - clusterManagerUpdateParameters - The request body.
@@ -450,7 +450,7 @@ func (client *ClusterManagersClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2026-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -473,4 +473,90 @@ func (client *ClusterManagersClient) updateHandleResponse(resp *http.Response) (
 		return ClusterManagersClientUpdateResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginUpdateRelayPrivateEndpointConnection - Update the private endpoint connection for the Azure Relay namespace managed
+// by the specified cluster manager. Use this operation to approve or reject a pending private endpoint connection request
+// for the relay namespace managed by the cluster manager.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterManagerName - The name of the cluster manager.
+//   - options - ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions contains the optional parameters for the
+//     ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection method.
+func (client *ClusterManagersClient) BeginUpdateRelayPrivateEndpointConnection(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions) (*runtime.Poller[ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateRelayPrivateEndpointConnection(ctx, resourceGroupName, clusterManagerName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// UpdateRelayPrivateEndpointConnection - Update the private endpoint connection for the Azure Relay namespace managed by
+// the specified cluster manager. Use this operation to approve or reject a pending private endpoint connection request for
+// the relay namespace managed by the cluster manager.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
+func (client *ClusterManagersClient) updateRelayPrivateEndpointConnection(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateRelayPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, clusterManagerName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateRelayPrivateEndpointConnectionCreateRequest creates the UpdateRelayPrivateEndpointConnection request.
+func (client *ClusterManagersClient) updateRelayPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusterManagers/{clusterManagerName}/updateRelayPrivateEndpointConnection"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterManagerName == "" {
+		return nil, errors.New("parameter clusterManagerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterManagerName}", url.PathEscape(clusterManagerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	if options != nil && options.ClusterManagerUpdateRelayPrivateEndpointConnectionParameters != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.ClusterManagerUpdateRelayPrivateEndpointConnectionParameters); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
 }

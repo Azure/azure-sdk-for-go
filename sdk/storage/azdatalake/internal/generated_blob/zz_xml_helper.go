@@ -15,6 +15,40 @@ import (
 
 type additionalProperties map[string]*string
 
+// MarshalXML implements the xml.Marshaler interface for additionalProperties.
+func (ap additionalProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	if err := e.EncodeToken(start); err != nil {
+		return err
+	}
+	for k, v := range ap {
+		err := e.EncodeToken(xml.StartElement{
+			Name: xml.Name{
+				Local: k,
+			},
+		})
+		if err != nil {
+			return err
+		}
+		if v != nil {
+			err = e.EncodeToken(xml.CharData(*v))
+			if err != nil {
+				return err
+			}
+		}
+		err = e.EncodeToken(xml.EndElement{
+			Name: xml.Name{
+				Local: k,
+			},
+		})
+		if err != nil {
+			return err
+		}
+	}
+	return e.EncodeToken(xml.EndElement{
+		Name: start.Name,
+	})
+}
+
 // UnmarshalXML implements the xml.Unmarshaler interface for additionalProperties.
 func (ap *additionalProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	tokName := ""

@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"reflect"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -42,6 +43,10 @@ type ClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, options *armnetworkcloud.ClustersClientGetOptions) (resp azfake.Responder[armnetworkcloud.ClustersClientGetResponse], errResp azfake.ErrorResponder)
 
+	// BeginInspect is the fake for method ClustersClient.BeginInspect
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginInspect func(ctx context.Context, resourceGroupName string, clusterName string, options *armnetworkcloud.ClustersClientBeginInspectOptions) (resp azfake.PollerResponder[armnetworkcloud.ClustersClientInspectResponse], errResp azfake.ErrorResponder)
+
 	// NewListByResourceGroupPager is the fake for method ClustersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetworkcloud.ClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetworkcloud.ClustersClientListByResourceGroupResponse])
@@ -49,6 +54,10 @@ type ClustersServer struct {
 	// NewListBySubscriptionPager is the fake for method ClustersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetworkcloud.ClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.ClustersClientListBySubscriptionResponse])
+
+	// BeginRotateCredential is the fake for method ClustersClient.BeginRotateCredential
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRotateCredential func(ctx context.Context, resourceGroupName string, clusterName string, body armnetworkcloud.ClusterRotateCredentialParameters, options *armnetworkcloud.ClustersClientBeginRotateCredentialOptions) (resp azfake.PollerResponder[armnetworkcloud.ClustersClientRotateCredentialResponse], errResp azfake.ErrorResponder)
 
 	// BeginScanRuntime is the fake for method ClustersClient.BeginScanRuntime
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -73,8 +82,10 @@ func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientDeleteResponse]](),
 		beginDeploy:                 newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientDeployResponse]](),
+		beginInspect:                newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientInspectResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListBySubscriptionResponse]](),
+		beginRotateCredential:       newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientRotateCredentialResponse]](),
 		beginScanRuntime:            newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientScanRuntimeResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientUpdateResponse]](),
 		beginUpdateVersion:          newTracker[azfake.PollerResponder[armnetworkcloud.ClustersClientUpdateVersionResponse]](),
@@ -89,8 +100,10 @@ type ClustersServerTransport struct {
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientDeleteResponse]]
 	beginDeploy                 *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientDeployResponse]]
+	beginInspect                *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientInspectResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.ClustersClientListBySubscriptionResponse]]
+	beginRotateCredential       *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientRotateCredentialResponse]]
 	beginScanRuntime            *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientScanRuntimeResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientUpdateResponse]]
 	beginUpdateVersion          *tracker[azfake.PollerResponder[armnetworkcloud.ClustersClientUpdateVersionResponse]]
@@ -108,9 +121,7 @@ func (c *ClustersServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -129,10 +140,14 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchBeginDeploy(req)
 			case "ClustersClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
+			case "ClustersClient.BeginInspect":
+				res.resp, res.err = c.dispatchBeginInspect(req)
 			case "ClustersClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ClustersClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
+			case "ClustersClient.BeginRotateCredential":
+				res.resp, res.err = c.dispatchBeginRotateCredential(req)
 			case "ClustersClient.BeginScanRuntime":
 				res.resp, res.err = c.dispatchBeginScanRuntime(req)
 			case "ClustersClient.BeginUpdate":
@@ -144,10 +159,7 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -195,7 +207,7 @@ func (c *ClustersServerTransport) dispatchBeginContinueUpdateVersion(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginContinueUpdateVersion.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -252,7 +264,7 @@ func (c *ClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		c.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -305,7 +317,7 @@ func (c *ClustersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -359,7 +371,7 @@ func (c *ClustersServerTransport) dispatchBeginDeploy(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginDeploy.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -393,13 +405,67 @@ func (c *ClustersServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cluster, req)
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchBeginInspect(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginInspect == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginInspect not implemented")}
+	}
+	beginInspect := c.beginInspect.get(req)
+	if beginInspect == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inspect`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.ClusterInspectParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armnetworkcloud.ClustersClientBeginInspectOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armnetworkcloud.ClustersClientBeginInspectOptions{
+				ClusterInspectParameters: &body,
+			}
+		}
+		respr, errRespr := c.srv.BeginInspect(req.Context(), resourceGroupNameParam, clusterNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginInspect = &respr
+		c.beginInspect.add(req, beginInspect)
+	}
+
+	resp, err := server.PollerResponderNext(beginInspect, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginInspect.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginInspect) {
+		c.beginInspect.remove(req)
+	}
+
 	return resp, nil
 }
 
@@ -420,11 +486,7 @@ func (c *ClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.
 		if err != nil {
 			return nil, err
 		}
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -434,11 +496,7 @@ func (c *ClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.
 		if err != nil {
 			return nil, err
 		}
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armnetworkcloud.ClustersClientListByResourceGroupOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetworkcloud.ClustersClientListByResourceGroupOptions{
@@ -457,7 +515,7 @@ func (c *ClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -480,11 +538,7 @@ func (c *ClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -494,11 +548,7 @@ func (c *ClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armnetworkcloud.ClustersClientListBySubscriptionOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetworkcloud.ClustersClientListBySubscriptionOptions{
@@ -517,13 +567,61 @@ func (c *ClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchBeginRotateCredential(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginRotateCredential == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRotateCredential not implemented")}
+	}
+	beginRotateCredential := c.beginRotateCredential.get(req)
+	if beginRotateCredential == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rotateCredential`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.ClusterRotateCredentialParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginRotateCredential(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRotateCredential = &respr
+		c.beginRotateCredential.add(req, beginRotateCredential)
+	}
+
+	resp, err := server.PollerResponderNext(beginRotateCredential, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginRotateCredential.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRotateCredential) {
+		c.beginRotateCredential.remove(req)
+	}
+
 	return resp, nil
 }
 
@@ -570,7 +668,7 @@ func (c *ClustersServerTransport) dispatchBeginScanRuntime(req *http.Request) (*
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginScanRuntime.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -627,7 +725,7 @@ func (c *ClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -675,7 +773,7 @@ func (c *ClustersServerTransport) dispatchBeginUpdateVersion(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginUpdateVersion.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

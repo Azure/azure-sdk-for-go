@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -25,8 +26,6 @@ type ServiceClient struct {
 // GetProperties - Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
 // Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - options - ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
 func (client *ServiceClient) GetProperties(ctx context.Context, options *ServiceClientGetPropertiesOptions) (ServiceClientGetPropertiesResponse, error) {
 	var err error
@@ -53,17 +52,17 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("restype", "service")
 	reqQP.Set("comp", "properties")
+	reqQP.Set("restype", "service")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	return req, nil
 }
 
@@ -88,8 +87,6 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 // GetStatistics - Retrieves statistics related to replication for the Table service. It is only available on the secondary
 // location endpoint when read-access geo-redundant replication is enabled for the account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - options - ServiceClientGetStatisticsOptions contains the optional parameters for the ServiceClient.GetStatistics method.
 func (client *ServiceClient) GetStatistics(ctx context.Context, options *ServiceClientGetStatisticsOptions) (ServiceClientGetStatisticsResponse, error) {
 	var err error
@@ -116,17 +113,17 @@ func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("restype", "service")
 	reqQP.Set("comp", "stats")
+	reqQP.Set("restype", "service")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	return req, nil
 }
 
@@ -158,8 +155,6 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 // SetProperties - Sets properties for an account's Table service endpoint, including properties for Analytics and CORS (Cross-Origin
 // Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - tableServiceProperties - The Table Service properties.
 //   - options - ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
 func (client *ServiceClient) SetProperties(ctx context.Context, tableServiceProperties TableServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
@@ -187,17 +182,17 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, tab
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("restype", "service")
 	reqQP.Set("comp", "properties")
+	reqQP.Set("restype", "service")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if err := runtime.MarshalAsXML(req, tableServiceProperties); err != nil {
 		return nil, err
 	}

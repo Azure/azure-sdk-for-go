@@ -13,6 +13,15 @@ type AuthenticationSettingPropertiesClassification interface {
 	GetAuthenticationSettingProperties() *AuthenticationSettingProperties
 }
 
+// DiscoveryRuleSpecificationClassification provides polymorphic access to related types.
+// Call the interface's GetDiscoveryRuleSpecification() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ApplicationInsightsTopologySpecification, *DiscoveryRuleSpecification, *ResourceGraphQuerySpecification
+type DiscoveryRuleSpecificationClassification interface {
+	// GetDiscoveryRuleSpecification returns the DiscoveryRuleSpecification content of the underlying type.
+	GetDiscoveryRuleSpecification() *DiscoveryRuleSpecification
+}
+
 // SignalDefinitionPropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetSignalDefinitionProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -21,4 +30,13 @@ type AuthenticationSettingPropertiesClassification interface {
 type SignalDefinitionPropertiesClassification interface {
 	// GetSignalDefinitionProperties returns the SignalDefinitionProperties content of the underlying type.
 	GetSignalDefinitionProperties() *SignalDefinitionProperties
+}
+
+// SignalInstancePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetSignalInstanceProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureResourceSignal, *ExternalSignal, *LogAnalyticsSignal, *PrometheusMetricsSignal, *SignalInstanceProperties
+type SignalInstancePropertiesClassification interface {
+	// GetSignalInstanceProperties returns the SignalInstanceProperties content of the underlying type.
+	GetSignalInstanceProperties() *SignalInstanceProperties
 }

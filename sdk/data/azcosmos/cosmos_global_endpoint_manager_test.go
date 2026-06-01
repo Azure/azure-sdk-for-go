@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// cSpell:ignore azcosmosgemtest azcosmostest westus
+
 package azcosmos
 
 import (
@@ -88,7 +90,7 @@ func TestGlobalEndpointManagerMarkEndpointUnavailableForRead(t *testing.T) {
 	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
 	assert.NoError(t, err)
 
-	err = gem.MarkEndpointUnavailableForRead(*endpoint)
+	_, err = gem.MarkEndpointUnavailableForRead(*endpoint)
 	assert.NoError(t, err)
 
 	unavailable := gem.IsEndpointUnavailable(*endpoint, 1)
@@ -108,7 +110,7 @@ func TestGlobalEndpointManagerMarkEndpointUnavailableForWrite(t *testing.T) {
 	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
 	assert.NoError(t, err)
 
-	err = gem.MarkEndpointUnavailableForWrite(*endpoint)
+	_, err = gem.MarkEndpointUnavailableForWrite(*endpoint)
 	assert.NoError(t, err)
 
 	unavailable := gem.IsEndpointUnavailable(*endpoint, 2)

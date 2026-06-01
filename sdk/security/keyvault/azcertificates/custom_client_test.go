@@ -95,6 +95,7 @@ func TestCreateCertificateRequestIncludesPlatformManaged(t *testing.T) {
 
 	body, err := io.ReadAll(req.Raw().Body)
 	require.NoError(t, err)
+	require.NoError(t, req.Raw().Body.Close())
 	require.JSONEq(t, `{
 		"policy": {
 			"issuer": {"name": "Self"},
@@ -127,6 +128,7 @@ func TestUpdateCertificatePolicyRequestIncludesPlatformManaged(t *testing.T) {
 
 	body, err := io.ReadAll(req.Raw().Body)
 	require.NoError(t, err)
+	require.NoError(t, req.Raw().Body.Close())
 	require.JSONEq(t, `{
 		"issuer": {"name": "Self"},
 		"platformManaged": {

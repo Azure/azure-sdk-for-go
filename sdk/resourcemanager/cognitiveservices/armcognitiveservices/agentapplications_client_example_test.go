@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-15-preview/AgentApplication/createOrUpdate.json
+// Generated from example definition: 2026-03-15-preview/AgentApplication/createOrUpdate.json
 func ExampleAgentApplicationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,13 +38,13 @@ func ExampleAgentApplicationsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AgentApplicationsClientCreateOrUpdateResponse{
-	// 	AgentApplication: &armcognitiveservices.AgentApplication{
+	// 	AgentApplication: armcognitiveservices.AgentApplication{
 	// 		Name: to.Ptr("agent-app-1"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/applications"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.CognitiveServices/accounts/my-cognitive-services-account/projects/my-project/applications/agent-app-1"),
@@ -69,7 +69,7 @@ func ExampleAgentApplicationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/AgentApplication/delete.json
+// Generated from example definition: 2026-03-15-preview/AgentApplication/delete.json
 func ExampleAgentApplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,11 +86,11 @@ func ExampleAgentApplicationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/AgentApplication/disable.json
+// Generated from example definition: 2026-03-15-preview/AgentApplication/disable.json
 func ExampleAgentApplicationsClient_Disable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleAgentApplicationsClient_Disable() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/AgentApplication/enable.json
+// Generated from example definition: 2026-03-15-preview/AgentApplication/enable.json
 func ExampleAgentApplicationsClient_Enable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleAgentApplicationsClient_Enable() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/AgentApplication/get.json
+// Generated from example definition: 2026-03-15-preview/AgentApplication/get.json
 func ExampleAgentApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleAgentApplicationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AgentApplicationsClientGetResponse{
-	// 	AgentApplication: &armcognitiveservices.AgentApplication{
+	// 	AgentApplication: armcognitiveservices.AgentApplication{
 	// 		Name: to.Ptr("agent-app-1"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/applications"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.CognitiveServices/accounts/my-cognitive-services-account/projects/my-project/applications/agent-app-1"),
@@ -177,7 +177,7 @@ func ExampleAgentApplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/AgentApplication/list.json
+// Generated from example definition: 2026-03-15-preview/AgentApplication/list.json
 func ExampleAgentApplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleAgentApplicationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/AgentApplication/listAgents.json
+// Generated from example definition: 2026-03-15-preview/AgentApplication/listAgents.json
 func ExampleAgentApplicationsClient_ListAgents() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExampleAgentApplicationsClient_ListAgents() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AgentApplicationsClientListAgentsResponse{
-	// 	AgentReferenceResourceArmPaginatedResult: &armcognitiveservices.AgentReferenceResourceArmPaginatedResult{
+	// 	AgentReferenceResourceArmPaginatedResult: armcognitiveservices.AgentReferenceResourceArmPaginatedResult{
 	// 		NextLink: nil,
 	// 		Value: []*armcognitiveservices.AgentReference{
 	// 			{

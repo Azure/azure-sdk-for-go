@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/Gates_Get.json
+// Generated from example definition: 2026-03-02-preview/Gates_Get.json
 func ExampleGatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleGatesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.GatesClientGetResponse{
-	// 	Gate: &armcontainerservicefleet.Gate{
+	// 	Gate: armcontainerservicefleet.Gate{
 	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1/gates/12345678-910a-bcde-f000-000000000000"),
 	// 		Name: to.Ptr("12345678-910a-bcde-f000-000000000000"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/gates"),
@@ -63,7 +63,7 @@ func ExampleGatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/Gates_ListByFleet.json
+// Generated from example definition: 2026-03-02-preview/Gates_ListByFleet.json
 func ExampleGatesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleGatesClient_NewListByFleetPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/Gates_Update.json
+// Generated from example definition: 2026-03-02-preview/Gates_Update.json
 func ExampleGatesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,13 +144,13 @@ func ExampleGatesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.GatesClientUpdateResponse{
-	// 	Gate: &armcontainerservicefleet.Gate{
+	// 	Gate: armcontainerservicefleet.Gate{
 	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1/gates/12345678-910a-bcde-f000-000000000000"),
 	// 		Name: to.Ptr("12345678-910a-bcde-f000-000000000000"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/gates"),

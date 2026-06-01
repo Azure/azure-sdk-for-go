@@ -18,6 +18,8 @@ import (
 
 // ProjectCapabilityHostsClient contains the methods for the ProjectCapabilityHosts group.
 // Don't use this type directly, use NewProjectCapabilityHostsClient() instead.
+//
+// Generated from API version 2026-03-15-preview
 type ProjectCapabilityHostsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewProjectCapabilityHostsClient(subscriptionID string, credential azcore.To
 //
 // Create or update project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -74,8 +74,6 @@ func (client *ProjectCapabilityHostsClient) BeginCreateOrUpdate(ctx context.Cont
 //
 // Create or update project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 func (client *ProjectCapabilityHostsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost ProjectCapabilityHost, options *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectCapabilityHostsClient.BeginCreateOrUpdate"
@@ -125,8 +123,8 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, capabilityHost); err != nil {
@@ -139,8 +137,6 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 //
 // Delete project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -168,8 +164,6 @@ func (client *ProjectCapabilityHostsClient) BeginDelete(ctx context.Context, res
 //
 // Delete project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 func (client *ProjectCapabilityHostsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, options *ProjectCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectCapabilityHostsClient.BeginDelete"
@@ -219,8 +213,8 @@ func (client *ProjectCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -228,8 +222,6 @@ func (client *ProjectCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 //
 // Get project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -286,8 +278,8 @@ func (client *ProjectCapabilityHostsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -304,8 +296,6 @@ func (client *ProjectCapabilityHostsClient) getHandleResponse(resp *http.Respons
 // NewListPager - List capabilityHost.
 //
 // List capabilityHost.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -358,8 +348,8 @@ func (client *ProjectCapabilityHostsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-06-01/storageTaskAssignmentsCrud/PutStorageTaskAssignment.json
+// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignment.json
 func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,13 +54,13 @@ func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TaskAssignmentsClientCreateResponse{
-	// 	TaskAssignment: &armstorage.TaskAssignment{
+	// 	TaskAssignment: armstorage.TaskAssignment{
 	// 		Name: to.Ptr("myassignment1"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/storageTaskAssignments"),
 	// 		ID: to.Ptr("/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.Storage/storageAccounts/sto4445/storageTaskAssignments/myassignment1"),
@@ -93,7 +93,82 @@ func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignment() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentRequiredProperties.json
+// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentMockRun.json
+func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignmentMockRun() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("1f31ba14-ce16-4281-b9b4-3e78da6e1616", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTaskAssignmentsClient().BeginCreate(ctx, "res4228", "sto4445", "myassignment1", armstorage.TaskAssignment{
+		Properties: &armstorage.TaskAssignmentProperties{
+			TaskID:      to.Ptr("/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.StorageActions/storageTasks/myStorageTask"),
+			Enabled:     to.Ptr(true),
+			Description: to.Ptr("My Storage task assignment for testing"),
+			ExecutionContext: &armstorage.TaskAssignmentExecutionContext{
+				Trigger: &armstorage.ExecutionTrigger{
+					Type: to.Ptr(armstorage.TriggerTypeMockRun),
+					Parameters: &armstorage.TriggerParameters{
+						StartOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T00:00:00.1234567Z"); return t }()),
+					},
+				},
+				Target: &armstorage.ExecutionTarget{
+					Prefix:        []*string{},
+					ExcludePrefix: []*string{},
+				},
+			},
+			Report: &armstorage.TaskAssignmentReport{
+				Prefix: to.Ptr("reports"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.TaskAssignmentsClientCreateResponse{
+	// 	TaskAssignment: armstorage.TaskAssignment{
+	// 		ID: to.Ptr("/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.Storage/storageAccounts/sto4445/storageTaskAssignments/myassignment1"),
+	// 		Name: to.Ptr("myassignment1"),
+	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/storageTaskAssignments"),
+	// 		Properties: &armstorage.TaskAssignmentProperties{
+	// 			TaskID: to.Ptr("/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.StorageActions/storageTasks/myStorageTask"),
+	// 			Enabled: to.Ptr(true),
+	// 			Description: to.Ptr("My Storage task assignment for testing"),
+	// 			ProvisioningState: to.Ptr(armstorage.StorageTaskAssignmentProvisioningStateValidateSubscriptionQuotaBegin),
+	// 			ExecutionContext: &armstorage.TaskAssignmentExecutionContext{
+	// 				Trigger: &armstorage.ExecutionTrigger{
+	// 					Type: to.Ptr(armstorage.TriggerTypeMockRun),
+	// 					Parameters: &armstorage.TriggerParameters{
+	// 						StartOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T00:00:00.1234567Z"); return t}()),
+	// 					},
+	// 				},
+	// 				Target: &armstorage.ExecutionTarget{
+	// 					Prefix: []*string{
+	// 					},
+	// 					ExcludePrefix: []*string{
+	// 					},
+	// 				},
+	// 			},
+	// 			Report: &armstorage.TaskAssignmentReport{
+	// 				Prefix: to.Ptr("reports"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentRequiredProperties.json
 func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignmentRequiredProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,13 +202,13 @@ func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignmentRequiredPr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TaskAssignmentsClientCreateResponse{
-	// 	TaskAssignment: &armstorage.TaskAssignment{
+	// 	TaskAssignment: armstorage.TaskAssignment{
 	// 		Name: to.Ptr("myassignment1"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/storageTaskAssignments"),
 	// 		ID: to.Ptr("/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.Storage/storageAccounts/sto4445/storageTaskAssignments/myassignment1"),
@@ -158,7 +233,7 @@ func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignmentRequiredPr
 	// }
 }
 
-// Generated from example definition: 2025-06-01/storageTaskAssignmentsCrud/DeleteStorageTaskAssignment.json
+// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/DeleteStorageTaskAssignment.json
 func ExampleTaskAssignmentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,11 +250,11 @@ func ExampleTaskAssignmentsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-06-01/storageTaskAssignmentsCrud/GetStorageTaskAssignment.json
+// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/GetStorageTaskAssignment.json
 func ExampleTaskAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +273,7 @@ func ExampleTaskAssignmentsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TaskAssignmentsClientGetResponse{
-	// 	TaskAssignment: &armstorage.TaskAssignment{
+	// 	TaskAssignment: armstorage.TaskAssignment{
 	// 		Name: to.Ptr("myassignment1"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/storageTaskAssignments"),
 	// 		ID: to.Ptr("/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.Storage/storageAccounts/sto4445/storageTaskAssignments/myassignment1"),
@@ -231,7 +306,7 @@ func ExampleTaskAssignmentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/storageTaskAssignmentsList/ListStorageTaskAssignmentsForAccount.json
+// Generated from example definition: 2025-08-01/storageTaskAssignmentsList/ListStorageTaskAssignmentsForAccount.json
 func ExampleTaskAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,7 +397,28 @@ func ExampleTaskAssignmentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/storageTaskAssignmentsCrud/PatchStorageTaskAssignment.json
+// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/StopStorageTaskAssignment.json
+func ExampleTaskAssignmentsClient_BeginStopAssignment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("1f31ba14-ce16-4281-b9b4-3e78da6e1616", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTaskAssignmentsClient().BeginStopAssignment(ctx, "res4228", "sto4445", "myassignment1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/PatchStorageTaskAssignment.json
 func ExampleTaskAssignmentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,13 +458,13 @@ func ExampleTaskAssignmentsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TaskAssignmentsClientUpdateResponse{
-	// 	TaskAssignment: &armstorage.TaskAssignment{
+	// 	TaskAssignment: armstorage.TaskAssignment{
 	// 		Name: to.Ptr("myassignment1"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/storageTaskAssignments"),
 	// 		ID: to.Ptr("/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.Storage/storageAccounts/sto4445/storageTaskAssignments/myassignment1"),

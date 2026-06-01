@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2023-11-01-preview/UnsupportedVMSizesGet_example.json
+// Generated from example definition: 2026-03-01-preview/UnsupportedVMSizesGet_example.json
 func ExampleUnsupportedVMSizesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleUnsupportedVMSizesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01-preview/UnsupportedVMSizesList_example.json
+// Generated from example definition: 2026-03-01-preview/UnsupportedVMSizesList_example.json
 func ExampleUnsupportedVMSizesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

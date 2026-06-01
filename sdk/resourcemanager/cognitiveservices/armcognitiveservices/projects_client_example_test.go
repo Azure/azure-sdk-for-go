@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-15-preview/CreateProject.json
+// Generated from example definition: 2026-03-15-preview/CreateProject.json
 func ExampleProjectsClient_BeginCreate_createProject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,13 +38,13 @@ func ExampleProjectsClient_BeginCreate_createProject() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ProjectsClientCreateResponse{
-	// 	Project: &armcognitiveservices.Project{
+	// 	Project: armcognitiveservices.Project{
 	// 		Name: to.Ptr("testProject1"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-04-10T08%3A00%3A05.445595Z'\""),
@@ -70,7 +70,7 @@ func ExampleProjectsClient_BeginCreate_createProject() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/CreateProjectMin.json
+// Generated from example definition: 2026-03-15-preview/CreateProjectMin.json
 func ExampleProjectsClient_BeginCreate_createProjectMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,13 +93,13 @@ func ExampleProjectsClient_BeginCreate_createProjectMin() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ProjectsClientCreateResponse{
-	// 	Project: &armcognitiveservices.Project{
+	// 	Project: armcognitiveservices.Project{
 	// 		Name: to.Ptr("testProject1"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-04-10T08%3A00%3A05.445595Z'\""),
@@ -123,7 +123,7 @@ func ExampleProjectsClient_BeginCreate_createProjectMin() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/DeleteProject.json
+// Generated from example definition: 2026-03-15-preview/DeleteProject.json
 func ExampleProjectsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,13 +138,18 @@ func ExampleProjectsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.ProjectsClientDeleteResponse{
+	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/GetProject.json
+// Generated from example definition: 2026-03-15-preview/GetProject.json
 func ExampleProjectsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +168,7 @@ func ExampleProjectsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ProjectsClientGetResponse{
-	// 	Project: &armcognitiveservices.Project{
+	// 	Project: armcognitiveservices.Project{
 	// 		Name: to.Ptr("myProject"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-04-10T04%3A42%3A19.7067387Z'\""),
@@ -187,7 +192,7 @@ func ExampleProjectsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/ListProjects.json
+// Generated from example definition: 2026-03-15-preview/ListProjects.json
 func ExampleProjectsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +263,7 @@ func ExampleProjectsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/UpdateProjects.json
+// Generated from example definition: 2026-03-15-preview/UpdateProjects.json
 func ExampleProjectsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,13 +285,13 @@ func ExampleProjectsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ProjectsClientUpdateResponse{
-	// 	Project: &armcognitiveservices.Project{
+	// 	Project: armcognitiveservices.Project{
 	// 		Name: to.Ptr("projectName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-04-10T07%3A46%3A21.5618831Z'\""),

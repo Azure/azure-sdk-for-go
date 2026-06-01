@@ -184,50 +184,6 @@ func NewClient() *Client {
 		assert.True(t, hasPreview)
 	})
 
-	t.Run("Package with const preview API version", func(t *testing.T) {
-		packageDir := filepath.Join(tempDir, "constpreview")
-		err = os.MkdirAll(packageDir, 0755)
-		require.NoError(t, err)
-
-		goFile := filepath.Join(packageDir, "client.go")
-		goContent := `package constpreview
-
-const defaultClientVersion string = "2023-01-01-preview"
-
-func NewClient() *Client {
-	return &Client{}
-}
-`
-		err = os.WriteFile(goFile, []byte(goContent), 0644)
-		require.NoError(t, err)
-
-		hasPreview, err := containsPreviewAPIVersion(packageDir)
-		assert.NoError(t, err)
-		assert.True(t, hasPreview)
-	})
-
-	t.Run("Package with const stable API version", func(t *testing.T) {
-		packageDir := filepath.Join(tempDir, "conststable")
-		err = os.MkdirAll(packageDir, 0755)
-		require.NoError(t, err)
-
-		goFile := filepath.Join(packageDir, "client.go")
-		goContent := `package conststable
-
-const defaultClientVersion string = "2023-01-01"
-
-func NewClient() *Client {
-	return &Client{}
-}
-`
-		err = os.WriteFile(goFile, []byte(goContent), 0644)
-		require.NoError(t, err)
-
-		hasPreview, err := containsPreviewAPIVersion(packageDir)
-		assert.NoError(t, err)
-		assert.False(t, hasPreview)
-	})
-
 	t.Run("Package without preview API", func(t *testing.T) {
 		packageDir := filepath.Join(tempDir, "stable")
 		err = os.MkdirAll(packageDir, 0755)
@@ -282,6 +238,46 @@ func NewAnotherClient() *AnotherClient {
 		hasPreview, err := containsPreviewAPIVersion(packageDir)
 		assert.NoError(t, err)
 		assert.True(t, hasPreview)
+	})
+
+	t.Run("Package with new-style version const (preview)", func(t *testing.T) {
+		packageDir := filepath.Join(tempDir, "newconstpreview")
+		err = os.MkdirAll(packageDir, 0755)
+		require.NoError(t, err)
+
+		goFile := filepath.Join(packageDir, "constants.go")
+		goContent := `package newconstpreview
+
+const (
+	version20250525Preview string = "2025-05-25-preview"
+)
+`
+		err = os.WriteFile(goFile, []byte(goContent), 0644)
+		require.NoError(t, err)
+
+		hasPreview, err := containsPreviewAPIVersion(packageDir)
+		assert.NoError(t, err)
+		assert.True(t, hasPreview)
+	})
+
+	t.Run("Package with new-style version const (stable)", func(t *testing.T) {
+		packageDir := filepath.Join(tempDir, "newconststable")
+		err = os.MkdirAll(packageDir, 0755)
+		require.NoError(t, err)
+
+		goFile := filepath.Join(packageDir, "constants.go")
+		goContent := `package newconststable
+
+const (
+	version20191001 string = "2019-10-01"
+)
+`
+		err = os.WriteFile(goFile, []byte(goContent), 0644)
+		require.NoError(t, err)
+
+		hasPreview, err := containsPreviewAPIVersion(packageDir)
+		assert.NoError(t, err)
+		assert.False(t, hasPreview)
 	})
 
 	t.Run("Empty package directory", func(t *testing.T) {

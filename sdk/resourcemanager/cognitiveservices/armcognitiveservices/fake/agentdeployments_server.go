@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -79,9 +80,7 @@ func (a *AgentDeploymentsServerTransport) Do(req *http.Request) (*http.Response,
 }
 
 func (a *AgentDeploymentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -107,10 +106,7 @@ func (a *AgentDeploymentsServerTransport) dispatchToMethodFake(req *http.Request
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -170,7 +166,7 @@ func (a *AgentDeploymentsServerTransport) dispatchBeginCreateOrUpdate(req *http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		a.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -226,7 +222,7 @@ func (a *AgentDeploymentsServerTransport) dispatchBeginDelete(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -272,7 +268,7 @@ func (a *AgentDeploymentsServerTransport) dispatchGet(req *http.Request) (*http.
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AgentDeployment, req)
@@ -311,11 +307,7 @@ func (a *AgentDeploymentsServerTransport) dispatchNewListPager(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
-		if err != nil {
-			return nil, err
-		}
-		countParam, err := parseOptional(countUnescaped, func(v string) (int32, error) {
+		countParam, err := parseOptional(qp.Get("count"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -325,39 +317,18 @@ func (a *AgentDeploymentsServerTransport) dispatchNewListPager(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
-		namesEscaped := qp["names"]
-		namesParam := make([]string, len(namesEscaped))
-		for i, v := range namesEscaped {
-			u, unescapeErr := url.QueryUnescape(v)
-			if unescapeErr != nil {
-				return nil, unescapeErr
-			}
-			namesParam[i] = u
-		}
-		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
-		if err != nil {
-			return nil, err
-		}
-		orderByParam := getOptional(orderByUnescaped)
-		orderByAscUnescaped, err := url.QueryUnescape(qp.Get("orderByAsc"))
-		if err != nil {
-			return nil, err
-		}
-		orderByAscParam, err := parseOptional(orderByAscUnescaped, strconv.ParseBool)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		orderByParam := getOptional(qp.Get("orderBy"))
+		orderByAscParam, err := parseOptional(qp.Get("orderByAsc"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
 		var options *armcognitiveservices.AgentDeploymentsClientListOptions
-		if countParam != nil || skipTokenParam != nil || len(namesParam) > 0 || orderByParam != nil || orderByAscParam != nil {
+		if countParam != nil || skipTokenParam != nil || len(qp["names"]) > 0 || orderByParam != nil || orderByAscParam != nil {
 			options = &armcognitiveservices.AgentDeploymentsClientListOptions{
 				Count:      countParam,
 				SkipToken:  skipTokenParam,
-				Names:      namesParam,
+				Names:      qp["names"],
 				OrderBy:    orderByParam,
 				OrderByAsc: orderByAscParam,
 			}
@@ -373,7 +344,7 @@ func (a *AgentDeploymentsServerTransport) dispatchNewListPager(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -418,7 +389,7 @@ func (a *AgentDeploymentsServerTransport) dispatchStart(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -463,7 +434,7 @@ func (a *AgentDeploymentsServerTransport) dispatchStop(req *http.Request) (*http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)

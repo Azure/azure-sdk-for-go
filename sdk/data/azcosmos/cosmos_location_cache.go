@@ -78,7 +78,17 @@ func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCro
 	}
 }
 
+// update refreshes the location cache. It acquires mapMutex internally; do
+// not call it while holding mapMutex (use updateLocked from inside such
+// sections). Public callers go through update; internal callers that already
+// hold the write lock call updateLocked.
 func (lc *locationCache) update(writeLocations []accountRegion, readLocations []accountRegion, prefList []string, enableMultipleWriteLocations *bool) error {
+	lc.mapMutex.Lock()
+	defer lc.mapMutex.Unlock()
+	return lc.updateLocked(writeLocations, readLocations, prefList, enableMultipleWriteLocations)
+}
+
+func (lc *locationCache) updateLocked(writeLocations []accountRegion, readLocations []accountRegion, prefList []string, enableMultipleWriteLocations *bool) error {
 	nextLoc := copyDatabaseAccountLocationsInfo(lc.locationInfo)
 	if prefList != nil {
 		nextLoc.prefLocations = prefList
@@ -86,7 +96,7 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 	if enableMultipleWriteLocations != nil {
 		lc.enableMultipleWriteLocations = *enableMultipleWriteLocations
 	}
-	lc.refreshStaleEndpoints()
+	lc.refreshStaleEndpointsLocked()
 	if readLocations != nil {
 		availReadEndpointsByLocation, availReadLocations, err := getEndpointsByLocation(readLocations)
 		if err != nil {
@@ -105,8 +115,29 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 		nextLoc.availWriteLocations = availWriteLocations
 	}
 
-	nextLoc.writeEndpoints = lc.getPrefAvailableEndpoints(nextLoc.availWriteEndpointsByLocation, nextLoc.availWriteLocations, write, lc.defaultEndpoint)
-	nextLoc.readEndpoints = lc.getPrefAvailableEndpoints(nextLoc.availReadEndpointsByLocation, nextLoc.availReadLocations, read, nextLoc.writeEndpoints[0])
+	// Choose regional fallbacks so the route lists never trail into the
+	// customer-supplied default endpoint. The only data-plane code path
+	// that may still hit the default endpoint is the degenerate "zero
+	// write regions on a write" case.
+	writeFallback := lc.defaultEndpoint
+	if len(nextLoc.availWriteLocations) > 0 {
+		if ep, ok := nextLoc.availWriteEndpointsByLocation[nextLoc.availWriteLocations[0]]; ok {
+			writeFallback = ep
+		}
+	}
+	nextLoc.writeEndpoints = lc.getPrefAvailableEndpointsLocked(nextLoc.availWriteEndpointsByLocation, nextLoc.availWriteLocations, nextLoc.prefLocations, write, writeFallback)
+	// Prefer the first available read region for the read fallback. Only
+	// fall back to the first write endpoint (or, transitively, the default
+	// endpoint) when the account advertises zero read regions -- accounts
+	// with valid read regions must never resolve a read to the default
+	// endpoint.
+	readFallback := nextLoc.writeEndpoints[0]
+	if len(nextLoc.availReadLocations) > 0 {
+		if ep, ok := nextLoc.availReadEndpointsByLocation[nextLoc.availReadLocations[0]]; ok {
+			readFallback = ep
+		}
+	}
+	nextLoc.readEndpoints = lc.getPrefAvailableEndpointsLocked(nextLoc.availReadEndpointsByLocation, nextLoc.availReadLocations, nextLoc.prefLocations, read, readFallback)
 	lc.lastUpdateTime = time.Now()
 	lc.locationInfo = nextLoc
 	// TODO: log
@@ -114,6 +145,14 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 }
 
 func (lc *locationCache) resolveServiceEndpoint(locationIndex int, resourceType resourceType, isWriteOperation, useWriteEndpoint bool) url.URL {
+	// Take a read lock for the duration of endpoint resolution. The
+	// fields read here (locationInfo, enableMultipleWriteLocations) are
+	// rewritten atomically under mapMutex.Lock() by update/updateLocked,
+	// and a concurrent forced refresh (e.g. from the retry policy's
+	// asyncForceRefreshGEM or the GEM policy's background refresh) can
+	// race with us without this lock.
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
 	if (isWriteOperation || useWriteEndpoint) && !lc.canUseMultipleWriteLocsToRoute(resourceType) {
 		if lc.enableCrossRegionRetries && len(lc.locationInfo.availWriteLocations) > 0 {
 			locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)
@@ -134,31 +173,50 @@ func (lc *locationCache) canUseMultipleWriteLocsToRoute(resourceType resourceTyp
 	return lc.canUseMultipleWriteLocs() && resourceType == resourceTypeDocument
 }
 
+// readEndpoints returns the cached preferred read endpoints, refreshing the
+// stale-endpoint set if the cache hasn't been updated within the
+// unavailableLocationExpirationTime AND at least one unavailability entry is
+// recorded. The refresh path used to call lc.update while still holding
+// mapMutex.RLock, which deadlocks with refreshStaleEndpoints's Lock()
+// (sync.RWMutex cannot upgrade RLock to Lock). We now capture the staleness
+// decision under RLock, release it, and let update acquire the write lock.
 func (lc *locationCache) readEndpoints() ([]url.URL, error) {
 	lc.mapMutex.RLock()
-	defer lc.mapMutex.RUnlock()
-	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
-		err := lc.update(nil, nil, nil, nil)
-		if err != nil {
+	stale := time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0
+	lc.mapMutex.RUnlock()
+	if stale {
+		if err := lc.update(nil, nil, nil, nil); err != nil {
 			return nil, err
 		}
 	}
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
 	return lc.locationInfo.readEndpoints, nil
 }
 
 func (lc *locationCache) writeEndpoints() ([]url.URL, error) {
 	lc.mapMutex.RLock()
-	defer lc.mapMutex.RUnlock()
-	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
-		err := lc.update(nil, nil, nil, nil)
-		if err != nil {
+	stale := time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0
+	lc.mapMutex.RUnlock()
+	if stale {
+		if err := lc.update(nil, nil, nil, nil); err != nil {
 			return nil, err
 		}
 	}
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
 	return lc.locationInfo.writeEndpoints, nil
 }
 
 func (lc *locationCache) getLocation(endpoint url.URL) string {
+	// Take a read lock for the duration of the lookup. The reads of
+	// locationInfo.availWriteEndpointsByLocation /
+	// availReadEndpointsByLocation and enableMultipleWriteLocations race
+	// the writes in update / updateLocked, especially now that the retry
+	// policy's asyncForceRefreshGEM can trigger a refresh concurrently
+	// with the data-plane lookup that calls into here.
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
 	firstLoc := ""
 	for location, uri := range lc.locationInfo.availWriteEndpointsByLocation {
 		if uri == endpoint {
@@ -183,35 +241,83 @@ func (lc *locationCache) getLocation(endpoint url.URL) string {
 	return ""
 }
 
+// canUseMultipleWriteLocs returns whether the account supports multi-master
+// writes. Callers that already hold lc.mapMutex use this; the public
+// CanUseMultipleWriteLocations entrypoint locks first.
 func (lc *locationCache) canUseMultipleWriteLocs() bool {
 	return lc.enableMultipleWriteLocations
 }
 
-func (lc *locationCache) markEndpointUnavailableForRead(endpoint url.URL) error {
-	return lc.markEndpointUnavailable(endpoint, read)
+func (lc *locationCache) CanUseMultipleWriteLocs() bool {
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
+	return lc.enableMultipleWriteLocations
 }
 
-func (lc *locationCache) markEndpointUnavailableForWrite(endpoint url.URL) error {
-	return lc.markEndpointUnavailable(endpoint, write)
+// sessionRetrySnapshot returns a coherent snapshot of the fields the
+// session-unavailable retry path needs to make a routing decision:
+// (canUseMultipleWriteLocs, availReadLocationCount, availWriteLocationCount).
+// Taking these reads under a single RLock prevents a concurrent
+// locationCache.update (e.g. from an async GEM refresh) from rewriting
+// enableMultipleWriteLocations between the multi-write branch decision
+// and the slice-length sampling that follows it.
+func (lc *locationCache) sessionRetrySnapshot() (multiWrite bool, readN, writeN int) {
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
+	return lc.enableMultipleWriteLocations,
+		len(lc.locationInfo.availReadLocations),
+		len(lc.locationInfo.availWriteLocations)
 }
 
-func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedOperations) error {
+func (lc *locationCache) markEndpointUnavailableForRead(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
+	return lc.markEndpointUnavailable(endpointKey(endpoint), read)
+}
+
+func (lc *locationCache) markEndpointUnavailableForWrite(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
+	return lc.markEndpointUnavailable(endpointKey(endpoint), write)
+}
+
+// endpointKey normalizes a url.URL to the form used as a key in
+// locationUnavailabilityInfoMap and stored in availReadEndpointsByLocation
+// / availWriteEndpointsByLocation: scheme + host only. Callers of
+// MarkEndpointUnavailable* commonly pass the full request URL (including
+// path, query, fragment, RawPath, etc.), which would never struct-equal
+// the base URLs the cache uses; without normalization the marks are
+// recorded under keys nothing else ever looks up and the demote step in
+// getPrefAvailableEndpointsLocked silently does nothing.
+func endpointKey(u url.URL) url.URL {
+	return url.URL{Scheme: u.Scheme, Host: u.Host}
+}
+
+// markEndpointUnavailable atomically samples whether the endpoint was already
+// unavailable for `op` and records the unavailability. Returning the prior
+// state from inside the same critical section that performs the mark
+// eliminates the check-then-act race exploited by concurrent callers.
+func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedOperations) (wasAlreadyUnavailable bool, err error) {
 	now := time.Now()
 	lc.mapMutex.Lock()
+	defer lc.mapMutex.Unlock()
 	if info, ok := lc.locationUnavailabilityInfoMap[endpoint]; ok {
+		wasAlreadyUnavailable = op&info.unavailableOps == op &&
+			time.Since(info.lastCheckTime) < lc.unavailableLocationExpirationTime
 		info.lastCheckTime = now
 		info.unavailableOps |= op
 		lc.locationUnavailabilityInfoMap[endpoint] = info
 	} else {
-		info = locationUnavailabilityInfo{
+		lc.locationUnavailabilityInfoMap[endpoint] = locationUnavailabilityInfo{
 			lastCheckTime:  now,
 			unavailableOps: op,
 		}
-		lc.locationUnavailabilityInfoMap[endpoint] = info
 	}
-	lc.mapMutex.Unlock()
-	err := lc.update(nil, nil, nil, nil)
-	return err
+	// Fast path: if the endpoint was already unavailable for this op within
+	// the unavailability window, the route lists cannot change -- skip the
+	// full updateLocked recompute. The only state mutation is the bumped
+	// lastCheckTime, which getPrefAvailableEndpointsLocked observes via
+	// isEndpointUnavailableLocked and which yields the same result.
+	if wasAlreadyUnavailable {
+		return wasAlreadyUnavailable, nil
+	}
+	return wasAlreadyUnavailable, lc.updateLocked(nil, nil, nil, nil)
 }
 
 func (lc *locationCache) databaseAccountRead(dbAcct accountProperties) error {
@@ -221,9 +327,12 @@ func (lc *locationCache) databaseAccountRead(dbAcct accountProperties) error {
 func (lc *locationCache) refreshStaleEndpoints() {
 	lc.mapMutex.Lock()
 	defer lc.mapMutex.Unlock()
+	lc.refreshStaleEndpointsLocked()
+}
+
+func (lc *locationCache) refreshStaleEndpointsLocked() {
 	for endpoint, info := range lc.locationUnavailabilityInfoMap {
-		t := time.Since(info.lastCheckTime)
-		if t > lc.unavailableLocationExpirationTime {
+		if time.Since(info.lastCheckTime) > lc.unavailableLocationExpirationTime {
 			delete(lc.locationUnavailabilityInfoMap, endpoint)
 		}
 	}
@@ -231,23 +340,31 @@ func (lc *locationCache) refreshStaleEndpoints() {
 
 func (lc *locationCache) isEndpointUnavailable(endpoint url.URL, ops requestedOperations) bool {
 	lc.mapMutex.RLock()
-	info, ok := lc.locationUnavailabilityInfoMap[endpoint]
-	lc.mapMutex.RUnlock()
+	defer lc.mapMutex.RUnlock()
+	return lc.isEndpointUnavailableLocked(endpoint, ops)
+}
+
+func (lc *locationCache) isEndpointUnavailableLocked(endpoint url.URL, ops requestedOperations) bool {
+	info, ok := lc.locationUnavailabilityInfoMap[endpointKey(endpoint)]
 	if ops == none || !ok || ops&info.unavailableOps != ops {
 		return false
 	}
 	return time.Since(info.lastCheckTime) < lc.unavailableLocationExpirationTime
 }
 
-func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[string]url.URL, locs []string, availOps requestedOperations, fallbackEndpoint url.URL) []url.URL {
+// getPrefAvailableEndpointsLocked returns the endpoints for the customer's
+// preferred locations in priority order, with unavailable endpoints moved to
+// the tail. Callers pass prefLocations explicitly so updateLocked can compute
+// route lists from the in-progress nextLoc snapshot rather than the
+// already-committed lc.locationInfo.
+func (lc *locationCache) getPrefAvailableEndpointsLocked(endpointsByLoc map[string]url.URL, locs []string, prefLocations []string, availOps requestedOperations, fallbackEndpoint url.URL) []url.URL {
 	endpoints := make([]url.URL, 0)
 	if lc.enableCrossRegionRetries {
 		if lc.canUseMultipleWriteLocs() || availOps&read != 0 {
 			unavailEndpoints := make([]url.URL, 0)
-			unavailEndpoints = append(unavailEndpoints, fallbackEndpoint)
-			for _, loc := range lc.locationInfo.prefLocations {
-				if endpoint, ok := endpointsByLoc[loc]; ok && endpoint != fallbackEndpoint {
-					if lc.isEndpointUnavailable(endpoint, availOps) {
+			for _, loc := range prefLocations {
+				if endpoint, ok := endpointsByLoc[loc]; ok {
+					if lc.isEndpointUnavailableLocked(endpoint, availOps) {
 						unavailEndpoints = append(unavailEndpoints, endpoint)
 					} else {
 						endpoints = append(endpoints, endpoint)
@@ -264,6 +381,13 @@ func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[string]url
 		}
 	}
 	if len(endpoints) == 0 {
+		// Last resort: none of the customer's preferred regions matched the
+		// account's regions (or cross-region retries are off and the
+		// non-multi-master read branch yielded nothing, or the account
+		// itself advertises zero regions). The caller passes a regional
+		// fallback whenever availWriteLocations is non-empty, so the only
+		// time this is the customer-supplied default endpoint is the
+		// degenerate "zero regions" case.
 		endpoints = append(endpoints, fallbackEndpoint)
 	}
 	return endpoints
@@ -291,6 +415,12 @@ func newDatabaseAccountLocationsInfo(prefLocations []string, defaultEndpoint url
 	availReadLocs := make([]string, 0)
 	availWriteEndpointsByLocation := make(map[string]url.URL)
 	availReadEndpointsByLocation := make(map[string]url.URL)
+	// Pre-populated seed: the lists contain defaultEndpoint until the first
+	// successful Update() replaces them with regional endpoints. This is
+	// safe because the pipeline policy (globalEndpointManagerPolicy) blocks
+	// data-plane requests on a synchronous bootstrap and surfaces the GEM
+	// error if it fails, so resolveServiceEndpoint is never consulted for a
+	// real data-plane request while these seeded values are still in effect.
 	writeEndpoints := []url.URL{defaultEndpoint}
 	readEndpoints := []url.URL{defaultEndpoint}
 	return &databaseAccountLocationsInfo{

@@ -19,6 +19,8 @@ import (
 
 // AlertsClient contains the methods for the Alerts group.
 // Don't use this type directly, use NewAlertsClient() instead.
+//
+// Generated from API version 2025-05-25-preview
 type AlertsClient struct {
 	internal *arm.Client
 	scope    string
@@ -45,8 +47,6 @@ func NewAlertsClient(scope string, credential azcore.TokenCredential, options *a
 // and 'vm1' is deleted then if you want to change state of this particular alert then use parent resource of scope. So in
 // this example change state call will look like this: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AlertsManagement/alerts/{alertId}'.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-25-preview
 //   - alertID - Unique ID of an alert instance.
 //   - newState - New state of the alert.
 //   - options - AlertsClientChangeStateOptions contains the optional parameters for the AlertsClient.ChangeState method.
@@ -88,9 +88,9 @@ func (client *AlertsClient) changeStateCreateRequest(ctx context.Context, alertI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-25-preview")
+	reqQP.Set("api-version", version20250525Preview)
 	reqQP.Set("newState", string(newState))
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Comment != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -113,8 +113,6 @@ func (client *AlertsClient) changeStateHandleResponse(resp *http.Response) (Aler
 
 // ChangeStateTenant - Change the state of an alert.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-25-preview
 //   - alertID - Unique ID of an alert instance.
 //   - newState - New state of the alert.
 //   - options - AlertsClientChangeStateTenantOptions contains the optional parameters for the AlertsClient.ChangeStateTenant
@@ -153,9 +151,9 @@ func (client *AlertsClient) changeStateTenantCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-25-preview")
+	reqQP.Set("api-version", version20250525Preview)
 	reqQP.Set("newState", string(newState))
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Comment != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -178,8 +176,6 @@ func (client *AlertsClient) changeStateTenantHandleResponse(resp *http.Response)
 
 // NewGetAllPager - List all existing alerts, where the results can be filtered on the basis of multiple parameters (e.g.
 // time range). The results can then be sorted on the basis specific fields, with the default being lastModifiedDateTime.
-//
-// Generated from API version 2025-05-25-preview
 //   - options - AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.NewGetAllPager method.
 func (client *AlertsClient) NewGetAllPager(options *AlertsClientGetAllOptions) *runtime.Pager[AlertsClientGetAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertsClientGetAllResponse]{
@@ -222,7 +218,7 @@ func (client *AlertsClient) getAllCreateRequest(ctx context.Context, options *Al
 	if options != nil && options.AlertState != nil {
 		reqQP.Set("alertState", string(*options.AlertState))
 	}
-	reqQP.Set("api-version", "2025-05-25-preview")
+	reqQP.Set("api-version", version20250525Preview)
 	if options != nil && options.CustomTimeRange != nil {
 		reqQP.Set("customTimeRange", *options.CustomTimeRange)
 	}
@@ -268,7 +264,7 @@ func (client *AlertsClient) getAllCreateRequest(ctx context.Context, options *Al
 	if options != nil && options.TimeRange != nil {
 		reqQP.Set("timeRange", string(*options.TimeRange))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -284,8 +280,6 @@ func (client *AlertsClient) getAllHandleResponse(resp *http.Response) (AlertsCli
 
 // NewGetAllTenantPager - List all existing alerts, where the results can be filtered on the basis of multiple parameters
 // (e.g. time range). The results can then be sorted on the basis specific fields, with the default being lastModifiedDateTime.
-//
-// Generated from API version 2025-05-25-preview
 //   - options - AlertsClientGetAllTenantOptions contains the optional parameters for the AlertsClient.NewGetAllTenantPager method.
 func (client *AlertsClient) NewGetAllTenantPager(options *AlertsClientGetAllTenantOptions) *runtime.Pager[AlertsClientGetAllTenantResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertsClientGetAllTenantResponse]{
@@ -324,7 +318,7 @@ func (client *AlertsClient) getAllTenantCreateRequest(ctx context.Context, optio
 	if options != nil && options.AlertState != nil {
 		reqQP.Set("alertState", string(*options.AlertState))
 	}
-	reqQP.Set("api-version", "2025-05-25-preview")
+	reqQP.Set("api-version", version20250525Preview)
 	if options != nil && options.CustomTimeRange != nil {
 		reqQP.Set("customTimeRange", *options.CustomTimeRange)
 	}
@@ -370,7 +364,7 @@ func (client *AlertsClient) getAllTenantCreateRequest(ctx context.Context, optio
 	if options != nil && options.TimeRange != nil {
 		reqQP.Set("timeRange", string(*options.TimeRange))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -391,8 +385,6 @@ func (client *AlertsClient) getAllTenantHandleResponse(resp *http.Response) (Ale
 // and 'vm1' is deleted then if you want to get alert by id then use parent resource of scope. So in this example get alert
 // by id call will look like this: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AlertsManagement/alerts/{alertId}'.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-25-preview
 //   - alertID - Unique ID of an alert instance.
 //   - options - AlertsClientGetByIDOptions contains the optional parameters for the AlertsClient.GetByID method.
 func (client *AlertsClient) GetByID(ctx context.Context, alertID string, options *AlertsClientGetByIDOptions) (AlertsClientGetByIDResponse, error) {
@@ -433,8 +425,8 @@ func (client *AlertsClient) getByIDCreateRequest(ctx context.Context, alertID st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-25-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250525Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -452,8 +444,6 @@ func (client *AlertsClient) getByIDHandleResponse(resp *http.Response) (AlertsCl
 //
 // Get information related to a specific alert.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-25-preview
 //   - alertID - Unique ID of an alert instance.
 //   - options - AlertsClientGetByIDTenantOptions contains the optional parameters for the AlertsClient.GetByIDTenant method.
 func (client *AlertsClient) GetByIDTenant(ctx context.Context, alertID string, options *AlertsClientGetByIDTenantOptions) (AlertsClientGetByIDTenantResponse, error) {
@@ -490,8 +480,8 @@ func (client *AlertsClient) getByIDTenantCreateRequest(ctx context.Context, aler
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-25-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250525Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -506,8 +496,6 @@ func (client *AlertsClient) getByIDTenantHandleResponse(resp *http.Response) (Al
 }
 
 // NewGetEnrichmentsPager - Get the enrichments of an alert. It returns a collection of one object named default.
-//
-// Generated from API version 2025-05-25-preview
 //   - alertID - Unique ID of an alert instance.
 //   - options - AlertsClientGetEnrichmentsOptions contains the optional parameters for the AlertsClient.NewGetEnrichmentsPager
 //     method.
@@ -550,8 +538,8 @@ func (client *AlertsClient) getEnrichmentsCreateRequest(ctx context.Context, ale
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-25-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250525Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -571,8 +559,6 @@ func (client *AlertsClient) getEnrichmentsHandleResponse(resp *http.Response) (A
 // and 'vm1' is deleted then if you want to get history of this particular alert then use parent resource of scope. So in
 // this example get history call will look like this: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AlertsManagement/alerts/{alertId}/history'.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-25-preview
 //   - alertID - Unique ID of an alert instance.
 //   - options - AlertsClientGetHistoryOptions contains the optional parameters for the AlertsClient.GetHistory method.
 func (client *AlertsClient) GetHistory(ctx context.Context, alertID string, options *AlertsClientGetHistoryOptions) (AlertsClientGetHistoryResponse, error) {
@@ -613,8 +599,8 @@ func (client *AlertsClient) getHistoryCreateRequest(ctx context.Context, alertID
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-25-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250525Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -631,8 +617,6 @@ func (client *AlertsClient) getHistoryHandleResponse(resp *http.Response) (Alert
 // GetHistoryTenant - Get the history of an alert, which captures any monitor condition changes (Fired/Resolved), alert state
 // changes (New/Acknowledged/Closed) and applied action rules for that particular alert.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-25-preview
 //   - alertID - Unique ID of an alert instance.
 //   - options - AlertsClientGetHistoryTenantOptions contains the optional parameters for the AlertsClient.GetHistoryTenant method.
 func (client *AlertsClient) GetHistoryTenant(ctx context.Context, alertID string, options *AlertsClientGetHistoryTenantOptions) (AlertsClientGetHistoryTenantResponse, error) {
@@ -669,8 +653,8 @@ func (client *AlertsClient) getHistoryTenantCreateRequest(ctx context.Context, a
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-25-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250525Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -687,8 +671,6 @@ func (client *AlertsClient) getHistoryTenantHandleResponse(resp *http.Response) 
 // GetSummary - Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
 // count of alerts for each severity).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-25-preview
 //   - groupby - This parameter allows the result set to be grouped by input fields. For example, groupby=severity,alertstate.
 //   - options - AlertsClientGetSummaryOptions contains the optional parameters for the AlertsClient.GetSummary method.
 func (client *AlertsClient) GetSummary(ctx context.Context, groupby AlertsSummaryGroupByFields, options *AlertsClientGetSummaryOptions) (AlertsClientGetSummaryResponse, error) {
@@ -731,7 +713,7 @@ func (client *AlertsClient) getSummaryCreateRequest(ctx context.Context, groupby
 	if options != nil && options.AlertState != nil {
 		reqQP.Set("alertState", string(*options.AlertState))
 	}
-	reqQP.Set("api-version", "2025-05-25-preview")
+	reqQP.Set("api-version", version20250525Preview)
 	if options != nil && options.CustomTimeRange != nil {
 		reqQP.Set("customTimeRange", *options.CustomTimeRange)
 	}
@@ -760,7 +742,7 @@ func (client *AlertsClient) getSummaryCreateRequest(ctx context.Context, groupby
 	if options != nil && options.TimeRange != nil {
 		reqQP.Set("timeRange", string(*options.TimeRange))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -776,8 +758,6 @@ func (client *AlertsClient) getSummaryHandleResponse(resp *http.Response) (Alert
 
 // MetaData - List alerts meta data information based on value of identifier parameter.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-25-preview
 //   - identifier - Identification of the information to be retrieved by API call.
 //   - options - AlertsClientMetaDataOptions contains the optional parameters for the AlertsClient.MetaData method.
 func (client *AlertsClient) MetaData(ctx context.Context, identifier Identifier, options *AlertsClientMetaDataOptions) (AlertsClientMetaDataResponse, error) {
@@ -810,9 +790,9 @@ func (client *AlertsClient) metaDataCreateRequest(ctx context.Context, identifie
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-25-preview")
+	reqQP.Set("api-version", version20250525Preview)
 	reqQP.Set("identifier", string(identifier))
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

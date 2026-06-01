@@ -19,6 +19,8 @@ import (
 
 // AgentApplicationsClient contains the methods for the AgentApplications group.
 // Don't use this type directly, use NewAgentApplicationsClient() instead.
+//
+// Generated from API version 2026-03-15-preview
 type AgentApplicationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +46,6 @@ func NewAgentApplicationsClient(subscriptionID string, credential azcore.TokenCr
 //
 // Creates or updates an Agent Application (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -74,8 +74,6 @@ func (client *AgentApplicationsClient) BeginCreateOrUpdate(ctx context.Context, 
 //
 // Creates or updates an Agent Application (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 func (client *AgentApplicationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, body AgentApplication, options *AgentApplicationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentApplicationsClient.BeginCreateOrUpdate"
@@ -125,8 +123,8 @@ func (client *AgentApplicationsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -139,8 +137,6 @@ func (client *AgentApplicationsClient) createOrUpdateCreateRequest(ctx context.C
 //
 // Delete Agent Application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -168,8 +164,6 @@ func (client *AgentApplicationsClient) BeginDelete(ctx context.Context, resource
 //
 // Delete Agent Application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 func (client *AgentApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentApplicationsClient.BeginDelete"
@@ -219,8 +213,8 @@ func (client *AgentApplicationsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -228,8 +222,6 @@ func (client *AgentApplicationsClient) deleteCreateRequest(ctx context.Context, 
 //
 // Disables an Agent Application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -285,8 +277,8 @@ func (client *AgentApplicationsClient) disableCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -294,8 +286,6 @@ func (client *AgentApplicationsClient) disableCreateRequest(ctx context.Context,
 //
 // Enables an Agent Application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -351,8 +341,8 @@ func (client *AgentApplicationsClient) enableCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -360,8 +350,6 @@ func (client *AgentApplicationsClient) enableCreateRequest(ctx context.Context, 
 //
 // Gets an Agent Application by name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -417,8 +405,8 @@ func (client *AgentApplicationsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -435,8 +423,6 @@ func (client *AgentApplicationsClient) getHandleResponse(resp *http.Response) (A
 // NewListPager - Lists Agent Applications in the project.
 //
 // Lists Agent Applications in the project.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -495,7 +481,7 @@ func (client *AgentApplicationsClient) listCreateRequest(ctx context.Context, re
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2026-01-15-preview")
+	reqQP.Set("api-version", version20260315Preview)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
 	}
@@ -513,7 +499,7 @@ func (client *AgentApplicationsClient) listCreateRequest(ctx context.Context, re
 	if options != nil && options.SearchText != nil {
 		reqQP.Set("searchText", *options.SearchText)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -531,8 +517,6 @@ func (client *AgentApplicationsClient) listHandleResponse(resp *http.Response) (
 //
 // Lists agents for an Agent Application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -589,8 +573,8 @@ func (client *AgentApplicationsClient) listAgentsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

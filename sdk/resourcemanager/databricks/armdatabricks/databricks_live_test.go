@@ -5,14 +5,17 @@ package armdatabricks_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
@@ -62,6 +65,15 @@ func TestDatabricksTestSuite(t *testing.T) {
 	suite.Run(t, new(DatabricksTestSuite))
 }
 
+func isOutboundNetworkEndpointsNotReady(err error) bool {
+	var respErr *azcore.ResponseError
+	if !errors.As(err, &respErr) {
+		return false
+	}
+
+	return respErr.StatusCode == 500 && strings.EqualFold(respErr.ErrorCode, "UnableToGetOutboundNetworkEndpoints")
+}
+
 func (testsuite *DatabricksTestSuite) Prepare() {
 	var err error
 	// From step Create_VirtualNetwork
@@ -98,7 +110,7 @@ func (testsuite *DatabricksTestSuite) Prepare() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2021-05-01",
+				"apiVersion": "2024-07-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
 				},
@@ -113,13 +125,15 @@ func (testsuite *DatabricksTestSuite) Prepare() {
 						map[string]any{
 							"name": "default",
 							"properties": map[string]any{
-								"addressPrefix": "10.0.0.0/24",
+								"addressPrefix":         "10.0.0.0/24",
+								"defaultOutboundAccess": false,
 							},
 						},
 						map[string]any{
 							"name": "myPublicSubnet",
 							"properties": map[string]any{
-								"addressPrefix": "10.0.1.0/24",
+								"addressPrefix":         "10.0.1.0/24",
+								"defaultOutboundAccess": false,
 								"delegations": []any{
 									map[string]any{
 										"name": "Microsoft.Databricks.workspaces",
@@ -137,7 +151,8 @@ func (testsuite *DatabricksTestSuite) Prepare() {
 						map[string]any{
 							"name": "myPrivateSubnet",
 							"properties": map[string]any{
-								"addressPrefix": "10.0.2.0/24",
+								"addressPrefix":         "10.0.2.0/24",
+								"defaultOutboundAccess": false,
 								"delegations": []any{
 									map[string]any{
 										"name": "Microsoft.Databricks.workspaces",
@@ -228,7 +243,7 @@ func (testsuite *DatabricksTestSuite) Prepare() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -242,6 +257,7 @@ func (testsuite *DatabricksTestSuite) Prepare() {
 							"name": "pesubnet",
 							"properties": map[string]any{
 								"addressPrefix":                     "10.0.3.0/24",
+								"defaultOutboundAccess":             false,
 								"delegations":                       []any{},
 								"privateEndpointNetworkPolicies":    "Disabled",
 								"privateLinkServiceNetworkPolicies": "Enabled",
@@ -315,12 +331,13 @@ func (testsuite *DatabricksTestSuite) Prepare() {
 			map[string]any{
 				"name":       "[concat(parameters('virtualNetworksName'), '/pesubnet')]",
 				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
 					"addressPrefix":                     "10.0.3.0/24",
+					"defaultOutboundAccess":             false,
 					"delegations":                       []any{},
 					"privateEndpointNetworkPolicies":    "Disabled",
 					"privateLinkServiceNetworkPolicies": "Enabled",
@@ -435,10 +452,29 @@ func (testsuite *DatabricksTestSuite) TestOutboundNetworkDependenciesEndpoints()
 	var err error
 	// From step OutboundNetworkDependenciesEndpoints_List
 	fmt.Println("Call operation: OutboundNetworkDependenciesEndpoints_List")
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		testsuite.T().Skip("skipping outbound network dependencies test: current recording only contains service-side UnableToGetOutboundNetworkEndpoints responses")
+	}
+
 	outboundNetworkDependenciesEndpointsClient, err := armdatabricks.NewOutboundNetworkDependenciesEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = outboundNetworkDependenciesEndpointsClient.List(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
-	testsuite.Require().NoError(err)
+
+	deadline := time.Now().Add(5 * time.Minute)
+	for {
+		_, err = outboundNetworkDependenciesEndpointsClient.List(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
+		if err == nil {
+			return
+		}
+		if !isOutboundNetworkEndpointsNotReady(err) {
+			testsuite.Require().NoError(err)
+		}
+
+		if time.Now().After(deadline) {
+			testsuite.T().Skipf("skipping outbound network dependencies test: service kept returning UnableToGetOutboundNetworkEndpoints for 5m: %v", err)
+		}
+
+		time.Sleep(15 * time.Second)
+	}
 }
 
 func (testsuite *DatabricksTestSuite) Cleanup() {

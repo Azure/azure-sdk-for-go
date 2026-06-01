@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleMonitorResourcesClient_LatestLinkedSaaS() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitorResourcesClientLatestLinkedSaaSResponse{
-	// 	LatestLinkedSaaSResponse: &armdatadog.LatestLinkedSaaSResponse{
+	// 	LatestLinkedSaaSResponse: armdatadog.LatestLinkedSaaSResponse{
 	// 		IsHiddenSaaS: to.Ptr(false),
 	// 		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.SaaS/resources/saas-resource-001"),
 	// 	},
@@ -57,13 +57,13 @@ func ExampleMonitorResourcesClient_BeginLinkSaaS() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitorResourcesClientLinkSaaSResponse{
-	// 	MonitorResource: &armdatadog.MonitorResource{
+	// 	MonitorResource: armdatadog.MonitorResource{
 	// 		ID: to.Ptr("/subscriptions/1a2b3c4d-5e6f-7a8b-9c0d-e1f2a3b4c5d6/resourceGroups/myResourceGroup/providers/Microsoft.Datadog/monitors/myMonitor"),
 	// 		Name: to.Ptr("myMonitor"),
 	// 		Type: to.Ptr("Microsoft.Datadog/monitors"),

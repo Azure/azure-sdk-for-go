@@ -12,10 +12,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // VirtualMachineScaleSetLifeCycleHookEventsServer is a fake server for instances of the armcompute.VirtualMachineScaleSetLifeCycleHookEventsClient type.
@@ -62,9 +63,7 @@ func (v *VirtualMachineScaleSetLifeCycleHookEventsServerTransport) Do(req *http.
 }
 
 func (v *VirtualMachineScaleSetLifeCycleHookEventsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -84,10 +83,7 @@ func (v *VirtualMachineScaleSetLifeCycleHookEventsServerTransport) dispatchToMet
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -125,7 +121,7 @@ func (v *VirtualMachineScaleSetLifeCycleHookEventsServerTransport) dispatchGet(r
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VMScaleSetLifecycleHookEvent, req)
@@ -166,7 +162,7 @@ func (v *VirtualMachineScaleSetLifeCycleHookEventsServerTransport) dispatchNewLi
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -207,7 +203,7 @@ func (v *VirtualMachineScaleSetLifeCycleHookEventsServerTransport) dispatchUpdat
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VMScaleSetLifecycleHookEvent, req)

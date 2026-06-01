@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent"
 	"log"
 )
 
@@ -35,7 +35,7 @@ func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientCreateRoleBindingResponse{
-	// 	RoleBindingRecord: &armconfluent.RoleBindingRecord{
+	// 	RoleBindingRecord: armconfluent.RoleBindingRecord{
 	// 		Kind: to.Ptr("rdgdgwc"),
 	// 		ID: to.Ptr("vyt"),
 	// 		Metadata: &armconfluent.MetadataEntity{
@@ -71,7 +71,7 @@ func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientCreateRoleBindingResponse{
-	// 	RoleBindingRecord: &armconfluent.RoleBindingRecord{
+	// 	RoleBindingRecord: armconfluent.RoleBindingRecord{
 	// 	},
 	// }
 }
@@ -147,7 +147,7 @@ func ExampleAccessClient_InviteUser_accessInviteUserMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientInviteUserResponse{
-	// 	InvitationRecord: &armconfluent.InvitationRecord{
+	// 	InvitationRecord: armconfluent.InvitationRecord{
 	// 		Kind: to.Ptr("uizkhsgicpwxpdoazoiwb"),
 	// 		ID: to.Ptr("ebcxw"),
 	// 		Metadata: &armconfluent.MetadataEntity{
@@ -185,7 +185,7 @@ func ExampleAccessClient_InviteUser_accessInviteUserMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientInviteUserResponse{
-	// 	InvitationRecord: &armconfluent.InvitationRecord{
+	// 	InvitationRecord: armconfluent.InvitationRecord{
 	// 	},
 	// }
 }
@@ -213,7 +213,7 @@ func ExampleAccessClient_ListClusters_accessListClustersMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListClustersResponse{
-	// 	AccessListClusterSuccessResponse: &armconfluent.AccessListClusterSuccessResponse{
+	// 	AccessListClusterSuccessResponse: armconfluent.AccessListClusterSuccessResponse{
 	// 		Kind: to.Ptr("ajiagwlynkxffeqevka"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -293,7 +293,7 @@ func ExampleAccessClient_ListClusters_accessListClustersMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListClustersResponse{
-	// 	AccessListClusterSuccessResponse: &armconfluent.AccessListClusterSuccessResponse{
+	// 	AccessListClusterSuccessResponse: armconfluent.AccessListClusterSuccessResponse{
 	// 	},
 	// }
 }
@@ -321,7 +321,7 @@ func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListEnvironmentsResponse{
-	// 	AccessListEnvironmentsSuccessResponse: &armconfluent.AccessListEnvironmentsSuccessResponse{
+	// 	AccessListEnvironmentsSuccessResponse: armconfluent.AccessListEnvironmentsSuccessResponse{
 	// 		Kind: to.Ptr("otgvdvmkalxvfhntcupkzeumnmysh"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -367,7 +367,7 @@ func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListEnvironmentsResponse{
-	// 	AccessListEnvironmentsSuccessResponse: &armconfluent.AccessListEnvironmentsSuccessResponse{
+	// 	AccessListEnvironmentsSuccessResponse: armconfluent.AccessListEnvironmentsSuccessResponse{
 	// 	},
 	// }
 }
@@ -395,7 +395,7 @@ func ExampleAccessClient_ListInvitations_accessListInvitationsMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListInvitationsResponse{
-	// 	AccessListInvitationsSuccessResponse: &armconfluent.AccessListInvitationsSuccessResponse{
+	// 	AccessListInvitationsSuccessResponse: armconfluent.AccessListInvitationsSuccessResponse{
 	// 		Kind: to.Ptr("bsiuyjkrslbybixusbaecuqj"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -445,7 +445,7 @@ func ExampleAccessClient_ListInvitations_accessListInvitationsMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListInvitationsResponse{
-	// 	AccessListInvitationsSuccessResponse: &armconfluent.AccessListInvitationsSuccessResponse{
+	// 	AccessListInvitationsSuccessResponse: armconfluent.AccessListInvitationsSuccessResponse{
 	// 	},
 	// }
 }
@@ -473,7 +473,7 @@ func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListRoleBindingNameListResponse{
-	// 	AccessRoleBindingNameListSuccessResponse: &armconfluent.AccessRoleBindingNameListSuccessResponse{
+	// 	AccessRoleBindingNameListSuccessResponse: armconfluent.AccessRoleBindingNameListSuccessResponse{
 	// 		Kind: to.Ptr("pictmuncchderpgmyxqmmc"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -508,7 +508,7 @@ func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListRoleBindingNameListResponse{
-	// 	AccessRoleBindingNameListSuccessResponse: &armconfluent.AccessRoleBindingNameListSuccessResponse{
+	// 	AccessRoleBindingNameListSuccessResponse: armconfluent.AccessRoleBindingNameListSuccessResponse{
 	// 	},
 	// }
 }
@@ -536,7 +536,7 @@ func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListRoleBindingsResponse{
-	// 	AccessListRoleBindingsSuccessResponse: &armconfluent.AccessListRoleBindingsSuccessResponse{
+	// 	AccessListRoleBindingsSuccessResponse: armconfluent.AccessListRoleBindingsSuccessResponse{
 	// 		Kind: to.Ptr("zpwiczs"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -584,7 +584,7 @@ func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListRoleBindingsResponse{
-	// 	AccessListRoleBindingsSuccessResponse: &armconfluent.AccessListRoleBindingsSuccessResponse{
+	// 	AccessListRoleBindingsSuccessResponse: armconfluent.AccessListRoleBindingsSuccessResponse{
 	// 	},
 	// }
 }
@@ -612,7 +612,7 @@ func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMaximumSet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListServiceAccountsResponse{
-	// 	AccessListServiceAccountsSuccessResponse: &armconfluent.AccessListServiceAccountsSuccessResponse{
+	// 	AccessListServiceAccountsSuccessResponse: armconfluent.AccessListServiceAccountsSuccessResponse{
 	// 		Kind: to.Ptr("puztaopmygsvwfwufjvycnok"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -659,7 +659,7 @@ func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMinimumSet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListServiceAccountsResponse{
-	// 	AccessListServiceAccountsSuccessResponse: &armconfluent.AccessListServiceAccountsSuccessResponse{
+	// 	AccessListServiceAccountsSuccessResponse: armconfluent.AccessListServiceAccountsSuccessResponse{
 	// 	},
 	// }
 }
@@ -687,7 +687,7 @@ func ExampleAccessClient_ListUsers_accessListUsersMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListUsersResponse{
-	// 	AccessListUsersSuccessResponse: &armconfluent.AccessListUsersSuccessResponse{
+	// 	AccessListUsersSuccessResponse: armconfluent.AccessListUsersSuccessResponse{
 	// 		Kind: to.Ptr("autatdvryzmgwnblxadobfvo"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -735,7 +735,7 @@ func ExampleAccessClient_ListUsers_accessListUsersMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListUsersResponse{
-	// 	AccessListUsersSuccessResponse: &armconfluent.AccessListUsersSuccessResponse{
+	// 	AccessListUsersSuccessResponse: armconfluent.AccessListUsersSuccessResponse{
 	// 	},
 	// }
 }

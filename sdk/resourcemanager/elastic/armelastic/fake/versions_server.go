@@ -11,10 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
 	"net/http"
-	"net/url"
 	"regexp"
+	"slices"
 )
 
 // VersionsServer is a fake server for instances of the armelastic.VersionsClient type.
@@ -53,9 +53,7 @@ func (v *VersionsServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (v *VersionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +69,7 @@ func (v *VersionsServerTransport) dispatchToMethodFake(req *http.Request, method
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -98,11 +93,7 @@ func (v *VersionsServerTransport) dispatchNewListPager(req *http.Request) (*http
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		regionParam, err := url.QueryUnescape(qp.Get("region"))
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListPager(regionParam, nil)
+		resp := v.srv.NewListPager(qp.Get("region"), nil)
 		newListPager = &resp
 		v.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armelastic.VersionsClientListResponse, createLink func() string) {
@@ -113,7 +104,7 @@ func (v *VersionsServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

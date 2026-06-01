@@ -18,6 +18,8 @@ import (
 
 // LocationBasedCapabilitiesClient contains the methods for the LocationBasedCapabilities group.
 // Don't use this type directly, use NewLocationBasedCapabilitiesClient() instead.
+//
+// Generated from API version 2024-12-01-preview
 type LocationBasedCapabilitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewLocationBasedCapabilitiesClient(subscriptionID string, credential azcore
 }
 
 // NewListPager - Get capabilities at specified location in a given subscription.
-//
-// Generated from API version 2024-12-01-preview
 //   - locationName - The name of the location.
 //   - options - LocationBasedCapabilitiesClientListOptions contains the optional parameters for the LocationBasedCapabilitiesClient.NewListPager
 //     method.
@@ -84,8 +84,8 @@ func (client *LocationBasedCapabilitiesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

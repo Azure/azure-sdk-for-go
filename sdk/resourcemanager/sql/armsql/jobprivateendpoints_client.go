@@ -18,6 +18,8 @@ import (
 
 // JobPrivateEndpointsClient contains the methods for the JobPrivateEndpoints group.
 // Don't use this type directly, use NewJobPrivateEndpointsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type JobPrivateEndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewJobPrivateEndpointsClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Creates or updates a private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent to be retrieved.
@@ -69,8 +69,6 @@ func (client *JobPrivateEndpointsClient) BeginCreateOrUpdate(ctx context.Context
 
 // CreateOrUpdate - Creates or updates a private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *JobPrivateEndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, privateEndpointName string, parameters JobPrivateEndpoint, options *JobPrivateEndpointsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobPrivateEndpointsClient.BeginCreateOrUpdate"
@@ -120,8 +118,8 @@ func (client *JobPrivateEndpointsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -132,8 +130,6 @@ func (client *JobPrivateEndpointsClient) createOrUpdateCreateRequest(ctx context
 
 // BeginDelete - Deletes a private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent to be retrieved.
@@ -159,8 +155,6 @@ func (client *JobPrivateEndpointsClient) BeginDelete(ctx context.Context, resour
 
 // Delete - Deletes a private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *JobPrivateEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, privateEndpointName string, options *JobPrivateEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobPrivateEndpointsClient.BeginDelete"
@@ -210,15 +204,13 @@ func (client *JobPrivateEndpointsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent to be retrieved.
@@ -274,8 +266,8 @@ func (client *JobPrivateEndpointsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -290,8 +282,6 @@ func (client *JobPrivateEndpointsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByAgentPager - Gets a list of job agent private endpoints.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent to be retrieved.
@@ -344,8 +334,8 @@ func (client *JobPrivateEndpointsClient) listByAgentCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

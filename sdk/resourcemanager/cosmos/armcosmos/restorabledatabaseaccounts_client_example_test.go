@@ -7,7 +7,7 @@ package armcosmos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.RestorableDatabaseAccountsClientGetByLocationResponse{
-	// 	RestorableDatabaseAccountGetResult: &armcosmos.RestorableDatabaseAccountGetResult{
+	// 	RestorableDatabaseAccountGetResult: armcosmos.RestorableDatabaseAccountGetResult{
 	// 		Name: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d"),

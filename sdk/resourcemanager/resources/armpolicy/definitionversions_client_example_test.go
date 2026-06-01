@@ -68,7 +68,7 @@ func ExampleDefinitionVersionsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientCreateOrUpdateResponse{
-	// 	DefinitionVersion: &armpolicy.DefinitionVersion{
+	// 	DefinitionVersion: armpolicy.DefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
@@ -169,7 +169,7 @@ func ExampleDefinitionVersionsClient_CreateOrUpdateAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse{
-	// 	DefinitionVersion: &armpolicy.DefinitionVersion{
+	// 	DefinitionVersion: armpolicy.DefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
@@ -277,7 +277,7 @@ func ExampleDefinitionVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientGetResponse{
-	// 	DefinitionVersion: &armpolicy.DefinitionVersion{
+	// 	DefinitionVersion: armpolicy.DefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
@@ -341,7 +341,7 @@ func ExampleDefinitionVersionsClient_GetAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientGetAtManagementGroupResponse{
-	// 	DefinitionVersion: &armpolicy.DefinitionVersion{
+	// 	DefinitionVersion: armpolicy.DefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
@@ -405,7 +405,7 @@ func ExampleDefinitionVersionsClient_GetBuiltIn() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientGetBuiltInResponse{
-	// 	DefinitionVersion: &armpolicy.DefinitionVersion{
+	// 	DefinitionVersion: armpolicy.DefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1/versions/1.2.1"),
@@ -583,7 +583,7 @@ func ExampleDefinitionVersionsClient_ListAll() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientListAllResponse{
-	// 	DefinitionVersionListResult: &armpolicy.DefinitionVersionListResult{
+	// 	DefinitionVersionListResult: armpolicy.DefinitionVersionListResult{
 	// 		Value: []*armpolicy.DefinitionVersion{
 	// 			{
 	// 				Name: to.Ptr("1.2.1"),
@@ -693,7 +693,7 @@ func ExampleDefinitionVersionsClient_ListAllAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientListAllAtManagementGroupResponse{
-	// 	DefinitionVersionListResult: &armpolicy.DefinitionVersionListResult{
+	// 	DefinitionVersionListResult: armpolicy.DefinitionVersionListResult{
 	// 		Value: []*armpolicy.DefinitionVersion{
 	// 			{
 	// 				Name: to.Ptr("1.2.1"),
@@ -803,7 +803,7 @@ func ExampleDefinitionVersionsClient_ListAllBuiltins() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientListAllBuiltinsResponse{
-	// 	DefinitionVersionListResult: &armpolicy.DefinitionVersionListResult{
+	// 	DefinitionVersionListResult: armpolicy.DefinitionVersionListResult{
 	// 		Value: []*armpolicy.DefinitionVersion{
 	// 			{
 	// 				Name: to.Ptr("1.2.1"),

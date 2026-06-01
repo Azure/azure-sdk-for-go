@@ -6,11 +6,10 @@ package armrecoveryservicessiterecovery_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"log"
 )
 
 // Generated from example definition: 2025-08-01/ReplicationFabrics_CheckConsistency.json
@@ -30,13 +29,13 @@ func ExampleReplicationFabricsClient_BeginCheckConsistency() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationFabricsClientCheckConsistencyResponse{
-	// 	Fabric: &armrecoveryservicessiterecovery.Fabric{
+	// 	Fabric: armrecoveryservicessiterecovery.Fabric{
 	// 		Name: to.Ptr("cloud1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1"),
@@ -84,13 +83,13 @@ func ExampleReplicationFabricsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationFabricsClientCreateResponse{
-	// 	Fabric: &armrecoveryservicessiterecovery.Fabric{
+	// 	Fabric: armrecoveryservicessiterecovery.Fabric{
 	// 		Name: to.Ptr("cloud1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1"),
@@ -132,7 +131,7 @@ func ExampleReplicationFabricsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -155,7 +154,7 @@ func ExampleReplicationFabricsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationFabricsClientGetResponse{
-	// 	Fabric: &armrecoveryservicessiterecovery.Fabric{
+	// 	Fabric: armrecoveryservicessiterecovery.Fabric{
 	// 		Name: to.Ptr("cloud1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1"),
@@ -250,7 +249,7 @@ func ExampleReplicationFabricsClient_BeginMigrateToAAD() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -271,7 +270,7 @@ func ExampleReplicationFabricsClient_BeginPurge() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -303,13 +302,13 @@ func ExampleReplicationFabricsClient_BeginReassociateGateway() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationFabricsClientReassociateGatewayResponse{
-	// 	Fabric: &armrecoveryservicessiterecovery.Fabric{
+	// 	Fabric: armrecoveryservicessiterecovery.Fabric{
 	// 		Name: to.Ptr("bc15edf300344660d9c2965f5d9225593d99734f6580613c997033abc3512a56"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics"),
 	// 		ID: to.Ptr("/Subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/MadhaviVRG/providers/Microsoft.RecoveryServices/vaults/MadhaviVault/replicationFabrics/bc15edf300344660d9c2965f5d9225593d99734f6580613c997033abc3512a56"),
@@ -351,7 +350,7 @@ func ExampleReplicationFabricsClient_BeginRemoveInfra() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -376,13 +375,13 @@ func ExampleReplicationFabricsClient_BeginRenewCertificate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationFabricsClientRenewCertificateResponse{
-	// 	Fabric: &armrecoveryservicessiterecovery.Fabric{
+	// 	Fabric: armrecoveryservicessiterecovery.Fabric{
 	// 		Name: to.Ptr("cloud1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1"),

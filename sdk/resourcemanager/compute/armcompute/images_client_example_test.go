@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -41,13 +41,13 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromABlob
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientCreateOrUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		Properties: &armcompute.ImageProperties{
 	// 			StorageProfile: &armcompute.ImageStorageProfile{
 	// 				OSDisk: &armcompute.ImageOSDisk{
@@ -101,13 +101,13 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromABlob
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientCreateOrUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		Properties: &armcompute.ImageProperties{
 	// 			StorageProfile: &armcompute.ImageStorageProfile{
 	// 				OSDisk: &armcompute.ImageOSDisk{
@@ -163,13 +163,13 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAMana
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientCreateOrUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		Properties: &armcompute.ImageProperties{
 	// 			StorageProfile: &armcompute.ImageStorageProfile{
 	// 				OSDisk: &armcompute.ImageOSDisk{
@@ -227,13 +227,13 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAMana
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientCreateOrUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		Properties: &armcompute.ImageProperties{
 	// 			StorageProfile: &armcompute.ImageStorageProfile{
 	// 				OSDisk: &armcompute.ImageOSDisk{
@@ -291,13 +291,13 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromASnap
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientCreateOrUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		Properties: &armcompute.ImageProperties{
 	// 			StorageProfile: &armcompute.ImageStorageProfile{
 	// 				OSDisk: &armcompute.ImageOSDisk{
@@ -355,13 +355,13 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromASnap
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientCreateOrUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		Properties: &armcompute.ImageProperties{
 	// 			StorageProfile: &armcompute.ImageStorageProfile{
 	// 				OSDisk: &armcompute.ImageOSDisk{
@@ -412,13 +412,13 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAnExi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientCreateOrUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		Properties: &armcompute.ImageProperties{
 	// 			SourceVirtualMachine: &armcompute.SubResource{
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
@@ -481,13 +481,13 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatInclu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientCreateOrUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		Properties: &armcompute.ImageProperties{
 	// 			StorageProfile: &armcompute.ImageStorageProfile{
 	// 				OSDisk: &armcompute.ImageOSDisk{
@@ -553,13 +553,13 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatInclu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientCreateOrUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		Properties: &armcompute.ImageProperties{
 	// 			StorageProfile: &armcompute.ImageStorageProfile{
 	// 				OSDisk: &armcompute.ImageOSDisk{
@@ -629,13 +629,13 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatInclu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientCreateOrUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		Properties: &armcompute.ImageProperties{
 	// 			StorageProfile: &armcompute.ImageStorageProfile{
 	// 				OSDisk: &armcompute.ImageOSDisk{
@@ -683,7 +683,7 @@ func ExampleImagesClient_BeginDelete_imageDeleteMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -709,7 +709,7 @@ func ExampleImagesClient_BeginDelete_imageDeleteMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -737,7 +737,7 @@ func ExampleImagesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientGetResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/myImage"),
 	// 		Name: to.Ptr("myImage"),
 	// 		Type: to.Ptr("Microsoft.Compute/images"),
@@ -941,13 +941,13 @@ func ExampleImagesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ImagesClientUpdateResponse{
-	// 	Image: &armcompute.Image{
+	// 	Image: armcompute.Image{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/myImage"),
 	// 		Name: to.Ptr("myImage"),
 	// 		Type: to.Ptr("Microsoft.Compute/images"),

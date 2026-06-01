@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -38,13 +38,13 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotByImportingAnUnma
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientCreateOrUpdateResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"),
 	// 		Properties: &armcompute.SnapshotProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -85,13 +85,13 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotByImportingAnUnma
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientCreateOrUpdateResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"),
 	// 		Properties: &armcompute.SnapshotProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -132,13 +132,13 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnExistingSna
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientCreateOrUpdateResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
 	// 		Name: to.Ptr("mySnapshot2"),
 	// 		Location: to.Ptr("West US"),
@@ -179,13 +179,13 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnElasticSanV
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientCreateOrUpdateResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"),
 	// 		Name: to.Ptr("mySnapshot"),
 	// 		Location: to.Ptr("West US"),
@@ -225,13 +225,13 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnExistingSna
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientCreateOrUpdateResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
 	// 		Name: to.Ptr("mySnapshot2"),
 	// 		Location: to.Ptr("West US"),
@@ -271,13 +271,13 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnExistingSna
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientCreateOrUpdateResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
 	// 		Name: to.Ptr("mySnapshot2"),
 	// 		Location: to.Ptr("West US"),
@@ -318,13 +318,13 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotWhichCanBeInstant
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientCreateOrUpdateResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
 	// 		Name: to.Ptr("mySnapshot2"),
 	// 		Location: to.Ptr("West US"),
@@ -357,7 +357,7 @@ func ExampleSnapshotsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -385,7 +385,7 @@ func ExampleSnapshotsClient_Get_getInformationAboutASnapshot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientGetResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		Properties: &armcompute.SnapshotProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
@@ -460,7 +460,7 @@ func ExampleSnapshotsClient_Get_getInformationAboutAnIncrementalSnapshot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientGetResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		Properties: &armcompute.SnapshotProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
@@ -545,13 +545,13 @@ func ExampleSnapshotsClient_BeginGrantAccess() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientGrantAccessResponse{
-	// 	AccessURI: &armcompute.AccessURI{
+	// 	AccessURI: armcompute.AccessURI{
 	// 		AccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/abcd?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2021-05-24T18:02:34Z&se=2021-05-24T18:19:14Z&sp=r"),
 	// 	},
 	// }
@@ -763,7 +763,7 @@ func ExampleSnapshotsClient_BeginRevokeAccess() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -797,13 +797,13 @@ func ExampleSnapshotsClient_BeginUpdate_updateASnapshot() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientUpdateResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		Properties: &armcompute.SnapshotProperties{
 	// 			CreationData: &armcompute.CreationData{
 	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionCopy),
@@ -850,13 +850,13 @@ func ExampleSnapshotsClient_BeginUpdate_updateASnapshotWithAcceleratedNetworking
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SnapshotsClientUpdateResponse{
-	// 	Snapshot: &armcompute.Snapshot{
+	// 	Snapshot: armcompute.Snapshot{
 	// 		Properties: &armcompute.SnapshotProperties{
 	// 			CreationData: &armcompute.CreationData{
 	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionCopy),

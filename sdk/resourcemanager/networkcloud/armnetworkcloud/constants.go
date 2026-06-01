@@ -4,6 +4,10 @@
 
 package armnetworkcloud
 
+const (
+	version20250901 string = "2025-09-01"
+)
+
 // ActionStateStatus - The status of the action.
 type ActionStateStatus string
 

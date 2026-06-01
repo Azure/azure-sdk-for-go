@@ -19,8 +19,6 @@ import (
 	"time"
 )
 
-const defaultLogAnalyticsClientVersion string = "2025-06-01"
-
 // LogAnalyticsClient contains the methods for the LogAnalytics group.
 // Don't use this type directly, use NewLogAnalyticsClient() instead.
 //
@@ -95,7 +93,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -159,7 +157,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	if options != nil && options.Continents != nil {
 		for _, qv := range options.Continents {
 			reqQP.Add("continents", qv)
@@ -250,7 +248,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	if options != nil && options.CustomDomains != nil {
 		for _, qv := range options.CustomDomains {
 			reqQP.Add("customDomains", qv)
@@ -328,7 +326,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -397,7 +395,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 			reqQP.Add("actions", string(qv))
 		}
 	}
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	reqQP.Set("dateTimeBegin", datetime.RFC3339(dateTimeBegin).String())
 	reqQP.Set("dateTimeEnd", datetime.RFC3339(dateTimeEnd).String())
 	reqQP.Set("granularity", string(granularity))
@@ -482,7 +480,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 			reqQP.Add("actions", string(qv))
 		}
 	}
-	reqQP.Set("api-version", defaultLogAnalyticsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	reqQP.Set("dateTimeBegin", datetime.RFC3339(dateTimeBegin).String())
 	reqQP.Set("dateTimeEnd", datetime.RFC3339(dateTimeEnd).String())
 	reqQP.Set("maxRanking", strconv.FormatInt(int64(maxRanking), 10))

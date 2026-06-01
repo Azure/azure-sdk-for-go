@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering
 
 go 1.25.0
 

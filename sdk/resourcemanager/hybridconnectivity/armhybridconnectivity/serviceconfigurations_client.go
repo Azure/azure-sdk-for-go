@@ -17,6 +17,8 @@ import (
 
 // ServiceConfigurationsClient contains the methods for the ServiceConfigurations group.
 // Don't use this type directly, use NewServiceConfigurationsClient() instead.
+//
+// Generated from API version 2024-12-01
 type ServiceConfigurationsClient struct {
 	internal *arm.Client
 }
@@ -37,8 +39,6 @@ func NewServiceConfigurationsClient(credential azcore.TokenCredential, options *
 
 // CreateOrupdate - Create or update a service in serviceConfiguration for the endpoint resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - endpointName - The endpoint name.
 //   - serviceConfigurationName - The service name.
@@ -87,8 +87,8 @@ func (client *ServiceConfigurationsClient) createOrupdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, serviceConfigurationResource); err != nil {
@@ -108,8 +108,6 @@ func (client *ServiceConfigurationsClient) createOrupdateHandleResponse(resp *ht
 
 // Delete - Deletes the service details to the target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - endpointName - The endpoint name.
 //   - serviceConfigurationName - The service name.
@@ -156,15 +154,13 @@ func (client *ServiceConfigurationsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the details about the service to the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - endpointName - The endpoint name.
 //   - serviceConfigurationName - The service name.
@@ -212,8 +208,8 @@ func (client *ServiceConfigurationsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -229,9 +225,7 @@ func (client *ServiceConfigurationsClient) getHandleResponse(resp *http.Response
 
 // NewListByEndpointResourcePager - Lists of all the services associated with endpoint resource.
 //
-// # API to enumerate registered services in service configurations under a Endpoint Resource
-//
-// Generated from API version 2024-12-01
+// API to enumerate registered services in service configurations under a Endpoint Resource
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - endpointName - The endpoint name.
 //   - options - ServiceConfigurationsClientListByEndpointResourceOptions contains the optional parameters for the ServiceConfigurationsClient.NewListByEndpointResourcePager
@@ -275,8 +269,8 @@ func (client *ServiceConfigurationsClient) listByEndpointResourceCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -292,8 +286,6 @@ func (client *ServiceConfigurationsClient) listByEndpointResourceHandleResponse(
 
 // Update - Update the service details in the service configurations of the target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - endpointName - The endpoint name.
 //   - serviceConfigurationName - The service name.
@@ -342,8 +334,8 @@ func (client *ServiceConfigurationsClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, serviceConfigurationResource); err != nil {

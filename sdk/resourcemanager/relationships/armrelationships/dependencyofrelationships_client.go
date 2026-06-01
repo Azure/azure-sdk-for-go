@@ -18,6 +18,8 @@ import (
 
 // DependencyOfRelationshipsClient contains the methods for the DependencyOfRelationships group.
 // Don't use this type directly, use NewDependencyOfRelationshipsClient() instead.
+//
+// Generated from API version 2023-09-01-preview
 type DependencyOfRelationshipsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewDependencyOfRelationshipsClient(credential azcore.TokenCredential, optio
 
 // BeginCreateOrUpdate - Create a DependencyOfRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - name - Name of dependencyOf relationship.
 //   - resource - Resource create parameters.
@@ -64,8 +64,6 @@ func (client *DependencyOfRelationshipsClient) BeginCreateOrUpdate(ctx context.C
 
 // CreateOrUpdate - Create a DependencyOfRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-01-preview
 func (client *DependencyOfRelationshipsClient) createOrUpdate(ctx context.Context, resourceURI string, name string, resource DependencyOfRelationship, options *DependencyOfRelationshipsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DependencyOfRelationshipsClient.BeginCreateOrUpdate"
@@ -103,8 +101,8 @@ func (client *DependencyOfRelationshipsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -115,8 +113,6 @@ func (client *DependencyOfRelationshipsClient) createOrUpdateCreateRequest(ctx c
 
 // BeginDelete - Delete a DependencyOfRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - name - Name of dependencyOf relationship.
 //   - options - DependencyOfRelationshipsClientBeginDeleteOptions contains the optional parameters for the DependencyOfRelationshipsClient.BeginDelete
@@ -140,8 +136,6 @@ func (client *DependencyOfRelationshipsClient) BeginDelete(ctx context.Context, 
 
 // Delete - Delete a DependencyOfRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-01-preview
 func (client *DependencyOfRelationshipsClient) deleteOperation(ctx context.Context, resourceURI string, name string, options *DependencyOfRelationshipsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DependencyOfRelationshipsClient.BeginDelete"
@@ -179,15 +173,13 @@ func (client *DependencyOfRelationshipsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a DependencyOfRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - name - Name of dependencyOf relationship.
 //   - options - DependencyOfRelationshipsClientGetOptions contains the optional parameters for the DependencyOfRelationshipsClient.Get
@@ -230,8 +222,8 @@ func (client *DependencyOfRelationshipsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

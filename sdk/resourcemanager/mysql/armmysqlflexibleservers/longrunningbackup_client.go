@@ -18,6 +18,8 @@ import (
 
 // LongRunningBackupClient contains the methods for the LongRunningBackup group.
 // Don't use this type directly, use NewLongRunningBackupClient() instead.
+//
+// Generated from API version 2024-12-01-preview
 type LongRunningBackupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewLongRunningBackupClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreate - Create backup for a given server with specified backup name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -69,8 +69,6 @@ func (client *LongRunningBackupClient) BeginCreate(ctx context.Context, resource
 
 // Create - Create backup for a given server with specified backup name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 func (client *LongRunningBackupClient) create(ctx context.Context, resourceGroupName string, serverName string, backupName string, parameters ServerBackupV2, options *LongRunningBackupClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LongRunningBackupClient.BeginCreate"
@@ -116,8 +114,8 @@ func (client *LongRunningBackupClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

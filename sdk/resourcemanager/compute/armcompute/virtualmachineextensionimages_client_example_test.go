@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientGetResponse{
-	// 	VirtualMachineExtensionImage: &armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImage: armcompute.VirtualMachineExtensionImage{
 	// 		Properties: &armcompute.VirtualMachineExtensionImageProperties{
 	// 			OperatingSystem: to.Ptr("aaaaaaaaaaaaaaaaaa"),
 	// 			ComputeRole: to.Ptr("aaaaaaaaaaaaaaaaa"),
@@ -69,7 +69,7 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientGetResponse{
-	// 	VirtualMachineExtensionImage: &armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImage: armcompute.VirtualMachineExtensionImage{
 	// 		Name: to.Ptr("aaaaaaaaaaaaaaa"),
 	// 		Location: to.Ptr("aaaaaaaaaaaaa"),
 	// 		ID: to.Ptr("aaaaaaaaaaaaaaaaa"),
@@ -96,7 +96,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensio
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientListTypesResponse{
-	// 	VirtualMachineExtensionImageArray: &[]*armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImageArray: []*armcompute.VirtualMachineExtensionImage{
 	// 		{
 	// 			Properties: &armcompute.VirtualMachineExtensionImageProperties{
 	// 				OperatingSystem: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -136,7 +136,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensio
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientListTypesResponse{
-	// 	VirtualMachineExtensionImageArray: &[]*armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImageArray: []*armcompute.VirtualMachineExtensionImage{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaaaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaa"),
@@ -168,7 +168,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExten
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientListVersionsResponse{
-	// 	VirtualMachineExtensionImageArray: &[]*armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImageArray: []*armcompute.VirtualMachineExtensionImage{
 	// 		{
 	// 			Properties: &armcompute.VirtualMachineExtensionImageProperties{
 	// 				OperatingSystem: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -208,7 +208,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExten
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientListVersionsResponse{
-	// 	VirtualMachineExtensionImageArray: &[]*armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImageArray: []*armcompute.VirtualMachineExtensionImage{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaaaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaa"),

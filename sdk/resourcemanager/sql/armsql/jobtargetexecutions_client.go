@@ -20,6 +20,8 @@ import (
 
 // JobTargetExecutionsClient contains the methods for the JobTargetExecutions group.
 // Don't use this type directly, use NewJobTargetExecutionsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type JobTargetExecutionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewJobTargetExecutionsClient(subscriptionID string, credential azcore.Token
 
 // Get - Gets a target execution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -115,8 +115,8 @@ func (client *JobTargetExecutionsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -131,8 +131,6 @@ func (client *JobTargetExecutionsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByJobExecutionPager - Lists target executions for all steps of a job execution.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -201,7 +199,7 @@ func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.CreateTimeMax != nil {
 		reqQP.Set("createTimeMax", datetime.RFC3339(*options.CreateTimeMax).String())
 	}
@@ -217,7 +215,7 @@ func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx con
 	if options != nil && options.IsActive != nil {
 		reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -232,8 +230,6 @@ func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *
 }
 
 // NewListByStepPager - Lists the target executions of a job step execution.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -307,7 +303,7 @@ func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.CreateTimeMax != nil {
 		reqQP.Set("createTimeMax", datetime.RFC3339(*options.CreateTimeMax).String())
 	}
@@ -323,7 +319,7 @@ func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Con
 	if options != nil && options.IsActive != nil {
 		reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -4,6 +4,10 @@
 
 package armpolicy
 
+const (
+	version20250301 string = "2025-03-01"
+)
+
 // AssignmentType - The type of policy assignment. Possible values are NotSpecified, System, SystemHidden, and Custom. Immutable.
 type AssignmentType string
 

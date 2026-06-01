@@ -19,6 +19,8 @@ import (
 
 // OffersClient contains the methods for the Offers group.
 // Don't use this type directly, use NewOffersClient() instead.
+//
+// Generated from API version 2025-10-01-preview
 type OffersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewOffersClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginGenerateAccessToken - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - offerID - Id of the offer
 //   - body - The content of the action request
@@ -68,8 +68,6 @@ func (client *OffersClient) BeginGenerateAccessToken(ctx context.Context, resour
 
 // GenerateAccessToken - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *OffersClient) generateAccessToken(ctx context.Context, resourceURI string, offerID string, body AccessTokenRequest, options *OffersClientBeginGenerateAccessTokenOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OffersClient.BeginGenerateAccessToken"
@@ -107,8 +105,8 @@ func (client *OffersClient) generateAccessTokenCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -119,8 +117,6 @@ func (client *OffersClient) generateAccessTokenCreateRequest(ctx context.Context
 
 // Get - Get a Offer
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - offerID - Id of the offer
 //   - options - OffersClientGetOptions contains the optional parameters for the OffersClient.Get method.
@@ -162,8 +158,8 @@ func (client *OffersClient) getCreateRequest(ctx context.Context, resourceURI st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -179,8 +175,6 @@ func (client *OffersClient) getHandleResponse(resp *http.Response) (OffersClient
 
 // GetAccessToken - get access token.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - offerID - Id of the offer
 //   - body - The content of the action request
@@ -223,8 +217,8 @@ func (client *OffersClient) getAccessTokenCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -243,8 +237,6 @@ func (client *OffersClient) getAccessTokenHandleResponse(resp *http.Response) (O
 }
 
 // NewListPager - List Offer resources by parent
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - OffersClientListOptions contains the optional parameters for the OffersClient.NewListPager method.
 func (client *OffersClient) NewListPager(resourceURI string, options *OffersClientListOptions) *runtime.Pager[OffersClientListResponse] {
@@ -291,14 +283,14 @@ func (client *OffersClient) listCreateRequest(ctx context.Context, resourceURI s
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-10-01-preview")
+	reqQP.Set("api-version", version20251001Preview)
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -313,8 +305,6 @@ func (client *OffersClient) listHandleResponse(resp *http.Response) (OffersClien
 }
 
 // NewListBySubscriptionPager - List Offer resources by subscription ID
-//
-// Generated from API version 2025-10-01-preview
 //   - options - OffersClientListBySubscriptionOptions contains the optional parameters for the OffersClient.NewListBySubscriptionPager
 //     method.
 func (client *OffersClient) NewListBySubscriptionPager(options *OffersClientListBySubscriptionOptions) *runtime.Pager[OffersClientListBySubscriptionResponse] {
@@ -352,8 +342,8 @@ func (client *OffersClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

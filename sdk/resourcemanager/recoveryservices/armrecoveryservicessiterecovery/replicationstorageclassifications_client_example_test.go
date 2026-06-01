@@ -6,10 +6,9 @@ package armrecoveryservicessiterecovery_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"log"
 )
 
 // Generated from example definition: 2025-08-01/ReplicationStorageClassifications_Get.json
@@ -31,7 +30,7 @@ func ExampleReplicationStorageClassificationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationStorageClassificationsClientGetResponse{
-	// 	StorageClassification: &armrecoveryservicessiterecovery.StorageClassification{
+	// 	StorageClassification: armrecoveryservicessiterecovery.StorageClassification{
 	// 		Name: to.Ptr("8891569e-aaef-4a46-a4a0-78c14f2d7b09"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationStorageClassifications"),
 	// 		ID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0/replicationStorageClassifications/8891569e-aaef-4a46-a4a0-78c14f2d7b09"),

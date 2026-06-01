@@ -82,13 +82,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithAutoScaleParamet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -183,13 +183,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithCustomVMImage() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -238,13 +238,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithSharedGalleriesCu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -303,13 +303,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithDedicatedHosts() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -383,13 +383,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putAnStatelessNodeTypeWithTempor
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -459,13 +459,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithVMImagePlan() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -671,13 +671,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -877,13 +877,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMinimumParameter
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -932,7 +932,7 @@ func ExampleNodeTypesClient_BeginDeallocate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -953,7 +953,7 @@ func ExampleNodeTypesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -979,7 +979,7 @@ func ExampleNodeTypesClient_BeginDeleteNode() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1002,7 +1002,7 @@ func ExampleNodeTypesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientGetResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("FE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/FE"),
@@ -1174,7 +1174,7 @@ func ExampleNodeTypesClient_BeginRedeploy_redeployAllNodesByUpgradeDomain() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1200,7 +1200,7 @@ func ExampleNodeTypesClient_BeginRedeploy_redeployNodes() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1223,7 +1223,7 @@ func ExampleNodeTypesClient_BeginReimage_reimageAllNodesByUpgradeDomain() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1249,7 +1249,7 @@ func ExampleNodeTypesClient_BeginReimage_reimageNodes() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1275,7 +1275,7 @@ func ExampleNodeTypesClient_BeginRestart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1301,7 +1301,7 @@ func ExampleNodeTypesClient_BeginStart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1331,13 +1331,13 @@ func ExampleNodeTypesClient_BeginUpdate_patchANodeTypeWhileAutoScaling() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -1426,13 +1426,13 @@ func ExampleNodeTypesClient_BeginUpdate_patchANodeType() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),

@@ -11,10 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // ProviderServer is a fake server for instances of the armappservice.ProviderClient type.
@@ -89,9 +90,7 @@ func (p *ProviderServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (p *ProviderServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -119,10 +118,7 @@ func (p *ProviderServerTransport) dispatchToMethodFake(req *http.Request, method
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -140,11 +136,7 @@ func (p *ProviderServerTransport) dispatchNewGetAvailableStacksPager(req *http.R
 	newGetAvailableStacksPager := p.newGetAvailableStacksPager.get(req)
 	if newGetAvailableStacksPager == nil {
 		qp := req.URL.Query()
-		oSTypeSelectedUnescaped, err := url.QueryUnescape(qp.Get("osTypeSelected"))
-		if err != nil {
-			return nil, err
-		}
-		oSTypeSelectedParam := getOptional(armappservice.ProviderOsTypeSelected(oSTypeSelectedUnescaped))
+		oSTypeSelectedParam := getOptional(armappservice.ProviderOsTypeSelected(qp.Get("osTypeSelected")))
 		var options *armappservice.ProviderClientGetAvailableStacksOptions
 		if oSTypeSelectedParam != nil {
 			options = &armappservice.ProviderClientGetAvailableStacksOptions{
@@ -162,7 +154,7 @@ func (p *ProviderServerTransport) dispatchNewGetAvailableStacksPager(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newGetAvailableStacksPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -185,11 +177,7 @@ func (p *ProviderServerTransport) dispatchNewGetAvailableStacksOnPremPager(req *
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		oSTypeSelectedUnescaped, err := url.QueryUnescape(qp.Get("osTypeSelected"))
-		if err != nil {
-			return nil, err
-		}
-		oSTypeSelectedParam := getOptional(armappservice.ProviderOsTypeSelected(oSTypeSelectedUnescaped))
+		oSTypeSelectedParam := getOptional(armappservice.ProviderOsTypeSelected(qp.Get("osTypeSelected")))
 		var options *armappservice.ProviderClientGetAvailableStacksOnPremOptions
 		if oSTypeSelectedParam != nil {
 			options = &armappservice.ProviderClientGetAvailableStacksOnPremOptions{
@@ -207,7 +195,7 @@ func (p *ProviderServerTransport) dispatchNewGetAvailableStacksOnPremPager(req *
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newGetAvailableStacksOnPremPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -224,11 +212,7 @@ func (p *ProviderServerTransport) dispatchNewGetFunctionAppStacksPager(req *http
 	newGetFunctionAppStacksPager := p.newGetFunctionAppStacksPager.get(req)
 	if newGetFunctionAppStacksPager == nil {
 		qp := req.URL.Query()
-		stackOsTypeUnescaped, err := url.QueryUnescape(qp.Get("stackOsType"))
-		if err != nil {
-			return nil, err
-		}
-		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(stackOsTypeUnescaped))
+		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(qp.Get("stackOsType")))
 		var options *armappservice.ProviderClientGetFunctionAppStacksOptions
 		if stackOsTypeParam != nil {
 			options = &armappservice.ProviderClientGetFunctionAppStacksOptions{
@@ -246,7 +230,7 @@ func (p *ProviderServerTransport) dispatchNewGetFunctionAppStacksPager(req *http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newGetFunctionAppStacksPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -273,11 +257,7 @@ func (p *ProviderServerTransport) dispatchNewGetFunctionAppStacksForLocationPage
 		if err != nil {
 			return nil, err
 		}
-		stackOsTypeUnescaped, err := url.QueryUnescape(qp.Get("stackOsType"))
-		if err != nil {
-			return nil, err
-		}
-		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(stackOsTypeUnescaped))
+		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(qp.Get("stackOsType")))
 		var options *armappservice.ProviderClientGetFunctionAppStacksForLocationOptions
 		if stackOsTypeParam != nil {
 			options = &armappservice.ProviderClientGetFunctionAppStacksForLocationOptions{
@@ -295,7 +275,7 @@ func (p *ProviderServerTransport) dispatchNewGetFunctionAppStacksForLocationPage
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newGetFunctionAppStacksForLocationPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -312,11 +292,7 @@ func (p *ProviderServerTransport) dispatchNewGetWebAppStacksPager(req *http.Requ
 	newGetWebAppStacksPager := p.newGetWebAppStacksPager.get(req)
 	if newGetWebAppStacksPager == nil {
 		qp := req.URL.Query()
-		stackOsTypeUnescaped, err := url.QueryUnescape(qp.Get("stackOsType"))
-		if err != nil {
-			return nil, err
-		}
-		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(stackOsTypeUnescaped))
+		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(qp.Get("stackOsType")))
 		var options *armappservice.ProviderClientGetWebAppStacksOptions
 		if stackOsTypeParam != nil {
 			options = &armappservice.ProviderClientGetWebAppStacksOptions{
@@ -334,7 +310,7 @@ func (p *ProviderServerTransport) dispatchNewGetWebAppStacksPager(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newGetWebAppStacksPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -361,11 +337,7 @@ func (p *ProviderServerTransport) dispatchNewGetWebAppStacksForLocationPager(req
 		if err != nil {
 			return nil, err
 		}
-		stackOsTypeUnescaped, err := url.QueryUnescape(qp.Get("stackOsType"))
-		if err != nil {
-			return nil, err
-		}
-		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(stackOsTypeUnescaped))
+		stackOsTypeParam := getOptional(armappservice.ProviderStackOsType(qp.Get("stackOsType")))
 		var options *armappservice.ProviderClientGetWebAppStacksForLocationOptions
 		if stackOsTypeParam != nil {
 			options = &armappservice.ProviderClientGetWebAppStacksForLocationOptions{
@@ -383,7 +355,7 @@ func (p *ProviderServerTransport) dispatchNewGetWebAppStacksForLocationPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newGetWebAppStacksForLocationPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -410,7 +382,7 @@ func (p *ProviderServerTransport) dispatchNewListOperationsPager(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListOperationsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

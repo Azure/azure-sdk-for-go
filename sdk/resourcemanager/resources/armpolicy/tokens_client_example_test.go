@@ -36,7 +36,7 @@ func ExampleTokensClient_Acquire() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.TokensClientAcquireResponse{
-	// 	TokenResponse: &armpolicy.TokenResponse{
+	// 	TokenResponse: armpolicy.TokenResponse{
 	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
 	// 		Result: to.Ptr(armpolicy.PolicyTokenResultSucceeded),
 	// 		Results: []*armpolicy.ExternalEvaluationEndpointInvocationResult{
@@ -109,7 +109,7 @@ func ExampleTokensClient_AcquireAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.TokensClientAcquireAtManagementGroupResponse{
-	// 	TokenResponse: &armpolicy.TokenResponse{
+	// 	TokenResponse: armpolicy.TokenResponse{
 	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
 	// 		Result: to.Ptr(armpolicy.PolicyTokenResultSucceeded),
 	// 		Results: []*armpolicy.ExternalEvaluationEndpointInvocationResult{

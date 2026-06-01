@@ -19,6 +19,8 @@ import (
 
 // DataMaskingRulesClient contains the methods for the DataMaskingRules group.
 // Don't use this type directly, use NewDataMaskingRulesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type DataMaskingRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewDataMaskingRulesClient(subscriptionID string, credential azcore.TokenCre
 
 // CreateOrUpdate - Creates or updates a database data masking rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -106,8 +106,8 @@ func (client *DataMaskingRulesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -126,8 +126,6 @@ func (client *DataMaskingRulesClient) createOrUpdateHandleResponse(resp *http.Re
 }
 
 // NewListByDatabasePager - Gets a list of database data masking rules.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -188,8 +186,8 @@ func (client *DataMaskingRulesClient) listByDatabaseCreateRequest(ctx context.Co
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

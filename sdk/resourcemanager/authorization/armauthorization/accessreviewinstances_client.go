@@ -18,6 +18,8 @@ import (
 
 // AccessReviewInstancesClient contains the methods for the AccessReviewInstances group.
 // Don't use this type directly, use NewAccessReviewInstancesClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type AccessReviewInstancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAccessReviewInstancesClient(subscriptionID string, credential azcore.Tok
 
 // Create - Update access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
 //   - properties - Access review instance properties.
@@ -90,8 +90,8 @@ func (client *AccessReviewInstancesClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -111,8 +111,6 @@ func (client *AccessReviewInstancesClient) createHandleResponse(resp *http.Respo
 
 // GetByID - Get access review instances
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
 //   - options - AccessReviewInstancesClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesClient.GetByID
@@ -159,8 +157,8 @@ func (client *AccessReviewInstancesClient) getByIDCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -175,8 +173,6 @@ func (client *AccessReviewInstancesClient) getByIDHandleResponse(resp *http.Resp
 }
 
 // NewListPager - Get access review instances
-//
-// Generated from API version 2021-12-01-preview
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - options - AccessReviewInstancesClientListOptions contains the optional parameters for the AccessReviewInstancesClient.NewListPager
 //     method.
@@ -222,8 +218,8 @@ func (client *AccessReviewInstancesClient) listCreateRequest(ctx context.Context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -18,6 +18,8 @@ import (
 
 // ProtectionPolicyOperationStatusesClient contains the methods for the ProtectionPolicyOperationStatuses group.
 // Don't use this type directly, use NewProtectionPolicyOperationStatusesClient() instead.
+//
+// Generated from API version 2026-01-31-preview
 type ProtectionPolicyOperationStatusesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewProtectionPolicyOperationStatusesClient(subscriptionID string, credentia
 // or failed. You can refer to the Operation Status enum for all the possible states of an operation. Some operations
 // create jobs. This method returns the list of jobs associated with operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionPolicyOperationStatusesClientGetOptions contains the optional parameters for the ProtectionPolicyOperationStatusesClient.Get
 //     method.
@@ -98,8 +98,8 @@ func (client *ProtectionPolicyOperationStatusesClient) getCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

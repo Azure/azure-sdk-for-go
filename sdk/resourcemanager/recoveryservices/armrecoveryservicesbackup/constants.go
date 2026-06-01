@@ -4,6 +4,10 @@
 
 package armrecoveryservicesbackup
 
+const (
+	version20260131Preview string = "2026-01-31-preview"
+)
+
 // AcquireStorageAccountLock - Whether storage account lock is to be acquired for this container or not.
 type AcquireStorageAccountLock string
 

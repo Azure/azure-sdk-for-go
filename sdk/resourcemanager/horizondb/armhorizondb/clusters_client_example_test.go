@@ -44,13 +44,13 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.ClustersClientCreateOrUpdateResponse{
-	// 	Cluster: &armhorizondb.Cluster{
+	// 	Cluster: armhorizondb.Cluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster"),
 	// 		Name: to.Ptr("examplecluster"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
@@ -92,7 +92,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -115,7 +115,7 @@ func ExampleClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.ClustersClientGetResponse{
-	// 	Cluster: &armhorizondb.Cluster{
+	// 	Cluster: armhorizondb.Cluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster"),
 	// 		Name: to.Ptr("examplecluster"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),
@@ -305,13 +305,13 @@ func ExampleClustersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.ClustersClientUpdateResponse{
-	// 	Cluster: &armhorizondb.Cluster{
+	// 	Cluster: armhorizondb.Cluster{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster"),
 	// 		Name: to.Ptr("examplecluster"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters"),

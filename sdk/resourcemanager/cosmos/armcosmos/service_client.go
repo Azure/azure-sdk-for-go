@@ -18,6 +18,8 @@ import (
 
 // ServiceClient contains the methods for the Service group.
 // Don't use this type directly, use NewServiceClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type ServiceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginCreate - Creates a service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - serviceName - Cosmos DB service name.
@@ -67,8 +67,6 @@ func (client *ServiceClient) BeginCreate(ctx context.Context, resourceGroupName 
 
 // Create - Creates a service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *ServiceClient) create(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters ServiceResourceCreateUpdateParameters, options *ServiceClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServiceClient.BeginCreate"
@@ -114,8 +112,8 @@ func (client *ServiceClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateParameters); err != nil {
@@ -126,8 +124,6 @@ func (client *ServiceClient) createCreateRequest(ctx context.Context, resourceGr
 
 // BeginDelete - Deletes service with the given serviceName.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - serviceName - Cosmos DB service name.
@@ -151,8 +147,6 @@ func (client *ServiceClient) BeginDelete(ctx context.Context, resourceGroupName 
 
 // Delete - Deletes service with the given serviceName.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *ServiceClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, serviceName string, options *ServiceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServiceClient.BeginDelete"
@@ -198,15 +192,13 @@ func (client *ServiceClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the status of service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - serviceName - Cosmos DB service name.
@@ -257,8 +249,8 @@ func (client *ServiceClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -273,8 +265,6 @@ func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClie
 }
 
 // NewListPager - Gets the status of service.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - ServiceClientListOptions contains the optional parameters for the ServiceClient.NewListPager method.
@@ -321,8 +311,8 @@ func (client *ServiceClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

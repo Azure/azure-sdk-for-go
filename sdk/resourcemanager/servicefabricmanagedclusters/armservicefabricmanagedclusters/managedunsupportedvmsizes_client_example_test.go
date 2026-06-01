@@ -30,7 +30,7 @@ func ExampleManagedUnsupportedVMSizesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedUnsupportedVMSizesClientGetResponse{
-	// 	ManagedVMSize: &armservicefabricmanagedclusters.ManagedVMSize{
+	// 	ManagedVMSize: armservicefabricmanagedclusters.ManagedVMSize{
 	// 		Name: to.Ptr("Standard_B1ls1"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/locations/managedVMSizes"),
 	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/managedVMSizes/Standard_B1ls1"),

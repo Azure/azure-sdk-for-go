@@ -18,6 +18,8 @@ import (
 
 // AuthorizedApplicationsClient contains the methods for the AuthorizedApplications group.
 // Don't use this type directly, use NewAuthorizedApplicationsClient() instead.
+//
+// Generated from API version 2024-09-01
 type AuthorizedApplicationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAuthorizedApplicationsClient(subscriptionID string, credential azcore.To
 
 // BeginCreateOrUpdate - Creates or updates the authorized application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - applicationID - The application ID.
 //   - properties - The authorized application properties supplied to the CreateOrUpdate operation.
@@ -67,8 +67,6 @@ func (client *AuthorizedApplicationsClient) BeginCreateOrUpdate(ctx context.Cont
 
 // CreateOrUpdate - Creates or updates the authorized application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *AuthorizedApplicationsClient) createOrUpdate(ctx context.Context, providerNamespace string, applicationID string, properties AuthorizedApplication, options *AuthorizedApplicationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AuthorizedApplicationsClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *AuthorizedApplicationsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -122,8 +120,6 @@ func (client *AuthorizedApplicationsClient) createOrUpdateCreateRequest(ctx cont
 
 // Delete - Deletes an authorized application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - applicationID - The application ID.
 //   - options - AuthorizedApplicationsClientDeleteOptions contains the optional parameters for the AuthorizedApplicationsClient.Delete
@@ -169,15 +165,13 @@ func (client *AuthorizedApplicationsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the authorized application details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - applicationID - The application ID.
 //   - options - AuthorizedApplicationsClientGetOptions contains the optional parameters for the AuthorizedApplicationsClient.Get
@@ -224,8 +218,8 @@ func (client *AuthorizedApplicationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -240,8 +234,6 @@ func (client *AuthorizedApplicationsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListPager - Gets the list of the authorized applications in the provider namespace.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - AuthorizedApplicationsClientListOptions contains the optional parameters for the AuthorizedApplicationsClient.NewListPager
 //     method.
@@ -284,8 +276,8 @@ func (client *AuthorizedApplicationsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

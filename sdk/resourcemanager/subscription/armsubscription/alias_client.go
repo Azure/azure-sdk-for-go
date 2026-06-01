@@ -18,6 +18,8 @@ import (
 
 // AliasClient contains the methods for the Alias group.
 // Don't use this type directly, use NewAliasClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type AliasClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewAliasClient(credential azcore.TokenCredential, options *arm.ClientOption
 
 // BeginCreate - Create Alias Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - aliasName - AliasName is the name for the subscription creation request. Note that this is not the same as subscription
 //     name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
 //   - options - AliasClientBeginCreateOptions contains the optional parameters for the AliasClient.BeginCreate method.
@@ -62,8 +62,6 @@ func (client *AliasClient) BeginCreate(ctx context.Context, aliasName string, bo
 
 // Create - Create Alias Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *AliasClient) create(ctx context.Context, aliasName string, body PutAliasRequest, options *AliasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AliasClient.BeginCreate"
@@ -97,8 +95,8 @@ func (client *AliasClient) createCreateRequest(ctx context.Context, aliasName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -109,8 +107,6 @@ func (client *AliasClient) createCreateRequest(ctx context.Context, aliasName st
 
 // Delete - Delete Alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - aliasName - AliasName is the name for the subscription creation request. Note that this is not the same as subscription
 //     name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
 //   - options - AliasClientDeleteOptions contains the optional parameters for the AliasClient.Delete method.
@@ -147,15 +143,13 @@ func (client *AliasClient) deleteCreateRequest(ctx context.Context, aliasName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get Alias Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - aliasName - AliasName is the name for the subscription creation request. Note that this is not the same as subscription
 //     name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
 //   - options - AliasClientGetOptions contains the optional parameters for the AliasClient.Get method.
@@ -193,8 +187,8 @@ func (client *AliasClient) getCreateRequest(ctx context.Context, aliasName strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -209,8 +203,6 @@ func (client *AliasClient) getHandleResponse(resp *http.Response) (AliasClientGe
 }
 
 // NewListPager - List Alias Subscription.
-//
-// Generated from API version 2025-11-01-preview
 //   - options - AliasClientListOptions contains the optional parameters for the AliasClient.NewListPager method.
 func (client *AliasClient) NewListPager(options *AliasClientListOptions) *runtime.Pager[AliasClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AliasClientListResponse]{
@@ -243,8 +235,8 @@ func (client *AliasClient) listCreateRequest(ctx context.Context, _ *AliasClient
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

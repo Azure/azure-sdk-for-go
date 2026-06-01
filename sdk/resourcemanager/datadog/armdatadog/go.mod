@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog
 
 go 1.25.0
 

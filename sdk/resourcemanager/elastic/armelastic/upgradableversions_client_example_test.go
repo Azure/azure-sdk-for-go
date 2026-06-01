@@ -7,7 +7,7 @@ package armelastic_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleUpgradableVersionsClient_Details() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelastic.UpgradableVersionsClientDetailsResponse{
-	// 	UpgradableVersionsList: &armelastic.UpgradableVersionsList{
+	// 	UpgradableVersionsList: armelastic.UpgradableVersionsList{
 	// 		CurrentVersion: to.Ptr("7.15.0"),
 	// 		UpgradableVersions: []*string{
 	// 			to.Ptr("7.15.1"),

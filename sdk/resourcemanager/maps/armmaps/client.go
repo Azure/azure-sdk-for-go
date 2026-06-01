@@ -6,16 +6,18 @@ package armmaps
 
 import (
 	"context"
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2025-10-01-preview
 type Client struct {
 	internal *arm.Client
 }
@@ -35,8 +37,6 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 }
 
 // NewListOperationsPager - List operations available for the Maps Resource Provider
-//
-// Generated from API version 2025-10-01-preview
 //   - options - ClientListOperationsOptions contains the optional parameters for the Client.NewListOperationsPager method.
 func (client *Client) NewListOperationsPager(options *ClientListOperationsOptions) *runtime.Pager[ClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListOperationsResponse]{
@@ -69,8 +69,8 @@ func (client *Client) listOperationsCreateRequest(ctx context.Context, _ *Client
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

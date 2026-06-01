@@ -351,7 +351,7 @@ func ExampleAssignmentsClient_Delete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.AssignmentsClientDeleteResponse{
-	// 	Assignment: &armpolicy.Assignment{
+	// 	Assignment: armpolicy.Assignment{
 	// 		Name: to.Ptr("EnforceNaming"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/EnforceNaming"),
@@ -399,7 +399,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.AssignmentsClientGetResponse{
-	// 	Assignment: &armpolicy.Assignment{
+	// 	Assignment: armpolicy.Assignment{
 	// 		Name: to.Ptr("EnforceNaming"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/EnforceNaming"),
@@ -448,7 +448,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithASystemAssignedId
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.AssignmentsClientGetResponse{
-	// 	Assignment: &armpolicy.Assignment{
+	// 	Assignment: armpolicy.Assignment{
 	// 		Name: to.Ptr("EnforceNaming"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/EnforceNaming"),
@@ -503,7 +503,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithOverrides() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.AssignmentsClientGetResponse{
-	// 	Assignment: &armpolicy.Assignment{
+	// 	Assignment: armpolicy.Assignment{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
@@ -559,7 +559,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithResourceSelectors
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.AssignmentsClientGetResponse{
-	// 	Assignment: &armpolicy.Assignment{
+	// 	Assignment: armpolicy.Assignment{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
@@ -614,7 +614,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithAUserAssignedIden
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.AssignmentsClientGetResponse{
-	// 	Assignment: &armpolicy.Assignment{
+	// 	Assignment: armpolicy.Assignment{
 	// 		Name: to.Ptr("EnforceNaming"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/EnforceNaming"),
@@ -996,7 +996,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithASystemAssignedI
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.AssignmentsClientUpdateResponse{
-	// 	Assignment: &armpolicy.Assignment{
+	// 	Assignment: armpolicy.Assignment{
 	// 		Name: to.Ptr("EnforceNaming"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/EnforceNaming"),
@@ -1069,7 +1069,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithOverrides() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.AssignmentsClientUpdateResponse{
-	// 	Assignment: &armpolicy.Assignment{
+	// 	Assignment: armpolicy.Assignment{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
@@ -1142,7 +1142,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithResourceSelector
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.AssignmentsClientUpdateResponse{
-	// 	Assignment: &armpolicy.Assignment{
+	// 	Assignment: armpolicy.Assignment{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
@@ -1205,7 +1205,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithAUserAssignedIde
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.AssignmentsClientUpdateResponse{
-	// 	Assignment: &armpolicy.Assignment{
+	// 	Assignment: armpolicy.Assignment{
 	// 		Name: to.Ptr("EnforceNaming"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/EnforceNaming"),

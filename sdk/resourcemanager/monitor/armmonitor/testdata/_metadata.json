@@ -15,5 +15,5 @@
     "ActionGroupsApi": "2024-10-01-preview",
     "NetworkSecurityPerimeterApi": "2021-10-01"
   },
-  "emitterVersion": "0.14.0"
+  "emitterVersion": "0.14.1"
 }

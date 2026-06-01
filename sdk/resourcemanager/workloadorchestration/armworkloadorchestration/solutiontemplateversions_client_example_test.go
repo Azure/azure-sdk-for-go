@@ -35,7 +35,7 @@ func ExampleSolutionTemplateVersionsClient_BeginBulkDeploySolution() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -74,7 +74,7 @@ func ExampleSolutionTemplateVersionsClient_BeginBulkPublishSolution() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -97,7 +97,7 @@ func ExampleSolutionTemplateVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SolutionTemplateVersionsClientGetResponse{
-	// 	SolutionTemplateVersion: &armworkloadorchestration.SolutionTemplateVersion{
+	// 	SolutionTemplateVersion: armworkloadorchestration.SolutionTemplateVersion{
 	// 		Properties: &armworkloadorchestration.SolutionTemplateVersionProperties{
 	// 			Configurations: to.Ptr("ofqcsavwmeuwmvtjnqpoybtjvkmrlh"),
 	// 			Specification: map[string]any{

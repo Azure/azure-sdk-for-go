@@ -11,20 +11,15 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole"
 	"net/http"
 	"net/url"
 	"regexp"
 	"slices"
-	"strings"
-	"sync"
 )
 
 // MicrosoftSerialConsoleServer is a fake server for instances of the armserialconsole.MicrosoftSerialConsoleClient type.
 type MicrosoftSerialConsoleServer struct {
-	// SerialPortsServer contains the fakes for client SerialPortsClient
-	SerialPortsServer SerialPortsServer
-
 	// DisableConsole is the fake for method MicrosoftSerialConsoleClient.DisableConsole
 	// HTTP status codes to indicate success: http.StatusOK
 	DisableConsole func(ctx context.Context, defaultParam string, options *armserialconsole.MicrosoftSerialConsoleClientDisableConsoleOptions) (resp azfake.Responder[armserialconsole.MicrosoftSerialConsoleClientDisableConsoleResponse], errResp azfake.ErrorResponder)
@@ -52,9 +47,7 @@ func NewMicrosoftSerialConsoleServerTransport(srv *MicrosoftSerialConsoleServer)
 // MicrosoftSerialConsoleServerTransport connects instances of armserialconsole.MicrosoftSerialConsoleClient to instances of MicrosoftSerialConsoleServer.
 // Don't use this type directly, use NewMicrosoftSerialConsoleServerTransport instead.
 type MicrosoftSerialConsoleServerTransport struct {
-	srv                 *MicrosoftSerialConsoleServer
-	trMu                sync.Mutex
-	trSerialPortsServer *SerialPortsServerTransport
+	srv *MicrosoftSerialConsoleServer
 }
 
 // Do implements the policy.Transporter interface for MicrosoftSerialConsoleServerTransport.
@@ -65,27 +58,7 @@ func (m *MicrosoftSerialConsoleServerTransport) Do(req *http.Request) (*http.Res
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	if client := method[:strings.Index(method, ".")]; client != "MicrosoftSerialConsoleClient" {
-		return m.dispatchToClientFake(req, client)
-	}
 	return m.dispatchToMethodFake(req, method)
-}
-
-func (m *MicrosoftSerialConsoleServerTransport) dispatchToClientFake(req *http.Request, client string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
-
-	switch client {
-	case "SerialPortsClient":
-		initServer(&m.trMu, &m.trSerialPortsServer, func() *SerialPortsServerTransport {
-			return NewSerialPortsServerTransport(&m.srv.SerialPortsServer)
-		})
-		resp, err = m.trSerialPortsServer.Do(req)
-	default:
-		err = fmt.Errorf("unhandled client %s", client)
-	}
-
-	return resp, err
 }
 
 func (m *MicrosoftSerialConsoleServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {

@@ -18,6 +18,8 @@ import (
 
 // MonitorResourcesClient contains the methods for the MonitorResources group.
 // Don't use this type directly, use NewMonitorResourcesClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type MonitorResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewMonitorResourcesClient(subscriptionID string, credential azcore.TokenCre
 //
 // Returns the latest SaaS linked to the Datadog organization of the underlying monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorResourcesClientLatestLinkedSaaSOptions contains the optional parameters for the MonitorResourcesClient.LatestLinkedSaaS
@@ -91,8 +91,8 @@ func (client *MonitorResourcesClient) latestLinkedSaaSCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +110,6 @@ func (client *MonitorResourcesClient) latestLinkedSaaSHandleResponse(resp *http.
 //
 // Links a new SaaS to the Datadog organization of the underlying monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - body - Link SaaS body parameter
@@ -139,8 +137,6 @@ func (client *MonitorResourcesClient) BeginLinkSaaS(ctx context.Context, resourc
 //
 // Links a new SaaS to the Datadog organization of the underlying monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 func (client *MonitorResourcesClient) linkSaaS(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, options *MonitorResourcesClientBeginLinkSaaSOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorResourcesClient.BeginLinkSaaS"
@@ -182,8 +178,8 @@ func (client *MonitorResourcesClient) linkSaaSCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

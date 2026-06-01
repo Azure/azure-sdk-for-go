@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 	"time"
 )
@@ -48,13 +48,13 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateABlockC
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientCreateOrUpdateResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		Name: to.Ptr("blockCapacityReservation"),
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/blockCapacityReservationGroup/capacityReservations/blockCapacityReservation"),
@@ -111,13 +111,13 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateACapaci
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientCreateOrUpdateResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		Name: to.Ptr("myCapacityReservation"),
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/myCapacityReservationGroup/capacityReservations/myCapacityReservation"),
@@ -170,13 +170,13 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateATarget
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientCreateOrUpdateResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		Name: to.Ptr("targetedCapacityReservation"),
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/targetedCapacityReservationGroup/capacityReservations/targetedCapacityReservation"),
@@ -217,7 +217,7 @@ func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMaxi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -243,7 +243,7 @@ func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMini
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -272,7 +272,7 @@ func ExampleCapacityReservationsClient_Get_getABlockCapacityReservation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientGetResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/blockCapacityReservationGroup/capacityReservations/blockCapacityReservation"),
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
@@ -352,7 +352,7 @@ func ExampleCapacityReservationsClient_Get_getACapacityReservation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientGetResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/myCapacityReservationGroup/capacityReservations/myCapacityReservation"),
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
@@ -428,7 +428,7 @@ func ExampleCapacityReservationsClient_Get_getATargetedCapacityReservation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientGetResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/targetedCapacityReservationGroup/capacityReservations/targetedCapacityReservation"),
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
@@ -808,13 +808,13 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaxi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientUpdateResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 		},
@@ -879,13 +879,13 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMini
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientUpdateResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.SKU{
 	// 		},

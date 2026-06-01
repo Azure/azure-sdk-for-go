@@ -18,6 +18,8 @@ import (
 
 // SolutionVersionsClient contains the methods for the SolutionVersions group.
 // Don't use this type directly, use NewSolutionVersionsClient() instead.
+//
+// Generated from API version 2025-06-01
 type SolutionVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSolutionVersionsClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Create or update a Solution Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - targetName - Name of the target
 //   - solutionName - Name of the solution
@@ -69,8 +69,6 @@ func (client *SolutionVersionsClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Create or update a Solution Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SolutionVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, targetName string, solutionName string, solutionVersionName string, resource SolutionVersion, options *SolutionVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SolutionVersionsClient.BeginCreateOrUpdate"
@@ -120,8 +118,8 @@ func (client *SolutionVersionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -132,8 +130,6 @@ func (client *SolutionVersionsClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Delete a Solution Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - targetName - Name of the target
 //   - solutionName - Name of the solution
@@ -159,8 +155,6 @@ func (client *SolutionVersionsClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Delete a Solution Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SolutionVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, targetName string, solutionName string, solutionVersionName string, options *SolutionVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SolutionVersionsClient.BeginDelete"
@@ -210,15 +204,13 @@ func (client *SolutionVersionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Solution Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - targetName - Name of the target
 //   - solutionName - Name of the solution
@@ -274,8 +266,8 @@ func (client *SolutionVersionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -290,8 +282,6 @@ func (client *SolutionVersionsClient) getHandleResponse(resp *http.Response) (So
 }
 
 // NewListBySolutionPager - List Solution Version Resources
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - targetName - Name of the target
 //   - solutionName - Name of the solution
@@ -344,8 +334,8 @@ func (client *SolutionVersionsClient) listBySolutionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -361,8 +351,6 @@ func (client *SolutionVersionsClient) listBySolutionHandleResponse(resp *http.Re
 
 // BeginUpdate - Update a Solution Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - targetName - Name of the target
 //   - solutionName - Name of the solution
@@ -389,8 +377,6 @@ func (client *SolutionVersionsClient) BeginUpdate(ctx context.Context, resourceG
 
 // Update - Update a Solution Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SolutionVersionsClient) update(ctx context.Context, resourceGroupName string, targetName string, solutionName string, solutionVersionName string, properties SolutionVersion, options *SolutionVersionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SolutionVersionsClient.BeginUpdate"
@@ -440,8 +426,8 @@ func (client *SolutionVersionsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

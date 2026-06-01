@@ -18,6 +18,8 @@ import (
 
 // MaintenanceWindowOptionsClient contains the methods for the MaintenanceWindowOptions group.
 // Don't use this type directly, use NewMaintenanceWindowOptionsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type MaintenanceWindowOptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewMaintenanceWindowOptionsClient(subscriptionID string, credential azcore.
 
 // Get - Gets a list of available maintenance windows.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -95,9 +95,9 @@ func (client *MaintenanceWindowOptionsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	reqQP.Set("maintenanceWindowOptionsName", maintenanceWindowOptionsName)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

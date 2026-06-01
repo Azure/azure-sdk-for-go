@@ -18,6 +18,8 @@ import (
 
 // BalancesClient contains the methods for the Balances group.
 // Don't use this type directly, use NewBalancesClient() instead.
+//
+// Generated from API version 2024-08-01
 type BalancesClient struct {
 	internal *arm.Client
 }
@@ -39,8 +41,6 @@ func NewBalancesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // GetByBillingAccount - Gets the balances for a scope by billingAccountId. Balances are available via this API only for May
 // 1, 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - options - BalancesClientGetByBillingAccountOptions contains the optional parameters for the BalancesClient.GetByBillingAccount
 //     method.
@@ -78,8 +78,8 @@ func (client *BalancesClient) getByBillingAccountCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -96,8 +96,6 @@ func (client *BalancesClient) getByBillingAccountHandleResponse(resp *http.Respo
 // GetForBillingPeriodByBillingAccount - Gets the balances for a scope by billing period and billingAccountId. Balances are
 // available via this API only for May 1, 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - billingPeriodName - Billing Period Name.
 //   - options - BalancesClientGetForBillingPeriodByBillingAccountOptions contains the optional parameters for the BalancesClient.GetForBillingPeriodByBillingAccount
@@ -140,8 +138,8 @@ func (client *BalancesClient) getForBillingPeriodByBillingAccountCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

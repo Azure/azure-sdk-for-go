@@ -18,6 +18,8 @@ import (
 
 // SyncAgentsClient contains the methods for the SyncAgents group.
 // Don't use this type directly, use NewSyncAgentsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type SyncAgentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSyncAgentsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Creates or updates a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - syncAgentName - The name of the sync agent.
@@ -68,8 +68,6 @@ func (client *SyncAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Creates or updates a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *SyncAgentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SyncAgentsClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *SyncAgentsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +125,6 @@ func (client *SyncAgentsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Deletes a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - syncAgentName - The name of the sync agent.
@@ -152,8 +148,6 @@ func (client *SyncAgentsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *SyncAgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SyncAgentsClient.BeginDelete"
@@ -199,15 +193,13 @@ func (client *SyncAgentsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // GenerateKey - Generates a sync agent key.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - syncAgentName - The name of the sync agent.
@@ -258,8 +250,8 @@ func (client *SyncAgentsClient) generateKeyCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *SyncAgentsClient) generateKeyHandleResponse(resp *http.Response) (
 
 // Get - Gets a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - syncAgentName - The name of the sync agent.
@@ -327,8 +317,8 @@ func (client *SyncAgentsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -343,8 +333,6 @@ func (client *SyncAgentsClient) getHandleResponse(resp *http.Response) (SyncAgen
 }
 
 // NewListByServerPager - Lists sync agents in a server.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - SyncAgentsClientListByServerOptions contains the optional parameters for the SyncAgentsClient.NewListByServerPager
@@ -392,8 +380,8 @@ func (client *SyncAgentsClient) listByServerCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -408,8 +396,6 @@ func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) 
 }
 
 // NewListLinkedDatabasesPager - Lists databases linked to a sync agent.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - syncAgentName - The name of the sync agent.
@@ -462,8 +448,8 @@ func (client *SyncAgentsClient) listLinkedDatabasesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

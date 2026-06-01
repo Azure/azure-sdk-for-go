@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -39,13 +39,13 @@ func ExampleVirtualMachineScaleSetVMExtensionsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSetVMExtension: &armcompute.VirtualMachineScaleSetVMExtension{
+	// 	VirtualMachineScaleSetVMExtension: armcompute.VirtualMachineScaleSetVMExtension{
 	// 		Name: to.Ptr("myVMExtension"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myvmScaleSet/virtualMachines/0/extensions/myVMExtension"),
@@ -80,7 +80,7 @@ func ExampleVirtualMachineScaleSetVMExtensionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -108,7 +108,7 @@ func ExampleVirtualMachineScaleSetVMExtensionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMExtensionsClientGetResponse{
-	// 	VirtualMachineScaleSetVMExtension: &armcompute.VirtualMachineScaleSetVMExtension{
+	// 	VirtualMachineScaleSetVMExtension: armcompute.VirtualMachineScaleSetVMExtension{
 	// 		Properties: &armcompute.VirtualMachineExtensionProperties{
 	// 			AutoUpgradeMinorVersion: to.Ptr(true),
 	// 			ProvisioningState: to.Ptr("Creating"),
@@ -145,7 +145,7 @@ func ExampleVirtualMachineScaleSetVMExtensionsClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMExtensionsClientListResponse{
-	// 	VirtualMachineScaleSetVMExtensionsListResult: &armcompute.VirtualMachineScaleSetVMExtensionsListResult{
+	// 	VirtualMachineScaleSetVMExtensionsListResult: armcompute.VirtualMachineScaleSetVMExtensionsListResult{
 	// 		Value: []*armcompute.VirtualMachineScaleSetVMExtension{
 	// 			{
 	// 				Properties: &armcompute.VirtualMachineExtensionProperties{
@@ -209,13 +209,13 @@ func ExampleVirtualMachineScaleSetVMExtensionsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMExtensionsClientUpdateResponse{
-	// 	VirtualMachineScaleSetVMExtension: &armcompute.VirtualMachineScaleSetVMExtension{
+	// 	VirtualMachineScaleSetVMExtension: armcompute.VirtualMachineScaleSetVMExtension{
 	// 		Name: to.Ptr("myVMExtension"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myvmScaleSet/virtualMachines/0/extensions/myVMExtension"),

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v4
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations
 
 go 1.25.0
 

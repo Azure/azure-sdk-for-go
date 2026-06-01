@@ -4,6 +4,10 @@
 
 package armtenantactivitylogalerts
 
+const (
+	version20230401Preview string = "2023-04-01-preview"
+)
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

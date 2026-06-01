@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight
 
 go 1.25.0
 

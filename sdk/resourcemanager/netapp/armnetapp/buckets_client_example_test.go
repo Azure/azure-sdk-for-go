@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
 	"log"
 )
 
@@ -45,13 +45,13 @@ func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientCreateOrUpdateResponse{
-	// 	Bucket: &armnetapp.Bucket{
+	// 	Bucket: armnetapp.Bucket{
 	// 		Name: to.Ptr("account1/pool1/volume1/bucket1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/buckets"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/buckets/bucket1"),
@@ -120,13 +120,13 @@ func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdateWithAkv() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientCreateOrUpdateResponse{
-	// 	Bucket: &armnetapp.Bucket{
+	// 	Bucket: armnetapp.Bucket{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/buckets/bucket1"),
 	// 		Name: to.Ptr("account1/pool1/volume1/bucket1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/buckets"),
@@ -179,7 +179,7 @@ func ExampleBucketsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -202,7 +202,7 @@ func ExampleBucketsClient_BeginGenerateAkvCredentials() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -227,7 +227,7 @@ func ExampleBucketsClient_GenerateCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientGenerateCredentialsResponse{
-	// 	BucketGenerateCredentials: &armnetapp.BucketGenerateCredentials{
+	// 	BucketGenerateCredentials: armnetapp.BucketGenerateCredentials{
 	// 		AccessKey: to.Ptr("<REDACTED>"),
 	// 		KeyPairExpiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:33Z"); return t}()),
 	// 		SecretKey: to.Ptr("<REDACTED>"),
@@ -254,7 +254,7 @@ func ExampleBucketsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientGetResponse{
-	// 	Bucket: &armnetapp.Bucket{
+	// 	Bucket: armnetapp.Bucket{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/buckets/bucket1"),
 	// 		Name: to.Ptr("account1/pool1/volume1/bucket1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/buckets"),
@@ -371,7 +371,7 @@ func ExampleBucketsClient_BeginRefreshCertificate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -401,13 +401,13 @@ func ExampleBucketsClient_BeginUpdate_bucketsUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientUpdateResponse{
-	// 	Bucket: &armnetapp.Bucket{
+	// 	Bucket: armnetapp.Bucket{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/buckets/bucket1"),
 	// 		Name: to.Ptr("account1/pool1/volume1/bucket1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/buckets"),
@@ -468,13 +468,13 @@ func ExampleBucketsClient_BeginUpdate_bucketsUpdateWithAkv() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientUpdateResponse{
-	// 	Bucket: &armnetapp.Bucket{
+	// 	Bucket: armnetapp.Bucket{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/buckets/bucket1"),
 	// 		Name: to.Ptr("account1/pool1/volume1/bucket1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/buckets"),

@@ -7,19 +7,20 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // SystemTopicsClient contains the methods for the SystemTopics group.
 // Don't use this type directly, use NewSystemTopicsClient() instead.
+//
+// Generated from API version 2025-07-15-preview
 type SystemTopicsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,8 +46,6 @@ func NewSystemTopicsClient(subscriptionID string, credential azcore.TokenCredent
 //
 // Asynchronously creates a new system topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - systemTopicName - Name of the system topic.
 //   - systemTopicInfo - System Topic information.
@@ -73,8 +72,6 @@ func (client *SystemTopicsClient) BeginCreateOrUpdate(ctx context.Context, resou
 //
 // Asynchronously creates a new system topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 func (client *SystemTopicsClient) createOrUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicInfo SystemTopic, options *SystemTopicsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SystemTopicsClient.BeginCreateOrUpdate"
@@ -116,8 +113,8 @@ func (client *SystemTopicsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, systemTopicInfo); err != nil {
@@ -130,8 +127,6 @@ func (client *SystemTopicsClient) createOrUpdateCreateRequest(ctx context.Contex
 //
 // Delete existing system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - systemTopicName - Name of the system topic.
 //   - options - SystemTopicsClientBeginDeleteOptions contains the optional parameters for the SystemTopicsClient.BeginDelete
@@ -157,8 +152,6 @@ func (client *SystemTopicsClient) BeginDelete(ctx context.Context, resourceGroup
 //
 // Delete existing system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 func (client *SystemTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SystemTopicsClient.BeginDelete"
@@ -200,8 +193,8 @@ func (client *SystemTopicsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -209,8 +202,6 @@ func (client *SystemTopicsClient) deleteCreateRequest(ctx context.Context, resou
 //
 // Get properties of a system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - systemTopicName - Name of the system topic.
 //   - options - SystemTopicsClientGetOptions contains the optional parameters for the SystemTopicsClient.Get method.
@@ -256,8 +247,8 @@ func (client *SystemTopicsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -274,8 +265,6 @@ func (client *SystemTopicsClient) getHandleResponse(resp *http.Response) (System
 // NewListByResourceGroupPager - List system topics under a resource group.
 //
 // List all the system topics under a resource group.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SystemTopicsClientListByResourceGroupOptions contains the optional parameters for the SystemTopicsClient.NewListByResourceGroupPager
 //     method.
@@ -324,8 +313,8 @@ func (client *SystemTopicsClient) listByResourceGroupCreateRequest(ctx context.C
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -342,8 +331,6 @@ func (client *SystemTopicsClient) listByResourceGroupHandleResponse(resp *http.R
 // NewListBySubscriptionPager - List system topics under an Azure subscription.
 //
 // List all the system topics under an Azure subscription.
-//
-// Generated from API version 2025-07-15-preview
 //   - options - SystemTopicsClientListBySubscriptionOptions contains the optional parameters for the SystemTopicsClient.NewListBySubscriptionPager
 //     method.
 func (client *SystemTopicsClient) NewListBySubscriptionPager(options *SystemTopicsClientListBySubscriptionOptions) *runtime.Pager[SystemTopicsClientListBySubscriptionResponse] {
@@ -387,8 +374,8 @@ func (client *SystemTopicsClient) listBySubscriptionCreateRequest(ctx context.Co
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -406,8 +393,6 @@ func (client *SystemTopicsClient) listBySubscriptionHandleResponse(resp *http.Re
 //
 // Asynchronously updates a system topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - systemTopicName - Name of the system topic.
 //   - systemTopicUpdateParameters - SystemTopic update information.
@@ -434,8 +419,6 @@ func (client *SystemTopicsClient) BeginUpdate(ctx context.Context, resourceGroup
 //
 // Asynchronously updates a system topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 func (client *SystemTopicsClient) update(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicUpdateParameters SystemTopicUpdateParameters, options *SystemTopicsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SystemTopicsClient.BeginUpdate"
@@ -477,8 +460,8 @@ func (client *SystemTopicsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, systemTopicUpdateParameters); err != nil {

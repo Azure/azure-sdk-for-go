@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 	"log"
 )
 
@@ -34,7 +34,7 @@ func ExampleCommunicationsNoSubscriptionClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityOutput: &armsupport.CheckNameAvailabilityOutput{
+	// 	CheckNameAvailabilityOutput: armsupport.CheckNameAvailabilityOutput{
 	// 		Message: to.Ptr("Name not available"),
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr("Name is already in use"),
@@ -65,13 +65,13 @@ func ExampleCommunicationsNoSubscriptionClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.CommunicationsNoSubscriptionClientCreateResponse{
-	// 	CommunicationDetails: &armsupport.CommunicationDetails{
+	// 	CommunicationDetails: armsupport.CommunicationDetails{
 	// 		Name: to.Ptr("testcommunication"),
 	// 		Type: to.Ptr("Microsoft.Support/communications"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket/communications/testcommunication"),
@@ -106,7 +106,7 @@ func ExampleCommunicationsNoSubscriptionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.CommunicationsNoSubscriptionClientGetResponse{
-	// 	CommunicationDetails: &armsupport.CommunicationDetails{
+	// 	CommunicationDetails: armsupport.CommunicationDetails{
 	// 		Name: to.Ptr("testmessage"),
 	// 		Type: to.Ptr("Microsoft.Support/communications"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket/communications/testmessage"),

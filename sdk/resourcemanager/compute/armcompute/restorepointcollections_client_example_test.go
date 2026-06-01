@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -42,7 +42,7 @@ func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestoreP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientCreateOrUpdateResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Name: to.Ptr("myRpc"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/myRpc"),
 	// 		Type: to.Ptr("Microsoft.Compute/restorePointCollections"),
@@ -92,7 +92,7 @@ func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestoreP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientCreateOrUpdateResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Name: to.Ptr("myRpc"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/myRpc"),
 	// 		Type: to.Ptr("Microsoft.Compute/restorePointCollections"),
@@ -129,7 +129,7 @@ func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDele
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -155,7 +155,7 @@ func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDele
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -183,7 +183,7 @@ func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionButNotTh
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientGetResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Name: to.Ptr("myRpc"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/myRpc"),
 	// 		Type: to.Ptr("Microsoft.Compute/restorePointCollections"),
@@ -223,7 +223,7 @@ func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionIncludin
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientGetResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Name: to.Ptr("rpcName"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName"),
 	// 		Type: to.Ptr("Microsoft.Compute/restorePointCollections"),
@@ -475,7 +475,7 @@ func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMax
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientUpdateResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Location: to.Ptr("norwayeast"),
 	// 		Properties: &armcompute.RestorePointCollectionProperties{
 	// 			Source: &armcompute.RestorePointCollectionSourceProperties{
@@ -671,7 +671,7 @@ func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMin
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointCollectionsClientUpdateResponse{
-	// 	RestorePointCollection: &armcompute.RestorePointCollection{
+	// 	RestorePointCollection: armcompute.RestorePointCollection{
 	// 		Location: to.Ptr("norwayeast"),
 	// 	},
 	// }

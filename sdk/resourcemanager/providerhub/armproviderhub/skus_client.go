@@ -18,6 +18,8 @@ import (
 
 // SKUsClient contains the methods for the SKUs group.
 // Don't use this type directly, use NewSKUsClient() instead.
+//
+// Generated from API version 2024-09-01
 type SKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // CreateOrUpdate - Creates or updates the resource type skus in the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - sku - The SKU.
@@ -94,8 +94,8 @@ func (client *SKUsClient) createOrUpdateCreateRequest(ctx context.Context, provi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -115,8 +115,6 @@ func (client *SKUsClient) createOrUpdateHandleResponse(resp *http.Response) (SKU
 
 // CreateOrUpdateNestedResourceTypeFirst - Creates or updates the resource type skus in the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -174,8 +172,8 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeFirstCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -195,8 +193,6 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeFirstHandleResponse(re
 
 // CreateOrUpdateNestedResourceTypeSecond - Creates or updates the resource type skus in the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -259,8 +255,8 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeSecondCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -280,8 +276,6 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeSecondHandleResponse(r
 
 // CreateOrUpdateNestedResourceTypeThird - Creates or updates the resource type skus in the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -349,8 +343,8 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeThirdCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -370,8 +364,6 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeThirdHandleResponse(re
 
 // Delete - Deletes a resource type sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - sku - The SKU.
@@ -421,15 +413,13 @@ func (client *SKUsClient) deleteCreateRequest(ctx context.Context, providerNames
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DeleteNestedResourceTypeFirst - Deletes a resource type sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -485,15 +475,13 @@ func (client *SKUsClient) deleteNestedResourceTypeFirstCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DeleteNestedResourceTypeSecond - Deletes a resource type sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -554,15 +542,13 @@ func (client *SKUsClient) deleteNestedResourceTypeSecondCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DeleteNestedResourceTypeThird - Deletes a resource type sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -628,15 +614,13 @@ func (client *SKUsClient) deleteNestedResourceTypeThirdCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the sku details for the given resource type and sku name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - sku - The SKU.
@@ -687,8 +671,8 @@ func (client *SKUsClient) getCreateRequest(ctx context.Context, providerNamespac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -704,8 +688,6 @@ func (client *SKUsClient) getHandleResponse(resp *http.Response) (SKUsClientGetR
 
 // GetNestedResourceTypeFirst - Gets the sku details for the given resource type and sku name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -762,8 +744,8 @@ func (client *SKUsClient) getNestedResourceTypeFirstCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -779,8 +761,6 @@ func (client *SKUsClient) getNestedResourceTypeFirstHandleResponse(resp *http.Re
 
 // GetNestedResourceTypeSecond - Gets the sku details for the given resource type and sku name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -842,8 +822,8 @@ func (client *SKUsClient) getNestedResourceTypeSecondCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -859,8 +839,6 @@ func (client *SKUsClient) getNestedResourceTypeSecondHandleResponse(resp *http.R
 
 // GetNestedResourceTypeThird - Gets the sku details for the given resource type and sku name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -927,8 +905,8 @@ func (client *SKUsClient) getNestedResourceTypeThirdCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -943,8 +921,6 @@ func (client *SKUsClient) getNestedResourceTypeThirdHandleResponse(resp *http.Re
 }
 
 // NewListByResourceTypeRegistrationsPager - Gets the list of skus for the given resource type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - options - SKUsClientListByResourceTypeRegistrationsOptions contains the optional parameters for the SKUsClient.NewListByResourceTypeRegistrationsPager
@@ -992,8 +968,8 @@ func (client *SKUsClient) listByResourceTypeRegistrationsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1008,8 +984,6 @@ func (client *SKUsClient) listByResourceTypeRegistrationsHandleResponse(resp *ht
 }
 
 // NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager - Gets the list of skus for the given resource type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -1062,8 +1036,8 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeFirst
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1078,8 +1052,6 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeFirst
 }
 
 // NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager - Gets the list of skus for the given resource type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -1137,8 +1109,8 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeSecon
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1153,8 +1125,6 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeSecon
 }
 
 // NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager - Gets the list of skus for the given resource type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -1217,8 +1187,8 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeThird
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

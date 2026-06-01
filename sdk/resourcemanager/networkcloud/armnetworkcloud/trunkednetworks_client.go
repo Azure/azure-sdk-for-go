@@ -19,6 +19,8 @@ import (
 
 // TrunkedNetworksClient contains the methods for the TrunkedNetworks group.
 // Don't use this type directly, use NewTrunkedNetworksClient() instead.
+//
+// Generated from API version 2025-09-01
 type TrunkedNetworksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewTrunkedNetworksClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Create a new trunked network or update the properties of the existing trunked network.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trunkedNetworkName - The name of the trunked network.
 //   - trunkedNetworkParameters - The request body.
@@ -68,8 +68,6 @@ func (client *TrunkedNetworksClient) BeginCreateOrUpdate(ctx context.Context, re
 
 // CreateOrUpdate - Create a new trunked network or update the properties of the existing trunked network.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *TrunkedNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, trunkedNetworkName string, trunkedNetworkParameters TrunkedNetwork, options *TrunkedNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TrunkedNetworksClient.BeginCreateOrUpdate"
@@ -111,8 +109,8 @@ func (client *TrunkedNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -129,8 +127,6 @@ func (client *TrunkedNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 
 // BeginDelete - Delete the provided trunked network.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trunkedNetworkName - The name of the trunked network.
 //   - options - TrunkedNetworksClientBeginDeleteOptions contains the optional parameters for the TrunkedNetworksClient.BeginDelete
@@ -154,8 +150,6 @@ func (client *TrunkedNetworksClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Delete the provided trunked network.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *TrunkedNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, trunkedNetworkName string, options *TrunkedNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TrunkedNetworksClient.BeginDelete"
@@ -197,8 +191,8 @@ func (client *TrunkedNetworksClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -210,8 +204,6 @@ func (client *TrunkedNetworksClient) deleteCreateRequest(ctx context.Context, re
 
 // Get - Get properties of the provided trunked network.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trunkedNetworkName - The name of the trunked network.
 //   - options - TrunkedNetworksClientGetOptions contains the optional parameters for the TrunkedNetworksClient.Get method.
@@ -257,8 +249,8 @@ func (client *TrunkedNetworksClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -273,8 +265,6 @@ func (client *TrunkedNetworksClient) getHandleResponse(resp *http.Response) (Tru
 }
 
 // NewListByResourceGroupPager - Get a list of trunked networks in the provided resource group.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - TrunkedNetworksClientListByResourceGroupOptions contains the optional parameters for the TrunkedNetworksClient.NewListByResourceGroupPager
 //     method.
@@ -323,8 +313,8 @@ func (client *TrunkedNetworksClient) listByResourceGroupCreateRequest(ctx contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -339,8 +329,6 @@ func (client *TrunkedNetworksClient) listByResourceGroupHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - Get a list of trunked networks in the provided subscription.
-//
-// Generated from API version 2025-09-01
 //   - options - TrunkedNetworksClientListBySubscriptionOptions contains the optional parameters for the TrunkedNetworksClient.NewListBySubscriptionPager
 //     method.
 func (client *TrunkedNetworksClient) NewListBySubscriptionPager(options *TrunkedNetworksClientListBySubscriptionOptions) *runtime.Pager[TrunkedNetworksClientListBySubscriptionResponse] {
@@ -384,8 +372,8 @@ func (client *TrunkedNetworksClient) listBySubscriptionCreateRequest(ctx context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -401,8 +389,6 @@ func (client *TrunkedNetworksClient) listBySubscriptionHandleResponse(resp *http
 
 // Update - Update tags associated with the provided trunked network.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trunkedNetworkName - The name of the trunked network.
 //   - trunkedNetworkUpdateParameters - The request body.
@@ -449,8 +435,8 @@ func (client *TrunkedNetworksClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

@@ -18,6 +18,8 @@ import (
 
 // ApplicationTypesClient contains the methods for the ApplicationTypes group.
 // Don't use this type directly, use NewApplicationTypesClient() instead.
+//
+// Generated from API version 2023-11-01-preview
 type ApplicationTypesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewApplicationTypesClient(subscriptionID string, credential azcore.TokenCre
 //
 // Create or update a Service Fabric application type name resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationTypeName - The name of the application type name resource.
@@ -97,8 +97,8 @@ func (client *ApplicationTypesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -120,8 +120,6 @@ func (client *ApplicationTypesClient) createOrUpdateHandleResponse(resp *http.Re
 //
 // Delete a Service Fabric application type name resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationTypeName - The name of the application type name resource.
@@ -148,8 +146,6 @@ func (client *ApplicationTypesClient) BeginDelete(ctx context.Context, resourceG
 //
 // Delete a Service Fabric application type name resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01-preview
 func (client *ApplicationTypesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationTypesClient.BeginDelete"
@@ -195,8 +191,8 @@ func (client *ApplicationTypesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -205,8 +201,6 @@ func (client *ApplicationTypesClient) deleteCreateRequest(ctx context.Context, r
 // Get a Service Fabric application type name resource created or in the process of being created in the Service Fabric cluster
 // resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationTypeName - The name of the application type name resource.
@@ -257,8 +251,8 @@ func (client *ApplicationTypesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +269,6 @@ func (client *ApplicationTypesClient) getHandleResponse(resp *http.Response) (Ap
 // NewListPager - Gets the list of application type name resources created in the specified Service Fabric cluster resource.
 //
 // Gets all application type name resources created or in the process of being created in the Service Fabric cluster resource.
-//
-// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - options - ApplicationTypesClientListOptions contains the optional parameters for the ApplicationTypesClient.NewListPager
@@ -324,8 +316,8 @@ func (client *ApplicationTypesClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

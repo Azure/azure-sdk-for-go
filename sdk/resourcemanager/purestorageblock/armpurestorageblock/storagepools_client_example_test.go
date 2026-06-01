@@ -53,13 +53,13 @@ func ExampleStoragePoolsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.StoragePoolsClientCreateResponse{
-	// 	StoragePool: &armpurestorageblock.StoragePool{
+	// 	StoragePool: armpurestorageblock.StoragePool{
 	// 		Properties: &armpurestorageblock.StoragePoolProperties{
 	// 			StoragePoolInternalID: to.Ptr("zcvzukcmphctpzrebsgtcr"),
 	// 			AvailabilityZone: to.Ptr("vknyl"),
@@ -124,7 +124,7 @@ func ExampleStoragePoolsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -145,7 +145,7 @@ func ExampleStoragePoolsClient_BeginDisableAvsConnection() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -168,7 +168,7 @@ func ExampleStoragePoolsClient_BeginEnableAvsConnection() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -197,7 +197,7 @@ func ExampleStoragePoolsClient_BeginFinalizeAvsConnection() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -220,7 +220,7 @@ func ExampleStoragePoolsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.StoragePoolsClientGetResponse{
-	// 	StoragePool: &armpurestorageblock.StoragePool{
+	// 	StoragePool: armpurestorageblock.StoragePool{
 	// 		Properties: &armpurestorageblock.StoragePoolProperties{
 	// 			StoragePoolInternalID: to.Ptr("zcvzukcmphctpzrebsgtcr"),
 	// 			AvailabilityZone: to.Ptr("vknyl"),
@@ -287,7 +287,7 @@ func ExampleStoragePoolsClient_GetAvsConnection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.StoragePoolsClientGetAvsConnectionResponse{
-	// 	AvsConnection: &armpurestorageblock.AvsConnection{
+	// 	AvsConnection: armpurestorageblock.AvsConnection{
 	// 		ServiceInitializationCompleted: to.Ptr(true),
 	// 		ServiceInitializationHandleEnc: to.Ptr("kvidtocmjciflvtwql"),
 	// 		ServiceInitializationHandle: &armpurestorageblock.ServiceInitializationHandle{
@@ -317,7 +317,7 @@ func ExampleStoragePoolsClient_GetAvsStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.StoragePoolsClientGetAvsStatusResponse{
-	// 	AvsStatus: &armpurestorageblock.AvsStatus{
+	// 	AvsStatus: armpurestorageblock.AvsStatus{
 	// 		AvsEnabled: to.Ptr(true),
 	// 		CurrentConnectionStatus: to.Ptr("vfirgp"),
 	// 		ClusterResourceID: to.Ptr("zxkvzrdjzwpk"),
@@ -344,7 +344,7 @@ func ExampleStoragePoolsClient_GetHealthStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.StoragePoolsClientGetHealthStatusResponse{
-	// 	StoragePoolHealthInfo: &armpurestorageblock.StoragePoolHealthInfo{
+	// 	StoragePoolHealthInfo: armpurestorageblock.StoragePoolHealthInfo{
 	// 		Health: &armpurestorageblock.HealthDetails{
 	// 			UsedCapacityPercentage: to.Ptr[float64](21),
 	// 			BandwidthUsage: &armpurestorageblock.BandwidthUsage{
@@ -547,7 +547,7 @@ func ExampleStoragePoolsClient_BeginRepairAvsConnection() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -581,13 +581,13 @@ func ExampleStoragePoolsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.StoragePoolsClientUpdateResponse{
-	// 	StoragePool: &armpurestorageblock.StoragePool{
+	// 	StoragePool: armpurestorageblock.StoragePool{
 	// 		Properties: &armpurestorageblock.StoragePoolProperties{
 	// 			StoragePoolInternalID: to.Ptr("zcvzukcmphctpzrebsgtcr"),
 	// 			AvailabilityZone: to.Ptr("vknyl"),

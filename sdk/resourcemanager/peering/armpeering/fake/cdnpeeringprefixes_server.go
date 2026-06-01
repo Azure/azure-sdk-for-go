@@ -11,10 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 	"net/http"
-	"net/url"
 	"regexp"
+	"slices"
 )
 
 // CdnPeeringPrefixesServer is a fake server for instances of the armpeering.CdnPeeringPrefixesClient type.
@@ -53,9 +53,7 @@ func (c *CdnPeeringPrefixesServerTransport) Do(req *http.Request) (*http.Respons
 }
 
 func (c *CdnPeeringPrefixesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +69,7 @@ func (c *CdnPeeringPrefixesServerTransport) dispatchToMethodFake(req *http.Reque
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -98,11 +93,7 @@ func (c *CdnPeeringPrefixesServerTransport) dispatchNewListPager(req *http.Reque
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		peeringLocationParam, err := url.QueryUnescape(qp.Get("peeringLocation"))
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPager(peeringLocationParam, nil)
+		resp := c.srv.NewListPager(qp.Get("peeringLocation"), nil)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpeering.CdnPeeringPrefixesClientListResponse, createLink func() string) {
@@ -113,7 +104,7 @@ func (c *CdnPeeringPrefixesServerTransport) dispatchNewListPager(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

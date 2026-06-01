@@ -34,13 +34,13 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.FirewallRulesClientCreateOrUpdateResponse{
-	// 	FirewallRule: &armpostgresqlhsc.FirewallRule{
+	// 	FirewallRule: armpostgresqlhsc.FirewallRule{
 	// 		Name: to.Ptr("rule1"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2/firewallRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/pgtestsvc4/firewallRules/rule1"),
@@ -78,7 +78,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -101,7 +101,7 @@ func ExampleFirewallRulesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.FirewallRulesClientGetResponse{
-	// 	FirewallRule: &armpostgresqlhsc.FirewallRule{
+	// 	FirewallRule: armpostgresqlhsc.FirewallRule{
 	// 		Name: to.Ptr("rule1"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2/firewallRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/pgtestsvc4/firewallRules/rule1"),

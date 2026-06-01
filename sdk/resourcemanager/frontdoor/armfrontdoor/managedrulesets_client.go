@@ -7,18 +7,19 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ManagedRuleSetsClient contains the methods for the ManagedRuleSets group.
 // Don't use this type directly, use NewManagedRuleSetsClient() instead.
+//
+// Generated from API version 2025-10-01
 type ManagedRuleSetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +42,6 @@ func NewManagedRuleSetsClient(subscriptionID string, credential azcore.TokenCred
 }
 
 // NewListPager - Lists all available managed rule sets.
-//
-// Generated from API version 2025-10-01
 //   - options - ManagedRuleSetsClientListOptions contains the optional parameters for the ManagedRuleSetsClient.NewListPager
 //     method.
 func (client *ManagedRuleSetsClient) NewListPager(options *ManagedRuleSetsClientListOptions) *runtime.Pager[ManagedRuleSetsClientListResponse] {
@@ -80,8 +79,8 @@ func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, _ *M
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -18,6 +18,8 @@ import (
 
 // RestorableSQLContainersClient contains the methods for the RestorableSQLContainers group.
 // Don't use this type directly, use NewRestorableSQLContainersClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type RestorableSQLContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewRestorableSQLContainersClient(subscriptionID string, credential azcore.T
 // NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
 // This helps in scenario where container was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
 // permission
-//
-// Generated from API version 2025-11-01-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableSQLContainersClientListOptions contains the optional parameters for the RestorableSQLContainersClient.NewListPager
@@ -91,7 +91,7 @@ func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
+	reqQP.Set("api-version", version20251101Preview)
 	if options != nil && options.EndTime != nil {
 		reqQP.Set("endTime", *options.EndTime)
 	}
@@ -101,7 +101,7 @@ func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Conte
 	if options != nil && options.StartTime != nil {
 		reqQP.Set("startTime", *options.StartTime)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

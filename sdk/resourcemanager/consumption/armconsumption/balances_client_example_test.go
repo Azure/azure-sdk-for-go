@@ -7,7 +7,7 @@ package armconsumption_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleBalancesClient_GetByBillingAccount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.BalancesClientGetByBillingAccountResponse{
-	// 	Balance: &armconsumption.Balance{
+	// 	Balance: armconsumption.Balance{
 	// 		Name: to.Ptr("balanceId1"),
 	// 		Type: to.Ptr("Microsoft.Consumption/balances"),
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/123456/providers/Microsoft.Billing/billingPeriods/201702/providers/Microsoft.Consumption/balances/balanceId1"),
@@ -75,7 +75,7 @@ func ExampleBalancesClient_GetForBillingPeriodByBillingAccount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.BalancesClientGetForBillingPeriodByBillingAccountResponse{
-	// 	Balance: &armconsumption.Balance{
+	// 	Balance: armconsumption.Balance{
 	// 		Name: to.Ptr("balanceId1"),
 	// 		Type: to.Ptr("Microsoft.Consumption/balances"),
 	// 		ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/123456/providers/Microsoft.Billing/billingPeriods/201702/providers/Microsoft.Consumption/balances/balanceId1"),

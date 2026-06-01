@@ -18,6 +18,8 @@ import (
 
 // MarketplaceAgreementsClient contains the methods for the MarketplaceAgreements group.
 // Don't use this type directly, use NewMarketplaceAgreementsClient() instead.
+//
+// Generated from API version 2025-08-18-preview
 type MarketplaceAgreementsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.Tok
 //
 // Create Confluent Marketplace agreement in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-18-preview
 //   - body - The request body
 //   - options - MarketplaceAgreementsClientCreateOptions contains the optional parameters for the MarketplaceAgreementsClient.Create
 //     method.
@@ -82,8 +82,8 @@ func (client *MarketplaceAgreementsClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-18-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250818Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -104,8 +104,6 @@ func (client *MarketplaceAgreementsClient) createHandleResponse(resp *http.Respo
 // NewListPager - List Confluent marketplace agreements in the subscription.
 //
 // List Confluent marketplace agreements in the subscription.
-//
-// Generated from API version 2025-08-18-preview
 //   - options - MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.NewListPager
 //     method.
 func (client *MarketplaceAgreementsClient) NewListPager(options *MarketplaceAgreementsClientListOptions) *runtime.Pager[MarketplaceAgreementsClientListResponse] {
@@ -143,8 +141,8 @@ func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-18-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250818Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

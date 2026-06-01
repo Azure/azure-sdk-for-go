@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 )
 
@@ -35,13 +35,13 @@ func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoMIResourcesClientCreateUpdateMongoMIRoleAssignmentResponse{
-	// 	MongoMIRoleAssignmentResource: &armcosmos.MongoMIRoleAssignmentResource{
+	// 	MongoMIRoleAssignmentResource: armcosmos.MongoMIRoleAssignmentResource{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongoMIRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongoMIRoleAssignments/myRoleAssignmentId"),
@@ -89,13 +89,13 @@ func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoMIResourcesClientCreateUpdateMongoMIRoleDefinitionResponse{
-	// 	MongoMIRoleDefinitionResource: &armcosmos.MongoMIRoleDefinitionResource{
+	// 	MongoMIRoleDefinitionResource: armcosmos.MongoMIRoleDefinitionResource{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongoMIRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongoMIRoleDefinitions/myRoleDefinitionId"),
@@ -136,7 +136,7 @@ func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -162,7 +162,7 @@ func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -190,7 +190,7 @@ func ExampleMongoMIResourcesClient_GetMongoMIRoleAssignment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoMIResourcesClientGetMongoMIRoleAssignmentResponse{
-	// 	MongoMIRoleAssignmentResource: &armcosmos.MongoMIRoleAssignmentResource{
+	// 	MongoMIRoleAssignmentResource: armcosmos.MongoMIRoleAssignmentResource{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongoMIRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongoMIRoleAssignments/myRoleAssignmentId"),
@@ -222,7 +222,7 @@ func ExampleMongoMIResourcesClient_GetMongoMIRoleDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoMIResourcesClientGetMongoMIRoleDefinitionResponse{
-	// 	MongoMIRoleDefinitionResource: &armcosmos.MongoMIRoleDefinitionResource{
+	// 	MongoMIRoleDefinitionResource: armcosmos.MongoMIRoleDefinitionResource{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongoMIRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongoMIRoleDefinitions/myRoleDefinitionId"),

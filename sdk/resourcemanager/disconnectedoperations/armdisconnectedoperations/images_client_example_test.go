@@ -31,7 +31,7 @@ func ExampleImagesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ImagesClientGetResponse{
-	// 	Image: &armdisconnectedoperations.Image{
+	// 	Image: armdisconnectedoperations.Image{
 	// 		Properties: &armdisconnectedoperations.ImageProperties{
 	// 			ProvisioningState: to.Ptr(armdisconnectedoperations.ResourceProvisioningStateSucceeded),
 	// 			ReleaseVersion: to.Ptr("2.0.0"),
@@ -148,7 +148,7 @@ func ExampleImagesClient_ListDownloadURI() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ImagesClientListDownloadURIResponse{
-	// 	ImageDownloadResult: &armdisconnectedoperations.ImageDownloadResult{
+	// 	ImageDownloadResult: armdisconnectedoperations.ImageDownloadResult{
 	// 		ReleaseVersion: to.Ptr("vbccjpcosofti"),
 	// 		ReleaseDisplayName: to.Ptr("thttwzm"),
 	// 		ReleaseNotes: to.Ptr("jswqauqfnwxk"),

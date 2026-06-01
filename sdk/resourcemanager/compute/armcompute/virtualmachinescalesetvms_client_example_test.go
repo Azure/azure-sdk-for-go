@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 	"time"
 )
@@ -30,7 +30,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginApproveRollingUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -82,13 +82,13 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginAttachDetachDataDisks_virtualMa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse{
-	// 	StorageProfile: &armcompute.StorageProfile{
+	// 	StorageProfile: armcompute.StorageProfile{
 	// 		ImageReference: &armcompute.ImageReference{
 	// 			Publisher: to.Ptr("MicrosoftWindowsServer"),
 	// 			Offer: to.Ptr("WindowsServer"),
@@ -170,13 +170,13 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginAttachDetachDataDisks_virtualMa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse{
-	// 	StorageProfile: &armcompute.StorageProfile{
+	// 	StorageProfile: armcompute.StorageProfile{
 	// 		ImageReference: &armcompute.ImageReference{
 	// 			Publisher: to.Ptr("MicrosoftWindowsServer"),
 	// 			Offer: to.Ptr("WindowsServer"),
@@ -228,7 +228,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginDeallocate_virtualMachineScaleS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -254,7 +254,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginDeallocate_virtualMachineScaleS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -281,7 +281,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -309,7 +309,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithResiliencyVie
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientGetResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Name: to.Ptr("{vmss-vm-name}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/1"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines"),
@@ -492,7 +492,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithUserData() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientGetResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Name: to.Ptr("{vmss-vm-name}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines"),
@@ -641,7 +641,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetVMWithVMSizePropert
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientGetResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Name: to.Ptr("{vmss-vm-name}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -794,7 +794,7 @@ func ExampleVirtualMachineScaleSetVMsClient_Get_getVMScaleSetFlexVMWithVirtualMa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientGetResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Name: to.Ptr("{vmss-flex-vm-name}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-flex-name}/virtualMachines/{vmss-flex-vm-name}"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines"),
@@ -827,7 +827,7 @@ func ExampleVirtualMachineScaleSetVMsClient_GetInstanceView() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientGetInstanceViewResponse{
-	// 	VirtualMachineScaleSetVMInstanceView: &armcompute.VirtualMachineScaleSetVMInstanceView{
+	// 	VirtualMachineScaleSetVMInstanceView: armcompute.VirtualMachineScaleSetVMInstanceView{
 	// 		PlatformUpdateDomain: to.Ptr[int32](0),
 	// 		PlatformFaultDomain: to.Ptr[int32](0),
 	// 		VMAgent: &armcompute.VirtualMachineAgentInstanceView{
@@ -1903,7 +1903,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPerformMaintenance_virtualMachi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1929,7 +1929,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPerformMaintenance_virtualMachi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1956,7 +1956,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPowerOff_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1982,7 +1982,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginPowerOff_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2008,7 +2008,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRedeploy_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2034,7 +2034,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRedeploy_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2064,7 +2064,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimage_virtualMachineScaleSetV
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2090,7 +2090,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimage_virtualMachineScaleSetV
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2116,7 +2116,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimageAll_virtualMachineScaleS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2142,7 +2142,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginReimageAll_virtualMachineScaleS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2168,7 +2168,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRestart_virtualMachineScaleSetV
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2194,7 +2194,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRestart_virtualMachineScaleSetV
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2223,7 +2223,7 @@ func ExampleVirtualMachineScaleSetVMsClient_RetrieveBootDiagnosticsData() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse{
-	// 	RetrieveBootDiagnosticsDataResult: &armcompute.RetrieveBootDiagnosticsDataResult{
+	// 	RetrieveBootDiagnosticsDataResult: armcompute.RetrieveBootDiagnosticsDataResult{
 	// 		ConsoleScreenshotBlobURI: to.Ptr("https://storageuri/myvmScaleSetinstance.screenshot.bmp?{saskey}"),
 	// 		SerialConsoleLogBlobURI: to.Ptr("https://storageuri/myvmScaleSetinstance.serialconsole.log?{saskey}"),
 	// 	},
@@ -2252,13 +2252,13 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginRunCommand() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse{
-	// 	RunCommandResult: &armcompute.RunCommandResult{
+	// 	RunCommandResult: armcompute.RunCommandResult{
 	// 		Value: []*armcompute.InstanceViewStatus{
 	// 			{
 	// 				Code: to.Ptr("ComponentStatus/StdOut/succeeded"),
@@ -2311,7 +2311,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginStart_virtualMachineScaleSetVMS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2337,7 +2337,7 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginStart_virtualMachineScaleSetVMS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2827,13 +2827,13 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate_virtualMachineScaleSetVM
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientUpdateResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Name: to.Ptr("{vmss-vm-name}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -3386,13 +3386,13 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate_virtualMachineScaleSetVM
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetVMsClientUpdateResponse{
-	// 	VirtualMachineScaleSetVM: &armcompute.VirtualMachineScaleSetVM{
+	// 	VirtualMachineScaleSetVM: armcompute.VirtualMachineScaleSetVM{
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0"),
 	// 	},

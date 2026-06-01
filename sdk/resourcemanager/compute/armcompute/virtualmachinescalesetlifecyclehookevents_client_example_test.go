@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetLifeCycleHookEventsClientGetResponse{
-	// 	VMScaleSetLifecycleHookEvent: &armcompute.VMScaleSetLifecycleHookEvent{
+	// 	VMScaleSetLifecycleHookEvent: armcompute.VMScaleSetLifecycleHookEvent{
 	// 		Name: to.Ptr("2e2e3046-f85f-4966-8fd2-5fd7bf6ea717"),
 	// 		ID: to.Ptr("/subscriptions/2167b012-c9f9-4b04-83b2-0ff304e7d51d/resourceGroups/RG01/providers/Microsoft.Compute/virtualMachineScaleSets/VMSS01/lifecycleHookEvents/2e2e3046-f85f-4966-8fd2-5fd7bf6ea717"),
 	// 		Properties: &armcompute.VMScaleSetLifecycleHookEventProperties{
@@ -168,7 +168,7 @@ func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetLifeCycleHookEventsClientUpdateResponse{
-	// 	VMScaleSetLifecycleHookEvent: &armcompute.VMScaleSetLifecycleHookEvent{
+	// 	VMScaleSetLifecycleHookEvent: armcompute.VMScaleSetLifecycleHookEvent{
 	// 		Name: to.Ptr("445c0a08-cfc5-4ef6-bb89-fe77c5178628"),
 	// 		ID: to.Ptr("/subscriptions/445c0a08-cfc5-4ef6-bb89-fe77c5178628/resourceGroups/RG01/providers/Microsoft.Compute/virtualMachineScaleSets/VMSS01/lifecycleHookEvents/445c0a08-cfc5-4ef6-bb89-fe77c5178628"),
 	// 		Properties: &armcompute.VMScaleSetLifecycleHookEventProperties{

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 )
 
@@ -38,13 +38,13 @@ func ExampleGarnetClustersClient_BeginCreateUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GarnetClustersClientCreateUpdateResponse{
-	// 	GarnetClusterResource: &armcosmos.GarnetClusterResource{
+	// 	GarnetClusterResource: armcosmos.GarnetClusterResource{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/garnet-prod-rg/providers/Microsoft.DocumentDB/garnetClusters/garnet-prod"),
 	// 		Name: to.Ptr("garnet-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/garnetClusters"),
@@ -76,7 +76,7 @@ func ExampleGarnetClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -99,7 +99,7 @@ func ExampleGarnetClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GarnetClustersClientGetResponse{
-	// 	GarnetClusterResource: &armcosmos.GarnetClusterResource{
+	// 	GarnetClusterResource: armcosmos.GarnetClusterResource{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/garnet-prod-rg/providers/Microsoft.DocumentDB/garnetClusters/garnet-prod"),
 	// 		Name: to.Ptr("garnet-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/garnetClusters"),
@@ -247,13 +247,13 @@ func ExampleGarnetClustersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GarnetClustersClientUpdateResponse{
-	// 	GarnetClusterResource: &armcosmos.GarnetClusterResource{
+	// 	GarnetClusterResource: armcosmos.GarnetClusterResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/garnet-prod-rg/providers/Microsoft.DocumentDB/garnetClusters/garnet-prod"),
 	// 		Name: to.Ptr("garnet-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/garnetClusters"),

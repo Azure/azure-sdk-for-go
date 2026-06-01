@@ -7,7 +7,7 @@ package armappservice_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleWorkflowRunActionScopeRepetitionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WorkflowRunActionScopeRepetitionsClientGetResponse{
-	// 	WorkflowRunActionRepetitionDefinition: &armappservice.WorkflowRunActionRepetitionDefinition{
+	// 	WorkflowRunActionRepetitionDefinition: armappservice.WorkflowRunActionRepetitionDefinition{
 	// 		Name: to.Ptr("000000"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/workflows/runs/actions/scopeRepetitions"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Web/sites/test-name/workflows/testFlow/runs/08586776228332053161046300351/actions/for_each/scopeRepetitions/000000"),

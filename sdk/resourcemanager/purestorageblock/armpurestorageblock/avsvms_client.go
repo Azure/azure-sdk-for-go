@@ -18,6 +18,8 @@ import (
 
 // AvsVMsClient contains the methods for the AvsVMs group.
 // Don't use this type directly, use NewAvsVMsClient() instead.
+//
+// Generated from API version 2024-11-01
 type AvsVMsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAvsVMsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginDelete - Delete an AVS VM
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - avsVMID - ID of the AVS VM
@@ -66,8 +66,6 @@ func (client *AvsVMsClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Delete an AVS VM
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *AvsVMsClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, avsVMID string, options *AvsVMsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvsVMsClient.BeginDelete"
@@ -113,15 +111,13 @@ func (client *AvsVMsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get an AVS VM
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - avsVMID - ID of the AVS VM
@@ -172,8 +168,8 @@ func (client *AvsVMsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -188,8 +184,6 @@ func (client *AvsVMsClient) getHandleResponse(resp *http.Response) (AvsVMsClient
 }
 
 // NewListByStoragePoolPager - List AVS VMs by storage pool
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - options - AvsVMsClientListByStoragePoolOptions contains the optional parameters for the AvsVMsClient.NewListByStoragePoolPager
@@ -237,8 +231,8 @@ func (client *AvsVMsClient) listByStoragePoolCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -254,8 +248,6 @@ func (client *AvsVMsClient) listByStoragePoolHandleResponse(resp *http.Response)
 
 // BeginUpdate - Update an AVS VM
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - avsVMID - ID of the AVS VM
@@ -280,8 +272,6 @@ func (client *AvsVMsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 
 // Update - Update an AVS VM
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *AvsVMsClient) update(ctx context.Context, resourceGroupName string, storagePoolName string, avsVMID string, properties AvsVMUpdate, options *AvsVMsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvsVMsClient.BeginUpdate"
@@ -327,8 +317,8 @@ func (client *AvsVMsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

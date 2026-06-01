@@ -11,10 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"net/http"
-	"net/url"
 	"regexp"
+	"slices"
 )
 
 // ResourceSKUsServer is a fake server for instances of the armcompute.ResourceSKUsClient type.
@@ -53,9 +53,7 @@ func (r *ResourceSKUsServerTransport) Do(req *http.Request) (*http.Response, err
 }
 
 func (r *ResourceSKUsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +69,7 @@ func (r *ResourceSKUsServerTransport) dispatchToMethodFake(req *http.Request, me
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -98,16 +93,8 @@ func (r *ResourceSKUsServerTransport) dispatchNewListPager(req *http.Request) (*
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		includeExtendedLocationsUnescaped, err := url.QueryUnescape(qp.Get("includeExtendedLocations"))
-		if err != nil {
-			return nil, err
-		}
-		includeExtendedLocationsParam := getOptional(includeExtendedLocationsUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		includeExtendedLocationsParam := getOptional(qp.Get("includeExtendedLocations"))
 		var options *armcompute.ResourceSKUsClientListOptions
 		if filterParam != nil || includeExtendedLocationsParam != nil {
 			options = &armcompute.ResourceSKUsClientListOptions{
@@ -126,7 +113,7 @@ func (r *ResourceSKUsServerTransport) dispatchNewListPager(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

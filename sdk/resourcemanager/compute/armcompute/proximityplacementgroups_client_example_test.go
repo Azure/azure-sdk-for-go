@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -45,7 +45,7 @@ func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ProximityPlacementGroupsClientCreateOrUpdateResponse{
-	// 	ProximityPlacementGroup: &armcompute.ProximityPlacementGroup{
+	// 	ProximityPlacementGroup: armcompute.ProximityPlacementGroup{
 	// 		Name: to.Ptr("myProximityPlacementGroup"),
 	// 		Properties: &armcompute.ProximityPlacementGroupProperties{
 	// 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
@@ -107,7 +107,7 @@ func ExampleProximityPlacementGroupsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ProximityPlacementGroupsClientGetResponse{
-	// 	ProximityPlacementGroup: &armcompute.ProximityPlacementGroup{
+	// 	ProximityPlacementGroup: armcompute.ProximityPlacementGroup{
 	// 		Name: to.Ptr("myProximityPlacementGroup"),
 	// 		Properties: &armcompute.ProximityPlacementGroupProperties{
 	// 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
@@ -296,7 +296,7 @@ func ExampleProximityPlacementGroupsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.ProximityPlacementGroupsClientUpdateResponse{
-	// 	ProximityPlacementGroup: &armcompute.ProximityPlacementGroup{
+	// 	ProximityPlacementGroup: armcompute.ProximityPlacementGroup{
 	// 		Name: to.Ptr("myProximityPlacementGroup"),
 	// 		Properties: &armcompute.ProximityPlacementGroupProperties{
 	// 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),

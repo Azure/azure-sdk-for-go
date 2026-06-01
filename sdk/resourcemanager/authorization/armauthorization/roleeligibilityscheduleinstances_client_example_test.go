@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleRoleEligibilityScheduleInstancesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleEligibilityScheduleInstancesClientGetResponse{
-	// 	RoleEligibilityScheduleInstance: &armauthorization.RoleEligibilityScheduleInstance{
+	// 	RoleEligibilityScheduleInstance: armauthorization.RoleEligibilityScheduleInstance{
 	// 		Name: to.Ptr("21e4b59a-0499-4fe0-a3c3-43a3055b773a"),
 	// 		Type: to.Ptr("Microsoft.Authorization/RoleEligibilityScheduleInstances"),
 	// 		ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleEligibilityScheduleInstances/21e4b59a-0499-4fe0-a3c3-43a3055b773a"),

@@ -19,6 +19,8 @@ import (
 
 // TicketsNoSubscriptionClient contains the methods for the TicketsNoSubscription group.
 // Don't use this type directly, use NewTicketsNoSubscriptionClient() instead.
+//
+// Generated from API version 2024-04-01
 type TicketsNoSubscriptionClient struct {
 	internal *arm.Client
 }
@@ -40,8 +42,6 @@ func NewTicketsNoSubscriptionClient(credential azcore.TokenCredential, options *
 // CheckNameAvailability - Check the availability of a resource name. This API should be used to check the uniqueness of the
 // name for support ticket creation for the selected subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01
 //   - checkNameAvailabilityInput - The request body
 //   - options - TicketsNoSubscriptionClientCheckNameAvailabilityOptions contains the optional parameters for the TicketsNoSubscriptionClient.CheckNameAvailability
 //     method.
@@ -75,8 +75,8 @@ func (client *TicketsNoSubscriptionClient) checkNameAvailabilityCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityInput); err != nil {
@@ -103,8 +103,6 @@ func (client *TicketsNoSubscriptionClient) checkNameAvailabilityHandleResponse(r
 // working on your ticket will reach out to you for consent if your issue requires gathering diagnostic information from your
 // Azure resources.<br/><br/>
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01
 //   - supportTicketName - The name of the SupportTicketDetails
 //   - createSupportTicketParameters - Support ticket request payload.
 //   - options - TicketsNoSubscriptionClientBeginCreateOptions contains the optional parameters for the TicketsNoSubscriptionClient.BeginCreate
@@ -136,8 +134,6 @@ func (client *TicketsNoSubscriptionClient) BeginCreate(ctx context.Context, supp
 // working on your ticket will reach out to you for consent if your issue requires gathering diagnostic information from your
 // Azure resources.<br/><br/>
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01
 func (client *TicketsNoSubscriptionClient) create(ctx context.Context, supportTicketName string, createSupportTicketParameters TicketDetails, options *TicketsNoSubscriptionClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TicketsNoSubscriptionClient.BeginCreate"
@@ -171,8 +167,8 @@ func (client *TicketsNoSubscriptionClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createSupportTicketParameters); err != nil {
@@ -184,8 +180,6 @@ func (client *TicketsNoSubscriptionClient) createCreateRequest(ctx context.Conte
 // Get - Gets details for a specific support ticket. Support ticket data is available for 18 months after ticket creation.
 // If a ticket was created more than 18 months ago, a request for data might cause an error.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01
 //   - supportTicketName - The name of the SupportTicketDetails
 //   - options - TicketsNoSubscriptionClientGetOptions contains the optional parameters for the TicketsNoSubscriptionClient.Get
 //     method.
@@ -223,8 +217,8 @@ func (client *TicketsNoSubscriptionClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -243,8 +237,6 @@ func (client *TicketsNoSubscriptionClient) getHandleResponse(resp *http.Response
 // <i>nextLink</i>, using which you can retrieve the next set of support tickets. <br/><br/>Support ticket data is available
 // for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause an
 // error.
-//
-// Generated from API version 2024-04-01
 //   - options - TicketsNoSubscriptionClientListOptions contains the optional parameters for the TicketsNoSubscriptionClient.NewListPager
 //     method.
 func (client *TicketsNoSubscriptionClient) NewListPager(options *TicketsNoSubscriptionClientListOptions) *runtime.Pager[TicketsNoSubscriptionClientListResponse] {
@@ -284,8 +276,8 @@ func (client *TicketsNoSubscriptionClient) listCreateRequest(ctx context.Context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-04-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -304,8 +296,6 @@ func (client *TicketsNoSubscriptionClient) listHandleResponse(resp *http.Respons
 // such a case, contact your support engineer to request severity update by adding a new communication using the Communications
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01
 //   - supportTicketName - The name of the SupportTicketDetails
 //   - updateSupportTicket - UpdateSupportTicket object.
 //   - options - TicketsNoSubscriptionClientUpdateOptions contains the optional parameters for the TicketsNoSubscriptionClient.Update
@@ -344,8 +334,8 @@ func (client *TicketsNoSubscriptionClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateSupportTicket); err != nil {

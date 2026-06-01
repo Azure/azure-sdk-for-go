@@ -381,6 +381,7 @@ func (a AzureBlobDataTransferDataSourceSink) MarshalJSON() ([]byte, error) {
 	objectMap["component"] = DataTransferComponentAzureBlobStorage
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "endpointUrl", a.EndpointURL)
+	populate(objectMap, "remoteAccountName", a.RemoteAccountName)
 	return json.Marshal(objectMap)
 }
 
@@ -401,6 +402,9 @@ func (a *AzureBlobDataTransferDataSourceSink) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "endpointUrl":
 			err = unpopulate(val, "EndpointURL", &a.EndpointURL)
+			delete(rawMsg, key)
+		case "remoteAccountName":
+			err = unpopulate(val, "RemoteAccountName", &a.RemoteAccountName)
 			delete(rawMsg, key)
 		}
 		if err != nil {

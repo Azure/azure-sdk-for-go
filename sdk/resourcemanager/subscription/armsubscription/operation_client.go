@@ -19,6 +19,8 @@ import (
 
 // OperationClient contains the methods for the Operation group.
 // Don't use this type directly, use NewOperationClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type OperationClient struct {
 	internal *arm.Client
 }
@@ -39,8 +41,6 @@ func NewOperationClient(credential azcore.TokenCredential, options *arm.ClientOp
 
 // Get - Get the status of the pending Microsoft.Subscription API operations.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - operationID - The operation ID, which can be found from the Location field in the generate recommendation response header.
 //   - options - OperationClientGetOptions contains the optional parameters for the OperationClient.Get method.
 func (client *OperationClient) Get(ctx context.Context, operationID string, options *OperationClientGetOptions) (OperationClientGetResponse, error) {
@@ -77,8 +77,8 @@ func (client *OperationClient) getCreateRequest(ctx context.Context, operationID
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

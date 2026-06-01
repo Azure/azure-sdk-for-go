@@ -7,7 +7,7 @@ package armazurestackhci_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleValidatedSolutionRecipesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ValidatedSolutionRecipesClientGetResponse{
-	// 	ValidatedSolutionRecipe: &armazurestackhci.ValidatedSolutionRecipe{
+	// 	ValidatedSolutionRecipe: armazurestackhci.ValidatedSolutionRecipe{
 	// 		Name: to.Ptr("10.2408.0"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/ValidatedSolutionRecipes"),
 	// 		ID: to.Ptr("/subscriptions/b8d594e5-51f3-4c11-9c54-a7771b81c712/providers/Microsoft.AzureStackHCI/validatedSolutionRecipes/10.2408.0"),

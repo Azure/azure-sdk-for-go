@@ -4,6 +4,10 @@
 
 package armservicefabricmanagedclusters
 
+const (
+	version20260201 string = "2026-02-01"
+)
+
 // Access - The network traffic is allowed or denied.
 type Access string
 

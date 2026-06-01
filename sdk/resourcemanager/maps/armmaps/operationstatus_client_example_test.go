@@ -6,10 +6,9 @@ package armmaps_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
+	"log"
 )
 
 // Generated from example definition: 2025-10-01-preview/GetOperationStatus.json
@@ -31,7 +30,7 @@ func ExampleOperationStatusClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.OperationStatusClientGetResponse{
-	// 	OperationStatusResult: &armmaps.OperationStatusResult{
+	// 	OperationStatusResult: armmaps.OperationStatusResult{
 	// 		Name: to.Ptr("01234567-89ab-4def-0123-456789abcdef"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-23T02:00:00.000+09:00"); return t}()),
 	// 		Error: &armmaps.ErrorDetail{

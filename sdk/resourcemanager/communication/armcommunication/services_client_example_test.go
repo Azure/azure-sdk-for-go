@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication"
 	"log"
 )
 
@@ -34,7 +34,7 @@ func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityAvailable(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: &armcommunication.CheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armcommunication.CheckNameAvailabilityResponse{
 	// 		Message: to.Ptr("Requested name is available for the requested type"),
 	// 		NameAvailable: to.Ptr(true),
 	// 		Reason: to.Ptr(armcommunication.CheckNameAvailabilityReason("NameAvailable")),
@@ -64,7 +64,7 @@ func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityUnavailabl
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: &armcommunication.CheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armcommunication.CheckNameAvailabilityResponse{
 	// 		Message: to.Ptr("Requested name is unavailable for the requested type"),
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr(armcommunication.CheckNameAvailabilityReasonAlreadyExists),
@@ -94,13 +94,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateResource() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientCreateOrUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -140,13 +140,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateResourceWithDisable
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientCreateOrUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -187,13 +187,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateResourceWithPublicN
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientCreateOrUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -236,13 +236,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateResourceWithManaged
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientCreateOrUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -278,7 +278,7 @@ func ExampleServicesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -306,7 +306,7 @@ func ExampleServicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientGetResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -351,7 +351,7 @@ func ExampleServicesClient_LinkNotificationHub() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientLinkNotificationHubResponse{
-	// 	LinkedNotificationHub: &armcommunication.LinkedNotificationHub{
+	// 	LinkedNotificationHub: armcommunication.LinkedNotificationHub{
 	// 		ResourceID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyOtherResourceGroup/providers/Microsoft.NotificationHubs/namespaces/MyNamespace/notificationHubs/MyHub"),
 	// 	},
 	// }
@@ -462,7 +462,7 @@ func ExampleServicesClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientListKeysResponse{
-	// 	ServiceKeys: &armcommunication.ServiceKeys{
+	// 	ServiceKeys: armcommunication.ServiceKeys{
 	// 		PrimaryKey: to.Ptr("<primaryKey>"),
 	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
 	// 	},
@@ -490,7 +490,7 @@ func ExampleServicesClient_RegenerateKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientRegenerateKeyResponse{
-	// 	ServiceKeys: &armcommunication.ServiceKeys{
+	// 	ServiceKeys: armcommunication.ServiceKeys{
 	// 		PrimaryConnectionString: to.Ptr("endpoint=http://example.com;accesskey=1234"),
 	// 		PrimaryKey: to.Ptr("1234"),
 	// 	},
@@ -520,7 +520,7 @@ func ExampleServicesClient_Update_updateResource() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -567,7 +567,7 @@ func ExampleServicesClient_Update_updateResourceToRemoveIdentity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -610,7 +610,7 @@ func ExampleServicesClient_Update_updateResourceToAddDisableLocalAuth() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -655,7 +655,7 @@ func ExampleServicesClient_Update_updateResourceToAddPublicNetworkAccess() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -703,7 +703,7 @@ func ExampleServicesClient_Update_updateResourceToAddSystemAndUserManagedIdentit
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -758,7 +758,7 @@ func ExampleServicesClient_Update_updateResourceToAddASystemAssignedManagedIdent
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
@@ -810,7 +810,7 @@ func ExampleServicesClient_Update_updateResourceToAddAUserAssignedManagedIdentit
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.ServicesClientUpdateResponse{
-	// 	ServiceResource: &armcommunication.ServiceResource{
+	// 	ServiceResource: armcommunication.ServiceResource{
 	// 		Name: to.Ptr("MyCommunicationResource"),
 	// 		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),

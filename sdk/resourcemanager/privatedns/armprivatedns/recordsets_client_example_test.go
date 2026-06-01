@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns"
 	"log"
 )
 
@@ -43,7 +43,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneAaaaRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordaaaa"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/AAAA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -96,7 +96,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneARecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recorda"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/A"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -147,7 +147,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneCnameRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordcname"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/CNAME"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -199,7 +199,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneMxRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordmx"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/MX"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -253,7 +253,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZonePtrRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/PTR"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -310,7 +310,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneSoaRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("@"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/SOA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -370,7 +370,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneSrvRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordsrv"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/SRV"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -429,7 +429,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneTxtRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordtxt"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/TXT"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -627,7 +627,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneAaaaRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordaaaa"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/AAAA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -668,7 +668,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneARecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recorda"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/A"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -709,7 +709,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneCnameRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordcname"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/CNAME"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -748,7 +748,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneMxRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordmx"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/MX"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -790,7 +790,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZonePtrRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/PTR"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -831,7 +831,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneSoaRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("@"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/SOA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -876,7 +876,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneSrvRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordsrv"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/SRV"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -920,7 +920,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneTxtRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordtxt"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/TXT"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1522,7 +1522,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneAaaaRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordaaaa"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/AAAA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1569,7 +1569,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneARecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recorda"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/A"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1616,7 +1616,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneCnameRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordcname"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/CNAME"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1661,7 +1661,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneMxRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordmx"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/MX"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1709,7 +1709,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZonePtrRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/PTR"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1756,7 +1756,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneSoaRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("@"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/SOA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1807,7 +1807,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneSrvRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordsrv"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/SRV"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1857,7 +1857,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneTxtRecordSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armprivatedns.RecordSet{
+	// 	RecordSet: armprivatedns.RecordSet{
 	// 		Name: to.Ptr("recordtxt"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/TXT"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),

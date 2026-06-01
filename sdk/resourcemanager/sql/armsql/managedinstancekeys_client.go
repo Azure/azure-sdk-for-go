@@ -18,6 +18,8 @@ import (
 
 // ManagedInstanceKeysClient contains the methods for the ManagedInstanceKeys group.
 // Don't use this type directly, use NewManagedInstanceKeysClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedInstanceKeysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedInstanceKeysClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Creates or updates a managed instance key.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - keyName - The name of the managed instance key to be retrieved.
@@ -68,8 +68,6 @@ func (client *ManagedInstanceKeysClient) BeginCreateOrUpdate(ctx context.Context
 
 // CreateOrUpdate - Creates or updates a managed instance key.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedInstanceKeysClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, parameters ManagedInstanceKey, options *ManagedInstanceKeysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstanceKeysClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *ManagedInstanceKeysClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +125,6 @@ func (client *ManagedInstanceKeysClient) createOrUpdateCreateRequest(ctx context
 
 // BeginDelete - Deletes the managed instance key with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - keyName - The name of the managed instance key to be retrieved.
@@ -153,8 +149,6 @@ func (client *ManagedInstanceKeysClient) BeginDelete(ctx context.Context, resour
 
 // Delete - Deletes the managed instance key with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedInstanceKeysClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, options *ManagedInstanceKeysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstanceKeysClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *ManagedInstanceKeysClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a managed instance key.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - keyName - The name of the managed instance key to be retrieved.
@@ -259,8 +251,8 @@ func (client *ManagedInstanceKeysClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *ManagedInstanceKeysClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByInstancePager - Gets a list of managed instance keys.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceKeysClientListByInstanceOptions contains the optional parameters for the ManagedInstanceKeysClient.NewListByInstancePager
@@ -327,8 +317,8 @@ func (client *ManagedInstanceKeysClient) listByInstanceCreateRequest(ctx context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

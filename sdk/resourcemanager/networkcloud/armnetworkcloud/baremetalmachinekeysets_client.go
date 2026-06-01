@@ -19,6 +19,8 @@ import (
 
 // BareMetalMachineKeySetsClient contains the methods for the BareMetalMachineKeySets group.
 // Don't use this type directly, use NewBareMetalMachineKeySetsClient() instead.
+//
+// Generated from API version 2025-09-01
 type BareMetalMachineKeySetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewBareMetalMachineKeySetsClient(subscriptionID string, credential azcore.T
 
 // BeginCreateOrUpdate - Create a new bare metal machine key set or update the existing one for the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - bareMetalMachineKeySetName - The name of the bare metal machine key set.
@@ -69,8 +69,6 @@ func (client *BareMetalMachineKeySetsClient) BeginCreateOrUpdate(ctx context.Con
 
 // CreateOrUpdate - Create a new bare metal machine key set or update the existing one for the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *BareMetalMachineKeySetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, bareMetalMachineKeySetParameters BareMetalMachineKeySet, options *BareMetalMachineKeySetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachineKeySetsClient.BeginCreateOrUpdate"
@@ -116,8 +114,8 @@ func (client *BareMetalMachineKeySetsClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -134,8 +132,6 @@ func (client *BareMetalMachineKeySetsClient) createOrUpdateCreateRequest(ctx con
 
 // BeginDelete - Delete the bare metal machine key set of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - bareMetalMachineKeySetName - The name of the bare metal machine key set.
@@ -160,8 +156,6 @@ func (client *BareMetalMachineKeySetsClient) BeginDelete(ctx context.Context, re
 
 // Delete - Delete the bare metal machine key set of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *BareMetalMachineKeySetsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, options *BareMetalMachineKeySetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachineKeySetsClient.BeginDelete"
@@ -207,8 +201,8 @@ func (client *BareMetalMachineKeySetsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -220,8 +214,6 @@ func (client *BareMetalMachineKeySetsClient) deleteCreateRequest(ctx context.Con
 
 // Get - Get bare metal machine key set of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - bareMetalMachineKeySetName - The name of the bare metal machine key set.
@@ -273,8 +265,8 @@ func (client *BareMetalMachineKeySetsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -289,8 +281,6 @@ func (client *BareMetalMachineKeySetsClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByClusterPager - Get a list of bare metal machine key sets for the provided cluster.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - BareMetalMachineKeySetsClientListByClusterOptions contains the optional parameters for the BareMetalMachineKeySetsClient.NewListByClusterPager
@@ -344,8 +334,8 @@ func (client *BareMetalMachineKeySetsClient) listByClusterCreateRequest(ctx cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -362,8 +352,6 @@ func (client *BareMetalMachineKeySetsClient) listByClusterHandleResponse(resp *h
 // BeginUpdate - Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
 // it. Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - bareMetalMachineKeySetName - The name of the bare metal machine key set.
@@ -390,8 +378,6 @@ func (client *BareMetalMachineKeySetsClient) BeginUpdate(ctx context.Context, re
 // Update - Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
 // Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *BareMetalMachineKeySetsClient) update(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, bareMetalMachineKeySetUpdateParameters BareMetalMachineKeySetPatchParameters, options *BareMetalMachineKeySetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachineKeySetsClient.BeginUpdate"
@@ -437,8 +423,8 @@ func (client *BareMetalMachineKeySetsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

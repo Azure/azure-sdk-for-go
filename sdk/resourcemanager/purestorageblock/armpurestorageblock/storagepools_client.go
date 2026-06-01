@@ -18,6 +18,8 @@ import (
 
 // StoragePoolsClient contains the methods for the StoragePools group.
 // Don't use this type directly, use NewStoragePoolsClient() instead.
+//
+// Generated from API version 2024-11-01
 type StoragePoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewStoragePoolsClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreate - Create a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *StoragePoolsClient) BeginCreate(ctx context.Context, resourceGroup
 
 // Create - Create a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *StoragePoolsClient) create(ctx context.Context, resourceGroupName string, storagePoolName string, resource StoragePool, options *StoragePoolsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragePoolsClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *StoragePoolsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *StoragePoolsClient) createCreateRequest(ctx context.Context, resou
 
 // BeginDelete - Delete a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - options - StoragePoolsClientBeginDeleteOptions contains the optional parameters for the StoragePoolsClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *StoragePoolsClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Delete a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *StoragePoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragePoolsClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *StoragePoolsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginDisableAvsConnection - Disable the existing AVS connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - options - StoragePoolsClientBeginDisableAvsConnectionOptions contains the optional parameters for the StoragePoolsClient.BeginDisableAvsConnection
@@ -222,8 +214,6 @@ func (client *StoragePoolsClient) BeginDisableAvsConnection(ctx context.Context,
 
 // DisableAvsConnection - Disable the existing AVS connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *StoragePoolsClient) disableAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientBeginDisableAvsConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragePoolsClient.BeginDisableAvsConnection"
@@ -265,15 +255,13 @@ func (client *StoragePoolsClient) disableAvsConnectionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginEnableAvsConnection - Initiate a connection between the storage pool and a specified AVS SDDC resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - properties - Storage pool EnableAvsConnection properties
@@ -298,8 +286,6 @@ func (client *StoragePoolsClient) BeginEnableAvsConnection(ctx context.Context, 
 
 // EnableAvsConnection - Initiate a connection between the storage pool and a specified AVS SDDC resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *StoragePoolsClient) enableAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolEnableAvsConnectionPost, options *StoragePoolsClientBeginEnableAvsConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragePoolsClient.BeginEnableAvsConnection"
@@ -341,8 +327,8 @@ func (client *StoragePoolsClient) enableAvsConnectionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err
@@ -352,8 +338,6 @@ func (client *StoragePoolsClient) enableAvsConnectionCreateRequest(ctx context.C
 
 // BeginFinalizeAvsConnection - Finalize an already started AVS connection to a specific AVS SDDC
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - properties - Storage pool FinalizeAvsConnection properties
@@ -378,8 +362,6 @@ func (client *StoragePoolsClient) BeginFinalizeAvsConnection(ctx context.Context
 
 // FinalizeAvsConnection - Finalize an already started AVS connection to a specific AVS SDDC
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *StoragePoolsClient) finalizeAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolFinalizeAvsConnectionPost, options *StoragePoolsClientBeginFinalizeAvsConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragePoolsClient.BeginFinalizeAvsConnection"
@@ -421,8 +403,8 @@ func (client *StoragePoolsClient) finalizeAvsConnectionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err
@@ -432,8 +414,6 @@ func (client *StoragePoolsClient) finalizeAvsConnectionCreateRequest(ctx context
 
 // Get - Get a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - options - StoragePoolsClientGetOptions contains the optional parameters for the StoragePoolsClient.Get method.
@@ -479,8 +459,8 @@ func (client *StoragePoolsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -496,8 +476,6 @@ func (client *StoragePoolsClient) getHandleResponse(resp *http.Response) (Storag
 
 // GetAvsConnection - Returns current information about an on-going connection to an AVS instance
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - options - StoragePoolsClientGetAvsConnectionOptions contains the optional parameters for the StoragePoolsClient.GetAvsConnection
@@ -544,8 +522,8 @@ func (client *StoragePoolsClient) getAvsConnectionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -561,8 +539,6 @@ func (client *StoragePoolsClient) getAvsConnectionHandleResponse(resp *http.Resp
 
 // GetAvsStatus - Returns the status of the storage pool connection to AVS
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - options - StoragePoolsClientGetAvsStatusOptions contains the optional parameters for the StoragePoolsClient.GetAvsStatus
@@ -609,8 +585,8 @@ func (client *StoragePoolsClient) getAvsStatusCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -626,8 +602,6 @@ func (client *StoragePoolsClient) getAvsStatusHandleResponse(resp *http.Response
 
 // GetHealthStatus - Retrieve health metrics of a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - options - StoragePoolsClientGetHealthStatusOptions contains the optional parameters for the StoragePoolsClient.GetHealthStatus
@@ -674,8 +648,8 @@ func (client *StoragePoolsClient) getHealthStatusCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -690,8 +664,6 @@ func (client *StoragePoolsClient) getHealthStatusHandleResponse(resp *http.Respo
 }
 
 // NewListByResourceGroupPager - List storage pools by resource group
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - StoragePoolsClientListByResourceGroupOptions contains the optional parameters for the StoragePoolsClient.NewListByResourceGroupPager
 //     method.
@@ -734,8 +706,8 @@ func (client *StoragePoolsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -750,8 +722,6 @@ func (client *StoragePoolsClient) listByResourceGroupHandleResponse(resp *http.R
 }
 
 // NewListBySubscriptionPager - List storage pools by Azure subscription ID
-//
-// Generated from API version 2024-11-01
 //   - options - StoragePoolsClientListBySubscriptionOptions contains the optional parameters for the StoragePoolsClient.NewListBySubscriptionPager
 //     method.
 func (client *StoragePoolsClient) NewListBySubscriptionPager(options *StoragePoolsClientListBySubscriptionOptions) *runtime.Pager[StoragePoolsClientListBySubscriptionResponse] {
@@ -789,8 +759,8 @@ func (client *StoragePoolsClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -807,8 +777,6 @@ func (client *StoragePoolsClient) listBySubscriptionHandleResponse(resp *http.Re
 // BeginRepairAvsConnection - Test and repair, if needed, all configuration elements of the storage pool connection to the
 // AVS instance
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - options - StoragePoolsClientBeginRepairAvsConnectionOptions contains the optional parameters for the StoragePoolsClient.BeginRepairAvsConnection
@@ -833,8 +801,6 @@ func (client *StoragePoolsClient) BeginRepairAvsConnection(ctx context.Context, 
 // RepairAvsConnection - Test and repair, if needed, all configuration elements of the storage pool connection to the AVS
 // instance
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *StoragePoolsClient) repairAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientBeginRepairAvsConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragePoolsClient.BeginRepairAvsConnection"
@@ -876,15 +842,13 @@ func (client *StoragePoolsClient) repairAvsConnectionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdate - Update a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - properties - The resource properties to be updated.
@@ -909,8 +873,6 @@ func (client *StoragePoolsClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Update a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *StoragePoolsClient) update(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolUpdate, options *StoragePoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragePoolsClient.BeginUpdate"
@@ -952,8 +914,8 @@ func (client *StoragePoolsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

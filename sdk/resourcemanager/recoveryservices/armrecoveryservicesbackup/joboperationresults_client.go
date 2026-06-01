@@ -18,6 +18,8 @@ import (
 
 // JobOperationResultsClient contains the methods for the JobOperationResults group.
 // Don't use this type directly, use NewJobOperationResultsClient() instead.
+//
+// Generated from API version 2026-01-31-preview
 type JobOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewJobOperationResultsClient(subscriptionID string, credential azcore.Token
 
 // Get - Fetches the result of any operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - JobOperationResultsClientGetOptions contains the optional parameters for the JobOperationResultsClient.Get method.
 func (client *JobOperationResultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string, operationID string, options *JobOperationResultsClientGetOptions) (JobOperationResultsClientGetResponse, error) {
@@ -94,7 +94,7 @@ func (client *JobOperationResultsClient) getCreateRequest(ctx context.Context, v
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

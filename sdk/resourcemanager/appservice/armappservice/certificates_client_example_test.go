@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -39,7 +39,7 @@ func ExampleCertificatesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.CertificatesClientCreateOrUpdateResponse{
-	// 	AppCertificate: &armappservice.AppCertificate{
+	// 	AppCertificate: armappservice.AppCertificate{
 	// 		Name: to.Ptr("testc6282"),
 	// 		Type: to.Ptr("Microsoft.Web/certificates"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/certificates/testc6282"),
@@ -100,7 +100,7 @@ func ExampleCertificatesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.CertificatesClientGetResponse{
-	// 	AppCertificate: &armappservice.AppCertificate{
+	// 	AppCertificate: armappservice.AppCertificate{
 	// 		Name: to.Ptr("testc6282"),
 	// 		Type: to.Ptr("Microsoft.Web/certificates"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/certificates/testc6282"),
@@ -273,7 +273,7 @@ func ExampleCertificatesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.CertificatesClientUpdateResponse{
-	// 	AppCertificate: &armappservice.AppCertificate{
+	// 	AppCertificate: armappservice.AppCertificate{
 	// 		Name: to.Ptr("testc6282"),
 	// 		Type: to.Ptr("Microsoft.Web/certificates"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/certificates/testc6282"),

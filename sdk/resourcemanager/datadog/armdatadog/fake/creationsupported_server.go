@@ -12,10 +12,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog"
 	"net/http"
-	"net/url"
 	"regexp"
+	"slices"
 )
 
 // CreationSupportedServer is a fake server for instances of the armdatadog.CreationSupportedClient type.
@@ -58,9 +58,7 @@ func (c *CreationSupportedServerTransport) Do(req *http.Request) (*http.Response
 }
 
 func (c *CreationSupportedServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,10 +76,7 @@ func (c *CreationSupportedServerTransport) dispatchToMethodFake(req *http.Reques
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -103,16 +98,12 @@ func (c *CreationSupportedServerTransport) dispatchGet(req *http.Request) (*http
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	datadogOrganizationIDParam, err := url.QueryUnescape(qp.Get("datadogOrganizationId"))
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), datadogOrganizationIDParam, nil)
+	respr, errRespr := c.srv.Get(req.Context(), qp.Get("datadogOrganizationId"), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CreateResourceSupportedResponse, req)
@@ -135,11 +126,7 @@ func (c *CreationSupportedServerTransport) dispatchNewListPager(req *http.Reques
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		datadogOrganizationIDParam, err := url.QueryUnescape(qp.Get("datadogOrganizationId"))
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPager(datadogOrganizationIDParam, nil)
+		resp := c.srv.NewListPager(qp.Get("datadogOrganizationId"), nil)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdatadog.CreationSupportedClientListResponse, createLink func() string) {
@@ -150,7 +137,7 @@ func (c *CreationSupportedServerTransport) dispatchNewListPager(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

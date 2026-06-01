@@ -30,7 +30,7 @@ func ExampleManagedClusterVersionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClusterVersionClientGetResponse{
-	// 	ManagedClusterCodeVersionResult: &armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
+	// 	ManagedClusterCodeVersionResult: armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
 	// 		Name: to.Ptr("7.2.477.9590"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/locations/environments/managedClusterVersions"),
 	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.477.9590"),
@@ -62,7 +62,7 @@ func ExampleManagedClusterVersionClient_GetByEnvironment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClusterVersionClientGetByEnvironmentResponse{
-	// 	ManagedClusterCodeVersionResult: &armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
+	// 	ManagedClusterCodeVersionResult: armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
 	// 		Name: to.Ptr("7.2.477.9590"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/locations/environments/managedClusterVersions"),
 	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.477.9590"),
@@ -94,7 +94,7 @@ func ExampleManagedClusterVersionClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClusterVersionClientListResponse{
-	// 	undefined: &[]*armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
+	// 	ManagedClusterCodeVersionResultArray: []*armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
 	// 		{
 	// 			Name: to.Ptr("7.2.457.9590"),
 	// 			Type: to.Ptr("Microsoft.ServiceFabric/locations/environments/managedClusterVersions"),
@@ -138,7 +138,7 @@ func ExampleManagedClusterVersionClient_ListByEnvironment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClusterVersionClientListByEnvironmentResponse{
-	// 	undefined: &[]*armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
+	// 	ManagedClusterCodeVersionResultArray: []*armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
 	// 		{
 	// 			Name: to.Ptr("7.2.457.9590"),
 	// 			Type: to.Ptr("Microsoft.ServiceFabric/locations/environments/managedClusterVersions"),

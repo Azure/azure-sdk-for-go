@@ -18,6 +18,8 @@ import (
 
 // ClustersClient contains the methods for the Clusters group.
 // Don't use this type directly, use NewClustersClient() instead.
+//
+// Generated from API version 2025-01-15-preview
 type ClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreate - Creates a new HDInsight cluster with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The cluster create request.
@@ -66,8 +66,6 @@ func (client *ClustersClient) BeginCreate(ctx context.Context, resourceGroupName
 
 // Create - Creates a new HDInsight cluster with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 func (client *ClustersClient) create(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterCreateParametersExtended, options *ClustersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginCreate"
@@ -109,8 +107,8 @@ func (client *ClustersClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -121,8 +119,6 @@ func (client *ClustersClient) createCreateRequest(ctx context.Context, resourceG
 
 // BeginDelete - Deletes the specified HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
@@ -145,8 +141,6 @@ func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Deletes the specified HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginDelete"
@@ -188,15 +182,13 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginExecuteScriptActions - Executes script actions on the specified HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The parameters for executing script actions.
@@ -221,8 +213,6 @@ func (client *ClustersClient) BeginExecuteScriptActions(ctx context.Context, res
 
 // ExecuteScriptActions - Executes script actions on the specified HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 func (client *ClustersClient) executeScriptActions(ctx context.Context, resourceGroupName string, clusterName string, parameters ExecuteScriptActionParameters, options *ClustersClientBeginExecuteScriptActionsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginExecuteScriptActions"
@@ -264,8 +254,8 @@ func (client *ClustersClient) executeScriptActionsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -275,8 +265,6 @@ func (client *ClustersClient) executeScriptActionsCreateRequest(ctx context.Cont
 
 // Get - Gets the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
@@ -322,8 +310,8 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -339,8 +327,6 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 
 // GetAzureAsyncOperationStatus - The the async operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - operationID - The long running operation id.
@@ -392,8 +378,8 @@ func (client *ClustersClient) getAzureAsyncOperationStatusCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -409,8 +395,6 @@ func (client *ClustersClient) getAzureAsyncOperationStatusHandleResponse(resp *h
 
 // GetGatewaySettings - Gets the gateway settings for the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ClustersClientGetGatewaySettingsOptions contains the optional parameters for the ClustersClient.GetGatewaySettings
@@ -457,8 +441,8 @@ func (client *ClustersClient) getGatewaySettingsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -473,8 +457,6 @@ func (client *ClustersClient) getGatewaySettingsHandleResponse(resp *http.Respon
 }
 
 // NewListPager - Lists all the HDInsight clusters under the subscription.
-//
-// Generated from API version 2025-01-15-preview
 //   - options - ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
 func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClustersClientListResponse]{
@@ -511,8 +493,8 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, _ *Clusters
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -527,8 +509,6 @@ func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersC
 }
 
 // NewListByResourceGroupPager - Lists the HDInsight clusters in a resource group.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
 //     method.
@@ -571,8 +551,8 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -588,8 +568,6 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // BeginResize - Resizes the specified HDInsight cluster to the specified size.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - roleName - The constant value for the roleName
@@ -614,8 +592,6 @@ func (client *ClustersClient) BeginResize(ctx context.Context, resourceGroupName
 
 // Resize - Resizes the specified HDInsight cluster to the specified size.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 func (client *ClustersClient) resize(ctx context.Context, resourceGroupName string, clusterName string, roleName RoleName, parameters ClusterResizeParameters, options *ClustersClientBeginResizeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginResize"
@@ -661,8 +637,8 @@ func (client *ClustersClient) resizeCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -672,8 +648,6 @@ func (client *ClustersClient) resizeCreateRequest(ctx context.Context, resourceG
 
 // BeginRotateDiskEncryptionKey - Rotate disk encryption key of the specified HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The parameters for the disk encryption operation.
@@ -698,8 +672,6 @@ func (client *ClustersClient) BeginRotateDiskEncryptionKey(ctx context.Context, 
 
 // RotateDiskEncryptionKey - Rotate disk encryption key of the specified HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 func (client *ClustersClient) rotateDiskEncryptionKey(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterDiskEncryptionParameters, options *ClustersClientBeginRotateDiskEncryptionKeyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginRotateDiskEncryptionKey"
@@ -741,8 +713,8 @@ func (client *ClustersClient) rotateDiskEncryptionKeyCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -752,8 +724,6 @@ func (client *ClustersClient) rotateDiskEncryptionKeyCreateRequest(ctx context.C
 
 // Update - Patch HDInsight cluster with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The cluster patch request.
@@ -800,8 +770,8 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -821,8 +791,6 @@ func (client *ClustersClient) updateHandleResponse(resp *http.Response) (Cluster
 
 // BeginUpdateAutoScaleConfiguration - Updates the Autoscale Configuration for HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - roleName - The constant value for the roleName
@@ -848,8 +816,6 @@ func (client *ClustersClient) BeginUpdateAutoScaleConfiguration(ctx context.Cont
 
 // UpdateAutoScaleConfiguration - Updates the Autoscale Configuration for HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 func (client *ClustersClient) updateAutoScaleConfiguration(ctx context.Context, resourceGroupName string, clusterName string, roleName RoleName, parameters AutoscaleConfigurationUpdateParameter, options *ClustersClientBeginUpdateAutoScaleConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginUpdateAutoScaleConfiguration"
@@ -895,8 +861,8 @@ func (client *ClustersClient) updateAutoScaleConfigurationCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -906,8 +872,6 @@ func (client *ClustersClient) updateAutoScaleConfigurationCreateRequest(ctx cont
 
 // BeginUpdateGatewaySettings - Configures the gateway settings on the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The cluster configurations.
@@ -932,8 +896,6 @@ func (client *ClustersClient) BeginUpdateGatewaySettings(ctx context.Context, re
 
 // UpdateGatewaySettings - Configures the gateway settings on the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 func (client *ClustersClient) updateGatewaySettings(ctx context.Context, resourceGroupName string, clusterName string, parameters UpdateGatewaySettingsParameters, options *ClustersClientBeginUpdateGatewaySettingsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginUpdateGatewaySettings"
@@ -975,8 +937,8 @@ func (client *ClustersClient) updateGatewaySettingsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -986,8 +948,6 @@ func (client *ClustersClient) updateGatewaySettingsCreateRequest(ctx context.Con
 
 // BeginUpdateIdentityCertificate - Updates the cluster identity certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The cluster configurations.
@@ -1012,8 +972,6 @@ func (client *ClustersClient) BeginUpdateIdentityCertificate(ctx context.Context
 
 // UpdateIdentityCertificate - Updates the cluster identity certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 func (client *ClustersClient) updateIdentityCertificate(ctx context.Context, resourceGroupName string, clusterName string, parameters UpdateClusterIdentityCertificateParameters, options *ClustersClientBeginUpdateIdentityCertificateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClustersClient.BeginUpdateIdentityCertificate"
@@ -1055,8 +1013,8 @@ func (client *ClustersClient) updateIdentityCertificateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

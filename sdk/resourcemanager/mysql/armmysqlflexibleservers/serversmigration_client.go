@@ -18,6 +18,8 @@ import (
 
 // ServersMigrationClient contains the methods for the ServersMigration group.
 // Don't use this type directly, use NewServersMigrationClient() instead.
+//
+// Generated from API version 2024-12-01-preview
 type ServersMigrationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewServersMigrationClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCutoverMigration - Cutover migration for MySQL import, it will switch source elastic server DNS to flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServersMigrationClientBeginCutoverMigrationOptions contains the optional parameters for the ServersMigrationClient.BeginCutoverMigration
@@ -67,8 +67,6 @@ func (client *ServersMigrationClient) BeginCutoverMigration(ctx context.Context,
 
 // CutoverMigration - Cutover migration for MySQL import, it will switch source elastic server DNS to flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 func (client *ServersMigrationClient) cutoverMigration(ctx context.Context, resourceGroupName string, serverName string, options *ServersMigrationClientBeginCutoverMigrationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServersMigrationClient.BeginCutoverMigration"
@@ -110,8 +108,8 @@ func (client *ServersMigrationClient) cutoverMigrationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

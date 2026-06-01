@@ -66,13 +66,13 @@ func ExampleInstancesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.InstancesClientCreateOrUpdateResponse{
-	// 	Instance: &armworkloadorchestration.Instance{
+	// 	Instance: armworkloadorchestration.Instance{
 	// 		Properties: &armworkloadorchestration.InstanceProperties{
 	// 			SolutionVersionID: to.Ptr("acpddbkfclsgxg"),
 	// 			TargetID: to.Ptr("eguutiftuxrsavvckjrv"),
@@ -143,7 +143,7 @@ func ExampleInstancesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -166,7 +166,7 @@ func ExampleInstancesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.InstancesClientGetResponse{
-	// 	Instance: &armworkloadorchestration.Instance{
+	// 	Instance: armworkloadorchestration.Instance{
 	// 		Properties: &armworkloadorchestration.InstanceProperties{
 	// 			SolutionVersionID: to.Ptr("acpddbkfclsgxg"),
 	// 			TargetID: to.Ptr("eguutiftuxrsavvckjrv"),
@@ -331,13 +331,13 @@ func ExampleInstancesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.InstancesClientUpdateResponse{
-	// 	Instance: &armworkloadorchestration.Instance{
+	// 	Instance: armworkloadorchestration.Instance{
 	// 		Properties: &armworkloadorchestration.InstanceProperties{
 	// 			SolutionVersionID: to.Ptr("acpddbkfclsgxg"),
 	// 			TargetID: to.Ptr("eguutiftuxrsavvckjrv"),

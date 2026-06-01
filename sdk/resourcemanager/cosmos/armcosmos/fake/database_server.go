@@ -11,10 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // DatabaseServer is a fake server for instances of the armcosmos.DatabaseClient type.
@@ -65,9 +66,7 @@ func (d *DatabaseServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (d *DatabaseServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -87,10 +86,7 @@ func (d *DatabaseServerTransport) dispatchToMethodFake(req *http.Request, method
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -136,7 +132,7 @@ func (d *DatabaseServerTransport) dispatchNewListMetricDefinitionsPager(req *htt
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListMetricDefinitionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -171,11 +167,7 @@ func (d *DatabaseServerTransport) dispatchNewListMetricsPager(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		filterParam, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, databaseRidParam, filterParam, nil)
+		resp := d.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, databaseRidParam, qp.Get("$filter"), nil)
 		newListMetricsPager = &resp
 		d.newListMetricsPager.add(req, newListMetricsPager)
 		server.PagerResponderInjectNextLinks(newListMetricsPager, req, func(page *armcosmos.DatabaseClientListMetricsResponse, createLink func() string) {
@@ -186,7 +178,7 @@ func (d *DatabaseServerTransport) dispatchNewListMetricsPager(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListMetricsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -221,11 +213,7 @@ func (d *DatabaseServerTransport) dispatchNewListUsagesPager(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
 		var options *armcosmos.DatabaseClientListUsagesOptions
 		if filterParam != nil {
 			options = &armcosmos.DatabaseClientListUsagesOptions{
@@ -243,7 +231,7 @@ func (d *DatabaseServerTransport) dispatchNewListUsagesPager(req *http.Request) 
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListUsagesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

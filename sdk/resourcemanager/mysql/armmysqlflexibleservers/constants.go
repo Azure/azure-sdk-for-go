@@ -4,6 +4,10 @@
 
 package armmysqlflexibleservers
 
+const (
+	version20241201Preview string = "2024-12-01-preview"
+)
+
 type AdministratorName string
 
 const (

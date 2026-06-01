@@ -7,18 +7,19 @@ package armpurview
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // KafkaConfigurationsClient contains the methods for the KafkaConfigurations group.
 // Don't use this type directly, use NewKafkaConfigurationsClient() instead.
+//
+// Generated from API version 2024-04-01-preview
 type KafkaConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +45,6 @@ func NewKafkaConfigurationsClient(subscriptionID string, credential azcore.Token
 //
 // Create or update Kafka Configuration
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the account.
 //   - kafkaConfigurationName - Name of kafka configuration.
@@ -98,8 +97,8 @@ func (client *KafkaConfigurationsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, kafkaConfiguration); err != nil {
@@ -121,8 +120,6 @@ func (client *KafkaConfigurationsClient) createOrUpdateHandleResponse(resp *http
 //
 // Deletes a KafkaConfiguration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the account.
 //   - kafkaConfigurationName - Name of kafka configuration.
@@ -173,8 +170,8 @@ func (client *KafkaConfigurationsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -182,8 +179,6 @@ func (client *KafkaConfigurationsClient) deleteCreateRequest(ctx context.Context
 //
 // Gets the kafka configuration for the account
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the account.
 //   - kafkaConfigurationName - Name of kafka configuration.
@@ -234,8 +229,8 @@ func (client *KafkaConfigurationsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -251,9 +246,7 @@ func (client *KafkaConfigurationsClient) getHandleResponse(resp *http.Response) 
 
 // NewListByAccountPager - Gets the list of Kafka configurations for the account.
 //
-// # Lists the Kafka configurations in the Account
-//
-// Generated from API version 2024-04-01-preview
+// Lists the Kafka configurations in the Account
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the account.
 //   - options - KafkaConfigurationsClientListByAccountOptions contains the optional parameters for the KafkaConfigurationsClient.NewListByAccountPager
@@ -304,8 +297,8 @@ func (client *KafkaConfigurationsClient) listByAccountCreateRequest(ctx context.
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -4,6 +4,10 @@
 
 package armpeering
 
+const (
+	version20250501 string = "2025-05-01"
+)
+
 // Command - Invoked command
 type Command string
 

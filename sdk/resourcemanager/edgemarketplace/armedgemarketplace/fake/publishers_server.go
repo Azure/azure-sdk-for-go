@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -65,9 +66,7 @@ func (p *PublishersServerTransport) Do(req *http.Request) (*http.Response, error
 }
 
 func (p *PublishersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -87,10 +86,7 @@ func (p *PublishersServerTransport) dispatchToMethodFake(req *http.Request, meth
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -124,7 +120,7 @@ func (p *PublishersServerTransport) dispatchGet(req *http.Request) (*http.Respon
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Publisher, req)
@@ -151,11 +147,7 @@ func (p *PublishersServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -165,11 +157,7 @@ func (p *PublishersServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
-		if err != nil {
-			return nil, err
-		}
-		skipParam, err := parseOptional(skipUnescaped, func(v string) (int32, error) {
+		skipParam, err := parseOptional(qp.Get("skip"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -179,11 +167,7 @@ func (p *PublishersServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		maxpagesizeUnescaped, err := url.QueryUnescape(qp.Get("maxpagesize"))
-		if err != nil {
-			return nil, err
-		}
-		maxpagesizeParam, err := parseOptional(maxpagesizeUnescaped, func(v string) (int32, error) {
+		maxpagesizeParam, err := parseOptional(qp.Get("maxpagesize"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -193,16 +177,8 @@ func (p *PublishersServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armedgemarketplace.PublishersClientListOptions
 		if topParam != nil || skipParam != nil || maxpagesizeParam != nil || filterParam != nil || skipTokenParam != nil {
 			options = &armedgemarketplace.PublishersClientListOptions{
@@ -224,7 +200,7 @@ func (p *PublishersServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -257,7 +233,7 @@ func (p *PublishersServerTransport) dispatchNewListBySubscriptionPager(req *http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

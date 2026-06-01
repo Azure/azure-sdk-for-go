@@ -8,16 +8,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-	"strconv"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armextensiontypes"
+	"net/http"
+	"net/url"
+	"regexp"
+	"slices"
+	"strconv"
 )
 
 // Server is a fake server for instances of the armextensiontypes.Client type.
@@ -90,9 +90,7 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -122,10 +120,7 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -175,7 +170,7 @@ func (s *ServerTransport) dispatchClusterGetVersion(req *http.Request) (*http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExtensionTypeVersionForReleaseTrain, req)
@@ -218,21 +213,9 @@ func (s *ServerTransport) dispatchNewClusterListVersionsPager(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		releaseTrainUnescaped, err := url.QueryUnescape(qp.Get("releaseTrain"))
-		if err != nil {
-			return nil, err
-		}
-		releaseTrainParam := getOptional(releaseTrainUnescaped)
-		majorVersionUnescaped, err := url.QueryUnescape(qp.Get("majorVersion"))
-		if err != nil {
-			return nil, err
-		}
-		majorVersionParam := getOptional(majorVersionUnescaped)
-		showLatestUnescaped, err := url.QueryUnescape(qp.Get("showLatest"))
-		if err != nil {
-			return nil, err
-		}
-		showLatestParam, err := parseOptional(showLatestUnescaped, strconv.ParseBool)
+		releaseTrainParam := getOptional(qp.Get("releaseTrain"))
+		majorVersionParam := getOptional(qp.Get("majorVersion"))
+		showLatestParam, err := parseOptional(qp.Get("showLatest"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -255,7 +238,7 @@ func (s *ServerTransport) dispatchNewClusterListVersionsPager(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newClusterListVersionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -300,7 +283,7 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExtensionType, req)
@@ -337,7 +320,7 @@ func (s *ServerTransport) dispatchGetVersion(req *http.Request) (*http.Response,
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExtensionTypeVersionForReleaseTrain, req)
@@ -376,26 +359,10 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 		if err != nil {
 			return nil, err
 		}
-		publisherIDUnescaped, err := url.QueryUnescape(qp.Get("publisherId"))
-		if err != nil {
-			return nil, err
-		}
-		publisherIDParam := getOptional(publisherIDUnescaped)
-		offerIDUnescaped, err := url.QueryUnescape(qp.Get("offerId"))
-		if err != nil {
-			return nil, err
-		}
-		offerIDParam := getOptional(offerIDUnescaped)
-		planIDUnescaped, err := url.QueryUnescape(qp.Get("planId"))
-		if err != nil {
-			return nil, err
-		}
-		planIDParam := getOptional(planIDUnescaped)
-		releaseTrainUnescaped, err := url.QueryUnescape(qp.Get("releaseTrain"))
-		if err != nil {
-			return nil, err
-		}
-		releaseTrainParam := getOptional(releaseTrainUnescaped)
+		publisherIDParam := getOptional(qp.Get("publisherId"))
+		offerIDParam := getOptional(qp.Get("offerId"))
+		planIDParam := getOptional(qp.Get("planId"))
+		releaseTrainParam := getOptional(qp.Get("releaseTrain"))
 		var options *armextensiontypes.ClientListOptions
 		if publisherIDParam != nil || offerIDParam != nil || planIDParam != nil || releaseTrainParam != nil {
 			options = &armextensiontypes.ClientListOptions{
@@ -416,7 +383,7 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -447,26 +414,10 @@ func (s *ServerTransport) dispatchNewListVersionsPager(req *http.Request) (*http
 		if err != nil {
 			return nil, err
 		}
-		releaseTrainUnescaped, err := url.QueryUnescape(qp.Get("releaseTrain"))
-		if err != nil {
-			return nil, err
-		}
-		releaseTrainParam := getOptional(releaseTrainUnescaped)
-		clusterTypeUnescaped, err := url.QueryUnescape(qp.Get("clusterType"))
-		if err != nil {
-			return nil, err
-		}
-		clusterTypeParam := getOptional(clusterTypeUnescaped)
-		majorVersionUnescaped, err := url.QueryUnescape(qp.Get("majorVersion"))
-		if err != nil {
-			return nil, err
-		}
-		majorVersionParam := getOptional(majorVersionUnescaped)
-		showLatestUnescaped, err := url.QueryUnescape(qp.Get("showLatest"))
-		if err != nil {
-			return nil, err
-		}
-		showLatestParam, err := parseOptional(showLatestUnescaped, strconv.ParseBool)
+		releaseTrainParam := getOptional(qp.Get("releaseTrain"))
+		clusterTypeParam := getOptional(qp.Get("clusterType"))
+		majorVersionParam := getOptional(qp.Get("majorVersion"))
+		showLatestParam, err := parseOptional(qp.Get("showLatest"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -490,7 +441,7 @@ func (s *ServerTransport) dispatchNewListVersionsPager(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListVersionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -523,7 +474,7 @@ func (s *ServerTransport) dispatchLocationGet(req *http.Request) (*http.Response
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExtensionType, req)
@@ -550,31 +501,11 @@ func (s *ServerTransport) dispatchNewLocationListPager(req *http.Request) (*http
 		if err != nil {
 			return nil, err
 		}
-		publisherIDUnescaped, err := url.QueryUnescape(qp.Get("publisherId"))
-		if err != nil {
-			return nil, err
-		}
-		publisherIDParam := getOptional(publisherIDUnescaped)
-		offerIDUnescaped, err := url.QueryUnescape(qp.Get("offerId"))
-		if err != nil {
-			return nil, err
-		}
-		offerIDParam := getOptional(offerIDUnescaped)
-		planIDUnescaped, err := url.QueryUnescape(qp.Get("planId"))
-		if err != nil {
-			return nil, err
-		}
-		planIDParam := getOptional(planIDUnescaped)
-		releaseTrainUnescaped, err := url.QueryUnescape(qp.Get("releaseTrain"))
-		if err != nil {
-			return nil, err
-		}
-		releaseTrainParam := getOptional(releaseTrainUnescaped)
-		clusterTypeUnescaped, err := url.QueryUnescape(qp.Get("clusterType"))
-		if err != nil {
-			return nil, err
-		}
-		clusterTypeParam := getOptional(clusterTypeUnescaped)
+		publisherIDParam := getOptional(qp.Get("publisherId"))
+		offerIDParam := getOptional(qp.Get("offerId"))
+		planIDParam := getOptional(qp.Get("planId"))
+		releaseTrainParam := getOptional(qp.Get("releaseTrain"))
+		clusterTypeParam := getOptional(qp.Get("clusterType"))
 		var options *armextensiontypes.ClientLocationListOptions
 		if publisherIDParam != nil || offerIDParam != nil || planIDParam != nil || releaseTrainParam != nil || clusterTypeParam != nil {
 			options = &armextensiontypes.ClientLocationListOptions{
@@ -596,7 +527,7 @@ func (s *ServerTransport) dispatchNewLocationListPager(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newLocationListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

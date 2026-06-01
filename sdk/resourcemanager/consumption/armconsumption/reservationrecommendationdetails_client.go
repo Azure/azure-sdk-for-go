@@ -17,6 +17,8 @@ import (
 
 // ReservationRecommendationDetailsClient contains the methods for the ReservationRecommendationDetails group.
 // Don't use this type directly, use NewReservationRecommendationDetailsClient() instead.
+//
+// Generated from API version 2024-08-01
 type ReservationRecommendationDetailsClient struct {
 	internal *arm.Client
 }
@@ -37,8 +39,6 @@ func NewReservationRecommendationDetailsClient(credential azcore.TokenCredential
 
 // Get - Details of a reservation recommendation for what-if analysis of reserved instances.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - resourceScope - The scope associated with reservation recommendation details operations. This includes '/subscriptions/{subscriptionId}/'
 //     for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
 //     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope, and '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
@@ -88,13 +88,13 @@ func (client *ReservationRecommendationDetailsClient) getCreateRequest(ctx conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", version20240801)
 	reqQP.Set("lookBackPeriod", string(lookBackPeriod))
 	reqQP.Set("product", product)
 	reqQP.Set("region", region)
 	reqQP.Set("scope", string(scope))
 	reqQP.Set("term", string(term))
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

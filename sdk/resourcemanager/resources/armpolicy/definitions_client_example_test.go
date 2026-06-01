@@ -307,7 +307,7 @@ func ExampleDefinitionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionsClientGetResponse{
-	// 	Definition: &armpolicy.Definition{
+	// 	Definition: armpolicy.Definition{
 	// 		Name: to.Ptr("ResourceNaming"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
@@ -375,7 +375,7 @@ func ExampleDefinitionsClient_GetAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionsClientGetAtManagementGroupResponse{
-	// 	Definition: &armpolicy.Definition{
+	// 	Definition: armpolicy.Definition{
 	// 		Name: to.Ptr("ResourceNaming"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
@@ -443,7 +443,7 @@ func ExampleDefinitionsClient_GetBuiltIn() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionsClientGetBuiltInResponse{
-	// 	Definition: &armpolicy.Definition{
+	// 	Definition: armpolicy.Definition{
 	// 		Name: to.Ptr("7433c107-6db4-4ad1-b57a-a76dce0154a1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions"),
 	// 		ID: to.Ptr("/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1"),

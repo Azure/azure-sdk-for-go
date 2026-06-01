@@ -15,8 +15,6 @@ import (
 	"strings"
 )
 
-const defaultBenefitRecommendationsClientVersion string = "2025-03-01"
-
 // BenefitRecommendationsClient contains the methods for the BenefitRecommendations group.
 // Don't use this type directly, use NewBenefitRecommendationsClient() instead.
 //
@@ -90,7 +88,7 @@ func (client *BenefitRecommendationsClient) listCreateRequest(ctx context.Contex
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", defaultBenefitRecommendationsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

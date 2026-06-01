@@ -18,6 +18,8 @@ import (
 
 // ServerSecurityAlertPoliciesClient contains the methods for the ServerSecurityAlertPolicies group.
 // Don't use this type directly, use NewServerSecurityAlertPoliciesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ServerSecurityAlertPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewServerSecurityAlertPoliciesClient(subscriptionID string, credential azco
 
 // BeginCreateOrUpdate - Creates or updates a threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - securityAlertPolicyName - The name of the security alert policy.
@@ -68,8 +68,6 @@ func (client *ServerSecurityAlertPoliciesClient) BeginCreateOrUpdate(ctx context
 
 // CreateOrUpdate - Creates or updates a threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ServerSecurityAlertPolicy, options *ServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerSecurityAlertPoliciesClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *ServerSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +125,6 @@ func (client *ServerSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx
 
 // Get - Get a server's security alert policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - securityAlertPolicyName - The name of the security alert policy.
@@ -180,8 +176,8 @@ func (client *ServerSecurityAlertPoliciesClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -196,8 +192,6 @@ func (client *ServerSecurityAlertPoliciesClient) getHandleResponse(resp *http.Re
 }
 
 // NewListByServerPager - Get the server's threat detection policies.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerSecurityAlertPoliciesClientListByServerOptions contains the optional parameters for the ServerSecurityAlertPoliciesClient.NewListByServerPager
@@ -245,8 +239,8 @@ func (client *ServerSecurityAlertPoliciesClient) listByServerCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

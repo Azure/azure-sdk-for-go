@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v3
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance
 
 go 1.25.0
 

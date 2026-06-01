@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -36,7 +36,7 @@ func ExampleSSHPublicKeysClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SSHPublicKeysClientCreateResponse{
-	// 	SSHPublicKeyResource: &armcompute.SSHPublicKeyResource{
+	// 	SSHPublicKeyResource: armcompute.SSHPublicKeyResource{
 	// 		Name: to.Ptr("mySshPublicKeyName"),
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/sshPublicKeys/mySshPublicKeyName"),
@@ -110,7 +110,7 @@ func ExampleSSHPublicKeysClient_GenerateKeyPair_generateAnSshKeyPair() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SSHPublicKeysClientGenerateKeyPairResponse{
-	// 	SSHPublicKeyGenerateKeyPairResult: &armcompute.SSHPublicKeyGenerateKeyPairResult{
+	// 	SSHPublicKeyGenerateKeyPairResult: armcompute.SSHPublicKeyGenerateKeyPairResult{
 	// 		PrivateKey: to.Ptr("{ssh private key}"),
 	// 		PublicKey: to.Ptr("{ssh-rsa public key}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/SshPublicKeys/mySshPublicKeyName"),
@@ -140,7 +140,7 @@ func ExampleSSHPublicKeysClient_GenerateKeyPair_generateAnSshKeyPairWithEd25519E
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SSHPublicKeysClientGenerateKeyPairResponse{
-	// 	SSHPublicKeyGenerateKeyPairResult: &armcompute.SSHPublicKeyGenerateKeyPairResult{
+	// 	SSHPublicKeyGenerateKeyPairResult: armcompute.SSHPublicKeyGenerateKeyPairResult{
 	// 		PrivateKey: to.Ptr("{ssh-ed25519 private key}"),
 	// 		PublicKey: to.Ptr("{ssh-ed25519 public key}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/SshPublicKeys/mySshPublicKeyName"),
@@ -170,7 +170,7 @@ func ExampleSSHPublicKeysClient_GenerateKeyPair_generateAnSshKeyPairWithRsaEncry
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SSHPublicKeysClientGenerateKeyPairResponse{
-	// 	SSHPublicKeyGenerateKeyPairResult: &armcompute.SSHPublicKeyGenerateKeyPairResult{
+	// 	SSHPublicKeyGenerateKeyPairResult: armcompute.SSHPublicKeyGenerateKeyPairResult{
 	// 		PrivateKey: to.Ptr("{ssh-rsa private key}"),
 	// 		PublicKey: to.Ptr("{ssh-rsa public key}"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/SshPublicKeys/mySshPublicKeyName"),
@@ -197,7 +197,7 @@ func ExampleSSHPublicKeysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SSHPublicKeysClientGetResponse{
-	// 	SSHPublicKeyResource: &armcompute.SSHPublicKeyResource{
+	// 	SSHPublicKeyResource: armcompute.SSHPublicKeyResource{
 	// 		Name: to.Ptr("mySshPublicKeyName"),
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
@@ -397,7 +397,7 @@ func ExampleSSHPublicKeysClient_Update_sshPublicKeyUpdateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SSHPublicKeysClientUpdateResponse{
-	// 	SSHPublicKeyResource: &armcompute.SSHPublicKeyResource{
+	// 	SSHPublicKeyResource: armcompute.SSHPublicKeyResource{
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armcompute.SSHPublicKeyResourceProperties{
 	// 			PublicKey: to.Ptr("{ssh-rsa public key}"),
@@ -432,7 +432,7 @@ func ExampleSSHPublicKeysClient_Update_sshPublicKeyUpdateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SSHPublicKeysClientUpdateResponse{
-	// 	SSHPublicKeyResource: &armcompute.SSHPublicKeyResource{
+	// 	SSHPublicKeyResource: armcompute.SSHPublicKeyResource{
 	// 		Location: to.Ptr("westus"),
 	// 	},
 	// }

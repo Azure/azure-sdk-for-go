@@ -20,6 +20,8 @@ import (
 // and other service groups into an organizational hierarchy and centrally manage access control, policies, alerting and reporting
 // for those resources
 // Don't use this type directly, use NewManagementClient() instead.
+//
+// Generated from API version 2024-02-01-preview
 type ManagementClient struct {
 	internal *arm.Client
 }
@@ -38,17 +40,8 @@ func NewManagementClient(credential azcore.TokenCredential, options *arm.ClientO
 	return client, nil
 }
 
-// NewClient creates a new instance of [Client].
-func (client *ManagementClient) NewClient() *Client {
-	return &Client{
-		internal: client.internal,
-	}
-}
-
 // BeginCreateOrUpdateServiceGroup - Create or Update a serviceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01-preview
 //   - serviceGroupName - ServiceGroup Name.
 //   - createServiceGroupRequest - ServiceGroup creation parameters
 //   - options - ManagementClientBeginCreateOrUpdateServiceGroupOptions contains the optional parameters for the ManagementClient.BeginCreateOrUpdateServiceGroup
@@ -72,8 +65,6 @@ func (client *ManagementClient) BeginCreateOrUpdateServiceGroup(ctx context.Cont
 
 // CreateOrUpdateServiceGroup - Create or Update a serviceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01-preview
 func (client *ManagementClient) createOrUpdateServiceGroup(ctx context.Context, serviceGroupName string, createServiceGroupRequest ServiceGroup, options *ManagementClientBeginCreateOrUpdateServiceGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagementClient.BeginCreateOrUpdateServiceGroup"
@@ -107,8 +98,8 @@ func (client *ManagementClient) createOrUpdateServiceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createServiceGroupRequest); err != nil {
@@ -119,8 +110,6 @@ func (client *ManagementClient) createOrUpdateServiceGroupCreateRequest(ctx cont
 
 // BeginDeleteServiceGroup - Delete a ServiceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01-preview
 //   - serviceGroupName - ServiceGroup Name.
 //   - options - ManagementClientBeginDeleteServiceGroupOptions contains the optional parameters for the ManagementClient.BeginDeleteServiceGroup
 //     method.
@@ -143,8 +132,6 @@ func (client *ManagementClient) BeginDeleteServiceGroup(ctx context.Context, ser
 
 // DeleteServiceGroup - Delete a ServiceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01-preview
 func (client *ManagementClient) deleteServiceGroup(ctx context.Context, serviceGroupName string, options *ManagementClientBeginDeleteServiceGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagementClient.BeginDeleteServiceGroup"
@@ -178,15 +165,13 @@ func (client *ManagementClient) deleteServiceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdateServiceGroup - Update a serviceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01-preview
 //   - serviceGroupName - ServiceGroup Name.
 //   - updateServiceGroupRequest - ServiceGroup update parameters
 //   - options - ManagementClientBeginUpdateServiceGroupOptions contains the optional parameters for the ManagementClient.BeginUpdateServiceGroup
@@ -210,8 +195,6 @@ func (client *ManagementClient) BeginUpdateServiceGroup(ctx context.Context, ser
 
 // UpdateServiceGroup - Update a serviceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01-preview
 func (client *ManagementClient) updateServiceGroup(ctx context.Context, serviceGroupName string, updateServiceGroupRequest ServiceGroup, options *ManagementClientBeginUpdateServiceGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagementClient.BeginUpdateServiceGroup"
@@ -245,8 +228,8 @@ func (client *ManagementClient) updateServiceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateServiceGroupRequest); err != nil {

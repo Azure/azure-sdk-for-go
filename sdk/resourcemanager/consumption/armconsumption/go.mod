@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption
 
 go 1.25.0
 

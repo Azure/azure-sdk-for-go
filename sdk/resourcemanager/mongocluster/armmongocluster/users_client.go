@@ -18,6 +18,8 @@ import (
 
 // UsersClient contains the methods for the Users group.
 // Don't use this type directly, use NewUsersClient() instead.
+//
+// Generated from API version 2026-02-01-preview
 type UsersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // BeginCreateOrUpdate - Creates a new user or updates an existing user on a mongo cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - userName - The name of the mongo cluster user.
@@ -69,8 +69,6 @@ func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 
 // CreateOrUpdate - Creates a new user or updates an existing user on a mongo cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01-preview
 func (client *UsersClient) createOrUpdate(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, resource User, options *UsersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UsersClient.BeginCreateOrUpdate"
@@ -116,8 +114,8 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -128,8 +126,6 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Deletes a mongo cluster user.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - userName - The name of the mongo cluster user.
@@ -153,8 +149,6 @@ func (client *UsersClient) BeginDelete(ctx context.Context, resourceGroupName st
 
 // Delete - Deletes a mongo cluster user.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01-preview
 func (client *UsersClient) deleteOperation(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UsersClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *UsersClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the defintion of a Mongo cluster user.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - userName - The name of the mongo cluster user.
@@ -259,8 +251,8 @@ func (client *UsersClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *UsersClient) getHandleResponse(resp *http.Response) (UsersClientGe
 }
 
 // NewListByMongoClusterPager - List all the users on a mongo cluster.
-//
-// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - options - UsersClientListByMongoClusterOptions contains the optional parameters for the UsersClient.NewListByMongoClusterPager
@@ -324,8 +314,8 @@ func (client *UsersClient) listByMongoClusterCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -18,6 +18,8 @@ import (
 
 // TdeCertificatesClient contains the methods for the TdeCertificates group.
 // Don't use this type directly, use NewTdeCertificatesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type TdeCertificatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewTdeCertificatesClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreate - Creates a TDE certificate for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - The requested TDE certificate to be created or updated.
@@ -67,8 +67,6 @@ func (client *TdeCertificatesClient) BeginCreate(ctx context.Context, resourceGr
 
 // Create - Creates a TDE certificate for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *TdeCertificatesClient) create(ctx context.Context, resourceGroupName string, serverName string, parameters TdeCertificate, options *TdeCertificatesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TdeCertificatesClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *TdeCertificatesClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

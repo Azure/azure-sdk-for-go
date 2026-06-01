@@ -6,11 +6,10 @@ package armpurview_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
+	"log"
 )
 
 // Generated from example definition: 2024-04-01-preview/DefaultAccounts_Get.json
@@ -33,7 +32,7 @@ func ExampleDefaultAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurview.DefaultAccountsClientGetResponse{
-	// 	DefaultAccountPayload: &armpurview.DefaultAccountPayload{
+	// 	DefaultAccountPayload: armpurview.DefaultAccountPayload{
 	// 		AccountName: to.Ptr("myDefaultAccount"),
 	// 		ResourceGroupName: to.Ptr("rg-1"),
 	// 		Scope: to.Ptr("12345678-1234-1234-1234-12345678abcd"),
@@ -93,7 +92,7 @@ func ExampleDefaultAccountsClient_Set() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurview.DefaultAccountsClientSetResponse{
-	// 	DefaultAccountPayload: &armpurview.DefaultAccountPayload{
+	// 	DefaultAccountPayload: armpurview.DefaultAccountPayload{
 	// 		AccountName: to.Ptr("myDefaultAccount"),
 	// 		ResourceGroupName: to.Ptr("rg-1"),
 	// 		Scope: to.Ptr("12345678-1234-1234-1234-12345678abcd"),

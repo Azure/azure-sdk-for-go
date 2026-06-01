@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -36,7 +36,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginApproveRollingUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -168,13 +168,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -346,13 +346,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -523,13 +523,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -686,13 +686,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createACustomImage
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -838,13 +838,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFro
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -990,13 +990,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFro
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -1137,13 +1137,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFro
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -1303,13 +1303,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWhe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -1502,13 +1502,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -1719,13 +1719,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -1923,13 +1923,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAPlatformIma
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -2088,13 +2088,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -2267,13 +2267,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -2460,13 +2460,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -2647,13 +2647,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -2818,13 +2818,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -2998,13 +2998,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -3173,13 +3173,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -3343,13 +3343,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createOrUpdateASca
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -3515,13 +3515,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -3707,13 +3707,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -3910,13 +3910,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -4095,13 +4095,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -4283,13 +4283,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -4469,13 +4469,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVmssWithAnE
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -4671,13 +4671,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -4874,13 +4874,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -5062,13 +5062,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVirtualMach
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](2),
@@ -5224,13 +5224,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVirtualMach
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](4),
@@ -5391,13 +5391,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -5563,13 +5563,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -5738,13 +5738,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAZonesAutoSc
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -5911,13 +5911,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -6089,13 +6089,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -6258,13 +6258,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -6424,13 +6424,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -6590,13 +6590,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -6762,13 +6762,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](2),
@@ -6948,13 +6948,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVmssWithAnE
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -7145,13 +7145,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -7312,13 +7312,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -7481,13 +7481,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -7652,13 +7652,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -7822,13 +7822,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -7995,13 +7995,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -8171,13 +8171,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -8341,13 +8341,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -8524,13 +8524,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Capacity: to.Ptr[int64](10),
 	// 			Name: to.Ptr("Mix"),
@@ -8725,13 +8725,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Capacity: to.Ptr[int64](10),
 	// 			Name: to.Ptr("Mix"),
@@ -8915,13 +8915,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](2),
@@ -9093,13 +9093,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -9274,13 +9274,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetCon
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -9454,13 +9454,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -9626,13 +9626,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -9790,13 +9790,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -9962,13 +9962,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -10150,13 +10150,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](2),
@@ -10349,13 +10349,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -10472,7 +10472,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeallocate_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10498,7 +10498,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeallocate_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10525,7 +10525,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10556,7 +10556,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeleteInstances_virtualMachineSca
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10586,7 +10586,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeleteInstances_virtualMachineSca
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10614,7 +10614,7 @@ func ExampleVirtualMachineScaleSetsClient_ForceRecoveryServiceFabricPlatformUpda
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse{
-	// 	RecoveryWalkResponse: &armcompute.RecoveryWalkResponse{
+	// 	RecoveryWalkResponse: armcompute.RecoveryWalkResponse{
 	// 		WalkPerformed: to.Ptr(true),
 	// 		NextPlatformUpdateDomain: to.Ptr[int32](7),
 	// 	},
@@ -10640,7 +10640,7 @@ func ExampleVirtualMachineScaleSetsClient_ForceRecoveryServiceFabricPlatformUpda
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse{
-	// 	RecoveryWalkResponse: &armcompute.RecoveryWalkResponse{
+	// 	RecoveryWalkResponse: armcompute.RecoveryWalkResponse{
 	// 	},
 	// }
 }
@@ -10664,7 +10664,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
@@ -10787,7 +10787,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetPlacedOn
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
@@ -10894,7 +10894,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getVMScaleSetVMWithDiskControllerT
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
@@ -11016,7 +11016,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetWithUser
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientGetResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		Name: to.Ptr("myVirtualMachineScaleSet"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myVirtualMachineScaleSet"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
@@ -11136,7 +11136,7 @@ func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientGetInstanceViewResponse{
-	// 	VirtualMachineScaleSetInstanceView: &armcompute.VirtualMachineScaleSetInstanceView{
+	// 	VirtualMachineScaleSetInstanceView: armcompute.VirtualMachineScaleSetInstanceView{
 	// 		VirtualMachine: &armcompute.VirtualMachineScaleSetInstanceViewStatusesSummary{
 	// 			StatusesSummary: []*armcompute.VirtualMachineStatusCodeCount{
 	// 				{
@@ -11200,7 +11200,7 @@ func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientGetInstanceViewResponse{
-	// 	VirtualMachineScaleSetInstanceView: &armcompute.VirtualMachineScaleSetInstanceView{
+	// 	VirtualMachineScaleSetInstanceView: armcompute.VirtualMachineScaleSetInstanceView{
 	// 	},
 	// }
 }
@@ -12801,7 +12801,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginPerformMaintenance_virtualMachine
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -12827,7 +12827,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginPerformMaintenance_virtualMachine
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -12859,7 +12859,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginPowerOff_virtualMachineScaleSetPo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -12885,7 +12885,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginPowerOff_virtualMachineScaleSetPo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -12911,7 +12911,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReapply_virtualMachineScaleSetsRe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -12937,7 +12937,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReapply_virtualMachineScaleSetsRe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -12968,7 +12968,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginRedeploy_virtualMachineScaleSetRe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -12994,7 +12994,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginRedeploy_virtualMachineScaleSetRe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13027,7 +13027,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReimage_virtualMachineScaleSetRei
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13053,7 +13053,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReimage_virtualMachineScaleSetRei
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13084,7 +13084,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReimageAll_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13110,7 +13110,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReimageAll_virtualMachineScaleSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13141,7 +13141,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginRestart_virtualMachineScaleSetRes
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13167,7 +13167,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginRestart_virtualMachineScaleSetRes
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13198,7 +13198,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginScaleOut() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13227,7 +13227,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginSetOrchestrationServiceState_virt
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13256,7 +13256,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginSetOrchestrationServiceState_virt
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13287,7 +13287,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginStart_virtualMachineScaleSetStart
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13313,7 +13313,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginStart_virtualMachineScaleSetStart
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -13630,13 +13630,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdate_virtualMachineScaleSetUpda
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
@@ -14014,13 +14014,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdate_virtualMachineScaleSetUpda
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetsClientUpdateResponse{
-	// 	VirtualMachineScaleSet: &armcompute.VirtualMachineScaleSet{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
 	// 		Location: to.Ptr("westus"),
 	// 	},
 	// }
@@ -14047,7 +14047,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdateInstances_virtualMachineSca
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -14077,7 +14077,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdateInstances_virtualMachineSca
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

@@ -6,10 +6,9 @@ package armmaps_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
+	"log"
 )
 
 // Generated from example definition: 2025-10-01-preview/PrivateLinkResources_Get.json
@@ -31,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armmaps.PrivateLinkResource{
+	// 	PrivateLinkResource: armmaps.PrivateLinkResource{
 	// 		Name: to.Ptr("mapsAccount"),
 	// 		Type: to.Ptr("Microsoft.Maps/accounts/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount/privateLinkResources/mapsAccount"),

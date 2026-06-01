@@ -4,6 +4,10 @@
 
 package armredis
 
+const (
+	version20241101 string = "2024-11-01"
+)
+
 // AccessPolicyAssignmentProvisioningState - Provisioning state of an access policy assignment set
 type AccessPolicyAssignmentProvisioningState string
 

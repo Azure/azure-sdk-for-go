@@ -18,6 +18,8 @@ import (
 
 // WafPolicyClient contains the methods for the WafPolicy group.
 // Don't use this type directly, use NewWafPolicyClient() instead.
+//
+// Generated from API version 2025-11-01
 type WafPolicyClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewWafPolicyClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreate - Create or update the Nginx Waf Policy for given Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - wafPolicyName - The name of Waf Policy
@@ -68,8 +68,6 @@ func (client *WafPolicyClient) BeginCreate(ctx context.Context, resourceGroupNam
 
 // Create - Create or update the Nginx Waf Policy for given Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *WafPolicyClient) create(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, body DeploymentWafPolicy, options *WafPolicyClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WafPolicyClient.BeginCreate"
@@ -115,8 +113,8 @@ func (client *WafPolicyClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -127,8 +125,6 @@ func (client *WafPolicyClient) createCreateRequest(ctx context.Context, resource
 
 // BeginDelete - Reset the Nginx Waf Policy of given Nginx deployment to default
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - wafPolicyName - The name of Waf Policy
@@ -152,8 +148,6 @@ func (client *WafPolicyClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Reset the Nginx Waf Policy of given Nginx deployment to default
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *WafPolicyClient) deleteOperation(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *WafPolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WafPolicyClient.BeginDelete"
@@ -199,15 +193,13 @@ func (client *WafPolicyClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the Nginx Waf Policy of given Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - wafPolicyName - The name of Waf Policy
@@ -258,8 +250,8 @@ func (client *WafPolicyClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -274,8 +266,6 @@ func (client *WafPolicyClient) getHandleResponse(resp *http.Response) (WafPolicy
 }
 
 // NewListPager - List Waf Policies of given Nginx deployment
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - options - WafPolicyClientListOptions contains the optional parameters for the WafPolicyClient.NewListPager method.
@@ -322,8 +312,8 @@ func (client *WafPolicyClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

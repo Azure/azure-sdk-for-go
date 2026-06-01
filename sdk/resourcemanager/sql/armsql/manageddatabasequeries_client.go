@@ -18,6 +18,8 @@ import (
 
 // ManagedDatabaseQueriesClient contains the methods for the ManagedDatabaseQueries group.
 // Don't use this type directly, use NewManagedDatabaseQueriesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedDatabaseQueriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedDatabaseQueriesClient(subscriptionID string, credential azcore.To
 
 // Get - Get query by query id.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -98,8 +98,8 @@ func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -114,8 +114,6 @@ func (client *ManagedDatabaseQueriesClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByQueryPager - Get query execution statistics by query id.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -172,7 +170,7 @@ func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.EndTime != nil {
 		reqQP.Set("endTime", *options.EndTime)
 	}
@@ -182,7 +180,7 @@ func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context
 	if options != nil && options.StartTime != nil {
 		reqQP.Set("startTime", *options.StartTime)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

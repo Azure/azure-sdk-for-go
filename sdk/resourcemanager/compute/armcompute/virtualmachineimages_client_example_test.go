@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleVirtualMachineImagesClient_Get_virtualMachineImageGetMaximumSetGen()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientGetResponse{
-	// 	VirtualMachineImage: &armcompute.VirtualMachineImage{
+	// 	VirtualMachineImage: armcompute.VirtualMachineImage{
 	// 		Properties: &armcompute.VirtualMachineImageProperties{
 	// 			Plan: &armcompute.PurchasePlan{
 	// 				Publisher: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
@@ -101,7 +101,7 @@ func ExampleVirtualMachineImagesClient_Get_virtualMachineImageGetMinimumSetGen()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientGetResponse{
-	// 	VirtualMachineImage: &armcompute.VirtualMachineImage{
+	// 	VirtualMachineImage: armcompute.VirtualMachineImage{
 	// 		Name: to.Ptr("aaaaaaaaa"),
 	// 		Location: to.Ptr("aaaaa"),
 	// 		ID: to.Ptr("aaaaaaaaaaa"),
@@ -131,7 +131,7 @@ func ExampleVirtualMachineImagesClient_List_virtualMachineImageListMaximumSetGen
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientListResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -167,7 +167,7 @@ func ExampleVirtualMachineImagesClient_List_virtualMachineImageListMinimumSetGen
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientListResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -196,7 +196,7 @@ func ExampleVirtualMachineImagesClient_ListByEdgeZone_virtualMachineImagesEdgeZo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientListByEdgeZoneResponse{
-	// 	VMImagesInEdgeZoneListResult: &armcompute.VMImagesInEdgeZoneListResult{
+	// 	VMImagesInEdgeZoneListResult: armcompute.VMImagesInEdgeZoneListResult{
 	// 		Value: []*armcompute.VirtualMachineImageResource{
 	// 			{
 	// 				Name: to.Ptr("18.04.202107200"),
@@ -231,7 +231,7 @@ func ExampleVirtualMachineImagesClient_ListByEdgeZone_virtualMachineImagesEdgeZo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientListByEdgeZoneResponse{
-	// 	VMImagesInEdgeZoneListResult: &armcompute.VMImagesInEdgeZoneListResult{
+	// 	VMImagesInEdgeZoneListResult: armcompute.VMImagesInEdgeZoneListResult{
 	// 		Value: []*armcompute.VirtualMachineImageResource{
 	// 		},
 	// 	},
@@ -257,7 +257,7 @@ func ExampleVirtualMachineImagesClient_ListOffers_virtualMachineImageListOffersM
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientListOffersResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -293,7 +293,7 @@ func ExampleVirtualMachineImagesClient_ListOffers_virtualMachineImageListOffersM
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientListOffersResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -322,7 +322,7 @@ func ExampleVirtualMachineImagesClient_ListPublishers_virtualMachineImageListPub
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientListPublishersResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -358,7 +358,7 @@ func ExampleVirtualMachineImagesClient_ListPublishers_virtualMachineImageListPub
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientListPublishersResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -387,7 +387,7 @@ func ExampleVirtualMachineImagesClient_ListSKUs_virtualMachineImageListSkusMaxim
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientListSKUsResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -423,7 +423,7 @@ func ExampleVirtualMachineImagesClient_ListSKUs_virtualMachineImageListSkusMinim
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineImagesClientListSKUsResponse{
-	// 	VirtualMachineImageResourceArray: &[]*armcompute.VirtualMachineImageResource{
+	// 	VirtualMachineImageResourceArray: []*armcompute.VirtualMachineImageResource{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaa"),

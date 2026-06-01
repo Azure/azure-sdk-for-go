@@ -1,10 +1,11 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql
 
 go 1.25.0
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.1
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2 v2.0.0-beta.8
 )
 
 require (

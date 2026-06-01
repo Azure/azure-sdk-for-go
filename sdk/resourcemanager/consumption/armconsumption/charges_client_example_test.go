@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleChargesClient_List_changesForBillingPeriodByDepartmentLegacy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.LegacyChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -69,7 +69,7 @@ func ExampleChargesClient_List_changesForBillingPeriodByEnrollmentAccountLegacy(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.LegacyChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -109,7 +109,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountModern() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -160,7 +160,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByBillingProfileI
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -234,7 +234,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByCustomerIdModer
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -313,7 +313,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByInvoiceSectionI
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -387,7 +387,7 @@ func ExampleChargesClient_List_chargesListByBillingProfileModern() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -439,7 +439,7 @@ func ExampleChargesClient_List_chargesListByBillingProfileGroupByInvoiceSectionI
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -515,7 +515,7 @@ func ExampleChargesClient_List_chargesListByBillingProfileInvoiceSectionModern()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -589,7 +589,7 @@ func ExampleChargesClient_List_chargesListByCustomerModern() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -637,7 +637,7 @@ func ExampleChargesClient_List_chargesListByInvoiceSectionIdModern() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -688,7 +688,7 @@ func ExampleChargesClient_List_chargesListByDepartmentLegacy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.LegacyChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -726,7 +726,7 @@ func ExampleChargesClient_List_chargesListForEnrollmentAccountLegacy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.LegacyChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),

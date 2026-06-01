@@ -46,13 +46,13 @@ func ExampleClusterManagersClient_BeginCreateOrUpdate_createOrUpdateClusterManag
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClusterManagersClientCreateOrUpdateResponse{
-	// 	ClusterManager: &armnetworkcloud.ClusterManager{
+	// 	ClusterManager: armnetworkcloud.ClusterManager{
 	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
 	// 		Identity: &armnetworkcloud.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("321e7654-e89b-12d3-a456-426655449999"),
@@ -145,13 +145,13 @@ func ExampleClusterManagersClient_BeginCreateOrUpdate_createOrUpdateClusterManag
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClusterManagersClientCreateOrUpdateResponse{
-	// 	ClusterManager: &armnetworkcloud.ClusterManager{
+	// 	ClusterManager: armnetworkcloud.ClusterManager{
 	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
 	// 		Identity: &armnetworkcloud.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
@@ -228,7 +228,7 @@ func ExampleClusterManagersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -251,7 +251,7 @@ func ExampleClusterManagersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClusterManagersClientGetResponse{
-	// 	ClusterManager: &armnetworkcloud.ClusterManager{
+	// 	ClusterManager: armnetworkcloud.ClusterManager{
 	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
 	// 		Identity: &armnetworkcloud.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("321e7654-e89b-12d3-a456-426655449999"),
@@ -508,7 +508,7 @@ func ExampleClusterManagersClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClusterManagersClientUpdateResponse{
-	// 	ClusterManager: &armnetworkcloud.ClusterManager{
+	// 	ClusterManager: armnetworkcloud.ClusterManager{
 	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
 	// 		Identity: &armnetworkcloud.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),

@@ -7,7 +7,7 @@ package armsupport_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleChatTranscriptsNoSubscriptionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.ChatTranscriptsNoSubscriptionClientGetResponse{
-	// 	ChatTranscriptDetails: &armsupport.ChatTranscriptDetails{
+	// 	ChatTranscriptDetails: armsupport.ChatTranscriptDetails{
 	// 		Name: to.Ptr("testmessage"),
 	// 		Type: to.Ptr("Microsoft.Support/chatTranscripts"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket/chatTranscripts/b371192a-b094-4a71-b093-7246029b0a54"),

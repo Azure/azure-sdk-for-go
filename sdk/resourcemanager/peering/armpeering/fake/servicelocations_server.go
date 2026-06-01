@@ -11,10 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 	"net/http"
-	"net/url"
 	"regexp"
+	"slices"
 )
 
 // ServiceLocationsServer is a fake server for instances of the armpeering.ServiceLocationsClient type.
@@ -53,9 +53,7 @@ func (s *ServiceLocationsServerTransport) Do(req *http.Request) (*http.Response,
 }
 
 func (s *ServiceLocationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +69,7 @@ func (s *ServiceLocationsServerTransport) dispatchToMethodFake(req *http.Request
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -98,11 +93,7 @@ func (s *ServiceLocationsServerTransport) dispatchNewListPager(req *http.Request
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		countryUnescaped, err := url.QueryUnescape(qp.Get("country"))
-		if err != nil {
-			return nil, err
-		}
-		countryParam := getOptional(countryUnescaped)
+		countryParam := getOptional(qp.Get("country"))
 		var options *armpeering.ServiceLocationsClientListOptions
 		if countryParam != nil {
 			options = &armpeering.ServiceLocationsClientListOptions{
@@ -120,7 +111,7 @@ func (s *ServiceLocationsServerTransport) dispatchNewListPager(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

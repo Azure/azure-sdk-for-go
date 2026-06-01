@@ -7,7 +7,7 @@ package armelastic_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleOrganizationsClient_GetAPIKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelastic.OrganizationsClientGetAPIKeyResponse{
-	// 	UserAPIKeyResponse: &armelastic.UserAPIKeyResponse{
+	// 	UserAPIKeyResponse: armelastic.UserAPIKeyResponse{
 	// 		Properties: &armelastic.UserAPIKeyResponseProperties{
 	// 			APIKey: to.Ptr("AbCdEfGhIjKlMnOpQrStUvWxYz"),
 	// 		},
@@ -57,7 +57,7 @@ func ExampleOrganizationsClient_GetElasticToAzureSubscriptionMapping() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelastic.OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{
-	// 	OrganizationToAzureSubscriptionMappingResponse: &armelastic.OrganizationToAzureSubscriptionMappingResponse{
+	// 	OrganizationToAzureSubscriptionMappingResponse: armelastic.OrganizationToAzureSubscriptionMappingResponse{
 	// 		Properties: &armelastic.OrganizationToAzureSubscriptionMappingResponseProperties{
 	// 			BilledAzureSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			ElasticOrganizationID: to.Ptr("1234567890"),
@@ -92,13 +92,13 @@ func ExampleOrganizationsClient_BeginResubscribe() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelastic.OrganizationsClientResubscribeResponse{
-	// 	MonitorResource: &armelastic.MonitorResource{
+	// 	MonitorResource: armelastic.MonitorResource{
 	// 		Name: to.Ptr("myMonitor"),
 	// 		Type: to.Ptr("Microsoft.Elastic/monitors"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Elastic/monitors/myMonitor"),

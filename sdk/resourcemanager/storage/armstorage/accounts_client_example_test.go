@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3"
 	"log"
 	"time"
 )
@@ -2411,8 +2411,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAccountsClient().BeginFailover(ctx, "res4228", "sto2434", &armstorage.AccountsClientBeginFailoverOptions{
-		FailoverType: to.Ptr("Planned")})
+	poller, err := clientFactory.NewAccountsClient().BeginFailover(ctx, "res4228", "sto2434", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

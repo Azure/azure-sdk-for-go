@@ -7,18 +7,19 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // FrontDoorsClient contains the methods for the FrontDoors group.
 // Don't use this type directly, use NewFrontDoorsClient() instead.
+//
+// Generated from API version 2025-10-01
 type FrontDoorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +43,6 @@ func NewFrontDoorsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Creates a new Front Door with a Front Door name under the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontDoorParameters - Front Door properties needed to create a new Front Door.
@@ -68,8 +67,6 @@ func (client *FrontDoorsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Creates a new Front Door with a Front Door name under the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *FrontDoorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, frontDoorParameters FrontDoor, options *FrontDoorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FrontDoorsClient.BeginCreateOrUpdate"
@@ -111,8 +108,8 @@ func (client *FrontDoorsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, frontDoorParameters); err != nil {
@@ -123,8 +120,6 @@ func (client *FrontDoorsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Deletes an existing Front Door with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - options - FrontDoorsClientBeginDeleteOptions contains the optional parameters for the FrontDoorsClient.BeginDelete method.
@@ -147,8 +142,6 @@ func (client *FrontDoorsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes an existing Front Door with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *FrontDoorsClient) deleteOperation(ctx context.Context, resourceGroupName string, frontDoorName string, options *FrontDoorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FrontDoorsClient.BeginDelete"
@@ -190,15 +183,13 @@ func (client *FrontDoorsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a Front Door with the specified Front Door name under the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - options - FrontDoorsClientGetOptions contains the optional parameters for the FrontDoorsClient.Get method.
@@ -244,8 +235,8 @@ func (client *FrontDoorsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,8 +251,6 @@ func (client *FrontDoorsClient) getHandleResponse(resp *http.Response) (FrontDoo
 }
 
 // NewListPager - Lists all of the Front Doors within an Azure subscription.
-//
-// Generated from API version 2025-10-01
 //   - options - FrontDoorsClientListOptions contains the optional parameters for the FrontDoorsClient.NewListPager method.
 func (client *FrontDoorsClient) NewListPager(options *FrontDoorsClientListOptions) *runtime.Pager[FrontDoorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FrontDoorsClientListResponse]{
@@ -298,8 +287,8 @@ func (client *FrontDoorsClient) listCreateRequest(ctx context.Context, _ *FrontD
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -314,8 +303,6 @@ func (client *FrontDoorsClient) listHandleResponse(resp *http.Response) (FrontDo
 }
 
 // NewListByResourceGroupPager - Lists all of the Front Doors within a resource group under a subscription.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - FrontDoorsClientListByResourceGroupOptions contains the optional parameters for the FrontDoorsClient.NewListByResourceGroupPager
 //     method.
@@ -358,8 +345,8 @@ func (client *FrontDoorsClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -375,8 +362,6 @@ func (client *FrontDoorsClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct Front Door endpoint in DNS.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - customDomainProperties - Custom domain to be validated.
@@ -424,8 +409,8 @@ func (client *FrontDoorsClient) validateCustomDomainCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customDomainProperties); err != nil {

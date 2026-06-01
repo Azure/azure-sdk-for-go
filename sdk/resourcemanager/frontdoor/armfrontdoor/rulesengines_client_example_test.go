@@ -6,11 +6,10 @@ package armfrontdoor_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
+	"log"
 )
 
 // Generated from example definition: 2025-10-01/FrontdoorRulesEngineCreate.json
@@ -118,13 +117,13 @@ func ExampleRulesEnginesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armfrontdoor.RulesEnginesClientCreateOrUpdateResponse{
-	// 	RulesEngine: &armfrontdoor.RulesEngine{
+	// 	RulesEngine: armfrontdoor.RulesEngine{
 	// 		Name: to.Ptr("rulesEngine1"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/rulesEngines/rulesEngine1"),
 	// 		Properties: &armfrontdoor.RulesEngineProperties{
@@ -202,7 +201,7 @@ func ExampleRulesEnginesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -225,7 +224,7 @@ func ExampleRulesEnginesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armfrontdoor.RulesEnginesClientGetResponse{
-	// 	RulesEngine: &armfrontdoor.RulesEngine{
+	// 	RulesEngine: armfrontdoor.RulesEngine{
 	// 		Name: to.Ptr("rulesEngine1"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/rulesEngines/rulesEngine1"),
 	// 		Properties: &armfrontdoor.RulesEngineProperties{

@@ -83,13 +83,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMaximumParameters(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ServicesClientCreateOrUpdateResponse{
-	// 	ServiceResource: &armservicefabricmanagedclusters.ServiceResource{
+	// 	ServiceResource: armservicefabricmanagedclusters.ServiceResource{
 	// 		Name: to.Ptr("myService"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp/services/myService"),
@@ -177,13 +177,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMinimumParameters(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ServicesClientCreateOrUpdateResponse{
-	// 	ServiceResource: &armservicefabricmanagedclusters.ServiceResource{
+	// 	ServiceResource: armservicefabricmanagedclusters.ServiceResource{
 	// 		Name: to.Ptr("myService"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp/services/myService"),
@@ -217,7 +217,7 @@ func ExampleServicesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -240,7 +240,7 @@ func ExampleServicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ServicesClientGetResponse{
-	// 	ServiceResource: &armservicefabricmanagedclusters.ServiceResource{
+	// 	ServiceResource: armservicefabricmanagedclusters.ServiceResource{
 	// 		Name: to.Ptr("myService"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp/services/myService"),
@@ -346,7 +346,7 @@ func ExampleServicesClient_BeginRestartReplica() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -373,7 +373,7 @@ func ExampleServicesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ServicesClientUpdateResponse{
-	// 	ServiceResource: &armservicefabricmanagedclusters.ServiceResource{
+	// 	ServiceResource: armservicefabricmanagedclusters.ServiceResource{
 	// 		Name: to.Ptr("myService"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp/services/myService"),

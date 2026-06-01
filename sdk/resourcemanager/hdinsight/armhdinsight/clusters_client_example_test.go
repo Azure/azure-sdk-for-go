@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
 	"log"
 )
 
@@ -126,13 +126,13 @@ func ExampleClustersClient_BeginCreate_createClusterWithStorageAdlsGen2Msi() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("ebd7702e-21a6-4968-aba6-f0a3c028b30e"),
@@ -336,13 +336,13 @@ func ExampleClustersClient_BeginCreate_createHdInsightClusterWithAutoscaleConfig
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("fdf2a6e8-ce83-42cc-8c2d-0ceb11a370ff"),
@@ -557,13 +557,13 @@ func ExampleClustersClient_BeginCreate_createClusterWithAvailabilityZones() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("fdf2a6e8-ce83-42cc-8c2d-0ceb11a370ff"),
@@ -718,13 +718,13 @@ func ExampleClustersClient_BeginCreate_createClusterWithComputeIsolationProperti
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("fdf2a6e8-ce83-42cc-8c2d-0ceb11a370ff"),
@@ -888,13 +888,13 @@ func ExampleClustersClient_BeginCreate_createClusterWithNetworkProperties() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("fdf2a6e8-ce83-42cc-8c2d-0ceb11a370ff"),
@@ -1054,13 +1054,13 @@ func ExampleClustersClient_BeginCreate_createClusterWithEncryptionAtHost() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("3b76ce3d-892c-4036-9d8b-8ade18ba7a4b"),
@@ -1235,13 +1235,13 @@ func ExampleClustersClient_BeginCreate_createClusterWithEncryptionInTransit() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("3b76ce3d-892c-4036-9d8b-8ade18ba7a4b"),
@@ -1418,13 +1418,13 @@ func ExampleClustersClient_BeginCreate_createClusterWithEntraUser() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("ebd5623e-21a6-4968-aba6-f0a3c028b30e"),
@@ -1594,13 +1594,13 @@ func ExampleClustersClient_BeginCreate_createClusterWithTls12() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("3b76ce3d-892c-4036-9d8b-8ade18ba7a4b"),
@@ -1797,13 +1797,13 @@ func ExampleClustersClient_BeginCreate_createClusterWithStorageWasbMsi() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("ebd7702e-yr32-4968-aba6-f0a3c028b30e"),
@@ -1999,13 +1999,13 @@ func ExampleClustersClient_BeginCreate_createKafkaClusterWithKafkaRestProxy() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("e1266b83-9bda-4797-a906-1bf82c8eb09a"),
@@ -2211,13 +2211,13 @@ func ExampleClustersClient_BeginCreate_createHadoopClusterWithAzureDataLakeStora
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("fdf2a6e8-ce83-42cc-8c2d-0ceb11a370ff"),
@@ -2441,13 +2441,13 @@ func ExampleClustersClient_BeginCreate_createSecureHadoopCluster() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("fdf2a6e8-ce83-42cc-8c2d-0ceb11a370ff"),
@@ -2622,13 +2622,13 @@ func ExampleClustersClient_BeginCreate_createHadoopOnLinuxClusterWithSshPassword
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("fdf2a6e8-ce83-42cc-8c2d-0ceb11a370ff"),
@@ -2809,13 +2809,13 @@ func ExampleClustersClient_BeginCreate_createHadoopOnLinuxClusterWithSshPublicKe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("fdf2a6e8-ce83-42cc-8c2d-0ceb11a370ff"),
@@ -2979,13 +2979,13 @@ func ExampleClustersClient_BeginCreate_createSparkOnLinuxClusterWithSshPassword(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientCreateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("fdf2a6e8-ce83-42cc-8c2d-0ceb11a370ff"),
@@ -3084,7 +3084,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -3123,7 +3123,7 @@ func ExampleClustersClient_BeginExecuteScriptActions() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -3151,7 +3151,7 @@ func ExampleClustersClient_Get_getHadoopOnLinuxCluster() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientGetResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("f0212a39-b827-45e0-9ffa-4f5232e58851"),
@@ -3252,7 +3252,7 @@ func ExampleClustersClient_Get_getSparkOnLinuxCluster() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientGetResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("4cd8b5a9-ca9c-4239-9e5b-3916032e994c"),
@@ -3356,7 +3356,7 @@ func ExampleClustersClient_GetAzureAsyncOperationStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientGetAzureAsyncOperationStatusResponse{
-	// 	AsyncOperationResult: &armhdinsight.AsyncOperationResult{
+	// 	AsyncOperationResult: armhdinsight.AsyncOperationResult{
 	// 		Status: to.Ptr(armhdinsight.AsyncOperationStateInProgress),
 	// 	},
 	// }
@@ -3381,7 +3381,7 @@ func ExampleClustersClient_GetGatewaySettings() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientGetGatewaySettingsResponse{
-	// 	GatewaySettings: &armhdinsight.GatewaySettings{
+	// 	GatewaySettings: armhdinsight.GatewaySettings{
 	// 		IsCredentialEnabled: to.Ptr("true"),
 	// 		Password: to.Ptr("**********"),
 	// 		UserName: to.Ptr("hadoop"),
@@ -3786,7 +3786,7 @@ func ExampleClustersClient_BeginResize() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -3816,7 +3816,7 @@ func ExampleClustersClient_BeginRotateDiskEncryptionKey() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -3849,7 +3849,7 @@ func ExampleClustersClient_Update_patchHdInsightLinuxClusters() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientUpdateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("f0212a39-b827-45e0-9ffa-4f5232e58851"),
@@ -3959,7 +3959,7 @@ func ExampleClustersClient_Update_patchHdInsightLinuxClustersWithSystemAssignedM
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ClustersClientUpdateResponse{
-	// 	Cluster: &armhdinsight.Cluster{
+	// 	Cluster: armhdinsight.Cluster{
 	// 		Name: to.Ptr("cluster1"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters"),
 	// 		Etag: to.Ptr("f0212a39-b827-45e0-9ffa-4f5232e58851"),
@@ -4064,7 +4064,7 @@ func ExampleClustersClient_BeginUpdateAutoScaleConfiguration_disableAutoscaleFor
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -4097,7 +4097,7 @@ func ExampleClustersClient_BeginUpdateAutoScaleConfiguration_enableOrUpdateAutos
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -4141,7 +4141,7 @@ func ExampleClustersClient_BeginUpdateAutoScaleConfiguration_enableOrUpdateAutos
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -4171,7 +4171,7 @@ func ExampleClustersClient_BeginUpdateGatewaySettings_enableHttpConnectivity() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -4206,7 +4206,7 @@ func ExampleClustersClient_BeginUpdateGatewaySettings_updateEntraUserInHdInsight
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -4236,7 +4236,7 @@ func ExampleClustersClient_BeginUpdateIdentityCertificate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

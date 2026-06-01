@@ -4,6 +4,10 @@
 
 package armconfluent
 
+const (
+	version20250818Preview string = "2025-08-18-preview"
+)
+
 // AuthType - Kafka Connector Auth Type
 type AuthType string
 

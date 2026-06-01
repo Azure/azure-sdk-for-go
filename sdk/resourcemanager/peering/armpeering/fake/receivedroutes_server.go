@@ -11,10 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // ReceivedRoutesServer is a fake server for instances of the armpeering.ReceivedRoutesClient type.
@@ -53,9 +54,7 @@ func (r *ReceivedRoutesServerTransport) Do(req *http.Request) (*http.Response, e
 }
 
 func (r *ReceivedRoutesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (r *ReceivedRoutesServerTransport) dispatchToMethodFake(req *http.Request, 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -106,31 +102,11 @@ func (r *ReceivedRoutesServerTransport) dispatchNewListByPeeringPager(req *http.
 		if err != nil {
 			return nil, err
 		}
-		prefixUnescaped, err := url.QueryUnescape(qp.Get("prefix"))
-		if err != nil {
-			return nil, err
-		}
-		prefixParam := getOptional(prefixUnescaped)
-		asPathUnescaped, err := url.QueryUnescape(qp.Get("asPath"))
-		if err != nil {
-			return nil, err
-		}
-		asPathParam := getOptional(asPathUnescaped)
-		originAsValidationStateUnescaped, err := url.QueryUnescape(qp.Get("originAsValidationState"))
-		if err != nil {
-			return nil, err
-		}
-		originAsValidationStateParam := getOptional(originAsValidationStateUnescaped)
-		rpkiValidationStateUnescaped, err := url.QueryUnescape(qp.Get("rpkiValidationState"))
-		if err != nil {
-			return nil, err
-		}
-		rpkiValidationStateParam := getOptional(rpkiValidationStateUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		prefixParam := getOptional(qp.Get("prefix"))
+		asPathParam := getOptional(qp.Get("asPath"))
+		originAsValidationStateParam := getOptional(qp.Get("originAsValidationState"))
+		rpkiValidationStateParam := getOptional(qp.Get("rpkiValidationState"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armpeering.ReceivedRoutesClientListByPeeringOptions
 		if prefixParam != nil || asPathParam != nil || originAsValidationStateParam != nil || rpkiValidationStateParam != nil || skipTokenParam != nil {
 			options = &armpeering.ReceivedRoutesClientListByPeeringOptions{
@@ -152,7 +128,7 @@ func (r *ReceivedRoutesServerTransport) dispatchNewListByPeeringPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListByPeeringPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

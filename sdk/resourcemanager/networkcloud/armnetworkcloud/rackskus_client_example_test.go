@@ -30,7 +30,7 @@ func ExampleRackSKUsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.RackSKUsClientGetResponse{
-	// 	RackSKU: &armnetworkcloud.RackSKU{
+	// 	RackSKU: armnetworkcloud.RackSKU{
 	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 		Name: to.Ptr("rackSkuName"),
 	// 		Properties: &armnetworkcloud.RackSKUProperties{

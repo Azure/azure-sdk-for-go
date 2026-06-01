@@ -7,7 +7,7 @@ package armnginx_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleAPIKeysClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.APIKeysClientCreateOrUpdateResponse{
-	// 	DeploymentAPIKeyResponse: &armnginx.DeploymentAPIKeyResponse{
+	// 	DeploymentAPIKeyResponse: armnginx.DeploymentAPIKeyResponse{
 	// 		Name: to.Ptr("myApiKey"),
 	// 		Type: to.Ptr("Nginx.NginxPlus/nginxDeployments/apiKeys"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/apiKeys/myApiKey"),
@@ -83,7 +83,7 @@ func ExampleAPIKeysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.APIKeysClientGetResponse{
-	// 	DeploymentAPIKeyResponse: &armnginx.DeploymentAPIKeyResponse{
+	// 	DeploymentAPIKeyResponse: armnginx.DeploymentAPIKeyResponse{
 	// 		Name: to.Ptr("myApiKey"),
 	// 		Type: to.Ptr("Nginx.NginxPlus/nginxDeployments/apiKeys"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/apiKeys/myApiKey"),

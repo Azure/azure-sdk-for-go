@@ -6,7 +6,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v2"
 )
 
 func unmarshalSettingClassification(rawMsg json.RawMessage) (armcostmanagement.SettingClassification, error) {

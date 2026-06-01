@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 	"time"
 )
@@ -41,13 +41,13 @@ func ExampleDedicatedHostsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientCreateOrUpdateResponse{
-	// 	DedicatedHost: &armcompute.DedicatedHost{
+	// 	DedicatedHost: armcompute.DedicatedHost{
 	// 		Properties: &armcompute.DedicatedHostProperties{
 	// 			PlatformFaultDomain: to.Ptr[int32](1),
 	// 			AutoReplaceOnFailure: to.Ptr(false),
@@ -84,7 +84,7 @@ func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostDeleteMaximumSetGen() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -110,7 +110,7 @@ func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostDeleteMinimumSetGen() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -139,7 +139,7 @@ func ExampleDedicatedHostsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientGetResponse{
-	// 	DedicatedHost: &armcompute.DedicatedHost{
+	// 	DedicatedHost: armcompute.DedicatedHost{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup/hosts/myHost"),
 	// 		Properties: &armcompute.DedicatedHostProperties{
 	// 			PlatformFaultDomain: to.Ptr[int32](1),
@@ -354,7 +354,7 @@ func ExampleDedicatedHostsClient_BeginRedeploy() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -375,7 +375,7 @@ func ExampleDedicatedHostsClient_BeginRestart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -429,13 +429,13 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMaximumSetGen() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientUpdateResponse{
-	// 	DedicatedHost: &armcompute.DedicatedHost{
+	// 	DedicatedHost: armcompute.DedicatedHost{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 		},
@@ -501,13 +501,13 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMinimumSetGen() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientUpdateResponse{
-	// 	DedicatedHost: &armcompute.DedicatedHost{
+	// 	DedicatedHost: armcompute.DedicatedHost{
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.SKU{
 	// 		},
@@ -536,13 +536,13 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateResize() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientUpdateResponse{
-	// 	DedicatedHost: &armcompute.DedicatedHost{
+	// 	DedicatedHost: armcompute.DedicatedHost{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 		},

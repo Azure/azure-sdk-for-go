@@ -30,7 +30,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_CreateProductSerialNumber_
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse{
-	// 	ProductSerialNumberRequestStatus: &armpanngfw.ProductSerialNumberRequestStatus{
+	// 	ProductSerialNumberRequestStatus: armpanngfw.ProductSerialNumberRequestStatus{
 	// 		Status: to.Ptr("Created"),
 	// 	},
 	// }
@@ -55,7 +55,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_CreateProductSerialNumber_
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse{
-	// 	ProductSerialNumberRequestStatus: &armpanngfw.ProductSerialNumberRequestStatus{
+	// 	ProductSerialNumberRequestStatus: armpanngfw.ProductSerialNumberRequestStatus{
 	// 		Status: to.Ptr("Created"),
 	// 	},
 	// }
@@ -80,7 +80,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListCloudManagerTenants_pa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse{
-	// 	CloudManagerTenantList: &armpanngfw.CloudManagerTenantList{
+	// 	CloudManagerTenantList: armpanngfw.CloudManagerTenantList{
 	// 		Value: []*string{
 	// 			to.Ptr("TenantName - 1234"),
 	// 		},
@@ -107,7 +107,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListCloudManagerTenants_pa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse{
-	// 	CloudManagerTenantList: &armpanngfw.CloudManagerTenantList{
+	// 	CloudManagerTenantList: armpanngfw.CloudManagerTenantList{
 	// 		Value: []*string{
 	// 			to.Ptr("TenantName - 1234"),
 	// 		},
@@ -134,7 +134,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListProductSerialNumberSta
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse{
-	// 	ProductSerialNumberStatus: &armpanngfw.ProductSerialNumberStatus{
+	// 	ProductSerialNumberStatus: armpanngfw.ProductSerialNumberStatus{
 	// 		SerialNumber: to.Ptr("1234567890"),
 	// 		Status: to.Ptr(armpanngfw.ProductSerialStatusValuesAllocated),
 	// 	},
@@ -160,7 +160,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListProductSerialNumberSta
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse{
-	// 	ProductSerialNumberStatus: &armpanngfw.ProductSerialNumberStatus{
+	// 	ProductSerialNumberStatus: armpanngfw.ProductSerialNumberStatus{
 	// 		Status: to.Ptr(armpanngfw.ProductSerialStatusValuesAllocated),
 	// 	},
 	// }
@@ -185,7 +185,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListSupportInfo_paloAltoNe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse{
-	// 	SupportInfoModel: &armpanngfw.SupportInfoModel{
+	// 	SupportInfoModel: armpanngfw.SupportInfoModel{
 	// 		AccountID: to.Ptr("3cg5b439-294d-4c25-b0b2-ef649e0g6d38"),
 	// 		AccountRegistrationStatus: to.Ptr(armpanngfw.RegistrationStatusRegistered),
 	// 		Credits: to.Ptr[int32](15),
@@ -224,7 +224,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListSupportInfo_paloAltoNe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse{
-	// 	SupportInfoModel: &armpanngfw.SupportInfoModel{
+	// 	SupportInfoModel: armpanngfw.SupportInfoModel{
 	// 	},
 	// }
 }

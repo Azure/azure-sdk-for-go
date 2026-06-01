@@ -30,7 +30,7 @@ func ExampleLongRunningBackupsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.LongRunningBackupsClientGetResponse{
-	// 	ServerBackupV2: &armmysqlflexibleservers.ServerBackupV2{
+	// 	ServerBackupV2: armmysqlflexibleservers.ServerBackupV2{
 	// 		Name: to.Ptr("daily_20210615T160516"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/backupsV2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backupsV2/daily_20210615T160516"),

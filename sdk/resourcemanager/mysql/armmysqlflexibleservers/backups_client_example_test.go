@@ -30,7 +30,7 @@ func ExampleBackupsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.BackupsClientGetResponse{
-	// 	ServerBackup: &armmysqlflexibleservers.ServerBackup{
+	// 	ServerBackup: armmysqlflexibleservers.ServerBackup{
 	// 		Name: to.Ptr("daily_20210615T160516"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/backups"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210615T160516"),
@@ -203,7 +203,7 @@ func ExampleBackupsClient_Put() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.BackupsClientPutResponse{
-	// 	ServerBackup: &armmysqlflexibleservers.ServerBackup{
+	// 	ServerBackup: armmysqlflexibleservers.ServerBackup{
 	// 		Name: to.Ptr("customer_20220507t073755_bb392c3b-17c6-4d3f-9742-8479ca87b3ac_mybackup"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/backups"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/customer_20220507t073755_bb392c3b-17c6-4d3f-9742-8479ca87b3ac_mybackup"),

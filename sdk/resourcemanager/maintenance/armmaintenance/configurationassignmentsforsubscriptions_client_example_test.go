@@ -64,7 +64,7 @@ func ExampleConfigurationAssignmentsForSubscriptionsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse{
-	// 	ConfigurationAssignment: &armmaintenance.ConfigurationAssignment{
+	// 	ConfigurationAssignment: armmaintenance.ConfigurationAssignment{
 	// 		Name: to.Ptr("workervmConfiguration"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/providers/Microsoft.Maintenance/configurationAssignments/workervmConfiguration"),
@@ -124,7 +124,7 @@ func ExampleConfigurationAssignmentsForSubscriptionsClient_Delete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationAssignmentsForSubscriptionsClientDeleteResponse{
-	// 	ConfigurationAssignment: &armmaintenance.ConfigurationAssignment{
+	// 	ConfigurationAssignment: armmaintenance.ConfigurationAssignment{
 	// 		Name: to.Ptr("workervmConfiguration"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/providers/Microsoft.Maintenance/configurationAssignments/workervmConfiguration"),
@@ -151,7 +151,7 @@ func ExampleConfigurationAssignmentsForSubscriptionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationAssignmentsForSubscriptionsClientGetResponse{
-	// 	ConfigurationAssignment: &armmaintenance.ConfigurationAssignment{
+	// 	ConfigurationAssignment: armmaintenance.ConfigurationAssignment{
 	// 		Name: to.Ptr("workervmConfiguration"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/providers/Microsoft.Maintenance/configurationAssignments/workervmConfiguration"),
@@ -240,7 +240,7 @@ func ExampleConfigurationAssignmentsForSubscriptionsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationAssignmentsForSubscriptionsClientUpdateResponse{
-	// 	ConfigurationAssignment: &armmaintenance.ConfigurationAssignment{
+	// 	ConfigurationAssignment: armmaintenance.ConfigurationAssignment{
 	// 		Name: to.Ptr("workervmConfiguration"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/providers/Microsoft.Maintenance/configurationAssignments/workervmConfiguration"),

@@ -18,6 +18,8 @@ import (
 
 // PatchSchedulesClient contains the methods for the PatchSchedules group.
 // Don't use this type directly, use NewPatchSchedulesClient() instead.
+//
+// Generated from API version 2024-11-01
 type PatchSchedulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Create or replace the patching schedule for Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the redis cache.
 //   - defaultParam - The name of the RedisPatchSchedule
@@ -95,8 +95,8 @@ func (client *PatchSchedulesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -116,8 +116,6 @@ func (client *PatchSchedulesClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes the patching schedule of a redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the redis cache.
 //   - defaultParam - The name of the RedisPatchSchedule
@@ -167,15 +165,13 @@ func (client *PatchSchedulesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the patching schedule of a redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the redis cache.
 //   - defaultParam - The name of the RedisPatchSchedule
@@ -226,8 +222,8 @@ func (client *PatchSchedulesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -242,8 +238,6 @@ func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (Patc
 }
 
 // NewListByRedisResourcePager - Gets all patch schedules in the specified redis cache (there is only one).
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - options - PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.NewListByRedisResourcePager
@@ -291,8 +285,8 @@ func (client *PatchSchedulesClient) listByRedisResourceCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

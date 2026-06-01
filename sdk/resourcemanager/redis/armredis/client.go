@@ -19,6 +19,8 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2024-11-01
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // CheckNameAvailability - Checks that the redis cache name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - parameters - The request body
 //   - options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
 func (client *Client) CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityParameters, options *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error) {
@@ -79,8 +79,8 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, pa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -90,8 +90,6 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, pa
 
 // BeginCreate - Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
 //   - parameters - Parameters supplied to the Create Redis operation.
@@ -115,8 +113,6 @@ func (client *Client) BeginCreate(ctx context.Context, resourceGroupName string,
 
 // Create - Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *Client) create(ctx context.Context, resourceGroupName string, name string, parameters CreateParameters, options *ClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreate"
@@ -158,8 +154,8 @@ func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -170,8 +166,6 @@ func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName
 
 // BeginDelete - Deletes a Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
 //   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
@@ -194,8 +188,6 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 
 // Delete - Deletes a Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDelete"
@@ -237,15 +229,13 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginExportData - Export data from the redis cache to blobs in a container.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
 //   - parameters - Parameters for Redis export operation.
@@ -269,8 +259,6 @@ func (client *Client) BeginExportData(ctx context.Context, resourceGroupName str
 
 // ExportData - Export data from the redis cache to blobs in a container.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *Client) exportData(ctx context.Context, resourceGroupName string, name string, parameters ExportRDBParameters, options *ClientBeginExportDataOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginExportData"
@@ -312,8 +300,8 @@ func (client *Client) exportDataCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -323,8 +311,6 @@ func (client *Client) exportDataCreateRequest(ctx context.Context, resourceGroup
 
 // BeginFlushCache - Deletes all of the keys in a cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - options - ClientBeginFlushCacheOptions contains the optional parameters for the Client.BeginFlushCache method.
@@ -347,8 +333,6 @@ func (client *Client) BeginFlushCache(ctx context.Context, resourceGroupName str
 
 // FlushCache - Deletes all of the keys in a cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *Client) flushCache(ctx context.Context, resourceGroupName string, cacheName string, options *ClientBeginFlushCacheOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginFlushCache"
@@ -390,8 +374,8 @@ func (client *Client) flushCacheCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -399,8 +383,6 @@ func (client *Client) flushCacheCreateRequest(ctx context.Context, resourceGroup
 // ForceReboot - Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can
 // be potential data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
 //   - parameters - Specifies which Redis node(s) to reboot.
@@ -447,8 +429,8 @@ func (client *Client) forceRebootCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -468,8 +450,6 @@ func (client *Client) forceRebootHandleResponse(resp *http.Response) (ClientForc
 
 // Get - Gets a Redis cache (resource description).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -515,8 +495,8 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -532,8 +512,6 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // BeginImportData - Import data into Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
 //   - parameters - Parameters for Redis import operation.
@@ -557,8 +535,6 @@ func (client *Client) BeginImportData(ctx context.Context, resourceGroupName str
 
 // ImportData - Import data into Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *Client) importData(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, options *ClientBeginImportDataOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginImportData"
@@ -600,8 +576,8 @@ func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -610,8 +586,6 @@ func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroup
 }
 
 // NewListByResourceGroupPager - Lists all Redis caches in a resource group.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager
 //     method.
@@ -654,8 +628,8 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -670,8 +644,6 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 }
 
 // NewListBySubscriptionPager - Gets all Redis caches in the specified subscription.
-//
-// Generated from API version 2024-11-01
 //   - options - ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListBySubscriptionResponse]{
@@ -708,8 +680,8 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, _ *Cl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -725,8 +697,6 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (Cli
 
 // ListKeys - Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
 //   - options - ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
@@ -772,8 +742,8 @@ func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -788,8 +758,6 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ClientListKey
 }
 
 // NewListUpgradeNotificationsPager - [Deprecated] Gets any upgrade notifications for a Redis cache.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
 //   - history - how many minutes in past to look for upgrade notifications
@@ -838,9 +806,9 @@ func (client *Client) listUpgradeNotificationsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", version20241101)
 	reqQP.Set("history", strconv.FormatFloat(history, 'f', -1, 64))
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -856,8 +824,6 @@ func (client *Client) listUpgradeNotificationsHandleResponse(resp *http.Response
 
 // RegenerateKey - Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
 //   - parameters - Specifies which key to regenerate.
@@ -904,8 +870,8 @@ func (client *Client) regenerateKeyCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -925,8 +891,6 @@ func (client *Client) regenerateKeyHandleResponse(resp *http.Response) (ClientRe
 
 // BeginUpdate - Update an existing Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the RedisResource
 //   - parameters - Parameters supplied to the Update Redis operation.
@@ -950,8 +914,6 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string,
 
 // Update - Update an existing Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *Client) update(ctx context.Context, resourceGroupName string, name string, parameters UpdateParameters, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginUpdate"
@@ -993,8 +955,8 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

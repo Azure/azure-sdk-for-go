@@ -18,6 +18,8 @@ import (
 
 // FileSharesClient contains the methods for the FileShares group.
 // Don't use this type directly, use NewFileSharesClient() instead.
+//
+// Generated from API version 2025-08-01
 type FileSharesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewFileSharesClient(subscriptionID string, credential azcore.TokenCredentia
 // Create - Creates a new share under the specified account as described by request body. The share resource includes metadata
 // and properties for that share. It does not include a list of the files contained by the share.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -101,8 +101,8 @@ func (client *FileSharesClient) createCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fileShare); err != nil {
@@ -122,8 +122,6 @@ func (client *FileSharesClient) createHandleResponse(resp *http.Response) (FileS
 
 // Delete - Deletes specified share under its account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -179,8 +177,8 @@ func (client *FileSharesClient) deleteCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Include != nil {
 		reqQP.Set("$include", *options.Include)
 	}
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.XMSSnapshot != nil {
 		req.Raw().Header["x-ms-snapshot"] = []string{*options.XMSSnapshot}
 	}
@@ -189,8 +187,6 @@ func (client *FileSharesClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets properties of a specified share.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -247,8 +243,8 @@ func (client *FileSharesClient) getCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSSnapshot != nil {
 		req.Raw().Header["x-ms-snapshot"] = []string{*options.XMSSnapshot}
@@ -268,8 +264,6 @@ func (client *FileSharesClient) getHandleResponse(resp *http.Response) (FileShar
 // Lease - The Lease Share operation establishes and manages a lock on a share for delete operations. The lock duration can
 // be 15 to 60 seconds, or can be infinite.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -323,8 +317,8 @@ func (client *FileSharesClient) leaseCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSSnapshot != nil {
 		req.Raw().Header["x-ms-snapshot"] = []string{*options.XMSSnapshot}
@@ -352,8 +346,6 @@ func (client *FileSharesClient) leaseHandleResponse(resp *http.Response) (FileSh
 }
 
 // NewListPager - Lists all shares.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -410,8 +402,8 @@ func (client *FileSharesClient) listCreateRequest(ctx context.Context, resourceG
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", *options.Maxpagesize)
 	}
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -427,8 +419,6 @@ func (client *FileSharesClient) listHandleResponse(resp *http.Response) (FileSha
 
 // Restore - Restore a file share within a valid retention days if share soft delete is enabled
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -481,8 +471,8 @@ func (client *FileSharesClient) restoreCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, deletedShare); err != nil {
 		return nil, err
@@ -493,8 +483,6 @@ func (client *FileSharesClient) restoreCreateRequest(ctx context.Context, resour
 // Update - Updates share properties as specified in request body. Properties not mentioned in the request will not be changed.
 // Update fails if the specified share does not already exist.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -549,8 +537,8 @@ func (client *FileSharesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fileShare); err != nil {

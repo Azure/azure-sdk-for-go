@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -43,7 +43,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateABlockC
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientCreateOrUpdateResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 			"department": to.Ptr("finance"),
@@ -102,7 +102,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateACapaci
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientCreateOrUpdateResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 			"department": to.Ptr("finance"),
@@ -171,7 +171,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateATarget
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientCreateOrUpdateResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 			"department": to.Ptr("finance"),
@@ -264,7 +264,7 @@ func ExampleCapacityReservationGroupsClient_Get_getABlockCapacityReservationGrou
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientGetResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/blockCapacityReservationGroup"),
 	// 		Properties: &armcompute.CapacityReservationGroupProperties{
 	// 			CapacityReservations: []*armcompute.SubResourceReadOnly{
@@ -356,7 +356,7 @@ func ExampleCapacityReservationGroupsClient_Get_getACapacityReservationGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientGetResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/myCapacityReservationGroup"),
 	// 		Properties: &armcompute.CapacityReservationGroupProperties{
 	// 			CapacityReservations: []*armcompute.SubResourceReadOnly{
@@ -465,7 +465,7 @@ func ExampleCapacityReservationGroupsClient_Get_getATargetedCapacityReservationG
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientGetResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/targetedCapacityReservationGroup"),
 	// 		Properties: &armcompute.CapacityReservationGroupProperties{
 	// 			CapacityReservations: []*armcompute.SubResourceReadOnly{
@@ -865,7 +865,7 @@ func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientUpdateResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 		},
@@ -934,7 +934,7 @@ func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationGroupsClientUpdateResponse{
-	// 	CapacityReservationGroup: &armcompute.CapacityReservationGroup{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
 	// 		Location: to.Ptr("westus"),
 	// 	},
 	// }

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultResourceUsageClientVersion string = "2025-06-01"
-
 // ResourceUsageClient contains the methods for the ResourceUsage group.
 // Don't use this type directly, use NewResourceUsageClient() instead.
 //
@@ -80,7 +78,7 @@ func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, _ *Res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultResourceUsageClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -18,6 +18,8 @@ import (
 
 // BackupResourceStorageConfigsNonCRRClient contains the methods for the BackupResourceStorageConfigsNonCRR group.
 // Don't use this type directly, use NewBackupResourceStorageConfigsNonCRRClient() instead.
+//
+// Generated from API version 2026-01-31-preview
 type BackupResourceStorageConfigsNonCRRClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBackupResourceStorageConfigsNonCRRClient(subscriptionID string, credenti
 
 // Get - Fetches resource storage config.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupResourceStorageConfigsNonCRRClientGetOptions contains the optional parameters for the BackupResourceStorageConfigsNonCRRClient.Get
 //     method.
@@ -88,8 +88,8 @@ func (client *BackupResourceStorageConfigsNonCRRClient) getCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -105,8 +105,6 @@ func (client *BackupResourceStorageConfigsNonCRRClient) getHandleResponse(resp *
 
 // Patch - Updates vault storage model type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupResourceStorageConfigsNonCRRClientPatchOptions contains the optional parameters for the BackupResourceStorageConfigsNonCRRClient.Patch
 //     method.
@@ -151,8 +149,8 @@ func (client *BackupResourceStorageConfigsNonCRRClient) patchCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -162,8 +160,6 @@ func (client *BackupResourceStorageConfigsNonCRRClient) patchCreateRequest(ctx c
 
 // Update - Updates vault storage model type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupResourceStorageConfigsNonCRRClientUpdateOptions contains the optional parameters for the BackupResourceStorageConfigsNonCRRClient.Update
 //     method.
@@ -209,8 +205,8 @@ func (client *BackupResourceStorageConfigsNonCRRClient) updateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

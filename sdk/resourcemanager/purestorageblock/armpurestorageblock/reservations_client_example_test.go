@@ -65,13 +65,13 @@ func ExampleReservationsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientCreateResponse{
-	// 	Reservation: &armpurestorageblock.Reservation{
+	// 	Reservation: armpurestorageblock.Reservation{
 	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
 	// 			ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
 	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
@@ -142,7 +142,7 @@ func ExampleReservationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -165,7 +165,7 @@ func ExampleReservationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientGetResponse{
-	// 	Reservation: &armpurestorageblock.Reservation{
+	// 	Reservation: armpurestorageblock.Reservation{
 	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
 	// 			ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
 	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
@@ -238,7 +238,7 @@ func ExampleReservationsClient_GetBillingReport() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientGetBillingReportResponse{
-	// 	ReservationBillingUsageReport: &armpurestorageblock.ReservationBillingUsageReport{
+	// 	ReservationBillingUsageReport: armpurestorageblock.ReservationBillingUsageReport{
 	// 		Timestamp: to.Ptr("2024-10-04T05:29:25.345Z"),
 	// 		BillingUsageProperties: []*armpurestorageblock.BillingUsageProperty{
 	// 			{
@@ -276,7 +276,7 @@ func ExampleReservationsClient_GetBillingStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientGetBillingStatusResponse{
-	// 	ReservationBillingStatus: &armpurestorageblock.ReservationBillingStatus{
+	// 	ReservationBillingStatus: armpurestorageblock.ReservationBillingStatus{
 	// 		Timestamp: to.Ptr("2024-10-04T05:29:25.345Z"),
 	// 		TotalUsedCapacityReported: to.Ptr[int64](8),
 	// 		LowDrrPoolCount: to.Ptr[int32](5),
@@ -314,7 +314,7 @@ func ExampleReservationsClient_GetResourceLimits() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientGetResourceLimitsResponse{
-	// 	LimitDetails: &armpurestorageblock.LimitDetails{
+	// 	LimitDetails: armpurestorageblock.LimitDetails{
 	// 		StoragePool: &armpurestorageblock.StoragePoolLimits{
 	// 			ProvisionedBandwidthMbPerSec: &armpurestorageblock.RangeLimits{
 	// 				Min: to.Ptr[int64](26),
@@ -565,13 +565,13 @@ func ExampleReservationsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientUpdateResponse{
-	// 	Reservation: &armpurestorageblock.Reservation{
+	// 	Reservation: armpurestorageblock.Reservation{
 	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
 	// 			ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
 	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{

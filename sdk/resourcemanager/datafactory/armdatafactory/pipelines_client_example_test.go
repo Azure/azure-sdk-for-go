@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
 	"log"
 )
 
@@ -109,7 +109,7 @@ func ExamplePipelinesClient_CreateOrUpdate_pipelinesCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.PipelinesClientCreateOrUpdateResponse{
-	// 	PipelineResource: &armdatafactory.PipelineResource{
+	// 	PipelineResource: armdatafactory.PipelineResource{
 	// 		Name: to.Ptr("examplePipeline"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/pipelines"),
 	// 		Etag: to.Ptr("0a0069d4-0000-0000-0000-5b245bd50000"),
@@ -274,7 +274,7 @@ func ExamplePipelinesClient_CreateOrUpdate_pipelinesUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.PipelinesClientCreateOrUpdateResponse{
-	// 	PipelineResource: &armdatafactory.PipelineResource{
+	// 	PipelineResource: armdatafactory.PipelineResource{
 	// 		Name: to.Ptr("examplePipeline"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/pipelines"),
 	// 		Etag: to.Ptr("0a006cd4-0000-0000-0000-5b245bd60000"),
@@ -366,7 +366,7 @@ func ExamplePipelinesClient_CreateRun() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.PipelinesClientCreateRunResponse{
-	// 	CreateRunResponse: &armdatafactory.CreateRunResponse{
+	// 	CreateRunResponse: armdatafactory.CreateRunResponse{
 	// 		RunID: to.Ptr("2f7fdb90-5df1-4b8e-ac2f-064cfa58202b"),
 	// 	},
 	// }
@@ -413,7 +413,7 @@ func ExamplePipelinesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.PipelinesClientGetResponse{
-	// 	PipelineResource: &armdatafactory.PipelineResource{
+	// 	PipelineResource: armdatafactory.PipelineResource{
 	// 		Name: to.Ptr("examplePipeline"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/pipelines"),
 	// 		Etag: to.Ptr("1500504f-0000-0200-0000-5cbe090f0000"),

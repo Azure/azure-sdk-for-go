@@ -18,6 +18,8 @@ import (
 
 // RestorableGremlinResourcesClient contains the methods for the RestorableGremlinResources group.
 // Don't use this type directly, use NewRestorableGremlinResourcesClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type RestorableGremlinResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewRestorableGremlinResourcesClient(subscriptionID string, credential azcor
 // NewListPager - Return a list of gremlin database and graphs combo that exist on the account at the given timestamp and
 // location. This helps in scenarios to validate what resources exist at given timestamp and location. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
 // permission.
-//
-// Generated from API version 2025-11-01-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableGremlinResourcesClientListOptions contains the optional parameters for the RestorableGremlinResourcesClient.NewListPager
@@ -91,14 +91,14 @@ func (client *RestorableGremlinResourcesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
+	reqQP.Set("api-version", version20251101Preview)
 	if options != nil && options.RestoreLocation != nil {
 		reqQP.Set("restoreLocation", *options.RestoreLocation)
 	}
 	if options != nil && options.RestoreTimestampInUTC != nil {
 		reqQP.Set("restoreTimestampInUtc", *options.RestoreTimestampInUTC)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

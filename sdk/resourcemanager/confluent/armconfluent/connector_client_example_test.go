@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent"
 	"log"
 )
 
@@ -47,7 +47,7 @@ func ExampleConnectorClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.ConnectorClientCreateOrUpdateResponse{
-	// 	ConnectorResource: &armconfluent.ConnectorResource{
+	// 	ConnectorResource: armconfluent.ConnectorResource{
 	// 		Properties: &armconfluent.ConnectorResourceProperties{
 	// 			ConnectorBasicInfo: &armconfluent.ConnectorInfoBase{
 	// 				ConnectorType: to.Ptr(armconfluent.ConnectorTypeSINK),
@@ -95,7 +95,7 @@ func ExampleConnectorClient_BeginDelete_connectorDeleteMaximumSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -116,7 +116,7 @@ func ExampleConnectorClient_BeginDelete_connectorDeleteMinimumSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -139,7 +139,7 @@ func ExampleConnectorClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.ConnectorClientGetResponse{
-	// 	ConnectorResource: &armconfluent.ConnectorResource{
+	// 	ConnectorResource: armconfluent.ConnectorResource{
 	// 		Properties: &armconfluent.ConnectorResourceProperties{
 	// 			ConnectorBasicInfo: &armconfluent.ConnectorInfoBase{
 	// 				ConnectorType: to.Ptr(armconfluent.ConnectorTypeSINK),

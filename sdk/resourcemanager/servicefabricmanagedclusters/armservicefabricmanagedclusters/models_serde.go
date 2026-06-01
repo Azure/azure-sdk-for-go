@@ -1675,7 +1675,9 @@ func (m *ManagedClusterProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ClusterCodeVersion", &m.ClusterCodeVersion)
 			delete(rawMsg, key)
 		case "clusterId":
-			err = unpopulate(val, "ClusterID", &m.ClusterID)
+			if string(val) != `""` {
+				err = unpopulate(val, "ClusterID", &m.ClusterID)
+			}
 			delete(rawMsg, key)
 		case "clusterState":
 			err = unpopulate(val, "ClusterState", &m.ClusterState)
@@ -4151,10 +4153,14 @@ func (s *Subnet) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "EnableIPv6", &s.EnableIPv6)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &s.Name)
+			if string(val) != `""` {
+				err = unpopulate(val, "Name", &s.Name)
+			}
 			delete(rawMsg, key)
 		case "networkSecurityGroupId":
-			err = unpopulate(val, "NetworkSecurityGroupID", &s.NetworkSecurityGroupID)
+			if string(val) != `""` {
+				err = unpopulate(val, "NetworkSecurityGroupID", &s.NetworkSecurityGroupID)
+			}
 			delete(rawMsg, key)
 		case "privateEndpointNetworkPolicies":
 			err = unpopulate(val, "PrivateEndpointNetworkPolicies", &s.PrivateEndpointNetworkPolicies)

@@ -7,7 +7,7 @@ package armcosmos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armcosmos.PrivateLinkResource{
+	// 	PrivateLinkResource: armcosmos.PrivateLinkResource{
 	// 		Name: to.Ptr("sql"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateLinkResources/sql"),

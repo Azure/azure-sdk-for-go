@@ -4,6 +4,10 @@
 
 package armstorage
 
+const (
+	version20250801 string = "2025-08-01"
+)
+
 // AccessTier - The default access tier for block blobs in the storage account. Required for storage accounts where kind =
 // BlobStorage. See more details in: https://learn.microsoft.com/azure/storage/blobs/access-tiers-overview.
 type AccessTier string

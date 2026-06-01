@@ -18,6 +18,8 @@ import (
 
 // DatabaseTablesClient contains the methods for the DatabaseTables group.
 // Don't use this type directly, use NewDatabaseTablesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type DatabaseTablesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDatabaseTablesClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Get database table
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -103,8 +103,8 @@ func (client *DatabaseTablesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -119,8 +119,6 @@ func (client *DatabaseTablesClient) getHandleResponse(resp *http.Response) (Data
 }
 
 // NewListBySchemaPager - List database tables
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -181,8 +179,8 @@ func (client *DatabaseTablesClient) listBySchemaCreateRequest(ctx context.Contex
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

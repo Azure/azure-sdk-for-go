@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -40,13 +40,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithAvailabilityPo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -89,13 +89,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByCopyingASnapshot
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -136,13 +136,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByImportingAnUnman
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -183,13 +183,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByImportingAnUnman
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -236,13 +236,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAConfidentialVMSupportedDiskEn
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -289,13 +289,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAnEmptyManagedDisk() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -338,13 +338,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAPlatformImage
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -399,13 +399,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureCompute
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -455,13 +455,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureCompute
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -511,13 +511,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureCompute
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -565,13 +565,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromElasticSanVolu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -611,13 +611,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnExistingMana
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -663,13 +663,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromImportSecureCr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -722,13 +722,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromImportSecureCr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -779,13 +779,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromUploadPrepared
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
@@ -833,13 +833,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAnEmptyManagedDiskInExtendedLo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -883,13 +883,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithPerformancePlu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -929,13 +929,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedUploadDisk() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -976,13 +976,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithDataAccessAuth
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1025,13 +1025,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskAndAssociateWithDi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1077,13 +1077,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskAndAssociateWithDi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1130,13 +1130,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAnUltraManagedDiskWithLogicalS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1182,13 +1182,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithOptimizedForFr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1234,13 +1234,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithPremiumV2Accou
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1287,13 +1287,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithSsdZrsAccountT
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1343,13 +1343,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithSecurityProfil
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("North Central US"),
@@ -1404,13 +1404,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithUltraAccountTy
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1449,7 +1449,7 @@ func ExampleDisksClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1477,7 +1477,7 @@ func ExampleDisksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientGetResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ManagedBy: to.Ptr("/subscriptions/123caaa-123v-v211-a49f-f88ccac5bf88/resourceGroups/ResourceGroupName/providers/Microsoft.Compute/virtualMachines/TestVM414689371c88843d65ec"),
 	// 		SKU: &armcompute.DiskSKU{
 	// 			Name: to.Ptr(armcompute.DiskStorageAccountTypesStandardLRS),
@@ -1563,13 +1563,13 @@ func ExampleDisksClient_BeginGrantAccess_getASasOnAManagedDisk() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientGrantAccessResponse{
-	// 	AccessURI: &armcompute.AccessURI{
+	// 	AccessURI: armcompute.AccessURI{
 	// 		AccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/abcd?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2021-05-24T18:02:34Z&se=2021-05-24T18:19:14Z&sp=r"),
 	// 	},
 	// }
@@ -1596,13 +1596,13 @@ func ExampleDisksClient_BeginGrantAccess_getSasOnManagedDiskAndVMGuestState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientGrantAccessResponse{
-	// 	AccessURI: &armcompute.AccessURI{
+	// 	AccessURI: armcompute.AccessURI{
 	// 		AccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/abcd?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2021-05-24T18:02:34Z&se=2021-05-24T18:19:14Z&sp=r"),
 	// 		SecurityDataAccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/b9bf5824-6122-49e0-ba22-042f76ccd8a1_vmgs?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2021-05-24T18:02:34Z&se=2021-05-24T18:19:14Z&sp=r"),
 	// 	},
@@ -1630,13 +1630,13 @@ func ExampleDisksClient_BeginGrantAccess_getSasOnManagedDiskVMGuestStateAndVMMet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientGrantAccessResponse{
-	// 	AccessURI: &armcompute.AccessURI{
+	// 	AccessURI: armcompute.AccessURI{
 	// 		AccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/abcd?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2025-05-29T18:02:34Z&se=2025-05-29T18:19:14Z&sp=r"),
 	// 		SecurityDataAccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/b9bf5824-6122-49e0-ba22-042f76ccd8a1_vmgs?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2025-05-29T18:02:34Z&se=2025-05-29T18:19:14Z&sp=r"),
 	// 		SecurityMetadataAccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/ghm3kwd5jzbn/2be55b76-f471-4f6b-bff0-4dcea6cbca7f_vmmd?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2025-05-29T18:02:34Z&se=2025-05-29T18:19:14Z&sp=r"),
@@ -1933,7 +1933,7 @@ func ExampleDisksClient_BeginRevokeAccess() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1964,13 +1964,13 @@ func ExampleDisksClient_BeginUpdate_createOrUpdateABurstingEnabledManagedDisk() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -2009,13 +2009,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddAcceleratedNetworking
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.DiskSKU{
@@ -2064,13 +2064,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskWithDiskControllerTypes() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.DiskSKU{
@@ -2122,13 +2122,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddPurchasePlan() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.DiskSKU{
@@ -2178,13 +2178,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddSupportsHibernation()
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.DiskSKU{
@@ -2227,13 +2227,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToChangeTier() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
 	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionEmpty),
@@ -2268,13 +2268,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToDisableBursting() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
 	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionEmpty),
@@ -2308,13 +2308,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToDisableOptimizedForFrequ
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
 	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionEmpty),
@@ -2350,13 +2350,13 @@ func ExampleDisksClient_BeginUpdate_updateManagedDiskToRemoveDiskAccessResourceA
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
 	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionEmpty),
@@ -2394,13 +2394,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddArchitecture() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.DiskSKU{

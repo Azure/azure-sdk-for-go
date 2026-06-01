@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
 	"log"
 )
 
@@ -33,7 +33,7 @@ func ExampleVirtualNetworkSubnetUsageClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.VirtualNetworkSubnetUsageClientListResponse{
-	// 	VirtualNetworkSubnetUsageModel: &armpostgresqlflexibleservers.VirtualNetworkSubnetUsageModel{
+	// 	VirtualNetworkSubnetUsageModel: armpostgresqlflexibleservers.VirtualNetworkSubnetUsageModel{
 	// 		DelegatedSubnetsUsage: []*armpostgresqlflexibleservers.DelegatedSubnetUsage{
 	// 			{
 	// 				SubnetName: to.Ptr("examplesubnet1"),

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v3"
 	"log"
 )
 
@@ -45,7 +45,7 @@ func ExamplePatchSchedulesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.PatchSchedulesClientCreateOrUpdateResponse{
-	// 	PatchSchedule: &armredis.PatchSchedule{
+	// 	PatchSchedule: armredis.PatchSchedule{
 	// 		Name: to.Ptr("cachename1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis/PatchSchedules"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1/patchSchedules/default"),
@@ -108,7 +108,7 @@ func ExamplePatchSchedulesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.PatchSchedulesClientGetResponse{
-	// 	PatchSchedule: &armredis.PatchSchedule{
+	// 	PatchSchedule: armredis.PatchSchedule{
 	// 		Name: to.Ptr("cache1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis/PatchSchedules"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1/patchSchedules/default"),

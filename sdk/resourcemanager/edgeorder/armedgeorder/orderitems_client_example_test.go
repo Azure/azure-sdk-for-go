@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder"
 	"log"
 )
 
@@ -96,13 +96,13 @@ func ExampleOrderItemsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.OrderItemsClientCreateResponse{
-	// 	OrderItemResource: &armedgeorder.OrderItemResource{
+	// 	OrderItemResource: armedgeorder.OrderItemResource{
 	// 		Name: to.Ptr("TestOrderItemName2"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/orderItems"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName2"),
@@ -223,7 +223,7 @@ func ExampleOrderItemsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -246,7 +246,7 @@ func ExampleOrderItemsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.OrderItemsClientGetResponse{
-	// 	OrderItemResource: &armedgeorder.OrderItemResource{
+	// 	OrderItemResource: armedgeorder.OrderItemResource{
 	// 		Name: to.Ptr("TestOrderItemName1"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/orderItems"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName1"),
@@ -845,7 +845,7 @@ func ExampleOrderItemsClient_BeginReturn() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -879,13 +879,13 @@ func ExampleOrderItemsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.OrderItemsClientUpdateResponse{
-	// 	OrderItemResource: &armedgeorder.OrderItemResource{
+	// 	OrderItemResource: armedgeorder.OrderItemResource{
 	// 		Name: to.Ptr("TestOrderItemName3"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/orderItems"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/orderItems/TestOrderItemName3"),

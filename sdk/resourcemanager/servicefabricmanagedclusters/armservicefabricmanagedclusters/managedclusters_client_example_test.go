@@ -179,13 +179,13 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClustersClientCreateOrUpdateResponse{
-	// 	ManagedCluster: &armservicefabricmanagedclusters.ManagedCluster{
+	// 	ManagedCluster: armservicefabricmanagedclusters.ManagedCluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters"),
 	// 		Etag: to.Ptr("W/\"636462502169240745\""),
@@ -393,13 +393,13 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumPara
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClustersClientCreateOrUpdateResponse{
-	// 	ManagedCluster: &armservicefabricmanagedclusters.ManagedCluster{
+	// 	ManagedCluster: armservicefabricmanagedclusters.ManagedCluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters"),
 	// 		Etag: to.Ptr("W/\"636462502169240745\""),
@@ -459,7 +459,7 @@ func ExampleManagedClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -482,7 +482,7 @@ func ExampleManagedClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClustersClientGetResponse{
-	// 	ManagedCluster: &armservicefabricmanagedclusters.ManagedCluster{
+	// 	ManagedCluster: armservicefabricmanagedclusters.ManagedCluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters"),
 	// 		Etag: to.Ptr("W/\"636462502169240745\""),
@@ -796,13 +796,13 @@ func ExampleManagedClustersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClustersClientUpdateResponse{
-	// 	ManagedCluster: &armservicefabricmanagedclusters.ManagedCluster{
+	// 	ManagedCluster: armservicefabricmanagedclusters.ManagedCluster{
 	// 		Name: to.Ptr("myCluster"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters"),
 	// 		Etag: to.Ptr("W/\"636462502169240745\""),

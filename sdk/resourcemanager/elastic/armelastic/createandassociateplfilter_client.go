@@ -18,6 +18,8 @@ import (
 
 // CreateAndAssociatePLFilterClient contains the methods for the CreateAndAssociatePLFilter group.
 // Don't use this type directly, use NewCreateAndAssociatePLFilterClient() instead.
+//
+// Generated from API version 2025-06-01
 type CreateAndAssociatePLFilterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCreateAndAssociatePLFilterClient(subscriptionID string, credential azcor
 
 // BeginCreate - Create and associate a PL filter with your Elastic monitor resource to control and manage network traffic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - CreateAndAssociatePLFilterClientBeginCreateOptions contains the optional parameters for the CreateAndAssociatePLFilterClient.BeginCreate
@@ -66,8 +66,6 @@ func (client *CreateAndAssociatePLFilterClient) BeginCreate(ctx context.Context,
 
 // Create - Create and associate a PL filter with your Elastic monitor resource to control and manage network traffic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *CreateAndAssociatePLFilterClient) create(ctx context.Context, resourceGroupName string, monitorName string, options *CreateAndAssociatePLFilterClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CreateAndAssociatePLFilterClient.BeginCreate"
@@ -109,7 +107,7 @@ func (client *CreateAndAssociatePLFilterClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", version20250601)
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}
@@ -119,6 +117,6 @@ func (client *CreateAndAssociatePLFilterClient) createCreateRequest(ctx context.
 	if options != nil && options.PrivateEndpointName != nil {
 		reqQP.Set("privateEndpointName", *options.PrivateEndpointName)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

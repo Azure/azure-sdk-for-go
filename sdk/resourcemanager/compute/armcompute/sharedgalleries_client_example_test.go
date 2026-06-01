@@ -7,7 +7,7 @@ package armcompute_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleSharedGalleriesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SharedGalleriesClientGetResponse{
-	// 	SharedGallery: &armcompute.SharedGallery{
+	// 	SharedGallery: armcompute.SharedGallery{
 	// 		Location: to.Ptr("myLocation"),
 	// 		Name: to.Ptr("myGalleryName"),
 	// 		Identifier: &armcompute.SharedGalleryIdentifier{

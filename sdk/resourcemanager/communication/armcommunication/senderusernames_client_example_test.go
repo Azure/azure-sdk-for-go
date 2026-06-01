@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication"
 	"log"
 )
 
@@ -36,7 +36,7 @@ func ExampleSenderUsernamesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.SenderUsernamesClientCreateOrUpdateResponse{
-	// 	SenderUsernameResource: &armcommunication.SenderUsernameResource{
+	// 	SenderUsernameResource: armcommunication.SenderUsernameResource{
 	// 		Name: to.Ptr("contoso.com"),
 	// 		Type: to.Ptr("Microsoft.Communication/EmailServices/Domains"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/contosoResourceGroup/providers/Microsoft.Communication/EmailServices/contosoEmailService/Domains/contoso.com/senderUsernames/contosoNewsAlerts"),
@@ -90,7 +90,7 @@ func ExampleSenderUsernamesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommunication.SenderUsernamesClientGetResponse{
-	// 	SenderUsernameResource: &armcommunication.SenderUsernameResource{
+	// 	SenderUsernameResource: armcommunication.SenderUsernameResource{
 	// 		Name: to.Ptr("contoso.com"),
 	// 		Type: to.Ptr("Microsoft.Communication/EmailServices/Domains/SenderUsernames"),
 	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/contosoResourceGroup/providers/Microsoft.Communication/EmailServices/contosoEmailService/Domains/contoso.com/senderUsernames/contosoNewsAlerts"),

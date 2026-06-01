@@ -18,6 +18,8 @@ import (
 
 // PrivateLinksClient - Operations for private links on DeidService resource
 // Don't use this type directly, use NewPrivateLinksClient() instead.
+//
+// Generated from API version 2024-09-20
 type PrivateLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewPrivateLinksClient(subscriptionID string, credential azcore.TokenCredent
 }
 
 // NewListByDeidServicePager - List private links on the given resource
-//
-// Generated from API version 2024-09-20
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deidServiceName - The name of the deid service
 //   - options - PrivateLinksClientListByDeidServiceOptions contains the optional parameters for the PrivateLinksClient.NewListByDeidServicePager
@@ -89,8 +89,8 @@ func (client *PrivateLinksClient) listByDeidServiceCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240920)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

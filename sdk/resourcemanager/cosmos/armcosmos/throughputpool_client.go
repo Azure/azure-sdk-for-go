@@ -18,6 +18,8 @@ import (
 
 // ThroughputPoolClient contains the methods for the ThroughputPool group.
 // Don't use this type directly, use NewThroughputPoolClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type ThroughputPoolClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewThroughputPoolClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when
 // performing updates on an account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - body - The parameters to provide for the current ThroughputPool.
@@ -69,8 +69,6 @@ func (client *ThroughputPoolClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
 // updates on an account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *ThroughputPoolClient) createOrUpdate(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolResource, options *ThroughputPoolClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ThroughputPoolClient.BeginCreateOrUpdate"
@@ -112,8 +110,8 @@ func (client *ThroughputPoolClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -124,8 +122,6 @@ func (client *ThroughputPoolClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Deletes an existing Azure Cosmos DB Throughput Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - options - ThroughputPoolClientBeginDeleteOptions contains the optional parameters for the ThroughputPoolClient.BeginDelete
@@ -149,8 +145,6 @@ func (client *ThroughputPoolClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Deletes an existing Azure Cosmos DB Throughput Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *ThroughputPoolClient) deleteOperation(ctx context.Context, resourceGroupName string, throughputPoolName string, options *ThroughputPoolClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ThroughputPoolClient.BeginDelete"
@@ -192,15 +186,13 @@ func (client *ThroughputPoolClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Retrieves the properties of an existing Azure Cosmos DB Throughput Pool
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - options - ThroughputPoolClientGetOptions contains the optional parameters for the ThroughputPoolClient.Get method.
@@ -246,8 +238,8 @@ func (client *ThroughputPoolClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -263,8 +255,6 @@ func (client *ThroughputPoolClient) getHandleResponse(resp *http.Response) (Thro
 
 // BeginUpdate - Updates the properties of an existing Azure Cosmos DB Throughput Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - body - The parameters to provide for the current Throughput Pool.
@@ -290,8 +280,6 @@ func (client *ThroughputPoolClient) BeginUpdate(ctx context.Context, resourceGro
 
 // Update - Updates the properties of an existing Azure Cosmos DB Throughput Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *ThroughputPoolClient) update(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolUpdate, options *ThroughputPoolClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ThroughputPoolClient.BeginUpdate"
@@ -333,8 +321,8 @@ func (client *ThroughputPoolClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

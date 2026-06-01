@@ -18,6 +18,8 @@ import (
 
 // OrganizationsClient contains the methods for the Organizations group.
 // Don't use this type directly, use NewOrganizationsClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type OrganizationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewOrganizationsClient(subscriptionID string, credential azcore.TokenCreden
 //
 // Reinstate integration with your Datadog organization by choosing one of the available subscription plans.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - OrganizationsClientBeginResubscribeOptions contains the optional parameters for the OrganizationsClient.BeginResubscribe
@@ -70,8 +70,6 @@ func (client *OrganizationsClient) BeginResubscribe(ctx context.Context, resourc
 //
 // Reinstate integration with your Datadog organization by choosing one of the available subscription plans.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 func (client *OrganizationsClient) resubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *OrganizationsClientBeginResubscribeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrganizationsClient.BeginResubscribe"
@@ -113,8 +111,8 @@ func (client *OrganizationsClient) resubscribeCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

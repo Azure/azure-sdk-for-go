@@ -6,11 +6,10 @@ package armeventgrid_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
+	"log"
 )
 
 // Generated from example definition: 2025-07-15-preview/Namespaces_CreateOrUpdate.json
@@ -42,13 +41,13 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespacesClientCreateOrUpdateResponse{
-	// 	Namespace: &armeventgrid.Namespace{
+	// 	Namespace: armeventgrid.Namespace{
 	// 		Name: to.Ptr("exampleNamespaceName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/Namespaces"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1"),
@@ -85,7 +84,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -113,7 +112,7 @@ func ExampleNamespacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespacesClientGetResponse{
-	// 	Namespace: &armeventgrid.Namespace{
+	// 	Namespace: armeventgrid.Namespace{
 	// 		Name: to.Ptr("exampleNamespaceName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1"),
@@ -256,7 +255,7 @@ func ExampleNamespacesClient_ListSharedAccessKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespacesClientListSharedAccessKeysResponse{
-	// 	NamespaceSharedAccessKeys: &armeventgrid.NamespaceSharedAccessKeys{
+	// 	NamespaceSharedAccessKeys: armeventgrid.NamespaceSharedAccessKeys{
 	// 		Key1: to.Ptr("testKey1Value"),
 	// 		Key2: to.Ptr("testKey2Value"),
 	// 	},
@@ -282,13 +281,13 @@ func ExampleNamespacesClient_BeginRegenerateKey() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespacesClientRegenerateKeyResponse{
-	// 	NamespaceSharedAccessKeys: &armeventgrid.NamespaceSharedAccessKeys{
+	// 	NamespaceSharedAccessKeys: armeventgrid.NamespaceSharedAccessKeys{
 	// 		Key1: to.Ptr("testKey1Value"),
 	// 		Key2: to.Ptr("testKey2Value"),
 	// 	},
@@ -316,13 +315,13 @@ func ExampleNamespacesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespacesClientUpdateResponse{
-	// 	Namespace: &armeventgrid.Namespace{
+	// 	Namespace: armeventgrid.Namespace{
 	// 		Name: to.Ptr("exampleNamespaceName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1"),
@@ -356,13 +355,13 @@ func ExampleNamespacesClient_BeginValidateCustomDomainOwnership() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespacesClientValidateCustomDomainOwnershipResponse{
-	// 	CustomDomainOwnershipValidationResult: &armeventgrid.CustomDomainOwnershipValidationResult{
+	// 	CustomDomainOwnershipValidationResult: armeventgrid.CustomDomainOwnershipValidationResult{
 	// 		CustomDomainsForTopicSpacesConfiguration: []*armeventgrid.CustomDomainConfiguration{
 	// 			{
 	// 				CertificateURL: to.Ptr("string"),

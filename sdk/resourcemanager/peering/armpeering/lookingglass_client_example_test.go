@@ -7,7 +7,7 @@ package armpeering_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleLookingGlassClient_Invoke() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.LookingGlassClientInvokeResponse{
-	// 	LookingGlassOutput: &armpeering.LookingGlassOutput{
+	// 	LookingGlassOutput: armpeering.LookingGlassOutput{
 	// 		Command: to.Ptr(armpeering.CommandTraceroute),
 	// 		Output: to.Ptr("traceroute to 0.0.0.0, 64 hops max, 52 bytes packets\n 1 West US (1.1.1.1) 0.111ms 0.222ms 0.333ms"),
 	// 	},

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -31,13 +31,13 @@ func ExampleDiskAccessesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DiskAccessesClientCreateOrUpdateResponse{
-	// 	DiskAccess: &armcompute.DiskAccess{
+	// 	DiskAccess: armcompute.DiskAccess{
 	// 		Name: to.Ptr("myDiskAccess"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourcegroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess"),
 	// 		Type: to.Ptr("Microsoft.Compute/diskAccesses"),
@@ -67,7 +67,7 @@ func ExampleDiskAccessesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -93,7 +93,7 @@ func ExampleDiskAccessesClient_BeginDeleteAPrivateEndpointConnection() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -121,7 +121,7 @@ func ExampleDiskAccessesClient_Get_getInformationAboutADiskAccessResource() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DiskAccessesClientGetResponse{
-	// 	DiskAccess: &armcompute.DiskAccess{
+	// 	DiskAccess: armcompute.DiskAccess{
 	// 		Properties: &armcompute.DiskAccessProperties{
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T04:41:35.079872+00:00"); return t}()),
@@ -157,7 +157,7 @@ func ExampleDiskAccessesClient_Get_getInformationAboutADiskAccessResourceWithPri
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DiskAccessesClientGetResponse{
-	// 	DiskAccess: &armcompute.DiskAccess{
+	// 	DiskAccess: armcompute.DiskAccess{
 	// 		Properties: &armcompute.DiskAccessProperties{
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T04:41:35.079872+00:00"); return t}()),
@@ -211,7 +211,7 @@ func ExampleDiskAccessesClient_GetAPrivateEndpointConnection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DiskAccessesClientGetAPrivateEndpointConnectionResponse{
-	// 	PrivateEndpointConnection: &armcompute.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armcompute.PrivateEndpointConnection{
 	// 		Name: to.Ptr("myPrivateEndpointConnection"),
 	// 		Type: to.Ptr("Microsoft.Compute/diskAccesses/PrivateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess/privateEndpoinConnections/myPrivateEndpointConnection"),
@@ -249,7 +249,7 @@ func ExampleDiskAccessesClient_GetPrivateLinkResources() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DiskAccessesClientGetPrivateLinkResourcesResponse{
-	// 	PrivateLinkResourceListResult: &armcompute.PrivateLinkResourceListResult{
+	// 	PrivateLinkResourceListResult: armcompute.PrivateLinkResourceListResult{
 	// 		Value: []*armcompute.PrivateLinkResource{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess/privateLinkResources/disks"),
@@ -495,13 +495,13 @@ func ExampleDiskAccessesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DiskAccessesClientUpdateResponse{
-	// 	DiskAccess: &armcompute.DiskAccess{
+	// 	DiskAccess: armcompute.DiskAccess{
 	// 		Name: to.Ptr("myDiskAccess"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourcegroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess"),
 	// 		Type: to.Ptr("Microsoft.Compute/diskAccesses"),
@@ -538,13 +538,13 @@ func ExampleDiskAccessesClient_BeginUpdateAPrivateEndpointConnection() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse{
-	// 	PrivateEndpointConnection: &armcompute.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armcompute.PrivateEndpointConnection{
 	// 		Name: to.Ptr("myPrivateEndpointConnectionName"),
 	// 		Type: to.Ptr("Microsoft.Compute/diskAccesses/PrivateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess/privateEndpoinConnections/myPrivateEndpointConnectionName"),

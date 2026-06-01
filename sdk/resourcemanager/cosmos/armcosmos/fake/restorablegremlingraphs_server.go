@@ -11,10 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // RestorableGremlinGraphsServer is a fake server for instances of the armcosmos.RestorableGremlinGraphsClient type.
@@ -53,9 +54,7 @@ func (r *RestorableGremlinGraphsServerTransport) Do(req *http.Request) (*http.Re
 }
 
 func (r *RestorableGremlinGraphsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (r *RestorableGremlinGraphsServerTransport) dispatchToMethodFake(req *http.
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -106,21 +102,9 @@ func (r *RestorableGremlinGraphsServerTransport) dispatchNewListPager(req *http.
 		if err != nil {
 			return nil, err
 		}
-		restorableGremlinDatabaseRidUnescaped, err := url.QueryUnescape(qp.Get("restorableGremlinDatabaseRid"))
-		if err != nil {
-			return nil, err
-		}
-		restorableGremlinDatabaseRidParam := getOptional(restorableGremlinDatabaseRidUnescaped)
-		startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
-		if err != nil {
-			return nil, err
-		}
-		startTimeParam := getOptional(startTimeUnescaped)
-		endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
-		if err != nil {
-			return nil, err
-		}
-		endTimeParam := getOptional(endTimeUnescaped)
+		restorableGremlinDatabaseRidParam := getOptional(qp.Get("restorableGremlinDatabaseRid"))
+		startTimeParam := getOptional(qp.Get("startTime"))
+		endTimeParam := getOptional(qp.Get("endTime"))
 		var options *armcosmos.RestorableGremlinGraphsClientListOptions
 		if restorableGremlinDatabaseRidParam != nil || startTimeParam != nil || endTimeParam != nil {
 			options = &armcosmos.RestorableGremlinGraphsClientListOptions{
@@ -140,7 +124,7 @@ func (r *RestorableGremlinGraphsServerTransport) dispatchNewListPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

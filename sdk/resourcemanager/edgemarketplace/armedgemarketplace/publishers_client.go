@@ -19,6 +19,8 @@ import (
 
 // PublishersClient contains the methods for the Publishers group.
 // Don't use this type directly, use NewPublishersClient() instead.
+//
+// Generated from API version 2025-10-01-preview
 type PublishersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewPublishersClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Get - Get a Publisher
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - publisherName - Name of the publisher
 //   - options - PublishersClientGetOptions contains the optional parameters for the PublishersClient.Get method.
@@ -85,8 +85,8 @@ func (client *PublishersClient) getCreateRequest(ctx context.Context, resourceUR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -101,8 +101,6 @@ func (client *PublishersClient) getHandleResponse(resp *http.Response) (Publishe
 }
 
 // NewListPager - List Publisher resources by parent
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - PublishersClientListOptions contains the optional parameters for the PublishersClient.NewListPager method.
 func (client *PublishersClient) NewListPager(resourceURI string, options *PublishersClientListOptions) *runtime.Pager[PublishersClientListResponse] {
@@ -149,14 +147,14 @@ func (client *PublishersClient) listCreateRequest(ctx context.Context, resourceU
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-10-01-preview")
+	reqQP.Set("api-version", version20251001Preview)
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -171,8 +169,6 @@ func (client *PublishersClient) listHandleResponse(resp *http.Response) (Publish
 }
 
 // NewListBySubscriptionPager - List Publisher resources by subscription ID
-//
-// Generated from API version 2025-10-01-preview
 //   - options - PublishersClientListBySubscriptionOptions contains the optional parameters for the PublishersClient.NewListBySubscriptionPager
 //     method.
 func (client *PublishersClient) NewListBySubscriptionPager(options *PublishersClientListBySubscriptionOptions) *runtime.Pager[PublishersClientListBySubscriptionResponse] {
@@ -210,8 +206,8 @@ func (client *PublishersClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

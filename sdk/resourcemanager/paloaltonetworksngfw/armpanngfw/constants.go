@@ -4,6 +4,10 @@
 
 package armpanngfw
 
+const (
+	version20251008 string = "2025-10-08"
+)
+
 type ActionEnum string
 
 const (

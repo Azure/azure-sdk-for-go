@@ -7,7 +7,7 @@ package armappservice_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleResourceHealthMetadataClient_GetBySite() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.ResourceHealthMetadataClientGetBySiteResponse{
-	// 	ResourceHealthMetadata: &armappservice.ResourceHealthMetadata{
+	// 	ResourceHealthMetadata: armappservice.ResourceHealthMetadata{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/resourceHealthMetadata"),
 	// 		ID: to.Ptr("/subscriptions/4adb32ad-8327-4cbb-b775-b84b4465bb38/resourceGroups/Default-Web-NorthCentralUS/providers/Microsoft.Web/sites/newsiteinnewASE-NCUS/resourceHealthMetadata/default"),
@@ -61,7 +61,7 @@ func ExampleResourceHealthMetadataClient_GetBySiteSlot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.ResourceHealthMetadataClientGetBySiteSlotResponse{
-	// 	ResourceHealthMetadata: &armappservice.ResourceHealthMetadata{
+	// 	ResourceHealthMetadata: armappservice.ResourceHealthMetadata{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/resourceHealthMetadata"),
 	// 		ID: to.Ptr("/subscriptions/4adb32ad-8327-4cbb-b775-b84b4465bb38/resourceGroups/Default-Web-NorthCentralUS/providers/Microsoft.Web/sites/newsiteinnewASE-NCUS/resourceHealthMetadata/default"),

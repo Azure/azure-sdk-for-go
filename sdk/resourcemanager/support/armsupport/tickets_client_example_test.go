@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 	"log"
 )
 
@@ -34,7 +34,7 @@ func ExampleTicketsClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityOutput: &armsupport.CheckNameAvailabilityOutput{
+	// 	CheckNameAvailabilityOutput: armsupport.CheckNameAvailabilityOutput{
 	// 		Message: to.Ptr("Name not available"),
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr("Name is already in use"),
@@ -88,13 +88,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -193,13 +193,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -298,13 +298,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -403,13 +403,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPool
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -508,13 +508,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatc
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -604,13 +604,13 @@ func ExampleTicketsClient_BeginCreate_createATicketForBillingRelatedIssues() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -698,13 +698,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComp
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -791,13 +791,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -884,13 +884,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -989,13 +989,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1094,13 +1094,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1199,13 +1199,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1304,13 +1304,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1409,13 +1409,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1518,13 +1518,13 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzur
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1618,13 +1618,13 @@ func ExampleTicketsClient_BeginCreate_createATicketForSubscriptionManagementRela
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1714,13 +1714,13 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1792,7 +1792,7 @@ func ExampleTicketsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientGetResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -2700,7 +2700,7 @@ func ExampleTicketsClient_Update_updateAdvancedDiagnosticConsentOfASubscriptionS
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientUpdateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -2782,7 +2782,7 @@ func ExampleTicketsClient_Update_updateContactDetailsOfASubscriptionSupportTicke
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientUpdateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -2852,7 +2852,7 @@ func ExampleTicketsClient_Update_updateSeverityOfASubscriptionSupportTicket() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientUpdateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
@@ -2921,7 +2921,7 @@ func ExampleTicketsClient_Update_updateStatusOfASubscriptionSupportTicket() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsClientUpdateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),

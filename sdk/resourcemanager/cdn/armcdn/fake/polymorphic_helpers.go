@@ -6,7 +6,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v2"
 )
 
 func unmarshalCustomDomainHTTPSParametersClassification(rawMsg json.RawMessage) (armcdn.CustomDomainHTTPSParametersClassification, error) {

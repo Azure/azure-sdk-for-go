@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -87,13 +87,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -260,13 +260,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -433,13 +433,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -601,13 +601,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -734,13 +734,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -871,13 +871,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1000,13 +1000,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1124,13 +1124,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1329,13 +1329,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1509,13 +1509,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1694,13 +1694,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1804,7 +1804,7 @@ func ExampleGalleryImageVersionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1832,7 +1832,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersion() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1924,7 +1924,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithReplicatio
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -2032,7 +2032,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithSnapshotsA
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -2123,7 +2123,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidation
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -2249,7 +2249,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidation
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -2391,7 +2391,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithVhdAsASour
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -2601,13 +2601,13 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_updateASimpleGalleryImageVers
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
 	// 				TargetRegions: []*armcompute.TargetRegion{
@@ -2685,13 +2685,13 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_restoreASoftDeletedGalleryIma
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
 	// 				TargetRegions: []*armcompute.TargetRegion{
@@ -2770,13 +2770,13 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_updateASimpleGalleryImageVers
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
 	// 				TargetRegions: []*armcompute.TargetRegion{

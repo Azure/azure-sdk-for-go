@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
 	"log"
 )
 
@@ -34,7 +34,7 @@ func ExampleExposureControlClient_GetFeatureValue() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.ExposureControlClientGetFeatureValueResponse{
-	// 	ExposureControlResponse: &armdatafactory.ExposureControlResponse{
+	// 	ExposureControlResponse: armdatafactory.ExposureControlResponse{
 	// 		FeatureName: to.Ptr("ADFIntegrationRuntimeSharingRbac"),
 	// 		Value: to.Ptr("False"),
 	// 	},
@@ -63,7 +63,7 @@ func ExampleExposureControlClient_GetFeatureValueByFactory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.ExposureControlClientGetFeatureValueByFactoryResponse{
-	// 	ExposureControlResponse: &armdatafactory.ExposureControlResponse{
+	// 	ExposureControlResponse: armdatafactory.ExposureControlResponse{
 	// 		FeatureName: to.Ptr("ADFIntegrationRuntimeSharingRbac"),
 	// 		Value: to.Ptr("False"),
 	// 	},
@@ -100,7 +100,7 @@ func ExampleExposureControlClient_QueryFeatureValuesByFactory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.ExposureControlClientQueryFeatureValuesByFactoryResponse{
-	// 	ExposureControlBatchResponse: &armdatafactory.ExposureControlBatchResponse{
+	// 	ExposureControlBatchResponse: armdatafactory.ExposureControlBatchResponse{
 	// 		ExposureControlResponses: []*armdatafactory.ExposureControlResponse{
 	// 			{
 	// 				FeatureName: to.Ptr("ADFIntegrationRuntimeSharingRbac"),

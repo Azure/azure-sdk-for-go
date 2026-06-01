@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultReservationOrdersClientVersion string = "2024-04-01"
-
 // ReservationOrdersClient contains the methods for the ReservationOrders group.
 // Don't use this type directly, use NewReservationOrdersClient() instead.
 //
@@ -87,7 +85,7 @@ func (client *ReservationOrdersClient) getByBillingAccountCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultReservationOrdersClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Expand != nil {
 		reqQP.Set("expand", *options.Expand)
 	}
@@ -146,7 +144,7 @@ func (client *ReservationOrdersClient) listByBillingAccountCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultReservationOrdersClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}

@@ -18,6 +18,8 @@ import (
 
 // DynamicSchemaVersionsClient contains the methods for the DynamicSchemaVersions group.
 // Don't use this type directly, use NewDynamicSchemaVersionsClient() instead.
+//
+// Generated from API version 2025-06-01
 type DynamicSchemaVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDynamicSchemaVersionsClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreateOrUpdate - Create or update a Dynamic Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
@@ -69,8 +69,6 @@ func (client *DynamicSchemaVersionsClient) BeginCreateOrUpdate(ctx context.Conte
 
 // CreateOrUpdate - Create or update a Dynamic Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *DynamicSchemaVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, resource DynamicSchemaVersion, options *DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DynamicSchemaVersionsClient.BeginCreateOrUpdate"
@@ -120,8 +118,8 @@ func (client *DynamicSchemaVersionsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -132,8 +130,6 @@ func (client *DynamicSchemaVersionsClient) createOrUpdateCreateRequest(ctx conte
 
 // BeginDelete - Delete a Dynamic Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
@@ -159,8 +155,6 @@ func (client *DynamicSchemaVersionsClient) BeginDelete(ctx context.Context, reso
 
 // Delete - Delete a Dynamic Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *DynamicSchemaVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, options *DynamicSchemaVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DynamicSchemaVersionsClient.BeginDelete"
@@ -210,15 +204,13 @@ func (client *DynamicSchemaVersionsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Dynamic Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
@@ -275,8 +267,8 @@ func (client *DynamicSchemaVersionsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -291,8 +283,6 @@ func (client *DynamicSchemaVersionsClient) getHandleResponse(resp *http.Response
 }
 
 // NewListByDynamicSchemaPager - List by Dynamic Schema
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
@@ -345,8 +335,8 @@ func (client *DynamicSchemaVersionsClient) listByDynamicSchemaCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -362,8 +352,6 @@ func (client *DynamicSchemaVersionsClient) listByDynamicSchemaHandleResponse(res
 
 // Update - update a Dynamic Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
@@ -421,8 +409,8 @@ func (client *DynamicSchemaVersionsClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

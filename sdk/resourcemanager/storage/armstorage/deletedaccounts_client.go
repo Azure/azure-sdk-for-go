@@ -18,6 +18,8 @@ import (
 
 // DeletedAccountsClient contains the methods for the DeletedAccounts group.
 // Don't use this type directly, use NewDeletedAccountsClient() instead.
+//
+// Generated from API version 2025-08-01
 type DeletedAccountsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDeletedAccountsClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Get properties of specified deleted account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - options - DeletedAccountsClientGetOptions contains the optional parameters for the DeletedAccountsClient.Get method.
 func (client *DeletedAccountsClient) Get(ctx context.Context, deletedAccountName string, location string, options *DeletedAccountsClientGetOptions) (DeletedAccountsClientGetResponse, error) {
 	var err error
@@ -86,8 +86,8 @@ func (client *DeletedAccountsClient) getCreateRequest(ctx context.Context, delet
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -102,8 +102,6 @@ func (client *DeletedAccountsClient) getHandleResponse(resp *http.Response) (Del
 }
 
 // NewListPager - Lists deleted accounts under the subscription.
-//
-// Generated from API version 2025-08-01
 //   - options - DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.NewListPager
 //     method.
 func (client *DeletedAccountsClient) NewListPager(options *DeletedAccountsClientListOptions) *runtime.Pager[DeletedAccountsClientListResponse] {
@@ -141,8 +139,8 @@ func (client *DeletedAccountsClient) listCreateRequest(ctx context.Context, _ *D
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

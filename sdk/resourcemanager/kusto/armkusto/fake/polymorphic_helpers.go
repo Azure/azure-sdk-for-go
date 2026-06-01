@@ -6,7 +6,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 )
 
 func unmarshalDataConnectionClassification(rawMsg json.RawMessage) (armkusto.DataConnectionClassification, error) {

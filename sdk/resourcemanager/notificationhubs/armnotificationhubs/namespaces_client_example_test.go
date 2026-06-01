@@ -33,7 +33,7 @@ func ExampleNamespacesClient_CheckAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.NamespacesClientCheckAvailabilityResponse{
-	// 	CheckAvailabilityResult: &armnotificationhubs.CheckAvailabilityResult{
+	// 	CheckAvailabilityResult: armnotificationhubs.CheckAvailabilityResult{
 	// 		Name: to.Ptr("sdk-Namespace-2924"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/checkNamespaceAvailability"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/providers/Microsoft.NotificationHubs/namespaces/sdk-Namespace-2924"),
@@ -89,13 +89,13 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.NamespacesClientCreateOrUpdateResponse{
-	// 	NamespaceResource: &armnotificationhubs.NamespaceResource{
+	// 	NamespaceResource: armnotificationhubs.NamespaceResource{
 	// 		Name: to.Ptr("nh-sdk-ns"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns"),
@@ -170,7 +170,7 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.NamespacesClientCreateOrUpdateAuthorizationRuleResponse{
-	// 	SharedAccessAuthorizationRuleResource: &armnotificationhubs.SharedAccessAuthorizationRuleResource{
+	// 	SharedAccessAuthorizationRuleResource: armnotificationhubs.SharedAccessAuthorizationRuleResource{
 	// 		Name: to.Ptr("NewAuthorizationRule"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/authorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/authorizationRules/NewAuthorizationRule"),
@@ -249,7 +249,7 @@ func ExampleNamespacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.NamespacesClientGetResponse{
-	// 	NamespaceResource: &armnotificationhubs.NamespaceResource{
+	// 	NamespaceResource: armnotificationhubs.NamespaceResource{
 	// 		Name: to.Ptr("nh-sdk-ns"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns"),
@@ -316,7 +316,7 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.NamespacesClientGetAuthorizationRuleResponse{
-	// 	SharedAccessAuthorizationRuleResource: &armnotificationhubs.SharedAccessAuthorizationRuleResource{
+	// 	SharedAccessAuthorizationRuleResource: armnotificationhubs.SharedAccessAuthorizationRuleResource{
 	// 		Name: to.Ptr("RootManageSharedAccessKey"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/authorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/authorizationRules/RootManageSharedAccessKey"),
@@ -352,7 +352,7 @@ func ExampleNamespacesClient_GetPnsCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.NamespacesClientGetPnsCredentialsResponse{
-	// 	PnsCredentialsResource: &armnotificationhubs.PnsCredentialsResource{
+	// 	PnsCredentialsResource: armnotificationhubs.PnsCredentialsResource{
 	// 		Name: to.Ptr("nh-sdk-hub"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/pnsCredentials"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns"),
@@ -672,7 +672,7 @@ func ExampleNamespacesClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.NamespacesClientListKeysResponse{
-	// 	ResourceListKeys: &armnotificationhubs.ResourceListKeys{
+	// 	ResourceListKeys: armnotificationhubs.ResourceListKeys{
 	// 		KeyName: to.Ptr("RootManageSharedAccessKey"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -703,7 +703,7 @@ func ExampleNamespacesClient_RegenerateKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.NamespacesClientRegenerateKeysResponse{
-	// 	ResourceListKeys: &armnotificationhubs.ResourceListKeys{
+	// 	ResourceListKeys: armnotificationhubs.ResourceListKeys{
 	// 		KeyName: to.Ptr("RootManageSharedAccessKey"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=########################################"),
 	// 		PrimaryKey: to.Ptr("########################################"),
@@ -749,7 +749,7 @@ func ExampleNamespacesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.NamespacesClientUpdateResponse{
-	// 	NamespaceResource: &armnotificationhubs.NamespaceResource{
+	// 	NamespaceResource: armnotificationhubs.NamespaceResource{
 	// 		Name: to.Ptr("nh-sdk-ns"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns"),

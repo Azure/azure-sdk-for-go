@@ -18,6 +18,8 @@ import (
 
 // VirtualMachinesClient contains the methods for the VirtualMachines group.
 // Don't use this type directly, use NewVirtualMachinesClient() instead.
+//
+// Generated from API version 2025-01-15-preview
 type VirtualMachinesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 
 // GetAsyncOperationStatus - Gets the async operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - operationID - The long running operation id.
@@ -94,8 +94,8 @@ func (client *VirtualMachinesClient) getAsyncOperationStatusCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -111,8 +111,6 @@ func (client *VirtualMachinesClient) getAsyncOperationStatusHandleResponse(resp 
 
 // ListHosts - Lists the HDInsight clusters hosts
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - VirtualMachinesClientListHostsOptions contains the optional parameters for the VirtualMachinesClient.ListHosts
@@ -159,8 +157,8 @@ func (client *VirtualMachinesClient) listHostsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -176,8 +174,6 @@ func (client *VirtualMachinesClient) listHostsHandleResponse(resp *http.Response
 
 // BeginRestartHosts - Restarts the specified HDInsight cluster hosts.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - hosts - The list of hosts to restart
@@ -202,8 +198,6 @@ func (client *VirtualMachinesClient) BeginRestartHosts(ctx context.Context, reso
 
 // RestartHosts - Restarts the specified HDInsight cluster hosts.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 func (client *VirtualMachinesClient) restartHosts(ctx context.Context, resourceGroupName string, clusterName string, hosts []*string, options *VirtualMachinesClientBeginRestartHostsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginRestartHosts"
@@ -245,8 +239,8 @@ func (client *VirtualMachinesClient) restartHostsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hosts); err != nil {
 		return nil, err

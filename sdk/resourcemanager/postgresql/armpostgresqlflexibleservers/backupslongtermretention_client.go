@@ -18,6 +18,8 @@ import (
 
 // BackupsLongTermRetentionClient contains the methods for the BackupsLongTermRetention group.
 // Don't use this type directly, use NewBackupsLongTermRetentionClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type BackupsLongTermRetentionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBackupsLongTermRetentionClient(subscriptionID string, credential azcore.
 
 // CheckPrerequisites - Performs all checks required for a long term retention backup operation to succeed.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - Request body for operation
@@ -90,8 +90,8 @@ func (client *BackupsLongTermRetentionClient) checkPrerequisitesCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -114,8 +114,6 @@ func (client *BackupsLongTermRetentionClient) checkPrerequisitesHandleResponse(r
 
 // Get - Gets the results of a long retention backup operation for a server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -167,8 +165,8 @@ func (client *BackupsLongTermRetentionClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -183,8 +181,6 @@ func (client *BackupsLongTermRetentionClient) getHandleResponse(resp *http.Respo
 }
 
 // NewListByServerPager - Lists the results of the long term retention backup operations for a server.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - BackupsLongTermRetentionClientListByServerOptions contains the optional parameters for the BackupsLongTermRetentionClient.NewListByServerPager
@@ -232,8 +228,8 @@ func (client *BackupsLongTermRetentionClient) listByServerCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -249,8 +245,6 @@ func (client *BackupsLongTermRetentionClient) listByServerHandleResponse(resp *h
 
 // BeginStart - Initiates a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - Request body for operation
@@ -275,8 +269,6 @@ func (client *BackupsLongTermRetentionClient) BeginStart(ctx context.Context, re
 
 // Start - Initiates a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *BackupsLongTermRetentionClient) start(ctx context.Context, resourceGroupName string, serverName string, parameters BackupsLongTermRetentionRequest, options *BackupsLongTermRetentionClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsLongTermRetentionClient.BeginStart"
@@ -318,8 +310,8 @@ func (client *BackupsLongTermRetentionClient) startCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

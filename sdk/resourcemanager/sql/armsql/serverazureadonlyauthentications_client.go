@@ -18,6 +18,8 @@ import (
 
 // ServerAzureADOnlyAuthenticationsClient contains the methods for the ServerAzureADOnlyAuthentications group.
 // Don't use this type directly, use NewServerAzureADOnlyAuthenticationsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ServerAzureADOnlyAuthenticationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewServerAzureADOnlyAuthenticationsClient(subscriptionID string, credential
 // BeginCreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory
 // only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - authenticationName - The name of server azure active directory only authentication.
@@ -70,8 +70,6 @@ func (client *ServerAzureADOnlyAuthenticationsClient) BeginCreateOrUpdate(ctx co
 // CreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory
 // only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, parameters ServerAzureADOnlyAuthentication, options *ServerAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerAzureADOnlyAuthenticationsClient.BeginCreateOrUpdate"
@@ -117,8 +115,8 @@ func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -129,8 +127,6 @@ func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdateCreateReques
 
 // BeginDelete - Deletes an existing server Active Directory only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - authenticationName - The name of server azure active directory only authentication.
@@ -155,8 +151,6 @@ func (client *ServerAzureADOnlyAuthenticationsClient) BeginDelete(ctx context.Co
 
 // Delete - Deletes an existing server Active Directory only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ServerAzureADOnlyAuthenticationsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerAzureADOnlyAuthenticationsClient.BeginDelete"
@@ -202,15 +196,13 @@ func (client *ServerAzureADOnlyAuthenticationsClient) deleteCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a specific Azure Active Directory only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - authenticationName - The name of server azure active directory only authentication.
@@ -262,8 +254,8 @@ func (client *ServerAzureADOnlyAuthenticationsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -278,8 +270,6 @@ func (client *ServerAzureADOnlyAuthenticationsClient) getHandleResponse(resp *ht
 }
 
 // NewListByServerPager - Gets a list of server Azure Active Directory only authentications.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerAzureADOnlyAuthenticationsClientListByServerOptions contains the optional parameters for the ServerAzureADOnlyAuthenticationsClient.NewListByServerPager
@@ -327,8 +317,8 @@ func (client *ServerAzureADOnlyAuthenticationsClient) listByServerCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

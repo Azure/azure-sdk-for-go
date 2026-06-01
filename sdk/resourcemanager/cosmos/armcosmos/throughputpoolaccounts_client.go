@@ -18,6 +18,8 @@ import (
 
 // ThroughputPoolAccountsClient contains the methods for the ThroughputPoolAccounts group.
 // Don't use this type directly, use NewThroughputPoolAccountsClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type ThroughputPoolAccountsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewThroughputPoolAccountsClient(subscriptionID string, credential azcore.To
 }
 
 // NewListPager - Lists all the Azure Cosmos DB accounts available under the subscription.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - options - ThroughputPoolAccountsClientListOptions contains the optional parameters for the ThroughputPoolAccountsClient.NewListPager
@@ -89,8 +89,8 @@ func (client *ThroughputPoolAccountsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

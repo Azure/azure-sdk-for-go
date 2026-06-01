@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -84,8 +84,8 @@ func (a *AuthorizationServerServerTransport) dispatchToMethodFake(req *http.Requ
 	go func() {
 		var intercepted bool
 		var res result
-		if authorizationServerServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = authorizationServerServerTransportInterceptor.Do(req)
+		if authorizationServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = authorizationServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -446,7 +446,7 @@ func (a *AuthorizationServerServerTransport) dispatchUpdate(req *http.Request) (
 }
 
 // set this to conditionally intercept incoming requests to AuthorizationServerServerTransport
-var authorizationServerServerTransportInterceptor interface {
+var authorizationServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

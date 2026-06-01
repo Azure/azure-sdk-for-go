@@ -20,6 +20,8 @@ import (
 
 // JobExecutionsClient contains the methods for the JobExecutions group.
 // Don't use this type directly, use NewJobExecutionsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type JobExecutionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewJobExecutionsClient(subscriptionID string, credential azcore.TokenCreden
 
 // Cancel - Requests cancellation of a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -104,15 +104,13 @@ func (client *JobExecutionsClient) cancelCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginCreate - Starts an elastic job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent to be retrieved.
@@ -138,8 +136,6 @@ func (client *JobExecutionsClient) BeginCreate(ctx context.Context, resourceGrou
 
 // Create - Starts an elastic job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *JobExecutionsClient) create(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobExecutionsClient.BeginCreate"
@@ -189,16 +185,14 @@ func (client *JobExecutionsClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -225,8 +219,6 @@ func (client *JobExecutionsClient) BeginCreateOrUpdate(ctx context.Context, reso
 
 // CreateOrUpdate - Creates or updates a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *JobExecutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobExecutionsClient.BeginCreateOrUpdate"
@@ -280,16 +272,14 @@ func (client *JobExecutionsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -350,8 +340,8 @@ func (client *JobExecutionsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -366,8 +356,6 @@ func (client *JobExecutionsClient) getHandleResponse(resp *http.Response) (JobEx
 }
 
 // NewListByAgentPager - Lists all executions in a job agent.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent to be retrieved.
@@ -426,7 +414,7 @@ func (client *JobExecutionsClient) listByAgentCreateRequest(ctx context.Context,
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.CreateTimeMax != nil {
 		reqQP.Set("createTimeMax", datetime.RFC3339(*options.CreateTimeMax).String())
 	}
@@ -442,7 +430,7 @@ func (client *JobExecutionsClient) listByAgentCreateRequest(ctx context.Context,
 	if options != nil && options.IsActive != nil {
 		reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -457,8 +445,6 @@ func (client *JobExecutionsClient) listByAgentHandleResponse(resp *http.Response
 }
 
 // NewListByJobPager - Lists a job's executions.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -522,7 +508,7 @@ func (client *JobExecutionsClient) listByJobCreateRequest(ctx context.Context, r
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.CreateTimeMax != nil {
 		reqQP.Set("createTimeMax", datetime.RFC3339(*options.CreateTimeMax).String())
 	}
@@ -538,7 +524,7 @@ func (client *JobExecutionsClient) listByJobCreateRequest(ctx context.Context, r
 	if options != nil && options.IsActive != nil {
 		reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v3"
 	"log"
 )
 
@@ -35,13 +35,13 @@ func ExampleLinkedServerClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.LinkedServerClientCreateResponse{
-	// 	LinkedServerWithProperties: &armredis.LinkedServerWithProperties{
+	// 	LinkedServerWithProperties: armredis.LinkedServerWithProperties{
 	// 		Name: to.Ptr("cache2"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis/linkedServers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1/linkedServers/cache2"),
@@ -74,7 +74,7 @@ func ExampleLinkedServerClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -102,7 +102,7 @@ func ExampleLinkedServerClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.LinkedServerClientGetResponse{
-	// 	LinkedServerWithProperties: &armredis.LinkedServerWithProperties{
+	// 	LinkedServerWithProperties: armredis.LinkedServerWithProperties{
 	// 		Name: to.Ptr("cache2"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis/linkedServers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1/linkedServers/cache2"),

@@ -6,11 +6,10 @@ package armrecoveryservicessiterecovery_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"log"
 )
 
 // Generated from example definition: 2025-08-01/ReplicationJobs_Cancel.json
@@ -30,13 +29,13 @@ func ExampleReplicationJobsClient_BeginCancel() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationJobsClientCancelResponse{
-	// 	Job: &armrecoveryservicessiterecovery.Job{
+	// 	Job: armrecoveryservicessiterecovery.Job{
 	// 		Name: to.Ptr("2653c648-fc72-4316-86f3-fdf8eaa0066b"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/2653c648-fc72-4316-86f3-fdf8eaa0066b"),
 	// 		Properties: &armrecoveryservicessiterecovery.JobProperties{
@@ -102,13 +101,13 @@ func ExampleReplicationJobsClient_BeginExport() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationJobsClientExportResponse{
-	// 	Job: &armrecoveryservicessiterecovery.Job{
+	// 	Job: armrecoveryservicessiterecovery.Job{
 	// 		Name: to.Ptr("37e0fc2b-13f2-4817-aafa-0cd807d46842"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/37e0fc2b-13f2-4817-aafa-0cd807d46842"),
 	// 		Properties: &armrecoveryservicessiterecovery.JobProperties{
@@ -158,7 +157,7 @@ func ExampleReplicationJobsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationJobsClientGetResponse{
-	// 	Job: &armrecoveryservicessiterecovery.Job{
+	// 	Job: armrecoveryservicessiterecovery.Job{
 	// 		Name: to.Ptr("32ea4b9e-de62-49a1-b062-7864d5c3b897"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/32ea4b9e-de62-49a1-b062-7864d5c3b897"),
 	// 		Properties: &armrecoveryservicessiterecovery.JobProperties{
@@ -321,13 +320,13 @@ func ExampleReplicationJobsClient_BeginRestart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationJobsClientRestartResponse{
-	// 	Job: &armrecoveryservicessiterecovery.Job{
+	// 	Job: armrecoveryservicessiterecovery.Job{
 	// 		Name: to.Ptr("42c7d13b-790c-4609-8e0b-0936f1c5e5fb"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/42c7d13b-790c-4609-8e0b-0936f1c5e5fb"),
 	// 		Properties: &armrecoveryservicessiterecovery.JobProperties{
@@ -395,13 +394,13 @@ func ExampleReplicationJobsClient_BeginResume() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationJobsClientResumeResponse{
-	// 	Job: &armrecoveryservicessiterecovery.Job{
+	// 	Job: armrecoveryservicessiterecovery.Job{
 	// 		Name: to.Ptr("58776d0b-3141-48b2-a377-9ad863eb160d"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/58776d0b-3141-48b2-a377-9ad863eb160d"),
 	// 		Properties: &armrecoveryservicessiterecovery.JobProperties{

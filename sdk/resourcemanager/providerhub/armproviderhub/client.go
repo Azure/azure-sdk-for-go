@@ -18,6 +18,8 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2024-09-01
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // CheckinManifest - Checkin the manifest.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - checkinManifestParams - The required body parameters supplied to the checkin manifest operation.
 //   - options - ClientCheckinManifestOptions contains the optional parameters for the Client.CheckinManifest method.
@@ -84,8 +84,8 @@ func (client *Client) checkinManifestCreateRequest(ctx context.Context, provider
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkinManifestParams); err != nil {
@@ -105,8 +105,6 @@ func (client *Client) checkinManifestHandleResponse(resp *http.Response) (Client
 
 // GenerateManifest - Generates the manifest for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - ClientGenerateManifestOptions contains the optional parameters for the Client.GenerateManifest method.
 func (client *Client) GenerateManifest(ctx context.Context, providerNamespace string, options *ClientGenerateManifestOptions) (ClientGenerateManifestResponse, error) {
@@ -147,8 +145,8 @@ func (client *Client) generateManifestCreateRequest(ctx context.Context, provide
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

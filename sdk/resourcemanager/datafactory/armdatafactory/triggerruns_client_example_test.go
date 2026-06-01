@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
 	"log"
 	"time"
 )
@@ -66,7 +66,7 @@ func ExampleTriggerRunsClient_QueryByFactory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.TriggerRunsClientQueryByFactoryResponse{
-	// 	TriggerRunsQueryResponse: &armdatafactory.TriggerRunsQueryResponse{
+	// 	TriggerRunsQueryResponse: armdatafactory.TriggerRunsQueryResponse{
 	// 		Value: []*armdatafactory.TriggerRun{
 	// 			{
 	// 				Message: to.Ptr(""),

@@ -18,6 +18,8 @@ import (
 
 // ConnectorsClient contains the methods for the Connectors group.
 // Don't use this type directly, use NewConnectorsClient() instead.
+//
+// Generated from API version 2025-08-01
 type ConnectorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreate - Create a Storage Connector if it does not already exist; otherwise, error out. This API will not allow you
 // to replace an already existing resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -71,8 +71,6 @@ func (client *ConnectorsClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Create - Create a Storage Connector if it does not already exist; otherwise, error out. This API will not allow you to
 // replace an already existing resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ConnectorsClient) create(ctx context.Context, resourceGroupName string, accountName string, connectorName string, resource Connector, options *ConnectorsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorsClient.BeginCreate"
@@ -118,8 +116,8 @@ func (client *ConnectorsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -130,8 +128,6 @@ func (client *ConnectorsClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Delete a Storage Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -156,8 +152,6 @@ func (client *ConnectorsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Delete a Storage Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, connectorName string, options *ConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorsClient.BeginDelete"
@@ -203,15 +197,13 @@ func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the specified Storage Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -263,8 +255,8 @@ func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -279,8 +271,6 @@ func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (Connecto
 }
 
 // NewListByStorageAccountPager - List all Storage Connectors in a Storage Account.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -329,8 +319,8 @@ func (client *ConnectorsClient) listByStorageAccountCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -349,8 +339,6 @@ func (client *ConnectorsClient) listByStorageAccountHandleResponse(resp *http.Re
 // this method does the following: Calls List on the backing data store, attempting to list up to one blob/object/etc.
 // If the above succeeds, and if a blob/object/etc is found, calls Get on that object, attempting to download one byte.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -383,8 +371,6 @@ func (client *ConnectorsClient) BeginTestExistingConnection(ctx context.Context,
 // this method does the following: Calls List on the backing data store, attempting to list up to one blob/object/etc.
 // If the above succeeds, and if a blob/object/etc is found, calls Get on that object, attempting to download one byte.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ConnectorsClient) testExistingConnection(ctx context.Context, resourceGroupName string, accountName string, connectorName string, body TestExistingConnectionRequest, options *ConnectorsClientBeginTestExistingConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorsClient.BeginTestExistingConnection"
@@ -430,8 +416,8 @@ func (client *ConnectorsClient) testExistingConnectionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -442,8 +428,6 @@ func (client *ConnectorsClient) testExistingConnectionCreateRequest(ctx context.
 
 // BeginUpdate - Update a Storage Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -469,8 +453,6 @@ func (client *ConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Update a Storage Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ConnectorsClient) update(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, options *ConnectorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorsClient.BeginUpdate"
@@ -516,8 +498,8 @@ func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

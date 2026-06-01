@@ -4,6 +4,10 @@
 
 package armsearch
 
+const (
+	version20260301Preview string = "2026-03-01-preview"
+)
+
 // AADAuthFailureMode - Describes what response the data plane API of a search service would send for requests that failed
 // authentication.
 type AADAuthFailureMode string

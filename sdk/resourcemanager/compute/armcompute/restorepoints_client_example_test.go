@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -35,7 +35,7 @@ func ExampleRestorePointsClient_BeginCreate_copyARestorePointToADifferentRegion(
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -65,7 +65,7 @@ func ExampleRestorePointsClient_BeginCreate_createARestorePoint() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -86,7 +86,7 @@ func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -112,7 +112,7 @@ func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -140,7 +140,7 @@ func ExampleRestorePointsClient_Get_getARestorePoint() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointsClientGetResponse{
-	// 	RestorePoint: &armcompute.RestorePoint{
+	// 	RestorePoint: armcompute.RestorePoint{
 	// 		Name: to.Ptr("rpName"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/rpName"),
 	// 		Properties: &armcompute.RestorePointProperties{
@@ -230,7 +230,7 @@ func ExampleRestorePointsClient_Get_getRestorePointWithInstanceView() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointsClientGetResponse{
-	// 	RestorePoint: &armcompute.RestorePoint{
+	// 	RestorePoint: armcompute.RestorePoint{
 	// 		Name: to.Ptr("rpName"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/rpName"),
 	// 		Properties: &armcompute.RestorePointProperties{

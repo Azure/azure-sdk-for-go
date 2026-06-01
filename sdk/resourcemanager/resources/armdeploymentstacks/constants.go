@@ -4,6 +4,10 @@
 
 package armdeploymentstacks
 
+const (
+	version20250701 string = "2025-07-01"
+)
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

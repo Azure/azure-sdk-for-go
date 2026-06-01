@@ -29,7 +29,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -52,7 +52,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnectionResource: &armnotificationhubs.PrivateEndpointConnectionResource{
+	// 	PrivateEndpointConnectionResource: armnotificationhubs.PrivateEndpointConnectionResource{
 	// 		Name: to.Ptr("nh-sdk-ns.4fdb3a25-664d-42f1-bde2-f8c2f8e0b3a1"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/Namespaces/PrivateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/privateEndpointConnections/nh-sdk-ns.4fdb3a25-664d-42f1-bde2-f8c2f8e0b3a1"),
@@ -92,7 +92,7 @@ func ExamplePrivateEndpointConnectionsClient_GetGroupID() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.PrivateEndpointConnectionsClientGetGroupIDResponse{
-	// 	PrivateLinkResource: &armnotificationhubs.PrivateLinkResource{
+	// 	PrivateLinkResource: armnotificationhubs.PrivateLinkResource{
 	// 		Name: to.Ptr("namespace"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/privateLinkResources/namespace"),
@@ -229,13 +229,13 @@ func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.PrivateEndpointConnectionsClientUpdateResponse{
-	// 	PrivateEndpointConnectionResource: &armnotificationhubs.PrivateEndpointConnectionResource{
+	// 	PrivateEndpointConnectionResource: armnotificationhubs.PrivateEndpointConnectionResource{
 	// 		Name: to.Ptr("nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourcegroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/privateEndpointConnections/nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e"),

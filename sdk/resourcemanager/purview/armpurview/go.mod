@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview
 
 go 1.25.0
 

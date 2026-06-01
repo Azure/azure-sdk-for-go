@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 )
 
@@ -49,7 +49,7 @@ func ExampleAvailabilitySetsClient_BeginConvertToVirtualMachineScaleSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -78,7 +78,7 @@ func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.AvailabilitySetsClientCreateOrUpdateResponse{
-	// 	AvailabilitySet: &armcompute.AvailabilitySet{
+	// 	AvailabilitySet: armcompute.AvailabilitySet{
 	// 		SKU: &armcompute.SKU{
 	// 			Name: to.Ptr("Classic"),
 	// 		},
@@ -130,7 +130,7 @@ func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySetWithSch
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.AvailabilitySetsClientCreateOrUpdateResponse{
-	// 	AvailabilitySet: &armcompute.AvailabilitySet{
+	// 	AvailabilitySet: armcompute.AvailabilitySet{
 	// 		SKU: &armcompute.SKU{
 	// 			Name: to.Ptr("Classic"),
 	// 		},
@@ -226,7 +226,7 @@ func ExampleAvailabilitySetsClient_Get_availabilitySetGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.AvailabilitySetsClientGetResponse{
-	// 	AvailabilitySet: &armcompute.AvailabilitySet{
+	// 	AvailabilitySet: armcompute.AvailabilitySet{
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armcompute.AvailabilitySetProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](2),
@@ -312,7 +312,7 @@ func ExampleAvailabilitySetsClient_Get_availabilitySetGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.AvailabilitySetsClientGetResponse{
-	// 	AvailabilitySet: &armcompute.AvailabilitySet{
+	// 	AvailabilitySet: armcompute.AvailabilitySet{
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
 	// 	},
@@ -771,7 +771,7 @@ func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.AvailabilitySetsClientUpdateResponse{
-	// 	AvailabilitySet: &armcompute.AvailabilitySet{
+	// 	AvailabilitySet: armcompute.AvailabilitySet{
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armcompute.AvailabilitySetProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](2),
@@ -829,7 +829,7 @@ func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.AvailabilitySetsClientUpdateResponse{
-	// 	AvailabilitySet: &armcompute.AvailabilitySet{
+	// 	AvailabilitySet: armcompute.AvailabilitySet{
 	// 		Location: to.Ptr("westus"),
 	// 	},
 	// }

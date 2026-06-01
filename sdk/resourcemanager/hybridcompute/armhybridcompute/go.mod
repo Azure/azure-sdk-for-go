@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute
 
 go 1.25.0
 

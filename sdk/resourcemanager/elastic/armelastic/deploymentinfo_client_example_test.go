@@ -7,7 +7,7 @@ package armelastic_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleDeploymentInfoClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelastic.DeploymentInfoClientListResponse{
-	// 	DeploymentInfoResponse: &armelastic.DeploymentInfoResponse{
+	// 	DeploymentInfoResponse: armelastic.DeploymentInfoResponse{
 	// 		DeploymentURL: to.Ptr("https://endpoint.eastus.kb.azure.elastic-cloud.com:9243"),
 	// 		DiskCapacity: to.Ptr("245760"),
 	// 		ElasticsearchEndPoint: to.Ptr("alias.es.eastus2.staging.azure.foundit.no"),

@@ -18,6 +18,8 @@ import (
 
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
+//
+// Generated from API version 2026-03-01-preview
 type UsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 }
 
 // NewListBySubscriptionPager - Get a list of all Azure AI Search quota usages across the subscription.
-//
-// Generated from API version 2026-03-01-preview
 //   - location - The name of the Azure region.
 //   - options - UsagesClientListBySubscriptionOptions contains the optional parameters for the UsagesClient.NewListBySubscriptionPager
 //     method.
@@ -84,8 +84,8 @@ func (client *UsagesClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}

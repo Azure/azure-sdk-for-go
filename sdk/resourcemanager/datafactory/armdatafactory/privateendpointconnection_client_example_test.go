@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
 	"log"
 )
 
@@ -42,7 +42,7 @@ func ExamplePrivateEndpointConnectionClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.PrivateEndpointConnectionClientCreateOrUpdateResponse{
-	// 	PrivateEndpointConnectionResource: &armdatafactory.PrivateEndpointConnectionResource{
+	// 	PrivateEndpointConnectionResource: armdatafactory.PrivateEndpointConnectionResource{
 	// 		Name: to.Ptr("exampleFactoryName"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName"),
@@ -102,7 +102,7 @@ func ExamplePrivateEndpointConnectionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.PrivateEndpointConnectionClientGetResponse{
-	// 	PrivateEndpointConnectionResource: &armdatafactory.PrivateEndpointConnectionResource{
+	// 	PrivateEndpointConnectionResource: armdatafactory.PrivateEndpointConnectionResource{
 	// 		Name: to.Ptr("exampleFactoryName"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName"),

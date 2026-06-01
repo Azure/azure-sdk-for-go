@@ -18,6 +18,8 @@ import (
 
 // ServerConfigurationOptionsClient contains the methods for the ServerConfigurationOptions group.
 // Don't use this type directly, use NewServerConfigurationOptionsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ServerConfigurationOptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewServerConfigurationOptionsClient(subscriptionID string, credential azcor
 
 // BeginCreateOrUpdate - Updates managed instance server configuration option.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - serverConfigurationOptionName - The name of the server configuration option.
@@ -68,8 +68,6 @@ func (client *ServerConfigurationOptionsClient) BeginCreateOrUpdate(ctx context.
 
 // CreateOrUpdate - Updates managed instance server configuration option.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ServerConfigurationOptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, serverConfigurationOptionName ServerConfigurationOptionName, parameters ServerConfigurationOption, options *ServerConfigurationOptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerConfigurationOptionsClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *ServerConfigurationOptionsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +125,6 @@ func (client *ServerConfigurationOptionsClient) createOrUpdateCreateRequest(ctx 
 
 // Get - Gets managed instance server configuration option.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - serverConfigurationOptionName - The name of the server configuration option.
@@ -180,8 +176,8 @@ func (client *ServerConfigurationOptionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -196,8 +192,6 @@ func (client *ServerConfigurationOptionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByManagedInstancePager - Gets a list of managed instance server configuration options.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ServerConfigurationOptionsClientListByManagedInstanceOptions contains the optional parameters for the ServerConfigurationOptionsClient.NewListByManagedInstancePager
@@ -245,8 +239,8 @@ func (client *ServerConfigurationOptionsClient) listByManagedInstanceCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

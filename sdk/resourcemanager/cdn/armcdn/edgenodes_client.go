@@ -14,8 +14,6 @@ import (
 	"strings"
 )
 
-const defaultEdgeNodesClientVersion string = "2025-06-01"
-
 // EdgeNodesClient contains the methods for the EdgeNodes group.
 // Don't use this type directly, use NewEdgeNodesClient() instead.
 //
@@ -71,7 +69,7 @@ func (client *EdgeNodesClient) listCreateRequest(ctx context.Context, _ *EdgeNod
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEdgeNodesClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

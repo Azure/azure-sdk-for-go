@@ -18,6 +18,8 @@ import (
 
 // ServersClient contains the methods for the Servers group.
 // Don't use this type directly, use NewServersClient() instead.
+//
+// Generated from API version 2023-03-02-preview
 type ServersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewServersClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // Get - Gets information about a server in cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - serverName - The name of the server.
@@ -93,8 +93,8 @@ func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClie
 }
 
 // NewListByClusterPager - Lists servers of a cluster.
-//
-// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ServersClientListByClusterOptions contains the optional parameters for the ServersClient.NewListByClusterPager
@@ -158,8 +156,8 @@ func (client *ServersClient) listByClusterCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

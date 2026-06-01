@@ -19,6 +19,8 @@ import (
 
 // TaskAssignmentInstancesReportClient contains the methods for the TaskAssignmentInstancesReport group.
 // Don't use this type directly, use NewTaskAssignmentInstancesReportClient() instead.
+//
+// Generated from API version 2025-08-01
 type TaskAssignmentInstancesReportClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewTaskAssignmentInstancesReportClient(subscriptionID string, credential az
 }
 
 // NewListPager - Fetch the report summary of a single storage task assignment's instances
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -103,8 +103,8 @@ func (client *TaskAssignmentInstancesReportClient) listCreateRequest(ctx context
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

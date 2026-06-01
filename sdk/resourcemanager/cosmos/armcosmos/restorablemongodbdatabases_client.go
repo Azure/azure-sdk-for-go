@@ -18,6 +18,8 @@ import (
 
 // RestorableMongodbDatabasesClient contains the methods for the RestorableMongodbDatabases group.
 // Don't use this type directly, use NewRestorableMongodbDatabasesClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type RestorableMongodbDatabasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewRestorableMongodbDatabasesClient(subscriptionID string, credential azcor
 // NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB databases under the restorable
 // account. This helps in scenario where database was accidentally deleted to get the deletion time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
 // permission
-//
-// Generated from API version 2025-11-01-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableMongodbDatabasesClientListOptions contains the optional parameters for the RestorableMongodbDatabasesClient.NewListPager
@@ -91,8 +91,8 @@ func (client *RestorableMongodbDatabasesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

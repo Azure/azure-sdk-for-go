@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
 	"log"
 	"time"
 )
@@ -58,7 +58,7 @@ func ExampleTriggersClient_CreateOrUpdate_triggersCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.TriggersClientCreateOrUpdateResponse{
-	// 	TriggerResource: &armdatafactory.TriggerResource{
+	// 	TriggerResource: armdatafactory.TriggerResource{
 	// 		Name: to.Ptr("exampleTrigger"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/triggers"),
 	// 		Etag: to.Ptr("0a008ad4-0000-0000-0000-5b245c6e0000"),
@@ -139,7 +139,7 @@ func ExampleTriggersClient_CreateOrUpdate_triggersUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.TriggersClientCreateOrUpdateResponse{
-	// 	TriggerResource: &armdatafactory.TriggerResource{
+	// 	TriggerResource: armdatafactory.TriggerResource{
 	// 		Name: to.Ptr("exampleTrigger"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/triggers"),
 	// 		Etag: to.Ptr("0a008dd4-0000-0000-0000-5b245c6f0000"),
@@ -216,7 +216,7 @@ func ExampleTriggersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.TriggersClientGetResponse{
-	// 	TriggerResource: &armdatafactory.TriggerResource{
+	// 	TriggerResource: armdatafactory.TriggerResource{
 	// 		Name: to.Ptr("exampleTrigger"),
 	// 		Type: to.Ptr("Microsoft.DataFactory/factories/triggers"),
 	// 		Etag: to.Ptr("1500544f-0000-0200-0000-5cbe09100000"),
@@ -270,7 +270,7 @@ func ExampleTriggersClient_GetEventSubscriptionStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.TriggersClientGetEventSubscriptionStatusResponse{
-	// 	TriggerSubscriptionOperationStatus: &armdatafactory.TriggerSubscriptionOperationStatus{
+	// 	TriggerSubscriptionOperationStatus: armdatafactory.TriggerSubscriptionOperationStatus{
 	// 		Status: to.Ptr(armdatafactory.EventSubscriptionStatusEnabled),
 	// 		TriggerName: to.Ptr("exampleTrigger"),
 	// 	},
@@ -362,7 +362,7 @@ func ExampleTriggersClient_QueryByFactory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.TriggersClientQueryByFactoryResponse{
-	// 	TriggerQueryResponse: &armdatafactory.TriggerQueryResponse{
+	// 	TriggerQueryResponse: armdatafactory.TriggerQueryResponse{
 	// 		Value: []*armdatafactory.TriggerResource{
 	// 			{
 	// 				Name: to.Ptr("exampleRerunTrigger"),
@@ -401,7 +401,7 @@ func ExampleTriggersClient_BeginStart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -427,7 +427,7 @@ func ExampleTriggersClient_BeginStop() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -453,13 +453,13 @@ func ExampleTriggersClient_BeginSubscribeToEvents() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.TriggersClientSubscribeToEventsResponse{
-	// 	TriggerSubscriptionOperationStatus: &armdatafactory.TriggerSubscriptionOperationStatus{
+	// 	TriggerSubscriptionOperationStatus: armdatafactory.TriggerSubscriptionOperationStatus{
 	// 		Status: to.Ptr(armdatafactory.EventSubscriptionStatusEnabled),
 	// 		TriggerName: to.Ptr("exampleTrigger"),
 	// 	},
@@ -483,13 +483,13 @@ func ExampleTriggersClient_BeginUnsubscribeFromEvents() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatafactory.TriggersClientUnsubscribeFromEventsResponse{
-	// 	TriggerSubscriptionOperationStatus: &armdatafactory.TriggerSubscriptionOperationStatus{
+	// 	TriggerSubscriptionOperationStatus: armdatafactory.TriggerSubscriptionOperationStatus{
 	// 		Status: to.Ptr(armdatafactory.EventSubscriptionStatusDisabled),
 	// 		TriggerName: to.Ptr("exampleTrigger"),
 	// 	},

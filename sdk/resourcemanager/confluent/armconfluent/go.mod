@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent
 
 go 1.25.0
 

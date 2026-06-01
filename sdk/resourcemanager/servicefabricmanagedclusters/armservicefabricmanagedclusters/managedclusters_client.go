@@ -18,6 +18,8 @@ import (
 
 // ManagedClustersClient contains the methods for the ManagedClusters group.
 // Don't use this type directly, use NewManagedClustersClient() instead.
+//
+// Generated from API version 2026-02-01
 type ManagedClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedClustersClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Create or update a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - parameters - The cluster resource.
@@ -67,8 +67,6 @@ func (client *ManagedClustersClient) BeginCreateOrUpdate(ctx context.Context, re
 
 // CreateOrUpdate - Create or update a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedCluster, options *ManagedClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedClustersClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -122,8 +120,6 @@ func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Con
 
 // BeginDelete - Delete a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - options - ManagedClustersClientBeginDeleteOptions contains the optional parameters for the ManagedClustersClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *ManagedClustersClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Delete a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ManagedClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedClustersClient.BeginDelete"
@@ -190,16 +184,14 @@ func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Service Fabric managed cluster resource created or in the process of being created in the specified resource
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - options - ManagedClustersClientGetOptions contains the optional parameters for the ManagedClustersClient.Get method.
@@ -245,8 +237,8 @@ func (client *ManagedClustersClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -262,8 +254,6 @@ func (client *ManagedClustersClient) getHandleResponse(resp *http.Response) (Man
 
 // NewListByResourceGroupPager - Gets all Service Fabric cluster resources created or in the process of being created in the
 // resource group.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ManagedClustersClientListByResourceGroupOptions contains the optional parameters for the ManagedClustersClient.NewListByResourceGroupPager
 //     method.
@@ -306,8 +296,8 @@ func (client *ManagedClustersClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -323,8 +313,6 @@ func (client *ManagedClustersClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - Gets all Service Fabric cluster resources created or in the process of being created in the
 // subscription.
-//
-// Generated from API version 2026-02-01
 //   - options - ManagedClustersClientListBySubscriptionOptions contains the optional parameters for the ManagedClustersClient.NewListBySubscriptionPager
 //     method.
 func (client *ManagedClustersClient) NewListBySubscriptionPager(options *ManagedClustersClientListBySubscriptionOptions) *runtime.Pager[ManagedClustersClientListBySubscriptionResponse] {
@@ -362,8 +350,8 @@ func (client *ManagedClustersClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -379,8 +367,6 @@ func (client *ManagedClustersClient) listBySubscriptionHandleResponse(resp *http
 
 // BeginUpdate - Update the tags of of a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - parameters - The managed cluster resource updated tags.
@@ -405,8 +391,6 @@ func (client *ManagedClustersClient) BeginUpdate(ctx context.Context, resourceGr
 
 // Update - Update the tags of of a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *ManagedClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, options *ManagedClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedClustersClient.BeginUpdate"
@@ -448,8 +432,8 @@ func (client *ManagedClustersClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

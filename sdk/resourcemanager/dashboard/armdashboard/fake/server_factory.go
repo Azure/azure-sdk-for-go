@@ -74,33 +74,33 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "GrafanaClient":
-		initServer(s, &s.trGrafanaServer, func() *GrafanaServerTransport { return NewGrafanaServerTransport(&s.srv.GrafanaServer) })
+		initServer(&s.trMu, &s.trGrafanaServer, func() *GrafanaServerTransport { return NewGrafanaServerTransport(&s.srv.GrafanaServer) })
 		resp, err = s.trGrafanaServer.Do(req)
 	case "IntegrationFabricsClient":
-		initServer(s, &s.trIntegrationFabricsServer, func() *IntegrationFabricsServerTransport {
+		initServer(&s.trMu, &s.trIntegrationFabricsServer, func() *IntegrationFabricsServerTransport {
 			return NewIntegrationFabricsServerTransport(&s.srv.IntegrationFabricsServer)
 		})
 		resp, err = s.trIntegrationFabricsServer.Do(req)
 	case "ManagedDashboardsClient":
-		initServer(s, &s.trManagedDashboardsServer, func() *ManagedDashboardsServerTransport {
+		initServer(&s.trMu, &s.trManagedDashboardsServer, func() *ManagedDashboardsServerTransport {
 			return NewManagedDashboardsServerTransport(&s.srv.ManagedDashboardsServer)
 		})
 		resp, err = s.trManagedDashboardsServer.Do(req)
 	case "ManagedPrivateEndpointsClient":
-		initServer(s, &s.trManagedPrivateEndpointsServer, func() *ManagedPrivateEndpointsServerTransport {
+		initServer(&s.trMu, &s.trManagedPrivateEndpointsServer, func() *ManagedPrivateEndpointsServerTransport {
 			return NewManagedPrivateEndpointsServerTransport(&s.srv.ManagedPrivateEndpointsServer)
 		})
 		resp, err = s.trManagedPrivateEndpointsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
-		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
 	case "PrivateLinkResourcesClient":
-		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+		initServer(&s.trMu, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
 			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
 		})
 		resp, err = s.trPrivateLinkResourcesServer.Do(req)
@@ -113,12 +113,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

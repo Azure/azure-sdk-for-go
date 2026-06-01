@@ -4,6 +4,10 @@
 
 package armdatadog
 
+const (
+	version20251226Preview string = "2025-12-26-preview"
+)
+
 // ConnectorAction - Add or Remove connectors for SRE agents.
 type ConnectorAction string
 

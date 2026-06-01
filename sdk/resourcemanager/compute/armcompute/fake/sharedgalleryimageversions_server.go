@@ -12,10 +12,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // SharedGalleryImageVersionsServer is a fake server for instances of the armcompute.SharedGalleryImageVersionsClient type.
@@ -58,9 +59,7 @@ func (s *SharedGalleryImageVersionsServerTransport) Do(req *http.Request) (*http
 }
 
 func (s *SharedGalleryImageVersionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,10 +77,7 @@ func (s *SharedGalleryImageVersionsServerTransport) dispatchToMethodFake(req *ht
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -123,7 +119,7 @@ func (s *SharedGalleryImageVersionsServerTransport) dispatchGet(req *http.Reques
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SharedGalleryImageVersion, req)
@@ -158,11 +154,7 @@ func (s *SharedGalleryImageVersionsServerTransport) dispatchNewListPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		sharedToUnescaped, err := url.QueryUnescape(qp.Get("sharedTo"))
-		if err != nil {
-			return nil, err
-		}
-		sharedToParam := getOptional(armcompute.SharedToValues(sharedToUnescaped))
+		sharedToParam := getOptional(armcompute.SharedToValues(qp.Get("sharedTo")))
 		var options *armcompute.SharedGalleryImageVersionsClientListOptions
 		if sharedToParam != nil {
 			options = &armcompute.SharedGalleryImageVersionsClientListOptions{
@@ -180,7 +172,7 @@ func (s *SharedGalleryImageVersionsServerTransport) dispatchNewListPager(req *ht
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleCopyJobsClient_Cancel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientCancelResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{
@@ -90,7 +90,7 @@ func ExampleCopyJobsClient_Complete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientCompleteResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/e35cc6eb-c8e3-447b-8de6-b83328cd0098/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{
@@ -178,7 +178,7 @@ func ExampleCopyJobsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientCreateResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{
@@ -237,7 +237,7 @@ func ExampleCopyJobsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientGetResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{
@@ -364,7 +364,7 @@ func ExampleCopyJobsClient_Pause() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientPauseResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{
@@ -423,7 +423,7 @@ func ExampleCopyJobsClient_Resume() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientResumeResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{

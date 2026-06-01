@@ -6,11 +6,10 @@ package armeventgrid_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
+	"log"
 )
 
 // Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_CreateOrUpdate.json
@@ -42,13 +41,13 @@ func ExampleNamespaceTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespaceTopicEventSubscriptionsClientCreateOrUpdateResponse{
-	// 	Subscription: &armeventgrid.Subscription{
+	// 	Subscription: armeventgrid.Subscription{
 	// 		Name: to.Ptr("examplenamespacetopicEventSub2"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/topics/eventsubscriptions"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/examplenamespace2/topics/examplenamespacetopic2/eventSubscriptions/examplenamespacetopicEventSub2"),
@@ -85,7 +84,7 @@ func ExampleNamespaceTopicEventSubscriptionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -113,7 +112,7 @@ func ExampleNamespaceTopicEventSubscriptionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespaceTopicEventSubscriptionsClientGetResponse{
-	// 	Subscription: &armeventgrid.Subscription{
+	// 	Subscription: armeventgrid.Subscription{
 	// 		Name: to.Ptr("examplenamespacetopicEventSub2"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/topics/eventsubscriptions"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/examplenamespace2/topics/examplenamespacetopic2/eventSubscriptions/examplenamespacetopicEventSub2"),
@@ -152,7 +151,7 @@ func ExampleNamespaceTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse{
-	// 	DeliveryAttributeListResult: &armeventgrid.DeliveryAttributeListResult{
+	// 	DeliveryAttributeListResult: armeventgrid.DeliveryAttributeListResult{
 	// 		Value: []armeventgrid.DeliveryAttributeMappingClassification{
 	// 			&armeventgrid.StaticDeliveryAttributeMapping{
 	// 				Name: to.Ptr("header1"),
@@ -201,7 +200,7 @@ func ExampleNamespaceTopicEventSubscriptionsClient_GetFullURL() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespaceTopicEventSubscriptionsClientGetFullURLResponse{
-	// 	SubscriptionFullURL: &armeventgrid.SubscriptionFullURL{
+	// 	SubscriptionFullURL: armeventgrid.SubscriptionFullURL{
 	// 		EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
 	// 	},
 	// }
@@ -301,13 +300,13 @@ func ExampleNamespaceTopicEventSubscriptionsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventgrid.NamespaceTopicEventSubscriptionsClientUpdateResponse{
-	// 	Subscription: &armeventgrid.Subscription{
+	// 	Subscription: armeventgrid.Subscription{
 	// 		Name: to.Ptr("exampleNamespaceTopicEventSubscriptionName1"),
 	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/topics/eventsubscriptions"),
 	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/examplenamespace2/topics/exampleNamespaceTopicName1/eventSubscriptions/exampleNamespaceTopicEventSubscriptionName1"),

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"log"
 	"time"
 )
@@ -44,7 +44,7 @@ func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHos
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientCreateOrUpdateResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		Properties: &armcompute.DedicatedHostGroupProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			SupportAutomaticPlacement: to.Ptr(true),
@@ -97,7 +97,7 @@ func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHos
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientCreateOrUpdateResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		Properties: &armcompute.DedicatedHostGroupProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			SupportAutomaticPlacement: to.Ptr(true),
@@ -182,7 +182,7 @@ func ExampleDedicatedHostGroupsClient_Get_createADedicatedHostGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientGetResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup"),
 	// 		Properties: &armcompute.DedicatedHostGroupProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
@@ -279,7 +279,7 @@ func ExampleDedicatedHostGroupsClient_Get_createAnUltraSsdEnabledDedicatedHostGr
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientGetResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup"),
 	// 		Properties: &armcompute.DedicatedHostGroupProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
@@ -610,7 +610,7 @@ func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupUpdateMaximumSetG
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientUpdateResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 		},
@@ -677,7 +677,7 @@ func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupUpdateMinimumSetG
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostGroupsClientUpdateResponse{
-	// 	DedicatedHostGroup: &armcompute.DedicatedHostGroup{
+	// 	DedicatedHostGroup: armcompute.DedicatedHostGroup{
 	// 		Location: to.Ptr("westus"),
 	// 	},
 	// }

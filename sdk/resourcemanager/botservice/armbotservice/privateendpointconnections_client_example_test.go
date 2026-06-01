@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
 	"log"
 )
 
@@ -38,7 +38,7 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.PrivateEndpointConnectionsClientCreateResponse{
-	// 	PrivateEndpointConnection: &armbotservice.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armbotservice.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 		Type: to.Ptr("Microsoft.BotService/botServices/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.BotService/botServices/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),
@@ -98,7 +98,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armbotservice.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armbotservice.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 		Type: to.Ptr("Microsoft.BotService/botServices/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.BotService/botServices/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),

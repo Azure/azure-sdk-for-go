@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.HanaOnAzure": "2020-02-07-preview"
   },
-  "emitterVersion": "0.14.0"
+  "emitterVersion": "0.14.1"
 }

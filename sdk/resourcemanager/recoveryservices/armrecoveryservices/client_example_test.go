@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices/v2"
 	"log"
 )
 
@@ -43,7 +43,7 @@ func ExampleClient_Capabilities() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.ClientCapabilitiesResponse{
-	// 	CapabilitiesResponse: &armrecoveryservices.CapabilitiesResponse{
+	// 	CapabilitiesResponse: armrecoveryservices.CapabilitiesResponse{
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/Vaults"),
 	// 		Properties: &armrecoveryservices.CapabilitiesResponseProperties{
 	// 			DNSZones: []*armrecoveryservices.DNSZoneResponse{
@@ -89,7 +89,7 @@ func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenNoR
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.ClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armrecoveryservices.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armrecoveryservices.CheckNameAvailabilityResult{
 	// 		NameAvailable: to.Ptr(true),
 	// 	},
 	// }
@@ -117,7 +117,7 @@ func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenRes
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.ClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armrecoveryservices.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armrecoveryservices.CheckNameAvailabilityResult{
 	// 		Message: to.Ptr("Resource already exists with the same name."),
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr("AlreadyExists"),

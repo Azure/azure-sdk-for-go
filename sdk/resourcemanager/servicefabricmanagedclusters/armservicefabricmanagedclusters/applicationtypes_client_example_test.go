@@ -33,7 +33,7 @@ func ExampleApplicationTypesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationTypesClientCreateOrUpdateResponse{
-	// 	ApplicationTypeResource: &armservicefabricmanagedclusters.ApplicationTypeResource{
+	// 	ApplicationTypeResource: armservicefabricmanagedclusters.ApplicationTypeResource{
 	// 		Name: to.Ptr("myAppType"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applicationTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applicationTypes/myAppType"),
@@ -61,7 +61,7 @@ func ExampleApplicationTypesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -84,7 +84,7 @@ func ExampleApplicationTypesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationTypesClientGetResponse{
-	// 	ApplicationTypeResource: &armservicefabricmanagedclusters.ApplicationTypeResource{
+	// 	ApplicationTypeResource: armservicefabricmanagedclusters.ApplicationTypeResource{
 	// 		Name: to.Ptr("myAppType"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applicationTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applicationTypes/myAppType"),
@@ -158,7 +158,7 @@ func ExampleApplicationTypesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationTypesClientUpdateResponse{
-	// 	ApplicationTypeResource: &armservicefabricmanagedclusters.ApplicationTypeResource{
+	// 	ApplicationTypeResource: armservicefabricmanagedclusters.ApplicationTypeResource{
 	// 		Name: to.Ptr("myAppType"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applicationTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applicationTypes/myAppType"),

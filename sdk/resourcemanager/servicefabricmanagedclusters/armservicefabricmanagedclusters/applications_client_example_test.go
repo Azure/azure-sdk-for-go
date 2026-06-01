@@ -71,13 +71,13 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMaximumPa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationsClientCreateOrUpdateResponse{
-	// 	ApplicationResource: &armservicefabricmanagedclusters.ApplicationResource{
+	// 	ApplicationResource: armservicefabricmanagedclusters.ApplicationResource{
 	// 		Name: to.Ptr("myApp"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp"),
@@ -149,13 +149,13 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMinimumPa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationsClientCreateOrUpdateResponse{
-	// 	ApplicationResource: &armservicefabricmanagedclusters.ApplicationResource{
+	// 	ApplicationResource: armservicefabricmanagedclusters.ApplicationResource{
 	// 		Name: to.Ptr("myApp"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp"),
@@ -219,7 +219,7 @@ func ExampleApplicationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -246,7 +246,7 @@ func ExampleApplicationsClient_BeginFetchHealth() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -269,7 +269,7 @@ func ExampleApplicationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationsClientGetResponse{
-	// 	ApplicationResource: &armservicefabricmanagedclusters.ApplicationResource{
+	// 	ApplicationResource: armservicefabricmanagedclusters.ApplicationResource{
 	// 		Name: to.Ptr("myApp"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp"),
@@ -376,7 +376,7 @@ func ExampleApplicationsClient_BeginReadUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -403,7 +403,7 @@ func ExampleApplicationsClient_BeginRestartDeployedCodePackage() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -426,7 +426,7 @@ func ExampleApplicationsClient_BeginResumeUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -447,7 +447,7 @@ func ExampleApplicationsClient_BeginStartRollback() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -478,13 +478,13 @@ func ExampleApplicationsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationsClientUpdateResponse{
-	// 	ApplicationResource: &armservicefabricmanagedclusters.ApplicationResource{
+	// 	ApplicationResource: armservicefabricmanagedclusters.ApplicationResource{
 	// 		Name: to.Ptr("myApp"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp"),
@@ -581,6 +581,6 @@ func ExampleApplicationsClient_BeginUpdateUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

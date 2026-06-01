@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
 	"log"
 )
 
@@ -32,7 +32,7 @@ func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendation
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ReservationRecommendationDetailsClientGetResponse{
-	// 	ReservationRecommendationDetailsModel: &armconsumption.ReservationRecommendationDetailsModel{
+	// 	ReservationRecommendationDetailsModel: armconsumption.ReservationRecommendationDetailsModel{
 	// 		Name: to.Ptr("reservationRecommendationDetails"),
 	// 		Type: to.Ptr("Microsoft.Consumption/ReservationRecommendationDetails"),
 	// 		ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000/providers/microsoft.consumption/reservationrecommendationdetails"),
@@ -142,7 +142,7 @@ func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendation
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ReservationRecommendationDetailsClientGetResponse{
-	// 	ReservationRecommendationDetailsModel: &armconsumption.ReservationRecommendationDetailsModel{
+	// 	ReservationRecommendationDetailsModel: armconsumption.ReservationRecommendationDetailsModel{
 	// 		Name: to.Ptr("reservationRecommendationDetails"),
 	// 		Type: to.Ptr("Microsoft.Consumption/ReservationRecommendationDetails"),
 	// 		ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-00000000:00000000-0000-0000-0000-00000000/billingProfiles/00000000-0000-0000-0000-00000000/providers/microsoft.consumption/reservationrecommendationdetails"),
@@ -218,7 +218,7 @@ func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendation
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ReservationRecommendationDetailsClientGetResponse{
-	// 	ReservationRecommendationDetailsModel: &armconsumption.ReservationRecommendationDetailsModel{
+	// 	ReservationRecommendationDetailsModel: armconsumption.ReservationRecommendationDetailsModel{
 	// 		Name: to.Ptr("reservationRecommendationDetails"),
 	// 		Type: to.Ptr("Microsoft.Consumption/ReservationRecommendationDetails"),
 	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/testGroup/providers/microsoft.consumption/reservationrecommendationdetails"),
@@ -300,7 +300,7 @@ func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendation
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ReservationRecommendationDetailsClientGetResponse{
-	// 	ReservationRecommendationDetailsModel: &armconsumption.ReservationRecommendationDetailsModel{
+	// 	ReservationRecommendationDetailsModel: armconsumption.ReservationRecommendationDetailsModel{
 	// 		Name: to.Ptr("reservationRecommendationDetails"),
 	// 		Type: to.Ptr("Microsoft.Consumption/ReservationRecommendationDetails"),
 	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-00000000/providers/microsoft.consumption/reservationrecommendationdetails"),

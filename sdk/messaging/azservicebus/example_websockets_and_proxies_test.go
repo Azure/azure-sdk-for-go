@@ -45,5 +45,5 @@ func ExampleNewClient_usingWebsocketsAndProxies() {
 	// websocket connection is closed. This error will be returned from the
 	// `Client.Close` function and can be ignored, as the websocket "close handshake"
 	// has already completed.
-	defer client.Close(context.TODO())
+	defer func() { _ = client.Close(context.TODO()) }()
 }

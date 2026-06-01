@@ -18,6 +18,8 @@ import (
 
 // LoadBalancersClient contains the methods for the LoadBalancers group.
 // Don't use this type directly, use NewLoadBalancersClient() instead.
+//
+// Generated from API version 2026-03-02-preview
 type LoadBalancersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewLoadBalancersClient(subscriptionID string, credential azcore.TokenCreden
 
 // CreateOrUpdate - Creates or updates a load balancer in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - loadBalancerName - The name of the load balancer.
@@ -95,8 +95,8 @@ func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -116,8 +116,6 @@ func (client *LoadBalancersClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // BeginDelete - Deletes a load balancer in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - loadBalancerName - The name of the load balancer.
@@ -142,8 +140,6 @@ func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Deletes a load balancer in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-02-preview
 func (client *LoadBalancersClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, options *LoadBalancersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LoadBalancersClient.BeginDelete"
@@ -189,15 +185,13 @@ func (client *LoadBalancersClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the specified load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - loadBalancerName - The name of the load balancer.
@@ -248,8 +242,8 @@ func (client *LoadBalancersClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,8 +258,6 @@ func (client *LoadBalancersClient) getHandleResponse(resp *http.Response) (LoadB
 }
 
 // NewListByManagedClusterPager - Gets a list of load balancers in the specified managed cluster.
-//
-// Generated from API version 2026-01-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - LoadBalancersClientListByManagedClusterOptions contains the optional parameters for the LoadBalancersClient.NewListByManagedClusterPager
@@ -313,8 +305,8 @@ func (client *LoadBalancersClient) listByManagedClusterCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

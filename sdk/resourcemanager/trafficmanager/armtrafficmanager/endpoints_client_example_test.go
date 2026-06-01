@@ -12,14 +12,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-04-01/Endpoint-PUT-External-WithAlwaysServe.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithAlwaysServe.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithAlwaysServe() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -40,10 +40,10 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithAlwaysServe() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armtrafficmanager.Endpoint{
+	// 	Endpoint: armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			AlwaysServe: to.Ptr(armtrafficmanager.AlwaysServeEnabled),
 	// 			EndpointLocation: to.Ptr("North Europe"),
@@ -57,14 +57,14 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithAlwaysServe() 
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-PUT-External-WithCustomHeaders.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithCustomHeaders.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithCustomHeaders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -94,10 +94,10 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithCustomHeaders(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armtrafficmanager.Endpoint{
+	// 	Endpoint: armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			CustomHeaders: []*armtrafficmanager.EndpointPropertiesCustomHeadersItem{
 	// 				{
@@ -120,14 +120,14 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithCustomHeaders(
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-PUT-External-WithGeoMapping.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithGeoMapping.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithGeoMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -150,10 +150,10 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithGeoMapping() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armtrafficmanager.Endpoint{
+	// 	Endpoint: armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("My external endpoint"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
 	// 			EndpointStatus: to.Ptr(armtrafficmanager.EndpointStatusEnabled),
@@ -169,14 +169,14 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithGeoMapping() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-PUT-External-WithLocation.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithLocation.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -196,10 +196,10 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithLocation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armtrafficmanager.Endpoint{
+	// 	Endpoint: armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointLocation: to.Ptr("North Europe"),
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
@@ -212,14 +212,14 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithLocation() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-PUT-External-WithSubnetMapping.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithSubnetMapping.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithSubnetMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -248,10 +248,10 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithSubnetMapping(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armtrafficmanager.Endpoint{
+	// 	Endpoint: armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("My external endpoint"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
 	// 			EndpointStatus: to.Ptr(armtrafficmanager.EndpointStatusEnabled),
@@ -273,14 +273,14 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithSubnetMapping(
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-DELETE-External.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-DELETE-External.json
 func ExampleEndpointsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -292,19 +292,19 @@ func ExampleEndpointsClient_Delete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.EndpointsClientDeleteResponse{
-	// 	DeleteOperationResult: &armtrafficmanager.DeleteOperationResult{
+	// 	DeleteOperationResult: armtrafficmanager.DeleteOperationResult{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-GET-External-WithGeoMapping.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-GET-External-WithGeoMapping.json
 func ExampleEndpointsClient_Get_endpointGetExternalWithGeoMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -316,10 +316,10 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithGeoMapping() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.EndpointsClientGetResponse{
-	// 	Endpoint: &armtrafficmanager.Endpoint{
+	// 	Endpoint: armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("My external endpoint"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
 	// 			EndpointStatus: to.Ptr(armtrafficmanager.EndpointStatusEnabled),
@@ -335,14 +335,14 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithGeoMapping() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-GET-External-WithLocation.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-GET-External-WithLocation.json
 func ExampleEndpointsClient_Get_endpointGetExternalWithLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -354,10 +354,10 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithLocation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.EndpointsClientGetResponse{
-	// 	Endpoint: &armtrafficmanager.Endpoint{
+	// 	Endpoint: armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointLocation: to.Ptr("North Europe"),
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
@@ -370,14 +370,14 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithLocation() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-GET-External-WithSubnetMapping.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-GET-External-WithSubnetMapping.json
 func ExampleEndpointsClient_Get_endpointGetExternalWithSubnetMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -389,10 +389,10 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithSubnetMapping() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.EndpointsClientGetResponse{
-	// 	Endpoint: &armtrafficmanager.Endpoint{
+	// 	Endpoint: armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("My external endpoint"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
 	// 			EndpointStatus: to.Ptr(armtrafficmanager.EndpointStatusEnabled),
@@ -414,21 +414,18 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithSubnetMapping() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-PATCH-External-Target.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PATCH-External-Target.json
 func ExampleEndpointsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewEndpointsClient().Update(ctx, "azuresdkfornetautoresttrafficmanager1421", "azsmnet6386", armtrafficmanager.EndpointTypeExternalEndpoints, "azsmnet7187", armtrafficmanager.Endpoint{
-		Name: to.Ptr("azsmnet7187"),
-		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-		ID:   to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 		Properties: &armtrafficmanager.EndpointProperties{
 			Target: to.Ptr("another.foobar.contoso.com"),
 		},
@@ -440,10 +437,10 @@ func ExampleEndpointsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.EndpointsClientUpdateResponse{
-	// 	Endpoint: &armtrafficmanager.Endpoint{
+	// 	Endpoint: armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointLocation: to.Ptr("North Europe"),
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),

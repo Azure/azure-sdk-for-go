@@ -945,7 +945,11 @@ type ACSMessageDeliveryStatusUpdatedEventData struct {
 	MessageID *string
 
 	// Optional. The BSUID of the recipient.
+<<<<<<< HEAD
 	ToBSUID *string
+=======
+	ToBsuid *string
+>>>>>>> origin/main
 }
 
 // ACSMessageInteractiveButtonReplyContent - Message Interactive button reply content for a user to business message
@@ -1039,7 +1043,11 @@ type ACSMessageReceivedEventData struct {
 	Error *Error
 
 	// Optional. The BSUID of the sender.
+<<<<<<< HEAD
 	FromBSUID *string
+=======
+	FromBsuid *string
+>>>>>>> origin/main
 
 	// Optional. The received message interactive content
 	InteractiveContent *ACSMessageInteractiveContent
@@ -1871,6 +1879,12 @@ type APICenterAPISpecification struct {
 
 	// Specification version.
 	Version *string
+}
+
+// APIEntityReference - The API entity reference.
+type APIEntityReference struct {
+	// REQUIRED; The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
+	ID *string
 }
 
 // APIManagementAPICreatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APICreated
@@ -3415,6 +3429,23 @@ type KeyVaultSecretNewVersionCreatedEventData struct {
 	Version *string
 }
 
+// LifecycleHookEventsEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Compute.VirtualMachineScaleSets.LifecycleHookEvents
+// preview event.
+type LifecycleHookEventsEventData struct {
+	// REQUIRED; The ARM resource ID of the Lifecycle Hook event entity created by the platform for this event. Customers can
+	// use this ARM resource ID to query more details about the event through Azure Resource Manager APIs.
+	ID *string
+
+	// REQUIRED; The name of the Lifecycle Hook event. This is a unique identifier for the Lifecycle Hook event.
+	Name *string
+
+	// REQUIRED; Operational information related to the Lifecycle Hook event.
+	OperationalInfo *OperationalInfo
+
+	// REQUIRED; The properties of the Virtual Machine Scale Set Lifecycle Hook event.
+	Properties *VirtualMachineScaleSetLifecycleHookEventProperties
+}
+
 // MachineLearningServicesDatasetDriftDetectedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.DatasetDriftDetected
 // event.
 type MachineLearningServicesDatasetDriftDetectedEventData struct {
@@ -3621,6 +3652,12 @@ type MicrosoftTeamsUserIdentifierModel struct {
 
 	// True if the Microsoft Teams user is anonymous. By default false if missing.
 	IsAnonymous *bool
+}
+
+// OperationalInfo - Operational information for a Virtual Machine Scale Set Lifecycle Hook event.
+type OperationalInfo struct {
+	// REQUIRED; The activity ID associated with the operation generating the Lifecycle Hook event.
+	ActivityID *string
 }
 
 // PhoneNumberIdentifierModel - A phone number.
@@ -4784,6 +4821,69 @@ type SubscriptionValidationEventData struct {
 type SubscriptionValidationResponse struct {
 	// REQUIRED; The validation response sent by the subscriber to Azure Event Grid to complete the validation of an event subscription.
 	ValidationResponse *string
+}
+
+// VirtualMachineScaleSetLifecycleHookEventAdditionalContext - Additional key-value pairs set on the Lifecycle Hook event
+// that gives customer some useful context/data.
+// The keys in this dictionary are specific to the Lifecycle Hook type. Different Lifecycle Hook events can have different
+// sets of keys in the additional context depending on the Lifecycle Hook type.
+// For example, for a Lifecycle Hook event with UpgradeAutoOSScheduling type,
+// the additional context can contain the key "priority" that helps customer identify the priority of the Auto OS Upgrade
+// operation triggered on the Virtual Machine Scale Set.
+type VirtualMachineScaleSetLifecycleHookEventAdditionalContext struct {
+	// Can only be present for a Lifecycle Hook event of type "UpgradeAutoOSScheduling". Denotes the priority of the Virtual Machine
+	// Scale Set Lifecycle Hook event for the Auto OS Upgrade scheduled on the Virtual Machine Scale Set.
+	Priority *string
+}
+
+// VirtualMachineScaleSetLifecycleHookEventProperties - Defines the Virtual Machine Scale Set Lifecycle Hook event properties.
+type VirtualMachineScaleSetLifecycleHookEventProperties struct {
+	// REQUIRED; Specify the action that will be applied on the a target resource in the Virtual Machine Scale Set Lifecycle Hook
+	// event if the platform does not get a response from the customer for the target resource before waitUntil.
+	DefaultAction *LifecycleHookAction
+
+	// REQUIRED; Specifies the exact UTC timestamp in ISO 8601 format till when the customer can delay the Lifecycle Hook event.
+	// The customer will not be allowed to delay the event to a timestamp beyond this.
+	MaxWaitUntil *string
+
+	// REQUIRED; Specifies the state of the Virtual Machine Scale Set Lifecycle Hook event.
+	State *VirtualMachineScaleSetLifecycleHookEventState
+
+	// REQUIRED; The UTC timestamp in ISO 8601 format at which the platform creates the Virtual Machine Scale Set Lifecycle Hook
+	// event entity.
+	TimeCreated *string
+
+	// REQUIRED; Defines the type or scenario for sending a Virtual Machine Scale Set Lifecycle Hook event to the customer.
+	Type *VirtualMachineScaleSetLifecycleHookEventType
+
+	// REQUIRED; Specifies the exact UTC timestamp in ISO 8601 format till which the event would remain in the current lifecycle
+	// state waiting for an action from the customer. Beyond this timestamp, the platform will apply the defaultAction for the
+	// event.
+	WaitUntil *string
+
+	// READ-ONLY; List of target resources which are getting processed in the Virtual Machine Scale Set Lifecycle Hook event.
+	TargetResources []VirtualMachineScaleSetLifecycleHookEventTargetResource
+
+	// Additional key-value pairs set on the Lifecycle Hook event that gives customer some useful context/data.
+	// The keys in this dictionary are specific to the Lifecycle Hook type. Different Lifecycle Hook events can have different
+	// sets of keys in the additional context depending on the Lifecycle Hook type.
+	// For example, for a Lifecycle Hook event with UpgradeAutoOSScheduling type,
+	// the additional context can contain the key "priority" that helps customer identify the priority of the Auto OS Upgrade
+	// operation triggered on the Virtual Machine Scale Set.
+	AdditionalContext *VirtualMachineScaleSetLifecycleHookEventAdditionalContext
+}
+
+// VirtualMachineScaleSetLifecycleHookEventTargetResource - Define a single target ARM resource in a Virtual Machine Scale
+// Set Lifecycle Hook event. Currently, this can be a Virtual Machine Scale Set resource or an individual virtual machine
+// resource within a VirtualMachineScaleSet.
+type VirtualMachineScaleSetLifecycleHookEventTargetResource struct {
+	// REQUIRED; State of the Lifecycle Hook for the target resource. The customer can patch this property to move the Lifecycle
+	// Hook to a terminal state.
+	ActionState *LifecycleHookActionState
+
+	// REQUIRED; Specifies the target ARM resource. Currently, this can be a Virtual Machine Scale Set resource or an individual
+	// virtual machine resource within a VirtualMachineScaleSet.
+	Resource *APIEntityReference
 }
 
 // WebAppServicePlanUpdatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Web.AppServicePlanUpdated

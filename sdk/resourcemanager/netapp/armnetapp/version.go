@@ -6,5 +6,5 @@ package armnetapp
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
-	moduleVersion = "v10.0.0-beta.1"
+	moduleVersion = "v10.0.0"
 )

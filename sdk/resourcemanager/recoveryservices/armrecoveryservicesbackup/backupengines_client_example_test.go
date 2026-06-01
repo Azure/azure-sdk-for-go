@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/Dpm/BackupEngines_Get.json
+// Generated from example definition: 2026-01-31-preview/Dpm/BackupEngines_Get.json
 func ExampleBackupEnginesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleBackupEnginesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.BackupEnginesClientGetResponse{
-	// 	BackupEngineBaseResource: &armrecoveryservicesbackup.BackupEngineBaseResource{
+	// 	BackupEngineBaseResource: armrecoveryservicesbackup.BackupEngineBaseResource{
 	// 		Name: to.Ptr("testServer"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupEngines"),
 	// 		ID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.RecoveryServices/vaults/testVault/backupEngines/testServer"),
@@ -55,7 +55,7 @@ func ExampleBackupEnginesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Dpm/BackupEngines_List.json
+// Generated from example definition: 2026-01-31-preview/Dpm/BackupEngines_List.json
 func ExampleBackupEnginesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

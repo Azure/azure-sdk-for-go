@@ -61,7 +61,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
-	defer sender.Close(ctx)
+	defer func() { _ = sender.Close(ctx) }()
 
 	batch, err := sender.NewMessageBatch(ctx, nil)
 	require.NoError(t, err)
@@ -86,7 +86,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	receiver, err := client.NewReceiverForQueue(
 		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
 	require.NoError(t, err)
-	defer receiver.Close(ctx)
+	defer func() { _ = receiver.Close(ctx) }()
 
 	messages := receiveAll(t, receiver, 2)
 	require.NoError(t, err)
@@ -127,12 +127,12 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 
 	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	receiver, err := client.NewReceiverForQueue(
 		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
 	require.NoError(t, err)
-	defer receiver.Close(context.Background())
+	defer func() { _ = receiver.Close(context.Background()) }()
 
 	batch, err := sender.NewMessageBatch(context.Background(), nil)
 	require.NoError(t, err)
@@ -266,11 +266,11 @@ func testScheduleMessages(t *testing.T, rawAMQP bool) {
 	receiver, err := client.NewReceiverForQueue(
 		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
 	require.NoError(t, err)
-	defer receiver.Close(context.Background())
+	defer func() { _ = receiver.Close(context.Background()) }()
 
 	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	now := time.Now()
 	farFuture := now.Add(time.Hour)

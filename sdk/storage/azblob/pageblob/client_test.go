@@ -13,6 +13,7 @@ import (
 	"io"
 	"math/rand"
 	"os"
+	"slices"
 	"testing"
 	"time"
 
@@ -705,6 +706,66 @@ func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopy() {
 	waitForIncrementalCopy(_require, dstBlob, &resp)
 }
 
+func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopyErrorCode() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+
+	accountSAS, err := testcommon.GetAccountSAS(sas.AccountPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true},
+		sas.AccountResourceTypes{Service: true, Container: true, Object: true})
+	_require.NoError(err)
+
+	svcClientSAS, err := service.NewClientWithNoCredential(svcClient.URL()+"?"+accountSAS, nil)
+	_require.NoError(err)
+	containerClient := svcClientSAS.NewContainerClient(containerName)
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	srcBlob := createNewPageBlob(context.Background(), _require, "src"+testcommon.GenerateBlobName(testName), containerClient)
+
+	contentSize := 1024
+	r := testcommon.GetReaderToGeneratedBytes(contentSize)
+	offset, count := int64(0), int64(contentSize)
+	_, err = srcBlob.UploadPages(context.Background(), r, blob.HTTPRange{
+		Offset: offset,
+		Count:  count,
+	}, nil)
+	_require.NoError(err)
+
+	snapshot1Resp, err := srcBlob.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+
+	// Sleep to ensure time difference between snapshots
+	recording.Sleep(1 * time.Millisecond)
+
+	// Create second snapshot (newer)
+	r2 := testcommon.GetReaderToGeneratedBytes(contentSize)
+	_, err = srcBlob.UploadPages(context.Background(), r2, blob.HTTPRange{
+		Offset: offset,
+		Count:  count,
+	}, nil)
+	_require.NoError(err)
+
+	snapshot2Resp, err := srcBlob.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+
+	dstBlob := containerClient.NewPageBlobClient("dst" + testcommon.GenerateBlobName(testName))
+
+	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshot2Resp.Snapshot, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	waitForIncrementalCopy(_require, dstBlob, &resp)
+
+	_, err = dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshot1Resp.Snapshot, nil)
+	_require.Error(err)
+	_require.True(bloberror.HasCode(err, bloberror.IncrementalCopyOfEarlierSnapshotNotAllowed))
+}
 func (s *PageBlobRecordedTestsSuite) TestResizePageBlob() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -4215,7 +4276,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestCreatePageBlobWithTags() {
 
 	_, err = pbClient.SetTags(context.Background(), testcommon.BasicBlobTagsMap, nil)
 	_require.NoError(err)
-	time.Sleep(10 * time.Second)
+	recording.Sleep(10 * time.Second)
 	// _require.Equal(setTagResp.RawResponse.StatusCode, 204)
 
 	gpResp, err := pbClient.GetProperties(context.Background(), nil)
@@ -4278,7 +4339,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
 
 	_, err = pbClient.SetTags(context.Background(), testcommon.SpecialCharBlobTagsMap, nil)
 	_require.NoError(err)
-	time.Sleep(10 * time.Second)
+	recording.Sleep(10 * time.Second)
 
 	resp, err := pbClient.CreateSnapshot(context.Background(), nil)
 	_require.NoError(err)
@@ -4452,7 +4513,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDelete() {
 	deleteBlobOptions := blob.DeleteOptions{
 		BlobDeleteType: &perm,
 	}
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	// Execute Delete with DeleteTypePermanent
 	pdResp, err := snapshotURL.Delete(context.Background(), &deleteBlobOptions)
@@ -4905,7 +4966,7 @@ func (s *PageBlobRecordedTestsSuite) TestUndeletePageBlobVersion() {
 	}
 
 	// adding wait after delete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -4916,7 +4977,7 @@ func (s *PageBlobRecordedTestsSuite) TestUndeletePageBlobVersion() {
 	_require.NoError(err)
 
 	// adding wait after undelete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -4965,7 +5026,7 @@ func (s *PageBlobRecordedTestsSuite) TestUndeletePageBlobSnapshot() {
 	}
 
 	// adding wait after delete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
@@ -4976,7 +5037,7 @@ func (s *PageBlobRecordedTestsSuite) TestUndeletePageBlobSnapshot() {
 	_require.NoError(err)
 
 	// adding wait after undelete
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
@@ -5038,6 +5099,117 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlobClientDefaultAudience() {
 	_require.NoError(err)
 }
 
+func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Page blob data must be 512-byte aligned
+	contentSize := int64(1024) // 1 KB (2 pages)
+	pbClient := createNewPageBlobWithSize(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient, contentSize)
+
+	_, content := testcommon.GetDataAndReader(testName, int(contentSize))
+
+	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(content)),
+		blob.HTTPRange{Offset: 0, Count: contentSize}, &pageblob.UploadPagesOptions{
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+	_require.NoError(err)
+
+	// Download and verify data
+	downloadResp, err := pbClient.BlobClient().DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
+func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesDownloadRoundtripWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Page blob data must be 512-byte aligned
+	contentSize := int64(1024) // 1 KB (2 pages)
+	pbClient := createNewPageBlobWithSize(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient, contentSize)
+
+	_, content := testcommon.GetDataAndReader(testName, int(contentSize))
+
+	// Upload with SM CRC64
+	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(content)),
+		blob.HTTPRange{Offset: 0, Count: contentSize}, &pageblob.UploadPagesOptions{
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+	_require.NoError(err)
+
+	// Download with SM CRC64 validation
+	downloadResp, err := pbClient.BlobClient().DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+}
+
+func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesMultipleWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := int64(2048) // 2 KB (4 pages)
+	pbClient := createNewPageBlobWithSize(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient, contentSize)
+
+	// Upload two 1 KB page ranges with SM validation
+	page1 := make([]byte, 1024)
+	page2 := make([]byte, 1024)
+	for i := range page1 {
+		page1[i] = byte(i % 251)
+	}
+	for i := range page2 {
+		page2[i] = byte((i + 100) % 251)
+	}
+
+	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(page1)),
+		blob.HTTPRange{Offset: 0, Count: 1024}, &pageblob.UploadPagesOptions{
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+	_require.NoError(err)
+
+	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(page2)),
+		blob.HTTPRange{Offset: 1024, Count: 1024}, &pageblob.UploadPagesOptions{
+			TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+		})
+	_require.NoError(err)
+
+	// Download and verify both pages
+	downloadResp, err := pbClient.BlobClient().DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+
+	expectedData := slices.Concat(page1, page2)
+	_require.Equal(expectedData, downloadedData)
+}
+
 func (s *PageBlobRecordedTestsSuite) TestPageBlobClientCustomAudience() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -5070,4 +5242,101 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlobClientCustomAudience() {
 
 	_, err = pbClientAudience.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestUploadPagesFromURLSourceCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewPageBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Create(context.Background(), pageblob.PageBytes*10, &pageblob.CreateOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	contentSize := 512
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.UploadPages(context.Background(), streaming.NopCloser(r), blob.HTTPRange{Offset: 0, Count: int64(contentSize)}, &pageblob.UploadPagesOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewPageBlobClient(destBlobName)
+	_, err = destBlobClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.NoError(err)
+
+	// Test UploadPagesFromURL with Source CPK
+	_, err = destBlobClient.UploadPagesFromURL(context.Background(), srcURL, 0, 0, int64(contentSize), &pageblob.UploadPagesFromURLOptions{
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       cpk.EncryptionKey,
+			SourceEncryptionKeySHA256: cpk.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: cpk.EncryptionAlgorithm,
+		},
+	})
+	_require.NoError(err)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestUploadPagesFromURLSourceCPKFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewPageBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Create(context.Background(), pageblob.PageBytes*10, &pageblob.CreateOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	contentSize := 512
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.UploadPages(context.Background(), streaming.NopCloser(r), blob.HTTPRange{Offset: 0, Count: int64(contentSize)}, &pageblob.UploadPagesOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewPageBlobClient(destBlobName)
+	_, err = destBlobClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.NoError(err)
+
+	invalidCPK := testcommon.TestInvalidCPKByValue
+	// Test UploadPagesFromURL with Source CPK
+	_, err = destBlobClient.UploadPagesFromURL(context.Background(), srcURL, 0, 0, int64(contentSize), &pageblob.UploadPagesFromURLOptions{
+		SourceCustomerProvidedKey: &blob.SourceCPKInfo{
+			SourceEncryptionKey:       invalidCPK.EncryptionKey,
+			SourceEncryptionKeySHA256: invalidCPK.EncryptionKeySHA256,
+			SourceEncryptionAlgorithm: invalidCPK.EncryptionAlgorithm,
+		},
+	})
+	_require.Error(err)
 }

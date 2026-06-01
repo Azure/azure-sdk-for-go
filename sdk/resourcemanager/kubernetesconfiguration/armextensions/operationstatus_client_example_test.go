@@ -6,13 +6,12 @@ package armextensions_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armextensions"
+	"log"
 )
 
-// Generated from example definition: 2024-11-01/GetExtensionAsyncOperationStatus.json
+// Generated from example definition: 2025-03-01/GetExtensionAsyncOperationStatus.json
 func ExampleOperationStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,12 +31,12 @@ func ExampleOperationStatusClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensions.OperationStatusClientGetResponse{
 	// 	OperationStatusResult: &armextensions.OperationStatusResult{
-	// 		Name: to.Ptr("99999999-9999-9999-9999-999999999999"),
-	// 		Error: nil,
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/clusterName1/providers/Microsoft.KubernetesConfiguration/extensions/ClusterMonitor/operations/99999999-9999-9999-9999-999999999999"),
+	// 		Name: to.Ptr("99999999-9999-9999-9999-999999999999"),
+	// 		Status: to.Ptr("Succeeded"),
 	// 		Properties: map[string]*string{
 	// 		},
-	// 		Status: to.Ptr("Succeeded"),
+	// 		Error: nil,
 	// 	},
 	// }
 }

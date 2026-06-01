@@ -6,6 +6,30 @@ package armextensions
 
 import "time"
 
+// AccessDetail - Metadata about the access details of the managing entity of the extension
+type AccessDetail struct {
+	// The list of allowed actions for the entity
+	AllowedActions []*string
+
+	// The description of the entity
+	Description *string
+
+	// The entity to which the access details apply
+	Entity *string
+}
+
+// AdditionalDetails - Additional details provided by the publisher of the extension.
+type AdditionalDetails struct {
+	// Documentation for the extension.
+	Docs *string
+
+	// Release Notes of the extension.
+	ReleaseNotes *string
+
+	// Troubleshooting guide for the extension.
+	TroubleshootingGuide *string
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -38,6 +62,11 @@ type Extension struct {
 	// Identity of the Extension resource
 	Identity *Identity
 
+	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
+	// Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template
+	// since it is managed by another resource.
+	ManagedBy *string
+
 	// Details of the resource plan.
 	Plan *Plan
 
@@ -59,11 +88,18 @@ type Extension struct {
 
 // ExtensionProperties - Properties of an Extension resource
 type ExtensionProperties struct {
+	// Additional details provided by the publisher of the extension.
+	AdditionalDetails *AdditionalDetails
+
 	// Identity of the Extension resource in an AKS cluster
 	AksAssignedIdentity *ExtensionPropertiesAksAssignedIdentity
 
 	// Flag to note if this extension participates in auto upgrade of minor version, or not.
 	AutoUpgradeMinorVersion *bool
+
+	// The upgrade mode for auto upgrade.
+	// The default is "compatible".
+	AutoUpgradeMode *AutoUpgradeMode
 
 	// Configuration settings that are sensitive, as name-value pairs for configuring this extension.
 	ConfigurationProtectedSettings map[string]*string
@@ -74,6 +110,9 @@ type ExtensionProperties struct {
 	// Type of the Extension, of which this resource is an instance of. It must be one of the Extension Types registered with
 	// Microsoft.KubernetesConfiguration by the Extension publisher.
 	ExtensionType *string
+
+	// Management details of the extension
+	ManagementDetails *ManagementDetails
 
 	// ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion
 	// is 'true'.
@@ -98,6 +137,9 @@ type ExtensionProperties struct {
 	// READ-ONLY; Error information from the Agent - e.g. errors during installation.
 	ErrorInfo *ErrorDetail
 
+	// READ-ONLY; State of the extension on the cluster.
+	ExtensionState *string
+
 	// READ-ONLY; Flag to note if this extension is a system extension
 	IsSystemExtension *bool
 
@@ -110,6 +152,15 @@ type ExtensionProperties struct {
 
 // ExtensionPropertiesAksAssignedIdentity - Identity of the Extension resource in an AKS cluster
 type ExtensionPropertiesAksAssignedIdentity struct {
+	// The client ID of resource identity.
+	ClientID *string
+
+	// The object ID of resource identity.
+	ObjectID *string
+
+	// The ID of the resource identity.
+	ResourceID *string
+
 	// The identity type.
 	Type *AKSIdentityType
 
@@ -161,6 +212,15 @@ type List struct {
 	NextLink *string
 }
 
+// ManagementDetails - Metadata about the managing entity of the extension and the permitted operations.
+type ManagementDetails struct {
+	// The list of access details of the managing entity
+	AccessDetails []*AccessDetail
+
+	// The category of the managing entity
+	Category *string
+}
+
 // OperationStatusResult - The current status of an async operation.
 type OperationStatusResult struct {
 	// REQUIRED; Operation status.
@@ -189,6 +249,10 @@ type PatchExtension struct {
 type PatchExtensionProperties struct {
 	// Flag to note if this extension participates in auto upgrade of minor version, or not.
 	AutoUpgradeMinorVersion *bool
+
+	// The upgrade mode for auto upgrade.
+	// The default is "compatible".
+	AutoUpgradeMode *AutoUpgradeMode
 
 	// Configuration settings that are sensitive, as name-value pairs for configuring this extension.
 	ConfigurationProtectedSettings map[string]*string

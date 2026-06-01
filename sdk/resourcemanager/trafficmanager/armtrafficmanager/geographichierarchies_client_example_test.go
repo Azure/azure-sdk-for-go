@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-04-01/GeographicHierarchy-GET-default.json
+// Generated from example definition: 2024-04-01-preview/GeographicHierarchy-GET-default.json
 func ExampleGeographicHierarchiesClient_GetDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleGeographicHierarchiesClient_GetDefault() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtrafficmanager.GeographicHierarchiesClientGetDefaultResponse{
-	// 	GeographicHierarchy: &armtrafficmanager.GeographicHierarchy{
+	// 	GeographicHierarchy: armtrafficmanager.GeographicHierarchy{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerGeographicHierarchies"),
 	// 		ID: to.Ptr("/providers/Microsoft.Network/trafficManagerGeographicHierarchies/default"),

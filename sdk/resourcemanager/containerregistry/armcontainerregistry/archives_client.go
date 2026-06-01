@@ -18,6 +18,8 @@ import (
 
 // ArchivesClient contains the methods for the Archives group.
 // Don't use this type directly, use NewArchivesClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type ArchivesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewArchivesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreate - Creates a archive for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - packageType - The package type.
@@ -68,8 +68,6 @@ func (client *ArchivesClient) BeginCreate(ctx context.Context, resourceGroupName
 
 // Create - Creates a archive for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *ArchivesClient) create(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveCreateParameters Archive, options *ArchivesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ArchivesClient.BeginCreate"
@@ -119,8 +117,8 @@ func (client *ArchivesClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, archiveCreateParameters); err != nil {
@@ -131,8 +129,6 @@ func (client *ArchivesClient) createCreateRequest(ctx context.Context, resourceG
 
 // BeginDelete - Deletes a archive from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - packageType - The package type.
@@ -157,8 +153,6 @@ func (client *ArchivesClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Deletes a archive from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *ArchivesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, options *ArchivesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ArchivesClient.BeginDelete"
@@ -208,15 +202,13 @@ func (client *ArchivesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the properties of the archive.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - packageType - The package type.
@@ -272,8 +264,8 @@ func (client *ArchivesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -288,8 +280,6 @@ func (client *ArchivesClient) getHandleResponse(resp *http.Response) (ArchivesCl
 }
 
 // NewListPager - Lists all archives for the specified container registry and package type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - packageType - The package type.
@@ -341,8 +331,8 @@ func (client *ArchivesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -358,8 +348,6 @@ func (client *ArchivesClient) listHandleResponse(resp *http.Response) (ArchivesC
 
 // Update - Updates a archive for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - packageType - The package type.
@@ -416,8 +404,8 @@ func (client *ArchivesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, archiveUpdateParameters); err != nil {

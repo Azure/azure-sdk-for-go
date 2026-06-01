@@ -10,10 +10,6 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
 	"io"
 	"net/http"
@@ -24,11 +20,15 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -587,7 +587,7 @@ func (s *RecordedTestSuite) TestCreateFileWithExpiryRelativeToNow() {
 	_require.NoError(err)
 	_require.NotNil(resp1.ExpiresOn)
 
-	time.Sleep(time.Second * 10)
+	recording.Sleep(time.Second * 10)
 	_, err = fClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
@@ -653,7 +653,7 @@ func (s *RecordedTestSuite) TestCreateFileWithLease() {
 	_, err = fClient.Create(context.Background(), createFileOpts)
 	_require.Error(err)
 
-	time.Sleep(time.Second * 15)
+	recording.Sleep(time.Second * 15)
 	resp, err = fClient.Create(context.Background(), createFileOpts)
 	_require.NoError(err)
 	_require.NotNil(resp)
@@ -1001,7 +1001,7 @@ func (s *RecordedTestSuite) TestFileSetExpiry() {
 	)
 	_require.NoError(err)
 
-	time.Sleep(time.Second * 12)
+	recording.Sleep(time.Second * 12)
 
 	_, err = fClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
@@ -1037,7 +1037,7 @@ func (s *UnrecordedTestSuite) TestFileSetExpiryTypeAbsoluteTime() {
 		nil)
 	_require.NoError(err)
 
-	time.Sleep(time.Second * 7)
+	recording.Sleep(time.Second * 7)
 
 	_, err = fClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
@@ -1402,6 +1402,135 @@ func (s *RecordedTestSuite) TestFileGetAccessControl() {
 	getACLResp, err := fClient.GetAccessControl(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestFileGetSystemProperties() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	resp, err := fClient.GetSystemProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.LastModified)
+	_require.NotNil(resp.Permissions)
+	_require.NotNil(resp.ResourceType)
+	_require.NotNil(resp.Owner)
+	_require.NotNil(resp.Group)
+}
+
+func (s *RecordedTestSuite) TestFileGetSystemPropertiesWithAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createResp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	opts := &file.GetSystemPropertiesOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfMatch: createResp.ETag,
+			},
+		},
+	}
+	resp, err := fClient.GetSystemProperties(context.Background(), opts)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.LastModified)
+	_require.NotNil(resp.Permissions)
+}
+
+func (s *RecordedTestSuite) TestFileGetSystemPropertiesWithACL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createOpts := &file.CreateOptions{
+		ACL: &acl,
+	}
+	_, err = fClient.Create(context.Background(), createOpts)
+	_require.NoError(err)
+
+	// verify GetAccessControl returns the ACL
+	getACLResp, err := fClient.GetAccessControl(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(acl, *getACLResp.ACL)
+
+	// verify GetSystemProperties returns permissions but not ACL
+	getSysResp, err := fClient.GetSystemProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(getSysResp.Permissions)
+	_require.NotNil(getSysResp.Owner)
+	_require.NotNil(getSysResp.Group)
+}
+
+func (s *RecordedTestSuite) TestFileGetSystemPropertiesWithUPN() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	opts := &file.GetSystemPropertiesOptions{
+		UPN: to.Ptr(true),
+	}
+	resp, err := fClient.GetSystemProperties(context.Background(), opts)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.LastModified)
+	_require.NotNil(resp.Permissions)
+	_require.NotNil(resp.Owner)
+	_require.NotNil(resp.Group)
 }
 
 func (s *UnrecordedTestSuite) TestFileGetAccessControlWithSAS() {
@@ -3790,7 +3919,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithAcquireLease() {
 	_require.NoError(err)
 	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
 
-	time.Sleep(time.Second * 15)
+	recording.Sleep(time.Second * 15)
 
 	// Check if the lease was acquired for the right duration
 	gResp, err := srcFClient.GetProperties(context.Background(), nil)
@@ -3829,7 +3958,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithRenewLease() {
 	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
 
 	// Wait for 15 seconds for lease to expire
-	time.Sleep(15 * time.Second)
+	recording.Sleep(15 * time.Second)
 
 	gResp, err := srcFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -5356,7 +5485,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 
 	// This tests file.NewClient
 	var respFromCtxFile *http.Response
-	ctxWithRespFile := runtime.WithCaptureResponse(context.Background(), &respFromCtxFile)
+	ctxWithRespFile := policy.WithCaptureResponse(context.Background(), &respFromCtxFile)
 	resp2, err := fClient.GetProperties(ctxWithRespFile, nil)
 	_require.NoError(err)
 	_require.NotNil(resp2)
@@ -5366,7 +5495,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	// This tests filesystem.NewClient
 	fClient = fsClient.NewFileClient(dirName + "/" + fileName)
 	var respFromCtxFs *http.Response
-	ctxWithRespFs := runtime.WithCaptureResponse(context.Background(), &respFromCtxFs)
+	ctxWithRespFs := policy.WithCaptureResponse(context.Background(), &respFromCtxFs)
 	resp2, err = fClient.GetProperties(ctxWithRespFs, nil)
 	_require.NoError(err)
 	_require.NotNil(resp2)
@@ -5381,7 +5510,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	fClient, err = dirClient.NewFileClient(fileName)
 	_require.NoError(err)
 	var respFromCtxService *http.Response
-	ctxWithRespService := runtime.WithCaptureResponse(context.Background(), &respFromCtxService)
+	ctxWithRespService := policy.WithCaptureResponse(context.Background(), &respFromCtxService)
 	resp2, err = fClient.GetProperties(ctxWithRespService, nil)
 	_require.NoError(err)
 	_require.NotNil(resp2)
@@ -5390,7 +5519,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 
 	// This tests directory.NewClient
 	var respFromCtxDir *http.Response
-	ctxWithRespDir := runtime.WithCaptureResponse(context.Background(), &respFromCtxDir)
+	ctxWithRespDir := policy.WithCaptureResponse(context.Background(), &respFromCtxDir)
 	dirClient, err = testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 	fClient, err = dirClient.NewFileClient(fileName)
@@ -5440,7 +5569,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {
 
 	// This tests file.NewClient
 	var respFromCtxFile *http.Response
-	ctxWithRespFile := runtime.WithCaptureResponse(context.Background(), &respFromCtxFile)
+	ctxWithRespFile := policy.WithCaptureResponse(context.Background(), &respFromCtxFile)
 	response, err := fClient.GetProperties(ctxWithRespFile, GetPropertiesOpts)
 	_require.NoError(err)
 	_require.NotNil(response)
@@ -5709,4 +5838,720 @@ func (s *UnrecordedTestSuite) TestFileClientAuthenticationFailure() {
 	_, err = fileClient.DownloadStream(context.Background(), nil)
 	_require.Error(err, "Expected authentication error")
 	_require.Contains(err.Error(), "ClientSecretCredential")
+}
+
+func (s *RecordedTestSuite) TestFileGetSetTags() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+	}
+
+	_, err = fClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := fClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+}
+
+func (s *UnrecordedTestSuite) TestFileGetSetTagsOAuth() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + fileName
+
+	fClient, err := file.NewClient(fileURL, cred, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = fClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := fClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *RecordedTestSuite) TestFileGetSetTagsWithAccessConditions() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+	}
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
+
+	setOpts := &file.SetTagsOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = fClient.SetTags(context.Background(), tags, setOpts)
+	_require.NoError(err)
+
+	getOpts := &file.GetTagsOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+
+	getTagsResp, err := fClient.GetTags(context.Background(), getOpts)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+}
+
+func (s *RecordedTestSuite) TestFileGetTagsAccessConditionsFail() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	getOpts := &file.GetTagsOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfModifiedSince: &futureTime,
+			},
+		},
+	}
+	_, err = fClient.GetTags(context.Background(), getOpts)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
+}
+
+func (s *RecordedTestSuite) TestFileSetTagsAccessConditionsFail() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+	}
+
+	futureTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	setOpts := &file.SetTagsOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfModifiedSince: &futureTime,
+			},
+		},
+	}
+	_, err = fClient.SetTags(context.Background(), tags, setOpts)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
+}
+
+func (s *RecordedTestSuite) TestFileGetTagsError() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// file not created, should fail
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.GetTags(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
+}
+
+func (s *RecordedTestSuite) TestFileSetTagsError() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// file not created, should fail
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+	}
+
+	_, err = fClient.SetTags(context.Background(), tags, nil)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
+}
+
+func (s *RecordedTestSuite) TestFileGetSetTagsWithLease() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), &file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+	}
+
+	setOpts := &file.SetTagsOptions{
+		AccessConditions: &file.AccessConditions{
+			LeaseAccessConditions: &file.LeaseAccessConditions{
+				LeaseID: proposedLeaseIDs[0],
+			},
+		},
+	}
+	_, err = fClient.SetTags(context.Background(), tags, setOpts)
+	_require.NoError(err)
+
+	getTagsResp, err := fClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+}
+
+func (s *RecordedTestSuite) TestFileGetTagsLeaseFailed() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), &file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	})
+	_require.NoError(err)
+
+	// Use a wrong lease ID
+	getOpts := &file.GetTagsOptions{
+		AccessConditions: &file.AccessConditions{
+			LeaseAccessConditions: &file.LeaseAccessConditions{
+				LeaseID: proposedLeaseIDs[1],
+			},
+		},
+	}
+	_, err = fClient.GetTags(context.Background(), getOpts)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.LeaseIDMismatchWithPathOperation)
+}
+
+func (s *RecordedTestSuite) TestFileSetTagsLeaseFailed() {
+	// Datalake tags is currently in public preview and not GA yet. Only run in playback mode.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		s.T().Skip("Datalake tags is in public preview and not GA yet")
+	}
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), &file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	})
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+	}
+
+	// Use a wrong lease ID
+	setOpts := &file.SetTagsOptions{
+		AccessConditions: &file.AccessConditions{
+			LeaseAccessConditions: &file.LeaseAccessConditions{
+				LeaseID: proposedLeaseIDs[1],
+			},
+		},
+	}
+	_, err = fClient.SetTags(context.Background(), tags, setOpts)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.LeaseIDMismatchWithPathOperation)
+}
+
+func (s *UnrecordedTestSuite) TestFileGetSetTagsWithSAS() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Generate SAS with Tag permission
+	permissions := sas.FilePermissions{
+		Read:  true,
+		Write: true,
+		Tag:   true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	sasURL, err := fClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	sasClient, err := file.NewClientWithNoCredential(sasURL, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *UnrecordedTestSuite) TestFileGetSetTagsFileSystemSas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Generate filesystem-level SAS
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
+	_require.NoError(err)
+
+	perms := sas.FileSystemPermissions{Read: true, Write: true, Tag: true}
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:       sas.ProtocolHTTPS,
+		ExpiryTime:     time.Now().UTC().Add(time.Hour),
+		FileSystemName: filesystemName,
+		Permissions:    perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+	sasClient, err := file.NewClientWithNoCredential(fClient.DFSURL()+"?"+sasToken, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *UnrecordedTestSuite) TestFileGetSetTagsAccountSas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
+	_require.NoError(err)
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    time.Now().UTC().Add(time.Hour),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, Write: true, Tag: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Service: true, Container: true, Object: true}).String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+	sasClient, err := file.NewClientWithNoCredential(fClient.DFSURL()+"?"+sasToken, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *UnrecordedTestSuite) TestFileGetSetTagsFileIdentitySas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient := testcommon.CreateNewFile(context.Background(), _require, fileName, fsClient)
+
+	// Get user delegation key
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	expiryTime := currentTime.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiryTime.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	perms := sas.FilePermissions{Read: true, Write: true, Tag: true}
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:       sas.ProtocolHTTPS,
+		StartTime:      time.Now().UTC().Add(-10 * time.Second),
+		ExpiryTime:     time.Now().UTC().Add(15 * time.Minute),
+		FileSystemName: filesystemName,
+		FilePath:       fileName,
+		Permissions:    perms.String(),
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	sasURL := fClient.DFSURL() + "?" + sasQueryParams.Encode()
+	sasClient, err := file.NewClientWithNoCredential(sasURL, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+func (s *UnrecordedTestSuite) TestFileGetSetTagsFileSystemIdentitySas() {
+	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Datalake tags is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient := testcommon.CreateNewFile(context.Background(), _require, fileName, fsClient)
+
+	// Get user delegation key
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	expiryTime := currentTime.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiryTime.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	perms := sas.FileSystemPermissions{Read: true, Write: true, Tag: true}
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:       sas.ProtocolHTTPS,
+		StartTime:      time.Now().UTC().Add(-10 * time.Second),
+		ExpiryTime:     time.Now().UTC().Add(15 * time.Minute),
+		FileSystemName: filesystemName,
+		Permissions:    perms.String(),
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	sasURL := fClient.DFSURL() + "?" + sasQueryParams.Encode()
+	sasClient, err := file.NewClientWithNoCredential(sasURL, nil)
+	_require.NoError(err)
+
+	tags := map[string]string{
+		"tagKey0": "tagValue0",
+		"tagKey1": "tagValue1",
+	}
+
+	_, err = sasClient.SetTags(context.Background(), tags, nil)
+	_require.NoError(err)
+
+	getTagsResp, err := sasClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(getTagsResp.BlobTagSet, len(tags))
+	tagMap := make(map[string]string)
+	for _, tag := range getTagsResp.BlobTagSet {
+		tagMap[*tag.Key] = *tag.Value
+	}
+	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
+	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }

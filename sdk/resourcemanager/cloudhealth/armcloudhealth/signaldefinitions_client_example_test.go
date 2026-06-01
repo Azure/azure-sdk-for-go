@@ -57,7 +57,7 @@ func ExampleSignalDefinitionsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.SignalDefinitionsClientCreateOrUpdateResponse{
-	// 	SignalDefinition: &armcloudhealth.SignalDefinition{
+	// 	SignalDefinition: armcloudhealth.SignalDefinition{
 	// 		Properties: &armcloudhealth.ResourceMetricSignalDefinitionProperties{
 	// 			MetricNamespace: to.Ptr("microsoft.compute/virtualMachines"),
 	// 			MetricName: to.Ptr("cpuusage"),
@@ -140,7 +140,7 @@ func ExampleSignalDefinitionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.SignalDefinitionsClientGetResponse{
-	// 	SignalDefinition: &armcloudhealth.SignalDefinition{
+	// 	SignalDefinition: armcloudhealth.SignalDefinition{
 	// 		Properties: &armcloudhealth.ResourceMetricSignalDefinitionProperties{
 	// 			MetricNamespace: to.Ptr("microsoft.compute/virtualMachines"),
 	// 			MetricName: to.Ptr("cpuusage"),

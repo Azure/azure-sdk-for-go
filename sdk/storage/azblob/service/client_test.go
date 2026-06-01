@@ -6,13 +6,14 @@ package service_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"io"
 	"net/http"
 	"os"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -617,7 +618,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -629,7 +630,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err = svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -648,7 +649,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyEmpty() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -671,7 +672,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -682,7 +683,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
+	recording.Sleep(time.Second * 30)
 
 	// If an element of service properties is not passed, the service keeps the current settings.
 	resp, err = svcClient.GetProperties(context.Background(), nil)
@@ -977,7 +978,7 @@ func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
 
 	// it appears that deleting the container involves acquiring a lease.
 	// since leases can only be 15-60s or infinite, we just wait for 60 seconds.
-	time.Sleep(60 * time.Second)
+	recording.Sleep(60 * time.Second)
 	prefix := testcommon.ContainerPrefix
 	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true, Deleted: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
@@ -1010,7 +1011,7 @@ func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
 			break
 		} else if bloberror.HasCode(err, bloberror.Code("ConcurrentContainerOperationInProgress")) {
 			// the container is still being restored, sleep a bit then try again
-			time.Sleep(10 * time.Second)
+			recording.Sleep(10 * time.Second)
 		} else {
 			// some other error
 			break
@@ -1177,7 +1178,7 @@ func (s *ServiceUnrecordedTestsSuite) TestFilterBlobsTagsWithServiceSAS() {
 	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.NoError(err)
 	_require.NotNil(createResp.VersionID)
-	time.Sleep(10 * time.Second)
+	recording.Sleep(10 * time.Second)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1352,6 +1353,77 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey(
 		}
 		_require.Equal(ctrHot, 0)
 		_require.Equal(ctrCool, 2)
+	}
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSmartUsingSharedKey() {
+	// Smart access tier is currently in public preview and not GA yet, skipping this test for now.
+	s.T().Skip("Smart access tier is in public preview and not GA yet")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+
+	bb, err := svcClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	// Create 5 containers, each with 2 blobs, and add SetTier(Smart) to batch
+	var cntClients []*container.Client
+	for i := 0; i < 5; i++ {
+		cntName := fmt.Sprintf("%v%v", containerName, i)
+		cntClient := svcClient.NewContainerClient(cntName)
+		_, err := cntClient.Create(context.Background(), nil)
+		_require.NoError(err)
+		cntClients = append(cntClients, cntClient)
+
+		bbName := fmt.Sprintf("block/blob%v", i*2)
+		bbClient := cntClient.NewBlockBlobClient(bbName)
+		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+		_require.NoError(err)
+		err = bb.SetTier(cntName, bbName, blob.AccessTierSmart, nil)
+		_require.NoError(err)
+
+		bbName = fmt.Sprintf("blockblob%v", i*2+1)
+		bbClient = cntClient.NewBlockBlobClient(bbName)
+		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+		_require.NoError(err)
+		err = bb.SetTier(cntName, bbName, blob.AccessTierSmart, nil)
+		_require.NoError(err)
+	}
+	defer batchClean(cntClients)
+
+	// Verify all blobs are in Hot tier before batch
+	for _, cntClient := range cntClients {
+		pager := cntClient.NewListBlobsFlatPager(nil)
+		for pager.More() {
+			resp, err := pager.NextPage(context.Background())
+			handleError(err)
+			for _, blobItem := range resp.Segment.BlobItems {
+				_require.Equal(*blobItem.Properties.AccessTier, container.AccessTierHot)
+			}
+		}
+	}
+
+	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	// Verify all blobs are now in Smart tier
+	for _, cntClient := range cntClients {
+		pager := cntClient.NewListBlobsFlatPager(nil)
+		var ctrSmart = 0
+		for pager.More() {
+			resp, err := pager.NextPage(context.Background())
+			handleError(err)
+			for _, blobItem := range resp.Segment.BlobItems {
+				if *blobItem.Properties.AccessTier == container.AccessTierSmart {
+					ctrSmart++
+				}
+			}
+		}
+		_require.Equal(ctrSmart, 2)
 	}
 }
 
@@ -1920,6 +1992,63 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientDefaultAudience() {
 	}
 }
 
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredentialError() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	// This is a dummy tenant ID
+	dummyTenantID := "00000000-0000-0000-0000-000000000000"
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:                 to.Ptr(start.Format(time.RFC3339)),
+		Expiry:                to.Ptr(expiry.Format(time.RFC3339)),
+		DelegatedUserTenantID: to.Ptr(dummyTenantID),
+	}
+
+	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredential() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:  to.Ptr(start.Format(time.RFC3339)),
+		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+	}
+
+	response, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+}
+
 func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1956,4 +2085,235 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
 		_require.NotNil(resp.ContainerItems[0].Name)
 		_require.Equal(*resp.ContainerItems[0].Name, containerName)
 	}
+}
+
+// customRequestHeadersAndQueryParametersPolicy injects additional headers and query parameters into each request.
+type customRequestHeadersAndQueryParametersPolicy struct {
+	headers     map[string]string
+	queryParams map[string]string
+}
+
+func (p *customRequestHeadersAndQueryParametersPolicy) Do(req *policy.Request) (*http.Response, error) {
+	rawReq := req.Raw()
+	for k, v := range p.headers {
+		rawReq.Header.Set(k, v)
+	}
+
+	q := rawReq.URL.Query()
+	for k, v := range p.queryParams {
+		q.Set(k, v)
+	}
+	rawReq.URL.RawQuery = q.Encode()
+
+	return req.Next()
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryParameters() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, cntClient)
+
+	// Get user delegation credential
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	requestHeaders := map[string]string{
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
+	}
+	requestQueryParameters := map[string]string{
+		"hello": "world",
+		"abra":  "cadabra",
+		"day":   "monday,tuesday",
+	}
+
+	// Create SAS with signed request headers and query parameters
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:                     sas.ProtocolHTTPS,
+		StartTime:                    time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:                   time.Now().UTC().Add(15 * time.Minute),
+		Permissions:                  (&sas.ContainerPermissions{Read: true}).String(),
+		ContainerName:                containerName,
+		SignedRequestHeaders:         requestHeaders,
+		SignedRequestQueryParameters: requestQueryParameters,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	// Build SAS blob URL
+	parts, err := sas.ParseURL(bbClient.URL())
+	_require.NoError(err)
+	parts.SAS = sasQueryParams
+	blobURLWithSAS := parts.String()
+
+	// Create blob client with per-call policy that injects headers and query params
+	blobClientSAS, err := blob.NewClientWithNoCredential(blobURLWithSAS, &blob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			PerCallPolicies: []policy.Policy{&customRequestHeadersAndQueryParametersPolicy{
+				headers:     requestHeaders,
+				queryParams: requestQueryParameters,
+			}},
+		},
+	})
+	_require.NoError(err)
+
+	// Act - GetProperties should succeed because the correct headers and query params are sent
+	resp, err := blobClientSAS.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryParametersFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, cntClient)
+
+	// Get user delegation credential
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	requestHeaders := map[string]string{
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
+	}
+	requestQueryParameters := map[string]string{
+		"hello": "world",
+		"abra":  "cadabra",
+		"day":   "monday,tuesday",
+	}
+
+	// Create SAS with signed request headers and query parameters
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:                     sas.ProtocolHTTPS,
+		StartTime:                    time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:                   time.Now().UTC().Add(15 * time.Minute),
+		Permissions:                  (&sas.ContainerPermissions{Read: true}).String(),
+		ContainerName:                containerName,
+		SignedRequestHeaders:         requestHeaders,
+		SignedRequestQueryParameters: requestQueryParameters,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	// Build SAS blob URL
+	parts, err := sas.ParseURL(bbClient.URL())
+	_require.NoError(err)
+	parts.SAS = sasQueryParams
+	blobURLWithSAS := parts.String()
+
+	// Deliberately do NOT send the required headers and query parameters
+	blobClientSAS, err := blob.NewClientWithNoCredential(blobURLWithSAS, nil)
+	_require.NoError(err)
+
+	// Act - GetProperties should fail with AuthenticationFailed
+	_, err = blobClientSAS.GetProperties(context.Background(), nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryParametersRoundtrip() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, cntClient)
+
+	// Get user delegation credential
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	requestHeaders := map[string]string{
+		"foo":      "bar",
+		"company":  "msft",
+		"language": "go,java,python",
+	}
+	requestQueryParameters := map[string]string{
+		"hello": "world",
+		"abra":  "cadabra",
+		"day":   "monday,tuesday",
+	}
+
+	// Create SAS with signed request headers and query parameters
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:                     sas.ProtocolHTTPS,
+		StartTime:                    time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:                   time.Now().UTC().Add(15 * time.Minute),
+		Permissions:                  (&sas.ContainerPermissions{Read: true}).String(),
+		ContainerName:                containerName,
+		SignedRequestHeaders:         requestHeaders,
+		SignedRequestQueryParameters: requestQueryParameters,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	// Build original SAS URL
+	parts, err := sas.ParseURL(bbClient.URL())
+	_require.NoError(err)
+	parts.SAS = sasQueryParams
+	originalURL := parts.String()
+
+	// Parse the URL again (roundtrip)
+	roundtripParts, err := sas.ParseURL(originalURL)
+	_require.NoError(err)
+	roundtripURL := roundtripParts.String()
+
+	// Verify roundtrip URL matches original
+	_require.Equal(originalURL, roundtripURL)
+	_require.Equal(sasQueryParams.Encode(), roundtripParts.SAS.Encode())
 }

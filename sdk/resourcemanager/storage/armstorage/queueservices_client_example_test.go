@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/QueueServicesGet.json
+// Generated from example definition: 2025-08-01/QueueServicesGet.json
 func ExampleQueueServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleQueueServicesClient_GetServiceProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.QueueServicesClientGetServicePropertiesResponse{
-	// 	QueueServiceProperties: &armstorage.QueueServiceProperties{
+	// 	QueueServiceProperties: armstorage.QueueServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/queueServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/queueServices/default"),
@@ -102,7 +102,7 @@ func ExampleQueueServicesClient_GetServiceProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/QueueServicesList.json
+// Generated from example definition: 2025-08-01/QueueServicesList.json
 func ExampleQueueServicesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleQueueServicesClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.QueueServicesClientListResponse{
-	// 	ListQueueServices: &armstorage.ListQueueServices{
+	// 	ListQueueServices: armstorage.ListQueueServices{
 	// 		Value: []*armstorage.QueueServiceProperties{
 	// 			{
 	// 				Name: to.Ptr("default"),
@@ -196,7 +196,7 @@ func ExampleQueueServicesClient_List() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/QueueServicesPut.json
+// Generated from example definition: 2025-08-01/QueueServicesPut.json
 func ExampleQueueServicesClient_SetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +279,7 @@ func ExampleQueueServicesClient_SetServiceProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.QueueServicesClientSetServicePropertiesResponse{
-	// 	QueueServiceProperties: &armstorage.QueueServiceProperties{
+	// 	QueueServiceProperties: armstorage.QueueServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/queueServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/queueServices/default"),

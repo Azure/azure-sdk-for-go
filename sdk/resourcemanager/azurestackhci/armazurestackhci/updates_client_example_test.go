@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-02-01/DeleteUpdates.json
+// Generated from example definition: 2026-04-01-preview/DeleteUpdates.json
 func ExampleUpdatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleUpdatesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/GetUpdates.json
+// Generated from example definition: 2026-04-01-preview/GetUpdates.json
 func ExampleUpdatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleUpdatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/ListUpdates.json
+// Generated from example definition: 2026-04-01-preview/ListUpdates.json
 func ExampleUpdatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleUpdatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/PostUpdates.json
+// Generated from example definition: 2026-04-01-preview/PostUpdates.json
 func ExampleUpdatesClient_BeginPost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +180,28 @@ func ExampleUpdatesClient_BeginPost() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/PutUpdates.json
+// Generated from example definition: 2026-04-01-preview/Updates_Prepare.json
+func ExampleUpdatesClient_BeginPrepare() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("b8d594e5-51f3-4c11-9c54-a7771b81c712", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewUpdatesClient().BeginPrepare(ctx, "testrg", "testcluster", "Microsoft4.2203.2.32", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-04-01-preview/PutUpdates.json
 func ExampleUpdatesClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

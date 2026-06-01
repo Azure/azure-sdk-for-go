@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.BotService": "2023-09-15-preview"
+  },
+  "emitterVersion": "0.10.2"
+}

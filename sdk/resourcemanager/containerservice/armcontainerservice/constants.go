@@ -4,6 +4,10 @@
 
 package armcontainerservice
 
+const (
+	version20260302Preview string = "2026-03-02-preview"
+)
+
 // AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF
 // host routing. This can be enabled only with Cilium dataplane. If not specified, the default value is None (no acceleration).
 // The acceleration mode can be changed on a pre-existing cluster. See https://aka.ms/acnsperformance for a detailed explanation

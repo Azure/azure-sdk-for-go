@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -33,11 +34,41 @@ type Client struct {
 	internal    *azcore.Client
 	gem         *globalEndpointManager
 	endpointUrl *url.URL
+	caches      *sharedCacheSet
+	closeOnce   sync.Once
+}
+
+// getContainerCache returns the container properties cache for this client.
+func (c *Client) getContainerCache() *containerPropertiesCache {
+	if c.caches == nil {
+		return nil
+	}
+	return c.caches.containerCache
+}
+
+// getPKRangeCache returns the partition key range cache for this client.
+func (c *Client) getPKRangeCache() *partitionKeyRangeCache {
+	if c.caches == nil {
+		return nil
+	}
+	return c.caches.pkRangeCache
 }
 
 // Endpoint used to create the client.
 func (c *Client) Endpoint() string {
 	return c.endpoint
+}
+
+// Close releases the shared cache reference for this client. The underlying
+// caches are removed from the global registry once all clients to the same
+// account endpoint have been closed. After Close, the client should not be used.
+// Close is idempotent; calling it multiple times is safe.
+func (c *Client) Close() {
+	c.closeOnce.Do(func() {
+		if c.endpoint != "" {
+			releaseCaches(c.endpoint)
+		}
+	})
 }
 
 // NewClientWithKey creates a new instance of Cosmos client with shared key authentication. It uses the default pipeline configuration.
@@ -54,6 +85,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
+	o = withDefaultTransport(o)
 
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
@@ -64,7 +96,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint)}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -101,6 +133,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
+	o = withDefaultTransport(o)
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
 		return nil, err
@@ -110,7 +143,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint)}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.
@@ -159,12 +192,23 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 			PerCall: []policy.Policy{
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
+					priorityLevel:                options.PriorityLevel,
+					throughputBucket:             options.ThroughputBucket,
 				},
 				&globalEndpointManagerPolicy{gem: gem},
 			},
 			PerRetry: []policy.Policy{
-				authPolicy,
+				// clientRetryPolicy is listed before authPolicy so that
+				// its internal retry loop (continue inside Do) naturally
+				// re-invokes authPolicy via req.Next() on each attempt.
+				// This refreshes the Authorization header from the
+				// credential cache on every internal retry — important
+				// for short-lived AAD/MSI tokens that may expire across
+				// the cumulative same-region + cross-region retry
+				// window. Cosmos master/resource keys are unaffected
+				// because they are static.
 				&clientRetryPolicy{gem: gem},
+				authPolicy,
 			},
 			Tracing: azruntime.TracingOptions{
 				Namespace: "Microsoft.DocumentDB",
@@ -185,6 +229,29 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 			},
 		},
 		&options.ClientOptions)
+}
+
+// withDefaultTransport returns a *ClientOptions whose Transport is set to the
+// Cosmos default HTTP client when the caller has not supplied one. Callers
+// of NewClient*/NewClientFromConnectionString invoke this exactly once and
+// reuse the result for both the user-facing and the global-endpoint-manager
+// pipelines so options are normalized in a single place. The returned value
+// is always non-nil; only the top-level Transport field is set on the clone,
+// so the caller's *ClientOptions struct is never mutated, but slice fields
+// such as PreferredRegions or PerCallPolicies still share backing arrays
+// with the caller's struct and should not be mutated in place.
+func withDefaultTransport(options *ClientOptions) *ClientOptions {
+	if options == nil {
+		return &ClientOptions{
+			ClientOptions: azcore.ClientOptions{Transport: defaultCosmosHTTPClient},
+		}
+	}
+	if options.Transport != nil {
+		return options
+	}
+	clone := *options
+	clone.Transport = defaultCosmosHTTPClient
+	return &clone
 }
 
 func createScopeFromEndpoint(endpoint *url.URL) ([]string, error) {
@@ -661,5 +728,7 @@ func getAllowedHeaders() []string {
 		cosmosHeaderIsPartitionKeyDeletePending,
 		cosmosHeaderQueryExecutionInfo,
 		headerXmsItemCount,
+		cosmosHeaderPriorityLevel,
+		cosmosHeaderThroughputBucket,
 	}
 }

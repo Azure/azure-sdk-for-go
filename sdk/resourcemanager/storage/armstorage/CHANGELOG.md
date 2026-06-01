@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.1 (2026-03-16)
+## 4.0.0 (2026-05-19)
 ### Breaking Changes
 
 - Function `*BlobContainersClient.CreateOrUpdateImmutabilityPolicy` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, containerName string, parameters ImmutabilityPolicy, options *BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions)`
@@ -26,12 +26,76 @@
 
 ### Features Added
 
+- New value `AccessTierSmart` added to enum type `AccessTier`
+- New value `AllowedCopyScopeAll` added to enum type `AllowedCopyScope`
+- New value `TriggerTypeMockRun` added to enum type `TriggerType`
+- New enum type `NativeDataSharingProvisioningState` with values `NativeDataSharingProvisioningStateAccepted`, `NativeDataSharingProvisioningStateCanceled`, `NativeDataSharingProvisioningStateCreating`, `NativeDataSharingProvisioningStateDeleting`, `NativeDataSharingProvisioningStateFailed`, `NativeDataSharingProvisioningStateSucceeded`
+- New enum type `StorageConnectorAuthType` with values `StorageConnectorAuthTypeManagedIdentity`
+- New enum type `StorageConnectorConnectionType` with values `StorageConnectorConnectionTypeDataShare`
+- New enum type `StorageConnectorDataSourceType` with values `StorageConnectorDataSourceTypeAzureDataShare`
+- New enum type `StorageConnectorSourceType` with values `StorageConnectorSourceTypeDataShare`
+- New enum type `StorageConnectorState` with values `StorageConnectorStateActive`, `StorageConnectorStateInactive`
+- New enum type `StorageDataShareAccessPolicyPermission` with values `StorageDataShareAccessPolicyPermissionNone`, `StorageDataShareAccessPolicyPermissionRead`
 - New enum type `StorageTaskAssignmentProvisioningState` with values `StorageTaskAssignmentProvisioningStateAccepted`, `StorageTaskAssignmentProvisioningStateCanceled`, `StorageTaskAssignmentProvisioningStateCreating`, `StorageTaskAssignmentProvisioningStateDeleting`, `StorageTaskAssignmentProvisioningStateFailed`, `StorageTaskAssignmentProvisioningStateSucceeded`, `StorageTaskAssignmentProvisioningStateValidateSubscriptionQuotaBegin`, `StorageTaskAssignmentProvisioningStateValidateSubscriptionQuotaEnd`
+- New function `*ClientFactory.NewConnectorsClient() *ConnectorsClient`
+- New function `*ClientFactory.NewDataSharesClient() *DataSharesClient`
+- New function `*ConnectorAuthProperties.GetConnectorAuthProperties() *ConnectorAuthProperties`
+- New function `*ConnectorAuthPropertiesUpdate.GetConnectorAuthPropertiesUpdate() *ConnectorAuthPropertiesUpdate`
+- New function `*ConnectorConnection.GetConnectorConnection() *ConnectorConnection`
+- New function `*ConnectorSource.GetConnectorSource() *ConnectorSource`
+- New function `*ConnectorSourceUpdate.GetConnectorSourceUpdate() *ConnectorSourceUpdate`
+- New function `NewConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorsClient, error)`
+- New function `*ConnectorsClient.BeginCreate(ctx context.Context, resourceGroupName string, accountName string, connectorName string, resource Connector, options *ConnectorsClientBeginCreateOptions) (*runtime.Poller[ConnectorsClientCreateResponse], error)`
+- New function `*ConnectorsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, connectorName string, options *ConnectorsClientBeginDeleteOptions) (*runtime.Poller[ConnectorsClientDeleteResponse], error)`
+- New function `*ConnectorsClient.Get(ctx context.Context, resourceGroupName string, accountName string, connectorName string, options *ConnectorsClientGetOptions) (ConnectorsClientGetResponse, error)`
+- New function `*ConnectorsClient.NewListByStorageAccountPager(resourceGroupName string, accountName string, options *ConnectorsClientListByStorageAccountOptions) *runtime.Pager[ConnectorsClientListByStorageAccountResponse]`
+- New function `*ConnectorsClient.BeginTestExistingConnection(ctx context.Context, resourceGroupName string, accountName string, connectorName string, body TestExistingConnectionRequest, options *ConnectorsClientBeginTestExistingConnectionOptions) (*runtime.Poller[ConnectorsClientTestExistingConnectionResponse], error)`
+- New function `*ConnectorsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, options *ConnectorsClientBeginUpdateOptions) (*runtime.Poller[ConnectorsClientUpdateResponse], error)`
+- New function `*DataShareConnection.GetConnectorConnection() *ConnectorConnection`
+- New function `*DataShareSource.GetConnectorSource() *ConnectorSource`
+- New function `*DataShareSourceUpdate.GetConnectorSourceUpdate() *ConnectorSourceUpdate`
+- New function `NewDataSharesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataSharesClient, error)`
+- New function `*DataSharesClient.BeginCreate(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, resource DataShare, options *DataSharesClientBeginCreateOptions) (*runtime.Poller[DataSharesClientCreateResponse], error)`
+- New function `*DataSharesClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, options *DataSharesClientBeginDeleteOptions) (*runtime.Poller[DataSharesClientDeleteResponse], error)`
+- New function `*DataSharesClient.Get(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, options *DataSharesClientGetOptions) (DataSharesClientGetResponse, error)`
+- New function `*DataSharesClient.NewListByStorageAccountPager(resourceGroupName string, accountName string, options *DataSharesClientListByStorageAccountOptions) *runtime.Pager[DataSharesClientListByStorageAccountResponse]`
+- New function `*DataSharesClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties DataShareUpdate, options *DataSharesClientBeginUpdateOptions) (*runtime.Poller[DataSharesClientUpdateResponse], error)`
+- New function `*ManagedIdentityAuthProperties.GetConnectorAuthProperties() *ConnectorAuthProperties`
+- New function `*ManagedIdentityAuthPropertiesUpdate.GetConnectorAuthPropertiesUpdate() *ConnectorAuthPropertiesUpdate`
+- New function `*TaskAssignmentsClient.BeginStopAssignment(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *TaskAssignmentsClientBeginStopAssignmentOptions) (*runtime.Poller[TaskAssignmentsClientStopAssignmentResponse], error)`
+- New struct `AccountSharedKeyAccessProperties`
+- New struct `Connector`
+- New struct `ConnectorListResult`
+- New struct `ConnectorProperties`
+- New struct `ConnectorPropertiesUpdate`
+- New struct `ConnectorUpdate`
+- New struct `DataCollaborationPolicyProperties`
+- New struct `DataShare`
+- New struct `DataShareAccessPolicy`
+- New struct `DataShareAsset`
+- New struct `DataShareConnection`
+- New struct `DataShareListResult`
+- New struct `DataShareProperties`
+- New struct `DataSharePropertiesUpdate`
+- New struct `DataShareSource`
+- New struct `DataShareSourceUpdate`
+- New struct `DataShareUpdate`
+- New struct `ManagedIdentityAuthProperties`
+- New struct `ManagedIdentityAuthPropertiesUpdate`
+- New struct `ObjectReplicationPolicyPropertiesTagsReplication`
+- New struct `ServiceSharedKeyAccessProperties`
+- New struct `StaticWebsite`
+- New struct `TestConnectionResponse`
+- New struct `TestExistingConnectionRequest`
 - New field `SystemData` in struct `Account`
 - New field `SystemData` in struct `AccountMigration`
+- New field `AllowSharedKeyAccessForServices`, `DataCollaborationPolicyProperties` in struct `AccountProperties`
+- New field `AllowSharedKeyAccessForServices`, `DataCollaborationPolicyProperties` in struct `AccountPropertiesCreateParameters`
+- New field `AllowSharedKeyAccessForServices`, `DataCollaborationPolicyProperties` in struct `AccountPropertiesUpdateParameters`
 - New field `SystemData` in struct `BlobContainer`
 - New field `NextLink` in struct `BlobServiceItems`
 - New field `SystemData` in struct `BlobServiceProperties`
+- New field `StaticWebsite` in struct `BlobServicePropertiesProperties`
 - New field `SystemData` in struct `DeletedAccount`
 - New field `SystemData` in struct `EncryptionScope`
 - New field `SystemData` in struct `FileServiceProperties`
@@ -45,6 +109,7 @@
 - New field `SystemData` in struct `ManagementPolicy`
 - New field `NextLink` in struct `ObjectReplicationPolicies`
 - New field `SystemData` in struct `ObjectReplicationPolicy`
+- New field `TagsReplication` in struct `ObjectReplicationPolicyProperties`
 - New field `NextLink` in struct `OperationListResult`
 - New field `SystemData` in struct `PrivateEndpointConnection`
 - New field `NextLink` in struct `PrivateEndpointConnectionListResult`
@@ -54,6 +119,7 @@
 - New field `NextLink` in struct `SKUListResult`
 - New field `SystemData` in struct `Table`
 - New field `SystemData` in struct `TableServiceProperties`
+- New field `SystemData` in struct `TaskAssignment`
 - New field `SystemData` in struct `TaskReportInstance`
 - New field `NextLink` in struct `UsageListResult`
 

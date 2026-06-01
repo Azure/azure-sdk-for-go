@@ -31,7 +31,7 @@ func ExampleRegistriesClient_GetBuildSourceUploadURL() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RegistriesClientGetBuildSourceUploadURLResponse{
-	// 	SourceUploadDefinition: &armcontainerregistrytasks.SourceUploadDefinition{
+	// 	SourceUploadDefinition: armcontainerregistrytasks.SourceUploadDefinition{
 	// 		RelativePath: to.Ptr("source/201802130000/b52f12d8-c3d6-4d75-9107-220f0bfc681d.tar.gz"),
 	// 		UploadURL: to.Ptr("https://registrystorageaccount.blob.core.windows.net/registrycontainer/source/201802130000/b52f12d8-c3d6-4d75-9107-220f0bfc681d.tar.gz?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
 	// 	},
@@ -86,7 +86,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRun() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RegistriesClientScheduleRunResponse{
-	// 	Run: &armcontainerregistrytasks.Run{
+	// 	Run: armcontainerregistrytasks.Run{
 	// 		Name: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
@@ -141,7 +141,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunEncodedTaskRun() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RegistriesClientScheduleRunResponse{
-	// 	Run: &armcontainerregistrytasks.Run{
+	// 	Run: armcontainerregistrytasks.Run{
 	// 		Name: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
@@ -197,7 +197,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunFileTaskRun() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RegistriesClientScheduleRunResponse{
-	// 	Run: &armcontainerregistrytasks.Run{
+	// 	Run: armcontainerregistrytasks.Run{
 	// 		Name: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
@@ -265,7 +265,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunTaskWithCustomCred
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RegistriesClientScheduleRunResponse{
-	// 	Run: &armcontainerregistrytasks.Run{
+	// 	Run: armcontainerregistrytasks.Run{
 	// 		Name: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
@@ -330,7 +330,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunTask() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RegistriesClientScheduleRunResponse{
-	// 	Run: &armcontainerregistrytasks.Run{
+	// 	Run: armcontainerregistrytasks.Run{
 	// 		Name: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
@@ -420,7 +420,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunWithCustomCredenti
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RegistriesClientScheduleRunResponse{
-	// 	Run: &armcontainerregistrytasks.Run{
+	// 	Run: armcontainerregistrytasks.Run{
 	// 		Name: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
@@ -483,7 +483,7 @@ func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunWithLogTemplate() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RegistriesClientScheduleRunResponse{
-	// 	Run: &armcontainerregistrytasks.Run{
+	// 	Run: armcontainerregistrytasks.Run{
 	// 		Name: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/run"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),

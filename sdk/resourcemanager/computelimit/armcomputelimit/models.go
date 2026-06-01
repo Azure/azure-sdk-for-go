@@ -51,6 +51,12 @@ type Feature struct {
 	Type *string
 }
 
+// FeatureEnableRequest - Request body for feature enable action.
+type FeatureEnableRequest struct {
+	// The Service Tree identifier associated with this feature action.
+	ServiceTreeID *string
+}
+
 // FeatureListResult - The response of a Feature list operation.
 type FeatureListResult struct {
 	// REQUIRED; The Feature items on this page

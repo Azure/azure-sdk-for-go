@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"time"
 )
 
@@ -59,9 +60,7 @@ func (c *CertificateOrdersDiagnosticsServerTransport) Do(req *http.Request) (*ht
 }
 
 func (c *CertificateOrdersDiagnosticsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -79,10 +78,7 @@ func (c *CertificateOrdersDiagnosticsServerTransport) dispatchToMethodFake(req *
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -116,27 +112,15 @@ func (c *CertificateOrdersDiagnosticsServerTransport) dispatchGetAppServiceCerti
 	if err != nil {
 		return nil, err
 	}
-	startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
+	startTimeParam, err := parseOptional(qp.Get("startTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	startTimeParam, err := parseOptional(startTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	endTimeParam, err := parseOptional(qp.Get("endTime"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
-	if err != nil {
-		return nil, err
-	}
-	endTimeParam, err := parseOptional(endTimeUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
-	if err != nil {
-		return nil, err
-	}
-	timeGrainUnescaped, err := url.QueryUnescape(qp.Get("timeGrain"))
-	if err != nil {
-		return nil, err
-	}
-	timeGrainParam := getOptional(timeGrainUnescaped)
+	timeGrainParam := getOptional(qp.Get("timeGrain"))
 	var options *armcertificateregistration.CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armcertificateregistration.CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions{
@@ -150,7 +134,7 @@ func (c *CertificateOrdersDiagnosticsServerTransport) dispatchGetAppServiceCerti
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DetectorResponse, req)
@@ -191,7 +175,7 @@ func (c *CertificateOrdersDiagnosticsServerTransport) dispatchNewListAppServiceC
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListAppServiceCertificateOrderDetectorResponsePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

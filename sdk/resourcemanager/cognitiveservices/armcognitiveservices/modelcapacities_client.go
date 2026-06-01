@@ -18,6 +18,8 @@ import (
 
 // ModelCapacitiesClient contains the methods for the ModelCapacities group.
 // Don't use this type directly, use NewModelCapacitiesClient() instead.
+//
+// Generated from API version 2026-03-15-preview
 type ModelCapacitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewModelCapacitiesClient(subscriptionID string, credential azcore.TokenCred
 }
 
 // NewListPager - List ModelCapacities.
-//
-// Generated from API version 2026-01-15-preview
 //   - modelFormat - The format of the Model
 //   - modelName - The name of the Model
 //   - modelVersion - The version of the Model
@@ -82,11 +82,11 @@ func (client *ModelCapacitiesClient) listCreateRequest(ctx context.Context, mode
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
+	reqQP.Set("api-version", version20260315Preview)
 	reqQP.Set("modelFormat", modelFormat)
 	reqQP.Set("modelName", modelName)
 	reqQP.Set("modelVersion", modelVersion)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

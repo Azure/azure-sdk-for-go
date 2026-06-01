@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-15-preview/PutRaiToolLabel.json
+// Generated from example definition: 2026-03-15-preview/PutRaiToolLabel.json
 func ExampleRaiToolLabelsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleRaiToolLabelsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiToolLabelsClientCreateOrUpdateResponse{
-	// 	RaiToolLabel: &armcognitiveservices.RaiToolLabel{
+	// 	RaiToolLabel: armcognitiveservices.RaiToolLabel{
 	// 		Name: to.Ptr("Web_Search"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/raiToolLabels"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiToolLabels/Web_Search"),
@@ -84,7 +84,7 @@ func ExampleRaiToolLabelsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/DeleteRaiToolLabel.json
+// Generated from example definition: 2026-03-15-preview/DeleteRaiToolLabel.json
 func ExampleRaiToolLabelsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,11 +101,11 @@ func ExampleRaiToolLabelsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/GetRaiToolLabel.json
+// Generated from example definition: 2026-03-15-preview/GetRaiToolLabel.json
 func ExampleRaiToolLabelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleRaiToolLabelsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiToolLabelsClientGetResponse{
-	// 	RaiToolLabel: &armcognitiveservices.RaiToolLabel{
+	// 	RaiToolLabel: armcognitiveservices.RaiToolLabel{
 	// 		Name: to.Ptr("raiToolLabelName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiIfcToolLabels/raiIfcToolLabelName"),
 	// 		Properties: &armcognitiveservices.RaiToolLabelProperties{
@@ -156,7 +156,7 @@ func ExampleRaiToolLabelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/ListRaiToolLabels.json
+// Generated from example definition: 2026-03-15-preview/ListRaiToolLabels.json
 func ExampleRaiToolLabelsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

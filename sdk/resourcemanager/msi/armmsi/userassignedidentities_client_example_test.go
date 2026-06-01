@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-30/IdentityCreate.json
+// Generated from example definition: 2025-05-31-preview/IdentityCreate.json
 func ExampleUserAssignedIdentitiesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,26 +37,30 @@ func ExampleUserAssignedIdentitiesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmsi.UserAssignedIdentitiesClientCreateOrUpdateResponse{
-	// 	Identity: &armmsi.Identity{
-	// 		Name: to.Ptr("identityName"),
-	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities"),
+	// 	Identity: armmsi.Identity{
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName"),
 	// 		Location: to.Ptr("eastus"),
+	// 		Name: to.Ptr("identityName"),
 	// 		Properties: &armmsi.UserAssignedIdentityProperties{
 	// 			ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
-	// 			IsolationScope: to.Ptr(armmsi.IsolationScopeNone),
 	// 			PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 	// 			TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
+	// 			IsolationScope: to.Ptr(armmsi.IsolationScopeNone),
+	// 			AssignmentRestrictions: &armmsi.AssignmentRestrictions{
+	// 				Providers: []*string{
+	// 				},
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key1": to.Ptr("value1"),
 	// 			"key2": to.Ptr("value2"),
 	// 		},
+	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-11-30/IdentityDelete.json
+// Generated from example definition: 2025-05-31-preview/IdentityDelete.json
 func ExampleUserAssignedIdentitiesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +82,7 @@ func ExampleUserAssignedIdentitiesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30/IdentityGet.json
+// Generated from example definition: 2025-05-31-preview/IdentityGet.json
 func ExampleUserAssignedIdentitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,26 +101,30 @@ func ExampleUserAssignedIdentitiesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmsi.UserAssignedIdentitiesClientGetResponse{
-	// 	Identity: &armmsi.Identity{
-	// 		Name: to.Ptr("identityName"),
-	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities"),
+	// 	Identity: armmsi.Identity{
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName"),
 	// 		Location: to.Ptr("eastus"),
+	// 		Name: to.Ptr("identityName"),
 	// 		Properties: &armmsi.UserAssignedIdentityProperties{
 	// 			ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
-	// 			IsolationScope: to.Ptr(armmsi.IsolationScopeNone),
 	// 			PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 	// 			TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
+	// 			IsolationScope: to.Ptr(armmsi.IsolationScopeNone),
+	// 			AssignmentRestrictions: &armmsi.AssignmentRestrictions{
+	// 				Providers: []*string{
+	// 				},
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key1": to.Ptr("value1"),
 	// 			"key2": to.Ptr("value2"),
 	// 		},
+	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-11-30/IdentityListByResourceGroup.json
+// Generated from example definition: 2025-05-31-preview/IdentityListByResourceGroup.json
 func ExampleUserAssignedIdentitiesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,31 +148,35 @@ func ExampleUserAssignedIdentitiesClient_NewListByResourceGroupPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmsi.UserAssignedIdentitiesClientListByResourceGroupResponse{
 		// 	UserAssignedIdentitiesListResult: armmsi.UserAssignedIdentitiesListResult{
-		// 		NextLink: to.Ptr("https://serviceRoot/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities?api-version=2024-11-30&$skiptoken=X'12345'"),
 		// 		Value: []*armmsi.Identity{
 		// 			{
-		// 				Name: to.Ptr("identityName"),
-		// 				Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities"),
 		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName"),
 		// 				Location: to.Ptr("eastus"),
+		// 				Name: to.Ptr("identityName"),
 		// 				Properties: &armmsi.UserAssignedIdentityProperties{
 		// 					ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
-		// 					IsolationScope: to.Ptr(armmsi.IsolationScopeNone),
 		// 					PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 		// 					TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
+		// 					IsolationScope: to.Ptr(armmsi.IsolationScopeNone),
+		// 					AssignmentRestrictions: &armmsi.AssignmentRestrictions{
+		// 						Providers: []*string{
+		// 						},
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key1": to.Ptr("value1"),
 		// 					"key2": to.Ptr("value2"),
 		// 				},
+		// 				Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities"),
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://serviceRoot/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities?api-version=2025-05-31-preview&$skiptoken=X'12345'"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2024-11-30/IdentityListBySubscription.json
+// Generated from example definition: 2025-05-31-preview/IdentityListBySubscription.json
 func ExampleUserAssignedIdentitiesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,31 +200,36 @@ func ExampleUserAssignedIdentitiesClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmsi.UserAssignedIdentitiesClientListBySubscriptionResponse{
 		// 	UserAssignedIdentitiesListResult: armmsi.UserAssignedIdentitiesListResult{
-		// 		NextLink: to.Ptr("https://serviceRoot/subscriptions/subId/providers/Microsoft.ManagedIdentity/userAssignedIdentities?api-version=2024-11-30&$skiptoken=X'12345'"),
 		// 		Value: []*armmsi.Identity{
 		// 			{
-		// 				Name: to.Ptr("identityName"),
-		// 				Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities"),
 		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName"),
 		// 				Location: to.Ptr("eastus"),
+		// 				Name: to.Ptr("identityName"),
 		// 				Properties: &armmsi.UserAssignedIdentityProperties{
 		// 					ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
-		// 					IsolationScope: to.Ptr(armmsi.IsolationScopeRegional),
 		// 					PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 		// 					TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
+		// 					IsolationScope: to.Ptr(armmsi.IsolationScopeRegional),
+		// 					AssignmentRestrictions: &armmsi.AssignmentRestrictions{
+		// 						Providers: []*string{
+		// 							to.Ptr("Microsoft.Compute"),
+		// 						},
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key1": to.Ptr("value1"),
 		// 					"key2": to.Ptr("value2"),
 		// 				},
+		// 				Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities"),
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://serviceRoot/subscriptions/subId/providers/Microsoft.ManagedIdentity/userAssignedIdentities?api-version=2025-05-31-preview&$skiptoken=X'12345'"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2024-11-30/IdentityUpdate.json
+// Generated from example definition: 2025-05-31-preview/IdentityUpdate.json
 func ExampleUserAssignedIdentitiesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,12 +242,18 @@ func ExampleUserAssignedIdentitiesClient_Update() {
 	}
 	res, err := clientFactory.NewUserAssignedIdentitiesClient().Update(ctx, "rgName", "resourceName", armmsi.IdentityUpdate{
 		Location: to.Ptr("eastus"),
-		Properties: &armmsi.UserAssignedIdentityProperties{
-			IsolationScope: to.Ptr(armmsi.IsolationScopeRegional),
-		},
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 			"key2": to.Ptr("value2"),
+		},
+		Properties: &armmsi.UserAssignedIdentityProperties{
+			IsolationScope: to.Ptr(armmsi.IsolationScopeRegional),
+			AssignmentRestrictions: &armmsi.AssignmentRestrictions{
+				Providers: []*string{
+					to.Ptr("Microsoft.Compute"),
+					to.Ptr("Microsoft.Storage/Accounts"),
+				},
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -240,21 +263,27 @@ func ExampleUserAssignedIdentitiesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmsi.UserAssignedIdentitiesClientUpdateResponse{
-	// 	Identity: &armmsi.Identity{
-	// 		Name: to.Ptr("identityName"),
-	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities"),
+	// 	Identity: armmsi.Identity{
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName"),
 	// 		Location: to.Ptr("eastus"),
+	// 		Name: to.Ptr("identityName"),
 	// 		Properties: &armmsi.UserAssignedIdentityProperties{
 	// 			ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
-	// 			IsolationScope: to.Ptr(armmsi.IsolationScopeRegional),
 	// 			PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 	// 			TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
+	// 			IsolationScope: to.Ptr(armmsi.IsolationScopeRegional),
+	// 			AssignmentRestrictions: &armmsi.AssignmentRestrictions{
+	// 				Providers: []*string{
+	// 					to.Ptr("Microsoft.Compute"),
+	// 					to.Ptr("Microsoft.Storage/Accounts"),
+	// 				},
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key1": to.Ptr("value1"),
 	// 			"key2": to.Ptr("value2"),
 	// 		},
+	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities"),
 	// 	},
 	// }
 }

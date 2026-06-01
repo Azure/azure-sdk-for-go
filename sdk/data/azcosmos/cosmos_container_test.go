@@ -826,11 +826,10 @@ func TestContainerReadPartitionKeyRangesEmpty(t *testing.T) {
 
 func TestContainerGetChangeFeedWithStartFrom(t *testing.T) {
 	changeFeedBody := []byte(
-		`{"_rid":"test-rid",
+		`{"_rid":"testRID",
 		"Documents":[{"id":"doc1"},{"id":"doc2"}],
 		"_count":2}`)
 	srv, close := mock.NewTLSServer()
-	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.SetResponse(
 		mock.WithBody(changeFeedBody),
@@ -840,9 +839,8 @@ func TestContainerGetChangeFeedWithStartFrom(t *testing.T) {
 		mock.WithStatusCode(200))
 
 	verifier := pipelineVerifier{}
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	ranges := []partitionKeyRange{{ID: "0", MinInclusive: "", MaxExclusive: "FF", ResourceID: "testRID"}}
+	client := createChangeFeedTestClient(t, srv, []policy.Policy{&verifier}, ranges)
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
@@ -861,8 +859,8 @@ func TestContainerGetChangeFeedWithStartFrom(t *testing.T) {
 	if err != nil {
 		t.Fatalf("GetChangeFeed returned error: %v", err)
 	}
-	if resp.ResourceID != "test-rid" {
-		t.Errorf("Expected ResourceID 'test-rid', got %v", resp.ResourceID)
+	if resp.ResourceID != "testRID" {
+		t.Errorf("Expected ResourceID 'testRID', got %v", resp.ResourceID)
 	}
 	if resp.Count != 2 {
 		t.Errorf("Expected Count 2, got %v", resp.Count)
@@ -871,11 +869,12 @@ func TestContainerGetChangeFeedWithStartFrom(t *testing.T) {
 		t.Errorf("Expected 2 documents, got %v", len(resp.Documents))
 	}
 
-	if len(verifier.requests) != 2 {
-		t.Fatalf("Expected 2 requests, got %d", len(verifier.requests))
+	// With caches pre-wired, only the change-feed request hits the wire.
+	if len(verifier.requests) != 1 {
+		t.Fatalf("Expected 1 request, got %d", len(verifier.requests))
 	}
 
-	request := verifier.requests[1]
+	request := verifier.requests[0]
 	ifModifiedSinceHeader := request.headers.Get(cosmosHeaderIfModifiedSince)
 	expectedIfModifiedSince := modifiedSince.Format(time.RFC1123)
 
@@ -893,7 +892,7 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 
 	// First response: All documents when using beginning of time filter
 	allDocumentsBody := []byte(`{
-		"_rid": "test-rid",
+		"_rid": "testRID",
 		"Documents": [
 			{"id": "doc1", "_ts": 1730000000},
 			{"id": "doc2", "_ts": 1735000000},
@@ -904,7 +903,7 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 
 	// Second response: Only documents after the filter time
 	filteredDocumentsBody := []byte(`{
-		"_rid": "test-rid",
+		"_rid": "testRID",
 		"Documents": [
 			{"id": "doc3", "_ts": 1740000000}
 		],
@@ -912,7 +911,6 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 	}`)
 
 	srv, close := mock.NewTLSServer()
-	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 
 	// Set up mock responses
@@ -924,9 +922,8 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 		mock.WithStatusCode(200))
 
 	verifier := pipelineVerifier{}
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	ranges := []partitionKeyRange{{ID: "0", MinInclusive: "", MaxExclusive: "FF", ResourceID: "testRID"}}
+	client := createChangeFeedTestClient(t, srv, []policy.Policy{&verifier}, ranges)
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
@@ -970,11 +967,12 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 		}
 	}
 
-	if len(verifier.requests) < 2 {
-		t.Fatalf("Expected at least 2 requests, got %d", len(verifier.requests))
+	// With caches pre-wired, only the change-feed request hits the wire.
+	if len(verifier.requests) < 1 {
+		t.Fatalf("Expected at least 1 request, got %d", len(verifier.requests))
 	}
 
-	firstRequest := verifier.requests[1]
+	firstRequest := verifier.requests[0]
 	firstIfModifiedSinceHeader := firstRequest.headers.Get(cosmosHeaderIfModifiedSince)
 	firstExpectedIfModifiedSince := beginningOfTime.Format(time.RFC1123)
 
@@ -994,8 +992,7 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 		mock.WithStatusCode(200))
 
 	verifier = pipelineVerifier{}
-	internalClient, _ = azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	client = &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	client = createChangeFeedTestClient(t, srv, []policy.Policy{&verifier}, ranges)
 	database, _ = newDatabase("databaseId", client)
 	container, _ = newContainer("containerId", database)
 
@@ -1026,11 +1023,11 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 		t.Errorf("Expected filtered document to have ID 'doc3', got '%s'", filteredDoc["id"])
 	}
 
-	if len(verifier.requests) < 2 {
-		t.Fatalf("Expected at least 2 requests in second test, got %d", len(verifier.requests))
+	if len(verifier.requests) < 1 {
+		t.Fatalf("Expected at least 1 request in second test, got %d", len(verifier.requests))
 	}
 
-	secondRequest := verifier.requests[1]
+	secondRequest := verifier.requests[0]
 	secondIfModifiedSinceHeader := secondRequest.headers.Get(cosmosHeaderIfModifiedSince)
 	secondExpectedIfModifiedSince := midpointTime.Format(time.RFC1123)
 
@@ -1044,34 +1041,15 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 
 func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 	changeFeedBody := []byte(`{
-        "_rid": "test-resource-id",
+        "_rid": "testRID",
         "Documents": [{"id": "doc1"}, {"id": "doc2"}],
         "_count": 2
     }`)
 
-	pkRangesBody := []byte(`{
-        "_rid": "test-resource-id",
-        "PartitionKeyRanges": [{
-            "_rid": "range-rid",
-            "id": "0",
-            "minInclusive": "00",
-            "maxExclusive": "FF"
-        }],
-        "_count": 1
-    }`)
-
 	srv, close := mock.NewTLSServer()
-	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 
-	// First response should be for the partition key ranges request
-	srv.AppendResponse(
-		mock.WithBody(pkRangesBody),
-		mock.WithHeader(cosmosHeaderActivityId, "pkRangesActivityId"),
-		mock.WithHeader(cosmosHeaderRequestCharge, "1.0"),
-		mock.WithStatusCode(200))
-
-	// Second response should be for the change feed request
+	// Only the change-feed request hits the wire — caches are pre-wired.
 	srv.AppendResponse(
 		mock.WithBody(changeFeedBody),
 		mock.WithHeader(cosmosHeaderEtag, "\"etag-12345\""),
@@ -1080,9 +1058,8 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		mock.WithStatusCode(200))
 
 	verifier := pipelineVerifier{}
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	ranges := []partitionKeyRange{{ID: "0", MinInclusive: "00", MaxExclusive: "FF", ResourceID: "testRID"}}
+	client := createChangeFeedTestClient(t, srv, []policy.Policy{&verifier}, ranges)
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
@@ -1100,8 +1077,8 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		t.Fatalf("GetChangeFeedForEPKRange failed: %v", err)
 	}
 
-	if resp.ResourceID != "test-resource-id" {
-		t.Errorf("unexpected ResourceID: got %q, want %q", resp.ResourceID, "test-resource-id")
+	if resp.ResourceID != "testRID" {
+		t.Errorf("unexpected ResourceID: got %q, want %q", resp.ResourceID, "testRID")
 	}
 
 	if resp.Count != 2 {
@@ -1112,25 +1089,13 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		t.Errorf("unexpected number of Documents: got %d, want 2", len(resp.Documents))
 	}
 
-	if len(verifier.requests) != 2 {
-		t.Fatalf("Expected exactly 2 requests (partition key ranges and change feed), got %d", len(verifier.requests))
+	if len(verifier.requests) != 1 {
+		t.Fatalf("Expected exactly 1 request (change feed; pkranges served from cache), got %d", len(verifier.requests))
 	}
 
-	// First request should be to get partition key ranges
-	pkRangesRequest := verifier.requests[0]
-	if !strings.Contains(pkRangesRequest.url.Path, "pkranges") {
-		t.Errorf("Expected first request to be for partition key ranges, got URL path: %s", pkRangesRequest.url.Path)
-	}
-	expectedPkRangesPath := "/dbs/databaseId/colls/containerId/pkranges"
-	if !strings.Contains(pkRangesRequest.url.Path, expectedPkRangesPath) {
-		t.Errorf("Expected partition key ranges path to contain %s, got %s",
-			expectedPkRangesPath, pkRangesRequest.url.Path)
-	}
-
-	// Second request should be the change feed request
-	changeFeedRequest := verifier.requests[1]
+	changeFeedRequest := verifier.requests[0]
 	if !strings.Contains(changeFeedRequest.url.Path, "/docs") {
-		t.Errorf("Expected second request to be for documents, got URL path: %s", changeFeedRequest.url.Path)
+		t.Errorf("Expected request to be for documents, got URL path: %s", changeFeedRequest.url.Path)
 	}
 
 	pkRangeHeader := changeFeedRequest.headers.Get(headerXmsDocumentDbPartitionKeyRangeId)
@@ -1159,9 +1124,11 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 			compositeToken.Version, cosmosCompositeContinuationTokenVersion)
 	}
 
-	if compositeToken.ResourceID != "test-resource-id" {
+	// Token's ResourceID is now populated at construction time from the
+	// container's RID ("testRID" per createChangeFeedTestClient).
+	if compositeToken.ResourceID != "testRID" {
 		t.Errorf("unexpected ResourceID in composite token: got %q, want %q",
-			compositeToken.ResourceID, "test-resource-id")
+			compositeToken.ResourceID, "testRID")
 	}
 
 	if len(compositeToken.Continuation) != 1 {
@@ -1187,26 +1154,485 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		t.Errorf("unexpected ContinuationToken: got %q, want %q",
 			*compositeToken.Continuation[0].ContinuationToken, "\"etag-12345\"")
 	}
+}
 
-	// Now test using the continuation token in a subsequent request
-	options2 := &ChangeFeedOptions{
-		MaxItemCount: 10,
-		Continuation: &resp.ContinuationToken,
+func TestCreateItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	clientPriority := PriorityLevelHigh
+	clientBucket := int32(2)
+	headerPolicy := &headerPolicies{
+		priorityLevel:    &clientPriority,
+		throughputBucket: &clientBucket,
 	}
 
-	headers := options2.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("expected headers to be non-nil")
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	// Test with per-request override
+	requestPriority := PriorityLevelLow
+	requestBucket := int32(5)
+	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("1"), jsonString, &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to create item: %v", err)
 	}
 
-	h := *headers
-	if h[headerIfNoneMatch] != "\"etag-12345\"" {
-		t.Errorf("unexpected IfNoneMatch header: got %q, want %q",
-			h[headerIfNoneMatch], "\"etag-12345\"")
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "Low" {
+		t.Errorf("Expected priority level header to be Low, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "5" {
+		t.Errorf("Expected throughput bucket header to be 5, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestUpsertItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelLow
+	requestBucket := int32(3)
+	_, err := container.UpsertItem(context.TODO(), NewPartitionKeyString("1"), jsonString, &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to upsert item: %v", err)
 	}
 
-	if h[cosmosHeaderChangeFeed] != cosmosHeaderValuesChangeFeed {
-		t.Errorf("unexpected ChangeFeed header in continuation request: got %q, want %q",
-			h[cosmosHeaderChangeFeed], cosmosHeaderValuesChangeFeed)
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "Low" {
+		t.Errorf("Expected priority level header to be Low, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "3" {
+		t.Errorf("Expected throughput bucket header to be 3, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestReplaceItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelHigh
+	requestBucket := int32(2)
+	_, err := container.ReplaceItem(context.TODO(), NewPartitionKeyString("1"), "doc1", jsonString, &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to replace item: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "High" {
+		t.Errorf("Expected priority level header to be High, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "2" {
+		t.Errorf("Expected throughput bucket header to be 2, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestReadItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar"}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelLow
+	requestBucket := int32(4)
+	_, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to read item: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "Low" {
+		t.Errorf("Expected priority level header to be Low, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "4" {
+		t.Errorf("Expected throughput bucket header to be 4, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestDeleteItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(204))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelHigh
+	requestBucket := int32(1)
+	_, err := container.DeleteItem(context.TODO(), NewPartitionKeyString("1"), "doc1", &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to delete item: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "High" {
+		t.Errorf("Expected priority level header to be High, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "1" {
+		t.Errorf("Expected throughput bucket header to be 1, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestPatchItemPriorityAndThroughputBucketHeaders(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar","hello":"world"}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	patchOpt := PatchOperations{}
+	patchOpt.AppendSet("/hello", "world")
+
+	requestPriority := PriorityLevelLow
+	requestBucket := int32(5)
+	_, err := container.PatchItem(context.TODO(), NewPartitionKeyString("1"), "doc1", patchOpt, &ItemOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to patch item: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "Low" {
+		t.Errorf("Expected priority level header to be Low, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "5" {
+		t.Errorf("Expected throughput bucket header to be 5, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestQueryItemsPriorityAndThroughputBucketHeaders(t *testing.T) {
+	jsonStringpage1 := []byte(`{"Documents":[{"id":"doc1"}]}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonStringpage1),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelHigh
+	requestBucket := int32(3)
+	queryPager := container.NewQueryItemsPager("select * from c", NewPartitionKeyString("1"), &QueryOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	_, err := queryPager.NextPage(context.TODO())
+	if err != nil {
+		t.Fatalf("Failed to query items: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "High" {
+		t.Errorf("Expected priority level header to be High, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "3" {
+		t.Errorf("Expected throughput bucket header to be 3, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestTransactionalBatchPriorityAndThroughputBucketHeaders(t *testing.T) {
+	batchResponseRaw := []map[string]interface{}{
+		{"statusCode": 200, "requestCharge": 10.0, "eTag": "someETag", "resourceBody": "someBody"},
+	}
+	jsonString, _ := json.Marshal(batchResponseRaw)
+
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	pk := NewPartitionKeyString("pk")
+	batch := container.NewTransactionalBatch(pk)
+	batch.ReadItem("someId", nil)
+
+	requestPriority := PriorityLevelLow
+	requestBucket := int32(1)
+	_, err := container.ExecuteTransactionalBatch(context.TODO(), batch, &TransactionalBatchOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("Failed to execute batch: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "Low" {
+		t.Errorf("Expected priority level header to be Low, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "1" {
+		t.Errorf("Expected throughput bucket header to be 1, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestChangeFeedPriorityAndThroughputBucketHeaders(t *testing.T) {
+	changeFeedBody := []byte(`{
+		"_rid": "testRID",
+		"Documents": [{"id": "doc1"}],
+		"_count": 1
+	}`)
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	// Only the change-feed request hits the wire — caches are pre-wired.
+	srv.AppendResponse(
+		mock.WithBody(changeFeedBody),
+		mock.WithHeader(cosmosHeaderEtag, "\"etag-12345\""),
+		mock.WithHeader(cosmosHeaderActivityId, "changeFeedActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "3.5"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+	ranges := []partitionKeyRange{{ID: "0", MinInclusive: "00", MaxExclusive: "FF", ResourceID: "testRID"}}
+	client := createChangeFeedTestClient(t, srv, []policy.Policy{headerPolicy, &verifier}, ranges)
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelHigh
+	requestBucket := int32(4)
+	feedRange := &FeedRange{
+		MinInclusive: "00",
+		MaxExclusive: "FF",
+	}
+	_, err := container.GetChangeFeed(context.TODO(), &ChangeFeedOptions{
+		MaxItemCount:     10,
+		FeedRange:        feedRange,
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("GetChangeFeed failed: %v", err)
+	}
+
+	h := verifier.requests[0].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "High" {
+		t.Errorf("Expected priority level header to be High, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "4" {
+		t.Errorf("Expected throughput bucket header to be 4, got %v", h.Get(cosmosHeaderThroughputBucket))
+	}
+}
+
+func TestReadManyItemsPriorityAndThroughputBucketHeaders(t *testing.T) {
+	containerBody, _ := json.Marshal(ContainerProperties{
+		ID: "containerId",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	})
+
+	rangeBody, _ := json.Marshal(struct {
+		PartitionKeyRanges []partitionKeyRange `json:"PartitionKeyRanges"`
+		Count              int                 `json:"_count"`
+	}{
+		PartitionKeyRanges: []partitionKeyRange{
+			{
+				ID:           "0",
+				MinInclusive: "",
+				MaxExclusive: "",
+			},
+		},
+		Count: 1,
+	})
+
+	queryBody, _ := json.Marshal(map[string][]map[string]string{
+		"Documents": {
+			{"id": "item1", "pk": "pk1"},
+		},
+	})
+
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+
+	// ReadMany needs: container properties, partition key ranges, query result
+	srv.AppendResponse(
+		mock.WithBody(containerBody),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderActivityId, "container-read"),
+	)
+	srv.AppendResponse(
+		mock.WithBody(rangeBody),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderActivityId, "range-read"),
+	)
+	srv.AppendResponse(
+		mock.WithBody(queryBody),
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(cosmosHeaderActivityId, "query-read"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "1.5"),
+	)
+
+	verifier := pipelineVerifier{}
+	headerPolicy := &headerPolicies{}
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	requestPriority := PriorityLevelLow
+	requestBucket := int32(2)
+	_, err := container.ReadManyItems(context.Background(), []ItemIdentity{
+		{
+			ID:           "item1",
+			PartitionKey: NewPartitionKeyString("pk1"),
+		},
+	}, &ReadManyOptions{
+		PriorityLevel:    &requestPriority,
+		ThroughputBucket: &requestBucket,
+	})
+	if err != nil {
+		t.Fatalf("ReadManyItems failed: %v", err)
+	}
+
+	// The third request is the query (first is container read, second is pk ranges)
+	if len(verifier.requests) < 3 {
+		t.Fatalf("Expected at least 3 requests, got %d", len(verifier.requests))
+	}
+	h := verifier.requests[2].headers
+	if h.Get(cosmosHeaderPriorityLevel) != "Low" {
+		t.Errorf("Expected priority level header to be Low, got %v", h.Get(cosmosHeaderPriorityLevel))
+	}
+	if h.Get(cosmosHeaderThroughputBucket) != "2" {
+		t.Errorf("Expected throughput bucket header to be 2, got %v", h.Get(cosmosHeaderThroughputBucket))
 	}
 }

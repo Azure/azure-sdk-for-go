@@ -4,6 +4,10 @@
 
 package armrecommender
 
+const (
+	version20250605 string = "2025-06-05"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

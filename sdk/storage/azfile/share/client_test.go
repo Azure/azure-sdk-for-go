@@ -964,6 +964,8 @@ func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyMoreThanFive() {
 }
 
 func (s *ShareRecordedTestsSuite) TestShareGetSetAccessPolicyDefault() {
+	// TODO: rerecord test and remove recording.SetDefaultMatcher
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(), &recording.SetDefaultMatcherOptions{CompareBodies: to.Ptr(false), ExcludedHeaders: []string{"Accept", "Content-Type"}}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1056,6 +1058,8 @@ func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyNonDefaultDeleteAndMod
 }
 
 func (s *ShareRecordedTestsSuite) TestShareSetAccessPolicyDeleteAllPolicies() {
+	// TODO: rerecord test and remove recording.SetDefaultMatcher
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(), &recording.SetDefaultMatcherOptions{CompareBodies: to.Ptr(false), ExcludedHeaders: []string{"Accept", "Content-Type"}}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

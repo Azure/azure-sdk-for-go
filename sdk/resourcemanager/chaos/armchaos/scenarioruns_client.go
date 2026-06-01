@@ -19,6 +19,8 @@ import (
 
 // ScenarioRunsClient contains the methods for the ScenarioRuns group.
 // Don't use this type directly, use NewScenarioRunsClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type ScenarioRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewScenarioRunsClient(subscriptionID string, credential azcore.TokenCredent
 
 // Cancel - Cancel the currently running scenario execution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -99,8 +99,8 @@ func (client *ScenarioRunsClient) cancelCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -125,8 +125,6 @@ func (client *ScenarioRunsClient) cancelHandleResponse(resp *http.Response) (Sce
 //
 // Get a scenario run.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -182,8 +180,8 @@ func (client *ScenarioRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -209,8 +207,6 @@ func (client *ScenarioRunsClient) getHandleResponse(resp *http.Response) (Scenar
 }
 
 // NewListAllPager - Get a list of scenario runs.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -263,8 +259,8 @@ func (client *ScenarioRunsClient) listAllCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

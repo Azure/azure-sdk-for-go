@@ -45,10 +45,10 @@ func unmarshalTaskStepPropertiesClassification(rawMsg json.RawMessage) (TaskStep
 	switch m["type"] {
 	case string(StepTypeDocker):
 		b = &DockerBuildStep{}
-	case string(StepTypeFileTask):
-		b = &FileTaskStep{}
 	case string(StepTypeEncodedTask):
 		b = &EncodedTaskStep{}
+	case string(StepTypeFileTask):
+		b = &FileTaskStep{}
 	default:
 		b = &TaskStepProperties{}
 	}
@@ -70,10 +70,10 @@ func unmarshalTaskStepUpdateParametersClassification(rawMsg json.RawMessage) (Ta
 	switch m["type"] {
 	case string(StepTypeDocker):
 		b = &DockerBuildStepUpdateParameters{}
-	case string(StepTypeFileTask):
-		b = &FileTaskStepUpdateParameters{}
 	case string(StepTypeEncodedTask):
 		b = &EncodedTaskStepUpdateParameters{}
+	case string(StepTypeFileTask):
+		b = &FileTaskStepUpdateParameters{}
 	default:
 		b = &TaskStepUpdateParameters{}
 	}

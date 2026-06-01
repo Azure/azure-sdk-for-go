@@ -46,7 +46,7 @@ func NewTaskAssignmentsClient(subscriptionID string, credential azcore.TokenCred
 // request is issued with the exact same set of properties, the request will succeed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -79,7 +79,7 @@ func (client *TaskAssignmentsClient) BeginCreate(ctx context.Context, resourceGr
 // request is issued with the exact same set of properties, the request will succeed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 func (client *TaskAssignmentsClient) create(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters TaskAssignment, options *TaskAssignmentsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TaskAssignmentsClient.BeginCreate"
@@ -125,7 +125,7 @@ func (client *TaskAssignmentsClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -138,7 +138,7 @@ func (client *TaskAssignmentsClient) createCreateRequest(ctx context.Context, re
 // BeginDelete - Delete the storage task assignment sub-resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -166,7 +166,7 @@ func (client *TaskAssignmentsClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete the storage task assignment sub-resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 func (client *TaskAssignmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *TaskAssignmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TaskAssignmentsClient.BeginDelete"
@@ -212,7 +212,7 @@ func (client *TaskAssignmentsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -220,7 +220,7 @@ func (client *TaskAssignmentsClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get the storage task assignment properties
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -273,7 +273,7 @@ func (client *TaskAssignmentsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,7 +290,7 @@ func (client *TaskAssignmentsClient) getHandleResponse(resp *http.Response) (Tas
 
 // NewListPager - List all the storage task assignments in an account
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -342,7 +342,7 @@ func (client *TaskAssignmentsClient) listCreateRequest(ctx context.Context, reso
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -357,10 +357,93 @@ func (client *TaskAssignmentsClient) listHandleResponse(resp *http.Response) (Ta
 	return result, nil
 }
 
+// BeginStopAssignment - Stops any active running storage action for the storage task assignment
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - storageTaskAssignmentName - The name of the storage task assignment within the specified resource group. Storage task assignment
+//     names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+//   - options - TaskAssignmentsClientBeginStopAssignmentOptions contains the optional parameters for the TaskAssignmentsClient.BeginStopAssignment
+//     method.
+func (client *TaskAssignmentsClient) BeginStopAssignment(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *TaskAssignmentsClientBeginStopAssignmentOptions) (*runtime.Poller[TaskAssignmentsClientStopAssignmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stopAssignment(ctx, resourceGroupName, accountName, storageTaskAssignmentName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TaskAssignmentsClientStopAssignmentResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TaskAssignmentsClientStopAssignmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// StopAssignment - Stops any active running storage action for the storage task assignment
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
+func (client *TaskAssignmentsClient) stopAssignment(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *TaskAssignmentsClientBeginStopAssignmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TaskAssignmentsClient.BeginStopAssignment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopAssignmentCreateRequest(ctx, resourceGroupName, accountName, storageTaskAssignmentName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// stopAssignmentCreateRequest creates the StopAssignment request.
+func (client *TaskAssignmentsClient) stopAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, _ *TaskAssignmentsClientBeginStopAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/storageTaskAssignments/{storageTaskAssignmentName}/stopAssignment"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if storageTaskAssignmentName == "" {
+		return nil, errors.New("parameter storageTaskAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageTaskAssignmentName}", url.PathEscape(storageTaskAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
+}
+
 // BeginUpdate - Update storage task assignment properties
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -390,7 +473,7 @@ func (client *TaskAssignmentsClient) BeginUpdate(ctx context.Context, resourceGr
 // Update - Update storage task assignment properties
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 func (client *TaskAssignmentsClient) update(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters TaskAssignmentUpdateParameters, options *TaskAssignmentsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TaskAssignmentsClient.BeginUpdate"
@@ -436,7 +519,7 @@ func (client *TaskAssignmentsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -18,6 +18,8 @@ import (
 
 // TestRaiExternalSafetyProviderClient contains the methods for the TestRaiExternalSafetyProvider group.
 // Don't use this type directly, use NewTestRaiExternalSafetyProviderClient() instead.
+//
+// Generated from API version 2026-03-15-preview
 type TestRaiExternalSafetyProviderClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewTestRaiExternalSafetyProviderClient(subscriptionID string, credential az
 
 // CreateOrUpdate - Test the rai safety provider associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - safetyProviderName - The name of the Rai External Safety Provider associated with the Cognitive Services Account
@@ -95,8 +95,8 @@ func (client *TestRaiExternalSafetyProviderClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, safetyProvider); err != nil {

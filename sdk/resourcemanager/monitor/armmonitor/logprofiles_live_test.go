@@ -35,7 +35,7 @@ func (testsuite *LogprofilesTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), pathToPackage)
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.storageAccountName = "monitorsana"
+	testsuite.storageAccountName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "monitorsana", 18, true)
 	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2023-11-01-preview/ClusterVersionsGet_example.json
+// Generated from example definition: 2026-03-01-preview/ClusterVersionsGet_example.json
 func ExampleClusterVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleClusterVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01-preview/ClusterVersionsGetByEnvironment_example.json
+// Generated from example definition: 2026-03-01-preview/ClusterVersionsGetByEnvironment_example.json
 func ExampleClusterVersionsClient_GetByEnvironment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleClusterVersionsClient_GetByEnvironment() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01-preview/ClusterVersionsList_example.json
+// Generated from example definition: 2026-03-01-preview/ClusterVersionsList_example.json
 func ExampleClusterVersionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleClusterVersionsClient_List() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01-preview/ClusterVersionsListByEnvironment.json
+// Generated from example definition: 2026-03-01-preview/ClusterVersionsListByEnvironment.json
 func ExampleClusterVersionsClient_ListByEnvironment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

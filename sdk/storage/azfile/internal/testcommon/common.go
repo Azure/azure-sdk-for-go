@@ -7,17 +7,18 @@ package testcommon
 import (
 	"bytes"
 	"errors"
+	"io"
+	"os"
+	"strconv"
+	"strings"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"io"
-	"os"
-	"strconv"
-	"strings"
-	"testing"
 )
 
 const (
@@ -122,6 +123,7 @@ func BeforeTest(t *testing.T, suite string, test string) {
 	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-request-id", "00000000-0000-0000-0000-000000000000", "", nil))
 	// TODO: more freezing
 	require.NoError(t, recording.Start(t, RecordingDirectory, nil))
+	require.NoError(t, recording.SetDefaultMatcher(t, &recording.SetDefaultMatcherOptions{ExcludedHeaders: []string{"Accept"}}))
 }
 
 func AfterTest(t *testing.T, suite string, test string) {

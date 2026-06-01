@@ -4,6 +4,10 @@
 
 package armcontainerservicefleet
 
+const (
+	version20260302Preview string = "2026-03-02-preview"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -103,6 +107,54 @@ func PossibleAutoUpgradeProfileProvisioningStateValues() []AutoUpgradeProfilePro
 		AutoUpgradeProfileProvisioningStateCanceled,
 		AutoUpgradeProfileProvisioningStateFailed,
 		AutoUpgradeProfileProvisioningStateSucceeded,
+	}
+}
+
+// ClusterMeshProfileProvisioningState - The provisioning state of the cluster mesh profile resource.
+type ClusterMeshProfileProvisioningState string
+
+const (
+	// ClusterMeshProfileProvisioningStateCanceled - Resource creation was canceled.
+	ClusterMeshProfileProvisioningStateCanceled ClusterMeshProfileProvisioningState = "Canceled"
+	// ClusterMeshProfileProvisioningStateFailed - Resource creation failed.
+	ClusterMeshProfileProvisioningStateFailed ClusterMeshProfileProvisioningState = "Failed"
+	// ClusterMeshProfileProvisioningStateSucceeded - Resource has been created.
+	ClusterMeshProfileProvisioningStateSucceeded ClusterMeshProfileProvisioningState = "Succeeded"
+)
+
+// PossibleClusterMeshProfileProvisioningStateValues returns the possible values for the ClusterMeshProfileProvisioningState const type.
+func PossibleClusterMeshProfileProvisioningStateValues() []ClusterMeshProfileProvisioningState {
+	return []ClusterMeshProfileProvisioningState{
+		ClusterMeshProfileProvisioningStateCanceled,
+		ClusterMeshProfileProvisioningStateFailed,
+		ClusterMeshProfileProvisioningStateSucceeded,
+	}
+}
+
+// ClusterMeshState - Cluster mesh state.
+type ClusterMeshState string
+
+const (
+	// ClusterMeshStateApplying - The mesh is applying.
+	ClusterMeshStateApplying ClusterMeshState = "Applying"
+	// ClusterMeshStateConnected - The mesh is connected.
+	ClusterMeshStateConnected ClusterMeshState = "Connected"
+	// ClusterMeshStateDegraded - The mesh is degraded.
+	ClusterMeshStateDegraded ClusterMeshState = "Degraded"
+	// ClusterMeshStateFailed - The mesh failed to connect.
+	ClusterMeshStateFailed ClusterMeshState = "Failed"
+	// ClusterMeshStateNotConnected - The mesh is not connected.
+	ClusterMeshStateNotConnected ClusterMeshState = "NotConnected"
+)
+
+// PossibleClusterMeshStateValues returns the possible values for the ClusterMeshState const type.
+func PossibleClusterMeshStateValues() []ClusterMeshState {
+	return []ClusterMeshState{
+		ClusterMeshStateApplying,
+		ClusterMeshStateConnected,
+		ClusterMeshStateDegraded,
+		ClusterMeshStateFailed,
+		ClusterMeshStateNotConnected,
 	}
 }
 
@@ -385,6 +437,30 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAndUserAssigned,
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// MeshMemberState - Mesh member state.
+type MeshMemberState string
+
+const (
+	// MeshMemberStateConnected - The member is connected to the mesh.
+	MeshMemberStateConnected MeshMemberState = "Connected"
+	// MeshMemberStateConnecting - The member is connecting to the mesh.
+	MeshMemberStateConnecting MeshMemberState = "Connecting"
+	// MeshMemberStateDisconnecting - The member is disconnecting from the mesh.
+	MeshMemberStateDisconnecting MeshMemberState = "Disconnecting"
+	// MeshMemberStateFailed - The member failed to connect due to an error.
+	MeshMemberStateFailed MeshMemberState = "Failed"
+)
+
+// PossibleMeshMemberStateValues returns the possible values for the MeshMemberState const type.
+func PossibleMeshMemberStateValues() []MeshMemberState {
+	return []MeshMemberState{
+		MeshMemberStateConnected,
+		MeshMemberStateConnecting,
+		MeshMemberStateDisconnecting,
+		MeshMemberStateFailed,
 	}
 }
 

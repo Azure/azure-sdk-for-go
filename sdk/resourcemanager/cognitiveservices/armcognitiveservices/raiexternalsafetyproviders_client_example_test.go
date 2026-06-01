@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-15-preview/ListRaiExternalSafetyProviders.json
+// Generated from example definition: 2026-03-15-preview/ListRaiExternalSafetyProviders.json
 func ExampleRaiExternalSafetyProvidersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

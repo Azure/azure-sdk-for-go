@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-01-15-preview/AccountConnection/create.json
+// Generated from example definition: 2026-03-15-preview/AccountConnection/create.json
 func ExampleAccountConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleAccountConnectionsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountConnectionsClientCreateResponse{
-	// 	ConnectionPropertiesV2BasicResource: &armcognitiveservices.ConnectionPropertiesV2BasicResource{
+	// 	ConnectionPropertiesV2BasicResource: armcognitiveservices.ConnectionPropertiesV2BasicResource{
 	// 		Name: to.Ptr("connection-1"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/connections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/connections/connection-1"),
@@ -53,7 +53,7 @@ func ExampleAccountConnectionsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/AccountConnection/delete.json
+// Generated from example definition: 2026-03-15-preview/AccountConnection/delete.json
 func ExampleAccountConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleAccountConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/AccountConnection/get.json
+// Generated from example definition: 2026-03-15-preview/AccountConnection/get.json
 func ExampleAccountConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleAccountConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountConnectionsClientGetResponse{
-	// 	ConnectionPropertiesV2BasicResource: &armcognitiveservices.ConnectionPropertiesV2BasicResource{
+	// 	ConnectionPropertiesV2BasicResource: armcognitiveservices.ConnectionPropertiesV2BasicResource{
 	// 		Name: to.Ptr("connection-1"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/connections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/connections/connection-1"),
@@ -108,7 +108,7 @@ func ExampleAccountConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/AccountConnection/list.json
+// Generated from example definition: 2026-03-15-preview/AccountConnection/list.json
 func ExampleAccountConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleAccountConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/AccountConnection/update.json
+// Generated from example definition: 2026-03-15-preview/AccountConnection/update.json
 func ExampleAccountConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleAccountConnectionsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountConnectionsClientUpdateResponse{
-	// 	ConnectionPropertiesV2BasicResource: &armcognitiveservices.ConnectionPropertiesV2BasicResource{
+	// 	ConnectionPropertiesV2BasicResource: armcognitiveservices.ConnectionPropertiesV2BasicResource{
 	// 		Name: to.Ptr("connection-1"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/connections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/connections/connection-1"),

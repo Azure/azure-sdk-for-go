@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-15-preview/CreateAccount.json
+// Generated from example definition: 2026-03-15-preview/CreateAccount.json
 func ExampleAccountsClient_BeginCreate_createAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,13 +53,13 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientCreateResponse{
-	// 	Account: &armcognitiveservices.Account{
+	// 	Account: armcognitiveservices.Account{
 	// 		Name: to.Ptr("testCreate1"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-04-10T08%3A00%3A05.445595Z'\""),
@@ -95,7 +95,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/CreateAccountMin.json
+// Generated from example definition: 2026-03-15-preview/CreateAccountMin.json
 func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,13 +122,13 @@ func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientCreateResponse{
-	// 	Account: &armcognitiveservices.Account{
+	// 	Account: armcognitiveservices.Account{
 	// 		Name: to.Ptr("testCreate1"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-04-10T08%3A00%3A05.445595Z'\""),
@@ -151,7 +151,7 @@ func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/DeleteAccount.json
+// Generated from example definition: 2026-03-15-preview/DeleteAccount.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +168,7 @@ func ExampleAccountsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -177,7 +177,84 @@ func ExampleAccountsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/GetAccount.json
+// Generated from example definition: 2026-03-15-preview/EvaluateDeploymentPolicies.json
+func ExampleAccountsClient_EvaluateDeploymentPolicies() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().EvaluateDeploymentPolicies(ctx, "resourceGroupName", "accountName", armcognitiveservices.EvaluateDeploymentPoliciesRequest{
+		Deployments: []*armcognitiveservices.EvaluateDeploymentPoliciesDeployment{
+			{
+				Name: to.Ptr("gpt4o-deployment"),
+				Properties: &armcognitiveservices.EvaluateDeploymentPoliciesDeploymentProperties{
+					Model: &armcognitiveservices.DeploymentModel{
+						Format:  to.Ptr("OpenAI"),
+						Name:    to.Ptr("gpt-4o"),
+						Version: to.Ptr("2024-11-20"),
+					},
+					RaiPolicyName: to.Ptr("Microsoft.DefaultV2"),
+				},
+			},
+			{
+				Name: to.Ptr("ada-embedding"),
+				Properties: &armcognitiveservices.EvaluateDeploymentPoliciesDeploymentProperties{
+					Model: &armcognitiveservices.DeploymentModel{
+						Format:  to.Ptr("OpenAI"),
+						Name:    to.Ptr("text-embedding-ada-002"),
+						Version: to.Ptr("2"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientEvaluateDeploymentPoliciesResponse{
+	// 	EvaluateDeploymentPoliciesResponse: armcognitiveservices.EvaluateDeploymentPoliciesResponse{
+	// 		Results: map[string]*armcognitiveservices.DeploymentPolicyEvaluationResult{
+	// 			"gpt4o-deployment": &armcognitiveservices.DeploymentPolicyEvaluationResult{
+	// 				EvaluationOutcome: to.Ptr(armcognitiveservices.PolicyEvaluationOutcomeCompliant),
+	// 				NonCompliantAssignments: []*armcognitiveservices.PolicyAssignmentEvaluationDetails{
+	// 				},
+	// 			},
+	// 			"ada-embedding": &armcognitiveservices.DeploymentPolicyEvaluationResult{
+	// 				EvaluationOutcome: to.Ptr(armcognitiveservices.PolicyEvaluationOutcomeNonCompliant),
+	// 				NonCompliantAssignments: []*armcognitiveservices.PolicyAssignmentEvaluationDetails{
+	// 					{
+	// 						AssignmentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/deny-gpt-models"),
+	// 						PolicyDefinitionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/deny-embedding-models"),
+	// 						EvaluationOutcome: to.Ptr(armcognitiveservices.PolicyEvaluationOutcomeNonCompliant),
+	// 						NonComplianceReason: to.Ptr("Model text-embedding-ada-002 is not allowed by policy."),
+	// 						Effect: to.Ptr("Deny"),
+	// 						ExpressionEvaluations: []*armcognitiveservices.PolicyExpressionEvaluationDetails{
+	// 							{
+	// 								Expression: to.Ptr("Microsoft.CognitiveServices/accounts/deployments/model.name"),
+	// 								ExpressionKind: to.Ptr("Field"),
+	// 								Operator: to.Ptr("notIn"),
+	// 								Result: to.Ptr("True"),
+	// 								TargetValue: to.Ptr("[\"gpt-4o\",\"gpt-4\"]"),
+	// 								ExpressionValue: to.Ptr("text-embedding-ada-002"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-15-preview/GetAccount.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +273,7 @@ func ExampleAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientGetResponse{
-	// 	Account: &armcognitiveservices.Account{
+	// 	Account: armcognitiveservices.Account{
 	// 		Name: to.Ptr("myAccount"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-04-10T04%3A42%3A19.7067387Z'\""),
@@ -218,7 +295,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/ListAccountsBySubscription.json
+// Generated from example definition: 2026-03-15-preview/ListAccountsBySubscription.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +389,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/ListAccountsByResourceGroup.json
+// Generated from example definition: 2026-03-15-preview/ListAccountsByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -379,7 +456,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/ListKeys.json
+// Generated from example definition: 2026-03-15-preview/ListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -398,14 +475,14 @@ func ExampleAccountsClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientListKeysResponse{
-	// 	APIKeys: &armcognitiveservices.APIKeys{
+	// 	APIKeys: armcognitiveservices.APIKeys{
 	// 		Key1: to.Ptr("KEY1"),
 	// 		Key2: to.Ptr("KEY2"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/ListAccountModels.json
+// Generated from example definition: 2026-03-15-preview/ListAccountModels.json
 func ExampleAccountsClient_NewListModelsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -606,7 +683,7 @@ func ExampleAccountsClient_NewListModelsPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/ListSkus.json
+// Generated from example definition: 2026-03-15-preview/ListSkus.json
 func ExampleAccountsClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -625,7 +702,7 @@ func ExampleAccountsClient_ListSKUs() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientListSKUsResponse{
-	// 	AccountSKUListResult: &armcognitiveservices.AccountSKUListResult{
+	// 	AccountSKUListResult: armcognitiveservices.AccountSKUListResult{
 	// 		Value: []*armcognitiveservices.AccountSKU{
 	// 			{
 	// 				ResourceType: to.Ptr("Microsoft.CognitiveServices/accounts"),
@@ -646,7 +723,7 @@ func ExampleAccountsClient_ListSKUs() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/GetUsages.json
+// Generated from example definition: 2026-03-15-preview/GetUsages.json
 func ExampleAccountsClient_ListUsages_getUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -665,7 +742,7 @@ func ExampleAccountsClient_ListUsages_getUsages() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientListUsagesResponse{
-	// 	UsageListResult: &armcognitiveservices.UsageListResult{
+	// 	UsageListResult: armcognitiveservices.UsageListResult{
 	// 		Value: []*armcognitiveservices.Usage{
 	// 			{
 	// 				Name: &armcognitiveservices.MetricName{
@@ -686,7 +763,7 @@ func ExampleAccountsClient_ListUsages_getUsages() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/GetUsagesClassicScope.json
+// Generated from example definition: 2026-03-15-preview/GetUsagesClassicScope.json
 func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -705,7 +782,7 @@ func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientListUsagesResponse{
-	// 	UsageListResult: &armcognitiveservices.UsageListResult{
+	// 	UsageListResult: armcognitiveservices.UsageListResult{
 	// 		Value: []*armcognitiveservices.Usage{
 	// 			{
 	// 				Name: &armcognitiveservices.MetricName{
@@ -725,7 +802,7 @@ func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/GetUsagesDataZoneScope.json
+// Generated from example definition: 2026-03-15-preview/GetUsagesDataZoneScope.json
 func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -744,7 +821,7 @@ func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientListUsagesResponse{
-	// 	UsageListResult: &armcognitiveservices.UsageListResult{
+	// 	UsageListResult: armcognitiveservices.UsageListResult{
 	// 		Value: []*armcognitiveservices.Usage{
 	// 			{
 	// 				Name: &armcognitiveservices.MetricName{
@@ -765,7 +842,7 @@ func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/GetUsagesGlobalScope.json
+// Generated from example definition: 2026-03-15-preview/GetUsagesGlobalScope.json
 func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -784,7 +861,7 @@ func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientListUsagesResponse{
-	// 	UsageListResult: &armcognitiveservices.UsageListResult{
+	// 	UsageListResult: armcognitiveservices.UsageListResult{
 	// 		Value: []*armcognitiveservices.Usage{
 	// 			{
 	// 				Name: &armcognitiveservices.MetricName{
@@ -805,7 +882,7 @@ func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/RegenerateKey.json
+// Generated from example definition: 2026-03-15-preview/RegenerateKey.json
 func ExampleAccountsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -826,14 +903,14 @@ func ExampleAccountsClient_RegenerateKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientRegenerateKeyResponse{
-	// 	APIKeys: &armcognitiveservices.APIKeys{
+	// 	APIKeys: armcognitiveservices.APIKeys{
 	// 		Key1: to.Ptr("KEY1"),
 	// 		Key2: to.Ptr("KEY2"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/UpdateAccount.json
+// Generated from example definition: 2026-03-15-preview/UpdateAccount.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -855,13 +932,13 @@ func ExampleAccountsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.AccountsClientUpdateResponse{
-	// 	Account: &armcognitiveservices.Account{
+	// 	Account: armcognitiveservices.Account{
 	// 		Name: to.Ptr("bingSearch"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-04-10T07%3A46%3A21.5618831Z'\""),

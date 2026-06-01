@@ -32,6 +32,14 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAccessBridgesClient creates a new instance of AccessBridgesClient.
+func (c *ClientFactory) NewAccessBridgesClient() *AccessBridgesClient {
+	return &AccessBridgesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewAgentPoolsClient creates a new instance of AgentPoolsClient.
 func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
 	return &AgentPoolsClient{
@@ -107,6 +115,14 @@ func (c *ClientFactory) NewKubernetesClusterFeaturesClient() *KubernetesClusterF
 // NewKubernetesClustersClient creates a new instance of KubernetesClustersClient.
 func (c *ClientFactory) NewKubernetesClustersClient() *KubernetesClustersClient {
 	return &KubernetesClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewKubernetesVersionsClient creates a new instance of KubernetesVersionsClient.
+func (c *ClientFactory) NewKubernetesVersionsClient() *KubernetesVersionsClient {
+	return &KubernetesVersionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

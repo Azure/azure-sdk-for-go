@@ -751,3 +751,40 @@ func TestSubjectAlternativeNames(t *testing.T) {
 
 	testSerde(t, sans)
 }
+
+// TestPlatformManaged exercises the experimental PlatformManaged property on
+// CertificatePolicy. The feature is intended for internal Azure Key Vault usage
+// only and requires a valid OneCert-managed domain; this test issues a
+// PublicTLSServerAuth certificate for a OneCert-owned host and verifies the
+// PlatformManaged configuration round-trips through Create + Get.
+func TestPlatformManaged(t *testing.T) {
+	client := startTest(t)
+
+	certName := getName(t, "platformmanaged")
+	dnsName := "onecertdomain.contoso.com"
+	policy := azcertificates.CertificatePolicy{
+		PlatformManaged: azcertificates.NewPlatformManaged("PublicTLSServerAuth", map[string]any{
+			"sans": map[string]any{
+				"dns_names": []string{dnsName},
+			},
+		}),
+	}
+	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &policy}
+	testSerde(t, &createParams)
+
+	_, err := client.CreateCertificate(ctx, certName, createParams, nil)
+	require.NoError(t, err)
+	defer cleanUpCert(t, client, certName)
+
+	policyResp, err := client.GetCertificatePolicy(ctx, certName, nil)
+	require.NoError(t, err)
+	require.NotNil(t, policyResp.PlatformManaged)
+	require.NotNil(t, policyResp.PlatformManaged.CertificateUsage)
+	require.Equal(t, "PublicTLSServerAuth", *policyResp.PlatformManaged.CertificateUsage)
+
+	sansRaw, ok := policyResp.PlatformManaged.Metadata["sans"].(map[string]any)
+	require.True(t, ok, "expected metadata.sans to round-trip as object, got %T", policyResp.PlatformManaged.Metadata["sans"])
+	dnsNamesRaw, ok := sansRaw["dns_names"].([]any)
+	require.True(t, ok, "expected metadata.sans.dns_names to round-trip as array, got %T", sansRaw["dns_names"])
+	require.Contains(t, dnsNamesRaw, dnsName)
+}

@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Regenerated code with the latest emitter.
+* Updated dependencies.
 
 ## 2.2.0 (2026-04-14)
 

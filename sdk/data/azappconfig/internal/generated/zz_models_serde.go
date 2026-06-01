@@ -8,9 +8,10 @@ package generated
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
+	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type Error.
@@ -191,7 +192,7 @@ func (k KeyValue) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "etag", k.Etag)
 	populate(objectMap, "key", k.Key)
 	populate(objectMap, "label", k.Label)
-	populateDateTimeRFC3339(objectMap, "last_modified", k.LastModified)
+	populateTime[datetime.RFC3339](objectMap, "last_modified", k.LastModified)
 	populate(objectMap, "locked", k.Locked)
 	populate(objectMap, "tags", k.Tags)
 	populate(objectMap, "value", k.Value)
@@ -220,7 +221,7 @@ func (k *KeyValue) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Label", &k.Label)
 			delete(rawMsg, key)
 		case "last_modified":
-			err = unpopulateDateTimeRFC3339(val, "LastModified", &k.LastModified)
+			err = unpopulateTime[datetime.RFC3339](val, "LastModified", &k.LastModified)
 			delete(rawMsg, key)
 		case "locked":
 			err = unpopulate(val, "Locked", &k.Locked)
@@ -406,9 +407,9 @@ func (o *OperationDetails) UnmarshalJSON(data []byte) error {
 func (s Snapshot) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "composition_type", s.CompositionType)
-	populateDateTimeRFC3339(objectMap, "created", s.Created)
+	populateTime[datetime.RFC3339](objectMap, "created", s.Created)
 	populate(objectMap, "etag", s.Etag)
-	populateDateTimeRFC3339(objectMap, "expires", s.Expires)
+	populateTime[datetime.RFC3339](objectMap, "expires", s.Expires)
 	populate(objectMap, "filters", s.Filters)
 	populate(objectMap, "items_count", s.ItemsCount)
 	populate(objectMap, "name", s.Name)
@@ -432,13 +433,13 @@ func (s *Snapshot) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CompositionType", &s.CompositionType)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateDateTimeRFC3339(val, "Created", &s.Created)
+			err = unpopulateTime[datetime.RFC3339](val, "Created", &s.Created)
 			delete(rawMsg, key)
 		case "etag":
 			err = unpopulate(val, "Etag", &s.Etag)
 			delete(rawMsg, key)
 		case "expires":
-			err = unpopulateDateTimeRFC3339(val, "Expires", &s.Expires)
+			err = unpopulateTime[datetime.RFC3339](val, "Expires", &s.Expires)
 			delete(rawMsg, key)
 		case "filters":
 			err = unpopulate(val, "Filters", &s.Filters)
@@ -537,6 +538,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+	} else if !reflect.ValueOf(t).IsNil() {
+		newTime := T(*t)
+		m[k] = (*T)(&newTime)
+	}
+}
+
 func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -545,4 +557,21 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
+}
+
+func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
+	if data == nil || string(data) == "null" {
+		return nil
+	}
+	var aux T
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	newTime := time.Time(aux)
+	*t = &newTime
+	return nil
+}
+
+type dateTimeConstraints interface {
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

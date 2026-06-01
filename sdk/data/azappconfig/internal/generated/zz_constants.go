@@ -5,6 +5,10 @@
 
 package generated
 
+const (
+	version20231101 string = "2023-11-01"
+)
+
 // CompositionType - The composition type describes how the key-values within the snapshot are composed. The 'key' composition
 // type ensures there are no two key-values containing the same key. The 'key_label' composition
 // type ensures there are no two key-values containing the same key and label.

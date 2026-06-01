@@ -1895,7 +1895,7 @@ func (a ACSMessageDeliveryStatusUpdatedEventData) MarshalJSON() ([]byte, error) 
 	populateTime[datetime.RFC3339](objectMap, "receivedTimeStamp", a.ReceivedTimestamp)
 	populate(objectMap, "status", a.Status)
 	populate(objectMap, "to", a.To)
-	populate(objectMap, "toBSUID", a.ToBSUID)
+	populate(objectMap, "toBSUID", a.ToBsuid)
 	return json.Marshal(objectMap)
 }
 
@@ -1930,7 +1930,7 @@ func (a *ACSMessageDeliveryStatusUpdatedEventData) UnmarshalJSON(data []byte) er
 			err = unpopulate(val, "To", &a.To)
 			delete(rawMsg, key)
 		case "toBSUID":
-			err = unpopulate(val, "ToBSUID", &a.ToBSUID)
+			err = unpopulate(val, "ToBsuid", &a.ToBsuid)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2124,7 +2124,7 @@ func (a ACSMessageReceivedEventData) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "context", a.Context)
 	populate(objectMap, "error", a.Error)
 	populate(objectMap, "from", a.From)
-	populate(objectMap, "fromBSUID", a.FromBSUID)
+	populate(objectMap, "fromBSUID", a.FromBsuid)
 	populate(objectMap, "interactive", a.InteractiveContent)
 	populate(objectMap, "media", a.MediaContent)
 	populate(objectMap, "messageId", a.MessageID)
@@ -2163,7 +2163,7 @@ func (a *ACSMessageReceivedEventData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "From", &a.From)
 			delete(rawMsg, key)
 		case "fromBSUID":
-			err = unpopulate(val, "FromBSUID", &a.FromBSUID)
+			err = unpopulate(val, "FromBsuid", &a.FromBsuid)
 			delete(rawMsg, key)
 		case "interactive":
 			err = unpopulate(val, "InteractiveContent", &a.InteractiveContent)

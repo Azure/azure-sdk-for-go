@@ -2,6 +2,8 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgemarketplace/arm
 
 go 1.24.0
 
+retract v0.1.0
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.1

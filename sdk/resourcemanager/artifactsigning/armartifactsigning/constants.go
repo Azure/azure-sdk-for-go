@@ -4,10 +4,6 @@
 
 package armartifactsigning
 
-const (
-	version20251013 string = "2025-10-13"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

@@ -4,10 +4,6 @@
 
 package armconnectedcache
 
-const (
-	version20241130Preview string = "2024-11-30-preview"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_Create.json
+// Generated from example definition: 2025-09-01/KubernetesClusters_Create.json
 func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernetesCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,13 +209,13 @@ func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernete
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.KubernetesClustersClientCreateOrUpdateResponse{
-	// 	KubernetesCluster: armnetworkcloud.KubernetesCluster{
+	// 	KubernetesCluster: &armnetworkcloud.KubernetesCluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -518,7 +518,7 @@ func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernete
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_L2LoadBalancer_Create.json
+// Generated from example definition: 2025-09-01/KubernetesClusters_L2LoadBalancer_Create.json
 func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernetesClusterWithALayer2LoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -686,13 +686,13 @@ func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernete
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.KubernetesClustersClientCreateOrUpdateResponse{
-	// 	KubernetesCluster: armnetworkcloud.KubernetesCluster{
+	// 	KubernetesCluster: &armnetworkcloud.KubernetesCluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -966,7 +966,7 @@ func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernete
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_Delete.json
+// Generated from example definition: 2025-09-01/KubernetesClusters_Delete.json
 func ExampleKubernetesClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -983,11 +983,11 @@ func ExampleKubernetesClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_Get.json
+// Generated from example definition: 2025-09-01/KubernetesClusters_Get.json
 func ExampleKubernetesClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1006,7 +1006,7 @@ func ExampleKubernetesClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.KubernetesClustersClientGetResponse{
-	// 	KubernetesCluster: armnetworkcloud.KubernetesCluster{
+	// 	KubernetesCluster: &armnetworkcloud.KubernetesCluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -1309,7 +1309,7 @@ func ExampleKubernetesClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_ListByResourceGroup.json
+// Generated from example definition: 2025-09-01/KubernetesClusters_ListByResourceGroup.json
 func ExampleKubernetesClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1641,7 +1641,7 @@ func ExampleKubernetesClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_ListBySubscription.json
+// Generated from example definition: 2025-09-01/KubernetesClusters_ListBySubscription.json
 func ExampleKubernetesClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1972,7 +1972,7 @@ func ExampleKubernetesClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_RestartNode.json
+// Generated from example definition: 2025-09-01/KubernetesClusters_RestartNode.json
 func ExampleKubernetesClustersClient_BeginRestartNode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1991,11 +1991,11 @@ func ExampleKubernetesClustersClient_BeginRestartNode() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_Patch.json
+// Generated from example definition: 2025-09-01/KubernetesClusters_Patch.json
 func ExampleKubernetesClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2037,13 +2037,13 @@ func ExampleKubernetesClustersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.KubernetesClustersClientUpdateResponse{
-	// 	KubernetesCluster: armnetworkcloud.KubernetesCluster{
+	// 	KubernetesCluster: &armnetworkcloud.KubernetesCluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),

@@ -4,10 +4,6 @@
 
 package armcontainerregistry
 
-const (
-	version20260101Preview string = "2026-01-01-preview"
-)
-
 // Action - The action of IP ACL rule.
 type Action string
 

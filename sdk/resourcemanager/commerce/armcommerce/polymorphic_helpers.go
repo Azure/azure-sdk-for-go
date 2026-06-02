@@ -16,10 +16,10 @@ func unmarshalOfferTermInfoClassification(rawMsg json.RawMessage) (OfferTermInfo
 	}
 	var b OfferTermInfoClassification
 	switch m["Name"] {
-	case string(OfferTermInfoNameMonetaryCommitment):
-		b = &MonetaryCommitment{}
 	case string(OfferTermInfoNameMonetaryCredit):
 		b = &MonetaryCredit{}
+	case string(OfferTermInfoNameMonetaryCommitment):
+		b = &MonetaryCommitment{}
 	case string(OfferTermInfoNameRecurringCharge):
 		b = &RecurringCharge{}
 	default:

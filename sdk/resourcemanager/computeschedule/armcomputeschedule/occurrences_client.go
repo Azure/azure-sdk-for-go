@@ -18,8 +18,6 @@ import (
 
 // OccurrencesClient contains the methods for the Occurrences group.
 // Don't use this type directly, use NewOccurrencesClient() instead.
-//
-// Generated from API version 2025-04-15-preview
 type OccurrencesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewOccurrencesClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Cancel - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-04-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - occurrenceID - The name of the Occurrence
@@ -94,8 +94,8 @@ func (client *OccurrencesClient) cancelCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-04-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -115,6 +115,8 @@ func (client *OccurrencesClient) cancelHandleResponse(resp *http.Response) (Occu
 
 // BeginDelay - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-04-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - occurrenceID - The name of the Occurrence
@@ -139,6 +141,8 @@ func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupNa
 
 // Delay - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-04-15-preview
 func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OccurrencesClient.BeginDelay"
@@ -184,8 +188,8 @@ func (client *OccurrencesClient) delayCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-04-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -196,6 +200,8 @@ func (client *OccurrencesClient) delayCreateRequest(ctx context.Context, resourc
 
 // Get - Get a Occurrence
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-04-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - occurrenceID - The name of the Occurrence
@@ -246,8 +252,8 @@ func (client *OccurrencesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-04-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -262,6 +268,8 @@ func (client *OccurrencesClient) getHandleResponse(resp *http.Response) (Occurre
 }
 
 // NewListByScheduledActionPager - List Occurrence resources by ScheduledAction
+//
+// Generated from API version 2025-04-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - options - OccurrencesClientListByScheduledActionOptions contains the optional parameters for the OccurrencesClient.NewListByScheduledActionPager
@@ -309,8 +317,8 @@ func (client *OccurrencesClient) listByScheduledActionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-04-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -325,6 +333,8 @@ func (client *OccurrencesClient) listByScheduledActionHandleResponse(resp *http.
 }
 
 // NewListResourcesPager - List resources attached to Scheduled Actions for the given occurrence
+//
+// Generated from API version 2025-04-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - occurrenceID - The name of the Occurrence
@@ -377,8 +387,8 @@ func (client *OccurrencesClient) listResourcesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-04-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

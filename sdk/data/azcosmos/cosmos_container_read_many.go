@@ -217,14 +217,31 @@ func (c *ContainerClient) executeOneChunk(
 			localOpts.ContinuationToken = &continuation
 		}
 
-		items, charge, ct, err := c.executeOneChunkPage(ctx, chunk, &localOpts, operationContext, path)
-		totalCharge += charge
+		rangeID := chunk.rangeID
+		azResponse, err := c.database.client.sendQueryRequest(
+			path,
+			ctx,
+			chunk.query,
+			chunk.params,
+			operationContext,
+			&localOpts,
+			func(req *policy.Request) {
+				req.Raw().Header.Set(cosmosHeaderPartitionKeyRangeId, rangeID)
+			},
+		)
 		if err != nil {
 			return nil, totalCharge, err
 		}
 
-		allItems = append(allItems, items...)
+		qResp, err := newQueryResponse(azResponse)
+		if err != nil {
+			return nil, totalCharge, err
+		}
 
+		totalCharge += qResp.RequestCharge
+		allItems = append(allItems, qResp.Items...)
+
+		ct := azResponse.Header.Get(cosmosHeaderContinuationToken)
 		if ct == "" {
 			break
 		}
@@ -232,49 +249,6 @@ func (c *ContainerClient) executeOneChunk(
 	}
 
 	return allItems, totalCharge, nil
-}
-
-// executeOneChunkPage sends a single page request for a chunk, creating an
-// OTel span for each HTTP round-trip. This matches the per-page span that
-// NewQueryItemsPager creates so that the internal queries issued by
-// ReadManyItems are visible in distributed traces.
-func (c *ContainerClient) executeOneChunkPage(
-	ctx context.Context,
-	chunk queryChunk,
-	queryOpts *QueryOptions,
-	operationContext pipelineRequestOptions,
-	path string,
-) ([][]byte, float32, string, error) {
-	var err error
-	spanName, err := c.getSpanForItems(operationTypeQuery)
-	if err != nil {
-		return nil, 0, "", err
-	}
-	ctx, endSpan := startSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
-	defer func() { endSpan(err) }()
-
-	rangeID := chunk.rangeID
-	azResponse, err := c.database.client.sendQueryRequest(
-		path,
-		ctx,
-		chunk.query,
-		chunk.params,
-		operationContext,
-		queryOpts,
-		func(req *policy.Request) {
-			req.Raw().Header.Set(cosmosHeaderPartitionKeyRangeId, rangeID)
-		},
-	)
-	if err != nil {
-		return nil, 0, "", err
-	}
-
-	qResp, err := newQueryResponse(azResponse)
-	if err != nil {
-		return nil, 0, "", err
-	}
-
-	return qResp.Items, qResp.RequestCharge, azResponse.Header.Get(cosmosHeaderContinuationToken), nil
 }
 
 // collectChunkResults merges per-chunk results into a single ReadManyItemsResponse.
@@ -397,11 +371,6 @@ func (c *ContainerClient) executeReadManyWithQueries(
 // refreshPKRangeCache forces a refresh of the partition key range cache for this container.
 // It also invalidates the container properties cache so that getContainerRID fetches the
 // current RID, which is necessary when a container is deleted and recreated with the same name.
-//
-// The pkRangeCache.invalidate() call is required before forceRefresh: forceRefresh joins
-// any in-flight refresh, so without invalidating first the caller could receive a snapshot
-// captured before the 410 trigger that prompted this call. invalidate() cancels the
-// in-flight op and bumps the generation so the join lands on a fresh post-invalidate fetch.
 // Returns an error if the refresh fails, allowing the caller to fail fast.
 func (c *ContainerClient) refreshPKRangeCache(ctx context.Context) error {
 	if c.database.client.getContainerCache() != nil {
@@ -412,7 +381,6 @@ func (c *ContainerClient) refreshPKRangeCache(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
-		c.database.client.getPKRangeCache().invalidate(containerRID)
 		_, err = c.database.client.getPKRangeCache().forceRefresh(ctx, containerRID, c.link, c.database.client)
 		if err != nil {
 			return err

@@ -18,8 +18,6 @@ import (
 
 // ActionVersionsClient contains the methods for the ActionVersions group.
 // Don't use this type directly, use NewActionVersionsClient() instead.
-//
-// Generated from API version 2026-05-01-preview
 type ActionVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewActionVersionsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Get an Action Version resource for a given location and action.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
 //   - actionName - String that represents an Action resource name.
 //   - versionName - String that represents an Action Version resource name.
@@ -93,8 +93,8 @@ func (client *ActionVersionsClient) getCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,6 +109,8 @@ func (client *ActionVersionsClient) getHandleResponse(resp *http.Response) (Acti
 }
 
 // NewListPager - Get a list of Action Version resources for a given location and action.
+//
+// Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
 //   - actionName - String that represents an Action resource name.
 //   - options - ActionVersionsClientListOptions contains the optional parameters for the ActionVersionsClient.NewListPager method.
@@ -155,11 +157,11 @@ func (client *ActionVersionsClient) listCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", "2026-05-01-preview")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

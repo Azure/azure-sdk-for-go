@@ -18,8 +18,6 @@ import (
 
 // NetworkSecurityGroupsClient contains the methods for the NetworkSecurityGroups group.
 // Don't use this type directly, use NewNetworkSecurityGroupsClient() instead.
-//
-// Generated from API version 2025-06-01-preview
 type NetworkSecurityGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewNetworkSecurityGroupsClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreateOrUpdate - Creates or updates a network security group in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkSecurityGroupName - Name of the network security group
 //   - resource - Resource create parameters.
@@ -68,6 +68,8 @@ func (client *NetworkSecurityGroupsClient) BeginCreateOrUpdate(ctx context.Conte
 
 // CreateOrUpdate - Creates or updates a network security group in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
 func (client *NetworkSecurityGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, resource NetworkSecurityGroup, options *NetworkSecurityGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityGroupsClient.BeginCreateOrUpdate"
@@ -109,8 +111,8 @@ func (client *NetworkSecurityGroupsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -121,6 +123,8 @@ func (client *NetworkSecurityGroupsClient) createOrUpdateCreateRequest(ctx conte
 
 // BeginDelete - Deletes the specified network security group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkSecurityGroupName - Name of the network security group
 //   - options - NetworkSecurityGroupsClientBeginDeleteOptions contains the optional parameters for the NetworkSecurityGroupsClient.BeginDelete
@@ -144,6 +148,8 @@ func (client *NetworkSecurityGroupsClient) BeginDelete(ctx context.Context, reso
 
 // Delete - Deletes the specified network security group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
 func (client *NetworkSecurityGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, options *NetworkSecurityGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityGroupsClient.BeginDelete"
@@ -185,13 +191,15 @@ func (client *NetworkSecurityGroupsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the specified network security group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkSecurityGroupName - Name of the network security group
 //   - options - NetworkSecurityGroupsClientGetOptions contains the optional parameters for the NetworkSecurityGroupsClient.Get
@@ -238,8 +246,8 @@ func (client *NetworkSecurityGroupsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -254,6 +262,8 @@ func (client *NetworkSecurityGroupsClient) getHandleResponse(resp *http.Response
 }
 
 // NewListAllPager - Gets all network security groups in a subscription.
+//
+// Generated from API version 2025-06-01-preview
 //   - options - NetworkSecurityGroupsClientListAllOptions contains the optional parameters for the NetworkSecurityGroupsClient.NewListAllPager
 //     method.
 func (client *NetworkSecurityGroupsClient) NewListAllPager(options *NetworkSecurityGroupsClientListAllOptions) *runtime.Pager[NetworkSecurityGroupsClientListAllResponse] {
@@ -291,8 +301,8 @@ func (client *NetworkSecurityGroupsClient) listAllCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -307,6 +317,8 @@ func (client *NetworkSecurityGroupsClient) listAllHandleResponse(resp *http.Resp
 }
 
 // NewListByResourceGroupPager - Gets all network security groups in a resource group.
+//
+// Generated from API version 2025-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkSecurityGroupsClientListByResourceGroupOptions contains the optional parameters for the NetworkSecurityGroupsClient.NewListByResourceGroupPager
 //     method.
@@ -349,8 +361,8 @@ func (client *NetworkSecurityGroupsClient) listByResourceGroupCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -366,6 +378,8 @@ func (client *NetworkSecurityGroupsClient) listByResourceGroupHandleResponse(res
 
 // BeginUpdateTags - Updates a network security group tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkSecurityGroupName - Name of the network security group
 //   - properties - The resource properties to be updated.
@@ -390,6 +404,8 @@ func (client *NetworkSecurityGroupsClient) BeginUpdateTags(ctx context.Context, 
 
 // UpdateTags - Updates a network security group tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
 func (client *NetworkSecurityGroupsClient) updateTags(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, properties NetworkSecurityGroupTagsUpdate, options *NetworkSecurityGroupsClientBeginUpdateTagsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityGroupsClient.BeginUpdateTags"
@@ -431,8 +447,8 @@ func (client *NetworkSecurityGroupsClient) updateTagsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

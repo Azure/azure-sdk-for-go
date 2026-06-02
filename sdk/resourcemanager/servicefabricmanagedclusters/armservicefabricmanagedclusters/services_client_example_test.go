@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/ServicePutOperation_example_max.json
+// Generated from example definition: 2026-02-01/ServicePutOperation_example_max.json
 func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,13 +83,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMaximumParameters(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ServicesClientCreateOrUpdateResponse{
-	// 	ServiceResource: armservicefabricmanagedclusters.ServiceResource{
+	// 	ServiceResource: &armservicefabricmanagedclusters.ServiceResource{
 	// 		Name: to.Ptr("myService"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp/services/myService"),
@@ -146,12 +146,11 @@ func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMaximumParameters(
 	// 		Tags: map[string]*string{
 	// 			"a": to.Ptr("b"),
 	// 		},
-	// 		Location: to.Ptr("eastus"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ServicePutOperation_example_min.json
+// Generated from example definition: 2026-02-01/ServicePutOperation_example_min.json
 func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,13 +177,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMinimumParameters(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ServicesClientCreateOrUpdateResponse{
-	// 	ServiceResource: armservicefabricmanagedclusters.ServiceResource{
+	// 	ServiceResource: &armservicefabricmanagedclusters.ServiceResource{
 	// 		Name: to.Ptr("myService"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp/services/myService"),
@@ -197,12 +196,11 @@ func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMinimumParameters(
 	// 			ServiceKind: to.Ptr(armservicefabricmanagedclusters.ServiceKindStateless),
 	// 			ServiceTypeName: to.Ptr("myServiceType"),
 	// 		},
-	// 		Location: to.Ptr("eastus"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ServiceDeleteOperation_example.json
+// Generated from example definition: 2026-02-01/ServiceDeleteOperation_example.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,11 +217,11 @@ func ExampleServicesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ServiceGetOperation_example.json
+// Generated from example definition: 2026-02-01/ServiceGetOperation_example.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +240,7 @@ func ExampleServicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ServicesClientGetResponse{
-	// 	ServiceResource: armservicefabricmanagedclusters.ServiceResource{
+	// 	ServiceResource: &armservicefabricmanagedclusters.ServiceResource{
 	// 		Name: to.Ptr("myService"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp/services/myService"),
@@ -270,7 +268,7 @@ func ExampleServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ServiceListOperation_example.json
+// Generated from example definition: 2026-02-01/ServiceListOperation_example.json
 func ExampleServicesClient_NewListByApplicationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +321,7 @@ func ExampleServicesClient_NewListByApplicationsPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ServiceActionRestartReplica_example.json
+// Generated from example definition: 2026-02-01/ServiceActionRestartReplica_example.json
 func ExampleServicesClient_BeginRestartReplica() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,11 +346,11 @@ func ExampleServicesClient_BeginRestartReplica() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ServicePatchOperation_example.json
+// Generated from example definition: 2026-02-01/ServicePatchOperation_example.json
 func ExampleServicesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,7 +373,7 @@ func ExampleServicesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ServicesClientUpdateResponse{
-	// 	ServiceResource: armservicefabricmanagedclusters.ServiceResource{
+	// 	ServiceResource: &armservicefabricmanagedclusters.ServiceResource{
 	// 		Name: to.Ptr("myService"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp/services/myService"),

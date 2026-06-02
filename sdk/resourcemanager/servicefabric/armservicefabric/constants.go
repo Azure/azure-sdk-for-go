@@ -4,10 +4,6 @@
 
 package armservicefabric
 
-const (
-	version20260301Preview string = "2026-03-01-preview"
-)
-
 // AddOnFeatures - Available cluster add-on features
 type AddOnFeatures string
 

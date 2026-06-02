@@ -16,7 +16,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // HostsServer is a fake server for instances of the armavs.HostsClient type.
@@ -59,7 +58,9 @@ func (h *HostsServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (h *HostsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -77,7 +78,10 @@ func (h *HostsServerTransport) dispatchToMethodFake(req *http.Request, method st
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -119,7 +123,7 @@ func (h *HostsServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Host, req)
@@ -164,7 +168,7 @@ func (h *HostsServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		h.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -18,8 +18,6 @@ import (
 
 // RaiPoliciesClient contains the methods for the RaiPolicies group.
 // Don't use this type directly, use NewRaiPoliciesClient() instead.
-//
-// Generated from API version 2026-03-15-preview
 type RaiPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewRaiPoliciesClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Update the state of specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
@@ -95,8 +95,8 @@ func (client *RaiPoliciesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, raiPolicy); err != nil {
@@ -116,6 +116,8 @@ func (client *RaiPoliciesClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // BeginDelete - Deletes the specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
@@ -139,6 +141,8 @@ func (client *RaiPoliciesClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Deletes the specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 func (client *RaiPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *RaiPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiPoliciesClient.BeginDelete"
@@ -184,13 +188,15 @@ func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
@@ -241,8 +247,8 @@ func (client *RaiPoliciesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -257,6 +263,8 @@ func (client *RaiPoliciesClient) getHandleResponse(resp *http.Response) (RaiPoli
 }
 
 // NewListPager - Gets the content filters associated with the Azure OpenAI account.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - options - RaiPoliciesClientListOptions contains the optional parameters for the RaiPoliciesClient.NewListPager method.
@@ -303,8 +311,8 @@ func (client *RaiPoliciesClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

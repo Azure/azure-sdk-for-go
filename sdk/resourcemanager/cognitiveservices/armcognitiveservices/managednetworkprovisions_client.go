@@ -18,8 +18,6 @@ import (
 
 // ManagedNetworkProvisionsClient contains the methods for the ManagedNetworkProvisions group.
 // Don't use this type directly, use NewManagedNetworkProvisionsClient() instead.
-//
-// Generated from API version 2026-03-15-preview
 type ManagedNetworkProvisionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +43,8 @@ func NewManagedNetworkProvisionsClient(subscriptionID string, credential azcore.
 //
 // Provisions the managed network of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - managedNetworkName - Name of the managedNetwork associated with the cognitive services account. Only 'default' is supported.
@@ -71,6 +71,8 @@ func (client *ManagedNetworkProvisionsClient) BeginProvisionManagedNetwork(ctx c
 //
 // Provisions the managed network of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 func (client *ManagedNetworkProvisionsClient) provisionManagedNetwork(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedNetworkProvisionsClient.BeginProvisionManagedNetwork"
@@ -116,8 +118,8 @@ func (client *ManagedNetworkProvisionsClient) provisionManagedNetworkCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

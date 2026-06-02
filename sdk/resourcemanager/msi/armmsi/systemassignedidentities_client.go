@@ -17,8 +17,6 @@ import (
 
 // SystemAssignedIdentitiesClient contains the methods for the SystemAssignedIdentities group.
 // Don't use this type directly, use NewSystemAssignedIdentitiesClient() instead.
-//
-// Generated from API version 2025-05-31-preview
 type SystemAssignedIdentitiesClient struct {
 	internal *arm.Client
 }
@@ -39,6 +37,8 @@ func NewSystemAssignedIdentitiesClient(credential azcore.TokenCredential, option
 
 // GetByScope - Gets the systemAssignedIdentity available under the specified RP scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - SystemAssignedIdentitiesClientGetByScopeOptions contains the optional parameters for the SystemAssignedIdentitiesClient.GetByScope
 //     method.
@@ -76,8 +76,8 @@ func (client *SystemAssignedIdentitiesClient) getByScopeCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250531Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

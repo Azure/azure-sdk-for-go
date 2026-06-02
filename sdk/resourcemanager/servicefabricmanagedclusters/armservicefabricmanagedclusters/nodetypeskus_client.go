@@ -18,8 +18,6 @@ import (
 
 // NodeTypeSKUsClient contains the methods for the NodeTypeSKUs group.
 // Don't use this type directly, use NewNodeTypeSKUsClient() instead.
-//
-// Generated from API version 2026-05-01-preview
 type NodeTypeSKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewNodeTypeSKUsClient(subscriptionID string, credential azcore.TokenCredent
 }
 
 // NewListPager - Get a Service Fabric node type supported SKUs.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -93,8 +93,8 @@ func (client *NodeTypeSKUsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

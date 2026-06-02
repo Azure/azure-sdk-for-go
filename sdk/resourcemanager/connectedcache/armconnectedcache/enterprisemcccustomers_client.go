@@ -18,8 +18,6 @@ import (
 
 // EnterpriseMccCustomersClient contains the methods for the EnterpriseMccCustomers group.
 // Don't use this type directly, use NewEnterpriseMccCustomersClient() instead.
-//
-// Generated from API version 2024-11-30-preview
 type EnterpriseMccCustomersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewEnterpriseMccCustomersClient(subscriptionID string, credential azcore.To
 
 // BeginCreateOrUpdate - This api creates an enterprise mcc customer with the specified create parameters
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - resource - Resource create parameters.
@@ -67,6 +67,8 @@ func (client *EnterpriseMccCustomersClient) BeginCreateOrUpdate(ctx context.Cont
 
 // CreateOrUpdate - This api creates an enterprise mcc customer with the specified create parameters
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30-preview
 func (client *EnterpriseMccCustomersClient) createOrUpdate(ctx context.Context, resourceGroupName string, customerResourceName string, resource EnterpriseMccCustomerResource, options *EnterpriseMccCustomersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnterpriseMccCustomersClient.BeginCreateOrUpdate"
@@ -108,8 +110,8 @@ func (client *EnterpriseMccCustomersClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -120,6 +122,8 @@ func (client *EnterpriseMccCustomersClient) createOrUpdateCreateRequest(ctx cont
 
 // BeginDelete - This api deletes an existing enterprise mcc customer resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - options - EnterpriseMccCustomersClientBeginDeleteOptions contains the optional parameters for the EnterpriseMccCustomersClient.BeginDelete
@@ -143,6 +147,8 @@ func (client *EnterpriseMccCustomersClient) BeginDelete(ctx context.Context, res
 
 // Delete - This api deletes an existing enterprise mcc customer resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30-preview
 func (client *EnterpriseMccCustomersClient) deleteOperation(ctx context.Context, resourceGroupName string, customerResourceName string, options *EnterpriseMccCustomersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnterpriseMccCustomersClient.BeginDelete"
@@ -184,13 +190,15 @@ func (client *EnterpriseMccCustomersClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the enterprise mcc customer resource information using this get call
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - options - EnterpriseMccCustomersClientGetOptions contains the optional parameters for the EnterpriseMccCustomersClient.Get
@@ -237,8 +245,8 @@ func (client *EnterpriseMccCustomersClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -254,6 +262,8 @@ func (client *EnterpriseMccCustomersClient) getHandleResponse(resp *http.Respons
 
 // NewListByResourceGroupPager - This api gets the information about all enterprise mcc customer resources under the given
 // subscription and resource group
+//
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - EnterpriseMccCustomersClientListByResourceGroupOptions contains the optional parameters for the EnterpriseMccCustomersClient.NewListByResourceGroupPager
 //     method.
@@ -296,8 +306,8 @@ func (client *EnterpriseMccCustomersClient) listByResourceGroupCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -312,6 +322,8 @@ func (client *EnterpriseMccCustomersClient) listByResourceGroupHandleResponse(re
 }
 
 // NewListBySubscriptionPager - This api gets information about all enterpriseMccCustomer resources under the given subscription
+//
+// Generated from API version 2024-11-30-preview
 //   - options - EnterpriseMccCustomersClientListBySubscriptionOptions contains the optional parameters for the EnterpriseMccCustomersClient.NewListBySubscriptionPager
 //     method.
 func (client *EnterpriseMccCustomersClient) NewListBySubscriptionPager(options *EnterpriseMccCustomersClientListBySubscriptionOptions) *runtime.Pager[EnterpriseMccCustomersClientListBySubscriptionResponse] {
@@ -349,8 +361,8 @@ func (client *EnterpriseMccCustomersClient) listBySubscriptionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -366,6 +378,8 @@ func (client *EnterpriseMccCustomersClient) listBySubscriptionHandleResponse(res
 
 // Update - This api updates an existing enterprise mcc customer resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - properties - The resource properties to be updated.
@@ -413,8 +427,8 @@ func (client *EnterpriseMccCustomersClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

@@ -16,7 +16,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // HybridIdentityMetadataServer is a fake server for instances of the armazurestackhcivm.HybridIdentityMetadataClient type.
@@ -59,7 +58,9 @@ func (h *HybridIdentityMetadataServerTransport) Do(req *http.Request) (*http.Res
 }
 
 func (h *HybridIdentityMetadataServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -77,7 +78,10 @@ func (h *HybridIdentityMetadataServerTransport) dispatchToMethodFake(req *http.R
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -107,7 +111,7 @@ func (h *HybridIdentityMetadataServerTransport) dispatchGet(req *http.Request) (
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HybridIdentityMetadata, req)
@@ -144,7 +148,7 @@ func (h *HybridIdentityMetadataServerTransport) dispatchNewListByVirtualMachineI
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		h.newListByVirtualMachineInstancePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

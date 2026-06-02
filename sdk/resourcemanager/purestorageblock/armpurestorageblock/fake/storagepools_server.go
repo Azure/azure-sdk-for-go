@@ -16,7 +16,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // StoragePoolsServer is a fake server for instances of the armpurestorageblock.StoragePoolsClient type.
@@ -119,7 +118,9 @@ func (s *StoragePoolsServerTransport) Do(req *http.Request) (*http.Response, err
 }
 
 func (s *StoragePoolsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -159,7 +160,10 @@ func (s *StoragePoolsServerTransport) dispatchToMethodFake(req *http.Request, me
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -207,7 +211,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginCreate(req *http.Request) (*h
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		s.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -251,7 +255,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -295,7 +299,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginDisableAvsConnection(req *htt
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDisableAvsConnection.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -343,7 +347,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginEnableAvsConnection(req *http
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginEnableAvsConnection.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -391,7 +395,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginFinalizeAvsConnection(req *ht
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginFinalizeAvsConnection.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -425,7 +429,7 @@ func (s *StoragePoolsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StoragePool, req)
@@ -458,7 +462,7 @@ func (s *StoragePoolsServerTransport) dispatchGetAvsConnection(req *http.Request
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AvsConnection, req)
@@ -491,7 +495,7 @@ func (s *StoragePoolsServerTransport) dispatchGetAvsStatus(req *http.Request) (*
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AvsStatus, req)
@@ -524,7 +528,7 @@ func (s *StoragePoolsServerTransport) dispatchGetHealthStatus(req *http.Request)
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StoragePoolHealthInfo, req)
@@ -561,7 +565,7 @@ func (s *StoragePoolsServerTransport) dispatchNewListByResourceGroupPager(req *h
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -594,7 +598,7 @@ func (s *StoragePoolsServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -637,7 +641,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginRepairAvsConnection(req *http
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginRepairAvsConnection.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -685,7 +689,7 @@ func (s *StoragePoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

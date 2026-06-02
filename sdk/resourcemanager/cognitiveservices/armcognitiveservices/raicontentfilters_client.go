@@ -18,8 +18,6 @@ import (
 
 // RaiContentFiltersClient contains the methods for the RaiContentFilters group.
 // Don't use this type directly, use NewRaiContentFiltersClient() instead.
-//
-// Generated from API version 2026-03-15-preview
 type RaiContentFiltersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewRaiContentFiltersClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Get Content Filters by Name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - location - The name of the Azure region.
 //   - filterName - The name of the RAI Content Filter.
 //   - options - RaiContentFiltersClientGetOptions contains the optional parameters for the RaiContentFiltersClient.Get method.
@@ -88,8 +88,8 @@ func (client *RaiContentFiltersClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,6 +104,8 @@ func (client *RaiContentFiltersClient) getHandleResponse(resp *http.Response) (R
 }
 
 // NewListPager - List Content Filters types.
+//
+// Generated from API version 2026-01-15-preview
 //   - location - The name of the Azure region.
 //   - options - RaiContentFiltersClientListOptions contains the optional parameters for the RaiContentFiltersClient.NewListPager
 //     method.
@@ -146,8 +148,8 @@ func (client *RaiContentFiltersClient) listCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

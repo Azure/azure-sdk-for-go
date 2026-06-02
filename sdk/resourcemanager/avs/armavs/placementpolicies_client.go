@@ -18,8 +18,6 @@ import (
 
 // PlacementPoliciesClient contains the methods for the PlacementPolicies group.
 // Don't use this type directly, use NewPlacementPoliciesClient() instead.
-//
-// Generated from API version 2025-09-01
 type PlacementPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewPlacementPoliciesClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrUpdate - Create a PlacementPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - clusterName - Name of the cluster
@@ -70,6 +70,8 @@ func (client *PlacementPoliciesClient) BeginCreateOrUpdate(ctx context.Context, 
 
 // CreateOrUpdate - Create a PlacementPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *PlacementPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, placementPolicyName string, placementPolicy PlacementPolicy, options *PlacementPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PlacementPoliciesClient.BeginCreateOrUpdate"
@@ -119,8 +121,8 @@ func (client *PlacementPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, placementPolicy); err != nil {
@@ -131,6 +133,8 @@ func (client *PlacementPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 
 // BeginDelete - Delete a PlacementPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - clusterName - Name of the cluster
@@ -156,6 +160,8 @@ func (client *PlacementPoliciesClient) BeginDelete(ctx context.Context, resource
 
 // Delete - Delete a PlacementPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *PlacementPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, placementPolicyName string, options *PlacementPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PlacementPoliciesClient.BeginDelete"
@@ -205,13 +211,15 @@ func (client *PlacementPoliciesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a PlacementPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - clusterName - Name of the cluster
@@ -267,8 +275,8 @@ func (client *PlacementPoliciesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -283,6 +291,8 @@ func (client *PlacementPoliciesClient) getHandleResponse(resp *http.Response) (P
 }
 
 // NewListPager - List PlacementPolicy resources by Cluster
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - clusterName - Name of the cluster
@@ -335,8 +345,8 @@ func (client *PlacementPoliciesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -352,6 +362,8 @@ func (client *PlacementPoliciesClient) listHandleResponse(resp *http.Response) (
 
 // BeginUpdate - Update a PlacementPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - clusterName - Name of the cluster
@@ -378,6 +390,8 @@ func (client *PlacementPoliciesClient) BeginUpdate(ctx context.Context, resource
 
 // Update - Update a PlacementPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *PlacementPoliciesClient) update(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, placementPolicyName string, placementPolicyUpdate PlacementPolicyUpdate, options *PlacementPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PlacementPoliciesClient.BeginUpdate"
@@ -427,8 +441,8 @@ func (client *PlacementPoliciesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, placementPolicyUpdate); err != nil {

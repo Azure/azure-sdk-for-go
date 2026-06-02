@@ -17,7 +17,6 @@ import (
 	"net/url"
 	"reflect"
 	"regexp"
-	"slices"
 	"strconv"
 )
 
@@ -151,7 +150,9 @@ func (b *BareMetalMachinesServerTransport) Do(req *http.Request) (*http.Response
 }
 
 func (b *BareMetalMachinesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -199,7 +200,10 @@ func (b *BareMetalMachinesServerTransport) dispatchToMethodFake(req *http.Reques
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -253,7 +257,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginCordon(req *http.Request
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginCordon.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -310,7 +314,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginCreateOrUpdate(req *http
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		b.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -363,7 +367,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginDelete(req *http.Request
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		b.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -397,7 +401,7 @@ func (b *BareMetalMachinesServerTransport) dispatchGet(req *http.Request) (*http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BareMetalMachine, req)
@@ -424,7 +428,11 @@ func (b *BareMetalMachinesServerTransport) dispatchNewListByResourceGroupPager(r
 		if err != nil {
 			return nil, err
 		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -434,7 +442,11 @@ func (b *BareMetalMachinesServerTransport) dispatchNewListByResourceGroupPager(r
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions{
@@ -453,7 +465,7 @@ func (b *BareMetalMachinesServerTransport) dispatchNewListByResourceGroupPager(r
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		b.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -476,7 +488,11 @@ func (b *BareMetalMachinesServerTransport) dispatchNewListBySubscriptionPager(re
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -486,7 +502,11 @@ func (b *BareMetalMachinesServerTransport) dispatchNewListBySubscriptionPager(re
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions{
@@ -505,7 +525,7 @@ func (b *BareMetalMachinesServerTransport) dispatchNewListBySubscriptionPager(re
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		b.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -558,7 +578,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginPowerOff(req *http.Reque
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginPowerOff.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -581,10 +601,6 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginReimage(req *http.Reques
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.BareMetalMachineReimageParameters](req)
-		if err != nil {
-			return nil, err
-		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -593,13 +609,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginReimage(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		var options *armnetworkcloud.BareMetalMachinesClientBeginReimageOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armnetworkcloud.BareMetalMachinesClientBeginReimageOptions{
-				Body: &body,
-			}
-		}
-		respr, errRespr := b.srv.BeginReimage(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, options)
+		respr, errRespr := b.srv.BeginReimage(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -612,7 +622,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginReimage(req *http.Reques
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginReimage.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -666,7 +676,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginReplace(req *http.Reques
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginReplace.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -710,7 +720,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRestart(req *http.Reques
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginRestart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -758,7 +768,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunCommand(req *http.Req
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginRunCommand.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -806,7 +816,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunDataExtracts(req *htt
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginRunDataExtracts.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -854,7 +864,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunDataExtractsRestricte
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginRunDataExtractsRestricted.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -902,7 +912,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunReadCommands(req *htt
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginRunReadCommands.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -946,7 +956,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginStart(req *http.Request)
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginStart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -990,7 +1000,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginUncordon(req *http.Reque
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginUncordon.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1047,7 +1057,7 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginUpdate(req *http.Request
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

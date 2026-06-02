@@ -16,7 +16,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 	"strconv"
 )
 
@@ -72,7 +71,9 @@ func (f *FleetUpdateStrategiesServerTransport) Do(req *http.Request) (*http.Resp
 }
 
 func (f *FleetUpdateStrategiesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -94,7 +95,10 @@ func (f *FleetUpdateStrategiesServerTransport) dispatchToMethodFake(req *http.Re
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -155,7 +159,7 @@ func (f *FleetUpdateStrategiesServerTransport) dispatchBeginCreateOrUpdate(req *
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		f.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -210,7 +214,7 @@ func (f *FleetUpdateStrategiesServerTransport) dispatchBeginDelete(req *http.Req
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		f.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -248,7 +252,7 @@ func (f *FleetUpdateStrategiesServerTransport) dispatchGet(req *http.Request) (*
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FleetUpdateStrategy, req)
@@ -279,7 +283,11 @@ func (f *FleetUpdateStrategiesServerTransport) dispatchNewListByFleetPager(req *
 		if err != nil {
 			return nil, err
 		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -289,7 +297,11 @@ func (f *FleetUpdateStrategiesServerTransport) dispatchNewListByFleetPager(req *
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armcontainerservicefleet.FleetUpdateStrategiesClientListByFleetOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armcontainerservicefleet.FleetUpdateStrategiesClientListByFleetOptions{
@@ -308,7 +320,7 @@ func (f *FleetUpdateStrategiesServerTransport) dispatchNewListByFleetPager(req *
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		f.newListByFleetPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

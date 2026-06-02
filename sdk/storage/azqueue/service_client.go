@@ -136,7 +136,7 @@ func (s *ServiceClient) NewListQueuesPager(o *ListQueuesOptions) *runtime.Pager[
 	listOptions := generated.ServiceClientListQueuesSegmentOptions{}
 	if o != nil {
 		if o.Include.Metadata {
-			listOptions.Include = append(listOptions.Include, generated.ListQueuesIncludeTypeMetadata)
+			listOptions.Include = append(listOptions.Include, "metadata")
 		}
 		listOptions.Marker = o.Marker
 		listOptions.Maxresults = o.MaxResults

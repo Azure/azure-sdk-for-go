@@ -18,8 +18,6 @@ import (
 
 // ActionsClient contains the methods for the Actions group.
 // Don't use this type directly, use NewActionsClient() instead.
-//
-// Generated from API version 2026-05-01-preview
 type ActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewActionsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // Get - Get an Action resource for a given location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
 //   - actionName - String that represents an Action resource name.
 //   - options - ActionsClientGetOptions contains the optional parameters for the ActionsClient.Get method.
@@ -88,8 +88,8 @@ func (client *ActionsClient) getCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,6 +104,8 @@ func (client *ActionsClient) getHandleResponse(resp *http.Response) (ActionsClie
 }
 
 // NewListPager - Get a list of Action resources for a given location.
+//
+// Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
 //   - options - ActionsClientListOptions contains the optional parameters for the ActionsClient.NewListPager method.
 func (client *ActionsClient) NewListPager(location string, options *ActionsClientListOptions) *runtime.Pager[ActionsClientListResponse] {
@@ -145,11 +147,11 @@ func (client *ActionsClient) listCreateRequest(ctx context.Context, location str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", "2026-05-01-preview")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ListLocationBasedModelCapacities.json
+// Generated from example definition: 2026-01-15-preview/ListLocationBasedModelCapacities.json
 func ExampleLocationBasedModelCapacitiesClient_NewListPager_listLocationBasedModelCapacities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleLocationBasedModelCapacitiesClient_NewListPager_listLocationBasedMod
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListLocationBasedModelCapacitiesClassicScope.json
+// Generated from example definition: 2026-01-15-preview/ListLocationBasedModelCapacitiesClassicScope.json
 func ExampleLocationBasedModelCapacitiesClient_NewListPager_listLocationBasedModelCapacitiesClassicScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleLocationBasedModelCapacitiesClient_NewListPager_listLocationBasedMod
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListLocationBasedModelCapacitiesDataZoneScope.json
+// Generated from example definition: 2026-01-15-preview/ListLocationBasedModelCapacitiesDataZoneScope.json
 func ExampleLocationBasedModelCapacitiesClient_NewListPager_listLocationBasedModelCapacitiesDataZoneScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleLocationBasedModelCapacitiesClient_NewListPager_listLocationBasedMod
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListLocationBasedModelCapacitiesGlobalScope.json
+// Generated from example definition: 2026-01-15-preview/ListLocationBasedModelCapacitiesGlobalScope.json
 func ExampleLocationBasedModelCapacitiesClient_NewListPager_listLocationBasedModelCapacitiesGlobalScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

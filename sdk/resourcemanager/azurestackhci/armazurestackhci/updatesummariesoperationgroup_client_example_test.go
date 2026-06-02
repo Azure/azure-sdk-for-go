@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-30/UpdateSummaries_CheckHealth.json
+// Generated from example definition: 2026-04-01-preview/UpdateSummaries_CheckHealth.json
 func ExampleUpdateSummariesOperationGroupClient_BeginCheckHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,11 +29,11 @@ func ExampleUpdateSummariesOperationGroupClient_BeginCheckHealth() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-30/UpdateSummaries_CheckUpdates.json
+// Generated from example definition: 2026-04-01-preview/UpdateSummaries_CheckUpdates.json
 func ExampleUpdateSummariesOperationGroupClient_BeginCheckUpdates_checkForUpdates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,11 +50,11 @@ func ExampleUpdateSummariesOperationGroupClient_BeginCheckUpdates_checkForUpdate
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-30/UpdateSummaries_CheckUpdates_MaximumSet.json
+// Generated from example definition: 2026-04-01-preview/UpdateSummaries_CheckUpdates_MaximumSet.json
 func ExampleUpdateSummariesOperationGroupClient_BeginCheckUpdates_checkForSpecificUpdateByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,6 +73,6 @@ func ExampleUpdateSummariesOperationGroupClient_BeginCheckUpdates_checkForSpecif
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

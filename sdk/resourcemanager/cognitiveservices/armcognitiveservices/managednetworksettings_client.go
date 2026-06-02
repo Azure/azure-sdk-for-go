@@ -18,8 +18,6 @@ import (
 
 // ManagedNetworkSettingsClient contains the methods for the ManagedNetworkSettings group.
 // Don't use this type directly, use NewManagedNetworkSettingsClient() instead.
-//
-// Generated from API version 2026-03-15-preview
 type ManagedNetworkSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +43,8 @@ func NewManagedNetworkSettingsClient(subscriptionID string, credential azcore.To
 //
 // Delete API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - managedNetworkName - Name of the managedNetwork associated with the cognitive services account. Only 'default' is supported.
@@ -71,6 +71,8 @@ func (client *ManagedNetworkSettingsClient) BeginDelete(ctx context.Context, res
 //
 // Delete API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 func (client *ManagedNetworkSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkSettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedNetworkSettingsClient.BeginDelete"
@@ -116,8 +118,8 @@ func (client *ManagedNetworkSettingsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -125,6 +127,8 @@ func (client *ManagedNetworkSettingsClient) deleteCreateRequest(ctx context.Cont
 //
 // Get API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - managedNetworkName - Name of the managedNetwork associated with the cognitive services account. Only 'default' is supported.
@@ -176,8 +180,8 @@ func (client *ManagedNetworkSettingsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -194,6 +198,8 @@ func (client *ManagedNetworkSettingsClient) getHandleResponse(resp *http.Respons
 // NewListPager - List API for managed network settings of a cognitive services account.
 //
 // List API for managed network settings of a cognitive services account.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - options - ManagedNetworkSettingsClientListOptions contains the optional parameters for the ManagedNetworkSettingsClient.NewListPager
@@ -241,8 +247,8 @@ func (client *ManagedNetworkSettingsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,6 +266,8 @@ func (client *ManagedNetworkSettingsClient) listHandleResponse(resp *http.Respon
 //
 // Patch API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - managedNetworkName - Name of the managedNetwork associated with the cognitive services account. Only 'default' is supported.
@@ -287,6 +295,8 @@ func (client *ManagedNetworkSettingsClient) BeginPatch(ctx context.Context, reso
 //
 // Patch API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 func (client *ManagedNetworkSettingsClient) patch(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPatchOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedNetworkSettingsClient.BeginPatch"
@@ -332,8 +342,8 @@ func (client *ManagedNetworkSettingsClient) patchCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -346,6 +356,8 @@ func (client *ManagedNetworkSettingsClient) patchCreateRequest(ctx context.Conte
 //
 // PUT API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - managedNetworkName - Name of the managedNetwork associated with the cognitive services account. Only 'default' is supported.
@@ -373,6 +385,8 @@ func (client *ManagedNetworkSettingsClient) BeginPut(ctx context.Context, resour
 //
 // PUT API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 func (client *ManagedNetworkSettingsClient) put(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPutOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedNetworkSettingsClient.BeginPut"
@@ -418,8 +432,8 @@ func (client *ManagedNetworkSettingsClient) putCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

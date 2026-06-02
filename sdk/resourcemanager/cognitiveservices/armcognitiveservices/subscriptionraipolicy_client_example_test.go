@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutSubscriptionRaiPolicy.json
+// Generated from example definition: 2026-01-15-preview/PutSubscriptionRaiPolicy.json
 func ExampleSubscriptionRaiPolicyClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleSubscriptionRaiPolicyClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.SubscriptionRaiPolicyClientCreateOrUpdateResponse{
-	// 	RaiPolicy: armcognitiveservices.RaiPolicy{
+	// 	RaiPolicy: &armcognitiveservices.RaiPolicy{
 	// 		Name: to.Ptr("raiPolicyName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiPolicies/raiPolicyName"),
 	// 		Properties: &armcognitiveservices.RaiPolicyProperties{
@@ -211,7 +211,7 @@ func ExampleSubscriptionRaiPolicyClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteSubscriptionRaiPolicy.json
+// Generated from example definition: 2026-01-15-preview/DeleteSubscriptionRaiPolicy.json
 func ExampleSubscriptionRaiPolicyClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,11 +228,11 @@ func ExampleSubscriptionRaiPolicyClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/GetSubscriptionRaiPolicy.json
+// Generated from example definition: 2026-01-15-preview/GetSubscriptionRaiPolicy.json
 func ExampleSubscriptionRaiPolicyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleSubscriptionRaiPolicyClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.SubscriptionRaiPolicyClientGetResponse{
-	// 	RaiPolicy: armcognitiveservices.RaiPolicy{
+	// 	RaiPolicy: &armcognitiveservices.RaiPolicy{
 	// 		Name: to.Ptr("raiPolicyName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiPolicies/raiPolicyName"),
 	// 		Properties: &armcognitiveservices.RaiPolicyProperties{

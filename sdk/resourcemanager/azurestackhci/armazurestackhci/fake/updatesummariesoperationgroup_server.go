@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // UpdateSummariesOperationGroupServer is a fake server for instances of the armazurestackhci.UpdateSummariesOperationGroupClient type.
@@ -60,7 +59,9 @@ func (u *UpdateSummariesOperationGroupServerTransport) Do(req *http.Request) (*h
 }
 
 func (u *UpdateSummariesOperationGroupServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,7 +79,10 @@ func (u *UpdateSummariesOperationGroupServerTransport) dispatchToMethodFake(req 
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -122,7 +126,7 @@ func (u *UpdateSummariesOperationGroupServerTransport) dispatchBeginCheckHealth(
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		u.beginCheckHealth.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -170,7 +174,7 @@ func (u *UpdateSummariesOperationGroupServerTransport) dispatchBeginCheckUpdates
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		u.beginCheckUpdates.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}

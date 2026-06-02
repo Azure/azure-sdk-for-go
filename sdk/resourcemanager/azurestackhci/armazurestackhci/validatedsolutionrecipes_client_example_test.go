@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-30/ValidatedSolutionRecipes_Get.json
+// Generated from example definition: 2026-04-01-preview/ValidatedSolutionRecipes_Get.json
 func ExampleValidatedSolutionRecipesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleValidatedSolutionRecipesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.ValidatedSolutionRecipesClientGetResponse{
-	// 	ValidatedSolutionRecipe: armazurestackhci.ValidatedSolutionRecipe{
+	// 	ValidatedSolutionRecipe: &armazurestackhci.ValidatedSolutionRecipe{
 	// 		Name: to.Ptr("10.2408.0"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/ValidatedSolutionRecipes"),
 	// 		ID: to.Ptr("/subscriptions/b8d594e5-51f3-4c11-9c54-a7771b81c712/providers/Microsoft.AzureStackHCI/validatedSolutionRecipes/10.2408.0"),
@@ -370,7 +370,7 @@ func ExampleValidatedSolutionRecipesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/ValidatedSolutionRecipes_ListBySubscriptionLocationResource.json
+// Generated from example definition: 2026-04-01-preview/ValidatedSolutionRecipes_ListBySubscriptionLocationResource.json
 func ExampleValidatedSolutionRecipesClient_NewListBySubscriptionLocationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

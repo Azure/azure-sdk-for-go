@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // SubscriptionRaiPolicyServer is a fake server for instances of the armcognitiveservices.SubscriptionRaiPolicyClient type.
@@ -62,7 +61,9 @@ func (s *SubscriptionRaiPolicyServerTransport) Do(req *http.Request) (*http.Resp
 }
 
 func (s *SubscriptionRaiPolicyServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -82,7 +83,10 @@ func (s *SubscriptionRaiPolicyServerTransport) dispatchToMethodFake(req *http.Re
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -116,7 +120,7 @@ func (s *SubscriptionRaiPolicyServerTransport) dispatchCreateOrUpdate(req *http.
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiPolicy, req)
@@ -155,7 +159,7 @@ func (s *SubscriptionRaiPolicyServerTransport) dispatchBeginDelete(req *http.Req
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -185,7 +189,7 @@ func (s *SubscriptionRaiPolicyServerTransport) dispatchGet(req *http.Request) (*
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiPolicy, req)

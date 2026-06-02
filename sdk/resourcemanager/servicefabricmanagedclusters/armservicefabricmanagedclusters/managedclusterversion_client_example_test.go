@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterVersionGet_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterVersionGet_example.json
 func ExampleManagedClusterVersionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,10 +30,10 @@ func ExampleManagedClusterVersionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClusterVersionClientGetResponse{
-	// 	ManagedClusterCodeVersionResult: armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
+	// 	ManagedClusterCodeVersionResult: &armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
 	// 		Name: to.Ptr("7.2.477.9590"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/locations/environments/managedClusterVersions"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.477.9590"),
+	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.477.9590"),
 	// 		Properties: &armservicefabricmanagedclusters.ManagedClusterVersionDetails{
 	// 			ClusterCodeVersion: to.Ptr("7.2.477.9590"),
 	// 			OSType: to.Ptr(armservicefabricmanagedclusters.OsTypeWindows),
@@ -43,7 +43,7 @@ func ExampleManagedClusterVersionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterVersionGetByEnvironment_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterVersionGetByEnvironment_example.json
 func ExampleManagedClusterVersionClient_GetByEnvironment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,10 +62,10 @@ func ExampleManagedClusterVersionClient_GetByEnvironment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClusterVersionClientGetByEnvironmentResponse{
-	// 	ManagedClusterCodeVersionResult: armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
+	// 	ManagedClusterCodeVersionResult: &armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
 	// 		Name: to.Ptr("7.2.477.9590"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/locations/environments/managedClusterVersions"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.477.9590"),
+	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.477.9590"),
 	// 		Properties: &armservicefabricmanagedclusters.ManagedClusterVersionDetails{
 	// 			ClusterCodeVersion: to.Ptr("7.2.477.9590"),
 	// 			OSType: to.Ptr(armservicefabricmanagedclusters.OsTypeWindows),
@@ -75,7 +75,7 @@ func ExampleManagedClusterVersionClient_GetByEnvironment() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterVersionList_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterVersionList_example.json
 func ExampleManagedClusterVersionClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,32 +94,32 @@ func ExampleManagedClusterVersionClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClusterVersionClientListResponse{
-	// 	ManagedClusterCodeVersionResultArray: []*armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
+	// 	undefined: &[]*armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
 	// 		{
 	// 			Name: to.Ptr("7.2.457.9590"),
 	// 			Type: to.Ptr("Microsoft.ServiceFabric/locations/environments/managedClusterVersions"),
-	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.457.9590"),
+	// 			ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.457.9590"),
 	// 			Properties: &armservicefabricmanagedclusters.ManagedClusterVersionDetails{
 	// 				ClusterCodeVersion: to.Ptr("7.2.457.9590"),
 	// 				OSType: to.Ptr(armservicefabricmanagedclusters.OsTypeWindows),
-	// 				SupportExpiryUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T00:00:00Z"); return t}()),
+	// 				SupportExpiryUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T00:00:00"); return t}()),
 	// 			},
 	// 		},
 	// 		{
 	// 			Name: to.Ptr("7.2.477.9590"),
 	// 			Type: to.Ptr("Microsoft.ServiceFabric/locations/environments/managedClusterVersions"),
-	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.477.9590"),
+	// 			ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.477.9590"),
 	// 			Properties: &armservicefabricmanagedclusters.ManagedClusterVersionDetails{
 	// 				ClusterCodeVersion: to.Ptr("7.2.477.9590"),
 	// 				OSType: to.Ptr(armservicefabricmanagedclusters.OsTypeWindows),
-	// 				SupportExpiryUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T00:00:00Z"); return t}()),
+	// 				SupportExpiryUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T00:00:00"); return t}()),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterVersionListByEnvironment.json
+// Generated from example definition: 2026-02-01/ManagedClusterVersionListByEnvironment.json
 func ExampleManagedClusterVersionClient_ListByEnvironment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,11 +138,11 @@ func ExampleManagedClusterVersionClient_ListByEnvironment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedClusterVersionClientListByEnvironmentResponse{
-	// 	ManagedClusterCodeVersionResultArray: []*armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
+	// 	undefined: &[]*armservicefabricmanagedclusters.ManagedClusterCodeVersionResult{
 	// 		{
 	// 			Name: to.Ptr("7.2.457.9590"),
 	// 			Type: to.Ptr("Microsoft.ServiceFabric/locations/environments/managedClusterVersions"),
-	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.457.9590"),
+	// 			ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.457.9590"),
 	// 			Properties: &armservicefabricmanagedclusters.ManagedClusterVersionDetails{
 	// 				ClusterCodeVersion: to.Ptr("7.2.457.9590"),
 	// 				OSType: to.Ptr(armservicefabricmanagedclusters.OsTypeWindows),
@@ -152,7 +152,7 @@ func ExampleManagedClusterVersionClient_ListByEnvironment() {
 	// 		{
 	// 			Name: to.Ptr("7.2.477.9590"),
 	// 			Type: to.Ptr("Microsoft.ServiceFabric/locations/environments/managedClusterVersions"),
-	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.477.9590"),
+	// 			ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceFabric/locations/eastus/environments/Windows/managedClusterVersions/7.2.477.9590"),
 	// 			Properties: &armservicefabricmanagedclusters.ManagedClusterVersionDetails{
 	// 				ClusterCodeVersion: to.Ptr("7.2.477.9590"),
 	// 				OSType: to.Ptr(armservicefabricmanagedclusters.OsTypeWindows),

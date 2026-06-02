@@ -18,8 +18,6 @@ import (
 
 // AvailableVersionsClient contains the methods for the AvailableVersions group.
 // Don't use this type directly, use NewAvailableVersionsClient() instead.
-//
-// Generated from API version 2025-08-01-preview
 type AvailableVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewAvailableVersionsClient(subscriptionID string, credential azcore.TokenCr
 }
 
 // NewListByLocationPager - List AvailableVersion resources by location.
+//
+// Generated from API version 2025-08-01-preview
 //   - location - The name of the Azure region.
 //   - options - AvailableVersionsClientListByLocationOptions contains the optional parameters for the AvailableVersionsClient.NewListByLocationPager
 //     method.
@@ -84,11 +84,11 @@ func (client *AvailableVersionsClient) listByLocationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", "2025-08-01-preview")
 	if options != nil && options.KubernetesVersion != nil {
 		reqQP.Set("kubernetesVersion", *options.KubernetesVersion)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -16,7 +16,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 	"strconv"
 )
 
@@ -82,7 +81,9 @@ func (t *TrunkedNetworksServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (t *TrunkedNetworksServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -108,7 +109,10 @@ func (t *TrunkedNetworksServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -165,7 +169,7 @@ func (t *TrunkedNetworksServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		t.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -218,7 +222,7 @@ func (t *TrunkedNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		t.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -252,7 +256,7 @@ func (t *TrunkedNetworksServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TrunkedNetwork, req)
@@ -279,7 +283,11 @@ func (t *TrunkedNetworksServerTransport) dispatchNewListByResourceGroupPager(req
 		if err != nil {
 			return nil, err
 		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -289,7 +297,11 @@ func (t *TrunkedNetworksServerTransport) dispatchNewListByResourceGroupPager(req
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armnetworkcloud.TrunkedNetworksClientListByResourceGroupOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetworkcloud.TrunkedNetworksClientListByResourceGroupOptions{
@@ -308,7 +320,7 @@ func (t *TrunkedNetworksServerTransport) dispatchNewListByResourceGroupPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		t.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -331,7 +343,11 @@ func (t *TrunkedNetworksServerTransport) dispatchNewListBySubscriptionPager(req 
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -341,7 +357,11 @@ func (t *TrunkedNetworksServerTransport) dispatchNewListBySubscriptionPager(req 
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armnetworkcloud.TrunkedNetworksClientListBySubscriptionOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetworkcloud.TrunkedNetworksClientListBySubscriptionOptions{
@@ -360,7 +380,7 @@ func (t *TrunkedNetworksServerTransport) dispatchNewListBySubscriptionPager(req 
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		t.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -406,7 +426,7 @@ func (t *TrunkedNetworksServerTransport) dispatchUpdate(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TrunkedNetwork, req)

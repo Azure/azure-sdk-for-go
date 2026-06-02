@@ -1,14 +1,5 @@
 # Release History
 
-## 1.4.0-beta.1 (2026-05-22)
-### Features Added
-
-- New struct `AssignmentRestrictions`
-- New struct `ClaimsMatchingExpression`
-- New field `ClaimsMatchingExpression` in struct `FederatedIdentityCredentialProperties`
-- New field `AssignmentRestrictions` in struct `UserAssignedIdentityProperties`
-
-
 ## 1.3.0 (2025-07-25)
 ### Features Added
 

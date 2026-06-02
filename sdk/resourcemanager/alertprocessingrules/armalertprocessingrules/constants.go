@@ -4,10 +4,6 @@
 
 package armalertprocessingrules
 
-const (
-	version20210808 string = "2021-08-08"
-)
-
 // ActionType - Action that should be applied.
 type ActionType string
 

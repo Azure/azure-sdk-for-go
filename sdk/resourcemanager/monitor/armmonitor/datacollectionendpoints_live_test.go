@@ -60,14 +60,16 @@ func (testsuite *DatacollectionendpointsTestSuite) TestDatacollectionendpoint() 
 	fmt.Println("Call operation: DataCollectionEndpoints_Create")
 	dataCollectionEndpointsClient, err := armmonitor.NewDataCollectionEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = dataCollectionEndpointsClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.dataCollectionEndpointName, armmonitor.DataCollectionEndpointResource{
-		Location: to.Ptr(testsuite.location),
-		Properties: &armmonitor.DataCollectionEndpointResourceProperties{
-			NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
-				PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
+	_, err = dataCollectionEndpointsClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.dataCollectionEndpointName, &armmonitor.DataCollectionEndpointsClientCreateOptions{
+		Body: &armmonitor.DataCollectionEndpointResource{
+			Location: to.Ptr(testsuite.location),
+			Properties: &armmonitor.DataCollectionEndpointResourceProperties{
+				NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
+					PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
+				},
 			},
 		},
-	}, nil)
+	})
 	testsuite.Require().NoError(err)
 
 	// From step DataCollectionEndpoints_ListBySubscription
@@ -95,13 +97,15 @@ func (testsuite *DatacollectionendpointsTestSuite) TestDatacollectionendpoint() 
 
 	// From step DataCollectionEndpoints_Update
 	fmt.Println("Call operation: DataCollectionEndpoints_Update")
-	_, err = dataCollectionEndpointsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.dataCollectionEndpointName, armmonitor.ResourceForUpdate{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("A"),
-			"tag2": to.Ptr("B"),
-			"tag3": to.Ptr("C"),
+	_, err = dataCollectionEndpointsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.dataCollectionEndpointName, &armmonitor.DataCollectionEndpointsClientUpdateOptions{
+		Body: &armmonitor.ResourceForUpdate{
+			Tags: map[string]*string{
+				"tag1": to.Ptr("A"),
+				"tag2": to.Ptr("B"),
+				"tag3": to.Ptr("C"),
+			},
 		},
-	}, nil)
+	})
 	testsuite.Require().NoError(err)
 
 	// From step DataCollectionRuleAssociations_ListByDataCollectionEndpoint

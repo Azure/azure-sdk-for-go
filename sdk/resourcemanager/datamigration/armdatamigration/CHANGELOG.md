@@ -1,49 +1,5 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-05-20)
-### Breaking Changes
-
-- Enum `DataMigrationResultCode` has been removed
-- Enum `ErrorType` has been removed
-- Struct `APIError` has been removed
-- Struct `DataItemMigrationSummaryResult` has been removed
-- Struct `Database` has been removed
-- Struct `DatabaseFileInput` has been removed
-- Struct `DatabaseObjectName` has been removed
-- Struct `DatabaseSummaryResult` has been removed
-- Struct `Error` has been removed
-- Struct `ErrorAdditionalInfo` has been removed
-- Struct `ErrorDetail` has been removed
-- Struct `ErrorResponse` has been removed
-- Struct `GetProjectDetailsNonSQLTaskInput` has been removed
-- Struct `MigrateSQLServerDatabaseInput` has been removed
-- Struct `MigrationTableMetadata` has been removed
-- Struct `MigrationValidationDatabaseLevelResult` has been removed
-- Struct `MongoDbObjectInfo` has been removed
-- Struct `NonSQLDataMigrationTable` has been removed
-- Struct `NonSQLDataMigrationTableResult` has been removed
-- Struct `NonSQLMigrationTaskInput` has been removed
-- Struct `NonSQLMigrationTaskOutput` has been removed
-- Struct `ProjectMetadata` has been removed
-- Struct `ProxyResource` has been removed
-- Struct `Resource` has been removed
-- Struct `SQLMigrationTaskInput` has been removed
-- Struct `SQLServerSQLMISyncTaskInput` has been removed
-- Struct `ServiceOperation` has been removed
-- Struct `ServiceOperationDisplay` has been removed
-- Struct `ServiceOperationList` has been removed
-- Struct `StartMigrationScenarioServerRoleResult` has been removed
-- Struct `TrackedResource` has been removed
-
-### Features Added
-
-- New value `ResourceTypeDatabaseMigrationProperties` added to enum type `ResourceType`
-- New field `SQLServerInstanceID` in struct `DatabaseMigrationProperties`
-- New field `SQLServerInstanceID` in struct `DatabaseMigrationPropertiesSQLDb`
-- New field `SQLServerInstanceID` in struct `DatabaseMigrationPropertiesSQLMi`
-- New field `SQLServerInstanceID` in struct `DatabaseMigrationPropertiesSQLVM`
-
-
 ## 2.0.0 (2025-09-26)
 ### Breaking Changes
 

@@ -4,10 +4,6 @@
 
 package armcommerce
 
-const (
-	version20150601Preview string = "2015-06-01-preview"
-)
-
 type AggregationGranularity string
 
 const (

@@ -1,6 +1,6 @@
 # Azure Go SDK Breaking Changes Review and Resolution Guide
 
-The Azure Go SDK generally prohibits breaking changes unless they result from service behavior modifications. This guide helps you identify, review, and resolve breaking changes that may occur in new SDK versions due to service's TypeSpec specification update. For migration of service specifications from Swagger to TypeSpec, refer to this [doc](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/breaking-changes/sdk-breaking-changes-guide-migration.md).
+The Azure Go SDK generally prohibits breaking changes unless they result from service behavior modifications. This guide helps you identify, review, and resolve breaking changes that may occur in new SDK versions due to service's TypeSpec specification update. For migration of service specifications from Swagger to TypeSpec, refer this [doc](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/breaking-changes/sdk-breaking-changes-guide-migration.md).
 
 Some breaking changes can be resolved through client customizations. You should follow the guidelines below to review and resolve breaking changes.
 
@@ -34,19 +34,15 @@ model B {
 }
 ```
 
-**Breaking**: An exported type `A` is renamed to `B`, invalidating any references to `A`.
-
-**Reason**: The type was renamed in the TypeSpec specification using `@renamedFrom`, so the generated Go type name changes accordingly.
+**Impact**: Type references become invalid.
 
 **Resolution**:
-
-Use client customization to restore the original type name:
 
 ```tsp
 @@clientName(B, "A", "go");
 ```
 
-## 2. Property Name Changes
+### 2. Property Name Changes
 
 **Changelog Pattern**:
 
@@ -64,13 +60,9 @@ model Test {
 }
 ```
 
-**Breaking**: The exported field `A` on struct `Test` is renamed to `B`, breaking field access patterns.
-
-**Reason**: The property was renamed in the TypeSpec specification using `@renamedFrom`, so the generated Go field name changes accordingly.
+**Impact**: Field access patterns break.
 
 **Resolution**:
-
-Use client customization to restore the original property name:
 
 ```tsp
 @@clientName(Test.b, "a", "go");
@@ -81,8 +73,8 @@ Use client customization to restore the original property name:
 **Changelog Pattern**:
 
 ```md
-- Function `*xxx.A` has been removed
-- New function `*xxx.B(xxx) *xxx`
+- Function 'A' has been removed
+- New function '*xxx.B(xxx) *xxx'
 ```
 
 **Spec Pattern**:
@@ -92,13 +84,9 @@ Use client customization to restore the original property name:
 op b(): void;
 ```
 
-**Breaking**: The client method `A` is renamed to `B`, breaking any callers of the original method.
-
-**Reason**: The operation was renamed in the TypeSpec specification using `@renamedFrom`, so the generated client method name changes accordingly.
+**Impact**: Method names change in the generated client.
 
 **Resolution**:
-
-Use client customization to restore the original operation name:
 
 ```tsp
 @@clientName(b, "a", "go");
@@ -122,13 +110,9 @@ enum Test {
 }
 ```
 
-**Breaking**: The exported enum value `A` is renamed to `B`, breaking references to the original constant.
-
-**Reason**: The enum value was renamed in the TypeSpec specification using `@renamedFrom`, so the generated Go constant name changes accordingly.
+**Impact**: Constant values become unavailable.
 
 **Resolution**:
-
-Use client customization to restore the original enum value name:
 
 ```tsp
 @@clientName(Test.b, "a", "go");
@@ -143,9 +127,7 @@ Use client customization to restore the original enum value name:
 - Operation `*xxx.BeginB` has been changed to non-LRO, use `*xxx.B` instead.
 ```
 
-**Breaking**: An operation switches between synchronous and long-running form, which changes both the method name (`A` ↔ `BeginA`) and the return type (direct result ↔ poller).
-
-**Reason**: The service's TypeSpec operation template (e.g., switching to/from an `*Async` ARM template) was changed to mark the operation as long-running or non-long-running.
+**Impact**: Method names and return types change (direct result ↔ poller).
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -158,9 +140,7 @@ Use client customization to restore the original enum value name:
 - New function `*xxx.A(xxx) (xxx, error)`
 ```
 
-**Breaking**: An operation switches between paged and non-paged form, which changes both the method name (`NewListAPager` ↔ `A`) and the return type (pager ↔ direct result).
-
-**Reason**: The service's TypeSpec operation template was changed to mark the operation as paged or non-paged (e.g., adding or removing `@list` / a paged template).
+**Impact**: Method names and return types change (direct result ↔ pager).
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -181,9 +161,7 @@ model Test {
 }
 ```
 
-**Breaking**: The type of an exported field `Test.Prop` changes from `*string` to `*int32`, requiring callers to update their code with type conversions or different value handling.
-
-**Reason**: The property's type was modified in the TypeSpec specification using `@typeChangedFrom`.
+**Impact**: Field types become incompatible, requiring type casting or conversion.
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -204,9 +182,7 @@ op test(
 ): void;
 ```
 
-**Breaking**: The type of a parameter on `*xxx.Test` changes from `string` to `int32`, breaking the method signature for callers.
-
-**Reason**: The operation parameter's type was modified in the TypeSpec specification using `@typeChangedFrom`.
+**Impact**: Method signatures change, requiring parameter type updates.
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -227,9 +203,7 @@ op test(): {
 };
 ```
 
-**Breaking**: The type of a response field changes from `*string` to `*int32`, breaking callers that read the response.
-
-**Reason**: The operation's return type was modified in the TypeSpec specification using `@returnTypeChangedFrom`.
+**Impact**: Return types become incompatible, requiring response handling updates.
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -252,9 +226,7 @@ model Test {
 }
 ```
 
-**Breaking**: The exported field `DeletedProp` on struct `Test` is no longer available, causing compilation errors for any code that reads or writes it.
-
-**Reason**: The property was removed in the TypeSpec specification using `@removed`.
+**Impact**: Fields are no longer available, causing compilation errors.
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -275,9 +247,7 @@ op test(
 ): void;
 ```
 
-**Breaking**: A parameter is removed from `*xxx.Test`, breaking the method signature for callers.
-
-**Reason**: The operation parameter was removed in the TypeSpec specification using `@removed`.
+**Impact**: Parameters are no longer available, requiring method signature updates.
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -296,9 +266,7 @@ op test(
 op test(): void;
 ```
 
-**Breaking**: The client method `*xxx.Test` is no longer available, breaking any caller that invoked it.
-
-**Reason**: The operation was removed in the TypeSpec specification using `@removed`.
+**Impact**: Client methods are no longer available, requiring alternative implementation.
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -319,9 +287,7 @@ model Test {
 }
 ```
 
-**Breaking**: The exported type `Test` is no longer available, breaking any code that references the type.
-
-**Reason**: The model was removed in the TypeSpec specification using `@removed`.
+**Impact**: Types are no longer available, requiring alternative type usage.
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -343,9 +309,7 @@ op test(
 ): void;
 ```
 
-**Breaking**: A new required parameter is added to `*xxx.Test`, breaking existing call sites which must now supply the additional argument.
-
-**Reason**: A new required parameter was added to the operation in the TypeSpec specification using `@added`.
+**Impact**: Method signatures require additional parameters, breaking existing calls.
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -367,9 +331,7 @@ op test(
 ): void;
 ```
 
-**Breaking**: A previously optional parameter on `*xxx.Test` becomes required: the parameter moves out of the options struct and into the method signature, breaking existing callers.
-
-**Reason**: The parameter was changed from optional to required in the TypeSpec specification using `@madeRequired`.
+**Impact**: Previously optional parameters become mandatory, requiring parameter updates.
 
 **Resolution**: Cannot be resolved through client customizations.
 
@@ -391,8 +353,6 @@ op test(
 ): void;
 ```
 
-**Breaking**: A previously required parameter on `*xxx.Test` becomes optional: the parameter moves out of the method signature and into the options struct, breaking existing callers.
-
-**Reason**: The parameter was changed from required to optional in the TypeSpec specification using `@madeOptional`.
+**Impact**: Previously mandatory parameters become optional, potentially affecting validation logic.
 
 **Resolution**: Cannot be resolved through client customizations.

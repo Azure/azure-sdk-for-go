@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/deleteManagedNetworkV2.json
+// Generated from example definition: 2026-01-15-preview/ManagedNetwork/deleteManagedNetworkV2.json
 func ExampleManagedNetworkSettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,11 +29,11 @@ func ExampleManagedNetworkSettingsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/getManagedNetworkV2.json
+// Generated from example definition: 2026-01-15-preview/ManagedNetwork/getManagedNetworkV2.json
 func ExampleManagedNetworkSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleManagedNetworkSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ManagedNetworkSettingsClientGetResponse{
-	// 	ManagedNetworkSettingsPropertiesBasicResource: armcognitiveservices.ManagedNetworkSettingsPropertiesBasicResource{
+	// 	ManagedNetworkSettingsPropertiesBasicResource: &armcognitiveservices.ManagedNetworkSettingsPropertiesBasicResource{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/managedNetworks"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.CognitiveServices/accounts/cognitive-account-name/managedNetworks/default"),
@@ -78,7 +78,7 @@ func ExampleManagedNetworkSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/listManagedNetworkV2.json
+// Generated from example definition: 2026-01-15-preview/ManagedNetwork/listManagedNetworkV2.json
 func ExampleManagedNetworkSettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleManagedNetworkSettingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/patchManagedNetworkV2.json
+// Generated from example definition: 2026-01-15-preview/ManagedNetwork/patchManagedNetworkV2.json
 func ExampleManagedNetworkSettingsClient_BeginPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,13 +163,13 @@ func ExampleManagedNetworkSettingsClient_BeginPatch() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ManagedNetworkSettingsClientPatchResponse{
-	// 	ManagedNetworkSettingsPropertiesBasicResource: armcognitiveservices.ManagedNetworkSettingsPropertiesBasicResource{
+	// 	ManagedNetworkSettingsPropertiesBasicResource: &armcognitiveservices.ManagedNetworkSettingsPropertiesBasicResource{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/managedNetworks"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.CognitiveServices/accounts/cognitive-account-name/managedNetworks/default"),
@@ -195,7 +195,7 @@ func ExampleManagedNetworkSettingsClient_BeginPatch() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/createOrUpdateManagedNetworkV2.json
+// Generated from example definition: 2026-01-15-preview/ManagedNetwork/createOrUpdateManagedNetworkV2.json
 func ExampleManagedNetworkSettingsClient_BeginPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,13 +226,13 @@ func ExampleManagedNetworkSettingsClient_BeginPut() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ManagedNetworkSettingsClientPutResponse{
-	// 	ManagedNetworkSettingsPropertiesBasicResource: armcognitiveservices.ManagedNetworkSettingsPropertiesBasicResource{
+	// 	ManagedNetworkSettingsPropertiesBasicResource: &armcognitiveservices.ManagedNetworkSettingsPropertiesBasicResource{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/managedNetworks"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.CognitiveServices/accounts/cognitive-account-name/managedNetworks/default"),

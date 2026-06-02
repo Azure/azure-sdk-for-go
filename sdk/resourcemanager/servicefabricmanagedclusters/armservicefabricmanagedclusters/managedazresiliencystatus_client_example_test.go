@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/managedAzResiliencyStatusGet_example.json
+// Generated from example definition: 2026-02-01/managedAzResiliencyStatusGet_example.json
 func ExampleManagedAzResiliencyStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleManagedAzResiliencyStatusClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedAzResiliencyStatusClientGetResponse{
-	// 	ManagedAzResiliencyStatus: armservicefabricmanagedclusters.ManagedAzResiliencyStatus{
+	// 	ManagedAzResiliencyStatus: &armservicefabricmanagedclusters.ManagedAzResiliencyStatus{
 	// 		BaseResourceStatus: []*armservicefabricmanagedclusters.ResourceAzStatus{
 	// 			{
 	// 				IsZoneResilient: to.Ptr(false),

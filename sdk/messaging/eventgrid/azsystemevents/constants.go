@@ -347,42 +347,6 @@ func PossibleACSUserEngagementValues() []ACSUserEngagement {
 	}
 }
 
-// AcsChatRetentionPolicyKind - Chat Retention Policy kind
-type AcsChatRetentionPolicyKind string
-
-const (
-	// AcsChatRetentionPolicyKindNone - None
-	AcsChatRetentionPolicyKindNone AcsChatRetentionPolicyKind = "none"
-	// AcsChatRetentionPolicyKindThreadCreationDate - ThreadCreationDate
-	AcsChatRetentionPolicyKindThreadCreationDate AcsChatRetentionPolicyKind = "threadCreationDate"
-)
-
-// PossibleAcsChatRetentionPolicyKindValues returns the possible values for the AcsChatRetentionPolicyKind const type.
-func PossibleAcsChatRetentionPolicyKindValues() []AcsChatRetentionPolicyKind {
-	return []AcsChatRetentionPolicyKind{
-		AcsChatRetentionPolicyKindNone,
-		AcsChatRetentionPolicyKindThreadCreationDate,
-	}
-}
-
-// AcsChatThreadDeletedReasonType - Chat Thread Deletion Reason Type
-type AcsChatThreadDeletedReasonType string
-
-const (
-	// AcsChatThreadDeletedReasonTypeDeletedByPolicy - DeletedByPolicy
-	AcsChatThreadDeletedReasonTypeDeletedByPolicy AcsChatThreadDeletedReasonType = "deletedByPolicy"
-	// AcsChatThreadDeletedReasonTypeDeletedByUser - DeletedByUser
-	AcsChatThreadDeletedReasonTypeDeletedByUser AcsChatThreadDeletedReasonType = "deletedByUser"
-)
-
-// PossibleAcsChatThreadDeletedReasonTypeValues returns the possible values for the AcsChatThreadDeletedReasonType const type.
-func PossibleAcsChatThreadDeletedReasonTypeValues() []AcsChatThreadDeletedReasonType {
-	return []AcsChatThreadDeletedReasonType{
-		AcsChatThreadDeletedReasonTypeDeletedByPolicy,
-		AcsChatThreadDeletedReasonTypeDeletedByUser,
-	}
-}
-
 // AppAction - Type of action of the operation
 type AppAction string
 
@@ -1084,46 +1048,6 @@ func PossibleHealthcareFhirResourceTypeValues() []HealthcareFhirResourceType {
 	}
 }
 
-// LifecycleHookAction - The action that will be applied to a target resource in the Virtual Machine Scale Set Lifecycle Hook
-// event if the platform does not receive a response from the customer for the target resource before waitUntil.
-type LifecycleHookAction string
-
-const (
-	// LifecycleHookActionApprove - The Lifecycle Hook of a target resource in a Lifecycle Hook event will be approved.
-	LifecycleHookActionApprove LifecycleHookAction = "Approve"
-	// LifecycleHookActionReject - The Lifecycle Hook of a target resource in a Lifecycle Hook event will be rejected.
-	LifecycleHookActionReject LifecycleHookAction = "Reject"
-)
-
-// PossibleLifecycleHookActionValues returns the possible values for the LifecycleHookAction const type.
-func PossibleLifecycleHookActionValues() []LifecycleHookAction {
-	return []LifecycleHookAction{
-		LifecycleHookActionApprove,
-		LifecycleHookActionReject,
-	}
-}
-
-// LifecycleHookActionState - Approval status of a target resource in a Virtual Machine Scale Set Lifecycle Hook event.
-type LifecycleHookActionState string
-
-const (
-	// LifecycleHookActionStateApproved - The Lifecycle Hook for the target resource is approved.
-	LifecycleHookActionStateApproved LifecycleHookActionState = "Approved"
-	// LifecycleHookActionStateRejected - The Lifecycle Hook for the target resource is rejected.
-	LifecycleHookActionStateRejected LifecycleHookActionState = "Rejected"
-	// LifecycleHookActionStateWaiting - The Lifecycle Hook for the target resource is waiting for approval.
-	LifecycleHookActionStateWaiting LifecycleHookActionState = "Waiting"
-)
-
-// PossibleLifecycleHookActionStateValues returns the possible values for the LifecycleHookActionState const type.
-func PossibleLifecycleHookActionStateValues() []LifecycleHookActionState {
-	return []LifecycleHookActionState{
-		LifecycleHookActionStateApproved,
-		LifecycleHookActionStateRejected,
-		LifecycleHookActionStateWaiting,
-	}
-}
-
 // StampKind - Kind of environment where app service plan is.
 type StampKind string
 
@@ -1226,48 +1150,5 @@ func PossibleStorageTaskCompletedStatusValues() []StorageTaskCompletedStatus {
 	return []StorageTaskCompletedStatus{
 		StorageTaskCompletedStatusFailed,
 		StorageTaskCompletedStatusSucceeded,
-	}
-}
-
-// VirtualMachineScaleSetLifecycleHookEventState - The states that a Virtual Machine Scale Set Lifecycle Hook event can be
-// in. This is not settable by the customer. It is set only by the platform.
-type VirtualMachineScaleSetLifecycleHookEventState string
-
-const (
-	// VirtualMachineScaleSetLifecycleHookEventStateActive - The Lifecycle Hook event is active. E.g., waiting on a response from
-	// the customer.
-	VirtualMachineScaleSetLifecycleHookEventStateActive VirtualMachineScaleSetLifecycleHookEventState = "Active"
-	// VirtualMachineScaleSetLifecycleHookEventStateCompleted - The Lifecycle Hook event is completed. i.e., all the target resources
-	// in the event have moved to a terminal state.
-	VirtualMachineScaleSetLifecycleHookEventStateCompleted VirtualMachineScaleSetLifecycleHookEventState = "Completed"
-)
-
-// PossibleVirtualMachineScaleSetLifecycleHookEventStateValues returns the possible values for the VirtualMachineScaleSetLifecycleHookEventState const type.
-func PossibleVirtualMachineScaleSetLifecycleHookEventStateValues() []VirtualMachineScaleSetLifecycleHookEventState {
-	return []VirtualMachineScaleSetLifecycleHookEventState{
-		VirtualMachineScaleSetLifecycleHookEventStateActive,
-		VirtualMachineScaleSetLifecycleHookEventStateCompleted,
-	}
-}
-
-// VirtualMachineScaleSetLifecycleHookEventType - Specifies the scenario for which the customer is interested in receiving
-// Virtual Machine Scale Set Lifecycle Hook events.
-type VirtualMachineScaleSetLifecycleHookEventType string
-
-const (
-	// VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting - Lifecycle Hook event sent to the customer
-	// before upgrade starts on a batch of virtual machines belonging to a Virtual Machine Scale Set during an Auto OS Upgrade
-	// operation.
-	VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting VirtualMachineScaleSetLifecycleHookEventType = "UpgradeAutoOSRollingBatchStarting"
-	// VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSScheduling - Lifecycle Hook event sent to the customer before
-	// an Auto OS Upgrade operation starts on the Virtual Machine Scale Set.
-	VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSScheduling VirtualMachineScaleSetLifecycleHookEventType = "UpgradeAutoOSScheduling"
-)
-
-// PossibleVirtualMachineScaleSetLifecycleHookEventTypeValues returns the possible values for the VirtualMachineScaleSetLifecycleHookEventType const type.
-func PossibleVirtualMachineScaleSetLifecycleHookEventTypeValues() []VirtualMachineScaleSetLifecycleHookEventType {
-	return []VirtualMachineScaleSetLifecycleHookEventType{
-		VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting,
-		VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSScheduling,
 	}
 }

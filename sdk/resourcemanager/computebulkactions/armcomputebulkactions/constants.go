@@ -4,10 +4,6 @@
 
 package armcomputebulkactions
 
-const (
-	version20260201Preview string = "2026-02-01-preview"
-)
-
 // AcceleratorManufacturer - Accelerator manufacturers supported by Azure VMs.
 type AcceleratorManufacturer string
 

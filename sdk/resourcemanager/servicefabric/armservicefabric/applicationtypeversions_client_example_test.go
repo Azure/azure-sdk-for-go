@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/ApplicationTypeVersionPutOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ApplicationTypeVersionPutOperation_example.json
 func ExampleApplicationTypeVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleApplicationTypeVersionsClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ApplicationTypeVersionDeleteOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ApplicationTypeVersionDeleteOperation_example.json
 func ExampleApplicationTypeVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleApplicationTypeVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ApplicationTypeVersionGetOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ApplicationTypeVersionGetOperation_example.json
 func ExampleApplicationTypeVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleApplicationTypeVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ApplicationTypeVersionListOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ApplicationTypeVersionListOperation_example.json
 func ExampleApplicationTypeVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

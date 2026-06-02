@@ -4,11 +4,7 @@
 package generated
 
 import (
-	"context"
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 const (
@@ -17,7 +13,7 @@ const (
 )
 
 func (client *DirectoryClient) Endpoint() string {
-	return client.url
+	return client.endpoint
 }
 
 func (client *DirectoryClient) InternalClient() *azcore.Client {
@@ -25,22 +21,19 @@ func (client *DirectoryClient) InternalClient() *azcore.Client {
 }
 
 // NewDirectoryClient creates a new instance of DirectoryClient with the specified values.
-//   - endpoint - The URL of the service account, share, or directory that is the target of the desired operation.
+//   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
+//   - allowTrailingDot - If true, the trailing dot will not be trimmed from the target URI.
+//   - fileRequestIntent - Valid value is backup
+//   - allowSourceTrailingDot - If true, the trailing dot will not be trimmed from the source URI.
 //   - azClient - azcore.Client is a basic HTTP client.  It consists of a pipeline and tracing provider.
-func NewDirectoryClient(endpoint string, azClient *azcore.Client) *DirectoryClient {
+func NewDirectoryClient(endpoint string, allowTrailingDot *bool, fileRequestIntent *ShareTokenIntent, allowSourceTrailingDot *bool, azClient *azcore.Client) *DirectoryClient {
 	client := &DirectoryClient{
-		internal: azClient,
-		url:      endpoint,
+		internal:               azClient,
+		endpoint:               endpoint,
+		allowTrailingDot:       allowTrailingDot,
+		version:                ServiceVersion,
+		fileRequestIntent:      fileRequestIntent,
+		allowSourceTrailingDot: allowSourceTrailingDot,
 	}
 	return client
-}
-
-// ListFilesAndDirectoriesSegmentCreateRequest creates the ListFilesAndDirectoriesSegment request.
-func (client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(ctx context.Context, options *DirectoryClientListFilesAndDirectoriesSegmentOptions) (*policy.Request, error) {
-	return client.listFilesAndDirectoriesSegmentCreateRequest(ctx, options)
-}
-
-// ListFilesAndDirectoriesSegmentHandleResponse handles the ListFilesAndDirectoriesSegment response.
-func (client *DirectoryClient) ListFilesAndDirectoriesSegmentHandleResponse(resp *http.Response) (DirectoryClientListFilesAndDirectoriesSegmentResponse, error) {
-	return client.listFilesAndDirectoriesSegmentHandleResponse(resp)
 }

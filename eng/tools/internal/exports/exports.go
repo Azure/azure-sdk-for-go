@@ -119,14 +119,11 @@ func (c *Content) addConst(pkg Package, g *ast.GenDecl) {
 			switch x := vs.Type.(type) {
 			case *ast.Ident:
 				co.Type = x.Name
-				switch val := vs.Values[0].(type) {
+				switch vs.Values[0].(type) {
 				case *ast.Ident:
-					v = val.Name
+					v = vs.Values[0].(*ast.Ident).Name
 				case *ast.BasicLit:
-					v = val.Value
-				case *ast.SelectorExpr:
-					// const Foo MyType = pkg.Bar
-					v = pkg.getText(val.Pos(), val.End())
+					v = vs.Values[0].(*ast.BasicLit).Value
 				default:
 					panic(fmt.Sprintf("wrong type %T", vs.Values[0]))
 				}

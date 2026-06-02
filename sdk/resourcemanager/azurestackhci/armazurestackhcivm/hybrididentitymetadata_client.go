@@ -17,8 +17,6 @@ import (
 
 // HybridIdentityMetadataClient contains the methods for the HybridIdentityMetadata group.
 // Don't use this type directly, use NewHybridIdentityMetadataClient() instead.
-//
-// Generated from API version 2025-06-01-preview
 type HybridIdentityMetadataClient struct {
 	internal *arm.Client
 }
@@ -39,6 +37,8 @@ func NewHybridIdentityMetadataClient(credential azcore.TokenCredential, options 
 
 // Get - Implements HybridIdentityMetadata GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - HybridIdentityMetadataClientGetOptions contains the optional parameters for the HybridIdentityMetadataClient.Get
 //     method.
@@ -76,8 +76,8 @@ func (client *HybridIdentityMetadataClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -92,6 +92,8 @@ func (client *HybridIdentityMetadataClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByVirtualMachineInstancePager - Returns the list of HybridIdentityMetadata of the given vm.
+//
+// Generated from API version 2025-06-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - HybridIdentityMetadataClientListByVirtualMachineInstanceOptions contains the optional parameters for the HybridIdentityMetadataClient.NewListByVirtualMachineInstancePager
 //     method.
@@ -130,8 +132,8 @@ func (client *HybridIdentityMetadataClient) listByVirtualMachineInstanceCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

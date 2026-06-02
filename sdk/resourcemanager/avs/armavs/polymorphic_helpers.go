@@ -16,14 +16,14 @@ func unmarshalAddonPropertiesClassification(rawMsg json.RawMessage) (AddonProper
 	}
 	var b AddonPropertiesClassification
 	switch m["addonType"] {
-	case string(AddonTypeArc):
-		b = &AddonArcProperties{}
-	case string(AddonTypeHCX):
-		b = &AddonHcxProperties{}
 	case string(AddonTypeSRM):
 		b = &AddonSrmProperties{}
 	case string(AddonTypeVR):
 		b = &AddonVrProperties{}
+	case string(AddonTypeHCX):
+		b = &AddonHcxProperties{}
+	case string(AddonTypeArc):
+		b = &AddonArcProperties{}
 	default:
 		b = &AddonProperties{}
 	}
@@ -87,12 +87,12 @@ func unmarshalMaintenanceManagementOperationClassification(rawMsg json.RawMessag
 	}
 	var b MaintenanceManagementOperationClassification
 	switch m["kind"] {
-	case string(MaintenanceManagementOperationKindMaintenanceReadinessRefresh):
-		b = &MaintenanceReadinessRefreshOperation{}
-	case string(MaintenanceManagementOperationKindReschedule):
-		b = &RescheduleOperation{}
 	case string(MaintenanceManagementOperationKindSchedule):
 		b = &ScheduleOperation{}
+	case string(MaintenanceManagementOperationKindReschedule):
+		b = &RescheduleOperation{}
+	case string(MaintenanceManagementOperationKindMaintenanceReadinessRefresh):
+		b = &MaintenanceReadinessRefreshOperation{}
 	default:
 		b = &MaintenanceManagementOperation{}
 	}
@@ -131,10 +131,10 @@ func unmarshalPlacementPolicyPropertiesClassification(rawMsg json.RawMessage) (P
 	}
 	var b PlacementPolicyPropertiesClassification
 	switch m["type"] {
-	case string(PlacementPolicyTypeVMHost):
-		b = &VMHostPlacementPolicyProperties{}
 	case string(PlacementPolicyTypeVMVM):
 		b = &VMPlacementPolicyProperties{}
+	case string(PlacementPolicyTypeVMHost):
+		b = &VMHostPlacementPolicyProperties{}
 	default:
 		b = &PlacementPolicyProperties{}
 	}
@@ -196,12 +196,12 @@ func unmarshalScheduleOperationConstraintClassification(rawMsg json.RawMessage) 
 	}
 	var b ScheduleOperationConstraintClassification
 	switch m["kind"] {
+	case string(ScheduleOperationConstraintKindSchedulingWindow):
+		b = &SchedulingWindow{}
 	case string(ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation):
 		b = &AvailableWindowForMaintenanceWhileScheduleOperation{}
 	case string(ScheduleOperationConstraintKindBlockedWhileScheduleOperation):
 		b = &BlockedWhileScheduleOperation{}
-	case string(ScheduleOperationConstraintKindSchedulingWindow):
-		b = &SchedulingWindow{}
 	default:
 		b = &ScheduleOperationConstraint{}
 	}
@@ -240,12 +240,12 @@ func unmarshalScriptExecutionParameterClassification(rawMsg json.RawMessage) (Sc
 	}
 	var b ScriptExecutionParameterClassification
 	switch m["type"] {
-	case string(ScriptExecutionParameterTypeCredential):
-		b = &PSCredentialExecutionParameter{}
 	case string(ScriptExecutionParameterTypeSecureValue):
 		b = &ScriptSecureStringExecutionParameter{}
 	case string(ScriptExecutionParameterTypeValue):
 		b = &ScriptStringExecutionParameter{}
+	case string(ScriptExecutionParameterTypeCredential):
+		b = &PSCredentialExecutionParameter{}
 	default:
 		b = &ScriptExecutionParameter{}
 	}
@@ -305,10 +305,10 @@ func unmarshalWorkloadNetworkDhcpEntityClassification(rawMsg json.RawMessage) (W
 	}
 	var b WorkloadNetworkDhcpEntityClassification
 	switch m["dhcpType"] {
-	case string(DhcpTypeEnumRELAY):
-		b = &WorkloadNetworkDhcpRelay{}
 	case string(DhcpTypeEnumSERVER):
 		b = &WorkloadNetworkDhcpServer{}
+	case string(DhcpTypeEnumRELAY):
+		b = &WorkloadNetworkDhcpRelay{}
 	default:
 		b = &WorkloadNetworkDhcpEntity{}
 	}

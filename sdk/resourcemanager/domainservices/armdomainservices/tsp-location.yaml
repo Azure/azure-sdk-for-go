@@ -1,4 +1,0 @@
-directory: specification/domainservices/resource-manager/Microsoft.AAD/DomainServices
-commit: b26c3c253cff26dd05361e882dbcf1b324f27dfd
-repo: Azure/azure-rest-api-specs
-additionalDirectories: 

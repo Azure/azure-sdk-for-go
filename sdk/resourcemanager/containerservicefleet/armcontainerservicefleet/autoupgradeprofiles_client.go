@@ -19,8 +19,6 @@ import (
 
 // AutoUpgradeProfilesClient contains the methods for the AutoUpgradeProfiles group.
 // Don't use this type directly, use NewAutoUpgradeProfilesClient() instead.
-//
-// Generated from API version 2026-03-02-preview
 type AutoUpgradeProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewAutoUpgradeProfilesClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Create a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - autoUpgradeProfileName - The name of the AutoUpgradeProfile resource.
@@ -69,6 +69,8 @@ func (client *AutoUpgradeProfilesClient) BeginCreateOrUpdate(ctx context.Context
 
 // CreateOrUpdate - Create a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 func (client *AutoUpgradeProfilesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, resource AutoUpgradeProfile, options *AutoUpgradeProfilesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AutoUpgradeProfilesClient.BeginCreateOrUpdate"
@@ -114,8 +116,8 @@ func (client *AutoUpgradeProfilesClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -132,6 +134,8 @@ func (client *AutoUpgradeProfilesClient) createOrUpdateCreateRequest(ctx context
 
 // BeginDelete - Delete a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - autoUpgradeProfileName - The name of the AutoUpgradeProfile resource.
@@ -156,6 +160,8 @@ func (client *AutoUpgradeProfilesClient) BeginDelete(ctx context.Context, resour
 
 // Delete - Delete a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 func (client *AutoUpgradeProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AutoUpgradeProfilesClient.BeginDelete"
@@ -201,8 +207,8 @@ func (client *AutoUpgradeProfilesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -211,6 +217,8 @@ func (client *AutoUpgradeProfilesClient) deleteCreateRequest(ctx context.Context
 
 // Get - Get a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - autoUpgradeProfileName - The name of the AutoUpgradeProfile resource.
@@ -261,8 +269,8 @@ func (client *AutoUpgradeProfilesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -277,6 +285,8 @@ func (client *AutoUpgradeProfilesClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByFleetPager - List AutoUpgradeProfile resources by Fleet
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - options - AutoUpgradeProfilesClientListByFleetOptions contains the optional parameters for the AutoUpgradeProfilesClient.NewListByFleetPager
@@ -330,8 +340,8 @@ func (client *AutoUpgradeProfilesClient) listByFleetCreateRequest(ctx context.Co
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20260302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

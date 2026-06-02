@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/ApplicationTypeNamePutOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ApplicationTypeNamePutOperation_example.json
 func ExampleApplicationTypesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleApplicationTypesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ApplicationTypeNameDeleteOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ApplicationTypeNameDeleteOperation_example.json
 func ExampleApplicationTypesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleApplicationTypesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ApplicationTypeNameGetOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ApplicationTypeNameGetOperation_example.json
 func ExampleApplicationTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleApplicationTypesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ApplicationTypeNameListOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ApplicationTypeNameListOperation_example.json
 func ExampleApplicationTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -18,8 +18,6 @@ import (
 
 // UnsupportedVMSizesClient contains the methods for the UnsupportedVMSizes group.
 // Don't use this type directly, use NewUnsupportedVMSizesClient() instead.
-//
-// Generated from API version 2026-03-01-preview
 type UnsupportedVMSizesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +43,8 @@ func NewUnsupportedVMSizesClient(subscriptionID string, credential azcore.TokenC
 //
 // Get unsupported vm size for Service Fabric Clusters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-01-preview
 //   - location - The name of the Azure region.
 //   - vmSize - VM Size name.
 //   - options - UnsupportedVMSizesClientGetOptions contains the optional parameters for the UnsupportedVMSizesClient.Get method.
@@ -90,8 +90,8 @@ func (client *UnsupportedVMSizesClient) getCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -108,6 +108,8 @@ func (client *UnsupportedVMSizesClient) getHandleResponse(resp *http.Response) (
 // NewListPager - Get the lists of unsupported vm sizes for Service Fabric Clusters.
 //
 // Get the lists of unsupported vm sizes for Service Fabric Clusters.
+//
+// Generated from API version 2023-11-01-preview
 //   - location - The name of the Azure region.
 //   - options - UnsupportedVMSizesClientListOptions contains the optional parameters for the UnsupportedVMSizesClient.NewListPager
 //     method.
@@ -150,8 +152,8 @@ func (client *UnsupportedVMSizesClient) listCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

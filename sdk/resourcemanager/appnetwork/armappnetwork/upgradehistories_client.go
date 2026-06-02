@@ -18,8 +18,6 @@ import (
 
 // UpgradeHistoriesClient contains the methods for the UpgradeHistories group.
 // Don't use this type directly, use NewUpgradeHistoriesClient() instead.
-//
-// Generated from API version 2025-08-01-preview
 type UpgradeHistoriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewUpgradeHistoriesClient(subscriptionID string, credential azcore.TokenCre
 }
 
 // NewListByAppLinkMemberPager - List UpgradeHistory resources by AppLinkMember.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
 //   - appLinkMemberName - The name of the AppLinkMember
@@ -94,8 +94,8 @@ func (client *UpgradeHistoriesClient) listByAppLinkMemberCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

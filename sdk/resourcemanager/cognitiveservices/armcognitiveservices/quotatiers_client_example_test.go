@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/CreateOrUpdateQuotaTier.json
+// Generated from example definition: 2026-01-15-preview/CreateOrUpdateQuotaTier.json
 func ExampleQuotaTiersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleQuotaTiersClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.QuotaTiersClientCreateOrUpdateResponse{
-	// 	QuotaTier: armcognitiveservices.QuotaTier{
+	// 	QuotaTier: &armcognitiveservices.QuotaTier{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/quotaTiers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/quotaTiers/default"),
@@ -48,7 +48,7 @@ func ExampleQuotaTiersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetQuotaTier.json
+// Generated from example definition: 2026-01-15-preview/GetQuotaTier.json
 func ExampleQuotaTiersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleQuotaTiersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.QuotaTiersClientGetResponse{
-	// 	QuotaTier: armcognitiveservices.QuotaTier{
+	// 	QuotaTier: &armcognitiveservices.QuotaTier{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/quotaTiers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/quotaTiers/default"),
@@ -85,7 +85,7 @@ func ExampleQuotaTiersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListQuotaTiers.json
+// Generated from example definition: 2026-01-15-preview/ListQuotaTiers.json
 func ExampleQuotaTiersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleQuotaTiersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/UpdateQuotaTier.json
+// Generated from example definition: 2026-01-15-preview/UpdateQuotaTier.json
 func ExampleQuotaTiersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleQuotaTiersClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.QuotaTiersClientUpdateResponse{
-	// 	QuotaTier: armcognitiveservices.QuotaTier{
+	// 	QuotaTier: &armcognitiveservices.QuotaTier{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/quotaTiers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/quotaTiers/default"),

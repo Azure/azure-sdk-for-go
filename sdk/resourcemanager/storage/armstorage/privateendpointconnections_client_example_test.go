@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/StorageAccountDeletePrivateEndpointConnection.json
+// Generated from example definition: 2025-06-01/StorageAccountDeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetPrivateEndpointConnection.json
+// Generated from example definition: 2025-06-01/StorageAccountGetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: armstorage.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: &armstorage.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),
@@ -72,7 +72,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountListPrivateEndpointConnections.json
+// Generated from example definition: 2025-06-01/StorageAccountListPrivateEndpointConnections.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountPutPrivateEndpointConnection.json
+// Generated from example definition: 2025-06-01/StorageAccountPutPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExamplePrivateEndpointConnectionsClient_Put() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.PrivateEndpointConnectionsClientPutResponse{
-	// 	PrivateEndpointConnection: armstorage.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: &armstorage.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),

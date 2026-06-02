@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // NodeTypeSKUsServer is a fake server for instances of the armservicefabricmanagedclusters.NodeTypeSKUsClient type.
@@ -54,7 +53,9 @@ func (n *NodeTypeSKUsServerTransport) Do(req *http.Request) (*http.Response, err
 }
 
 func (n *NodeTypeSKUsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,7 +71,10 @@ func (n *NodeTypeSKUsServerTransport) dispatchToMethodFake(req *http.Request, me
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -116,7 +120,7 @@ func (n *NodeTypeSKUsServerTransport) dispatchNewListPager(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		n.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -4,12 +4,11 @@
 package azqueue
 
 import (
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/sas"
+	"time"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -320,13 +319,13 @@ type EnqueueMessageOptions struct {
 	VisibilityTimeout *int32
 }
 
-func (o *EnqueueMessageOptions) format() *generated.QueueClientSendMessageOptions {
+func (o *EnqueueMessageOptions) format() *generated.MessagesClientEnqueueOptions {
 	if o == nil {
 		return nil
 	}
 
-	return &generated.QueueClientSendMessageOptions{MessageTimeToLive: o.TimeToLive,
-		VisibilityTimeout: o.VisibilityTimeout}
+	return &generated.MessagesClientEnqueueOptions{MessageTimeToLive: o.TimeToLive,
+		Visibilitytimeout: o.VisibilityTimeout}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -341,14 +340,14 @@ type DequeueMessageOptions struct {
 	VisibilityTimeout *int32
 }
 
-func (o *DequeueMessageOptions) format() *generated.QueueClientReceiveMessagesOptions {
+func (o *DequeueMessageOptions) format() *generated.MessagesClientDequeueOptions {
 	numberOfMessages := int32(1)
 	if o == nil {
-		return &generated.QueueClientReceiveMessagesOptions{NumberOfMessages: &numberOfMessages}
+		return &generated.MessagesClientDequeueOptions{NumberOfMessages: &numberOfMessages}
 	}
 
-	return &generated.QueueClientReceiveMessagesOptions{NumberOfMessages: &numberOfMessages,
-		VisibilityTimeout: o.VisibilityTimeout}
+	return &generated.MessagesClientDequeueOptions{NumberOfMessages: &numberOfMessages,
+		Visibilitytimeout: o.VisibilityTimeout}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -368,13 +367,13 @@ type DequeueMessagesOptions struct {
 	VisibilityTimeout *int32
 }
 
-func (o *DequeueMessagesOptions) format() *generated.QueueClientReceiveMessagesOptions {
+func (o *DequeueMessagesOptions) format() *generated.MessagesClientDequeueOptions {
 	if o == nil {
 		return nil
 	}
 
-	return &generated.QueueClientReceiveMessagesOptions{NumberOfMessages: o.NumberOfMessages,
-		VisibilityTimeout: o.VisibilityTimeout}
+	return &generated.MessagesClientDequeueOptions{NumberOfMessages: o.NumberOfMessages,
+		Visibilitytimeout: o.VisibilityTimeout}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -384,12 +383,15 @@ type UpdateMessageOptions struct {
 	VisibilityTimeout *int32
 }
 
-func (o *UpdateMessageOptions) format() *generated.QueueClientUpdateMessageOptions {
+func (o *UpdateMessageOptions) format() *generated.MessageIDClientUpdateOptions {
+	defaultVT := to.Ptr(int32(0))
 	if o == nil {
-		return nil
+		return &generated.MessageIDClientUpdateOptions{Visibilitytimeout: defaultVT}
 	}
-
-	return nil
+	if o.VisibilityTimeout == nil {
+		o.VisibilityTimeout = defaultVT
+	}
+	return &generated.MessageIDClientUpdateOptions{Visibilitytimeout: o.VisibilityTimeout}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -398,7 +400,7 @@ func (o *UpdateMessageOptions) format() *generated.QueueClientUpdateMessageOptio
 type DeleteMessageOptions struct {
 }
 
-func (o *DeleteMessageOptions) format() *generated.QueueClientDeleteMessageOptions {
+func (o *DeleteMessageOptions) format() *generated.MessageIDClientDeleteOptions {
 	if o == nil {
 		return nil
 	}
@@ -412,9 +414,9 @@ func (o *DeleteMessageOptions) format() *generated.QueueClientDeleteMessageOptio
 type PeekMessageOptions struct {
 }
 
-func (o *PeekMessageOptions) format() *generated.QueueClientPeekMessagesOptions {
+func (o *PeekMessageOptions) format() *generated.MessagesClientPeekOptions {
 	numberOfMessages := int32(1)
-	return &generated.QueueClientPeekMessagesOptions{NumberOfMessages: &numberOfMessages}
+	return &generated.MessagesClientPeekOptions{NumberOfMessages: &numberOfMessages}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -424,12 +426,12 @@ type PeekMessagesOptions struct {
 	NumberOfMessages *int32
 }
 
-func (o *PeekMessagesOptions) format() *generated.QueueClientPeekMessagesOptions {
+func (o *PeekMessagesOptions) format() *generated.MessagesClientPeekOptions {
 	if o == nil {
 		return nil
 	}
 
-	return &generated.QueueClientPeekMessagesOptions{NumberOfMessages: o.NumberOfMessages}
+	return &generated.MessagesClientPeekOptions{NumberOfMessages: o.NumberOfMessages}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -438,7 +440,7 @@ func (o *PeekMessagesOptions) format() *generated.QueueClientPeekMessagesOptions
 type ClearMessagesOptions struct {
 }
 
-func (o *ClearMessagesOptions) format() *generated.QueueClientClearOptions {
+func (o *ClearMessagesOptions) format() *generated.MessagesClientClearOptions {
 	if o == nil {
 		return nil
 	}

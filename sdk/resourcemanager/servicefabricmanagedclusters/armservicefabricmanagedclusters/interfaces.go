@@ -4,15 +4,6 @@
 
 package armservicefabricmanagedclusters
 
-// FaultSimulationContentClassification provides polymorphic access to related types.
-// Call the interface's GetFaultSimulationContent() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *FaultSimulationContent, *ZoneFaultSimulationContent
-type FaultSimulationContentClassification interface {
-	// GetFaultSimulationContent returns the FaultSimulationContent content of the underlying type.
-	GetFaultSimulationContent() *FaultSimulationContent
-}
-
 // PartitionClassification provides polymorphic access to related types.
 // Call the interface's GetPartition() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

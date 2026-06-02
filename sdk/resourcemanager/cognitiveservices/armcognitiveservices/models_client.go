@@ -18,8 +18,6 @@ import (
 
 // ModelsClient contains the methods for the Models group.
 // Don't use this type directly, use NewModelsClient() instead.
-//
-// Generated from API version 2026-03-15-preview
 type ModelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewModelsClient(subscriptionID string, credential azcore.TokenCredential, o
 }
 
 // NewListPager - List Models.
+//
+// Generated from API version 2026-01-15-preview
 //   - location - The location name.
 //   - options - ModelsClientListOptions contains the optional parameters for the ModelsClient.NewListPager method.
 func (client *ModelsClient) NewListPager(location string, options *ModelsClientListOptions) *runtime.Pager[ModelsClientListResponse] {
@@ -83,8 +83,8 @@ func (client *ModelsClient) listCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

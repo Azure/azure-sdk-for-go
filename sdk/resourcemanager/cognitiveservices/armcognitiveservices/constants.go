@@ -4,10 +4,6 @@
 
 package armcognitiveservices
 
-const (
-	version20260315Preview string = "2026-03-15-preview"
-)
-
 // AbusePenaltyAction - The action of AbusePenalty.
 type AbusePenaltyAction string
 
@@ -302,69 +298,6 @@ func PossibleComputeOperationStatusTypeValues() []ComputeOperationStatusType {
 		ComputeOperationStatusTypeFailed,
 		ComputeOperationStatusTypeInProgress,
 		ComputeOperationStatusTypeSucceeded,
-	}
-}
-
-// ComputeProvisioningState - The provisioning state of a compute resource.
-type ComputeProvisioningState string
-
-const (
-	// ComputeProvisioningStateAccepted - The resource provisioning request has been accepted.
-	ComputeProvisioningStateAccepted ComputeProvisioningState = "Accepted"
-	// ComputeProvisioningStateCanceled - The resource provisioning was canceled.
-	ComputeProvisioningStateCanceled ComputeProvisioningState = "Canceled"
-	// ComputeProvisioningStateDeleting - The resource is being deleted.
-	ComputeProvisioningStateDeleting ComputeProvisioningState = "Deleting"
-	// ComputeProvisioningStateDisabled - The resource is disabled.
-	ComputeProvisioningStateDisabled ComputeProvisioningState = "Disabled"
-	// ComputeProvisioningStateFailed - The resource provisioning has failed.
-	ComputeProvisioningStateFailed ComputeProvisioningState = "Failed"
-	// ComputeProvisioningStateRestarting - The compute resource is restarting.
-	ComputeProvisioningStateRestarting ComputeProvisioningState = "Restarting"
-	// ComputeProvisioningStateScaling - The resource is scaling.
-	ComputeProvisioningStateScaling ComputeProvisioningState = "Scaling"
-	// ComputeProvisioningStateStarting - The compute resource is starting.
-	ComputeProvisioningStateStarting ComputeProvisioningState = "Starting"
-	// ComputeProvisioningStateStopped - The compute resource is stopped.
-	ComputeProvisioningStateStopped ComputeProvisioningState = "Stopped"
-	// ComputeProvisioningStateStopping - The compute resource is stopping.
-	ComputeProvisioningStateStopping ComputeProvisioningState = "Stopping"
-	// ComputeProvisioningStateSucceeded - The resource has been fully provisioned.
-	ComputeProvisioningStateSucceeded ComputeProvisioningState = "Succeeded"
-)
-
-// PossibleComputeProvisioningStateValues returns the possible values for the ComputeProvisioningState const type.
-func PossibleComputeProvisioningStateValues() []ComputeProvisioningState {
-	return []ComputeProvisioningState{
-		ComputeProvisioningStateAccepted,
-		ComputeProvisioningStateCanceled,
-		ComputeProvisioningStateDeleting,
-		ComputeProvisioningStateDisabled,
-		ComputeProvisioningStateFailed,
-		ComputeProvisioningStateRestarting,
-		ComputeProvisioningStateScaling,
-		ComputeProvisioningStateStarting,
-		ComputeProvisioningStateStopped,
-		ComputeProvisioningStateStopping,
-		ComputeProvisioningStateSucceeded,
-	}
-}
-
-// ComputeType - The type of compute resource.
-type ComputeType string
-
-const (
-	// ComputeTypeCluster - Cluster (AKS-backed) compute type.
-	ComputeTypeCluster ComputeType = "Cluster"
-	// ComputeTypeContainerInstance - Container Instance compute type.
-	ComputeTypeContainerInstance ComputeType = "ContainerInstance"
-)
-
-// PossibleComputeTypeValues returns the possible values for the ComputeType const type.
-func PossibleComputeTypeValues() []ComputeType {
-	return []ComputeType{
-		ComputeTypeCluster,
-		ComputeTypeContainerInstance,
 	}
 }
 
@@ -1256,27 +1189,6 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// PolicyEvaluationOutcome - The outcome of a policy evaluation.
-type PolicyEvaluationOutcome string
-
-const (
-	// PolicyEvaluationOutcomeCompliant - The deployment is compliant with all policies.
-	PolicyEvaluationOutcomeCompliant PolicyEvaluationOutcome = "Compliant"
-	// PolicyEvaluationOutcomeError - An error occurred during evaluation.
-	PolicyEvaluationOutcomeError PolicyEvaluationOutcome = "Error"
-	// PolicyEvaluationOutcomeNonCompliant - The deployment violates one or more policies.
-	PolicyEvaluationOutcomeNonCompliant PolicyEvaluationOutcome = "NonCompliant"
-)
-
-// PossiblePolicyEvaluationOutcomeValues returns the possible values for the PolicyEvaluationOutcome const type.
-func PossiblePolicyEvaluationOutcomeValues() []PolicyEvaluationOutcome {
-	return []PolicyEvaluationOutcome{
-		PolicyEvaluationOutcomeCompliant,
-		PolicyEvaluationOutcomeError,
-		PolicyEvaluationOutcomeNonCompliant,
-	}
-}
-
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -1559,24 +1471,24 @@ func PossibleRoutingMethodsValues() []RoutingMethods {
 	}
 }
 
-// RoutingMode - The model-router routing mode that determines how requests are distributed across models.
+// RoutingMode - The routing mode that determines how requests are distributed across models.
 type RoutingMode string
 
 const (
-	// RoutingModeBalanced - Balance cost and quality when routing requests across models.
+	// RoutingModeAccuracy - Route requests to maximize accuracy regardless of cost.
+	RoutingModeAccuracy RoutingMode = "accuracy"
+	// RoutingModeBalanced - Balance cost and accuracy when routing requests across models.
 	RoutingModeBalanced RoutingMode = "balanced"
 	// RoutingModeCost - Route requests to minimize cost while meeting performance requirements.
 	RoutingModeCost RoutingMode = "cost"
-	// RoutingModeQuality - Route requests to maximize quality regardless of cost.
-	RoutingModeQuality RoutingMode = "quality"
 )
 
 // PossibleRoutingModeValues returns the possible values for the RoutingMode const type.
 func PossibleRoutingModeValues() []RoutingMode {
 	return []RoutingMode{
+		RoutingModeAccuracy,
 		RoutingModeBalanced,
 		RoutingModeCost,
-		RoutingModeQuality,
 	}
 }
 
@@ -1788,23 +1700,5 @@ func PossibleUpgradeAvailabilityStatusValues() []UpgradeAvailabilityStatus {
 	return []UpgradeAvailabilityStatus{
 		UpgradeAvailabilityStatusAvailable,
 		UpgradeAvailabilityStatusNotAvailable,
-	}
-}
-
-// VMPriority - VM priority for a compute pool.
-type VMPriority string
-
-const (
-	// VMPriorityLowPriority - Low-priority VM.
-	VMPriorityLowPriority VMPriority = "LowPriority"
-	// VMPriorityRegular - Regular VM priority.
-	VMPriorityRegular VMPriority = "Regular"
-)
-
-// PossibleVMPriorityValues returns the possible values for the VMPriority const type.
-func PossibleVMPriorityValues() []VMPriority {
-	return []VMPriority{
-		VMPriorityLowPriority,
-		VMPriorityRegular,
 	}
 }

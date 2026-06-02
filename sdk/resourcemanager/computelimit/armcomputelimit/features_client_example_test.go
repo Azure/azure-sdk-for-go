@@ -6,13 +6,12 @@ package armcomputelimit_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computelimit/armcomputelimit"
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/Features_Disable.json
+// Generated from example definition: 2026-04-30/Features_Disable.json
 func ExampleFeaturesClient_BeginDisable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +40,7 @@ func ExampleFeaturesClient_BeginDisable() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/Features_Enable.json
+// Generated from example definition: 2026-04-30/Features_Enable.json
 func ExampleFeaturesClient_BeginEnable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,10 +51,7 @@ func ExampleFeaturesClient_BeginEnable() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFeaturesClient().BeginEnable(ctx, "eastus", "VmCategoryQuota", &armcomputelimit.FeaturesClientBeginEnableOptions{
-		Body: &armcomputelimit.FeatureEnableRequest{
-			ServiceTreeID: to.Ptr("a1b2c3d4-5678-90ab-cdef-1234567890ab"),
-		}})
+	poller, err := clientFactory.NewFeaturesClient().BeginEnable(ctx, "eastus", "VmCategoryQuota", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -73,7 +69,7 @@ func ExampleFeaturesClient_BeginEnable() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/Features_Get.json
+// Generated from example definition: 2026-04-30/Features_Get.json
 func ExampleFeaturesClient_Get_getFeature() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +100,7 @@ func ExampleFeaturesClient_Get_getFeature() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/Features_Get_SharedLimit.json
+// Generated from example definition: 2026-04-30/Features_Get_SharedLimit.json
 func ExampleFeaturesClient_Get_getSharedLimitFeature() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +131,7 @@ func ExampleFeaturesClient_Get_getSharedLimitFeature() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/Features_List.json
+// Generated from example definition: 2026-04-30/Features_List.json
 func ExampleFeaturesClient_NewListBySubscriptionLocationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

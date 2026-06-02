@@ -15,9 +15,6 @@ import (
 
 // ServerFactory is a fake server for instances of the armnetworkcloud.ClientFactory type.
 type ServerFactory struct {
-	// AccessBridgesServer contains the fakes for client AccessBridgesClient
-	AccessBridgesServer AccessBridgesServer
-
 	// AgentPoolsServer contains the fakes for client AgentPoolsClient
 	AgentPoolsServer AgentPoolsServer
 
@@ -47,9 +44,6 @@ type ServerFactory struct {
 
 	// KubernetesClustersServer contains the fakes for client KubernetesClustersClient
 	KubernetesClustersServer KubernetesClustersServer
-
-	// KubernetesVersionsServer contains the fakes for client KubernetesVersionsClient
-	KubernetesVersionsServer KubernetesVersionsServer
 
 	// L2NetworksServer contains the fakes for client L2NetworksClient
 	L2NetworksServer L2NetworksServer
@@ -96,7 +90,6 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                               *ServerFactory
 	trMu                              sync.Mutex
-	trAccessBridgesServer             *AccessBridgesServerTransport
 	trAgentPoolsServer                *AgentPoolsServerTransport
 	trBareMetalMachineKeySetsServer   *BareMetalMachineKeySetsServerTransport
 	trBareMetalMachinesServer         *BareMetalMachinesServerTransport
@@ -107,7 +100,6 @@ type ServerFactoryTransport struct {
 	trConsolesServer                  *ConsolesServerTransport
 	trKubernetesClusterFeaturesServer *KubernetesClusterFeaturesServerTransport
 	trKubernetesClustersServer        *KubernetesClustersServerTransport
-	trKubernetesVersionsServer        *KubernetesVersionsServerTransport
 	trL2NetworksServer                *L2NetworksServerTransport
 	trL3NetworksServer                *L3NetworksServerTransport
 	trMetricsConfigurationsServer     *MetricsConfigurationsServerTransport
@@ -133,11 +125,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "AccessBridgesClient":
-		initServer(&s.trMu, &s.trAccessBridgesServer, func() *AccessBridgesServerTransport {
-			return NewAccessBridgesServerTransport(&s.srv.AccessBridgesServer)
-		})
-		resp, err = s.trAccessBridgesServer.Do(req)
 	case "AgentPoolsClient":
 		initServer(&s.trMu, &s.trAgentPoolsServer, func() *AgentPoolsServerTransport { return NewAgentPoolsServerTransport(&s.srv.AgentPoolsServer) })
 		resp, err = s.trAgentPoolsServer.Do(req)
@@ -180,11 +167,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewKubernetesClustersServerTransport(&s.srv.KubernetesClustersServer)
 		})
 		resp, err = s.trKubernetesClustersServer.Do(req)
-	case "KubernetesVersionsClient":
-		initServer(&s.trMu, &s.trKubernetesVersionsServer, func() *KubernetesVersionsServerTransport {
-			return NewKubernetesVersionsServerTransport(&s.srv.KubernetesVersionsServer)
-		})
-		resp, err = s.trKubernetesVersionsServer.Do(req)
 	case "L2NetworksClient":
 		initServer(&s.trMu, &s.trL2NetworksServer, func() *L2NetworksServerTransport { return NewL2NetworksServerTransport(&s.srv.L2NetworksServer) })
 		resp, err = s.trL2NetworksServer.Do(req)

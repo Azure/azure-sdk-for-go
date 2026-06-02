@@ -18,8 +18,6 @@ import (
 
 // HealthModelsClient contains the methods for the HealthModels group.
 // Don't use this type directly, use NewHealthModelsClient() instead.
-//
-// Generated from API version 2025-05-01-preview
 type HealthModelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewHealthModelsClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreate - Create a HealthModel
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - resource - Resource create parameters.
@@ -67,6 +67,8 @@ func (client *HealthModelsClient) BeginCreate(ctx context.Context, resourceGroup
 
 // Create - Create a HealthModel
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 func (client *HealthModelsClient) create(ctx context.Context, resourceGroupName string, healthModelName string, resource HealthModel, options *HealthModelsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HealthModelsClient.BeginCreate"
@@ -108,8 +110,8 @@ func (client *HealthModelsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -120,6 +122,8 @@ func (client *HealthModelsClient) createCreateRequest(ctx context.Context, resou
 
 // BeginDelete - Delete a HealthModel
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - options - HealthModelsClientBeginDeleteOptions contains the optional parameters for the HealthModelsClient.BeginDelete
@@ -143,6 +147,8 @@ func (client *HealthModelsClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Delete a HealthModel
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 func (client *HealthModelsClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, options *HealthModelsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HealthModelsClient.BeginDelete"
@@ -184,13 +190,15 @@ func (client *HealthModelsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a HealthModel
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - options - HealthModelsClientGetOptions contains the optional parameters for the HealthModelsClient.Get method.
@@ -236,8 +244,8 @@ func (client *HealthModelsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -252,6 +260,8 @@ func (client *HealthModelsClient) getHandleResponse(resp *http.Response) (Health
 }
 
 // NewListByResourceGroupPager - List HealthModel resources by resource group
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - HealthModelsClientListByResourceGroupOptions contains the optional parameters for the HealthModelsClient.NewListByResourceGroupPager
 //     method.
@@ -294,8 +304,8 @@ func (client *HealthModelsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -310,6 +320,8 @@ func (client *HealthModelsClient) listByResourceGroupHandleResponse(resp *http.R
 }
 
 // NewListBySubscriptionPager - List HealthModel resources by subscription ID
+//
+// Generated from API version 2025-05-01-preview
 //   - options - HealthModelsClientListBySubscriptionOptions contains the optional parameters for the HealthModelsClient.NewListBySubscriptionPager
 //     method.
 func (client *HealthModelsClient) NewListBySubscriptionPager(options *HealthModelsClientListBySubscriptionOptions) *runtime.Pager[HealthModelsClientListBySubscriptionResponse] {
@@ -347,8 +359,8 @@ func (client *HealthModelsClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -364,6 +376,8 @@ func (client *HealthModelsClient) listBySubscriptionHandleResponse(resp *http.Re
 
 // BeginUpdate - Update a HealthModel
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - properties - The resource properties to be updated.
@@ -388,6 +402,8 @@ func (client *HealthModelsClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Update a HealthModel
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 func (client *HealthModelsClient) update(ctx context.Context, resourceGroupName string, healthModelName string, properties HealthModelUpdate, options *HealthModelsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HealthModelsClient.BeginUpdate"
@@ -429,8 +445,8 @@ func (client *HealthModelsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

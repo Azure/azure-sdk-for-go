@@ -18,8 +18,6 @@ import (
 
 // IscsiPathsClient contains the methods for the IscsiPaths group.
 // Don't use this type directly, use NewIscsiPathsClient() instead.
-//
-// Generated from API version 2025-09-01
 type IscsiPathsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewIscsiPathsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Create a IscsiPath
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - resource - Resource create parameters.
@@ -68,6 +68,8 @@ func (client *IscsiPathsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Create a IscsiPath
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *IscsiPathsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, resource IscsiPath, options *IscsiPathsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IscsiPathsClient.BeginCreateOrUpdate"
@@ -109,8 +111,8 @@ func (client *IscsiPathsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -121,6 +123,8 @@ func (client *IscsiPathsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Delete a IscsiPath
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - IscsiPathsClientBeginDeleteOptions contains the optional parameters for the IscsiPathsClient.BeginDelete method.
@@ -143,6 +147,8 @@ func (client *IscsiPathsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Delete a IscsiPath
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *IscsiPathsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, options *IscsiPathsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IscsiPathsClient.BeginDelete"
@@ -184,13 +190,15 @@ func (client *IscsiPathsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a IscsiPath
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - IscsiPathsClientGetOptions contains the optional parameters for the IscsiPathsClient.Get method.
@@ -236,8 +244,8 @@ func (client *IscsiPathsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -252,6 +260,8 @@ func (client *IscsiPathsClient) getHandleResponse(resp *http.Response) (IscsiPat
 }
 
 // NewListByPrivateCloudPager - List IscsiPath resources by PrivateCloud
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - IscsiPathsClientListByPrivateCloudOptions contains the optional parameters for the IscsiPathsClient.NewListByPrivateCloudPager
@@ -299,8 +309,8 @@ func (client *IscsiPathsClient) listByPrivateCloudCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

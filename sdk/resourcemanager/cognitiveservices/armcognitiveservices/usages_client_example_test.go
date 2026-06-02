@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ListUsages.json
+// Generated from example definition: 2026-01-15-preview/ListUsages.json
 func ExampleUsagesClient_NewListPager_getUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleUsagesClient_NewListPager_getUsages() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListUsagesClassicScope.json
+// Generated from example definition: 2026-01-15-preview/ListUsagesClassicScope.json
 func ExampleUsagesClient_NewListPager_getUsagesClassicScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleUsagesClient_NewListPager_getUsagesClassicScope() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListUsagesDataZoneScope.json
+// Generated from example definition: 2026-01-15-preview/ListUsagesDataZoneScope.json
 func ExampleUsagesClient_NewListPager_getUsagesDataZoneScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleUsagesClient_NewListPager_getUsagesDataZoneScope() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListUsagesGlobalScope.json
+// Generated from example definition: 2026-01-15-preview/ListUsagesGlobalScope.json
 func ExampleUsagesClient_NewListPager_getUsagesGlobalScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

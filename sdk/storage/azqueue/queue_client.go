@@ -29,6 +29,15 @@ func (q *QueueClient) queueClient() *generated.QueueClient {
 	return queue
 }
 
+func (q *QueueClient) messagesClient() *generated.MessagesClient {
+	_, messages := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient])(q))
+	return messages
+}
+
+func (q *QueueClient) getMessageIDURL(messageID string) string {
+	return runtime.JoinPaths(q.queueClient().Endpoint(), "messages", messageID)
+}
+
 func (q *QueueClient) sharedKey() *SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.QueueClient, generated.MessagesClient])(q))
 }
@@ -160,55 +169,69 @@ func (q *QueueClient) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOpt
 // EnqueueMessage adds a message to the queue.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-message.
 func (q *QueueClient) EnqueueMessage(ctx context.Context, content string, o *EnqueueMessageOptions) (EnqueueMessagesResponse, error) {
+	opts := o.format()
 	message := generated.QueueMessage{MessageText: &content}
-	return q.queueClient().SendMessage(ctx, message, o.format())
+	resp, err := q.messagesClient().Enqueue(ctx, message, opts)
+	return resp, err
 }
 
 // DequeueMessage removes one message from the queue.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-messages.
 func (q *QueueClient) DequeueMessage(ctx context.Context, o *DequeueMessageOptions) (DequeueMessagesResponse, error) {
-	return q.queueClient().ReceiveMessages(ctx, o.format())
+	opts := o.format()
+	resp, err := q.messagesClient().Dequeue(ctx, opts)
+	return resp, err
 }
 
 // UpdateMessage updates a message from the queue with the given popReceipt.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/update-message.
 func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popReceipt string, content string, o *UpdateMessageOptions) (UpdateMessageResponse, error) {
-	visibilityTimeout := int32(0)
-	if o != nil && o.VisibilityTimeout != nil {
-		visibilityTimeout = *o.VisibilityTimeout
-	}
+	opts := o.format()
 	message := generated.QueueMessage{MessageText: &content}
-	return q.queueClient().UpdateMessage(ctx, messageID, popReceipt, visibilityTimeout, message, o.format())
+	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), q.queueClient().InternalClient())
+	resp, err := messageClient.Update(ctx, popReceipt, message, opts)
+	return resp, err
 }
 
 // DeleteMessage deletes message from queue with the given popReceipt.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-message2.
 func (q *QueueClient) DeleteMessage(ctx context.Context, messageID string, popReceipt string, o *DeleteMessageOptions) (DeleteMessageResponse, error) {
-	return q.queueClient().DeleteMessage(ctx, messageID, popReceipt, o.format())
+	opts := o.format()
+	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), q.queueClient().InternalClient())
+	resp, err := messageClient.Delete(ctx, popReceipt, opts)
+	return resp, err
 }
 
 // PeekMessage peeks the first message from the queue.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/peek-messages.
 func (q *QueueClient) PeekMessage(ctx context.Context, o *PeekMessageOptions) (PeekMessagesResponse, error) {
-	return q.queueClient().PeekMessages(ctx, o.format())
+	opts := o.format()
+	resp, err := q.messagesClient().Peek(ctx, opts)
+	return resp, err
 }
 
 // DequeueMessages removes one or more messages from the queue.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-messages.
 func (q *QueueClient) DequeueMessages(ctx context.Context, o *DequeueMessagesOptions) (DequeueMessagesResponse, error) {
-	return q.queueClient().ReceiveMessages(ctx, o.format())
+	opts := o.format()
+	resp, err := q.messagesClient().Dequeue(ctx, opts)
+	return resp, err
 }
 
 // PeekMessages peeks one or more messages from the queue
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/peek-messages.
 func (q *QueueClient) PeekMessages(ctx context.Context, o *PeekMessagesOptions) (PeekMessagesResponse, error) {
-	return q.queueClient().PeekMessages(ctx, o.format())
+	opts := o.format()
+	resp, err := q.messagesClient().Peek(ctx, opts)
+	return resp, err
 }
 
 // ClearMessages deletes all messages from the queue.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/clear-messages.
 func (q *QueueClient) ClearMessages(ctx context.Context, o *ClearMessagesOptions) (ClearMessagesResponse, error) {
-	return q.queueClient().Clear(ctx, o.format())
+	opts := o.format()
+	resp, err := q.messagesClient().Clear(ctx, opts)
+	return resp, err
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.

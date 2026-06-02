@@ -6,7 +6,6 @@ package lease
 import (
 	"context"
 	"errors"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
@@ -54,22 +53,20 @@ func (f *FileClient) LeaseID() *string {
 	return f.leaseID
 }
 
-func (f *FileClient) getClientOptions() *base.ClientOptions {
-	return base.GetClientOptions((*base.Client[generated.FileClient])(f.fileClient))
-}
-
 // Acquire operation can be used to request a new lease.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
 func (f *FileClient) Acquire(ctx context.Context, options *FileAcquireOptions) (FileAcquireResponse, error) {
-	opts := options.format(f.LeaseID(), f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
-	return f.generated().AcquireLease(ctx, opts)
+	opts := options.format(f.LeaseID())
+	resp, err := f.generated().AcquireLease(ctx, (int32)(-1), opts)
+	return resp, err
 }
 
 // Break operation can be used to break the lease, if the file has an active lease. Once a lease is broken, it cannot be renewed.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
 func (f *FileClient) Break(ctx context.Context, options *FileBreakOptions) (FileBreakResponse, error) {
-	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
-	return f.generated().BreakLease(ctx, opts)
+	opts, leaseAccessConditions := options.format()
+	resp, err := f.generated().BreakLease(ctx, opts, leaseAccessConditions)
+	return resp, err
 }
 
 // Change operation can be used to change the lease ID of an active lease.
@@ -79,7 +76,7 @@ func (f *FileClient) Change(ctx context.Context, proposedLeaseID string, options
 		return FileChangeResponse{}, errors.New("leaseID cannot be nil")
 	}
 
-	opts := options.format(&proposedLeaseID, f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	opts := options.format(&proposedLeaseID)
 	resp, err := f.generated().ChangeLease(ctx, *f.LeaseID(), opts)
 
 	// If lease has been changed successfully, set the leaseID in client
@@ -97,6 +94,7 @@ func (f *FileClient) Release(ctx context.Context, options *FileReleaseOptions) (
 		return FileReleaseResponse{}, errors.New("leaseID cannot be nil")
 	}
 
-	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
-	return f.generated().ReleaseLease(ctx, *f.LeaseID(), opts)
+	opts := options.format()
+	resp, err := f.generated().ReleaseLease(ctx, *f.LeaseID(), opts)
+	return resp, err
 }

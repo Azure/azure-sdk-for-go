@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/AgentPools_Create.json
+// Generated from example definition: 2025-09-01/AgentPools_Create.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,13 +97,13 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.AgentPoolsClientCreateOrUpdateResponse{
-	// 	AgentPool: armnetworkcloud.AgentPool{
+	// 	AgentPool: &armnetworkcloud.AgentPool{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -190,7 +190,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/AgentPools_Delete.json
+// Generated from example definition: 2025-09-01/AgentPools_Delete.json
 func ExampleAgentPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,11 +207,11 @@ func ExampleAgentPoolsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/AgentPools_Get.json
+// Generated from example definition: 2025-09-01/AgentPools_Get.json
 func ExampleAgentPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleAgentPoolsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.AgentPoolsClientGetResponse{
-	// 	AgentPool: armnetworkcloud.AgentPool{
+	// 	AgentPool: &armnetworkcloud.AgentPool{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -317,7 +317,7 @@ func ExampleAgentPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/AgentPools_ListByKubernetesCluster.json
+// Generated from example definition: 2025-09-01/AgentPools_ListByKubernetesCluster.json
 func ExampleAgentPoolsClient_NewListByKubernetesClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +433,7 @@ func ExampleAgentPoolsClient_NewListByKubernetesClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/AgentPools_Patch.json
+// Generated from example definition: 2025-09-01/AgentPools_Patch.json
 func ExampleAgentPoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,13 +470,13 @@ func ExampleAgentPoolsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.AgentPoolsClientUpdateResponse{
-	// 	AgentPool: armnetworkcloud.AgentPool{
+	// 	AgentPool: &armnetworkcloud.AgentPool{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),

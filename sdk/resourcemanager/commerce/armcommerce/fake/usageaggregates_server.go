@@ -7,16 +7,17 @@ package fake
 import (
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
+	"time"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommerce"
-	"net/http"
-	"regexp"
-	"slices"
-	"strconv"
-	"time"
 )
 
 // UsageAggregatesServer is a fake server for instances of the armcommerce.UsageAggregatesClient type.
@@ -55,7 +56,9 @@ func (u *UsageAggregatesServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (u *UsageAggregatesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,7 +74,10 @@ func (u *UsageAggregatesServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -95,20 +101,40 @@ func (u *UsageAggregatesServerTransport) dispatchNewListPager(req *http.Request)
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		reportedStartTimeParam, err := time.Parse(time.RFC3339Nano, qp.Get("reportedStartTime"))
+		reportedStartTimeUnescaped, err := url.QueryUnescape(qp.Get("reportedStartTime"))
 		if err != nil {
 			return nil, err
 		}
-		reportedEndTimeParam, err := time.Parse(time.RFC3339Nano, qp.Get("reportedEndTime"))
+		reportedStartTimeParam, err := time.Parse(time.RFC3339Nano, reportedStartTimeUnescaped)
 		if err != nil {
 			return nil, err
 		}
-		showDetailsParam, err := parseOptional(qp.Get("showDetails"), strconv.ParseBool)
+		reportedEndTimeUnescaped, err := url.QueryUnescape(qp.Get("reportedEndTime"))
 		if err != nil {
 			return nil, err
 		}
-		aggregationGranularityParam := getOptional(armcommerce.AggregationGranularity(qp.Get("aggregationGranularity")))
-		continuationTokenParam := getOptional(qp.Get("continuationToken"))
+		reportedEndTimeParam, err := time.Parse(time.RFC3339Nano, reportedEndTimeUnescaped)
+		if err != nil {
+			return nil, err
+		}
+		showDetailsUnescaped, err := url.QueryUnescape(qp.Get("showDetails"))
+		if err != nil {
+			return nil, err
+		}
+		showDetailsParam, err := parseOptional(showDetailsUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		aggregationGranularityUnescaped, err := url.QueryUnescape(qp.Get("aggregationGranularity"))
+		if err != nil {
+			return nil, err
+		}
+		aggregationGranularityParam := getOptional(armcommerce.AggregationGranularity(aggregationGranularityUnescaped))
+		continuationTokenUnescaped, err := url.QueryUnescape(qp.Get("continuationToken"))
+		if err != nil {
+			return nil, err
+		}
+		continuationTokenParam := getOptional(continuationTokenUnescaped)
 		var options *armcommerce.UsageAggregatesClientListOptions
 		if showDetailsParam != nil || aggregationGranularityParam != nil || continuationTokenParam != nil {
 			options = &armcommerce.UsageAggregatesClientListOptions{
@@ -128,7 +154,7 @@ func (u *UsageAggregatesServerTransport) dispatchNewListPager(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		u.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

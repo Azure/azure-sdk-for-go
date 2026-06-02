@@ -130,33 +130,6 @@ func (f *Feature) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FeatureEnableRequest.
-func (f FeatureEnableRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "serviceTreeId", f.ServiceTreeID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FeatureEnableRequest.
-func (f *FeatureEnableRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", f, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "serviceTreeId":
-			err = unpopulate(val, "ServiceTreeID", &f.ServiceTreeID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", f, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type FeatureListResult.
 func (f FeatureListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

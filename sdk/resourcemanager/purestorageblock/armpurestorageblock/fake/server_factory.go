@@ -35,12 +35,6 @@ type ServerFactory struct {
 
 	// StoragePoolsServer contains the fakes for client StoragePoolsClient
 	StoragePoolsServer StoragePoolsServer
-
-	// VolumeGroupsServer contains the fakes for client VolumeGroupsClient
-	VolumeGroupsServer VolumeGroupsServer
-
-	// VolumesServer contains the fakes for client VolumesClient
-	VolumesServer VolumesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -64,8 +58,6 @@ type ServerFactoryTransport struct {
 	trOperationsServer                 *OperationsServerTransport
 	trReservationsServer               *ReservationsServerTransport
 	trStoragePoolsServer               *StoragePoolsServerTransport
-	trVolumeGroupsServer               *VolumeGroupsServerTransport
-	trVolumesServer                    *VolumesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -82,36 +74,30 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AvsStorageContainerVolumesClient":
-		initServer(&s.trMu, &s.trAvsStorageContainerVolumesServer, func() *AvsStorageContainerVolumesServerTransport {
+		initServer(s, &s.trAvsStorageContainerVolumesServer, func() *AvsStorageContainerVolumesServerTransport {
 			return NewAvsStorageContainerVolumesServerTransport(&s.srv.AvsStorageContainerVolumesServer)
 		})
 		resp, err = s.trAvsStorageContainerVolumesServer.Do(req)
 	case "AvsStorageContainersClient":
-		initServer(&s.trMu, &s.trAvsStorageContainersServer, func() *AvsStorageContainersServerTransport {
+		initServer(s, &s.trAvsStorageContainersServer, func() *AvsStorageContainersServerTransport {
 			return NewAvsStorageContainersServerTransport(&s.srv.AvsStorageContainersServer)
 		})
 		resp, err = s.trAvsStorageContainersServer.Do(req)
 	case "AvsVMVolumesClient":
-		initServer(&s.trMu, &s.trAvsVMVolumesServer, func() *AvsVMVolumesServerTransport { return NewAvsVMVolumesServerTransport(&s.srv.AvsVMVolumesServer) })
+		initServer(s, &s.trAvsVMVolumesServer, func() *AvsVMVolumesServerTransport { return NewAvsVMVolumesServerTransport(&s.srv.AvsVMVolumesServer) })
 		resp, err = s.trAvsVMVolumesServer.Do(req)
 	case "AvsVMsClient":
-		initServer(&s.trMu, &s.trAvsVMsServer, func() *AvsVMsServerTransport { return NewAvsVMsServerTransport(&s.srv.AvsVMsServer) })
+		initServer(s, &s.trAvsVMsServer, func() *AvsVMsServerTransport { return NewAvsVMsServerTransport(&s.srv.AvsVMsServer) })
 		resp, err = s.trAvsVMsServer.Do(req)
 	case "OperationsClient":
-		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "ReservationsClient":
-		initServer(&s.trMu, &s.trReservationsServer, func() *ReservationsServerTransport { return NewReservationsServerTransport(&s.srv.ReservationsServer) })
+		initServer(s, &s.trReservationsServer, func() *ReservationsServerTransport { return NewReservationsServerTransport(&s.srv.ReservationsServer) })
 		resp, err = s.trReservationsServer.Do(req)
 	case "StoragePoolsClient":
-		initServer(&s.trMu, &s.trStoragePoolsServer, func() *StoragePoolsServerTransport { return NewStoragePoolsServerTransport(&s.srv.StoragePoolsServer) })
+		initServer(s, &s.trStoragePoolsServer, func() *StoragePoolsServerTransport { return NewStoragePoolsServerTransport(&s.srv.StoragePoolsServer) })
 		resp, err = s.trStoragePoolsServer.Do(req)
-	case "VolumeGroupsClient":
-		initServer(&s.trMu, &s.trVolumeGroupsServer, func() *VolumeGroupsServerTransport { return NewVolumeGroupsServerTransport(&s.srv.VolumeGroupsServer) })
-		resp, err = s.trVolumeGroupsServer.Do(req)
-	case "VolumesClient":
-		initServer(&s.trMu, &s.trVolumesServer, func() *VolumesServerTransport { return NewVolumesServerTransport(&s.srv.VolumesServer) })
-		resp, err = s.trVolumesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}
@@ -121,4 +107,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
+}
+
+func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
+	s.trMu.Lock()
+	if *dst == nil {
+		*dst = src()
+	}
+	s.trMu.Unlock()
 }

@@ -17,8 +17,6 @@ import (
 
 // ScheduledActionExtensionClient contains the methods for the ScheduledActionExtension group.
 // Don't use this type directly, use NewScheduledActionExtensionClient() instead.
-//
-// Generated from API version 2025-04-15-preview
 type ScheduledActionExtensionClient struct {
 	internal *arm.Client
 }
@@ -38,6 +36,8 @@ func NewScheduledActionExtensionClient(credential azcore.TokenCredential, option
 }
 
 // NewListByVMsPager - List ScheduledActionResources resources by parent
+//
+// Generated from API version 2025-04-15-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - ScheduledActionExtensionClientListByVMsOptions contains the optional parameters for the ScheduledActionExtensionClient.NewListByVMsPager
 //     method.
@@ -76,8 +76,8 @@ func (client *ScheduledActionExtensionClient) listByVMsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-04-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

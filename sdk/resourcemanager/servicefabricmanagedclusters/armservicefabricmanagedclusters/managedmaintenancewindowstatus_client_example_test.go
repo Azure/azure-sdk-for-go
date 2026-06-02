@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/ManagedMaintenanceWindowStatusGet_example.json
+// Generated from example definition: 2026-02-01/ManagedMaintenanceWindowStatusGet_example.json
 func ExampleManagedMaintenanceWindowStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,14 +30,14 @@ func ExampleManagedMaintenanceWindowStatusClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ManagedMaintenanceWindowStatusClientGetResponse{
-	// 	ManagedMaintenanceWindowStatus: armservicefabricmanagedclusters.ManagedMaintenanceWindowStatus{
+	// 	ManagedMaintenanceWindowStatus: &armservicefabricmanagedclusters.ManagedMaintenanceWindowStatus{
 	// 		CanApplyUpdates: to.Ptr(true),
 	// 		IsRegionReady: to.Ptr(true),
 	// 		IsWindowActive: to.Ptr(true),
 	// 		IsWindowEnabled: to.Ptr(false),
-	// 		LastWindowEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-30T00:00:00Z"); return t}()),
-	// 		LastWindowStartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-30T00:00:00Z"); return t}()),
-	// 		LastWindowStatusUpdateAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-30T00:00:00Z"); return t}()),
+	// 		LastWindowEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-30T00:00:00"); return t}()),
+	// 		LastWindowStartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-30T00:00:00"); return t}()),
+	// 		LastWindowStatusUpdateAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-30T00:00:00"); return t}()),
 	// 	},
 	// }
 }

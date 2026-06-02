@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/DeletedAccountGet.json
+// Generated from example definition: 2025-06-01/DeletedAccountGet.json
 func ExampleDeletedAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleDeletedAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.DeletedAccountsClientGetResponse{
-	// 	DeletedAccount: armstorage.DeletedAccount{
+	// 	DeletedAccount: &armstorage.DeletedAccount{
 	// 		Name: to.Ptr("sto1125"),
 	// 		Type: to.Ptr("Microsoft.Storage/deletedAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/providers/Microsoft.Storage/locations/eastus/deletedAccounts/sto1125"),
@@ -45,7 +45,7 @@ func ExampleDeletedAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/DeletedAccountList.json
+// Generated from example definition: 2025-06-01/DeletedAccountList.json
 func ExampleDeletedAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

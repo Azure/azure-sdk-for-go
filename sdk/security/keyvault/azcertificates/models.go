@@ -135,10 +135,6 @@ type CertificatePolicy struct {
 	// Actions that will be performed by Key Vault over the lifetime of a certificate.
 	LifetimeActions []*LifetimeAction
 
-	// Configuration that enables the platform to manage the certificate on behalf of the user. This feature is currently intended
-	// for internal use only.
-	PlatformManaged *PlatformManaged
-
 	// Properties of the secret backing a certificate.
 	SecretProperties *SecretProperties
 
@@ -444,16 +440,6 @@ type OrganizationDetails struct {
 
 	// Id of the organization.
 	ID *string
-}
-
-// PlatformManaged - Properties of the platform managed certificate. This feature is currently intended for internal use only.
-type PlatformManaged struct {
-	// REQUIRED; The intended usage of the certificate.
-	CertificateUsage *string
-
-	// JSON-formatted platform managed metadata. The schema is intentionally undefined as this feature is currently intended for
-	// internal use only.
-	Metadata map[string]any
 }
 
 // RestoreCertificateParameters - The certificate restore parameters.

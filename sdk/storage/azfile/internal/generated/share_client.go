@@ -8,7 +8,7 @@ import (
 )
 
 func (client *ShareClient) Endpoint() string {
-	return client.url
+	return client.endpoint
 }
 
 func (client *ShareClient) InternalClient() *azcore.Client {
@@ -17,11 +17,14 @@ func (client *ShareClient) InternalClient() *azcore.Client {
 
 // NewShareClient creates a new instance of ShareClient with the specified values.
 //   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
+//   - fileRequestIntent - Valid value is backup
 //   - azClient - azcore.Client is a basic HTTP client.  It consists of a pipeline and tracing provider.
-func NewShareClient(endpoint string, azClient *azcore.Client) *ShareClient {
+func NewShareClient(endpoint string, fileRequestIntent *ShareTokenIntent, azClient *azcore.Client) *ShareClient {
 	client := &ShareClient{
-		internal: azClient,
-		url:      endpoint,
+		internal:          azClient,
+		endpoint:          endpoint,
+		version:           ServiceVersion,
+		fileRequestIntent: fileRequestIntent,
 	}
 	return client
 }

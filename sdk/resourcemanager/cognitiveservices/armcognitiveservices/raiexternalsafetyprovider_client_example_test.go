@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutRaiExternalSafetyProvider.json
+// Generated from example definition: 2026-01-15-preview/PutRaiExternalSafetyProvider.json
 func ExampleRaiExternalSafetyProviderClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleRaiExternalSafetyProviderClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiExternalSafetyProviderClientCreateOrUpdateResponse{
-	// 	RaiExternalSafetyProviderSchema: armcognitiveservices.RaiExternalSafetyProviderSchema{
+	// 	RaiExternalSafetyProviderSchema: &armcognitiveservices.RaiExternalSafetyProviderSchema{
 	// 		Name: to.Ptr("safetyProviderName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/safetyProviderName"),
 	// 		Properties: &armcognitiveservices.RaiExternalSafetyProviderSchemaProperties{
@@ -59,7 +59,7 @@ func ExampleRaiExternalSafetyProviderClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteRaiExternalSafetyProvider.json
+// Generated from example definition: 2026-01-15-preview/DeleteRaiExternalSafetyProvider.json
 func ExampleRaiExternalSafetyProviderClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,11 +76,11 @@ func ExampleRaiExternalSafetyProviderClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/GetRaiExternalSafetyProvider.json
+// Generated from example definition: 2026-01-15-preview/GetRaiExternalSafetyProvider.json
 func ExampleRaiExternalSafetyProviderClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleRaiExternalSafetyProviderClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiExternalSafetyProviderClientGetResponse{
-	// 	RaiExternalSafetyProviderSchema: armcognitiveservices.RaiExternalSafetyProviderSchema{
+	// 	RaiExternalSafetyProviderSchema: &armcognitiveservices.RaiExternalSafetyProviderSchema{
 	// 		Name: to.Ptr("safetyProviderName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/safetyProviderName"),
 	// 		Properties: &armcognitiveservices.RaiExternalSafetyProviderSchemaProperties{

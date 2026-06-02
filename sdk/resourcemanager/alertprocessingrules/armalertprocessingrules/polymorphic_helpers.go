@@ -60,10 +60,10 @@ func unmarshalRecurrenceClassification(rawMsg json.RawMessage) (RecurrenceClassi
 	switch m["recurrenceType"] {
 	case string(RecurrenceTypeDaily):
 		b = &DailyRecurrence{}
-	case string(RecurrenceTypeMonthly):
-		b = &MonthlyRecurrence{}
 	case string(RecurrenceTypeWeekly):
 		b = &WeeklyRecurrence{}
+	case string(RecurrenceTypeMonthly):
+		b = &MonthlyRecurrence{}
 	default:
 		b = &Recurrence{}
 	}

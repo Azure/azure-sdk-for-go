@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // AutoUpgradeProfileOperationsServer is a fake server for instances of the armcontainerservicefleet.AutoUpgradeProfileOperationsClient type.
@@ -54,7 +53,9 @@ func (a *AutoUpgradeProfileOperationsServerTransport) Do(req *http.Request) (*ht
 }
 
 func (a *AutoUpgradeProfileOperationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,7 +71,10 @@ func (a *AutoUpgradeProfileOperationsServerTransport) dispatchToMethodFake(req *
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -118,7 +122,7 @@ func (a *AutoUpgradeProfileOperationsServerTransport) dispatchBeginGenerateUpdat
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		a.beginGenerateUpdateRun.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

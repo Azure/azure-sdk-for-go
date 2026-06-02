@@ -85,7 +85,6 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
-	o = withDefaultTransport(o)
 
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
@@ -133,7 +132,6 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
-	o = withDefaultTransport(o)
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
 	if err != nil {
 		return nil, err
@@ -198,17 +196,8 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 				&globalEndpointManagerPolicy{gem: gem},
 			},
 			PerRetry: []policy.Policy{
-				// clientRetryPolicy is listed before authPolicy so that
-				// its internal retry loop (continue inside Do) naturally
-				// re-invokes authPolicy via req.Next() on each attempt.
-				// This refreshes the Authorization header from the
-				// credential cache on every internal retry — important
-				// for short-lived AAD/MSI tokens that may expire across
-				// the cumulative same-region + cross-region retry
-				// window. Cosmos master/resource keys are unaffected
-				// because they are static.
-				&clientRetryPolicy{gem: gem},
 				authPolicy,
+				&clientRetryPolicy{gem: gem},
 			},
 			Tracing: azruntime.TracingOptions{
 				Namespace: "Microsoft.DocumentDB",
@@ -229,29 +218,6 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 			},
 		},
 		&options.ClientOptions)
-}
-
-// withDefaultTransport returns a *ClientOptions whose Transport is set to the
-// Cosmos default HTTP client when the caller has not supplied one. Callers
-// of NewClient*/NewClientFromConnectionString invoke this exactly once and
-// reuse the result for both the user-facing and the global-endpoint-manager
-// pipelines so options are normalized in a single place. The returned value
-// is always non-nil; only the top-level Transport field is set on the clone,
-// so the caller's *ClientOptions struct is never mutated, but slice fields
-// such as PreferredRegions or PerCallPolicies still share backing arrays
-// with the caller's struct and should not be mutated in place.
-func withDefaultTransport(options *ClientOptions) *ClientOptions {
-	if options == nil {
-		return &ClientOptions{
-			ClientOptions: azcore.ClientOptions{Transport: defaultCosmosHTTPClient},
-		}
-	}
-	if options.Transport != nil {
-		return options
-	}
-	clone := *options
-	clone.Transport = defaultCosmosHTTPClient
-	return &clone
 }
 
 func createScopeFromEndpoint(endpoint *url.URL) ([]string, error) {

@@ -18,8 +18,6 @@ import (
 
 // TargetTypesClient contains the methods for the TargetTypes group.
 // Don't use this type directly, use NewTargetTypesClient() instead.
-//
-// Generated from API version 2026-05-01-preview
 type TargetTypesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewTargetTypesClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Get - Get a Target Type resources for given location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
 //   - targetTypeName - String that represents a Target Type resource name.
 //   - options - TargetTypesClientGetOptions contains the optional parameters for the TargetTypesClient.Get method.
@@ -88,8 +88,8 @@ func (client *TargetTypesClient) getCreateRequest(ctx context.Context, location 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,6 +104,8 @@ func (client *TargetTypesClient) getHandleResponse(resp *http.Response) (TargetT
 }
 
 // NewListPager - Get a list of Target Type resources for given location.
+//
+// Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
 //   - options - TargetTypesClientListOptions contains the optional parameters for the TargetTypesClient.NewListPager method.
 func (client *TargetTypesClient) NewListPager(location string, options *TargetTypesClientListOptions) *runtime.Pager[TargetTypesClientListResponse] {
@@ -145,11 +147,11 @@ func (client *TargetTypesClient) listCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", "2026-05-01-preview")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

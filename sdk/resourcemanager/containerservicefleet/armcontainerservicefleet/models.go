@@ -128,85 +128,12 @@ type AutoUpgradeProfileStatus struct {
 	LastTriggeredAt *time.Time
 }
 
-// CiliumProperties - The Cilium specific properties of the member cluster.
-type CiliumProperties struct {
-	// READ-ONLY; Cilium requires each cluster to be assigned a unique numeric cluster id from 1 - 255. The id is managed by Fleet
-	// and cannot be set by the user.
-	ID *int32
-
-	// READ-ONLY; Cilium requires each cluster to be assigned a unique human-readable name. The name is managed by Fleet, based
-	// on the Fleet Member name, and cannot be set by the user.
-	Name *string
-}
-
 // ClusterAffinity contains cluster affinity scheduling rules for the selected resources.
 type ClusterAffinity struct {
 	// If the affinity requirements specified by this field are not met at scheduling time, the resource will not be scheduled
 	// onto the cluster. If the affinity requirements specified by this field cease to be met at some point after the placement
 	// (e.g. due to an update), the system may or may not try to eventually remove the resource from the cluster.
 	RequiredDuringSchedulingIgnoredDuringExecution *ClusterSelector
-}
-
-// ClusterMeshProfile - A cluster mesh profile stores the general information about the mesh.
-type ClusterMeshProfile struct {
-	// The resource-specific properties for this resource.
-	Properties *ClusterMeshProfileProperties
-
-	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
-	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
-	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
-	// fields.
-	ETag *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ClusterMeshProfileListResult - The response of a ClusterMeshProfile list operation.
-type ClusterMeshProfileListResult struct {
-	// REQUIRED; The ClusterMeshProfile items on this page
-	Value []*ClusterMeshProfile
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// ClusterMeshProfileProperties - A cluster mesh profile stores the general information about the mesh.
-type ClusterMeshProfileProperties struct {
-	// Select the members of the mesh.
-	// * Only key/value pairs with the `=` operator are accepted in the label selector.
-	// * If empty or not specified, no Fleet members will be selected to join the mesh.
-	MemberSelector *MemberSelector
-
-	// READ-ONLY; The provisioning state of the cluster mesh profile.
-	ProvisioningState *ClusterMeshProfileProvisioningState
-
-	// READ-ONLY; The cluster mesh profile status.
-	Status *ClusterMeshProfileStatus
-}
-
-// ClusterMeshProfileStatus - Status of the cluster mesh.
-type ClusterMeshProfileStatus struct {
-	// READ-ONLY; The state of the cluster mesh.
-	State *ClusterMeshState
-
-	// READ-ONLY; The last applied MemberSelector for the cluster mesh profile.
-	LastAppliedMemberSelector *MemberSelector
-
-	// READ-ONLY; The last operation error of the cluster mesh profile.
-	LastOperationError *ErrorDetail
-
-	// READ-ONLY; The last operation ID for the cluster mesh profile.
-	LastOperationID *string
 }
 
 // ClusterResourcePlacementSpec defines the desired state of ClusterResourcePlacement.
@@ -461,9 +388,6 @@ type FleetMemberProperties struct {
 
 	// The labels for the fleet member.
 	Labels map[string]*string
-
-	// READ-ONLY; The Mesh Member Properties associated with this Fleet Member.
-	MeshProperties *MeshProperties
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *FleetMemberProvisioningState
@@ -730,12 +654,6 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
-// MemberSelector - Select members of a fleet.
-type MemberSelector struct {
-	// REQUIRED; Kubernetes-style label selector for selecting Fleet members, e.g. `env=production`.
-	ByLabel *string
-}
-
 // MemberUpdateStatus - The status of a member update operation.
 type MemberUpdateStatus struct {
 	// READ-ONLY; The Azure resource id of the target Kubernetes cluster.
@@ -752,33 +670,6 @@ type MemberUpdateStatus struct {
 
 	// READ-ONLY; The status of the MemberUpdate operation.
 	Status *UpdateStatus
-}
-
-// MeshMemberStatus - Status of the mesh member.
-type MeshMemberStatus struct {
-	// READ-ONLY; The mesh member state.
-	State *MeshMemberState
-
-	// READ-ONLY; The error affecting this member.
-	Error *ErrorDetail
-
-	// READ-ONLY; The last operation ID that affected the mesh properties of the fleet member.
-	LastOperationID *string
-
-	// READ-ONLY; When the status was last updated.
-	LastUpdatedAt *time.Time
-}
-
-// MeshProperties - The Mesh Member data for a Fleet Member resource.
-type MeshProperties struct {
-	// READ-ONLY; The Cilium cluster properties.
-	CiliumProperties *CiliumProperties
-
-	// READ-ONLY; Resource id of the cluster mesh profile associated with this mesh member.
-	ClusterMeshProfileResourceID *string
-
-	// READ-ONLY; The status of the mesh member.
-	Status *MeshMemberStatus
 }
 
 // NetworkPolicy - The network policy for the managed namespace.

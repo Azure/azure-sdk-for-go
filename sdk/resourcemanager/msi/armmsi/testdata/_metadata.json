@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.ManagedIdentity": "2025-05-31-preview"
+    "Microsoft.ManagedIdentity": "2024-11-30"
   },
-  "emitterVersion": "0.14.1"
+  "emitterVersion": "0.10.2"
 }

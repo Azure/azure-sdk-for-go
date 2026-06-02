@@ -15,14 +15,13 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // OutboundRulesServer is a fake server for instances of the armcognitiveservices.OutboundRulesClient type.
 type OutboundRulesServer struct {
 	// BeginPost is the fake for method OutboundRulesClient.BeginPost
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginPost func(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body armcognitiveservices.ManagedNetworkSettingsBasicResource, options *armcognitiveservices.OutboundRulesClientBeginPostOptions) (resp azfake.PollerResponder[azfake.PagerResponder[armcognitiveservices.OutboundRulesClientPostResponse]], errResp azfake.ErrorResponder)
+	BeginPost func(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body armcognitiveservices.ManagedNetworkSettingsBasicResource, options *armcognitiveservices.OutboundRulesClientBeginPostOptions) (resp azfake.PollerResponder[armcognitiveservices.OutboundRulesClientPostResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOutboundRulesServerTransport creates a new instance of OutboundRulesServerTransport with the provided implementation.
@@ -31,7 +30,7 @@ type OutboundRulesServer struct {
 func NewOutboundRulesServerTransport(srv *OutboundRulesServer) *OutboundRulesServerTransport {
 	return &OutboundRulesServerTransport{
 		srv:       srv,
-		beginPost: newTracker[azfake.PollerResponder[azfake.PagerResponder[armcognitiveservices.OutboundRulesClientPostResponse]]](),
+		beginPost: newTracker[azfake.PollerResponder[armcognitiveservices.OutboundRulesClientPostResponse]](),
 	}
 }
 
@@ -39,7 +38,7 @@ func NewOutboundRulesServerTransport(srv *OutboundRulesServer) *OutboundRulesSer
 // Don't use this type directly, use NewOutboundRulesServerTransport instead.
 type OutboundRulesServerTransport struct {
 	srv       *OutboundRulesServer
-	beginPost *tracker[azfake.PollerResponder[azfake.PagerResponder[armcognitiveservices.OutboundRulesClientPostResponse]]]
+	beginPost *tracker[azfake.PollerResponder[armcognitiveservices.OutboundRulesClientPostResponse]]
 }
 
 // Do implements the policy.Transporter interface for OutboundRulesServerTransport.
@@ -54,7 +53,9 @@ func (o *OutboundRulesServerTransport) Do(req *http.Request) (*http.Response, er
 }
 
 func (o *OutboundRulesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,7 +71,10 @@ func (o *OutboundRulesServerTransport) dispatchToMethodFake(req *http.Request, m
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -122,7 +126,7 @@ func (o *OutboundRulesServerTransport) dispatchBeginPost(req *http.Request) (*ht
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		o.beginPost.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

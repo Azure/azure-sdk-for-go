@@ -12,39 +12,39 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AvsVms_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/AvsVms_Delete_MaximumSet_Gen.json
 func ExampleAvsVMsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAvsVMsClient().BeginDelete(ctx, "rgpurestorage", "storagepool-01", "abc123def456", nil)
+	poller, err := clientFactory.NewAvsVMsClient().BeginDelete(ctx, "rgpurestorage", "storagePoolname", "cbdec-ddbb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AvsVms_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/AvsVms_Get_MaximumSet_Gen.json
 func ExampleAvsVMsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAvsVMsClient().Get(ctx, "rgpurestorage", "storagepool-01", "abc123def456", nil)
+	res, err := clientFactory.NewAvsVMsClient().Get(ctx, "rgpurestorage", "storagePoolname", "cbdec-ddbb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -52,58 +52,58 @@ func ExampleAvsVMsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.AvsVMsClientGetResponse{
-	// 	AvsVM: armpurestorageblock.AvsVM{
+	// 	AvsVM: &armpurestorageblock.AvsVM{
 	// 		Properties: &armpurestorageblock.AvsVMProperties{
-	// 			StoragePoolInternalID: to.Ptr("pool-abc123"),
-	// 			StoragePoolResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01"),
-	// 			DisplayName: to.Ptr("AVS Virtual Machine 01"),
-	// 			CreatedTimestamp: to.Ptr("2026-01-16T07:25:56.721Z"),
+	// 			StoragePoolInternalID: to.Ptr("zpchlbmnmgympdfqeuchp"),
+	// 			StoragePoolResourceID: to.Ptr("refrmhvh"),
+	// 			DisplayName: to.Ptr("zcpusnyyozsxptnvia"),
+	// 			CreatedTimestamp: to.Ptr("eeczpavimq"),
 	// 			SoftDeletion: &armpurestorageblock.SoftDeletion{
 	// 				Destroyed: to.Ptr(true),
-	// 				EradicationTimestamp: to.Ptr("2026-01-23T07:25:56.721Z"),
+	// 				EradicationTimestamp: to.Ptr("kaxjtehra"),
 	// 			},
 	// 			VolumeContainerType: to.Ptr(armpurestorageblock.VolumeContainerTypeAVS),
 	// 			Avs: &armpurestorageblock.AvsVMDetails{
-	// 				VMID: to.Ptr("vm-123"),
-	// 				VMName: to.Ptr("avs-vm-01"),
+	// 				VMID: to.Ptr("ljsdq"),
+	// 				VMName: to.Ptr("hskuenhnxpscuqikeohkyjfebgzapx"),
 	// 				VMType: to.Ptr(armpurestorageblock.VMTypeVVol),
-	// 				AvsVMInternalID: to.Ptr("vm-internal-123"),
+	// 				AvsVMInternalID: to.Ptr("wnamcozqs"),
 	// 			},
 	// 			Space: &armpurestorageblock.Space{
-	// 				TotalUsed: to.Ptr[int64](1073741824),
-	// 				Unique: to.Ptr[int64](268435456),
-	// 				Snapshots: to.Ptr[int64](53687091236870910),
-	// 				Shared: to.Ptr[int64](268435456),
+	// 				TotalUsed: to.Ptr[int64](28),
+	// 				Unique: to.Ptr[int64](4),
+	// 				Snapshots: to.Ptr[int64](5),
+	// 				Shared: to.Ptr[int64](9),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armpurestorageblock.ResourceProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/avsVms/avs-vm-01"),
-	// 		Name: to.Ptr("avs-vm-01"),
-	// 		Type: to.Ptr("PureStorage.Block/storagePools/avsVms"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+	// 		Name: to.Ptr("ifvdmtawvkzz"),
+	// 		Type: to.Ptr("qsfuizcaje"),
 	// 		SystemData: &armpurestorageblock.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedBy: to.Ptr("ruoitchmuomrbscg"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/AvsVms_ListByStoragePool_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/AvsVms_ListByStoragePool_MaximumSet_Gen.json
 func ExampleAvsVMsClient_NewListByStoragePoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAvsVMsClient().NewListByStoragePoolPager("rgpurestorage", "storagepool-01", nil)
+	pager := clientFactory.NewAvsVMsClient().NewListByStoragePoolPager("rgpurestorage", "storagePoolname", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -119,60 +119,60 @@ func ExampleAvsVMsClient_NewListByStoragePoolPager() {
 		// 		Value: []*armpurestorageblock.AvsVM{
 		// 			{
 		// 				Properties: &armpurestorageblock.AvsVMProperties{
-		// 					StoragePoolInternalID: to.Ptr("pool-abc123"),
-		// 					StoragePoolResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01"),
-		// 					DisplayName: to.Ptr("AVS Virtual Machine 01"),
-		// 					CreatedTimestamp: to.Ptr("2026-01-16T07:25:56.721Z"),
+		// 					StoragePoolInternalID: to.Ptr("zpchlbmnmgympdfqeuchp"),
+		// 					StoragePoolResourceID: to.Ptr("refrmhvh"),
+		// 					DisplayName: to.Ptr("zcpusnyyozsxptnvia"),
+		// 					CreatedTimestamp: to.Ptr("eeczpavimq"),
 		// 					SoftDeletion: &armpurestorageblock.SoftDeletion{
 		// 						Destroyed: to.Ptr(true),
-		// 						EradicationTimestamp: to.Ptr("2026-01-23T07:25:56.721Z"),
+		// 						EradicationTimestamp: to.Ptr("kaxjtehra"),
 		// 					},
 		// 					VolumeContainerType: to.Ptr(armpurestorageblock.VolumeContainerTypeAVS),
 		// 					Avs: &armpurestorageblock.AvsVMDetails{
-		// 						VMID: to.Ptr("vm-123"),
-		// 						VMName: to.Ptr("avs-vm-01"),
+		// 						VMID: to.Ptr("ljsdq"),
+		// 						VMName: to.Ptr("hskuenhnxpscuqikeohkyjfebgzapx"),
 		// 						VMType: to.Ptr(armpurestorageblock.VMTypeVVol),
-		// 						AvsVMInternalID: to.Ptr("vm-internal-123"),
+		// 						AvsVMInternalID: to.Ptr("wnamcozqs"),
 		// 					},
 		// 					Space: &armpurestorageblock.Space{
-		// 						TotalUsed: to.Ptr[int64](1073741824),
-		// 						Unique: to.Ptr[int64](268435456),
-		// 						Snapshots: to.Ptr[int64](53687091236870910),
-		// 						Shared: to.Ptr[int64](268435456),
+		// 						TotalUsed: to.Ptr[int64](28),
+		// 						Unique: to.Ptr[int64](4),
+		// 						Snapshots: to.Ptr[int64](5),
+		// 						Shared: to.Ptr[int64](9),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armpurestorageblock.ResourceProvisioningStateSucceeded),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("avs-vm-01"),
-		// 				Type: to.Ptr("PureStorage.Block/storagePools/avsVms"),
+		// 				Name: to.Ptr("ifvdmtawvkzz"),
+		// 				Type: to.Ptr("qsfuizcaje"),
 		// 				SystemData: &armpurestorageblock.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
+		// 					CreatedBy: to.Ptr("ruoitchmuomrbscg"),
 		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
 		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123nnrdra"),
+		// 		NextLink: to.Ptr("https://microsoft.com/annrdra"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AvsVms_Update_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/AvsVms_Update_MaximumSet_Gen.json
 func ExampleAvsVMsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAvsVMsClient().BeginUpdate(ctx, "rgpurestorage", "storagepool-01", "abc123def456", armpurestorageblock.AvsVMUpdate{
+	poller, err := clientFactory.NewAvsVMsClient().BeginUpdate(ctx, "rgpurestorage", "storagePoolname", "cbdec-ddbb", armpurestorageblock.AvsVMUpdate{
 		Properties: &armpurestorageblock.AvsVMUpdateProperties{
 			SoftDeletion: &armpurestorageblock.SoftDeletion{
 				Destroyed: to.Ptr(true),
@@ -184,47 +184,47 @@ func ExampleAvsVMsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.AvsVMsClientUpdateResponse{
-	// 	AvsVM: armpurestorageblock.AvsVM{
+	// 	AvsVM: &armpurestorageblock.AvsVM{
 	// 		Properties: &armpurestorageblock.AvsVMProperties{
-	// 			StoragePoolInternalID: to.Ptr("pool-abc123"),
-	// 			StoragePoolResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01"),
-	// 			DisplayName: to.Ptr("AVS Virtual Machine 01"),
-	// 			CreatedTimestamp: to.Ptr("2026-01-16T07:25:56.721Z"),
+	// 			StoragePoolInternalID: to.Ptr("zpchlbmnmgympdfqeuchp"),
+	// 			StoragePoolResourceID: to.Ptr("refrmhvh"),
+	// 			DisplayName: to.Ptr("zcpusnyyozsxptnvia"),
+	// 			CreatedTimestamp: to.Ptr("eeczpavimq"),
 	// 			SoftDeletion: &armpurestorageblock.SoftDeletion{
 	// 				Destroyed: to.Ptr(true),
-	// 				EradicationTimestamp: to.Ptr("2026-01-23T07:25:56.721Z"),
+	// 				EradicationTimestamp: to.Ptr("kaxjtehra"),
 	// 			},
 	// 			VolumeContainerType: to.Ptr(armpurestorageblock.VolumeContainerTypeAVS),
 	// 			Avs: &armpurestorageblock.AvsVMDetails{
-	// 				VMID: to.Ptr("vm-123"),
-	// 				VMName: to.Ptr("avs-vm-01"),
+	// 				VMID: to.Ptr("ljsdq"),
+	// 				VMName: to.Ptr("hskuenhnxpscuqikeohkyjfebgzapx"),
 	// 				VMType: to.Ptr(armpurestorageblock.VMTypeVVol),
-	// 				AvsVMInternalID: to.Ptr("vm-internal-123"),
+	// 				AvsVMInternalID: to.Ptr("wnamcozqs"),
 	// 			},
 	// 			Space: &armpurestorageblock.Space{
-	// 				TotalUsed: to.Ptr[int64](1073741824),
-	// 				Unique: to.Ptr[int64](268435456),
-	// 				Snapshots: to.Ptr[int64](53687091236870910),
-	// 				Shared: to.Ptr[int64](268435456),
+	// 				TotalUsed: to.Ptr[int64](28),
+	// 				Unique: to.Ptr[int64](4),
+	// 				Snapshots: to.Ptr[int64](5),
+	// 				Shared: to.Ptr[int64](9),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armpurestorageblock.ResourceProvisioningStateSucceeded),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("avs-vm-01"),
-	// 		Type: to.Ptr("PureStorage.Block/storagePools/avsVms"),
+	// 		Name: to.Ptr("ifvdmtawvkzz"),
+	// 		Type: to.Ptr("qsfuizcaje"),
 	// 		SystemData: &armpurestorageblock.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedBy: to.Ptr("ruoitchmuomrbscg"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 	// 		},
 	// 	},
 	// }

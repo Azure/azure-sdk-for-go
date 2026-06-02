@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// cSpell:ignore azcosmosgemtest azcosmostest westus
-
 package azcosmos
 
 import (
@@ -20,7 +18,6 @@ import (
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 type countPolicy struct {
@@ -90,7 +87,7 @@ func TestGlobalEndpointManagerMarkEndpointUnavailableForRead(t *testing.T) {
 	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
 	assert.NoError(t, err)
 
-	_, err = gem.MarkEndpointUnavailableForRead(*endpoint)
+	err = gem.MarkEndpointUnavailableForRead(*endpoint)
 	assert.NoError(t, err)
 
 	unavailable := gem.IsEndpointUnavailable(*endpoint, 1)
@@ -110,7 +107,7 @@ func TestGlobalEndpointManagerMarkEndpointUnavailableForWrite(t *testing.T) {
 	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
 	assert.NoError(t, err)
 
-	_, err = gem.MarkEndpointUnavailableForWrite(*endpoint)
+	err = gem.MarkEndpointUnavailableForWrite(*endpoint)
 	assert.NoError(t, err)
 
 	unavailable := gem.IsEndpointUnavailable(*endpoint, 2)
@@ -499,7 +496,6 @@ func TestAddedAllowTentativeHeaderGEMPolicy(t *testing.T) {
 	gemServer.SetResponse(mock.WithBody([]byte(mocked_response)))
 	// change time to trigger another get account properties call
 	mockGem.lastUpdateTime = time.Now().Add(-10 * time.Minute)
-	mockGem.lastAttemptTime = time.Now().Add(-10 * time.Minute)
 
 	// Issue another test request
 	req, err = azruntime.NewRequest(ctx, http.MethodGet, gemServer.URL())
@@ -512,12 +508,6 @@ func TestAddedAllowTentativeHeaderGEMPolicy(t *testing.T) {
 	if err != nil {
 		t.Fatalf("testPipeline.Do failed: %v", err)
 	}
-
-	// Wait for the background async refresh to complete so the locationCache
-	// reflects the new (non-multi-write) topology before the next request.
-	require.Eventually(t, func() bool {
-		return !mockGem.CanUseMultipleWriteLocations()
-	}, 2*time.Second, 5*time.Millisecond, "async GEM refresh must update locationCache within 2s")
 
 	// Issue another test request that will use the updated account properties
 	req, err = azruntime.NewRequest(ctx, http.MethodGet, gemServer.URL())

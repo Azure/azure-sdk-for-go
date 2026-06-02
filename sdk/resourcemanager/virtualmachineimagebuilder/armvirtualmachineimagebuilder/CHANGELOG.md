@@ -1,26 +1,5 @@
 # Release History
 
-## 3.0.0 (2026-05-20)
-### Breaking Changes
-
-- Struct `ErrorAdditionalInfo` has been removed
-- Struct `ErrorDetail` has been removed
-- Struct `ErrorResponse` has been removed
-- Struct `ProxyResource` has been removed
-- Struct `Resource` has been removed
-- Struct `TrackedResource` has been removed
-
-### Features Added
-
-- New enum type `ReplicationMode` with values `ReplicationModeFull`, `ReplicationModeShallow`
-- New enum type `WorkloadOptimizationState` with values `WorkloadOptimizationStateDisabled`, `WorkloadOptimizationStateEnabled`
-- New struct `DataDisk`
-- New struct `ImageTemplatePropertiesOptimizeWorkload`
-- New field `AdditionalDataDisks` in struct `ImageTemplateProperties`
-- New field `Workload` in struct `ImageTemplatePropertiesOptimize`
-- New field `ReplicationMode` in struct `ImageTemplateSharedImageDistributor`
-
-
 ## 2.3.0 (2024-06-21)
 ### Features Added
 

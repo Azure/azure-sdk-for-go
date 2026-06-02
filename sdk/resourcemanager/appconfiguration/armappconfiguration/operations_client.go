@@ -18,8 +18,6 @@ import (
 
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
-//
-// Generated from API version 2025-08-01-preview
 type OperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewOperationsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CheckNameAvailability - Checks whether the configuration store name is available for use.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - checkNameAvailabilityParameters - The request body
 //   - options - OperationsClientCheckNameAvailabilityOptions contains the optional parameters for the OperationsClient.CheckNameAvailability
 //     method.
@@ -80,8 +80,8 @@ func (client *OperationsClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityParameters); err != nil {
@@ -100,6 +100,8 @@ func (client *OperationsClient) checkNameAvailabilityHandleResponse(resp *http.R
 }
 
 // NewListPager - List the operations for the provider
+//
+// Generated from API version 2025-08-01-preview
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
@@ -135,8 +137,8 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -152,6 +154,8 @@ func (client *OperationsClient) listHandleResponse(resp *http.Response) (Operati
 
 // RegionalCheckNameAvailability - Checks whether the configuration store name is available for use.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - location - The location name.
 //   - checkNameAvailabilityParameters - The request body
 //   - options - OperationsClientRegionalCheckNameAvailabilityOptions contains the optional parameters for the OperationsClient.RegionalCheckNameAvailability
@@ -194,8 +198,8 @@ func (client *OperationsClient) regionalCheckNameAvailabilityCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityParameters); err != nil {

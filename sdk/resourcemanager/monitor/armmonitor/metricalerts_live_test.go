@@ -86,7 +86,7 @@ func (testsuite *MetricalertsTestSuite) Prepare() {
 			map[string]interface{}{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2024-07-01",
+				"apiVersion": "2021-05-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]interface{}{
 					"addressSpace": map[string]interface{}{
@@ -98,8 +98,7 @@ func (testsuite *MetricalertsTestSuite) Prepare() {
 						map[string]interface{}{
 							"name": "vmsssubnet",
 							"properties": map[string]interface{}{
-								"addressPrefix":         "10.0.0.0/24",
-								"defaultOutboundAccess": false,
+								"addressPrefix": "10.0.0.0/24",
 							},
 						},
 					},
@@ -216,7 +215,7 @@ func (testsuite *MetricalertsTestSuite) Prepare() {
 						},
 					},
 					"hardwareProfile": map[string]interface{}{
-						"vmSize": "Standard_D2s_v3",
+						"vmSize": "Standard_DS1_v2",
 					},
 					"networkProfile": map[string]interface{}{
 						"networkInterfaces": []interface{}{
@@ -265,6 +264,9 @@ func (testsuite *MetricalertsTestSuite) Prepare() {
 							"osType": "Windows",
 						},
 					},
+				},
+				"zones": []interface{}{
+					"1",
 				},
 			},
 		},

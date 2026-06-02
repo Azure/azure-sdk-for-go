@@ -42,7 +42,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // ListByStorageAccount - Gets the private link resources that need to be created for a storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -90,7 +90,7 @@ func (client *PrivateLinkResourcesClient) listByStorageAccountCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

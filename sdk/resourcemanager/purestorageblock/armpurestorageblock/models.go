@@ -303,30 +303,6 @@ type AzureVmwareService struct {
 	ClusterResourceID *string
 }
 
-// AzureVolumeProperties - Properties of an Azure volume
-type AzureVolumeProperties struct {
-	// Currently provisioned size of the volume, in bytes
-	ProvisionedSize *int64
-
-	// Azure Resource ID of the source volume group to clone from.
-	SourceVolumeGroupResourceID *string
-
-	// Azure resource ID of the source volume for cloning
-	SourceVolumeResourceID *string
-
-	// READ-ONLY; Volume creation date, as an RFC 3339 timestamp
-	CreatedAt *time.Time
-
-	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Serial number of the volume
-	SerialNumber *string
-
-	// READ-ONLY; Storage space usage for the volume
-	Space *Space
-}
-
 // BandwidthUsage - Bandwidth usage metrics
 type BandwidthUsage struct {
 	// REQUIRED; Number of bytes written and read per second (maximum value over the last 10 minutes)
@@ -372,12 +348,6 @@ type CompanyDetails struct {
 	Address *Address
 }
 
-// ConnectionParametersResponse - Connection parameters response
-type ConnectionParametersResponse struct {
-	// REQUIRED; ISCSI connection parameters
-	Iscsi *IscsiConnectionParameters
-}
-
 // HealthDetails - Health metrics for a storage pool
 type HealthDetails struct {
 	// REQUIRED; Bandwidth usage metrics
@@ -410,24 +380,6 @@ type IopsUsage struct {
 
 	// REQUIRED; IOPS value currently provisioned for the storage pool
 	Provisioned *int64
-}
-
-// IscsiConnectionParameters - ISCSI connection parameters
-type IscsiConnectionParameters struct {
-	// REQUIRED; List of ISCSI endpoints for connection
-	Endpoints []*IscsiEndpoint
-}
-
-// IscsiEndpoint - ISCSI connection endpoint details
-type IscsiEndpoint struct {
-	// REQUIRED; IP address of the endpoint
-	IP *string
-
-	// REQUIRED; IQN (iSCSI Qualified Name) of the endpoint
-	Iqn *string
-
-	// REQUIRED; Port number of the endpoint
-	Port *int32
 }
 
 // LimitDetails - Limits constraining certain resource properties
@@ -545,15 +497,6 @@ type OperationListResult struct {
 	NextLink *string
 }
 
-// PerformanceParameters - Performance parameters for volume group
-type PerformanceParameters struct {
-	// Bandwidth limit in MB per second
-	BandwidthLimitMbPerSec *int64
-
-	// IOPS limit
-	IopsLimit *int64
-}
-
 // PerformancePolicyLimits - internal
 type PerformancePolicyLimits struct {
 	// REQUIRED; internal
@@ -561,15 +504,6 @@ type PerformancePolicyLimits struct {
 
 	// REQUIRED; internal
 	IopsLimit *RangeLimits
-}
-
-// ProtectionParameters - Protection parameters for volume group
-type ProtectionParameters struct {
-	// Snapshot frequency in ISO 8601 duration format
-	Frequency *string
-
-	// Retention period for snapshots in ISO 8601 duration format
-	Retention *string
 }
 
 // ProtectionPolicyLimits - internal
@@ -943,118 +877,10 @@ type VnetInjection struct {
 	VnetID *string
 }
 
-// Volume - Azure Volume resource
-type Volume struct {
-	// The resource-specific properties for this resource.
-	Properties *AzureVolumeProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// VolumeGroup - Volume Group resource
-type VolumeGroup struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The resource-specific properties for this resource.
-	Properties *VolumeGroupProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// VolumeGroupListResult - The response of a VolumeGroup list operation.
-type VolumeGroupListResult struct {
-	// REQUIRED; The VolumeGroup items on this page
-	Value []*VolumeGroup
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// VolumeGroupProperties - Properties of a volume group
-type VolumeGroupProperties struct {
-	// Performance parameters for the volume group
-	PerformanceParameters *PerformanceParameters
-
-	// Protection parameters for the volume group
-	ProtectionParameters *ProtectionParameters
-
-	// Azure resource ID of the source volume group for cloning
-	SourceVolumeGroupResourceID *string
-
-	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Pure Storage's internal ID of the storage pool
-	StoragePoolInternalID *string
-
-	// READ-ONLY; Pure Storage's internal ID of the volume group
-	VolumeGroupInternalID *string
-}
-
-// VolumeGroupStatus - Volume group status information
-type VolumeGroupStatus struct {
-	// REQUIRED; Number of hosts currently connected to the volume group
-	ConnectedHostCount *int32
-
-	// REQUIRED; Storage space usage for the volume group
-	Space *Space
-}
-
-// VolumeGroupUpdate - The type used for update operations of the VolumeGroup.
-type VolumeGroupUpdate struct {
-	// The resource-specific properties for this resource.
-	Properties *VolumeGroupUpdateProperties
-
-	// Resource tags.
-	Tags map[string]*string
-}
-
-// VolumeGroupUpdateProperties - The updatable properties of the VolumeGroup.
-type VolumeGroupUpdateProperties struct {
-	// Performance parameters for the volume group
-	PerformanceParameters *PerformanceParameters
-
-	// Protection parameters for the volume group
-	ProtectionParameters *ProtectionParameters
-}
-
 // VolumeLimits - Limits used for volumes
 type VolumeLimits struct {
 	// REQUIRED; Provisioned size limits for a volume, in bytes
 	ProvisionedSize *RangeLimits
-}
-
-// VolumeListResult - The response of a Volume list operation.
-type VolumeListResult struct {
-	// REQUIRED; The Volume items on this page
-	Value []*Volume
-
-	// The link to the next page of items
-	NextLink *string
 }
 
 // VolumeProperties - Volume properties
@@ -1091,16 +917,4 @@ type VolumeProperties struct {
 
 	// READ-ONLY; Specify which control plane handles the lifecycle of the volume
 	VolumeType *VolumeType
-}
-
-// VolumeUpdate - The type used for update operations of the Volume.
-type VolumeUpdate struct {
-	// The resource-specific properties for this resource.
-	Properties *VolumeUpdateProperties
-}
-
-// VolumeUpdateProperties - The updatable properties of the Volume.
-type VolumeUpdateProperties struct {
-	// Currently provisioned size of the volume, in bytes
-	ProvisionedSize *int64
 }

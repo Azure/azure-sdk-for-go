@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ListPrivateLinkResources.json
+// Generated from example definition: 2026-01-15-preview/ListPrivateLinkResources.json
 func ExamplePrivateLinkResourcesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.PrivateLinkResourcesClientListResponse{
-	// 	PrivateLinkResourceListResult: armcognitiveservices.PrivateLinkResourceListResult{
+	// 	PrivateLinkResourceListResult: &armcognitiveservices.PrivateLinkResourceListResult{
 	// 		Value: []*armcognitiveservices.PrivateLinkResource{
 	// 			{
 	// 				Name: to.Ptr("blob"),

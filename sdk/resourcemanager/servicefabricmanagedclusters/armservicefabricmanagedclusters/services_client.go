@@ -18,8 +18,6 @@ import (
 
 // ServicesClient contains the methods for the Services group.
 // Don't use this type directly, use NewServicesClient() instead.
-//
-// Generated from API version 2026-05-01-preview
 type ServicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Create or update a Service Fabric managed service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -69,6 +69,8 @@ func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Create or update a Service Fabric managed service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResource, options *ServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginCreateOrUpdate"
@@ -118,8 +120,8 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -130,6 +132,8 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Delete a Service Fabric managed service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -154,6 +158,8 @@ func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Delete a Service Fabric managed service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, options *ServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginDelete"
@@ -203,14 +209,16 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a Service Fabric service resource created or in the process of being created in the Service Fabric managed application
 // resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -266,8 +274,8 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -283,6 +291,8 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 
 // NewListByApplicationsPager - Gets all service resources created or in the process of being created in the Service Fabric
 // managed application resource.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -335,8 +345,8 @@ func (client *ServicesClient) listByApplicationsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -352,6 +362,8 @@ func (client *ServicesClient) listByApplicationsHandleResponse(resp *http.Respon
 
 // BeginRestartReplica - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -378,6 +390,8 @@ func (client *ServicesClient) BeginRestartReplica(ctx context.Context, resourceG
 
 // RestartReplica - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *ServicesClient) restartReplica(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters RestartReplicaRequest, options *ServicesClientBeginRestartReplicaOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginRestartReplica"
@@ -427,8 +441,8 @@ func (client *ServicesClient) restartReplicaCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -438,6 +452,8 @@ func (client *ServicesClient) restartReplicaCreateRequest(ctx context.Context, r
 
 // Update - Updates the tags of a service resource of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -494,8 +510,8 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

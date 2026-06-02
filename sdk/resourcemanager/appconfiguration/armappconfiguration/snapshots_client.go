@@ -18,8 +18,6 @@ import (
 
 // SnapshotsClient contains the methods for the Snapshots group.
 // Don't use this type directly, use NewSnapshotsClient() instead.
-//
-// Generated from API version 2025-08-01-preview
 type SnapshotsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreate - Creates a snapshot. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios
 // involving App Configuration snapshots the data plane API should be used instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - snapshotName - The name of the snapshot.
@@ -69,6 +69,8 @@ func (client *SnapshotsClient) BeginCreate(ctx context.Context, resourceGroupNam
 // Create - Creates a snapshot. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios
 // involving App Configuration snapshots the data plane API should be used instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 func (client *SnapshotsClient) create(ctx context.Context, resourceGroupName string, configStoreName string, snapshotName string, body Snapshot, options *SnapshotsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SnapshotsClient.BeginCreate"
@@ -114,8 +116,8 @@ func (client *SnapshotsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -127,6 +129,8 @@ func (client *SnapshotsClient) createCreateRequest(ctx context.Context, resource
 // Get - Gets the properties of the specified snapshot. NOTE: This operation is intended for use in ARM Template deployments.
 // For all other scenarios involving App Configuration snapshots the data plane API should be used instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - snapshotName - The name of the snapshot.
@@ -177,8 +181,8 @@ func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

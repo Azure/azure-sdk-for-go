@@ -13,15 +13,10 @@ type FileAcquireOptions struct {
 	// placeholder for future options
 }
 
-func (o *FileAcquireOptions) format(proposedLeaseID *string, fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.FileClientAcquireLeaseOptions {
-	leaseDuration := int32(-1)
-	opts := &generated.FileClientAcquireLeaseOptions{
-		ProposedLeaseID:   proposedLeaseID,
-		FileRequestIntent: fileRequestIntent,
-		LeaseDuration:     &leaseDuration,
-		AllowTrailingDot:  allowTrailingDot,
+func (o *FileAcquireOptions) format(proposedLeaseID *string) *generated.FileClientAcquireLeaseOptions {
+	return &generated.FileClientAcquireLeaseOptions{
+		ProposedLeaseID: proposedLeaseID,
 	}
-	return opts
 }
 
 // FileBreakOptions contains the optional parameters for the FileClient.Break method.
@@ -30,19 +25,12 @@ type FileBreakOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *FileBreakOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.FileClientBreakLeaseOptions {
-	opts := &generated.FileClientBreakLeaseOptions{
-		FileRequestIntent: fileRequestIntent,
-		AllowTrailingDot:  allowTrailingDot,
-	}
+func (o *FileBreakOptions) format() (*generated.FileClientBreakLeaseOptions, *generated.LeaseAccessConditions) {
 	if o == nil {
-		return opts
+		return nil, nil
 	}
 
-	if o.AccessConditions != nil {
-		opts.LeaseID = o.AccessConditions.LeaseID
-	}
-	return opts
+	return nil, o.AccessConditions
 }
 
 // FileChangeOptions contains the optional parameters for the FileClient.Change method.
@@ -50,13 +38,10 @@ type FileChangeOptions struct {
 	// placeholder for future options
 }
 
-func (o *FileChangeOptions) format(proposedLeaseID *string, fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.FileClientChangeLeaseOptions {
-	opts := &generated.FileClientChangeLeaseOptions{
-		ProposedLeaseID:   proposedLeaseID,
-		FileRequestIntent: fileRequestIntent,
-		AllowTrailingDot:  allowTrailingDot,
+func (o *FileChangeOptions) format(proposedLeaseID *string) *generated.FileClientChangeLeaseOptions {
+	return &generated.FileClientChangeLeaseOptions{
+		ProposedLeaseID: proposedLeaseID,
 	}
-	return opts
 }
 
 // FileReleaseOptions contains the optional parameters for the FileClient.Release method.
@@ -64,12 +49,8 @@ type FileReleaseOptions struct {
 	// placeholder for future options
 }
 
-func (o *FileReleaseOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.FileClientReleaseLeaseOptions {
-	opts := &generated.FileClientReleaseLeaseOptions{
-		FileRequestIntent: fileRequestIntent,
-		AllowTrailingDot:  allowTrailingDot,
-	}
-	return opts
+func (o *FileReleaseOptions) format() *generated.FileClientReleaseLeaseOptions {
+	return nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -80,11 +61,9 @@ type ShareAcquireOptions struct {
 	ShareSnapshot *string
 }
 
-func (o *ShareAcquireOptions) format(proposedLeaseID *string, duration int32, fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientAcquireLeaseOptions {
+func (o *ShareAcquireOptions) format(proposedLeaseID *string) *generated.ShareClientAcquireLeaseOptions {
 	opts := &generated.ShareClientAcquireLeaseOptions{
-		ProposedLeaseID:   proposedLeaseID,
-		LeaseDuration:     &duration,
-		FileRequestIntent: fileRequestIntent,
+		ProposedLeaseID: proposedLeaseID,
 	}
 	if o != nil {
 		opts.Sharesnapshot = o.ShareSnapshot
@@ -107,18 +86,15 @@ type ShareBreakOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *ShareBreakOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientBreakLeaseOptions {
-	opts := &generated.ShareClientBreakLeaseOptions{
-		FileRequestIntent: fileRequestIntent,
+func (o *ShareBreakOptions) format() (*generated.ShareClientBreakLeaseOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
 	}
-	if o != nil {
-		opts.BreakPeriod = o.BreakPeriod
-		opts.Sharesnapshot = o.ShareSnapshot
-		if o.AccessConditions != nil {
-			opts.LeaseID = o.AccessConditions.LeaseID
-		}
-	}
-	return opts
+
+	return &generated.ShareClientBreakLeaseOptions{
+		BreakPeriod:   o.BreakPeriod,
+		Sharesnapshot: o.ShareSnapshot,
+	}, o.AccessConditions
 }
 
 // ShareChangeOptions contains the optional parameters for the ShareClient.Change method.
@@ -127,10 +103,9 @@ type ShareChangeOptions struct {
 	ShareSnapshot *string
 }
 
-func (o *ShareChangeOptions) format(proposedLeaseID *string, fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientChangeLeaseOptions {
+func (o *ShareChangeOptions) format(proposedLeaseID *string) *generated.ShareClientChangeLeaseOptions {
 	opts := &generated.ShareClientChangeLeaseOptions{
-		ProposedLeaseID:   proposedLeaseID,
-		FileRequestIntent: fileRequestIntent,
+		ProposedLeaseID: proposedLeaseID,
 	}
 	if o != nil {
 		opts.Sharesnapshot = o.ShareSnapshot
@@ -144,14 +119,13 @@ type ShareReleaseOptions struct {
 	ShareSnapshot *string
 }
 
-func (o *ShareReleaseOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientReleaseLeaseOptions {
-	opts := &generated.ShareClientReleaseLeaseOptions{
-		FileRequestIntent: fileRequestIntent,
+func (o *ShareReleaseOptions) format() *generated.ShareClientReleaseLeaseOptions {
+	if o == nil {
+		return nil
 	}
-	if o != nil {
-		opts.Sharesnapshot = o.ShareSnapshot
+	return &generated.ShareClientReleaseLeaseOptions{
+		Sharesnapshot: o.ShareSnapshot,
 	}
-	return opts
 }
 
 // ShareRenewOptions contains the optional parameters for the ShareClient.Renew method.
@@ -160,12 +134,11 @@ type ShareRenewOptions struct {
 	ShareSnapshot *string
 }
 
-func (o *ShareRenewOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientRenewLeaseOptions {
-	opts := &generated.ShareClientRenewLeaseOptions{
-		FileRequestIntent: fileRequestIntent,
+func (o *ShareRenewOptions) format() *generated.ShareClientRenewLeaseOptions {
+	if o == nil {
+		return nil
 	}
-	if o != nil {
-		opts.Sharesnapshot = o.ShareSnapshot
+	return &generated.ShareClientRenewLeaseOptions{
+		Sharesnapshot: o.ShareSnapshot,
 	}
-	return opts
 }

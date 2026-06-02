@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // SpotPlacementScoresServer is a fake server for instances of the armrecommender.SpotPlacementScoresClient type.
@@ -54,7 +53,9 @@ func (s *SpotPlacementScoresServerTransport) Do(req *http.Request) (*http.Respon
 }
 
 func (s *SpotPlacementScoresServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -72,7 +73,10 @@ func (s *SpotPlacementScoresServerTransport) dispatchToMethodFake(req *http.Requ
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -102,7 +106,7 @@ func (s *SpotPlacementScoresServerTransport) dispatchGet(req *http.Request) (*ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ComputeDiagnosticBase, req)
@@ -135,7 +139,7 @@ func (s *SpotPlacementScoresServerTransport) dispatchPost(req *http.Request) (*h
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SpotPlacementScoresResponse, req)

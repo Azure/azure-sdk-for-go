@@ -6,5 +6,5 @@ package armpurestorageblock
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purestorageblock/armpurestorageblock"
-	moduleVersion = "v1.1.0-beta.1"
+	moduleVersion = "v1.0.0"
 )

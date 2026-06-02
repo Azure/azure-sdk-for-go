@@ -18,8 +18,6 @@ import (
 
 // VMFamiliesClient - Location-scoped operations for VM family resources.
 // Don't use this type directly, use NewVMFamiliesClient() instead.
-//
-// Generated from API version 2026-06-01
 type VMFamiliesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewVMFamiliesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Get - Gets the properties of a VM family.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - vmFamilyName - The name of the VmFamily
 //   - options - VMFamiliesClientGetOptions contains the optional parameters for the VMFamiliesClient.Get method.
@@ -88,8 +88,8 @@ func (client *VMFamiliesClient) getCreateRequest(ctx context.Context, location s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,6 +104,8 @@ func (client *VMFamiliesClient) getHandleResponse(resp *http.Response) (VMFamili
 }
 
 // NewListBySubscriptionLocationResourcePager - Lists all VM families for the subscription at the specified location.
+//
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - options - VMFamiliesClientListBySubscriptionLocationResourceOptions contains the optional parameters for the VMFamiliesClient.NewListBySubscriptionLocationResourcePager
 //     method.
@@ -149,8 +151,8 @@ func (client *VMFamiliesClient) listBySubscriptionLocationResourceCreateRequest(
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -18,8 +18,6 @@ import (
 
 // GuestSubscriptionsClient - Location-scoped operations for guest subscriptions.
 // Don't use this type directly, use NewGuestSubscriptionsClient() instead.
-//
-// Generated from API version 2026-06-01
 type GuestSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewGuestSubscriptionsClient(subscriptionID string, credential azcore.TokenC
 
 // Create - Adds a subscription as a guest to consume the compute limits shared by the host subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - guestSubscriptionID - The name of the GuestSubscription
 //   - resource - Resource create parameters.
@@ -90,8 +90,8 @@ func (client *GuestSubscriptionsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -111,6 +111,8 @@ func (client *GuestSubscriptionsClient) createHandleResponse(resp *http.Response
 
 // Delete - Deletes a subscription as a guest to stop consuming the compute limits shared by the host subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - guestSubscriptionID - The name of the GuestSubscription
 //   - options - GuestSubscriptionsClientDeleteOptions contains the optional parameters for the GuestSubscriptionsClient.Delete
@@ -156,13 +158,15 @@ func (client *GuestSubscriptionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the properties of a guest subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - guestSubscriptionID - The name of the GuestSubscription
 //   - options - GuestSubscriptionsClientGetOptions contains the optional parameters for the GuestSubscriptionsClient.Get method.
@@ -208,8 +212,8 @@ func (client *GuestSubscriptionsClient) getCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -224,6 +228,8 @@ func (client *GuestSubscriptionsClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListBySubscriptionLocationResourcePager - Lists all guest subscriptions in a location.
+//
+// Generated from API version 2026-04-30
 //   - location - The name of the Azure region.
 //   - options - GuestSubscriptionsClientListBySubscriptionLocationResourceOptions contains the optional parameters for the GuestSubscriptionsClient.NewListBySubscriptionLocationResourcePager
 //     method.
@@ -266,8 +272,8 @@ func (client *GuestSubscriptionsClient) listBySubscriptionLocationResourceCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

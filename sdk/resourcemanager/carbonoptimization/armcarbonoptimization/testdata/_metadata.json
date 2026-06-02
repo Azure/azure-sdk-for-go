@@ -1,6 +1,4 @@
 {
-  "apiVersions": {
-    "Microsoft.Carbon": "2025-04-01"
-  },
-  "emitterVersion": "0.14.0"
+  "apiVersion": "2025-04-01",
+  "emitterVersion": "0.9.1"
 }

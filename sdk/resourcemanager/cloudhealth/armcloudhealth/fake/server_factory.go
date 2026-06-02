@@ -74,31 +74,31 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AuthenticationSettingsClient":
-		initServer(&s.trMu, &s.trAuthenticationSettingsServer, func() *AuthenticationSettingsServerTransport {
+		initServer(s, &s.trAuthenticationSettingsServer, func() *AuthenticationSettingsServerTransport {
 			return NewAuthenticationSettingsServerTransport(&s.srv.AuthenticationSettingsServer)
 		})
 		resp, err = s.trAuthenticationSettingsServer.Do(req)
 	case "DiscoveryRulesClient":
-		initServer(&s.trMu, &s.trDiscoveryRulesServer, func() *DiscoveryRulesServerTransport {
+		initServer(s, &s.trDiscoveryRulesServer, func() *DiscoveryRulesServerTransport {
 			return NewDiscoveryRulesServerTransport(&s.srv.DiscoveryRulesServer)
 		})
 		resp, err = s.trDiscoveryRulesServer.Do(req)
 	case "EntitiesClient":
-		initServer(&s.trMu, &s.trEntitiesServer, func() *EntitiesServerTransport { return NewEntitiesServerTransport(&s.srv.EntitiesServer) })
+		initServer(s, &s.trEntitiesServer, func() *EntitiesServerTransport { return NewEntitiesServerTransport(&s.srv.EntitiesServer) })
 		resp, err = s.trEntitiesServer.Do(req)
 	case "HealthModelsClient":
-		initServer(&s.trMu, &s.trHealthModelsServer, func() *HealthModelsServerTransport { return NewHealthModelsServerTransport(&s.srv.HealthModelsServer) })
+		initServer(s, &s.trHealthModelsServer, func() *HealthModelsServerTransport { return NewHealthModelsServerTransport(&s.srv.HealthModelsServer) })
 		resp, err = s.trHealthModelsServer.Do(req)
 	case "OperationsClient":
-		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "RelationshipsClient":
-		initServer(&s.trMu, &s.trRelationshipsServer, func() *RelationshipsServerTransport {
+		initServer(s, &s.trRelationshipsServer, func() *RelationshipsServerTransport {
 			return NewRelationshipsServerTransport(&s.srv.RelationshipsServer)
 		})
 		resp, err = s.trRelationshipsServer.Do(req)
 	case "SignalDefinitionsClient":
-		initServer(&s.trMu, &s.trSignalDefinitionsServer, func() *SignalDefinitionsServerTransport {
+		initServer(s, &s.trSignalDefinitionsServer, func() *SignalDefinitionsServerTransport {
 			return NewSignalDefinitionsServerTransport(&s.srv.SignalDefinitionsServer)
 		})
 		resp, err = s.trSignalDefinitionsServer.Do(req)
@@ -111,4 +111,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
+}
+
+func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
+	s.trMu.Lock()
+	if *dst == nil {
+		*dst = src()
+	}
+	s.trMu.Unlock()
 }

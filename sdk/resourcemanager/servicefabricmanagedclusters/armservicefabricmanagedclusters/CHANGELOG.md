@@ -1,38 +1,5 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-05-19)
-### Features Added
-
-- New enum type `FaultKind` with values `FaultKindZone`
-- New enum type `FaultSimulationStatus` with values `FaultSimulationStatusActive`, `FaultSimulationStatusDone`, `FaultSimulationStatusStartFailed`, `FaultSimulationStatusStarting`, `FaultSimulationStatusStopFailed`, `FaultSimulationStatusStopping`
-- New enum type `ScaleInPolicyMode` with values `ScaleInPolicyModeDefault`, `ScaleInPolicyModeNewestNodeFirst`, `ScaleInPolicyModeOldestNodeFirst`
-- New enum type `SfmcOperationStatus` with values `SfmcOperationStatusAborted`, `SfmcOperationStatusCanceled`, `SfmcOperationStatusCreated`, `SfmcOperationStatusFailed`, `SfmcOperationStatusStarted`, `SfmcOperationStatusSucceeded`
-- New function `*FaultSimulationContent.GetFaultSimulationContent() *FaultSimulationContent`
-- New function `*ManagedClustersClient.GetFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, options *ManagedClustersClientGetFaultSimulationOptions) (ManagedClustersClientGetFaultSimulationResponse, error)`
-- New function `*ManagedClustersClient.NewListFaultSimulationPager(resourceGroupName string, clusterName string, options *ManagedClustersClientListFaultSimulationOptions) *runtime.Pager[ManagedClustersClientListFaultSimulationResponse]`
-- New function `*ManagedClustersClient.BeginStartFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationContentWrapper, options *ManagedClustersClientBeginStartFaultSimulationOptions) (*runtime.Poller[ManagedClustersClientStartFaultSimulationResponse], error)`
-- New function `*ManagedClustersClient.BeginStopFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, options *ManagedClustersClientBeginStopFaultSimulationOptions) (*runtime.Poller[ManagedClustersClientStopFaultSimulationResponse], error)`
-- New function `*ZoneFaultSimulationContent.GetFaultSimulationContent() *FaultSimulationContent`
-- New function `*NodeTypesClient.GetFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationIDContent, options *NodeTypesClientGetFaultSimulationOptions) (NodeTypesClientGetFaultSimulationResponse, error)`
-- New function `*NodeTypesClient.NewListFaultSimulationPager(resourceGroupName string, clusterName string, nodeTypeName string, options *NodeTypesClientListFaultSimulationOptions) *runtime.Pager[NodeTypesClientListFaultSimulationResponse]`
-- New function `*NodeTypesClient.BeginStartFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationContentWrapper, options *NodeTypesClientBeginStartFaultSimulationOptions) (*runtime.Poller[NodeTypesClientStartFaultSimulationResponse], error)`
-- New function `*NodeTypesClient.BeginStopFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationIDContent, options *NodeTypesClientBeginStopFaultSimulationOptions) (*runtime.Poller[NodeTypesClientStopFaultSimulationResponse], error)`
-- New struct `ApplyMaintenanceWindowRequest`
-- New struct `FaultSimulation`
-- New struct `FaultSimulationConstraints`
-- New struct `FaultSimulationContentWrapper`
-- New struct `FaultSimulationDetails`
-- New struct `FaultSimulationIDContent`
-- New struct `FaultSimulationListResult`
-- New struct `HostEndpointSettings`
-- New struct `NodeTypeFaultSimulation`
-- New struct `ProxyAgentSettings`
-- New struct `ScaleInPolicy`
-- New struct `ZoneFaultSimulationContent`
-- New field `Body` in struct `ManagedApplyMaintenanceWindowClientPostOptions`
-- New field `ProxyAgentSettings`, `ScaleInPolicy` in struct `NodeTypeProperties`
-
-
 ## 1.0.0 (2026-02-24)
 ### Breaking Changes
 

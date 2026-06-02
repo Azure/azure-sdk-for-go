@@ -18,8 +18,6 @@ import (
 
 // ClusterVersionsClient contains the methods for the ClusterVersions group.
 // Don't use this type directly, use NewClusterVersionsClient() instead.
-//
-// Generated from API version 2026-03-01-preview
 type ClusterVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +43,8 @@ func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCred
 //
 // Gets information about an available Service Fabric cluster code version.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-01-preview
 //   - location - The name of the Azure region.
 //   - clusterVersion - The cluster code version.
 //   - options - ClusterVersionsClientGetOptions contains the optional parameters for the ClusterVersionsClient.Get method.
@@ -90,8 +90,8 @@ func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,6 +109,8 @@ func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response) (Clu
 //
 // Gets information about an available Service Fabric cluster code version by environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-01-preview
 //   - location - The name of the Azure region.
 //   - environment - The operating system of the cluster. The default means all.
 //   - clusterVersion - The cluster code version.
@@ -160,8 +162,8 @@ func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -179,6 +181,8 @@ func (client *ClusterVersionsClient) getByEnvironmentHandleResponse(resp *http.R
 //
 // Gets all available code versions for Service Fabric cluster resources by location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-01-preview
 //   - location - The location name.
 //   - options - ClusterVersionsClientListOptions contains the optional parameters for the ClusterVersionsClient.List method.
 func (client *ClusterVersionsClient) List(ctx context.Context, location string, options *ClusterVersionsClientListOptions) (ClusterVersionsClientListResponse, error) {
@@ -219,8 +223,8 @@ func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -238,6 +242,8 @@ func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response) (Cl
 //
 // Gets all available code versions for Service Fabric cluster resources by environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-01-preview
 //   - location - The location name.
 //   - environment - The operating system of the cluster. The default means all.
 //   - options - ClusterVersionsClientListByEnvironmentOptions contains the optional parameters for the ClusterVersionsClient.ListByEnvironment
@@ -284,8 +290,8 @@ func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -64,22 +64,6 @@ func (c *ClientFactory) NewBlobServicesClient() *BlobServicesClient {
 	}
 }
 
-// NewConnectorsClient creates a new instance of ConnectorsClient.
-func (c *ClientFactory) NewConnectorsClient() *ConnectorsClient {
-	return &ConnectorsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewDataSharesClient creates a new instance of DataSharesClient.
-func (c *ClientFactory) NewDataSharesClient() *DataSharesClient {
-	return &DataSharesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewDeletedAccountsClient creates a new instance of DeletedAccountsClient.
 func (c *ClientFactory) NewDeletedAccountsClient() *DeletedAccountsClient {
 	return &DeletedAccountsClient{

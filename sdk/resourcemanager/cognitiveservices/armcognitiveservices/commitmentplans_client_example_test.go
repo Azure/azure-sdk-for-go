@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutCommitmentPlan.json
+// Generated from example definition: 2026-01-15-preview/PutCommitmentPlan.json
 func ExampleCommitmentPlansClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleCommitmentPlansClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.CommitmentPlansClientCreateOrUpdateResponse{
-	// 	CommitmentPlan: armcognitiveservices.CommitmentPlan{
+	// 	CommitmentPlan: &armcognitiveservices.CommitmentPlan{
 	// 		Name: to.Ptr("commitmentPlanName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/commitmentPlans"),
 	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/commitmentPlans/commitmentPlanName"),
@@ -56,7 +56,7 @@ func ExampleCommitmentPlansClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/CreateSharedCommitmentPlanAssociation.json
+// Generated from example definition: 2026-01-15-preview/CreateSharedCommitmentPlanAssociation.json
 func ExampleCommitmentPlansClient_BeginCreateOrUpdateAssociation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,13 +77,13 @@ func ExampleCommitmentPlansClient_BeginCreateOrUpdateAssociation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.CommitmentPlansClientCreateOrUpdateAssociationResponse{
-	// 	CommitmentPlanAccountAssociation: armcognitiveservices.CommitmentPlanAccountAssociation{
+	// 	CommitmentPlanAccountAssociation: &armcognitiveservices.CommitmentPlanAccountAssociation{
 	// 		Name: to.Ptr("commitmentPlanAssociationName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/commitmentPlans/accountAssociations"),
 	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/commitmentPlans/commitmentPlanName/accountAssociations/commitmentPlanAssociationName"),
@@ -94,7 +94,7 @@ func ExampleCommitmentPlansClient_BeginCreateOrUpdateAssociation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/CreateSharedCommitmentPlan.json
+// Generated from example definition: 2026-01-15-preview/CreateSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginCreateOrUpdatePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,13 +125,13 @@ func ExampleCommitmentPlansClient_BeginCreateOrUpdatePlan() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.CommitmentPlansClientCreateOrUpdatePlanResponse{
-	// 	CommitmentPlan: armcognitiveservices.CommitmentPlan{
+	// 	CommitmentPlan: &armcognitiveservices.CommitmentPlan{
 	// 		Name: to.Ptr("commitmentPlanName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/commitmentPlans"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/commitmentPlans/commitmentPlanName"),
@@ -153,7 +153,7 @@ func ExampleCommitmentPlansClient_BeginCreateOrUpdatePlan() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteCommitmentPlan.json
+// Generated from example definition: 2026-01-15-preview/DeleteCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleCommitmentPlansClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -179,7 +179,7 @@ func ExampleCommitmentPlansClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteSharedCommitmentPlanAssociation.json
+// Generated from example definition: 2026-01-15-preview/DeleteSharedCommitmentPlanAssociation.json
 func ExampleCommitmentPlansClient_BeginDeleteAssociation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleCommitmentPlansClient_BeginDeleteAssociation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -205,7 +205,7 @@ func ExampleCommitmentPlansClient_BeginDeleteAssociation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteSharedCommitmentPlan.json
+// Generated from example definition: 2026-01-15-preview/DeleteSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginDeletePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleCommitmentPlansClient_BeginDeletePlan() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -231,7 +231,7 @@ func ExampleCommitmentPlansClient_BeginDeletePlan() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetCommitmentPlan.json
+// Generated from example definition: 2026-01-15-preview/GetCommitmentPlan.json
 func ExampleCommitmentPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +250,7 @@ func ExampleCommitmentPlansClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.CommitmentPlansClientGetResponse{
-	// 	CommitmentPlan: armcognitiveservices.CommitmentPlan{
+	// 	CommitmentPlan: &armcognitiveservices.CommitmentPlan{
 	// 		Name: to.Ptr("commitmentPlanName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/commitmentPlans"),
 	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/commitmentPlans/commitmentPlanName"),
@@ -266,7 +266,7 @@ func ExampleCommitmentPlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetSharedCommitmentPlanAssociation.json
+// Generated from example definition: 2026-01-15-preview/GetSharedCommitmentPlanAssociation.json
 func ExampleCommitmentPlansClient_GetAssociation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExampleCommitmentPlansClient_GetAssociation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.CommitmentPlansClientGetAssociationResponse{
-	// 	CommitmentPlanAccountAssociation: armcognitiveservices.CommitmentPlanAccountAssociation{
+	// 	CommitmentPlanAccountAssociation: &armcognitiveservices.CommitmentPlanAccountAssociation{
 	// 		Name: to.Ptr("commitmentPlanAssociationName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/commitmentPlans/accountAssociations"),
 	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/commitmentPlans/commitmentPlanName/accountAssociations/commitmentPlanAssociationName"),
@@ -296,7 +296,7 @@ func ExampleCommitmentPlansClient_GetAssociation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetSharedCommitmentPlan.json
+// Generated from example definition: 2026-01-15-preview/GetSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_GetPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +315,7 @@ func ExampleCommitmentPlansClient_GetPlan() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.CommitmentPlansClientGetPlanResponse{
-	// 	CommitmentPlan: armcognitiveservices.CommitmentPlan{
+	// 	CommitmentPlan: &armcognitiveservices.CommitmentPlan{
 	// 		Name: to.Ptr("commitmentPlanName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/commitmentPlans"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/commitmentPlans/commitmentPlanName"),
@@ -337,7 +337,7 @@ func ExampleCommitmentPlansClient_GetPlan() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListCommitmentPlans.json
+// Generated from example definition: 2026-01-15-preview/ListCommitmentPlans.json
 func ExampleCommitmentPlansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +381,7 @@ func ExampleCommitmentPlansClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListSharedCommitmentPlanAssociations.json
+// Generated from example definition: 2026-01-15-preview/ListSharedCommitmentPlanAssociations.json
 func ExampleCommitmentPlansClient_NewListAssociationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -420,7 +420,7 @@ func ExampleCommitmentPlansClient_NewListAssociationsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListSharedCommitmentPlansByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/ListSharedCommitmentPlansByResourceGroup.json
 func ExampleCommitmentPlansClient_NewListPlansByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,7 +470,7 @@ func ExampleCommitmentPlansClient_NewListPlansByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListSharedCommitmentPlansBySubscription.json
+// Generated from example definition: 2026-01-15-preview/ListSharedCommitmentPlansBySubscription.json
 func ExampleCommitmentPlansClient_NewListPlansBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -520,7 +520,7 @@ func ExampleCommitmentPlansClient_NewListPlansBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/UpdateSharedCommitmentPlan.json
+// Generated from example definition: 2026-01-15-preview/UpdateSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginUpdatePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -541,13 +541,13 @@ func ExampleCommitmentPlansClient_BeginUpdatePlan() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.CommitmentPlansClientUpdatePlanResponse{
-	// 	CommitmentPlan: armcognitiveservices.CommitmentPlan{
+	// 	CommitmentPlan: &armcognitiveservices.CommitmentPlan{
 	// 		Name: to.Ptr("commitmentPlanName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/commitmentPlans"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/commitmentPlans/commitmentPlanName"),

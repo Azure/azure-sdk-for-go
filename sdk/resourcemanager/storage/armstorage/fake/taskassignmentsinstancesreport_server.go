@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 	"strconv"
 )
 
@@ -55,7 +54,9 @@ func (t *TaskAssignmentsInstancesReportServerTransport) Do(req *http.Request) (*
 }
 
 func (t *TaskAssignmentsInstancesReportServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,7 +72,10 @@ func (t *TaskAssignmentsInstancesReportServerTransport) dispatchToMethodFake(req
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -103,7 +107,11 @@ func (t *TaskAssignmentsInstancesReportServerTransport) dispatchNewListPager(req
 		if err != nil {
 			return nil, err
 		}
-		maxpagesizeParam, err := parseOptional(qp.Get("$maxpagesize"), func(v string) (int32, error) {
+		maxpagesizeUnescaped, err := url.QueryUnescape(qp.Get("$maxpagesize"))
+		if err != nil {
+			return nil, err
+		}
+		maxpagesizeParam, err := parseOptional(maxpagesizeUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -113,7 +121,11 @@ func (t *TaskAssignmentsInstancesReportServerTransport) dispatchNewListPager(req
 		if err != nil {
 			return nil, err
 		}
-		filterParam := getOptional(qp.Get("$filter"))
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armstorage.TaskAssignmentsInstancesReportClientListOptions
 		if maxpagesizeParam != nil || filterParam != nil {
 			options = &armstorage.TaskAssignmentsInstancesReportClientListOptions{
@@ -132,7 +144,7 @@ func (t *TaskAssignmentsInstancesReportServerTransport) dispatchNewListPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		t.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

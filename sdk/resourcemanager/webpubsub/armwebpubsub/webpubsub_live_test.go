@@ -6,7 +6,6 @@ package armwebpubsub_test
 import (
 	"context"
 	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -274,7 +273,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2024-07-01",
+				"apiVersion": "2020-11-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -288,7 +287,6 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 							"name": "default",
 							"properties": map[string]any{
 								"addressPrefix":                     "10.0.0.0/24",
-								"defaultOutboundAccess":             false,
 								"delegations":                       []any{},
 								"privateEndpointNetworkPolicies":    "Disabled",
 								"privateLinkServiceNetworkPolicies": "Enabled",
@@ -362,13 +360,12 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
 				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2024-07-01",
+				"apiVersion": "2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
 					"addressPrefix":                     "10.0.0.0/24",
-					"defaultOutboundAccess":             false,
 					"delegations":                       []any{},
 					"privateEndpointNetworkPolicies":    "Disabled",
 					"privateLinkServiceNetworkPolicies": "Enabled",
@@ -429,69 +426,67 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 
 // Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}
 func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
-	var storageAccountID string
+	var webAppId string
 	var err error
-	// From step Create_StorageAccount
+	// From step Create_WebApp
 	template := map[string]any{
 		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 		"contentVersion": "1.0.0.0",
 		"outputs": map[string]any{
-			"storageAccountId": map[string]any{
+			"webAppId": map[string]any{
 				"type":  "string",
-				"value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+				"value": "[resourceId('Microsoft.Web/sites', parameters('sitesName'))]",
 			},
 		},
 		"parameters": map[string]any{
-			"storageAccountName": map[string]any{
+			"serverfarmsName": map[string]any{
 				"type":         "string",
-				"defaultValue": strings.ToLower(testsuite.resourceName + "sa"),
+				"defaultValue": testsuite.serverfarmsName,
 			},
-			"location": map[string]any{
+			"sitesName": map[string]any{
 				"type":         "string",
-				"defaultValue": testsuite.location,
+				"defaultValue": testsuite.sitesName,
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('storageAccountName')]",
-				"type":       "Microsoft.Storage/storageAccounts",
+				"name":       "[parameters('serverfarmsName')]",
+				"type":       "Microsoft.Web/serverfarms",
 				"apiVersion": "2022-09-01",
-				"kind":       "StorageV2",
-				"location":   "[parameters('location')]",
+				"kind":       "linux",
+				"location":   "East US",
 				"properties": map[string]any{
-					"accessTier":                   "Hot",
-					"allowBlobPublicAccess":        true,
-					"allowCrossTenantReplication":  true,
-					"allowSharedKeyAccess":         true,
-					"defaultToOAuthAuthentication": false,
-					"dnsEndpointType":              "Standard",
-					"encryption": map[string]any{
-						"keySource":                       "Microsoft.Storage",
-						"requireInfrastructureEncryption": false,
-						"services": map[string]any{
-							"blob": map[string]any{
-								"enabled": true,
-								"keyType": "Account",
-							},
-							"file": map[string]any{
-								"enabled": true,
-								"keyType": "Account",
-							},
-						},
-					},
-					"minimumTlsVersion": "TLS1_2",
-					"networkAcls": map[string]any{
-						"bypass":              "AzureServices",
-						"defaultAction":       "Allow",
-						"ipRules":             []any{},
-						"virtualNetworkRules": []any{},
-					},
-					"publicNetworkAccess":      "Enabled",
-					"supportsHttpsTrafficOnly": true,
+					"elasticScaleEnabled":       false,
+					"hyperV":                    false,
+					"isSpot":                    false,
+					"isXenon":                   false,
+					"maximumElasticWorkerCount": float64(1),
+					"perSiteScaling":            false,
+					"reserved":                  true,
+					"targetWorkerCount":         float64(0),
+					"targetWorkerSizeId":        float64(0),
+					"zoneRedundant":             false,
 				},
 				"sku": map[string]any{
-					"name": "Standard_RAGRS",
-					"tier": "Standard",
+					"name":     "P1v3",
+					"capacity": float64(1),
+					"family":   "Pv3",
+					"size":     "P1v3",
+					"tier":     "PremiumV3",
+				},
+			},
+			map[string]any{
+				"name":       "[parameters('sitesName')]",
+				"type":       "Microsoft.Web/sites",
+				"apiVersion": "2022-09-01",
+				"dependsOn": []any{
+					"[resourceId('Microsoft.Web/serverfarms', parameters('serverfarmsName'))]",
+				},
+				"kind":     "app",
+				"location": "East US",
+				"properties": map[string]any{
+					"enabled":      true,
+					"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarmsName'))]",
 				},
 			},
 		},
@@ -503,9 +498,9 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
 			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
-	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_StorageAccount", &deployment)
+	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_WebApp", &deployment)
 	testsuite.Require().NoError(err)
-	storageAccountID = deploymentExtend.Properties.Outputs.(map[string]interface{})["storageAccountId"].(map[string]interface{})["value"].(string)
+	webAppId = deploymentExtend.Properties.Outputs.(map[string]interface{})["webAppId"].(map[string]interface{})["value"].(string)
 
 	// From step WebPubSubSharedPrivateLinkResources_CreateOrUpdate
 	fmt.Println("Call operation: WebPubSubSharedPrivateLinkResources_CreateOrUpdate")
@@ -513,8 +508,8 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
 	testsuite.Require().NoError(err)
 	sharedPrivateLinkResourcesClientCreateOrUpdateResponsePoller, err := sharedPrivateLinkResourcesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.sharedPrivateLinkResourceName, testsuite.resourceGroupName, testsuite.resourceName, armwebpubsub.SharedPrivateLinkResource{
 		Properties: &armwebpubsub.SharedPrivateLinkResourceProperties{
-			GroupID:               to.Ptr("table"),
-			PrivateLinkResourceID: to.Ptr(storageAccountID),
+			GroupID:               to.Ptr("sites"),
+			PrivateLinkResourceID: to.Ptr(webAppId),
 			RequestMessage:        to.Ptr("Please approve"),
 		},
 	}, nil)

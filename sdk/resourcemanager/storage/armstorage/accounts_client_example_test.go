@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-08-01/StorageAccountAbortHierarchicalNamespaceMigration.json
+// Generated from example definition: 2025-06-01/StorageAccountAbortHierarchicalNamespaceMigration.json
 func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -39,7 +39,7 @@ func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCheckNameAvailability.json
+// Generated from example definition: 2025-06-01/StorageAccountCheckNameAvailability.json
 func ExampleAccountsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,13 +61,13 @@ func ExampleAccountsClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: armstorage.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: &armstorage.CheckNameAvailabilityResult{
 	// 		NameAvailable: to.Ptr(true),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01/NfsV3AccountCreate.json
+// Generated from example definition: 2025-06-01/NfsV3AccountCreate.json
 func ExampleAccountsClient_BeginCreate_nfsV3AccountCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,13 +106,13 @@ func ExampleAccountsClient_BeginCreate_nfsV3AccountCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/sto4445"),
@@ -143,14 +143,14 @@ func ExampleAccountsClient_BeginCreate_nfsV3AccountCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreate.json
+// Generated from example definition: 2025-06-01/StorageAccountCreate.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("a3f7c2b9-4e1d-4c8a-9d6f-8b2a5e41c7f3", cred, nil)
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -197,20 +197,6 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
 				IsBlobEnabled: to.Ptr(true),
 			},
-			AllowSharedKeyAccessForServices: &armstorage.AccountSharedKeyAccessProperties{
-				Blob: &armstorage.ServiceSharedKeyAccessProperties{
-					Enabled: to.Ptr(true),
-				},
-				File: &armstorage.ServiceSharedKeyAccessProperties{
-					Enabled: to.Ptr(false),
-				},
-				Queue: &armstorage.ServiceSharedKeyAccessProperties{
-					Enabled: to.Ptr(true),
-				},
-				Table: &armstorage.ServiceSharedKeyAccessProperties{
-					Enabled: to.Ptr(false),
-				},
-			},
 		},
 		SKU: &armstorage.SKU{
 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
@@ -225,13 +211,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ExtendedLocation: &armstorage.ExtendedLocation{
@@ -311,20 +297,6 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	// 			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
 	// 				IsBlobEnabled: to.Ptr(true),
 	// 			},
-	// 			AllowSharedKeyAccessForServices: &armstorage.AccountSharedKeyAccessProperties{
-	// 				Blob: &armstorage.ServiceSharedKeyAccessProperties{
-	// 					Enabled: to.Ptr(true),
-	// 				},
-	// 				File: &armstorage.ServiceSharedKeyAccessProperties{
-	// 					Enabled: to.Ptr(false),
-	// 				},
-	// 				Queue: &armstorage.ServiceSharedKeyAccessProperties{
-	// 					Enabled: to.Ptr(true),
-	// 				},
-	// 				Table: &armstorage.ServiceSharedKeyAccessProperties{
-	// 					Enabled: to.Ptr(false),
-	// 				},
-	// 			},
 	// 		},
 	// 		SKU: &armstorage.SKU{
 	// 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
@@ -338,7 +310,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateAllowedCopyScopeToAAD.json
+// Generated from example definition: 2025-06-01/StorageAccountCreateAllowedCopyScopeToAAD.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -398,13 +370,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ExtendedLocation: &armstorage.ExtendedLocation{
@@ -494,7 +466,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
+// Generated from example definition: 2025-06-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPrivateLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,13 +526,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPri
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ExtendedLocation: &armstorage.ExtendedLocation{
@@ -650,7 +622,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPri
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateDisallowPublicNetworkAccess.json
+// Generated from example definition: 2025-06-01/StorageAccountCreateDisallowPublicNetworkAccess.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,13 +686,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetwork
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ExtendedLocation: &armstorage.ExtendedLocation{
@@ -810,7 +782,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetwork
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
+// Generated from example definition: 2025-06-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzureDnsZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -876,13 +848,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzur
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ExtendedLocation: &armstorage.ExtendedLocation{
@@ -973,7 +945,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzur
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateDnsEndpointTypeToStandard.json
+// Generated from example definition: 2025-06-01/StorageAccountCreateDnsEndpointTypeToStandard.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStandard() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1039,13 +1011,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStan
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ExtendedLocation: &armstorage.ExtendedLocation{
@@ -1136,7 +1108,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStan
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateEnablePublicNetworkAccess.json
+// Generated from example definition: 2025-06-01/StorageAccountCreateEnablePublicNetworkAccess.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1200,13 +1172,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAc
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ExtendedLocation: &armstorage.ExtendedLocation{
@@ -1296,7 +1268,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAc
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreatePremiumBlockBlobStorage.json
+// Generated from example definition: 2025-06-01/StorageAccountCreatePremiumBlockBlobStorage.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1341,13 +1313,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStora
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/sto4445"),
@@ -1397,7 +1369,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStora
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
+// Generated from example definition: 2025-06-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptionIdentityWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1449,13 +1421,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptio
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/sto4445"),
@@ -1531,7 +1503,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptio
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
+// Generated from example definition: 2025-06-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1584,13 +1556,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityW
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/sto4445"),
@@ -1667,75 +1639,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityW
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateWithDataCollaborationPolicy.json
-func ExampleAccountsClient_BeginCreate_storageAccountCreateWithDataCollaborationPolicy() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccountsClient().BeginCreate(ctx, "res9101", "sto4445", armstorage.AccountCreateParameters{
-		Kind:     to.Ptr(armstorage.KindStorage),
-		Location: to.Ptr("eastus"),
-		Properties: &armstorage.AccountPropertiesCreateParameters{
-			DataCollaborationPolicyProperties: &armstorage.DataCollaborationPolicyProperties{
-				AllowStorageConnectors:      to.Ptr(true),
-				AllowStorageDataShares:      to.Ptr(true),
-				AllowCrossTenantDataSharing: to.Ptr(false),
-			},
-		},
-		SKU: &armstorage.SKU{
-			Name: to.Ptr(armstorage.SKUNameStandardGRS),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
-	// 		Name: to.Ptr("sto4445"),
-	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/sto4445"),
-	// 		Kind: to.Ptr(armstorage.KindStorage),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armstorage.AccountProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
-	// 			PrimaryEndpoints: &armstorage.Endpoints{
-	// 				Blob: to.Ptr("https://sto4445.blob.core.windows.net/"),
-	// 				Dfs: to.Ptr("https://sto4445.dfs.core.windows.net/"),
-	// 				File: to.Ptr("https://sto4445.file.core.windows.net/"),
-	// 				Queue: to.Ptr("https://sto4445.queue.core.windows.net/"),
-	// 				Table: to.Ptr("https://sto4445.table.core.windows.net/"),
-	// 				Web: to.Ptr("https://sto4445.web.core.windows.net/"),
-	// 			},
-	// 			PrimaryLocation: to.Ptr("eastus2euap"),
-	// 			ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
-	// 			DataCollaborationPolicyProperties: &armstorage.DataCollaborationPolicyProperties{
-	// 				AllowStorageConnectors: to.Ptr(true),
-	// 				AllowStorageDataShares: to.Ptr(true),
-	// 				AllowCrossTenantDataSharing: to.Ptr(false),
-	// 			},
-	// 		},
-	// 		SKU: &armstorage.SKU{
-	// 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
-	// 			Tier: to.Ptr(armstorage.SKUTierStandard),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01/StorageAccountCreateWithImmutabilityPolicy.json
+// Generated from example definition: 2025-06-01/StorageAccountCreateWithImmutabilityPolicy.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateWithImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1772,13 +1676,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithImmutabilityPolic
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ExtendedLocation: &armstorage.ExtendedLocation{
@@ -1817,175 +1721,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithImmutabilityPolic
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateWithSmartAccessTier.json
-func ExampleAccountsClient_BeginCreate_storageAccountCreateWithSmartAccessTier() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccountsClient().BeginCreate(ctx, "res9101", "sto4445", armstorage.AccountCreateParameters{
-		ExtendedLocation: &armstorage.ExtendedLocation{
-			Name: to.Ptr("losangeles001"),
-			Type: to.Ptr(armstorage.ExtendedLocationTypesEdgeZone),
-		},
-		Kind:     to.Ptr(armstorage.KindStorage),
-		Location: to.Ptr("eastus"),
-		Properties: &armstorage.AccountPropertiesCreateParameters{
-			AccessTier:                   to.Ptr(armstorage.AccessTierSmart),
-			AllowBlobPublicAccess:        to.Ptr(false),
-			AllowSharedKeyAccess:         to.Ptr(true),
-			DefaultToOAuthAuthentication: to.Ptr(false),
-			Encryption: &armstorage.Encryption{
-				KeySource:                       to.Ptr(armstorage.KeySourceMicrosoftStorage),
-				RequireInfrastructureEncryption: to.Ptr(false),
-				Services: &armstorage.EncryptionServices{
-					Blob: &armstorage.EncryptionService{
-						Enabled: to.Ptr(true),
-						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-					},
-					File: &armstorage.EncryptionService{
-						Enabled: to.Ptr(true),
-						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-					},
-				},
-			},
-			IsHnsEnabled:  to.Ptr(true),
-			IsSftpEnabled: to.Ptr(true),
-			KeyPolicy: &armstorage.KeyPolicy{
-				KeyExpirationPeriodInDays: to.Ptr[int32](20),
-			},
-			MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
-			RoutingPreference: &armstorage.RoutingPreference{
-				PublishInternetEndpoints:  to.Ptr(true),
-				PublishMicrosoftEndpoints: to.Ptr(true),
-				RoutingChoice:             to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
-			},
-			SasPolicy: &armstorage.SasPolicy{
-				ExpirationAction:    to.Ptr(armstorage.ExpirationActionLog),
-				SasExpirationPeriod: to.Ptr("1.15:59:59"),
-			},
-			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
-				IsBlobEnabled: to.Ptr(true),
-			},
-		},
-		SKU: &armstorage.SKU{
-			Name: to.Ptr(armstorage.SKUNameStandardGRS),
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
-			"key2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
-	// 		Name: to.Ptr("sto4445"),
-	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-	// 		ExtendedLocation: &armstorage.ExtendedLocation{
-	// 			Name: to.Ptr("losangeles001"),
-	// 			Type: to.Ptr(armstorage.ExtendedLocationTypesEdgeZone),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/sto4445"),
-	// 		Kind: to.Ptr(armstorage.KindStorage),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armstorage.AccountProperties{
-	// 			AllowBlobPublicAccess: to.Ptr(false),
-	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.4863236Z"); return t}()),
-	// 			Encryption: &armstorage.Encryption{
-	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
-	// 				RequireInfrastructureEncryption: to.Ptr(false),
-	// 				Services: &armstorage.EncryptionServices{
-	// 					Blob: &armstorage.EncryptionService{
-	// 						Enabled: to.Ptr(true),
-	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
-	// 					},
-	// 					File: &armstorage.EncryptionService{
-	// 						Enabled: to.Ptr(true),
-	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
-	// 					},
-	// 				},
-	// 			},
-	// 			IsHnsEnabled: to.Ptr(true),
-	// 			IsSftpEnabled: to.Ptr(true),
-	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 			},
-	// 			KeyPolicy: &armstorage.KeyPolicy{
-	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
-	// 			},
-	// 			MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
-	// 			PrimaryEndpoints: &armstorage.Endpoints{
-	// 				Blob: to.Ptr("https://sto4445.blob.core.windows.net/"),
-	// 				Dfs: to.Ptr("https://sto4445.dfs.core.windows.net/"),
-	// 				File: to.Ptr("https://sto4445.file.core.windows.net/"),
-	// 				InternetEndpoints: &armstorage.AccountInternetEndpoints{
-	// 					Blob: to.Ptr("https://sto4445-internetrouting.blob.core.windows.net/"),
-	// 					Dfs: to.Ptr("https://sto4445-internetrouting.dfs.core.windows.net/"),
-	// 					File: to.Ptr("https://sto4445-internetrouting.file.core.windows.net/"),
-	// 					Web: to.Ptr("https://sto4445-internetrouting.web.core.windows.net/"),
-	// 				},
-	// 				MicrosoftEndpoints: &armstorage.AccountMicrosoftEndpoints{
-	// 					Blob: to.Ptr("https://sto4445-microsoftrouting.blob.core.windows.net/"),
-	// 					Dfs: to.Ptr("https://sto4445-microsoftrouting.dfs.core.windows.net/"),
-	// 					File: to.Ptr("https://sto4445-microsoftrouting.file.core.windows.net/"),
-	// 					Queue: to.Ptr("https://sto4445-microsoftrouting.queue.core.windows.net/"),
-	// 					Table: to.Ptr("https://sto4445-microsoftrouting.table.core.windows.net/"),
-	// 					Web: to.Ptr("https://sto4445-microsoftrouting.web.core.windows.net/"),
-	// 				},
-	// 				Queue: to.Ptr("https://sto4445.queue.core.windows.net/"),
-	// 				Table: to.Ptr("https://sto4445.table.core.windows.net/"),
-	// 				Web: to.Ptr("https://sto4445.web.core.windows.net/"),
-	// 			},
-	// 			PrimaryLocation: to.Ptr("eastus2euap"),
-	// 			ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
-	// 			RoutingPreference: &armstorage.RoutingPreference{
-	// 				PublishInternetEndpoints: to.Ptr(true),
-	// 				PublishMicrosoftEndpoints: to.Ptr(true),
-	// 				RoutingChoice: to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
-	// 			},
-	// 			SasPolicy: &armstorage.SasPolicy{
-	// 				ExpirationAction: to.Ptr(armstorage.ExpirationActionLog),
-	// 				SasExpirationPeriod: to.Ptr("1.15:59:59"),
-	// 			},
-	// 			SecondaryLocation: to.Ptr("centraluseuap"),
-	// 			StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
-	// 			StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
-	// 			EnableHTTPSTrafficOnly: to.Ptr(true),
-	// 			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
-	// 				IsBlobEnabled: to.Ptr(true),
-	// 			},
-	// 		},
-	// 		SKU: &armstorage.SKU{
-	// 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
-	// 			Tier: to.Ptr(armstorage.SKUTierStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01/StorageAccountCreate_placement.json
+// Generated from example definition: 2025-06-01/StorageAccountCreate_placement.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreatePlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2053,13 +1789,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePlacement() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ExtendedLocation: &armstorage.ExtendedLocation{
@@ -2155,7 +1891,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePlacement() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreate_zones.json
+// Generated from example definition: 2025-06-01/StorageAccountCreate_zones.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2223,13 +1959,13 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateZones() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientCreateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ExtendedLocation: &armstorage.ExtendedLocation{
@@ -2322,7 +2058,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateZones() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountPostMigration.json
+// Generated from example definition: 2025-06-01/StorageAccountPostMigration.json
 func ExampleAccountsClient_BeginCustomerInitiatedMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2343,7 +2079,7 @@ func ExampleAccountsClient_BeginCustomerInitiatedMigration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2352,7 +2088,7 @@ func ExampleAccountsClient_BeginCustomerInitiatedMigration() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountDelete.json
+// Generated from example definition: 2025-06-01/StorageAccountDelete.json
 func ExampleAccountsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2374,7 +2110,7 @@ func ExampleAccountsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountFailover.json
+// Generated from example definition: 2025-06-01/StorageAccountFailover.json
 func ExampleAccountsClient_BeginFailover_storageAccountFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2391,7 +2127,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailover() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2400,7 +2136,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountFailoverPlanned.json
+// Generated from example definition: 2025-06-01/StorageAccountFailoverPlanned.json
 func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2418,7 +2154,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -2427,7 +2163,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetMigrationFailed.json
+// Generated from example definition: 2025-06-01/StorageAccountGetMigrationFailed.json
 func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrationFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2446,7 +2182,7 @@ func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientGetCustomerInitiatedMigrationResponse{
-	// 	AccountMigration: armstorage.AccountMigration{
+	// 	AccountMigration: &armstorage.AccountMigration{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/accountMigrations"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/accountMigrations/default"),
@@ -2460,7 +2196,7 @@ func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrat
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetMigrationInProgress.json
+// Generated from example definition: 2025-06-01/StorageAccountGetMigrationInProgress.json
 func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrationInProgress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2479,7 +2215,7 @@ func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientGetCustomerInitiatedMigrationResponse{
-	// 	AccountMigration: armstorage.AccountMigration{
+	// 	AccountMigration: &armstorage.AccountMigration{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/accountMigrations"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/accountMigrations/default"),
@@ -2491,7 +2227,7 @@ func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrat
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetAsyncSkuConversionStatus.json
+// Generated from example definition: 2025-06-01/StorageAccountGetAsyncSkuConversionStatus.json
 func ExampleAccountsClient_GetProperties_storageAccountGetAsyncSkuConversionStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2510,7 +2246,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetAsyncSkuConversionStat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientGetPropertiesResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -2534,7 +2270,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetAsyncSkuConversionStat
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetProperties.json
+// Generated from example definition: 2025-06-01/StorageAccountGetProperties.json
 func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2553,7 +2289,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientGetPropertiesResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -2651,7 +2387,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetPropertiesCMKEnabled.json
+// Generated from example definition: 2025-06-01/StorageAccountGetPropertiesCMKEnabled.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2670,7 +2406,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientGetPropertiesResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -2767,7 +2503,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled()
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetPropertiesCMKVersionExpirationTime.json
+// Generated from example definition: 2025-06-01/StorageAccountGetPropertiesCMKVersionExpirationTime.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkVersionExpirationTime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2786,7 +2522,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkVersionEx
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientGetPropertiesResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -2884,7 +2620,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkVersionEx
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
+// Generated from example definition: 2025-06-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicationStatscanFailoverFalse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2904,7 +2640,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientGetPropertiesResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -3002,7 +2738,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
+// Generated from example definition: 2025-06-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicationStatscanFailoverTrue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3022,7 +2758,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientGetPropertiesResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -3120,7 +2856,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountHierarchicalNamespaceMigration.json
+// Generated from example definition: 2025-06-01/StorageAccountHierarchicalNamespaceMigration.json
 func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3137,7 +2873,7 @@ func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -3146,7 +2882,7 @@ func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountList.json
+// Generated from example definition: 2025-06-01/StorageAccountList.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3477,7 +3213,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountListAccountSAS.json
+// Generated from example definition: 2025-06-01/StorageAccountListAccountSAS.json
 func ExampleAccountsClient_ListAccountSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3504,13 +3240,13 @@ func ExampleAccountsClient_ListAccountSAS() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientListAccountSASResponse{
-	// 	ListAccountSasResponse: armstorage.ListAccountSasResponse{
+	// 	ListAccountSasResponse: &armstorage.ListAccountSasResponse{
 	// 		AccountSasToken: to.Ptr("sv=2015-04-05&ss=b&srt=s&sp=r&st=2017-05-24T10%3A42%3A03Z&se=2017-05-24T11%3A42%3A03Z&spr=https,http&sig=Z0I%2BEpM%2BPPlTC8ApfUf%2BcffO2aahMgZim3U0iArqsS0%3D"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountListByResourceGroup.json
+// Generated from example definition: 2025-06-01/StorageAccountListByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3604,7 +3340,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountListKeys.json
+// Generated from example definition: 2025-06-01/StorageAccountListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3623,7 +3359,7 @@ func ExampleAccountsClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientListKeysResponse{
-	// 	AccountListKeysResult: armstorage.AccountListKeysResult{
+	// 	AccountListKeysResult: &armstorage.AccountListKeysResult{
 	// 		Keys: []*armstorage.AccountKey{
 	// 			{
 	// 				KeyName: to.Ptr("key1"),
@@ -3640,7 +3376,7 @@ func ExampleAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountListServiceSAS.json
+// Generated from example definition: 2025-06-01/StorageAccountListServiceSAS.json
 func ExampleAccountsClient_ListServiceSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3664,13 +3400,13 @@ func ExampleAccountsClient_ListServiceSAS() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientListServiceSASResponse{
-	// 	ListServiceSasResponse: armstorage.ListServiceSasResponse{
+	// 	ListServiceSasResponse: &armstorage.ListServiceSasResponse{
 	// 		ServiceSasToken: to.Ptr("sv=2015-04-05&sr=c&se=2017-05-24T11%3A32%3A48Z&sp=l&sig=PoF8yBUGixsjzwroLmw7vG3VbGz4KB2woZC2D4C2oio%3D"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountRegenerateKerbKey.json
+// Generated from example definition: 2025-06-01/StorageAccountRegenerateKerbKey.json
 func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKerbKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3691,7 +3427,7 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKerbKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientRegenerateKeyResponse{
-	// 	AccountListKeysResult: armstorage.AccountListKeysResult{
+	// 	AccountListKeysResult: &armstorage.AccountListKeysResult{
 	// 		Keys: []*armstorage.AccountKey{
 	// 			{
 	// 				KeyName: to.Ptr("key1"),
@@ -3713,7 +3449,7 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKerbKey() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountRegenerateKey.json
+// Generated from example definition: 2025-06-01/StorageAccountRegenerateKey.json
 func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3734,7 +3470,7 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientRegenerateKeyResponse{
-	// 	AccountListKeysResult: armstorage.AccountListKeysResult{
+	// 	AccountListKeysResult: &armstorage.AccountListKeysResult{
 	// 		Keys: []*armstorage.AccountKey{
 	// 			{
 	// 				KeyName: to.Ptr("key1"),
@@ -3751,7 +3487,7 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/BlobRangesRestore.json
+// Generated from example definition: 2025-06-01/BlobRangesRestore.json
 func ExampleAccountsClient_BeginRestoreBlobRanges() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3780,13 +3516,13 @@ func ExampleAccountsClient_BeginRestoreBlobRanges() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientRestoreBlobRangesResponse{
-	// 	BlobRestoreStatus: armstorage.BlobRestoreStatus{
+	// 	BlobRestoreStatus: &armstorage.BlobRestoreStatus{
 	// 		Parameters: &armstorage.BlobRestoreParameters{
 	// 			BlobRanges: []*armstorage.BlobRestoreRange{
 	// 				{
@@ -3806,7 +3542,7 @@ func ExampleAccountsClient_BeginRestoreBlobRanges() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountRevokeUserDelegationKeys.json
+// Generated from example definition: 2025-06-01/StorageAccountRevokeUserDelegationKeys.json
 func ExampleAccountsClient_RevokeUserDelegationKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3828,7 +3564,7 @@ func ExampleAccountsClient_RevokeUserDelegationKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountEnableAD.json
+// Generated from example definition: 2025-06-01/StorageAccountEnableAD.json
 func ExampleAccountsClient_Update_storageAccountEnableAd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3863,7 +3599,7 @@ func ExampleAccountsClient_Update_storageAccountEnableAd() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -3911,7 +3647,7 @@ func ExampleAccountsClient_Update_storageAccountEnableAd() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountEnableCMK.json
+// Generated from example definition: 2025-06-01/StorageAccountEnableCMK.json
 func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3951,7 +3687,7 @@ func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -4013,7 +3749,7 @@ func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountEnableSmbOAuth.json
+// Generated from example definition: 2025-06-01/StorageAccountEnableSmbOAuth.json
 func ExampleAccountsClient_Update_storageAccountEnableSmbOAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4041,7 +3777,7 @@ func ExampleAccountsClient_Update_storageAccountEnableSmbOAuth() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -4082,7 +3818,7 @@ func ExampleAccountsClient_Update_storageAccountEnableSmbOAuth() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountLeverageIPv6Ability.json
+// Generated from example definition: 2025-06-01/StorageAccountLeverageIPv6Ability.json
 func ExampleAccountsClient_Update_storageAccountUpdateEnableIpv6Features() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4116,7 +3852,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateEnableIpv6Features() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -4177,206 +3913,8 @@ func ExampleAccountsClient_Update_storageAccountUpdateEnableIpv6Features() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdate.json
+// Generated from example definition: 2025-06-01/StorageAccountUpdate.json
 func ExampleAccountsClient_Update_storageAccountUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("a3f7c2b9-4e1d-4c8a-9d6f-8b2a5e41c7f3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().Update(ctx, "res9407", "sto8596", armstorage.AccountUpdateParameters{
-		Properties: &armstorage.AccountPropertiesUpdateParameters{
-			AllowBlobPublicAccess:        to.Ptr(false),
-			AllowSharedKeyAccess:         to.Ptr(true),
-			DefaultToOAuthAuthentication: to.Ptr(false),
-			EnableExtendedGroups:         to.Ptr(true),
-			Encryption: &armstorage.Encryption{
-				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
-				Services: &armstorage.EncryptionServices{
-					Blob: &armstorage.EncryptionService{
-						Enabled: to.Ptr(true),
-						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-					},
-					File: &armstorage.EncryptionService{
-						Enabled: to.Ptr(true),
-						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-					},
-				},
-			},
-			IsLocalUserEnabled: to.Ptr(true),
-			IsSftpEnabled:      to.Ptr(true),
-			KeyPolicy: &armstorage.KeyPolicy{
-				KeyExpirationPeriodInDays: to.Ptr[int32](20),
-			},
-			MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
-			NetworkRuleSet: &armstorage.NetworkRuleSet{
-				DefaultAction: to.Ptr(armstorage.DefaultActionAllow),
-				ResourceAccessRules: []*armstorage.ResourceAccessRule{
-					{
-						ResourceID: to.Ptr("/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace"),
-						TenantID:   to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-					},
-				},
-			},
-			RoutingPreference: &armstorage.RoutingPreference{
-				PublishInternetEndpoints:  to.Ptr(true),
-				PublishMicrosoftEndpoints: to.Ptr(true),
-				RoutingChoice:             to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
-			},
-			SasPolicy: &armstorage.SasPolicy{
-				ExpirationAction:    to.Ptr(armstorage.ExpirationActionLog),
-				SasExpirationPeriod: to.Ptr("1.15:59:59"),
-			},
-			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
-				IsBlobEnabled: to.Ptr(true),
-			},
-			AllowSharedKeyAccessForServices: &armstorage.AccountSharedKeyAccessProperties{
-				Blob: &armstorage.ServiceSharedKeyAccessProperties{
-					Enabled: to.Ptr(true),
-				},
-				File: &armstorage.ServiceSharedKeyAccessProperties{
-					Enabled: to.Ptr(false),
-				},
-				Queue: &armstorage.ServiceSharedKeyAccessProperties{
-					Enabled: to.Ptr(true),
-				},
-				Table: &armstorage.ServiceSharedKeyAccessProperties{
-					Enabled: to.Ptr(false),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
-	// 		Name: to.Ptr("sto8596"),
-	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
-	// 		Kind: to.Ptr(armstorage.KindStorage),
-	// 		Location: to.Ptr("eastus2(stage)"),
-	// 		Properties: &armstorage.AccountProperties{
-	// 			AllowBlobPublicAccess: to.Ptr(false),
-	// 			AllowSharedKeyAccess: to.Ptr(true),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.7633306Z"); return t}()),
-	// 			EnableExtendedGroups: to.Ptr(true),
-	// 			Encryption: &armstorage.Encryption{
-	// 				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
-	// 				Services: &armstorage.EncryptionServices{
-	// 					Blob: &armstorage.EncryptionService{
-	// 						Enabled: to.Ptr(true),
-	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
-	// 					},
-	// 					File: &armstorage.EncryptionService{
-	// 						Enabled: to.Ptr(true),
-	// 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
-	// 						LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.7036140Z"); return t}()),
-	// 					},
-	// 				},
-	// 			},
-	// 			IsHnsEnabled: to.Ptr(true),
-	// 			IsLocalUserEnabled: to.Ptr(true),
-	// 			IsSftpEnabled: to.Ptr(true),
-	// 			KeyCreationTime: &armstorage.KeyCreationTime{
-	// 				Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 				Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.4322836Z"); return t}()),
-	// 			},
-	// 			KeyPolicy: &armstorage.KeyPolicy{
-	// 				KeyExpirationPeriodInDays: to.Ptr[int32](20),
-	// 			},
-	// 			MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
-	// 			NetworkRuleSet: &armstorage.NetworkRuleSet{
-	// 				Bypass: to.Ptr(armstorage.BypassAzureServices),
-	// 				DefaultAction: to.Ptr(armstorage.DefaultActionAllow),
-	// 				IPRules: []*armstorage.IPRule{
-	// 				},
-	// 				ResourceAccessRules: []*armstorage.ResourceAccessRule{
-	// 					{
-	// 						ResourceID: to.Ptr("/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace"),
-	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 					},
-	// 				},
-	// 				VirtualNetworkRules: []*armstorage.VirtualNetworkRule{
-	// 				},
-	// 			},
-	// 			PrimaryEndpoints: &armstorage.Endpoints{
-	// 				Blob: to.Ptr("https://sto8596.blob.core.windows.net/"),
-	// 				Dfs: to.Ptr("https://sto8596.dfs.core.windows.net/"),
-	// 				File: to.Ptr("https://sto8596.file.core.windows.net/"),
-	// 				InternetEndpoints: &armstorage.AccountInternetEndpoints{
-	// 					Blob: to.Ptr("https://sto8596-internetrouting.blob.core.windows.net/"),
-	// 					Dfs: to.Ptr("https://sto8596-internetrouting.dfs.core.windows.net/"),
-	// 					File: to.Ptr("https://sto8596-internetrouting.file.core.windows.net/"),
-	// 					Web: to.Ptr("https://sto8596-internetrouting.web.core.windows.net/"),
-	// 				},
-	// 				MicrosoftEndpoints: &armstorage.AccountMicrosoftEndpoints{
-	// 					Blob: to.Ptr("https://sto8596-microsoftrouting.blob.core.windows.net/"),
-	// 					Dfs: to.Ptr("https://sto8596-microsoftrouting.dfs.core.windows.net/"),
-	// 					File: to.Ptr("https://sto8596-microsoftrouting.file.core.windows.net/"),
-	// 					Queue: to.Ptr("https://sto8596-microsoftrouting.queue.core.windows.net/"),
-	// 					Table: to.Ptr("https://sto8596-microsoftrouting.table.core.windows.net/"),
-	// 					Web: to.Ptr("https://sto8596-microsoftrouting.web.core.windows.net/"),
-	// 				},
-	// 				Queue: to.Ptr("https://sto8596.queue.core.windows.net/"),
-	// 				Table: to.Ptr("https://sto8596.table.core.windows.net/"),
-	// 				Web: to.Ptr("https://sto8596.web.core.windows.net/"),
-	// 			},
-	// 			PrimaryLocation: to.Ptr("eastus2(stage)"),
-	// 			ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
-	// 			RoutingPreference: &armstorage.RoutingPreference{
-	// 				PublishInternetEndpoints: to.Ptr(true),
-	// 				PublishMicrosoftEndpoints: to.Ptr(true),
-	// 				RoutingChoice: to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
-	// 			},
-	// 			SasPolicy: &armstorage.SasPolicy{
-	// 				ExpirationAction: to.Ptr(armstorage.ExpirationActionLog),
-	// 				SasExpirationPeriod: to.Ptr("1.15:59:59"),
-	// 			},
-	// 			SecondaryLocation: to.Ptr("northcentralus(stage)"),
-	// 			StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
-	// 			StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
-	// 			EnableHTTPSTrafficOnly: to.Ptr(false),
-	// 			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
-	// 				IsBlobEnabled: to.Ptr(true),
-	// 			},
-	// 			AllowSharedKeyAccessForServices: &armstorage.AccountSharedKeyAccessProperties{
-	// 				Blob: &armstorage.ServiceSharedKeyAccessProperties{
-	// 					Enabled: to.Ptr(true),
-	// 				},
-	// 				File: &armstorage.ServiceSharedKeyAccessProperties{
-	// 					Enabled: to.Ptr(false),
-	// 				},
-	// 				Queue: &armstorage.ServiceSharedKeyAccessProperties{
-	// 					Enabled: to.Ptr(true),
-	// 				},
-	// 				Table: &armstorage.ServiceSharedKeyAccessProperties{
-	// 					Enabled: to.Ptr(false),
-	// 				},
-	// 			},
-	// 		},
-	// 		SKU: &armstorage.SKU{
-	// 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
-	// 			Tier: to.Ptr(armstorage.SKUTierStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01/StorageAccountUpdateAccessTierToSmart.json
-func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -4388,7 +3926,6 @@ func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	}
 	res, err := clientFactory.NewAccountsClient().Update(ctx, "res9407", "sto8596", armstorage.AccountUpdateParameters{
 		Properties: &armstorage.AccountPropertiesUpdateParameters{
-			AccessTier:                   to.Ptr(armstorage.AccessTierSmart),
 			AllowBlobPublicAccess:        to.Ptr(false),
 			AllowSharedKeyAccess:         to.Ptr(true),
 			DefaultToOAuthAuthentication: to.Ptr(false),
@@ -4442,7 +3979,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -4546,7 +4083,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateAllowedCopyScopeToAAD.json
+// Generated from example definition: 2025-06-01/StorageAccountUpdateAllowedCopyScopeToAAD.json
 func ExampleAccountsClient_Update_storageAccountUpdateAllowedCopyScopeToAad() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4606,7 +4143,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateAllowedCopyScopeToAad() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -4705,7 +4242,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateAllowedCopyScopeToAad() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateDisablePublicNetworkAccess.json
+// Generated from example definition: 2025-06-01/StorageAccountUpdateDisablePublicNetworkAccess.json
 func ExampleAccountsClient_Update_storageAccountUpdateDisablePublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4765,7 +4302,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateDisablePublicNetworkAccess
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -4864,7 +4401,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateDisablePublicNetworkAccess
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
+// Generated from example definition: 2025-06-01/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
 func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIdentityWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4917,7 +4454,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIden
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/sto4445"),
@@ -4993,7 +4530,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIden
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
+// Generated from example definition: 2025-06-01/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
 func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5047,7 +4584,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto4445"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/sto4445"),
@@ -5124,59 +4661,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFe
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateWithDataCollaborationPolicy.json
-func ExampleAccountsClient_Update_storageAccountUpdateWithDataCollaborationPolicy() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().Update(ctx, "res9407", "sto8596", armstorage.AccountUpdateParameters{
-		Properties: &armstorage.AccountPropertiesUpdateParameters{
-			DataCollaborationPolicyProperties: &armstorage.DataCollaborationPolicyProperties{
-				AllowStorageConnectors:      to.Ptr(true),
-				AllowStorageDataShares:      to.Ptr(true),
-				AllowCrossTenantDataSharing: to.Ptr(false),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
-	// 		Name: to.Ptr("sto8596"),
-	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
-	// 		Kind: to.Ptr(armstorage.KindStorage),
-	// 		Location: to.Ptr("eastus2(stage)"),
-	// 		Properties: &armstorage.AccountProperties{
-	// 			DataCollaborationPolicyProperties: &armstorage.DataCollaborationPolicyProperties{
-	// 				AllowStorageConnectors: to.Ptr(true),
-	// 				AllowStorageDataShares: to.Ptr(true),
-	// 				AllowCrossTenantDataSharing: to.Ptr(false),
-	// 			},
-	// 		},
-	// 		SKU: &armstorage.SKU{
-	// 			Name: to.Ptr(armstorage.SKUNameStandardGRS),
-	// 			Tier: to.Ptr(armstorage.SKUTierStandard),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01/StorageAccountUpdateWithImmutabilityPolicy.json
+// Generated from example definition: 2025-06-01/StorageAccountUpdateWithImmutabilityPolicy.json
 func ExampleAccountsClient_Update_storageAccountUpdateWithImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5206,7 +4691,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateWithImmutabilityPolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -5234,7 +4719,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateWithImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdate_placement.json
+// Generated from example definition: 2025-06-01/StorageAccountUpdate_placement.json
 func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5300,7 +4785,7 @@ func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
@@ -5407,7 +4892,7 @@ func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdate_zones.json
+// Generated from example definition: 2025-06-01/StorageAccountUpdate_zones.json
 func ExampleAccountsClient_Update_storageAccountUpdateZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5473,7 +4958,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateZones() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientUpdateResponse{
-	// 	Account: armstorage.Account{
+	// 	Account: &armstorage.Account{
 	// 		Name: to.Ptr("sto8596"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),

@@ -18,8 +18,6 @@ import (
 
 // PureStoragePoliciesClient contains the methods for the PureStoragePolicies group.
 // Don't use this type directly, use NewPureStoragePoliciesClient() instead.
-//
-// Generated from API version 2025-09-01
 type PureStoragePoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewPureStoragePoliciesClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Create a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - storagePolicyName - Name of the storage policy.
@@ -68,6 +68,8 @@ func (client *PureStoragePoliciesClient) BeginCreateOrUpdate(ctx context.Context
 
 // CreateOrUpdate - Create a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *PureStoragePoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, resource PureStoragePolicy, options *PureStoragePoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PureStoragePoliciesClient.BeginCreateOrUpdate"
@@ -113,8 +115,8 @@ func (client *PureStoragePoliciesClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -125,6 +127,8 @@ func (client *PureStoragePoliciesClient) createOrUpdateCreateRequest(ctx context
 
 // BeginDelete - Delete a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - storagePolicyName - Name of the storage policy.
@@ -149,6 +153,8 @@ func (client *PureStoragePoliciesClient) BeginDelete(ctx context.Context, resour
 
 // Delete - Delete a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *PureStoragePoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, options *PureStoragePoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PureStoragePoliciesClient.BeginDelete"
@@ -194,13 +200,15 @@ func (client *PureStoragePoliciesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - storagePolicyName - Name of the storage policy.
@@ -251,8 +259,8 @@ func (client *PureStoragePoliciesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -267,6 +275,8 @@ func (client *PureStoragePoliciesClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - List PureStoragePolicy resources by PrivateCloud
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - PureStoragePoliciesClientListOptions contains the optional parameters for the PureStoragePoliciesClient.NewListPager
@@ -314,8 +324,8 @@ func (client *PureStoragePoliciesClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

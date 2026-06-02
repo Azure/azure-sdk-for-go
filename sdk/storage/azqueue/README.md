@@ -1,5 +1,7 @@
 # Azure Queue Storage SDK for Go
 
+> Service Version: 2018-03-28
+
 Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in 
 the world via authenticated calls using HTTP or HTTPS. 
 A single queue message can be up to 64 KiB in size, and a queue can contain millions of messages, 

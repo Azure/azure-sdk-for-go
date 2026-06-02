@@ -81,12 +81,12 @@ func unmarshalBaseDetailsClassification(rawMsg json.RawMessage) (BaseDetailsClas
 	}
 	var b BaseDetailsClassification
 	switch m["type"] {
+	case string(AlertModificationTypePropertyChange):
+		b = &PropertyChangeDetails{}
 	case string(AlertModificationTypeActionsSuppressed):
 		b = &ActionSuppressedDetails{}
 	case string(AlertModificationTypeActionsTriggered):
 		b = &ActionTriggeredDetails{}
-	case string(AlertModificationTypePropertyChange):
-		b = &PropertyChangeDetails{}
 	default:
 		b = &BaseDetails{}
 	}

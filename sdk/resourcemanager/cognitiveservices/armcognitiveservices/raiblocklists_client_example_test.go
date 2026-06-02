@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutRaiBlocklist.json
+// Generated from example definition: 2026-01-15-preview/PutRaiBlocklist.json
 func ExampleRaiBlocklistsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleRaiBlocklistsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiBlocklistsClientCreateOrUpdateResponse{
-	// 	RaiBlocklist: armcognitiveservices.RaiBlocklist{
+	// 	RaiBlocklist: &armcognitiveservices.RaiBlocklist{
 	// 		Name: to.Ptr("raiBlocklistName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiBlocklists/raiBlocklistName"),
 	// 		Properties: &armcognitiveservices.RaiBlocklistProperties{
@@ -45,7 +45,7 @@ func ExampleRaiBlocklistsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteRaiBlocklist.json
+// Generated from example definition: 2026-01-15-preview/DeleteRaiBlocklist.json
 func ExampleRaiBlocklistsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,11 +62,11 @@ func ExampleRaiBlocklistsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/GetRaiBlocklist.json
+// Generated from example definition: 2026-01-15-preview/GetRaiBlocklist.json
 func ExampleRaiBlocklistsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleRaiBlocklistsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiBlocklistsClientGetResponse{
-	// 	RaiBlocklist: armcognitiveservices.RaiBlocklist{
+	// 	RaiBlocklist: &armcognitiveservices.RaiBlocklist{
 	// 		Name: to.Ptr("raiBlocklistName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiBlocklists/raiBlocklistName"),
 	// 		Properties: &armcognitiveservices.RaiBlocklistProperties{
@@ -95,7 +95,7 @@ func ExampleRaiBlocklistsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListBlocklists.json
+// Generated from example definition: 2026-01-15-preview/ListBlocklists.json
 func ExampleRaiBlocklistsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/L2Networks_Create.json
+// Generated from example definition: 2025-09-01/L2Networks_Create.json
 func ExampleL2NetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,13 +44,13 @@ func ExampleL2NetworksClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.L2NetworksClientCreateOrUpdateResponse{
-	// 	L2Network: armnetworkcloud.L2Network{
+	// 	L2Network: &armnetworkcloud.L2Network{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -86,7 +86,7 @@ func ExampleL2NetworksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/L2Networks_Delete.json
+// Generated from example definition: 2025-09-01/L2Networks_Delete.json
 func ExampleL2NetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,11 +103,11 @@ func ExampleL2NetworksClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/L2Networks_Get.json
+// Generated from example definition: 2025-09-01/L2Networks_Get.json
 func ExampleL2NetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleL2NetworksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.L2NetworksClientGetResponse{
-	// 	L2Network: armnetworkcloud.L2Network{
+	// 	L2Network: &armnetworkcloud.L2Network{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -162,7 +162,7 @@ func ExampleL2NetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/L2Networks_ListByResourceGroup.json
+// Generated from example definition: 2025-09-01/L2Networks_ListByResourceGroup.json
 func ExampleL2NetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleL2NetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/L2Networks_ListBySubscription.json
+// Generated from example definition: 2025-09-01/L2Networks_ListBySubscription.json
 func ExampleL2NetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleL2NetworksClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/L2Networks_Patch.json
+// Generated from example definition: 2025-09-01/L2Networks_Patch.json
 func ExampleL2NetworksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +316,7 @@ func ExampleL2NetworksClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.L2NetworksClientUpdateResponse{
-	// 	L2Network: armnetworkcloud.L2Network{
+	// 	L2Network: &armnetworkcloud.L2Network{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),

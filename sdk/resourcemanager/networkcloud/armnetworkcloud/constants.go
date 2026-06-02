@@ -4,75 +4,6 @@
 
 package armnetworkcloud
 
-// AccessBridgeAllowedName - The allowed names for the access bridge.
-type AccessBridgeAllowedName string
-
-const (
-	// AccessBridgeAllowedNameBastion - The access bridge for bare metal machine bastion access.
-	AccessBridgeAllowedNameBastion AccessBridgeAllowedName = "Bastion"
-	// AccessBridgeAllowedNamePrivateVault - The access bridge for cluster access to private vault.
-	AccessBridgeAllowedNamePrivateVault AccessBridgeAllowedName = "PrivateVault"
-	// AccessBridgeAllowedNameStorageDashboard - The access bridge for access to the storage dashboard.
-	AccessBridgeAllowedNameStorageDashboard AccessBridgeAllowedName = "StorageDashboard"
-)
-
-// PossibleAccessBridgeAllowedNameValues returns the possible values for the AccessBridgeAllowedName const type.
-func PossibleAccessBridgeAllowedNameValues() []AccessBridgeAllowedName {
-	return []AccessBridgeAllowedName{
-		AccessBridgeAllowedNameBastion,
-		AccessBridgeAllowedNamePrivateVault,
-		AccessBridgeAllowedNameStorageDashboard,
-	}
-}
-
-// AccessBridgeDetailedStatus - The detailed status reported by the access bridge.
-type AccessBridgeDetailedStatus string
-
-const (
-	// AccessBridgeDetailedStatusDegraded - The access bridge is experiencing degraded performance or partial outages.
-	AccessBridgeDetailedStatusDegraded AccessBridgeDetailedStatus = "Degraded"
-	// AccessBridgeDetailedStatusFailed - The access bridge is not operational.
-	AccessBridgeDetailedStatusFailed AccessBridgeDetailedStatus = "Failed"
-	// AccessBridgeDetailedStatusRunning - The access bridge is healthy and operating normally.
-	AccessBridgeDetailedStatusRunning AccessBridgeDetailedStatus = "Running"
-)
-
-// PossibleAccessBridgeDetailedStatusValues returns the possible values for the AccessBridgeDetailedStatus const type.
-func PossibleAccessBridgeDetailedStatusValues() []AccessBridgeDetailedStatus {
-	return []AccessBridgeDetailedStatus{
-		AccessBridgeDetailedStatusDegraded,
-		AccessBridgeDetailedStatusFailed,
-		AccessBridgeDetailedStatusRunning,
-	}
-}
-
-// AccessBridgeProvisioningState - The provisioning state of the access bridge.
-type AccessBridgeProvisioningState string
-
-const (
-	// AccessBridgeProvisioningStateAccepted - The Accepted status.
-	AccessBridgeProvisioningStateAccepted AccessBridgeProvisioningState = "Accepted"
-	// AccessBridgeProvisioningStateCanceled - The Canceled status.
-	AccessBridgeProvisioningStateCanceled AccessBridgeProvisioningState = "Canceled"
-	// AccessBridgeProvisioningStateFailed - The Failed status.
-	AccessBridgeProvisioningStateFailed AccessBridgeProvisioningState = "Failed"
-	// AccessBridgeProvisioningStateProvisioning - The Provisioning status.
-	AccessBridgeProvisioningStateProvisioning AccessBridgeProvisioningState = "Provisioning"
-	// AccessBridgeProvisioningStateSucceeded - The Succeeded status.
-	AccessBridgeProvisioningStateSucceeded AccessBridgeProvisioningState = "Succeeded"
-)
-
-// PossibleAccessBridgeProvisioningStateValues returns the possible values for the AccessBridgeProvisioningState const type.
-func PossibleAccessBridgeProvisioningStateValues() []AccessBridgeProvisioningState {
-	return []AccessBridgeProvisioningState{
-		AccessBridgeProvisioningStateAccepted,
-		AccessBridgeProvisioningStateCanceled,
-		AccessBridgeProvisioningStateFailed,
-		AccessBridgeProvisioningStateProvisioning,
-		AccessBridgeProvisioningStateSucceeded,
-	}
-}
-
 // ActionStateStatus - The status of the action.
 type ActionStateStatus string
 
@@ -397,44 +328,6 @@ func PossibleBareMetalMachineKeySetUserSetupStatusValues() []BareMetalMachineKey
 	}
 }
 
-// BareMetalMachineMetricsConfigurationStatusLogLevel - The log level for the monitoring configuration status of the bare
-// metal machine.
-type BareMetalMachineMetricsConfigurationStatusLogLevel string
-
-const (
-	// BareMetalMachineMetricsConfigurationStatusLogLevelDefault - Logs are emitted at the default log level.
-	BareMetalMachineMetricsConfigurationStatusLogLevelDefault BareMetalMachineMetricsConfigurationStatusLogLevel = "Default"
-	// BareMetalMachineMetricsConfigurationStatusLogLevelNexus - Logs are emitted at the Nexus log level.
-	BareMetalMachineMetricsConfigurationStatusLogLevelNexus BareMetalMachineMetricsConfigurationStatusLogLevel = "Nexus"
-)
-
-// PossibleBareMetalMachineMetricsConfigurationStatusLogLevelValues returns the possible values for the BareMetalMachineMetricsConfigurationStatusLogLevel const type.
-func PossibleBareMetalMachineMetricsConfigurationStatusLogLevelValues() []BareMetalMachineMetricsConfigurationStatusLogLevel {
-	return []BareMetalMachineMetricsConfigurationStatusLogLevel{
-		BareMetalMachineMetricsConfigurationStatusLogLevelDefault,
-		BareMetalMachineMetricsConfigurationStatusLogLevelNexus,
-	}
-}
-
-// BareMetalMachineMetricsConfigurationStatusMetricsLevel - The metrics level for the monitoring configuration status of the
-// bare metal machine.
-type BareMetalMachineMetricsConfigurationStatusMetricsLevel string
-
-const (
-	// BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault - Metrics are emitted at the default metrics level.
-	BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault BareMetalMachineMetricsConfigurationStatusMetricsLevel = "Default"
-	// BareMetalMachineMetricsConfigurationStatusMetricsLevelNexus - Metrics are emitted at the Nexus metrics level.
-	BareMetalMachineMetricsConfigurationStatusMetricsLevelNexus BareMetalMachineMetricsConfigurationStatusMetricsLevel = "Nexus"
-)
-
-// PossibleBareMetalMachineMetricsConfigurationStatusMetricsLevelValues returns the possible values for the BareMetalMachineMetricsConfigurationStatusMetricsLevel const type.
-func PossibleBareMetalMachineMetricsConfigurationStatusMetricsLevelValues() []BareMetalMachineMetricsConfigurationStatusMetricsLevel {
-	return []BareMetalMachineMetricsConfigurationStatusMetricsLevel{
-		BareMetalMachineMetricsConfigurationStatusMetricsLevelDefault,
-		BareMetalMachineMetricsConfigurationStatusMetricsLevelNexus,
-	}
-}
-
 // BareMetalMachinePowerState - The power state derived from the baseboard management controller.
 type BareMetalMachinePowerState string
 
@@ -497,27 +390,6 @@ func PossibleBareMetalMachineReadyStateValues() []BareMetalMachineReadyState {
 	return []BareMetalMachineReadyState{
 		BareMetalMachineReadyStateFalse,
 		BareMetalMachineReadyStateTrue,
-	}
-}
-
-// BareMetalMachineReimageSafeguardMode - The safeguard mode to use for the reimage action, where None indicates to bypass
-// safeguards and All indicates to utilize all safeguards.
-type BareMetalMachineReimageSafeguardMode string
-
-const (
-	// BareMetalMachineReimageSafeguardModeAll - Run all pre‑operation validation checks before performing the reimage. If any
-	// check fails, the request is rejected and no changes are made.
-	BareMetalMachineReimageSafeguardModeAll BareMetalMachineReimageSafeguardMode = "All"
-	// BareMetalMachineReimageSafeguardModeNone - Skip all safeguards and perform the reimage without running pre‑operation validation
-	// checks.
-	BareMetalMachineReimageSafeguardModeNone BareMetalMachineReimageSafeguardMode = "None"
-)
-
-// PossibleBareMetalMachineReimageSafeguardModeValues returns the possible values for the BareMetalMachineReimageSafeguardMode const type.
-func PossibleBareMetalMachineReimageSafeguardModeValues() []BareMetalMachineReimageSafeguardMode {
-	return []BareMetalMachineReimageSafeguardMode{
-		BareMetalMachineReimageSafeguardModeAll,
-		BareMetalMachineReimageSafeguardModeNone,
 	}
 }
 
@@ -794,12 +666,6 @@ const (
 	CloudServicesNetworkStorageStatusStatusExpandingVolume CloudServicesNetworkStorageStatusStatus = "ExpandingVolume"
 	// CloudServicesNetworkStorageStatusStatusExpansionFailed - The expansion of the storage allocation has failed.
 	CloudServicesNetworkStorageStatusStatusExpansionFailed CloudServicesNetworkStorageStatusStatus = "ExpansionFailed"
-	// CloudServicesNetworkStorageStatusStatusInitializing - The storage allocation is initializing.
-	CloudServicesNetworkStorageStatusStatusInitializing CloudServicesNetworkStorageStatusStatus = "Initializing"
-	// CloudServicesNetworkStorageStatusStatusNone - The storage allocation has no status.
-	CloudServicesNetworkStorageStatusStatusNone CloudServicesNetworkStorageStatusStatus = "None"
-	// CloudServicesNetworkStorageStatusStatusRepairing - The storage allocation is being repaired.
-	CloudServicesNetworkStorageStatusStatusRepairing CloudServicesNetworkStorageStatusStatus = "Repairing"
 )
 
 // PossibleCloudServicesNetworkStorageStatusStatusValues returns the possible values for the CloudServicesNetworkStorageStatusStatus const type.
@@ -808,9 +674,6 @@ func PossibleCloudServicesNetworkStorageStatusStatusValues() []CloudServicesNetw
 		CloudServicesNetworkStorageStatusStatusAvailable,
 		CloudServicesNetworkStorageStatusStatusExpandingVolume,
 		CloudServicesNetworkStorageStatusStatusExpansionFailed,
-		CloudServicesNetworkStorageStatusStatusInitializing,
-		CloudServicesNetworkStorageStatusStatusNone,
-		CloudServicesNetworkStorageStatusStatusRepairing,
 	}
 }
 
@@ -855,27 +718,6 @@ func PossibleClusterContinueUpdateVersionMachineGroupTargetingModeValues() []Clu
 	}
 }
 
-// ClusterContinueUpdateVersionSafeguardMode - ClusterContinueUpdateVersionSafeguardMode represents the mode of the cluster
-// continue update safeguards.
-type ClusterContinueUpdateVersionSafeguardMode string
-
-const (
-	// ClusterContinueUpdateVersionSafeguardModeAll - Run all pre‑operation validation checks before continuing the version update.
-	// If any check fails, the request is rejected and no changes are made.
-	ClusterContinueUpdateVersionSafeguardModeAll ClusterContinueUpdateVersionSafeguardMode = "All"
-	// ClusterContinueUpdateVersionSafeguardModeNone - Skip all safeguards and continue the version update without running pre‑operation
-	// validation checks.
-	ClusterContinueUpdateVersionSafeguardModeNone ClusterContinueUpdateVersionSafeguardMode = "None"
-)
-
-// PossibleClusterContinueUpdateVersionSafeguardModeValues returns the possible values for the ClusterContinueUpdateVersionSafeguardMode const type.
-func PossibleClusterContinueUpdateVersionSafeguardModeValues() []ClusterContinueUpdateVersionSafeguardMode {
-	return []ClusterContinueUpdateVersionSafeguardMode{
-		ClusterContinueUpdateVersionSafeguardModeAll,
-		ClusterContinueUpdateVersionSafeguardModeNone,
-	}
-}
-
 // ClusterDetailedStatus - The current detailed status of the cluster.
 type ClusterDetailedStatus string
 
@@ -912,22 +754,6 @@ func PossibleClusterDetailedStatusValues() []ClusterDetailedStatus {
 		ClusterDetailedStatusRunning,
 		ClusterDetailedStatusUpdatePaused,
 		ClusterDetailedStatusUpdating,
-	}
-}
-
-// ClusterInspectAdditionalAction - Additional actions supplement the default non-disruptive cluster inspection. Additional
-// actions may be disallowed if the cluster is in a deployed and running state.
-type ClusterInspectAdditionalAction string
-
-const (
-	// ClusterInspectAdditionalActionResetHardware - Indicates that hardware reset should be performed during inspection.
-	ClusterInspectAdditionalActionResetHardware ClusterInspectAdditionalAction = "ResetHardware"
-)
-
-// PossibleClusterInspectAdditionalActionValues returns the possible values for the ClusterInspectAdditionalAction const type.
-func PossibleClusterInspectAdditionalActionValues() []ClusterInspectAdditionalAction {
-	return []ClusterInspectAdditionalAction{
-		ClusterInspectAdditionalActionResetHardware,
 	}
 }
 
@@ -1159,26 +985,6 @@ func PossibleClusterUpdateStrategyTypeValues() []ClusterUpdateStrategyType {
 	}
 }
 
-// ClusterUpdateVersionSafeguardMode - ClusterUpdateVersionSafeguardMode represents the mode of the cluster update safeguards.
-type ClusterUpdateVersionSafeguardMode string
-
-const (
-	// ClusterUpdateVersionSafeguardModeAll - Run all pre‑operation validation checks before performing the version update. If
-	// any check fails, the request is rejected and no changes are made.
-	ClusterUpdateVersionSafeguardModeAll ClusterUpdateVersionSafeguardMode = "All"
-	// ClusterUpdateVersionSafeguardModeNone - Skip all safeguards and perform the version update without running pre‑operation
-	// validation checks.
-	ClusterUpdateVersionSafeguardModeNone ClusterUpdateVersionSafeguardMode = "None"
-)
-
-// PossibleClusterUpdateVersionSafeguardModeValues returns the possible values for the ClusterUpdateVersionSafeguardMode const type.
-func PossibleClusterUpdateVersionSafeguardModeValues() []ClusterUpdateVersionSafeguardMode {
-	return []ClusterUpdateVersionSafeguardMode{
-		ClusterUpdateVersionSafeguardModeAll,
-		ClusterUpdateVersionSafeguardModeNone,
-	}
-}
-
 // CommandOutputType - The type of command output for the override.
 type CommandOutputType string
 
@@ -1191,9 +997,6 @@ const (
 	CommandOutputTypeBareMetalMachineRunDataExtractsRestricted CommandOutputType = "BareMetalMachineRunDataExtractsRestricted"
 	// CommandOutputTypeBareMetalMachineRunReadCommands - BareMetalMachineRunReadCommands output type
 	CommandOutputTypeBareMetalMachineRunReadCommands CommandOutputType = "BareMetalMachineRunReadCommands"
-	// CommandOutputTypeClusterSupportAdministrativeActions - ClusterSupportAdministrativeActions output type supporting administrative
-	// actions that can be run on a cluster for support purposes.
-	CommandOutputTypeClusterSupportAdministrativeActions CommandOutputType = "ClusterSupportAdministrativeActions"
 	// CommandOutputTypeStorageRunReadCommands - StorageRunReadCommands output type
 	CommandOutputTypeStorageRunReadCommands CommandOutputType = "StorageRunReadCommands"
 )
@@ -1205,7 +1008,6 @@ func PossibleCommandOutputTypeValues() []CommandOutputType {
 		CommandOutputTypeBareMetalMachineRunDataExtracts,
 		CommandOutputTypeBareMetalMachineRunDataExtractsRestricted,
 		CommandOutputTypeBareMetalMachineRunReadCommands,
-		CommandOutputTypeClusterSupportAdministrativeActions,
 		CommandOutputTypeStorageRunReadCommands,
 	}
 }
@@ -1331,26 +1133,6 @@ func PossibleDefaultGatewayValues() []DefaultGateway {
 	return []DefaultGateway{
 		DefaultGatewayFalse,
 		DefaultGatewayTrue,
-	}
-}
-
-// DeploymentType - The type (kind) of the cluster. When specified, the value must exactly match the kind configured on the
-// cluster manager that manages the cluster. If omitted, the service will default the value to the kind value of the cluster
-// manager.
-type DeploymentType string
-
-const (
-	// DeploymentTypeAzureLocal - Azure Local
-	DeploymentTypeAzureLocal DeploymentType = "AzureLocal"
-	// DeploymentTypeNexus - Azure Operator Nexus
-	DeploymentTypeNexus DeploymentType = "Nexus"
-)
-
-// PossibleDeploymentTypeValues returns the possible values for the DeploymentType const type.
-func PossibleDeploymentTypeValues() []DeploymentType {
-	return []DeploymentType{
-		DeploymentTypeAzureLocal,
-		DeploymentTypeNexus,
 	}
 }
 
@@ -1754,30 +1536,6 @@ func PossibleKubernetesPluginTypeValues() []KubernetesPluginType {
 	}
 }
 
-// KubernetesVersionProvisioningState - The provisioning state of the Kubernetes version resource.
-type KubernetesVersionProvisioningState string
-
-const (
-	// KubernetesVersionProvisioningStateAccepted - The Accepted status.
-	KubernetesVersionProvisioningStateAccepted KubernetesVersionProvisioningState = "Accepted"
-	// KubernetesVersionProvisioningStateCanceled - The Canceled status.
-	KubernetesVersionProvisioningStateCanceled KubernetesVersionProvisioningState = "Canceled"
-	// KubernetesVersionProvisioningStateFailed - The Failed status.
-	KubernetesVersionProvisioningStateFailed KubernetesVersionProvisioningState = "Failed"
-	// KubernetesVersionProvisioningStateSucceeded - The Succeeded status.
-	KubernetesVersionProvisioningStateSucceeded KubernetesVersionProvisioningState = "Succeeded"
-)
-
-// PossibleKubernetesVersionProvisioningStateValues returns the possible values for the KubernetesVersionProvisioningState const type.
-func PossibleKubernetesVersionProvisioningStateValues() []KubernetesVersionProvisioningState {
-	return []KubernetesVersionProvisioningState{
-		KubernetesVersionProvisioningStateAccepted,
-		KubernetesVersionProvisioningStateCanceled,
-		KubernetesVersionProvisioningStateFailed,
-		KubernetesVersionProvisioningStateSucceeded,
-	}
-}
-
 // L2NetworkDetailedStatus - The more detailed status of the L2 network.
 type L2NetworkDetailedStatus string
 
@@ -2104,24 +1862,6 @@ func PossibleRackSKUTypeValues() []RackSKUType {
 	}
 }
 
-// RelayPrivateEndpointConnectionState - The state to set for the private endpoint connection.
-type RelayPrivateEndpointConnectionState string
-
-const (
-	// RelayPrivateEndpointConnectionStateApproved - The private endpoint connection is approved.
-	RelayPrivateEndpointConnectionStateApproved RelayPrivateEndpointConnectionState = "Approved"
-	// RelayPrivateEndpointConnectionStateRejected - The private endpoint connection is rejected.
-	RelayPrivateEndpointConnectionStateRejected RelayPrivateEndpointConnectionState = "Rejected"
-)
-
-// PossibleRelayPrivateEndpointConnectionStateValues returns the possible values for the RelayPrivateEndpointConnectionState const type.
-func PossibleRelayPrivateEndpointConnectionStateValues() []RelayPrivateEndpointConnectionState {
-	return []RelayPrivateEndpointConnectionState{
-		RelayPrivateEndpointConnectionStateApproved,
-		RelayPrivateEndpointConnectionStateRejected,
-	}
-}
-
 // RelayType - The indicator of which relay type the machine should be assigned to use. Platform indicates the use of a platform-dedicated
 // relay. Public indicates the use of the standard public relay for Arc services.
 type RelayType string
@@ -2181,61 +1921,6 @@ func PossibleRemoteVendorManagementStatusValues() []RemoteVendorManagementStatus
 	}
 }
 
-// RuntimeProtectionAgentHealthStatus - The runtime protection agent health status.
-type RuntimeProtectionAgentHealthStatus string
-
-const (
-	// RuntimeProtectionAgentHealthStatusHealthy - The runtime protection agent is healthy.
-	RuntimeProtectionAgentHealthStatusHealthy RuntimeProtectionAgentHealthStatus = "Healthy"
-	// RuntimeProtectionAgentHealthStatusUnhealthy - The runtime protection agent has health issues.
-	RuntimeProtectionAgentHealthStatusUnhealthy RuntimeProtectionAgentHealthStatus = "Unhealthy"
-)
-
-// PossibleRuntimeProtectionAgentHealthStatusValues returns the possible values for the RuntimeProtectionAgentHealthStatus const type.
-func PossibleRuntimeProtectionAgentHealthStatusValues() []RuntimeProtectionAgentHealthStatus {
-	return []RuntimeProtectionAgentHealthStatus{
-		RuntimeProtectionAgentHealthStatusHealthy,
-		RuntimeProtectionAgentHealthStatusUnhealthy,
-	}
-}
-
-// RuntimeProtectionAgentLicenseStatus - The runtime protection agent license status.
-type RuntimeProtectionAgentLicenseStatus string
-
-const (
-	// RuntimeProtectionAgentLicenseStatusLicensed - The runtime protection agent license is valid.
-	RuntimeProtectionAgentLicenseStatusLicensed RuntimeProtectionAgentLicenseStatus = "Licensed"
-	// RuntimeProtectionAgentLicenseStatusUnlicensed - The runtime protection agent license is not valid.
-	RuntimeProtectionAgentLicenseStatusUnlicensed RuntimeProtectionAgentLicenseStatus = "Unlicensed"
-)
-
-// PossibleRuntimeProtectionAgentLicenseStatusValues returns the possible values for the RuntimeProtectionAgentLicenseStatus const type.
-func PossibleRuntimeProtectionAgentLicenseStatusValues() []RuntimeProtectionAgentLicenseStatus {
-	return []RuntimeProtectionAgentLicenseStatus{
-		RuntimeProtectionAgentLicenseStatusLicensed,
-		RuntimeProtectionAgentLicenseStatusUnlicensed,
-	}
-}
-
-// RuntimeProtectionDefinitionUpdateMode - The definition update mode for runtime protection.
-type RuntimeProtectionDefinitionUpdateMode string
-
-const (
-	// RuntimeProtectionDefinitionUpdateModeAutomatic - Update definitions automatically through the connected runtime protection
-	// agent.
-	RuntimeProtectionDefinitionUpdateModeAutomatic RuntimeProtectionDefinitionUpdateMode = "Automatic"
-	// RuntimeProtectionDefinitionUpdateModeNone - Do not update definitions.
-	RuntimeProtectionDefinitionUpdateModeNone RuntimeProtectionDefinitionUpdateMode = "None"
-)
-
-// PossibleRuntimeProtectionDefinitionUpdateModeValues returns the possible values for the RuntimeProtectionDefinitionUpdateMode const type.
-func PossibleRuntimeProtectionDefinitionUpdateModeValues() []RuntimeProtectionDefinitionUpdateMode {
-	return []RuntimeProtectionDefinitionUpdateMode{
-		RuntimeProtectionDefinitionUpdateModeAutomatic,
-		RuntimeProtectionDefinitionUpdateModeNone,
-	}
-}
-
 // RuntimeProtectionEnforcementLevel - The mode of operation for runtime protection.
 type RuntimeProtectionEnforcementLevel string
 
@@ -2260,24 +1945,6 @@ func PossibleRuntimeProtectionEnforcementLevelValues() []RuntimeProtectionEnforc
 		RuntimeProtectionEnforcementLevelOnDemand,
 		RuntimeProtectionEnforcementLevelPassive,
 		RuntimeProtectionEnforcementLevelRealTime,
-	}
-}
-
-// SecurityRuleDirection - The direction of allowed network traffic based on the rule.
-type SecurityRuleDirection string
-
-const (
-	// SecurityRuleDirectionInbound - Inbound traffic toward the on-premsises cluster.
-	SecurityRuleDirectionInbound SecurityRuleDirection = "Inbound"
-	// SecurityRuleDirectionOutbound - Outbound traffic from the on-premises cluster.
-	SecurityRuleDirectionOutbound SecurityRuleDirection = "Outbound"
-)
-
-// PossibleSecurityRuleDirectionValues returns the possible values for the SecurityRuleDirection const type.
-func PossibleSecurityRuleDirectionValues() []SecurityRuleDirection {
-	return []SecurityRuleDirection{
-		SecurityRuleDirectionInbound,
-		SecurityRuleDirectionOutbound,
 	}
 }
 
@@ -2347,44 +2014,6 @@ func PossibleStorageApplianceDetailedStatusValues() []StorageApplianceDetailedSt
 	}
 }
 
-// StorageApplianceMetricsConfigurationStatusLogLevel - The log level for the monitoring configuration status of the storage
-// appliance.
-type StorageApplianceMetricsConfigurationStatusLogLevel string
-
-const (
-	// StorageApplianceMetricsConfigurationStatusLogLevelDefault - Logs are emitted at the default log level.
-	StorageApplianceMetricsConfigurationStatusLogLevelDefault StorageApplianceMetricsConfigurationStatusLogLevel = "Default"
-	// StorageApplianceMetricsConfigurationStatusLogLevelNexus - Logs are emitted at the Nexus log level.
-	StorageApplianceMetricsConfigurationStatusLogLevelNexus StorageApplianceMetricsConfigurationStatusLogLevel = "Nexus"
-)
-
-// PossibleStorageApplianceMetricsConfigurationStatusLogLevelValues returns the possible values for the StorageApplianceMetricsConfigurationStatusLogLevel const type.
-func PossibleStorageApplianceMetricsConfigurationStatusLogLevelValues() []StorageApplianceMetricsConfigurationStatusLogLevel {
-	return []StorageApplianceMetricsConfigurationStatusLogLevel{
-		StorageApplianceMetricsConfigurationStatusLogLevelDefault,
-		StorageApplianceMetricsConfigurationStatusLogLevelNexus,
-	}
-}
-
-// StorageApplianceMetricsConfigurationStatusMetricsLevel - The metrics level for the monitoring configuration status of the
-// storage appliance.
-type StorageApplianceMetricsConfigurationStatusMetricsLevel string
-
-const (
-	// StorageApplianceMetricsConfigurationStatusMetricsLevelDefault - Metrics are emitted at the default metrics level.
-	StorageApplianceMetricsConfigurationStatusMetricsLevelDefault StorageApplianceMetricsConfigurationStatusMetricsLevel = "Default"
-	// StorageApplianceMetricsConfigurationStatusMetricsLevelNexus - Metrics are emitted at the Nexus metrics level.
-	StorageApplianceMetricsConfigurationStatusMetricsLevelNexus StorageApplianceMetricsConfigurationStatusMetricsLevel = "Nexus"
-)
-
-// PossibleStorageApplianceMetricsConfigurationStatusMetricsLevelValues returns the possible values for the StorageApplianceMetricsConfigurationStatusMetricsLevel const type.
-func PossibleStorageApplianceMetricsConfigurationStatusMetricsLevelValues() []StorageApplianceMetricsConfigurationStatusMetricsLevel {
-	return []StorageApplianceMetricsConfigurationStatusMetricsLevel{
-		StorageApplianceMetricsConfigurationStatusMetricsLevelDefault,
-		StorageApplianceMetricsConfigurationStatusMetricsLevelNexus,
-	}
-}
-
 // StorageApplianceProvisioningState - The provisioning state of the storage appliance.
 type StorageApplianceProvisioningState string
 
@@ -2409,24 +2038,6 @@ func PossibleStorageApplianceProvisioningStateValues() []StorageApplianceProvisi
 		StorageApplianceProvisioningStateFailed,
 		StorageApplianceProvisioningStateProvisioning,
 		StorageApplianceProvisioningStateSucceeded,
-	}
-}
-
-// TransportProtocol - The protocol advertised by the access bridge endpoints.
-type TransportProtocol string
-
-const (
-	// TransportProtocolTCP - The TCP transport protocol.
-	TransportProtocolTCP TransportProtocol = "TCP"
-	// TransportProtocolUDP - The UDP transport protocol.
-	TransportProtocolUDP TransportProtocol = "UDP"
-)
-
-// PossibleTransportProtocolValues returns the possible values for the TransportProtocol const type.
-func PossibleTransportProtocolValues() []TransportProtocol {
-	return []TransportProtocol{
-		TransportProtocolTCP,
-		TransportProtocolUDP,
 	}
 }
 

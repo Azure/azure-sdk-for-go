@@ -4,10 +4,6 @@
 
 package armcarbonoptimization
 
-const (
-	version20250401 string = "2025-04-01"
-)
-
 // AccessDecisionEnum - Enum for Access Decision
 type AccessDecisionEnum string
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/TableServicesGet.json
+// Generated from example definition: 2025-06-01/TableServicesGet.json
 func ExampleTableServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleTableServicesClient_GetServiceProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TableServicesClientGetServicePropertiesResponse{
-	// 	TableServiceProperties: armstorage.TableServiceProperties{
+	// 	TableServiceProperties: &armstorage.TableServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/tableServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/tableServices/default"),
@@ -102,7 +102,7 @@ func ExampleTableServicesClient_GetServiceProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/TableServicesList.json
+// Generated from example definition: 2025-06-01/TableServicesList.json
 func ExampleTableServicesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleTableServicesClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TableServicesClientListResponse{
-	// 	ListTableServices: armstorage.ListTableServices{
+	// 	ListTableServices: &armstorage.ListTableServices{
 	// 		Value: []*armstorage.TableServiceProperties{
 	// 			{
 	// 				Name: to.Ptr("default"),
@@ -196,7 +196,7 @@ func ExampleTableServicesClient_List() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/TableServicesPut.json
+// Generated from example definition: 2025-06-01/TableServicesPut.json
 func ExampleTableServicesClient_SetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +279,7 @@ func ExampleTableServicesClient_SetServiceProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.TableServicesClientSetServicePropertiesResponse{
-	// 	TableServiceProperties: armstorage.TableServiceProperties{
+	// 	TableServiceProperties: &armstorage.TableServiceProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/tableServices"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/tableServices/default"),

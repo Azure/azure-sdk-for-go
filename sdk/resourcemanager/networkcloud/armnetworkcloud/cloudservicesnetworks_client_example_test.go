@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/CloudServicesNetworks_Create.json
+// Generated from example definition: 2025-09-01/CloudServicesNetworks_Create.json
 func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
 				Mode:               to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 				SizeMiB:            to.Ptr[int64](1048576),
-				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 			},
 		},
 		Tags: map[string]*string{
@@ -58,13 +58,13 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.CloudServicesNetworksClientCreateOrUpdateResponse{
-	// 	CloudServicesNetwork: armnetworkcloud.CloudServicesNetwork{
+	// 	CloudServicesNetwork: &armnetworkcloud.CloudServicesNetwork{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -107,14 +107,14 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	// 			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
 	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 	// 				SizeMiB: to.Ptr[int64](1048576),
-	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 	// 			},
 	// 			StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
 	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 	// 				SizeMiB: to.Ptr[int64](1048576),
 	// 				Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
 	// 				StatusMessage: to.Ptr("Storage is available"),
-	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/Volumes/volumeName"),
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
@@ -134,7 +134,7 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/CloudServicesNetworks_Delete.json
+// Generated from example definition: 2025-09-01/CloudServicesNetworks_Delete.json
 func ExampleCloudServicesNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,11 +151,11 @@ func ExampleCloudServicesNetworksClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/CloudServicesNetworks_Get.json
+// Generated from example definition: 2025-09-01/CloudServicesNetworks_Get.json
 func ExampleCloudServicesNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleCloudServicesNetworksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.CloudServicesNetworksClientGetResponse{
-	// 	CloudServicesNetwork: armnetworkcloud.CloudServicesNetwork{
+	// 	CloudServicesNetwork: &armnetworkcloud.CloudServicesNetwork{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -217,14 +217,14 @@ func ExampleCloudServicesNetworksClient_Get() {
 	// 			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
 	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 	// 				SizeMiB: to.Ptr[int64](1048576),
-	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 	// 			},
 	// 			StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
 	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 	// 				SizeMiB: to.Ptr[int64](1048576),
 	// 				Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
 	// 				StatusMessage: to.Ptr("Storage is available"),
-	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/Volumes/volumeName"),
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
@@ -244,7 +244,7 @@ func ExampleCloudServicesNetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/CloudServicesNetworks_ListByResourceGroup.json
+// Generated from example definition: 2025-09-01/CloudServicesNetworks_ListByResourceGroup.json
 func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,14 +313,14 @@ func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 		// 					StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
 		// 						Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 		// 						SizeMiB: to.Ptr[int64](1048576),
-		// 						StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+		// 						StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 		// 					},
 		// 					StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
 		// 						Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 		// 						SizeMiB: to.Ptr[int64](1048576),
 		// 						Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
 		// 						StatusMessage: to.Ptr("Storage is available"),
-		// 						VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+		// 						VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/Volumes/volumeName"),
 		// 					},
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
@@ -343,7 +343,7 @@ func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/CloudServicesNetworks_ListBySubscription.json
+// Generated from example definition: 2025-09-01/CloudServicesNetworks_ListBySubscription.json
 func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -412,14 +412,14 @@ func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 		// 					StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
 		// 						Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 		// 						SizeMiB: to.Ptr[int64](1048576),
-		// 						StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+		// 						StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 		// 					},
 		// 					StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
 		// 						Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 		// 						SizeMiB: to.Ptr[int64](1048576),
 		// 						Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
 		// 						StatusMessage: to.Ptr("Storage is available"),
-		// 						VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+		// 						VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/Volumes/volumeName"),
 		// 					},
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
@@ -442,7 +442,7 @@ func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/CloudServicesNetworks_Patch.json
+// Generated from example definition: 2025-09-01/CloudServicesNetworks_Patch.json
 func ExampleCloudServicesNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,7 +470,7 @@ func ExampleCloudServicesNetworksClient_BeginUpdate() {
 			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptionsPatch{
 				Mode:               to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 				SizeMiB:            to.Ptr[int64](1048576),
-				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 			},
 		},
 		Tags: map[string]*string{
@@ -483,13 +483,13 @@ func ExampleCloudServicesNetworksClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.CloudServicesNetworksClientUpdateResponse{
-	// 	CloudServicesNetwork: armnetworkcloud.CloudServicesNetwork{
+	// 	CloudServicesNetwork: &armnetworkcloud.CloudServicesNetwork{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -532,14 +532,14 @@ func ExampleCloudServicesNetworksClient_BeginUpdate() {
 	// 			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
 	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 	// 				SizeMiB: to.Ptr[int64](1048576),
-	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 	// 			},
 	// 			StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
 	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
 	// 				SizeMiB: to.Ptr[int64](1048576),
 	// 				Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
 	// 				StatusMessage: to.Ptr("Storage is available"),
-	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/Volumes/volumeName"),
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{

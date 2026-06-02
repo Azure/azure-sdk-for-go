@@ -4,9 +4,7 @@
 package changelog
 
 import (
-	"encoding/json"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"testing"
 
@@ -69,60 +67,4 @@ func TestValidatePackagePath(t *testing.T) {
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "does not exist or is not a directory")
 	})
-}
-
-// TestReportFileFlag_NewPackageOutput exercises the changelog command end-to-end
-// in --report-file (report-only) mode against a brand-new (un-released) module.
-// It verifies that:
-//   - The command succeeds.
-//   - A JSON report is written to the given file with the expected fields.
-//   - CHANGELOG.md is NOT created in the package (report-only mode is non-mutating).
-func TestReportFileFlag_NewPackageOutput(t *testing.T) {
-	// Initialize a temp directory as a git repository so FindSDKRoot / OpenSDKRepository succeed.
-	tempDir := t.TempDir()
-
-	gitInit := exec.Command("git", "init")
-	gitInit.Dir = tempDir
-	if err := gitInit.Run(); err != nil {
-		t.Skip("Git not available, skipping test")
-	}
-
-	// Create a fake SDK package layout: <root>/sdk/foo/armbar with a go.mod file.
-	packagePath := filepath.Join(tempDir, "sdk", "foo", "armbar")
-	require.NoError(t, os.MkdirAll(packagePath, 0755))
-	require.NoError(t, os.WriteFile(
-		filepath.Join(packagePath, "go.mod"),
-		[]byte("module github.com/Azure/azure-sdk-for-go/sdk/foo/armbar\n\ngo 1.23\n"),
-		0644,
-	))
-
-	reportFile := filepath.Join(tempDir, "sdkchange.json")
-
-	cmd := Command()
-	cmd.SetArgs([]string{packagePath, "--report-file", reportFile})
-	// Silence the cobra-managed output streams; the command also writes JSON via fmt.Println,
-	// which will surface in test output but is harmless.
-	cmd.SetOut(os.Stderr)
-	cmd.SetErr(os.Stderr)
-
-	require.NoError(t, cmd.Execute(), "report-only changelog execution should succeed for a new package")
-
-	// Verify the report file was written and parses as the expected schema.
-	data, err := os.ReadFile(reportFile)
-	require.NoError(t, err, "report file should be written when --report-file is set")
-	require.NotEmpty(t, data, "report file should not be empty")
-
-	var result ChangelogResult
-	require.NoError(t, json.Unmarshal(data, &result), "report file should contain valid ChangelogResult JSON")
-
-	assert.True(t, result.Success, "Success should be true for a new package report")
-	assert.Equal(t, packagePath, result.PackagePath)
-	assert.Equal(t, "New Package", result.PackageStatus)
-	assert.False(t, result.HasBreakingChange, "a new package has no breaking changes")
-	assert.NotEmpty(t, result.ChangelogMD, "ChangelogMD should be populated in the report")
-	assert.NotEmpty(t, result.ReleaseDate, "ReleaseDate should be populated")
-
-	// Verify CHANGELOG.md was NOT created (report-only mode must not mutate the package).
-	_, err = os.Stat(filepath.Join(packagePath, utils.ChangelogFileName))
-	assert.True(t, os.IsNotExist(err), "report-only mode must not create CHANGELOG.md, got err=%v", err)
 }

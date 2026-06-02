@@ -4,42 +4,6 @@
 
 package armnetworkcloud
 
-// AccessBridgesClientCreateOrUpdateResponse contains the response from method AccessBridgesClient.BeginCreateOrUpdate.
-type AccessBridgesClientCreateOrUpdateResponse struct {
-	// AccessBridge represents a managed access bridge resource.
-	AccessBridge
-}
-
-// AccessBridgesClientDeleteResponse contains the response from method AccessBridgesClient.BeginDelete.
-type AccessBridgesClientDeleteResponse struct {
-	// The current status of an async operation.
-	OperationStatusResult
-}
-
-// AccessBridgesClientGetResponse contains the response from method AccessBridgesClient.Get.
-type AccessBridgesClientGetResponse struct {
-	// AccessBridge represents a managed access bridge resource.
-	AccessBridge
-}
-
-// AccessBridgesClientListByResourceGroupResponse contains the response from method AccessBridgesClient.NewListByResourceGroupPager.
-type AccessBridgesClientListByResourceGroupResponse struct {
-	// AccessBridgeList represents a paged list of access bridges.
-	AccessBridgeList
-}
-
-// AccessBridgesClientListBySubscriptionResponse contains the response from method AccessBridgesClient.NewListBySubscriptionPager.
-type AccessBridgesClientListBySubscriptionResponse struct {
-	// AccessBridgeList represents a paged list of access bridges.
-	AccessBridgeList
-}
-
-// AccessBridgesClientUpdateResponse contains the response from method AccessBridgesClient.BeginUpdate.
-type AccessBridgesClientUpdateResponse struct {
-	// AccessBridge represents a managed access bridge resource.
-	AccessBridge
-}
-
 // AgentPoolsClientCreateOrUpdateResponse contains the response from method AgentPoolsClient.BeginCreateOrUpdate.
 type AgentPoolsClientCreateOrUpdateResponse struct {
 	// AgentPool represents the agent pool of Kubernetes cluster.
@@ -304,12 +268,6 @@ type ClusterManagersClientListBySubscriptionResponse struct {
 	ClusterManagerList
 }
 
-// ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse contains the response from method ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection.
-type ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse struct {
-	// The current status of an async operation.
-	OperationStatusResult
-}
-
 // ClusterManagersClientUpdateResponse contains the response from method ClusterManagersClient.Update.
 type ClusterManagersClientUpdateResponse struct {
 	// ClusterManager represents a control-plane to manage one or more on-premises clusters.
@@ -346,12 +304,6 @@ type ClustersClientGetResponse struct {
 	Cluster
 }
 
-// ClustersClientInspectResponse contains the response from method ClustersClient.BeginInspect.
-type ClustersClientInspectResponse struct {
-	// The current status of an async operation.
-	OperationStatusResult
-}
-
 // ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.NewListByResourceGroupPager.
 type ClustersClientListByResourceGroupResponse struct {
 	// ClusterList represents a list of clusters.
@@ -362,12 +314,6 @@ type ClustersClientListByResourceGroupResponse struct {
 type ClustersClientListBySubscriptionResponse struct {
 	// ClusterList represents a list of clusters.
 	ClusterList
-}
-
-// ClustersClientRotateCredentialResponse contains the response from method ClustersClient.BeginRotateCredential.
-type ClustersClientRotateCredentialResponse struct {
-	// The current status of an async operation.
-	OperationStatusResult
 }
 
 // ClustersClientScanRuntimeResponse contains the response from method ClustersClient.BeginScanRuntime.
@@ -488,42 +434,6 @@ type KubernetesClustersClientRestartNodeResponse struct {
 type KubernetesClustersClientUpdateResponse struct {
 	// KubernetesCluster represents the Kubernetes cluster hosted on Network Cloud.
 	KubernetesCluster
-}
-
-// KubernetesVersionsClientCreateOrUpdateResponse contains the response from method KubernetesVersionsClient.BeginCreateOrUpdate.
-type KubernetesVersionsClientCreateOrUpdateResponse struct {
-	// KubernetesVersion represents the available Kubernetes versions for a cluster.
-	KubernetesVersion
-}
-
-// KubernetesVersionsClientDeleteResponse contains the response from method KubernetesVersionsClient.BeginDelete.
-type KubernetesVersionsClientDeleteResponse struct {
-	// The current status of an async operation.
-	OperationStatusResult
-}
-
-// KubernetesVersionsClientGetResponse contains the response from method KubernetesVersionsClient.Get.
-type KubernetesVersionsClientGetResponse struct {
-	// KubernetesVersion represents the available Kubernetes versions for a cluster.
-	KubernetesVersion
-}
-
-// KubernetesVersionsClientListByResourceGroupResponse contains the response from method KubernetesVersionsClient.NewListByResourceGroupPager.
-type KubernetesVersionsClientListByResourceGroupResponse struct {
-	// KubernetesVersionList represents a list of Kubernetes version resources.
-	KubernetesVersionList
-}
-
-// KubernetesVersionsClientListBySubscriptionResponse contains the response from method KubernetesVersionsClient.NewListBySubscriptionPager.
-type KubernetesVersionsClientListBySubscriptionResponse struct {
-	// KubernetesVersionList represents a list of Kubernetes version resources.
-	KubernetesVersionList
-}
-
-// KubernetesVersionsClientUpdateResponse contains the response from method KubernetesVersionsClient.BeginUpdate.
-type KubernetesVersionsClientUpdateResponse struct {
-	// KubernetesVersion represents the available Kubernetes versions for a cluster.
-	KubernetesVersion
 }
 
 // L2NetworksClientCreateOrUpdateResponse contains the response from method L2NetworksClient.BeginCreateOrUpdate.

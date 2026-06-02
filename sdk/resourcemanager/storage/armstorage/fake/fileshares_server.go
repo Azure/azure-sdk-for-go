@@ -17,7 +17,6 @@ import (
 	"net/url"
 	"reflect"
 	"regexp"
-	"slices"
 )
 
 // FileSharesServer is a fake server for instances of the armstorage.FileSharesClient type.
@@ -80,7 +79,9 @@ func (f *FileSharesServerTransport) Do(req *http.Request) (*http.Response, error
 }
 
 func (f *FileSharesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -108,7 +109,10 @@ func (f *FileSharesServerTransport) dispatchToMethodFake(req *http.Request, meth
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -146,7 +150,11 @@ func (f *FileSharesServerTransport) dispatchCreate(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	expandParam := getOptional(qp.Get("$expand"))
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
 	var options *armstorage.FileSharesClientCreateOptions
 	if expandParam != nil {
 		options = &armstorage.FileSharesClientCreateOptions{
@@ -158,7 +166,7 @@ func (f *FileSharesServerTransport) dispatchCreate(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FileShare, req)
@@ -192,7 +200,11 @@ func (f *FileSharesServerTransport) dispatchDelete(req *http.Request) (*http.Res
 		return nil, err
 	}
 	xMSSnapshotParam := getOptional(getHeaderValue(req.Header, "x-ms-snapshot"))
-	includeParam := getOptional(qp.Get("$include"))
+	includeUnescaped, err := url.QueryUnescape(qp.Get("$include"))
+	if err != nil {
+		return nil, err
+	}
+	includeParam := getOptional(includeUnescaped)
 	var options *armstorage.FileSharesClientDeleteOptions
 	if xMSSnapshotParam != nil || includeParam != nil {
 		options = &armstorage.FileSharesClientDeleteOptions{
@@ -205,7 +217,7 @@ func (f *FileSharesServerTransport) dispatchDelete(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -238,7 +250,11 @@ func (f *FileSharesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	expandParam := getOptional(qp.Get("$expand"))
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
 	xMSSnapshotParam := getOptional(getHeaderValue(req.Header, "x-ms-snapshot"))
 	var options *armstorage.FileSharesClientGetOptions
 	if expandParam != nil || xMSSnapshotParam != nil {
@@ -252,7 +268,7 @@ func (f *FileSharesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FileShare, req)
@@ -301,7 +317,7 @@ func (f *FileSharesServerTransport) dispatchLease(req *http.Request) (*http.Resp
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LeaseShareResponse, req)
@@ -335,9 +351,21 @@ func (f *FileSharesServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		maxpagesizeParam := getOptional(qp.Get("$maxpagesize"))
-		filterParam := getOptional(qp.Get("$filter"))
-		expandParam := getOptional(qp.Get("$expand"))
+		maxpagesizeUnescaped, err := url.QueryUnescape(qp.Get("$maxpagesize"))
+		if err != nil {
+			return nil, err
+		}
+		maxpagesizeParam := getOptional(maxpagesizeUnescaped)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(expandUnescaped)
 		var options *armstorage.FileSharesClientListOptions
 		if maxpagesizeParam != nil || filterParam != nil || expandParam != nil {
 			options = &armstorage.FileSharesClientListOptions{
@@ -357,7 +385,7 @@ func (f *FileSharesServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		f.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -398,7 +426,7 @@ func (f *FileSharesServerTransport) dispatchRestore(req *http.Request) (*http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -439,7 +467,7 @@ func (f *FileSharesServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FileShare, req)

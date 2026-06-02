@@ -18,8 +18,6 @@ import (
 
 // AppLinkMembersClient contains the methods for the AppLinkMembers group.
 // Don't use this type directly, use NewAppLinkMembersClient() instead.
-//
-// Generated from API version 2025-08-01-preview
 type AppLinkMembersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewAppLinkMembersClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Create an AppLinkMember.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
 //   - appLinkMemberName - The name of the AppLinkMember
@@ -68,6 +68,8 @@ func (client *AppLinkMembersClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // CreateOrUpdate - Create an AppLinkMember.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 func (client *AppLinkMembersClient) createOrUpdate(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, resource AppLinkMember, options *AppLinkMembersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AppLinkMembersClient.BeginCreateOrUpdate"
@@ -113,8 +115,8 @@ func (client *AppLinkMembersClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -125,6 +127,8 @@ func (client *AppLinkMembersClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Delete an AppLinkMember.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
 //   - appLinkMemberName - The name of the AppLinkMember
@@ -149,6 +153,8 @@ func (client *AppLinkMembersClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Delete an AppLinkMember.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 func (client *AppLinkMembersClient) deleteOperation(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, options *AppLinkMembersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AppLinkMembersClient.BeginDelete"
@@ -194,13 +200,15 @@ func (client *AppLinkMembersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get an AppLinkMember.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
 //   - appLinkMemberName - The name of the AppLinkMember
@@ -251,8 +259,8 @@ func (client *AppLinkMembersClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -267,6 +275,8 @@ func (client *AppLinkMembersClient) getHandleResponse(resp *http.Response) (AppL
 }
 
 // NewListByAppLinkPager - List AppLinkMember resources by AppLink.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
 //   - options - AppLinkMembersClientListByAppLinkOptions contains the optional parameters for the AppLinkMembersClient.NewListByAppLinkPager
@@ -314,8 +324,8 @@ func (client *AppLinkMembersClient) listByAppLinkCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -331,6 +341,8 @@ func (client *AppLinkMembersClient) listByAppLinkHandleResponse(resp *http.Respo
 
 // BeginUpdate - Update an AppLinkMember.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
 //   - appLinkMemberName - The name of the AppLinkMember
@@ -357,6 +369,8 @@ func (client *AppLinkMembersClient) BeginUpdate(ctx context.Context, resourceGro
 
 // Update - Update an AppLinkMember.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 func (client *AppLinkMembersClient) update(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, properties AppLinkMemberUpdate, options *AppLinkMembersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AppLinkMembersClient.BeginUpdate"
@@ -402,8 +416,8 @@ func (client *AppLinkMembersClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

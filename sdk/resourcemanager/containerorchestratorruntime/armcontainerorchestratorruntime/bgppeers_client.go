@@ -18,8 +18,6 @@ import (
 
 // BgpPeersClient contains the methods for the BgpPeers group.
 // Don't use this type directly, use NewBgpPeersClient() instead.
-//
-// Generated from API version 2024-03-01
 type BgpPeersClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewBgpPeersClient(credential azcore.TokenCredential, options *arm.ClientOpt
 
 // BeginCreateOrUpdate - Create a BgpPeer
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - bgpPeerName - The name of the BgpPeer
 //   - resource - Resource create parameters.
@@ -65,6 +65,8 @@ func (client *BgpPeersClient) BeginCreateOrUpdate(ctx context.Context, resourceU
 
 // CreateOrUpdate - Create a BgpPeer
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
 func (client *BgpPeersClient) createOrUpdate(ctx context.Context, resourceURI string, bgpPeerName string, resource BgpPeer, options *BgpPeersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BgpPeersClient.BeginCreateOrUpdate"
@@ -102,8 +104,8 @@ func (client *BgpPeersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -114,6 +116,8 @@ func (client *BgpPeersClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // Delete - Delete a BgpPeer
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - bgpPeerName - The name of the BgpPeer
 //   - options - BgpPeersClientDeleteOptions contains the optional parameters for the BgpPeersClient.Delete method.
@@ -154,13 +158,15 @@ func (client *BgpPeersClient) deleteCreateRequest(ctx context.Context, resourceU
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a BgpPeer
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - bgpPeerName - The name of the BgpPeer
 //   - options - BgpPeersClientGetOptions contains the optional parameters for the BgpPeersClient.Get method.
@@ -202,8 +208,8 @@ func (client *BgpPeersClient) getCreateRequest(ctx context.Context, resourceURI 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -218,6 +224,8 @@ func (client *BgpPeersClient) getHandleResponse(resp *http.Response) (BgpPeersCl
 }
 
 // NewListPager - List BgpPeer resources by parent
+//
+// Generated from API version 2024-03-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - BgpPeersClientListOptions contains the optional parameters for the BgpPeersClient.NewListPager method.
 func (client *BgpPeersClient) NewListPager(resourceURI string, options *BgpPeersClientListOptions) *runtime.Pager[BgpPeersClientListResponse] {
@@ -255,8 +263,8 @@ func (client *BgpPeersClient) listCreateRequest(ctx context.Context, resourceURI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

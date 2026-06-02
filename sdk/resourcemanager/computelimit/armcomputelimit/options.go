@@ -12,9 +12,6 @@ type FeaturesClientBeginDisableOptions struct {
 
 // FeaturesClientBeginEnableOptions contains the optional parameters for the FeaturesClient.BeginEnable method.
 type FeaturesClientBeginEnableOptions struct {
-	// The content of the action request
-	Body *FeatureEnableRequest
-
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

@@ -1,22 +1,5 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-05-20)
-### Breaking Changes
-
-- Struct `CertificateBodyDescription` has been removed
-- Struct `ErrorDetails` has been removed
-- Struct `Resource` has been removed
-
-### Features Added
-
-- New enum type `GatewayVersion` with values `GatewayVersionV1`, `GatewayVersionV2`
-- New struct `Details`
-- New field `SystemData` in struct `CertificateDescription`
-- New field `SystemData` in struct `EventHubConsumerGroupInfo`
-- New field `SystemData` in struct `PrivateEndpointConnection`
-- New field `DeviceHostName`, `IotHubDetails`, `ServiceHostName` in struct `Properties`
-
-
 ## 1.4.0-beta.1 (2025-11-11)
 ### Features Added
 

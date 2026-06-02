@@ -18,8 +18,6 @@ import (
 
 // AuthenticationSettingsClient contains the methods for the AuthenticationSettings group.
 // Don't use this type directly, use NewAuthenticationSettingsClient() instead.
-//
-// Generated from API version 2025-05-01-preview
 type AuthenticationSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewAuthenticationSettingsClient(subscriptionID string, credential azcore.To
 
 // CreateOrUpdate - Create a AuthenticationSetting
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - authenticationSettingName - Name of the authentication setting. Must be unique within a health model.
@@ -95,8 +95,8 @@ func (client *AuthenticationSettingsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -116,6 +116,8 @@ func (client *AuthenticationSettingsClient) createOrUpdateHandleResponse(resp *h
 
 // Delete - Delete a AuthenticationSetting
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - authenticationSettingName - Name of the authentication setting. Must be unique within a health model.
@@ -166,13 +168,15 @@ func (client *AuthenticationSettingsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a AuthenticationSetting
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - authenticationSettingName - Name of the authentication setting. Must be unique within a health model.
@@ -224,8 +228,8 @@ func (client *AuthenticationSettingsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -240,6 +244,8 @@ func (client *AuthenticationSettingsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByHealthModelPager - List AuthenticationSetting resources by HealthModel
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - options - AuthenticationSettingsClientListByHealthModelOptions contains the optional parameters for the AuthenticationSettingsClient.NewListByHealthModelPager
@@ -287,8 +293,8 @@ func (client *AuthenticationSettingsClient) listByHealthModelCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

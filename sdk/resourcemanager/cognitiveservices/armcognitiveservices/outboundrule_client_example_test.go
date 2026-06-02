@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/createOrUpdateRuleV2.json
+// Generated from example definition: 2026-01-15-preview/ManagedNetwork/createOrUpdateRuleV2.json
 func ExampleOutboundRuleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExampleOutboundRuleClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.OutboundRuleClientCreateOrUpdateResponse{
-	// 	OutboundRuleBasicResource: armcognitiveservices.OutboundRuleBasicResource{
+	// 	OutboundRuleBasicResource: &armcognitiveservices.OutboundRuleBasicResource{
 	// 		Name: to.Ptr("rule_name_1"),
 	// 		Type: to.Ptr("accounts/outboundRules"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.CognitiveServices/accounts/cognitive-account-name/managedNetworks/default/outboundRules/rule_name_1"),
@@ -56,7 +56,7 @@ func ExampleOutboundRuleClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/deleteRuleV2.json
+// Generated from example definition: 2026-01-15-preview/ManagedNetwork/deleteRuleV2.json
 func ExampleOutboundRuleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,11 +73,11 @@ func ExampleOutboundRuleClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/getRuleV2.json
+// Generated from example definition: 2026-01-15-preview/ManagedNetwork/getRuleV2.json
 func ExampleOutboundRuleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleOutboundRuleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.OutboundRuleClientGetResponse{
-	// 	OutboundRuleBasicResource: armcognitiveservices.OutboundRuleBasicResource{
+	// 	OutboundRuleBasicResource: &armcognitiveservices.OutboundRuleBasicResource{
 	// 		Name: to.Ptr("rule_name_1"),
 	// 		Type: to.Ptr("accounts/outboundRules"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.CognitiveServices/accounts/cognitive-account-name/managedNetworks/default/outboundRules/rule_name_1"),
@@ -110,7 +110,7 @@ func ExampleOutboundRuleClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/listRuleV2.json
+// Generated from example definition: 2026-01-15-preview/ManagedNetwork/listRuleV2.json
 func ExampleOutboundRuleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

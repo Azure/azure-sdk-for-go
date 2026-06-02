@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/ServicePutOperation_example_max.json
+// Generated from example definition: 2023-11-01-preview/ServicePutOperation_example_max.json
 func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMaximumParameters(
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ServicePutOperation_example_min.json
+// Generated from example definition: 2023-11-01-preview/ServicePutOperation_example_min.json
 func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMinimumParameters(
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ServiceDeleteOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ServiceDeleteOperation_example.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleServicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ServiceGetOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ServiceGetOperation_example.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ServiceListOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ServiceListOperation_example.json
 func ExampleServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +220,7 @@ func ExampleServicesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ServicePatchOperation_example.json
+// Generated from example definition: 2023-11-01-preview/ServicePatchOperation_example.json
 func ExampleServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

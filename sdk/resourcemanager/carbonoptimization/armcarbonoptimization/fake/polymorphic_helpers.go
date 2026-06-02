@@ -19,16 +19,16 @@ func unmarshalQueryFilterClassification(rawMsg json.RawMessage) (armcarbonoptimi
 	}
 	var b armcarbonoptimization.QueryFilterClassification
 	switch m["reportType"] {
-	case string(armcarbonoptimization.ReportTypeEnumItemDetailsReport):
-		b = &armcarbonoptimization.ItemDetailsQueryFilter{}
-	case string(armcarbonoptimization.ReportTypeEnumMonthlySummaryReport):
-		b = &armcarbonoptimization.MonthlySummaryReportQueryFilter{}
 	case string(armcarbonoptimization.ReportTypeEnumOverallSummaryReport):
 		b = &armcarbonoptimization.OverallSummaryReportQueryFilter{}
-	case string(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport):
-		b = &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{}
+	case string(armcarbonoptimization.ReportTypeEnumMonthlySummaryReport):
+		b = &armcarbonoptimization.MonthlySummaryReportQueryFilter{}
 	case string(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport):
 		b = &armcarbonoptimization.TopItemsSummaryReportQueryFilter{}
+	case string(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport):
+		b = &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{}
+	case string(armcarbonoptimization.ReportTypeEnumItemDetailsReport):
+		b = &armcarbonoptimization.ItemDetailsQueryFilter{}
 	default:
 		b = &armcarbonoptimization.QueryFilter{}
 	}

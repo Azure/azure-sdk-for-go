@@ -42,7 +42,6 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 		InsecureAllowCredentialWithHTTP: conOptions.InsecureAllowCredentialWithHTTP,
 	})
 	plOpts := runtime.PipelineOptions{
-		PerCall:  []policy.Policy{shared.NewRangePolicy()},
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -61,7 +60,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
+	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
@@ -80,7 +79,6 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
-		PerCall:  []policy.Policy{shared.NewRangePolicy()},
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)

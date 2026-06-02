@@ -18,8 +18,6 @@ import (
 
 // AutoUpgradeProfileOperationsClient contains the methods for the AutoUpgradeProfileOperations group.
 // Don't use this type directly, use NewAutoUpgradeProfileOperationsClient() instead.
-//
-// Generated from API version 2026-03-02-preview
 type AutoUpgradeProfileOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewAutoUpgradeProfileOperationsClient(subscriptionID string, credential azc
 
 // BeginGenerateUpdateRun - Generates an update run for a given auto upgrade profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - autoUpgradeProfileName - The name of the AutoUpgradeProfile resource.
@@ -68,6 +68,8 @@ func (client *AutoUpgradeProfileOperationsClient) BeginGenerateUpdateRun(ctx con
 
 // GenerateUpdateRun - Generates an update run for a given auto upgrade profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 func (client *AutoUpgradeProfileOperationsClient) generateUpdateRun(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfileOperationsClientBeginGenerateUpdateRunOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AutoUpgradeProfileOperationsClient.BeginGenerateUpdateRun"
@@ -113,8 +115,8 @@ func (client *AutoUpgradeProfileOperationsClient) generateUpdateRunCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -53,13 +53,13 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdate(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.PrivateCloudsClientCreateOrUpdateResponse{
-	// 	PrivateCloud: armavs.PrivateCloud{
+	// 	PrivateCloud: &armavs.PrivateCloud{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Name: to.Ptr("cloud1"),
@@ -164,13 +164,13 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateF
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.PrivateCloudsClientCreateOrUpdateResponse{
-	// 	PrivateCloud: armavs.PrivateCloud{
+	// 	PrivateCloud: &armavs.PrivateCloud{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Name: to.Ptr("cloud1"),
@@ -274,13 +274,13 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.PrivateCloudsClientCreateOrUpdateResponse{
-	// 	PrivateCloud: armavs.PrivateCloud{
+	// 	PrivateCloud: &armavs.PrivateCloud{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Zones: []*string{
@@ -399,13 +399,13 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.PrivateCloudsClientCreateOrUpdateResponse{
-	// 	PrivateCloud: armavs.PrivateCloud{
+	// 	PrivateCloud: &armavs.PrivateCloud{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Zones: []*string{
@@ -500,7 +500,7 @@ func ExamplePrivateCloudsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -528,7 +528,7 @@ func ExamplePrivateCloudsClient_Get_privateCloudsGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.PrivateCloudsClientGetResponse{
-	// 	PrivateCloud: armavs.PrivateCloud{
+	// 	PrivateCloud: &armavs.PrivateCloud{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1"),
 	// 		Identity: &armavs.PrivateCloudIdentity{
 	// 			PrincipalID: to.Ptr("881e5573-063f-49e4-8c08-79d7df0169d8"),
@@ -633,7 +633,7 @@ func ExamplePrivateCloudsClient_Get_privateCloudsGetStretched() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.PrivateCloudsClientGetResponse{
-	// 	PrivateCloud: armavs.PrivateCloud{
+	// 	PrivateCloud: &armavs.PrivateCloud{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Name: to.Ptr("cloud1"),
@@ -730,7 +730,7 @@ func ExamplePrivateCloudsClient_GetVcfLicense() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.PrivateCloudsClientGetVcfLicenseResponse{
-	// 	VcfLicenseClassification: &armavs.Vcf5License{
+	// 	Vcf5License: &armavs.Vcf5License{
 	// 		Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
 	// 		LicenseKey: to.Ptr("12345-12345-12345-12345-12345"),
 	// 		EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
@@ -965,7 +965,7 @@ func ExamplePrivateCloudsClient_ListAdminCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.PrivateCloudsClientListAdminCredentialsResponse{
-	// 	AdminCredentials: armavs.AdminCredentials{
+	// 	AdminCredentials: &armavs.AdminCredentials{
 	// 		NsxtPassword: to.Ptr("$(1X4Dkk"),
 	// 		NsxtUsername: to.Ptr("admin"),
 	// 		VcenterPassword: to.Ptr("<vcenterPassword>"),
@@ -1190,7 +1190,7 @@ func ExamplePrivateCloudsClient_BeginRotateNsxtPassword() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
@@ -1211,7 +1211,7 @@ func ExamplePrivateCloudsClient_BeginRotateVcenterPassword() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
@@ -1249,13 +1249,13 @@ func ExamplePrivateCloudsClient_BeginUpdate_privateCloudsUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.PrivateCloudsClientUpdateResponse{
-	// 	PrivateCloud: armavs.PrivateCloud{
+	// 	PrivateCloud: &armavs.PrivateCloud{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Name: to.Ptr("cloud1"),
@@ -1349,13 +1349,13 @@ func ExamplePrivateCloudsClient_BeginUpdate_privateCloudsUpdateStretched() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.PrivateCloudsClientUpdateResponse{
-	// 	PrivateCloud: armavs.PrivateCloud{
+	// 	PrivateCloud: &armavs.PrivateCloud{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Name: to.Ptr("cloud1"),

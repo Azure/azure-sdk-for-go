@@ -18,8 +18,6 @@ import (
 
 // CommitmentTiersClient contains the methods for the CommitmentTiers group.
 // Don't use this type directly, use NewCommitmentTiersClient() instead.
-//
-// Generated from API version 2026-03-15-preview
 type CommitmentTiersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewCommitmentTiersClient(subscriptionID string, credential azcore.TokenCred
 }
 
 // NewListPager - List Commitment Tiers.
+//
+// Generated from API version 2026-01-15-preview
 //   - location - The location name.
 //   - options - CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.NewListPager
 //     method.
@@ -84,8 +84,8 @@ func (client *CommitmentTiersClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

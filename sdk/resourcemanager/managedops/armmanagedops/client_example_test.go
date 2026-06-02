@@ -72,8 +72,8 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
 	// 				},
 	// 				UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
-	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateDisable),
-	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredEnablementStateDisable),
+	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersDisable),
+	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersDisable),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 	// 			PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
@@ -82,23 +82,23 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 			Services: &armmanagedops.ServiceInformation{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				AzurePolicyAndMachineConfiguration: &armmanagedops.GuestConfigurationInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				DefenderForServers: &armmanagedops.DefenderForServersInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				DefenderCspm: &armmanagedops.DefenderCspmInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 			},
 	// 		},
@@ -171,8 +171,8 @@ func ExampleClient_Get() {
 	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
 	// 				},
 	// 				UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
-	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
-	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
+	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
+	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 	// 			PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
@@ -181,23 +181,23 @@ func ExampleClient_Get() {
 	// 			Services: &armmanagedops.ServiceInformation{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				AzurePolicyAndMachineConfiguration: &armmanagedops.GuestConfigurationInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				DefenderForServers: &armmanagedops.DefenderForServersInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				DefenderCspm: &armmanagedops.DefenderCspmInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 			},
 	// 		},
@@ -255,8 +255,8 @@ func ExampleClient_NewListPager() {
 		// 							AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
 		// 						},
 		// 						UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
-		// 						DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
-		// 						DefenderCspm: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
+		// 						DefenderForServers: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
+		// 						DefenderCspm: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 		// 					PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
@@ -265,23 +265,23 @@ func ExampleClient_NewListPager() {
 		// 					Services: &armmanagedops.ServiceInformation{
 		// 						ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
 		// 							DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
-		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 		// 						},
 		// 						AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
 		// 							DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
-		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 		// 						},
 		// 						AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
-		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 		// 						},
 		// 						AzurePolicyAndMachineConfiguration: &armmanagedops.GuestConfigurationInformation{
-		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 		// 						},
 		// 						DefenderForServers: &armmanagedops.DefenderForServersInformation{
-		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 		// 						},
 		// 						DefenderCspm: &armmanagedops.DefenderCspmInformation{
-		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 		// 						},
 		// 					},
 		// 				},
@@ -340,8 +340,8 @@ func ExampleClient_BeginUpdate() {
 	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
 	// 				},
 	// 				UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
-	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
-	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
+	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
+	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 	// 			PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
@@ -350,23 +350,23 @@ func ExampleClient_BeginUpdate() {
 	// 			Services: &armmanagedops.ServiceInformation{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				AzurePolicyAndMachineConfiguration: &armmanagedops.GuestConfigurationInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				DefenderForServers: &armmanagedops.DefenderForServersInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 				DefenderCspm: &armmanagedops.DefenderCspmInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
 	// 				},
 	// 			},
 	// 		},

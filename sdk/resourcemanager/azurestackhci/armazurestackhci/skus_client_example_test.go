@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-30/GetSku.json
+// Generated from example definition: 2026-04-01-preview/GetSku.json
 func ExampleSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleSKUsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.SKUsClientGetResponse{
-	// 	SKU: armazurestackhci.SKU{
+	// 	SKU: &armazurestackhci.SKU{
 	// 		Name: to.Ptr("sku1"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/publishers/offers/skus"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/publishers/publisher1/offers/offer1/skus/sku1"),
@@ -54,7 +54,7 @@ func ExampleSKUsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/ListSkusByOffer.json
+// Generated from example definition: 2026-04-01-preview/ListSkusByOffer.json
 func ExampleSKUsClient_NewListByOfferPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,8 +19,6 @@ import (
 
 // FleetUpdateStrategiesClient contains the methods for the FleetUpdateStrategies group.
 // Don't use this type directly, use NewFleetUpdateStrategiesClient() instead.
-//
-// Generated from API version 2026-03-02-preview
 type FleetUpdateStrategiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewFleetUpdateStrategiesClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreateOrUpdate - Create a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - updateStrategyName - The name of the UpdateStrategy resource.
@@ -70,6 +70,8 @@ func (client *FleetUpdateStrategiesClient) BeginCreateOrUpdate(ctx context.Conte
 
 // CreateOrUpdate - Create a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 func (client *FleetUpdateStrategiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, resource FleetUpdateStrategy, options *FleetUpdateStrategiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetUpdateStrategiesClient.BeginCreateOrUpdate"
@@ -115,8 +117,8 @@ func (client *FleetUpdateStrategiesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -133,6 +135,8 @@ func (client *FleetUpdateStrategiesClient) createOrUpdateCreateRequest(ctx conte
 
 // BeginDelete - Delete a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - updateStrategyName - The name of the UpdateStrategy resource.
@@ -157,6 +161,8 @@ func (client *FleetUpdateStrategiesClient) BeginDelete(ctx context.Context, reso
 
 // Delete - Delete a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 func (client *FleetUpdateStrategiesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, options *FleetUpdateStrategiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetUpdateStrategiesClient.BeginDelete"
@@ -202,8 +208,8 @@ func (client *FleetUpdateStrategiesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -212,6 +218,8 @@ func (client *FleetUpdateStrategiesClient) deleteCreateRequest(ctx context.Conte
 
 // Get - Get a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - updateStrategyName - The name of the UpdateStrategy resource.
@@ -263,8 +271,8 @@ func (client *FleetUpdateStrategiesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -279,6 +287,8 @@ func (client *FleetUpdateStrategiesClient) getHandleResponse(resp *http.Response
 }
 
 // NewListByFleetPager - List FleetUpdateStrategy resources by Fleet
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - options - FleetUpdateStrategiesClientListByFleetOptions contains the optional parameters for the FleetUpdateStrategiesClient.NewListByFleetPager
@@ -332,8 +342,8 @@ func (client *FleetUpdateStrategiesClient) listByFleetCreateRequest(ctx context.
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20260302Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -4,10 +4,6 @@
 
 package armcomputefleet
 
-const (
-	version20250701Preview string = "2025-07-01-preview"
-)
-
 // AcceleratorManufacturer - Accelerator manufacturers supported by Azure VMs.
 type AcceleratorManufacturer string
 

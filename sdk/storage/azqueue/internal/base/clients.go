@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
@@ -56,7 +57,7 @@ func NewServiceClient(queueURL string, azClient *azcore.Client, sharedKey *expor
 func NewQueueClient(queueURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.QueueClient, generated.MessagesClient] {
 	return &CompositeClient[generated.QueueClient, generated.MessagesClient]{
 		innerT:    generated.NewQueueClient(queueURL, azClient),
-		innerU:    &generated.MessagesClient{},
+		innerU:    generated.NewMessagesClient(runtime.JoinPaths(queueURL, "messages"), azClient),
 		sharedKey: sharedKey,
 	}
 }

@@ -18,8 +18,6 @@ import (
 
 // TargetsClient contains the methods for the Targets group.
 // Don't use this type directly, use NewTargetsClient() instead.
-//
-// Generated from API version 2026-05-01-preview
 type TargetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewTargetsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // CreateOrUpdate - Create or update a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentProviderNamespace - The parent resource provider namespace.
 //   - parentResourceType - The parent resource type.
@@ -104,8 +104,8 @@ func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -125,6 +125,8 @@ func (client *TargetsClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - Delete a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentProviderNamespace - The parent resource provider namespace.
 //   - parentResourceType - The parent resource type.
@@ -184,13 +186,15 @@ func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentProviderNamespace - The parent resource provider namespace.
 //   - parentResourceType - The parent resource type.
@@ -251,8 +255,8 @@ func (client *TargetsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -267,6 +271,8 @@ func (client *TargetsClient) getHandleResponse(resp *http.Response) (TargetsClie
 }
 
 // NewListPager - Get a list of Target resources that extend a tracked regional resource.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parentProviderNamespace - The parent resource provider namespace.
 //   - parentResourceType - The parent resource type.
@@ -323,11 +329,11 @@ func (client *TargetsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", "2026-05-01-preview")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

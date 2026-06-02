@@ -43,7 +43,7 @@ func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCreateOrUpdate - Create a new volume or update the properties of the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - volumeName - The name of the volume.
 //   - volumeParameters - The request body.
@@ -69,7 +69,7 @@ func (client *VolumesClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 // CreateOrUpdate - Create a new volume or update the properties of the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2025-09-01
 func (client *VolumesClient) createOrUpdate(ctx context.Context, resourceGroupName string, volumeName string, volumeParameters Volume, options *VolumesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VolumesClient.BeginCreateOrUpdate"
@@ -111,7 +111,7 @@ func (client *VolumesClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -130,7 +130,7 @@ func (client *VolumesClient) createOrUpdateCreateRequest(ctx context.Context, re
 // BeginDelete - Delete the provided volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - volumeName - The name of the volume.
 //   - options - VolumesClientBeginDeleteOptions contains the optional parameters for the VolumesClient.BeginDelete method.
@@ -154,7 +154,7 @@ func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Delete the provided volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2025-09-01
 func (client *VolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VolumesClient.BeginDelete"
@@ -196,7 +196,7 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -210,7 +210,7 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Get properties of the provided volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - volumeName - The name of the volume.
 //   - options - VolumesClientGetOptions contains the optional parameters for the VolumesClient.Get method.
@@ -256,7 +256,7 @@ func (client *VolumesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -273,7 +273,7 @@ func (client *VolumesClient) getHandleResponse(resp *http.Response) (VolumesClie
 
 // NewListByResourceGroupPager - Get a list of volumes in the provided resource group.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VolumesClientListByResourceGroupOptions contains the optional parameters for the VolumesClient.NewListByResourceGroupPager
 //     method.
@@ -322,7 +322,7 @@ func (client *VolumesClient) listByResourceGroupCreateRequest(ctx context.Contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2026-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -339,7 +339,7 @@ func (client *VolumesClient) listByResourceGroupHandleResponse(resp *http.Respon
 
 // NewListBySubscriptionPager - Get a list of volumes in the provided subscription.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2025-09-01
 //   - options - VolumesClientListBySubscriptionOptions contains the optional parameters for the VolumesClient.NewListBySubscriptionPager
 //     method.
 func (client *VolumesClient) NewListBySubscriptionPager(options *VolumesClientListBySubscriptionOptions) *runtime.Pager[VolumesClientListBySubscriptionResponse] {
@@ -383,7 +383,7 @@ func (client *VolumesClient) listBySubscriptionCreateRequest(ctx context.Context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2026-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -401,7 +401,7 @@ func (client *VolumesClient) listBySubscriptionHandleResponse(resp *http.Respons
 // Update - Update tags associated with the provided volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - volumeName - The name of the volume.
 //   - volumeUpdateParameters - The request body.
@@ -448,7 +448,7 @@ func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

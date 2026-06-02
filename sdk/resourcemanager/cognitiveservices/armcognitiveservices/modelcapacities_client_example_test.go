@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ListModelCapacities.json
+// Generated from example definition: 2026-01-15-preview/ListModelCapacities.json
 func ExampleModelCapacitiesClient_NewListPager_listModelCapacities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleModelCapacitiesClient_NewListPager_listModelCapacities() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListModelCapacitiesClassicScope.json
+// Generated from example definition: 2026-01-15-preview/ListModelCapacitiesClassicScope.json
 func ExampleModelCapacitiesClient_NewListPager_listModelCapacitiesClassicScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleModelCapacitiesClient_NewListPager_listModelCapacitiesClassicScope()
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListModelCapacitiesDataZoneScope.json
+// Generated from example definition: 2026-01-15-preview/ListModelCapacitiesDataZoneScope.json
 func ExampleModelCapacitiesClient_NewListPager_listModelCapacitiesDataZoneScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleModelCapacitiesClient_NewListPager_listModelCapacitiesDataZoneScope(
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListModelCapacitiesGlobalScope.json
+// Generated from example definition: 2026-01-15-preview/ListModelCapacitiesGlobalScope.json
 func ExampleModelCapacitiesClient_NewListPager_listModelCapacitiesGlobalScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

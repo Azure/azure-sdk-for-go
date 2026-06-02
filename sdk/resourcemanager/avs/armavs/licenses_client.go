@@ -18,8 +18,6 @@ import (
 
 // LicensesClient contains the methods for the Licenses group.
 // Don't use this type directly, use NewLicensesClient() instead.
-//
-// Generated from API version 2025-09-01
 type LicensesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewLicensesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Create a License
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - licenseName - Name of the license.
@@ -68,6 +68,8 @@ func (client *LicensesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Create a License
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *LicensesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, licenseName LicenseName, resource License, options *LicensesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LicensesClient.BeginCreateOrUpdate"
@@ -113,8 +115,8 @@ func (client *LicensesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -125,6 +127,8 @@ func (client *LicensesClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Delete a License
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - licenseName - Name of the license.
@@ -148,6 +152,8 @@ func (client *LicensesClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Delete a License
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *LicensesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, licenseName LicenseName, options *LicensesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LicensesClient.BeginDelete"
@@ -193,13 +199,15 @@ func (client *LicensesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a License
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - licenseName - Name of the license.
@@ -250,8 +258,8 @@ func (client *LicensesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -267,6 +275,8 @@ func (client *LicensesClient) getHandleResponse(resp *http.Response) (LicensesCl
 
 // GetProperties - Just like ArmResourceActionSync, but with no request body.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - licenseName - Name of the license.
@@ -317,8 +327,8 @@ func (client *LicensesClient) getPropertiesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -333,6 +343,8 @@ func (client *LicensesClient) getPropertiesHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - List License resources by PrivateCloud
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - LicensesClientListOptions contains the optional parameters for the LicensesClient.NewListPager method.
@@ -379,8 +391,8 @@ func (client *LicensesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

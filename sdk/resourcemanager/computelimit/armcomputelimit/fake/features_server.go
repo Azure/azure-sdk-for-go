@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computelimit/armcomputelimit"
 	"net/http"
 	"net/url"
-	"reflect"
 	"regexp"
 	"slices"
 )
@@ -161,10 +160,6 @@ func (f *FeaturesServerTransport) dispatchBeginEnable(req *http.Request) (*http.
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcomputelimit.FeatureEnableRequest](req)
-		if err != nil {
-			return nil, err
-		}
 		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
@@ -173,13 +168,7 @@ func (f *FeaturesServerTransport) dispatchBeginEnable(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		var options *armcomputelimit.FeaturesClientBeginEnableOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armcomputelimit.FeaturesClientBeginEnableOptions{
-				Body: &body,
-			}
-		}
-		respr, errRespr := f.srv.BeginEnable(req.Context(), locationParam, featureNameParam, options)
+		respr, errRespr := f.srv.BeginEnable(req.Context(), locationParam, featureNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

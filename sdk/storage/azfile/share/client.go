@@ -41,7 +41,6 @@ func NewClient(shareURL string, cred azcore.TokenCredential, options *ClientOpti
 		InsecureAllowCredentialWithHTTP: conOptions.InsecureAllowCredentialWithHTTP,
 	})
 	plOpts := runtime.PipelineOptions{
-		PerCall:  []policy.Policy{shared.NewRangePolicy()},
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -60,7 +59,7 @@ func NewClient(shareURL string, cred azcore.TokenCredential, options *ClientOpti
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(shareURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
+	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
@@ -161,15 +160,17 @@ func (s *Client) WithSnapshot(shareSnapshot string) (*Client, error) {
 // Create operation creates a new share within a storage account. If a share with the same name already exists, the operation fails.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-share.
 func (s *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-	return s.generated().Create(ctx, opts)
+	opts := options.format()
+	resp, err := s.generated().Create(ctx, opts)
+	return resp, err
 }
 
 // Delete operation marks the specified share for deletion. The share and any files contained within it are later deleted during garbage collection.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-share.
 func (s *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-	return s.generated().Delete(ctx, opts)
+	opts, leaseAccessConditions := options.format()
+	resp, err := s.generated().Delete(ctx, opts, leaseAccessConditions)
+	return resp, err
 }
 
 // Restore operation restores a share that had previously been soft-deleted.
@@ -183,85 +184,86 @@ func (s *Client) Restore(ctx context.Context, deletedShareVersion string, option
 	opts := &generated.ShareClientRestoreOptions{
 		DeletedShareName:    &urlParts.ShareName,
 		DeletedShareVersion: &deletedShareVersion,
-		FileRequestIntent:   s.getClientOptions().FileRequestIntent,
 	}
-	return s.generated().Restore(ctx, opts)
+	resp, err := s.generated().Restore(ctx, opts)
+	return resp, err
 }
 
 // GetProperties operation returns all user-defined metadata and system properties for the specified share or share snapshot.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-share-properties.
 func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-	return s.generated().GetProperties(ctx, opts)
+	opts, leaseAccessConditions := options.format()
+	resp, err := s.generated().GetProperties(ctx, opts, leaseAccessConditions)
+	return resp, err
 }
 
 // SetProperties operation sets properties for the specified share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-share-properties.
 func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-	return s.generated().SetProperties(ctx, opts)
+	opts, leaseAccessConditions := options.format()
+	resp, err := s.generated().SetProperties(ctx, opts, leaseAccessConditions)
+	return resp, err
 }
 
 // CreateSnapshot operation creates a read-only snapshot of a share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/snapshot-share.
 func (s *Client) CreateSnapshot(ctx context.Context, options *CreateSnapshotOptions) (CreateSnapshotResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-	return s.generated().CreateSnapshot(ctx, opts)
+	opts := options.format()
+	resp, err := s.generated().CreateSnapshot(ctx, opts)
+	return resp, err
 }
 
 // GetAccessPolicy operation returns information about stored access policies specified on the share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-share-acl.
 func (s *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-	return s.generated().GetAccessPolicy(ctx, opts)
+	opts, leaseAccessConditions := options.format()
+	resp, err := s.generated().GetAccessPolicy(ctx, opts, leaseAccessConditions)
+	return resp, err
 }
 
 // SetAccessPolicy operation sets a stored access policy for use with shared access signatures.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-share-acl.
 func (s *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-
-	var shareACL []*SignedIdentifier
-	if options != nil && options.ShareACL != nil {
-		for _, si := range options.ShareACL {
-			err := formatTime(si)
-			if err != nil {
-				return SetAccessPolicyResponse{}, err
-			}
-		}
-		shareACL = options.ShareACL
+	opts, leaseAccessConditions, err := options.format()
+	if err != nil {
+		return SetAccessPolicyResponse{}, err
 	}
-	return s.generated().SetAccessPolicy(ctx, shareACL, opts)
+
+	resp, err := s.generated().SetAccessPolicy(ctx, opts, leaseAccessConditions)
+	return resp, err
 }
 
 // CreatePermission operation creates a permission (a security descriptor) at the share level.
 // The created security descriptor can be used for the files and directories in the share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-permission.
 func (s *Client) CreatePermission(ctx context.Context, sharePermission string, options *CreatePermissionOptions) (CreatePermissionResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-	return s.generated().CreatePermission(ctx, Permission{
-		Permission: &sharePermission}, opts)
+	permission, opts := options.format(sharePermission)
+	resp, err := s.generated().CreatePermission(ctx, permission, opts)
+	return resp, err
 }
 
 // GetPermission operation gets the SDDL permission string from the service using a known permission key.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-permission.
 func (s *Client) GetPermission(ctx context.Context, filePermissionKey string, options *GetPermissionOptions) (GetPermissionResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-	return s.generated().GetPermission(ctx, filePermissionKey, opts)
+	opts := options.format()
+	resp, err := s.generated().GetPermission(ctx, filePermissionKey, opts)
+	return resp, err
 }
 
 // SetMetadata operation sets one or more user-defined name-value pairs for the specified share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-share-metadata.
 func (s *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-	return s.generated().SetMetadata(ctx, opts)
+	opts, leaseAccessConditions := options.format()
+	resp, err := s.generated().SetMetadata(ctx, opts, leaseAccessConditions)
+	return resp, err
 }
 
 // GetStatistics operation retrieves statistics related to the share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-share-stats.
 func (s *Client) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
-	opts := options.format(s.getClientOptions().FileRequestIntent)
-	return s.generated().GetStatistics(ctx, opts)
+	opts, leaseAccessConditions := options.format()
+	resp, err := s.generated().GetStatistics(ctx, opts, leaseAccessConditions)
+	return resp, err
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at share.

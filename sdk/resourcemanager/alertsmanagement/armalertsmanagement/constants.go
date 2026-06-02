@@ -4,10 +4,6 @@
 
 package armalertsmanagement
 
-const (
-	version20250525Preview string = "2025-05-25-preview"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

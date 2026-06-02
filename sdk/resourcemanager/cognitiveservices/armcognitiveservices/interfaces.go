@@ -23,15 +23,6 @@ type ApplicationAuthorizationPolicyClassification interface {
 	GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy
 }
 
-// ComputePropertiesClassification provides polymorphic access to related types.
-// Call the interface's GetComputeProperties() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *ClusterComputeProperties, *ComputeProperties, *ContainerInstanceComputeProperties
-type ComputePropertiesClassification interface {
-	// GetComputeProperties returns the ComputeProperties content of the underlying type.
-	GetComputeProperties() *ComputeProperties
-}
-
 // ConnectionPropertiesV2Classification provides polymorphic access to related types.
 // Call the interface's GetConnectionPropertiesV2() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

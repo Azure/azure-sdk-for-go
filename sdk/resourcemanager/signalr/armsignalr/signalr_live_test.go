@@ -359,7 +359,7 @@ func (testsuite *SignalrTestSuite) TestSignalRPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2024-07-01",
+				"apiVersion": "2020-11-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -373,7 +373,6 @@ func (testsuite *SignalrTestSuite) TestSignalRPrivateEndpointConnections() {
 							"name": "default",
 							"properties": map[string]any{
 								"addressPrefix":                     "10.0.0.0/24",
-								"defaultOutboundAccess":             false,
 								"delegations":                       []any{},
 								"privateEndpointNetworkPolicies":    "Disabled",
 								"privateLinkServiceNetworkPolicies": "Enabled",
@@ -447,13 +446,12 @@ func (testsuite *SignalrTestSuite) TestSignalRPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
 				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2024-07-01",
+				"apiVersion": "2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
 					"addressPrefix":                     "10.0.0.0/24",
-					"defaultOutboundAccess":             false,
 					"delegations":                       []any{},
 					"privateEndpointNetworkPolicies":    "Disabled",
 					"privateLinkServiceNetworkPolicies": "Enabled",

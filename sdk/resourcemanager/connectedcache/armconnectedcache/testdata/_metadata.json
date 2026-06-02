@@ -1,6 +1,4 @@
 {
-  "apiVersions": {
-    "Microsoft.ConnectedCache": "2024-11-30-preview"
-  },
-  "emitterVersion": "0.14.1"
+  "apiVersion": "2024-11-30-preview",
+  "emitterVersion": "0.9.1"
 }

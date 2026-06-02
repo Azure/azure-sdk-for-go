@@ -48,14 +48,6 @@ func (c *ClientFactory) NewAutoUpgradeProfilesClient() *AutoUpgradeProfilesClien
 	}
 }
 
-// NewClusterMeshProfilesClient creates a new instance of ClusterMeshProfilesClient.
-func (c *ClientFactory) NewClusterMeshProfilesClient() *ClusterMeshProfilesClient {
-	return &ClusterMeshProfilesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewFleetManagedNamespacesClient creates a new instance of FleetManagedNamespacesClient.
 func (c *ClientFactory) NewFleetManagedNamespacesClient() *FleetManagedNamespacesClient {
 	return &FleetManagedNamespacesClient{

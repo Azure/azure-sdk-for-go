@@ -4,10 +4,6 @@
 
 package azcertificates
 
-const (
-	version20260301Preview string = "2026-03-01-preview"
-)
-
 // CertificatePolicyAction - The type of the action.
 type CertificatePolicyAction string
 

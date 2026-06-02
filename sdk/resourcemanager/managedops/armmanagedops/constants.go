@@ -19,6 +19,25 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
+type ChangeTrackingInformationEnablementStatus string
+
+const (
+	ChangeTrackingInformationEnablementStatusDisabled   ChangeTrackingInformationEnablementStatus = "Disabled"
+	ChangeTrackingInformationEnablementStatusEnabled    ChangeTrackingInformationEnablementStatus = "Enabled"
+	ChangeTrackingInformationEnablementStatusFailed     ChangeTrackingInformationEnablementStatus = "Failed"
+	ChangeTrackingInformationEnablementStatusInProgress ChangeTrackingInformationEnablementStatus = "InProgress"
+)
+
+// PossibleChangeTrackingInformationEnablementStatusValues returns the possible values for the ChangeTrackingInformationEnablementStatus const type.
+func PossibleChangeTrackingInformationEnablementStatusValues() []ChangeTrackingInformationEnablementStatus {
+	return []ChangeTrackingInformationEnablementStatus{
+		ChangeTrackingInformationEnablementStatusDisabled,
+		ChangeTrackingInformationEnablementStatusEnabled,
+		ChangeTrackingInformationEnablementStatusFailed,
+		ChangeTrackingInformationEnablementStatusInProgress,
+	}
+}
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -43,45 +62,18 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DesiredEnablementState - The desired enablement state of a service.
-type DesiredEnablementState string
+type DesiredConfigurationDefenderForServers string
 
 const (
-	// DesiredEnablementStateDisable - Disable the service.
-	DesiredEnablementStateDisable DesiredEnablementState = "Disable"
-	// DesiredEnablementStateEnable - Enable the service.
-	DesiredEnablementStateEnable DesiredEnablementState = "Enable"
+	DesiredConfigurationDefenderForServersDisable DesiredConfigurationDefenderForServers = "Disable"
+	DesiredConfigurationDefenderForServersEnable  DesiredConfigurationDefenderForServers = "Enable"
 )
 
-// PossibleDesiredEnablementStateValues returns the possible values for the DesiredEnablementState const type.
-func PossibleDesiredEnablementStateValues() []DesiredEnablementState {
-	return []DesiredEnablementState{
-		DesiredEnablementStateDisable,
-		DesiredEnablementStateEnable,
-	}
-}
-
-// EnablementState - The enablement state of a service.
-type EnablementState string
-
-const (
-	// EnablementStateDisabled - Service is disabled.
-	EnablementStateDisabled EnablementState = "Disabled"
-	// EnablementStateEnabled - Service is enabled.
-	EnablementStateEnabled EnablementState = "Enabled"
-	// EnablementStateFailed - Service enablement has failed.
-	EnablementStateFailed EnablementState = "Failed"
-	// EnablementStateInProgress - Service enablement is in progress.
-	EnablementStateInProgress EnablementState = "InProgress"
-)
-
-// PossibleEnablementStateValues returns the possible values for the EnablementState const type.
-func PossibleEnablementStateValues() []EnablementState {
-	return []EnablementState{
-		EnablementStateDisabled,
-		EnablementStateEnabled,
-		EnablementStateFailed,
-		EnablementStateInProgress,
+// PossibleDesiredConfigurationDefenderForServersValues returns the possible values for the DesiredConfigurationDefenderForServers const type.
+func PossibleDesiredConfigurationDefenderForServersValues() []DesiredConfigurationDefenderForServers {
+	return []DesiredConfigurationDefenderForServers{
+		DesiredConfigurationDefenderForServersDisable,
+		DesiredConfigurationDefenderForServersEnable,
 	}
 }
 

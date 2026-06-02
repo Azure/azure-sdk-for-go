@@ -18,8 +18,6 @@ import (
 
 // UserAssignedIdentitiesClient contains the methods for the UserAssignedIdentities group.
 // Don't use this type directly, use NewUserAssignedIdentitiesClient() instead.
-//
-// Generated from API version 2025-05-31-preview
 type UserAssignedIdentitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewUserAssignedIdentitiesClient(subscriptionID string, credential azcore.To
 
 // CreateOrUpdate - Create or update an identity in the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the identity resource.
 //   - parameters - Parameters to create or update the identity
@@ -90,8 +90,8 @@ func (client *UserAssignedIdentitiesClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250531Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -111,6 +111,8 @@ func (client *UserAssignedIdentitiesClient) createOrUpdateHandleResponse(resp *h
 
 // Delete - Deletes the identity.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the identity resource.
 //   - options - UserAssignedIdentitiesClientDeleteOptions contains the optional parameters for the UserAssignedIdentitiesClient.Delete
@@ -156,13 +158,15 @@ func (client *UserAssignedIdentitiesClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250531Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the identity.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the identity resource.
 //   - options - UserAssignedIdentitiesClientGetOptions contains the optional parameters for the UserAssignedIdentitiesClient.Get
@@ -209,8 +213,8 @@ func (client *UserAssignedIdentitiesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250531Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -225,6 +229,8 @@ func (client *UserAssignedIdentitiesClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByResourceGroupPager - Lists all the userAssignedIdentities available under the specified ResourceGroup.
+//
+// Generated from API version 2024-11-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - UserAssignedIdentitiesClientListByResourceGroupOptions contains the optional parameters for the UserAssignedIdentitiesClient.NewListByResourceGroupPager
 //     method.
@@ -267,8 +273,8 @@ func (client *UserAssignedIdentitiesClient) listByResourceGroupCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250531Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -283,6 +289,8 @@ func (client *UserAssignedIdentitiesClient) listByResourceGroupHandleResponse(re
 }
 
 // NewListBySubscriptionPager - Lists all the userAssignedIdentities available under the specified subscription.
+//
+// Generated from API version 2024-11-30
 //   - options - UserAssignedIdentitiesClientListBySubscriptionOptions contains the optional parameters for the UserAssignedIdentitiesClient.NewListBySubscriptionPager
 //     method.
 func (client *UserAssignedIdentitiesClient) NewListBySubscriptionPager(options *UserAssignedIdentitiesClientListBySubscriptionOptions) *runtime.Pager[UserAssignedIdentitiesClientListBySubscriptionResponse] {
@@ -320,8 +328,8 @@ func (client *UserAssignedIdentitiesClient) listBySubscriptionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250531Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -337,6 +345,8 @@ func (client *UserAssignedIdentitiesClient) listBySubscriptionHandleResponse(res
 
 // Update - Update an identity in the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the identity resource.
 //   - parameters - Parameters to update the identity
@@ -384,8 +394,8 @@ func (client *UserAssignedIdentitiesClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250531Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-30")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

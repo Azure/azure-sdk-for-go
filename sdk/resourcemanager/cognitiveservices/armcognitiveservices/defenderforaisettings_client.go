@@ -18,8 +18,6 @@ import (
 
 // DefenderForAISettingsClient contains the methods for the DefenderForAISettings group.
 // Don't use this type directly, use NewDefenderForAISettingsClient() instead.
-//
-// Generated from API version 2026-03-15-preview
 type DefenderForAISettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewDefenderForAISettingsClient(subscriptionID string, credential azcore.Tok
 
 // CreateOrUpdate - Creates or Updates the specified Defender for AI setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - defenderForAISettingName - The name of the defender for AI setting.
@@ -95,8 +95,8 @@ func (client *DefenderForAISettingsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, defenderForAISettings); err != nil {
@@ -116,6 +116,8 @@ func (client *DefenderForAISettingsClient) createOrUpdateHandleResponse(resp *ht
 
 // Get - Gets the specified Defender for AI setting by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - defenderForAISettingName - The name of the defender for AI setting.
@@ -167,8 +169,8 @@ func (client *DefenderForAISettingsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -183,6 +185,8 @@ func (client *DefenderForAISettingsClient) getHandleResponse(resp *http.Response
 }
 
 // NewListPager - Lists the Defender for AI settings.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - options - DefenderForAISettingsClientListOptions contains the optional parameters for the DefenderForAISettingsClient.NewListPager
@@ -230,8 +234,8 @@ func (client *DefenderForAISettingsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -247,6 +251,8 @@ func (client *DefenderForAISettingsClient) listHandleResponse(resp *http.Respons
 
 // Update - Updates the specified Defender for AI setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - defenderForAISettingName - The name of the defender for AI setting.
@@ -299,8 +305,8 @@ func (client *DefenderForAISettingsClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, defenderForAISettings); err != nil {

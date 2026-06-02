@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-31-preview/FederatedIdentityCredentialCreate.json
-func ExampleFederatedIdentityCredentialsClient_CreateOrUpdate_federatedIdentityCredentialCreate() {
+// Generated from example definition: 2024-11-30/FederatedIdentityCredentialCreate.json
+func ExampleFederatedIdentityCredentialsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -25,11 +25,11 @@ func ExampleFederatedIdentityCredentialsClient_CreateOrUpdate_federatedIdentityC
 	}
 	res, err := clientFactory.NewFederatedIdentityCredentialsClient().CreateOrUpdate(ctx, "rgName", "resourceName", "ficResourceName", armmsi.FederatedIdentityCredential{
 		Properties: &armmsi.FederatedIdentityCredentialProperties{
+			Audiences: []*string{
+				to.Ptr("api://AzureADTokenExchange"),
+			},
 			Issuer:  to.Ptr("https://oidc.prod-aks.azure.com/TenantGUID/IssuerGUID"),
 			Subject: to.Ptr("system:serviceaccount:ns:svcaccount"),
-			Audiences: []*string{
-				to.Ptr("api://AzureADTokenExchange"),
-			},
 		},
 	}, nil)
 	if err != nil {
@@ -39,70 +39,22 @@ func ExampleFederatedIdentityCredentialsClient_CreateOrUpdate_federatedIdentityC
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmsi.FederatedIdentityCredentialsClientCreateOrUpdateResponse{
-	// 	FederatedIdentityCredential: armmsi.FederatedIdentityCredential{
-	// 		ID: to.Ptr("/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName/federatedIdentityCredentials/ficResourceName"),
+	// 	FederatedIdentityCredential: &armmsi.FederatedIdentityCredential{
 	// 		Name: to.Ptr("ficResourceName"),
+	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials"),
+	// 		ID: to.Ptr("/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName/federatedIdentityCredentials/ficResourceName"),
 	// 		Properties: &armmsi.FederatedIdentityCredentialProperties{
+	// 			Audiences: []*string{
+	// 				to.Ptr("api://AzureADTokenExchange"),
+	// 			},
 	// 			Issuer: to.Ptr("https://oidc.prod-aks.azure.com/TenantGUID/IssuerGUID"),
 	// 			Subject: to.Ptr("system:serviceaccount:ns:svcaccount"),
-	// 			Audiences: []*string{
-	// 				to.Ptr("api://AzureADTokenExchange"),
-	// 			},
 	// 		},
-	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-31-preview/FlexibleFederatedIdentityCredentialCreate.json
-func ExampleFederatedIdentityCredentialsClient_CreateOrUpdate_flexibleFederatedIdentityCredentialCreate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmsi.NewClientFactory("c267c0e7-0a73-4789-9e17-d26aeb0904e5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewFederatedIdentityCredentialsClient().CreateOrUpdate(ctx, "rgName", "resourceName", "ficResourceName", armmsi.FederatedIdentityCredential{
-		Properties: &armmsi.FederatedIdentityCredentialProperties{
-			Issuer: to.Ptr("https://oidc.prod-aks.azure.com/TenantGUID/IssuerGUID"),
-			Audiences: []*string{
-				to.Ptr("api://AzureADTokenExchange"),
-			},
-			ClaimsMatchingExpression: &armmsi.ClaimsMatchingExpression{
-				LanguageVersion: to.Ptr[int32](1),
-				Value:           to.Ptr("claims['sub'] matches system:serviceaccount:ns:*"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmsi.FederatedIdentityCredentialsClientCreateOrUpdateResponse{
-	// 	FederatedIdentityCredential: armmsi.FederatedIdentityCredential{
-	// 		ID: to.Ptr("/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName/federatedIdentityCredentials/ficResourceName"),
-	// 		Name: to.Ptr("ficResourceName"),
-	// 		Properties: &armmsi.FederatedIdentityCredentialProperties{
-	// 			Issuer: to.Ptr("https://oidc.prod-aks.azure.com/TenantGUID/IssuerGUID"),
-	// 			Audiences: []*string{
-	// 				to.Ptr("api://AzureADTokenExchange"),
-	// 			},
-	// 			ClaimsMatchingExpression: &armmsi.ClaimsMatchingExpression{
-	// 				LanguageVersion: to.Ptr[int32](1),
-	// 				Value: to.Ptr("claims['sub'] matches system:serviceaccount:ns:*"),
-	// 			},
-	// 		},
-	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-31-preview/FederatedIdentityCredentialDelete.json
+// Generated from example definition: 2024-11-30/FederatedIdentityCredentialDelete.json
 func ExampleFederatedIdentityCredentialsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,8 +76,8 @@ func ExampleFederatedIdentityCredentialsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-31-preview/FederatedIdentityCredentialGet.json
-func ExampleFederatedIdentityCredentialsClient_Get_federatedIdentityCredentialGet() {
+// Generated from example definition: 2024-11-30/FederatedIdentityCredentialGet.json
+func ExampleFederatedIdentityCredentialsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -143,59 +95,22 @@ func ExampleFederatedIdentityCredentialsClient_Get_federatedIdentityCredentialGe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmsi.FederatedIdentityCredentialsClientGetResponse{
-	// 	FederatedIdentityCredential: armmsi.FederatedIdentityCredential{
-	// 		ID: to.Ptr("/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName/federatedIdentityCredentials/ficResourceName"),
+	// 	FederatedIdentityCredential: &armmsi.FederatedIdentityCredential{
 	// 		Name: to.Ptr("ficResourceName"),
+	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials"),
+	// 		ID: to.Ptr("/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName/federatedIdentityCredentials/ficResourceName"),
 	// 		Properties: &armmsi.FederatedIdentityCredentialProperties{
+	// 			Audiences: []*string{
+	// 				to.Ptr("api://AzureADTokenExchange"),
+	// 			},
 	// 			Issuer: to.Ptr("https://oidc.prod-aks.azure.com/TenantGUID/IssuerGUID"),
 	// 			Subject: to.Ptr("system:serviceaccount:ns:svcaccount"),
-	// 			Audiences: []*string{
-	// 				to.Ptr("api://AzureADTokenExchange"),
-	// 			},
 	// 		},
-	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-31-preview/FlexibleFederatedIdentityCredentialGet.json
-func ExampleFederatedIdentityCredentialsClient_Get_flexibleFederatedIdentityCredentialGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmsi.NewClientFactory("c267c0e7-0a73-4789-9e17-d26aeb0904e5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewFederatedIdentityCredentialsClient().Get(ctx, "rgName", "resourceName", "ficResourceName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmsi.FederatedIdentityCredentialsClientGetResponse{
-	// 	FederatedIdentityCredential: armmsi.FederatedIdentityCredential{
-	// 		ID: to.Ptr("/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName/federatedIdentityCredentials/ficResourceName"),
-	// 		Name: to.Ptr("ficResourceName"),
-	// 		Properties: &armmsi.FederatedIdentityCredentialProperties{
-	// 			Issuer: to.Ptr("https://oidc.prod-aks.azure.com/TenantGUID/IssuerGUID"),
-	// 			Audiences: []*string{
-	// 				to.Ptr("api://AzureADTokenExchange"),
-	// 			},
-	// 			ClaimsMatchingExpression: &armmsi.ClaimsMatchingExpression{
-	// 				LanguageVersion: to.Ptr[int32](1),
-	// 				Value: to.Ptr("claims['sub'] matches system:serviceaccount:ns:*"),
-	// 			},
-	// 		},
-	// 		Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-31-preview/FederatedIdentityCredentialList.json
+// Generated from example definition: 2024-11-30/FederatedIdentityCredentialList.json
 func ExampleFederatedIdentityCredentialsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,36 +134,21 @@ func ExampleFederatedIdentityCredentialsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmsi.FederatedIdentityCredentialsClientListResponse{
 		// 	FederatedIdentityCredentialsListResult: armmsi.FederatedIdentityCredentialsListResult{
+		// 		NextLink: to.Ptr("https://serviceRoot/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/resourceName/federatedIdentityCredentials?api-version=2024-11-30&$skipToken=X'12345'"),
 		// 		Value: []*armmsi.FederatedIdentityCredential{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName/federatedIdentityCredentials/ficResourceName"),
 		// 				Name: to.Ptr("ficResourceName"),
+		// 				Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials"),
+		// 				ID: to.Ptr("/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName/federatedIdentityCredentials/ficResourceName"),
 		// 				Properties: &armmsi.FederatedIdentityCredentialProperties{
+		// 					Audiences: []*string{
+		// 						to.Ptr("api://AzureADTokenExchange"),
+		// 					},
 		// 					Issuer: to.Ptr("https://oidc.prod-aks.azure.com/TenantGUID/IssuerGUID"),
 		// 					Subject: to.Ptr("system:serviceaccount:ns:svcaccount"),
-		// 					Audiences: []*string{
-		// 						to.Ptr("api://AzureADTokenExchange"),
-		// 					},
 		// 				},
-		// 				Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials"),
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName/federatedIdentityCredentials/flexibleFicResourceName"),
-		// 				Name: to.Ptr("flexibleFicResourceName"),
-		// 				Properties: &armmsi.FederatedIdentityCredentialProperties{
-		// 					Issuer: to.Ptr("https://oidc.prod-aks.azure.com/TenantGUID/IssuerGUID"),
-		// 					Audiences: []*string{
-		// 						to.Ptr("api://AzureADTokenExchange"),
-		// 					},
-		// 					ClaimsMatchingExpression: &armmsi.ClaimsMatchingExpression{
-		// 						LanguageVersion: to.Ptr[int32](1),
-		// 						Value: to.Ptr("claims['sub'] matches system:serviceaccount:ns:*"),
-		// 					},
-		// 				},
-		// 				Type: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://serviceRoot/subscriptions/c267c0e7-0a73-4789-9e17-d26aeb0904e5/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/resourceName/federatedIdentityCredentials?api-version=2025-05-31-preview&$skipToken=X'12345'"),
 		// 	},
 		// }
 	}

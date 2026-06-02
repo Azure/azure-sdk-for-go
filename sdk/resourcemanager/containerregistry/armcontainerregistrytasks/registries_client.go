@@ -18,8 +18,6 @@ import (
 
 // RegistriesClient contains the methods for the Registries group.
 // Don't use this type directly, use NewRegistriesClient() instead.
-//
-// Generated from API version 2025-03-01-preview
 type RegistriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewRegistriesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // GetBuildSourceUploadURL - Get the upload location for the user to be able to upload the source.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - RegistriesClientGetBuildSourceUploadURLOptions contains the optional parameters for the RegistriesClient.GetBuildSourceUploadURL
@@ -89,8 +89,8 @@ func (client *RegistriesClient) getBuildSourceUploadURLCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -106,6 +106,8 @@ func (client *RegistriesClient) getBuildSourceUploadURLHandleResponse(resp *http
 
 // ScheduleRun - Schedules a new run based on the request parameters and add it to the run queue.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - runRequest - The request body
@@ -152,8 +154,8 @@ func (client *RegistriesClient) scheduleRunCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, runRequest); err != nil {

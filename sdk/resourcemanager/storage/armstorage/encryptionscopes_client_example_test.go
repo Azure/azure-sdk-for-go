@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/StorageAccountGetEncryptionScope.json
+// Generated from example definition: 2025-06-01/StorageAccountGetEncryptionScope.json
 func ExampleEncryptionScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleEncryptionScopesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.EncryptionScopesClientGetResponse{
-	// 	EncryptionScope: armstorage.EncryptionScope{
+	// 	EncryptionScope: &armstorage.EncryptionScope{
 	// 		Name: to.Ptr("{encyrption-scope-name}"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
@@ -45,7 +45,7 @@ func ExampleEncryptionScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountEncryptionScopeList.json
+// Generated from example definition: 2025-06-01/StorageAccountEncryptionScopeList.json
 func ExampleEncryptionScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleEncryptionScopesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountPatchEncryptionScope.json
+// Generated from example definition: 2025-06-01/StorageAccountPatchEncryptionScope.json
 func ExampleEncryptionScopesClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleEncryptionScopesClient_Patch() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.EncryptionScopesClientPatchResponse{
-	// 	EncryptionScope: armstorage.EncryptionScope{
+	// 	EncryptionScope: &armstorage.EncryptionScope{
 	// 		Name: to.Ptr("{encryption-scope-name}"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
@@ -146,7 +146,7 @@ func ExampleEncryptionScopesClient_Patch() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountPutEncryptionScope.json
+// Generated from example definition: 2025-06-01/StorageAccountPutEncryptionScope.json
 func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.EncryptionScopesClientPutResponse{
-	// 	EncryptionScope: armstorage.EncryptionScope{
+	// 	EncryptionScope: &armstorage.EncryptionScope{
 	// 		Name: to.Ptr("{encryption-scope-name}"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
@@ -179,7 +179,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
+// Generated from example definition: 2025-06-01/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
 func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScopeWithInfrastructureEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScopeWithInfra
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.EncryptionScopesClientPutResponse{
-	// 	EncryptionScope: armstorage.EncryptionScope{
+	// 	EncryptionScope: &armstorage.EncryptionScope{
 	// 		Name: to.Ptr("{encryption-scope-name}"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),

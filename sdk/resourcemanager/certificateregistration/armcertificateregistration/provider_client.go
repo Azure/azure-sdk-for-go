@@ -11,13 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
-	"strings"
 )
 
 // ProviderClient contains the methods for the Provider group.
 // Don't use this type directly, use NewProviderClient() instead.
-//
-// Generated from API version 2024-11-01
 type ProviderClient struct {
 	internal *arm.Client
 }
@@ -38,7 +35,9 @@ func NewProviderClient(credential azcore.TokenCredential, options *arm.ClientOpt
 
 // NewListOperationsPager - Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
 //
-// Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+// # Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+//
+// Generated from API version 2024-11-01
 //   - options - ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.NewListOperationsPager
 //     method.
 func (client *ProviderClient) NewListOperationsPager(options *ProviderClientListOperationsOptions) *runtime.Pager[ProviderClientListOperationsResponse] {
@@ -72,8 +71,8 @@ func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

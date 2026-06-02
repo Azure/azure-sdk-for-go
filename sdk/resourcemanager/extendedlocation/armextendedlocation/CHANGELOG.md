@@ -1,16 +1,5 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-05-20)
-### Breaking Changes
-
-- Struct `ErrorAdditionalInfo` has been removed
-- Struct `ErrorDetail` has been removed
-- Struct `ErrorResponse` has been removed
-- Struct `ProxyResource` has been removed
-- Struct `Resource` has been removed
-- Struct `TrackedResource` has been removed
-
-
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 

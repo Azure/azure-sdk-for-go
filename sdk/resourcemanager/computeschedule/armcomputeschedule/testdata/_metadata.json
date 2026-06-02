@@ -1,6 +1,4 @@
 {
-  "apiVersions": {
-    "Microsoft.ComputeSchedule": "2025-04-15-preview"
-  },
-  "emitterVersion": "0.14.1"
+  "apiVersion": "2025-04-15-preview",
+  "emitterVersion": "0.9.1"
 }

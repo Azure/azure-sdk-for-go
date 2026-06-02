@@ -18,8 +18,6 @@ import (
 
 // PrivateAccessesClient contains the methods for the PrivateAccesses group.
 // Don't use this type directly, use NewPrivateAccessesClient() instead.
-//
-// Generated from API version 2026-05-01-preview
 type PrivateAccessesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewPrivateAccessesClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Create or update a private access
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateAccessName - The name of the private access resource that is being created. Supported characters for the name are
 //     a-z, A-Z, 0-9, _ and -. The maximum name length is 80 characters.
@@ -68,6 +68,8 @@ func (client *PrivateAccessesClient) BeginCreateOrUpdate(ctx context.Context, re
 
 // CreateOrUpdate - Create or update a private access
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 func (client *PrivateAccessesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateAccessName string, resource PrivateAccess, options *PrivateAccessesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateAccessesClient.BeginCreateOrUpdate"
@@ -109,8 +111,8 @@ func (client *PrivateAccessesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -121,6 +123,8 @@ func (client *PrivateAccessesClient) createOrUpdateCreateRequest(ctx context.Con
 
 // BeginDelete - Delete a private access
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateAccessName - The name of the private access resource that is being created. Supported characters for the name are
 //     a-z, A-Z, 0-9, _ and -. The maximum name length is 80 characters.
@@ -145,6 +149,8 @@ func (client *PrivateAccessesClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Delete a private access
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 func (client *PrivateAccessesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateAccessName string, options *PrivateAccessesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateAccessesClient.BeginDelete"
@@ -186,13 +192,15 @@ func (client *PrivateAccessesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginDeleteAPrivateEndpointConnection - Deletes a private endpoint connection under a private access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateAccessName - The name of the private access resource that is being created. Supported characters for the name are
 //     a-z, A-Z, 0-9, _ and -. The maximum name length is 80 characters.
@@ -218,6 +226,8 @@ func (client *PrivateAccessesClient) BeginDeleteAPrivateEndpointConnection(ctx c
 
 // DeleteAPrivateEndpointConnection - Deletes a private endpoint connection under a private access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 func (client *PrivateAccessesClient) deleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, privateAccessName string, privateEndpointConnectionName string, options *PrivateAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateAccessesClient.BeginDeleteAPrivateEndpointConnection"
@@ -263,13 +273,15 @@ func (client *PrivateAccessesClient) deleteAPrivateEndpointConnectionCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a private access resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateAccessName - The name of the private access resource that is being created. Supported characters for the name are
 //     a-z, A-Z, 0-9, _ and -. The maximum name length is 80 characters.
@@ -316,8 +328,8 @@ func (client *PrivateAccessesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -333,6 +345,8 @@ func (client *PrivateAccessesClient) getHandleResponse(resp *http.Response) (Pri
 
 // GetAPrivateEndpointConnection - Gets information about a private endpoint connection under a private access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateAccessName - The name of the private access resource that is being created. Supported characters for the name are
 //     a-z, A-Z, 0-9, _ and -. The maximum name length is 80 characters.
@@ -385,8 +399,8 @@ func (client *PrivateAccessesClient) getAPrivateEndpointConnectionCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -402,6 +416,8 @@ func (client *PrivateAccessesClient) getAPrivateEndpointConnectionHandleResponse
 
 // GetPrivateLinkResources - Gets the private link resources possible under private access resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateAccessName - The name of the private access resource that is being created. Supported characters for the name are
 //     a-z, A-Z, 0-9, _ and -. The maximum name length is 80 characters.
@@ -449,8 +465,8 @@ func (client *PrivateAccessesClient) getPrivateLinkResourcesCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -465,6 +481,8 @@ func (client *PrivateAccessesClient) getPrivateLinkResourcesHandleResponse(resp 
 }
 
 // NewListPager - Get a list of private access resources in a resource group.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateAccessesClientListOptions contains the optional parameters for the PrivateAccessesClient.NewListPager
 //     method.
@@ -507,11 +525,11 @@ func (client *PrivateAccessesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", "2026-05-01-preview")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -526,6 +544,8 @@ func (client *PrivateAccessesClient) listHandleResponse(resp *http.Response) (Pr
 }
 
 // NewListAllPager - Get a list of private access resources in a subscription.
+//
+// Generated from API version 2026-05-01-preview
 //   - options - PrivateAccessesClientListAllOptions contains the optional parameters for the PrivateAccessesClient.NewListAllPager
 //     method.
 func (client *PrivateAccessesClient) NewListAllPager(options *PrivateAccessesClientListAllOptions) *runtime.Pager[PrivateAccessesClientListAllResponse] {
@@ -563,11 +583,11 @@ func (client *PrivateAccessesClient) listAllCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", "2026-05-01-preview")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -582,6 +602,8 @@ func (client *PrivateAccessesClient) listAllHandleResponse(resp *http.Response) 
 }
 
 // NewListPrivateEndpointConnectionsPager - List information about private endpoint connections under a private access resource
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateAccessName - The name of the private access resource that is being created. Supported characters for the name are
 //     a-z, A-Z, 0-9, _ and -. The maximum name length is 80 characters.
@@ -630,8 +652,8 @@ func (client *PrivateAccessesClient) listPrivateEndpointConnectionsCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -647,6 +669,8 @@ func (client *PrivateAccessesClient) listPrivateEndpointConnectionsHandleRespons
 
 // BeginUpdate - Patch a private access tags
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateAccessName - The name of the private access resource that is being created. Supported characters for the name are
 //     a-z, A-Z, 0-9, _ and -. The maximum name length is 80 characters.
@@ -672,6 +696,8 @@ func (client *PrivateAccessesClient) BeginUpdate(ctx context.Context, resourceGr
 
 // Update - Patch a private access tags
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-05-01-preview
 func (client *PrivateAccessesClient) update(ctx context.Context, resourceGroupName string, privateAccessName string, properties PrivateAccessPatch, options *PrivateAccessesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateAccessesClient.BeginUpdate"
@@ -713,8 +739,8 @@ func (client *PrivateAccessesClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

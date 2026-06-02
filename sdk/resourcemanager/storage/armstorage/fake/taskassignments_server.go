@@ -16,7 +16,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 	"strconv"
 )
 
@@ -38,10 +37,6 @@ type TaskAssignmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, accountName string, options *armstorage.TaskAssignmentsClientListOptions) (resp azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse])
 
-	// BeginStopAssignment is the fake for method TaskAssignmentsClient.BeginStopAssignment
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStopAssignment func(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *armstorage.TaskAssignmentsClientBeginStopAssignmentOptions) (resp azfake.PollerResponder[armstorage.TaskAssignmentsClientStopAssignmentResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdate is the fake for method TaskAssignmentsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters armstorage.TaskAssignmentUpdateParameters, options *armstorage.TaskAssignmentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorage.TaskAssignmentsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -52,24 +47,22 @@ type TaskAssignmentsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTaskAssignmentsServerTransport(srv *TaskAssignmentsServer) *TaskAssignmentsServerTransport {
 	return &TaskAssignmentsServerTransport{
-		srv:                 srv,
-		beginCreate:         newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientCreateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse]](),
-		beginStopAssignment: newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientStopAssignmentResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientUpdateResponse]](),
+		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientUpdateResponse]](),
 	}
 }
 
 // TaskAssignmentsServerTransport connects instances of armstorage.TaskAssignmentsClient to instances of TaskAssignmentsServer.
 // Don't use this type directly, use NewTaskAssignmentsServerTransport instead.
 type TaskAssignmentsServerTransport struct {
-	srv                 *TaskAssignmentsServer
-	beginCreate         *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientCreateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse]]
-	beginStopAssignment *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientStopAssignmentResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientUpdateResponse]]
+	srv          *TaskAssignmentsServer
+	beginCreate  *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for TaskAssignmentsServerTransport.
@@ -84,7 +77,9 @@ func (t *TaskAssignmentsServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (t *TaskAssignmentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -101,8 +96,6 @@ func (t *TaskAssignmentsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = t.dispatchGet(req)
 			case "TaskAssignmentsClient.NewListPager":
 				res.resp, res.err = t.dispatchNewListPager(req)
-			case "TaskAssignmentsClient.BeginStopAssignment":
-				res.resp, res.err = t.dispatchBeginStopAssignment(req)
 			case "TaskAssignmentsClient.BeginUpdate":
 				res.resp, res.err = t.dispatchBeginUpdate(req)
 			default:
@@ -110,7 +103,10 @@ func (t *TaskAssignmentsServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -162,7 +158,7 @@ func (t *TaskAssignmentsServerTransport) dispatchBeginCreate(req *http.Request) 
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
 		t.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -210,7 +206,7 @@ func (t *TaskAssignmentsServerTransport) dispatchBeginDelete(req *http.Request) 
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		t.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -248,7 +244,7 @@ func (t *TaskAssignmentsServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TaskAssignment, req)
@@ -279,7 +275,11 @@ func (t *TaskAssignmentsServerTransport) dispatchNewListPager(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -306,61 +306,13 @@ func (t *TaskAssignmentsServerTransport) dispatchNewListPager(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		t.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListPager) {
 		t.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (t *TaskAssignmentsServerTransport) dispatchBeginStopAssignment(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginStopAssignment == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStopAssignment not implemented")}
-	}
-	beginStopAssignment := t.beginStopAssignment.get(req)
-	if beginStopAssignment == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopAssignment`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		storageTaskAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageTaskAssignmentName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginStopAssignment(req.Context(), resourceGroupNameParam, accountNameParam, storageTaskAssignmentNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStopAssignment = &respr
-		t.beginStopAssignment.add(req, beginStopAssignment)
-	}
-
-	resp, err := server.PollerResponderNext(beginStopAssignment, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		t.beginStopAssignment.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStopAssignment) {
-		t.beginStopAssignment.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -405,7 +357,7 @@ func (t *TaskAssignmentsServerTransport) dispatchBeginUpdate(req *http.Request) 
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		t.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

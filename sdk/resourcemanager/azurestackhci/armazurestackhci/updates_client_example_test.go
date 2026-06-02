@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-30/DeleteUpdates.json
+// Generated from example definition: 2026-04-01-preview/DeleteUpdates.json
 func ExampleUpdatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleUpdatesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -39,7 +39,7 @@ func ExampleUpdatesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/GetUpdates.json
+// Generated from example definition: 2026-04-01-preview/GetUpdates.json
 func ExampleUpdatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleUpdatesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.UpdatesClientGetResponse{
-	// 	Update: armazurestackhci.Update{
+	// 	Update: &armazurestackhci.Update{
 	// 		Name: to.Ptr("Microsoft4.2203.2.32"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/updates"),
 	// 		ID: to.Ptr("/subscriptions/b8d594e5-51f3-4c11-9c54-a7771b81c712/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/clusters/testcluster/updates/Microsoft4.2203.2.32"),
@@ -92,7 +92,7 @@ func ExampleUpdatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/ListUpdates.json
+// Generated from example definition: 2026-04-01-preview/ListUpdates.json
 func ExampleUpdatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleUpdatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-30/PostUpdates.json
+// Generated from example definition: 2026-04-01-preview/PostUpdates.json
 func ExampleUpdatesClient_BeginPost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleUpdatesClient_BeginPost() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -180,7 +180,7 @@ func ExampleUpdatesClient_BeginPost() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/Updates_Prepare.json
+// Generated from example definition: 2026-04-01-preview/Updates_Prepare.json
 func ExampleUpdatesClient_BeginPrepare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,11 +197,11 @@ func ExampleUpdatesClient_BeginPrepare() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-30/PutUpdates.json
+// Generated from example definition: 2026-04-01-preview/PutUpdates.json
 func ExampleUpdatesClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleUpdatesClient_Put() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.UpdatesClientPutResponse{
-	// 	Update: armazurestackhci.Update{
+	// 	Update: &armazurestackhci.Update{
 	// 		Name: to.Ptr("Microsoft4.2203.2.32"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/updates"),
 	// 		ID: to.Ptr("/subscriptions/b8d594e5-51f3-4c11-9c54-a7771b81c712/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/clusters/testcluster/updates/Microsoft4.2203.2.32"),

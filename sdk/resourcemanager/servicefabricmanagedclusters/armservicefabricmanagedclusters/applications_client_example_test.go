@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/ApplicationPutOperation_example_max.json
+// Generated from example definition: 2026-02-01/ApplicationPutOperation_example_max.json
 func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,13 +71,13 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMaximumPa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationsClientCreateOrUpdateResponse{
-	// 	ApplicationResource: armservicefabricmanagedclusters.ApplicationResource{
+	// 	ApplicationResource: &armservicefabricmanagedclusters.ApplicationResource{
 	// 		Name: to.Ptr("myApp"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp"),
@@ -127,7 +127,7 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMaximumPa
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationPutOperation_example_min.json
+// Generated from example definition: 2026-02-01/ApplicationPutOperation_example_min.json
 func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,13 +149,13 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMinimumPa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationsClientCreateOrUpdateResponse{
-	// 	ApplicationResource: armservicefabricmanagedclusters.ApplicationResource{
+	// 	ApplicationResource: &armservicefabricmanagedclusters.ApplicationResource{
 	// 		Name: to.Ptr("myApp"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp"),
@@ -202,7 +202,7 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMinimumPa
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationDeleteOperation_example.json
+// Generated from example definition: 2026-02-01/ApplicationDeleteOperation_example.json
 func ExampleApplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,11 +219,11 @@ func ExampleApplicationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionFetchHealth_example.json
+// Generated from example definition: 2026-02-01/ApplicationActionFetchHealth_example.json
 func ExampleApplicationsClient_BeginFetchHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,11 +246,11 @@ func ExampleApplicationsClient_BeginFetchHealth() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationGetOperation_example.json
+// Generated from example definition: 2026-02-01/ApplicationGetOperation_example.json
 func ExampleApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleApplicationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationsClientGetResponse{
-	// 	ApplicationResource: armservicefabricmanagedclusters.ApplicationResource{
+	// 	ApplicationResource: &armservicefabricmanagedclusters.ApplicationResource{
 	// 		Name: to.Ptr("myApp"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp"),
@@ -318,7 +318,7 @@ func ExampleApplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationListOperation_example.json
+// Generated from example definition: 2026-02-01/ApplicationListOperation_example.json
 func ExampleApplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -359,7 +359,7 @@ func ExampleApplicationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionGetUpgrade_example.json
+// Generated from example definition: 2026-02-01/ApplicationActionGetUpgrade_example.json
 func ExampleApplicationsClient_BeginReadUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,11 +376,11 @@ func ExampleApplicationsClient_BeginReadUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionRestartDeployedCodePackage_example.json
+// Generated from example definition: 2026-02-01/ApplicationActionRestartDeployedCodePackage_example.json
 func ExampleApplicationsClient_BeginRestartDeployedCodePackage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,11 +403,11 @@ func ExampleApplicationsClient_BeginRestartDeployedCodePackage() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionResumeUpgrade_example.json
+// Generated from example definition: 2026-02-01/ApplicationActionResumeUpgrade_example.json
 func ExampleApplicationsClient_BeginResumeUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,11 +426,11 @@ func ExampleApplicationsClient_BeginResumeUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionStartRollback_example.json
+// Generated from example definition: 2026-02-01/ApplicationActionStartRollback_example.json
 func ExampleApplicationsClient_BeginStartRollback() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,11 +447,11 @@ func ExampleApplicationsClient_BeginStartRollback() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationPatchOperation_example.json
+// Generated from example definition: 2026-02-01/ApplicationPatchOperation_example.json
 func ExampleApplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,13 +478,13 @@ func ExampleApplicationsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.ApplicationsClientUpdateResponse{
-	// 	ApplicationResource: armservicefabricmanagedclusters.ApplicationResource{
+	// 	ApplicationResource: &armservicefabricmanagedclusters.ApplicationResource{
 	// 		Name: to.Ptr("myApp"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/applications"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedclusters/myCluster/applications/myApp"),
@@ -535,7 +535,7 @@ func ExampleApplicationsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionUpdateUpgrade_example.json
+// Generated from example definition: 2026-02-01/ApplicationActionUpdateUpgrade_example.json
 func ExampleApplicationsClient_BeginUpdateUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -581,6 +581,6 @@ func ExampleApplicationsClient_BeginUpdateUpgrade() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

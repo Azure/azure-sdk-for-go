@@ -4,10 +4,6 @@
 
 package armtrafficmanager
 
-const (
-	version20240401Preview string = "2024-04-01-preview"
-)
-
 // AllowedEndpointRecordType - The allowed type DNS record types for this profile.
 type AllowedEndpointRecordType string
 

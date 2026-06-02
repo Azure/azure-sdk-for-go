@@ -4,68 +4,6 @@
 
 package armnetworkcloud
 
-// AccessBridgesClientBeginCreateOrUpdateOptions contains the optional parameters for the AccessBridgesClient.BeginCreateOrUpdate
-// method.
-type AccessBridgesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AccessBridgesClientBeginDeleteOptions contains the optional parameters for the AccessBridgesClient.BeginDelete method.
-type AccessBridgesClientBeginDeleteOptions struct {
-	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
-	// in error from server as they are not supported.
-	IfNoneMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AccessBridgesClientBeginUpdateOptions contains the optional parameters for the AccessBridgesClient.BeginUpdate method.
-type AccessBridgesClientBeginUpdateOptions struct {
-	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
-	// in error from server as they are not supported.
-	IfNoneMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AccessBridgesClientGetOptions contains the optional parameters for the AccessBridgesClient.Get method.
-type AccessBridgesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccessBridgesClientListByResourceGroupOptions contains the optional parameters for the AccessBridgesClient.NewListByResourceGroupPager
-// method.
-type AccessBridgesClientListByResourceGroupOptions struct {
-	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
-	// through large result sets.
-	SkipToken *string
-
-	// The maximum number of resources to return from the operation. Example: '$top=10'.
-	Top *int32
-}
-
-// AccessBridgesClientListBySubscriptionOptions contains the optional parameters for the AccessBridgesClient.NewListBySubscriptionPager
-// method.
-type AccessBridgesClientListBySubscriptionOptions struct {
-	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
-	// through large result sets.
-	SkipToken *string
-
-	// The maximum number of resources to return from the operation. Example: '$top=10'.
-	Top *int32
-}
-
 // AgentPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginCreateOrUpdate
 // method.
 type AgentPoolsClientBeginCreateOrUpdateOptions struct {
@@ -239,9 +177,6 @@ type BareMetalMachinesClientBeginPowerOffOptions struct {
 // BareMetalMachinesClientBeginReimageOptions contains the optional parameters for the BareMetalMachinesClient.BeginReimage
 // method.
 type BareMetalMachinesClientBeginReimageOptions struct {
-	// The content of the action request
-	Body *BareMetalMachineReimageParameters
-
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -505,16 +440,6 @@ type ClusterManagersClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions contains the optional parameters for the ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection
-// method.
-type ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions struct {
-	// The request body.
-	ClusterManagerUpdateRelayPrivateEndpointConnectionParameters *ClusterManagerUpdateRelayPrivateEndpointConnectionParameters
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // ClusterManagersClientGetOptions contains the optional parameters for the ClusterManagersClient.Get method.
 type ClusterManagersClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -593,22 +518,6 @@ type ClustersClientBeginDeployOptions struct {
 	// The request body.
 	ClusterDeployParameters *ClusterDeployParameters
 
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClustersClientBeginInspectOptions contains the optional parameters for the ClustersClient.BeginInspect method.
-type ClustersClientBeginInspectOptions struct {
-	// The request body.
-	ClusterInspectParameters *ClusterInspectParameters
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClustersClientBeginRotateCredentialOptions contains the optional parameters for the ClustersClient.BeginRotateCredential
-// method.
-type ClustersClientBeginRotateCredentialOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -860,78 +769,6 @@ type KubernetesClustersClientListByResourceGroupOptions struct {
 // KubernetesClustersClientListBySubscriptionOptions contains the optional parameters for the KubernetesClustersClient.NewListBySubscriptionPager
 // method.
 type KubernetesClustersClientListBySubscriptionOptions struct {
-	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
-	// through large result sets.
-	SkipToken *string
-
-	// The maximum number of resources to return from the operation. Example: '$top=10'.
-	Top *int32
-}
-
-// KubernetesVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the KubernetesVersionsClient.BeginCreateOrUpdate
-// method.
-type KubernetesVersionsClientBeginCreateOrUpdateOptions struct {
-	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
-	// in error from server as they are not supported.
-	IfNoneMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// KubernetesVersionsClientBeginDeleteOptions contains the optional parameters for the KubernetesVersionsClient.BeginDelete
-// method.
-type KubernetesVersionsClientBeginDeleteOptions struct {
-	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
-	// in error from server as they are not supported.
-	IfNoneMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// KubernetesVersionsClientBeginUpdateOptions contains the optional parameters for the KubernetesVersionsClient.BeginUpdate
-// method.
-type KubernetesVersionsClientBeginUpdateOptions struct {
-	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
-	// in error from server as they are not supported.
-	IfNoneMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// KubernetesVersionsClientGetOptions contains the optional parameters for the KubernetesVersionsClient.Get method.
-type KubernetesVersionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// KubernetesVersionsClientListByResourceGroupOptions contains the optional parameters for the KubernetesVersionsClient.NewListByResourceGroupPager
-// method.
-type KubernetesVersionsClientListByResourceGroupOptions struct {
-	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
-	// through large result sets.
-	SkipToken *string
-
-	// The maximum number of resources to return from the operation. Example: '$top=10'.
-	Top *int32
-}
-
-// KubernetesVersionsClientListBySubscriptionOptions contains the optional parameters for the KubernetesVersionsClient.NewListBySubscriptionPager
-// method.
-type KubernetesVersionsClientListBySubscriptionOptions struct {
 	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
 	// through large result sets.
 	SkipToken *string

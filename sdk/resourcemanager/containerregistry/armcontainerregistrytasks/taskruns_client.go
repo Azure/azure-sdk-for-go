@@ -18,8 +18,6 @@ import (
 
 // TaskRunsClient contains the methods for the TaskRuns group.
 // Don't use this type directly, use NewTaskRunsClient() instead.
-//
-// Generated from API version 2025-03-01-preview
 type TaskRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewTaskRunsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreate - Creates a task run for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - taskRunName - The name of the task run.
@@ -67,6 +67,8 @@ func (client *TaskRunsClient) BeginCreate(ctx context.Context, resourceGroupName
 
 // Create - Creates a task run for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
 func (client *TaskRunsClient) create(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TaskRunsClient.BeginCreate"
@@ -112,8 +114,8 @@ func (client *TaskRunsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, taskRun); err != nil {
@@ -124,6 +126,8 @@ func (client *TaskRunsClient) createCreateRequest(ctx context.Context, resourceG
 
 // Delete - Deletes a specified task run resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - taskRunName - The name of the task run.
@@ -173,13 +177,15 @@ func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the detailed information for a given task run.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - taskRunName - The name of the task run.
@@ -230,8 +236,8 @@ func (client *TaskRunsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -247,6 +253,8 @@ func (client *TaskRunsClient) getHandleResponse(resp *http.Response) (TaskRunsCl
 
 // GetDetails - Gets the detailed information for a given task run that includes all secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - taskRunName - The name of the task run.
@@ -297,8 +305,8 @@ func (client *TaskRunsClient) getDetailsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -313,6 +321,8 @@ func (client *TaskRunsClient) getDetailsHandleResponse(resp *http.Response) (Tas
 }
 
 // NewListPager - Lists all the task runs for a specified container registry.
+//
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - options - TaskRunsClientListOptions contains the optional parameters for the TaskRunsClient.NewListPager method.
@@ -359,8 +369,8 @@ func (client *TaskRunsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -376,6 +386,8 @@ func (client *TaskRunsClient) listHandleResponse(resp *http.Response) (TaskRunsC
 
 // BeginUpdate - Updates a task run with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the Registry
 //   - taskRunName - The name of the task run.
@@ -400,6 +412,8 @@ func (client *TaskRunsClient) BeginUpdate(ctx context.Context, resourceGroupName
 
 // Update - Updates a task run with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
 func (client *TaskRunsClient) update(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TaskRunsClient.BeginUpdate"
@@ -445,8 +459,8 @@ func (client *TaskRunsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateParameters); err != nil {

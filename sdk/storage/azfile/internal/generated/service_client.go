@@ -4,15 +4,11 @@
 package generated
 
 import (
-	"context"
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 func (client *ServiceClient) Endpoint() string {
-	return client.url
+	return client.endpoint
 }
 
 func (client *ServiceClient) InternalClient() *azcore.Client {
@@ -25,17 +21,8 @@ func (client *ServiceClient) InternalClient() *azcore.Client {
 func NewServiceClient(endpoint string, azClient *azcore.Client) *ServiceClient {
 	client := &ServiceClient{
 		internal: azClient,
-		url:      endpoint,
+		endpoint: endpoint,
+		version:  ServiceVersion,
 	}
 	return client
-}
-
-// ListSharesSegmentCreateRequest creates the ListSharesSegment request.
-func (client *ServiceClient) ListSharesSegmentCreateRequest(ctx context.Context, options *ServiceClientListSharesSegmentOptions) (*policy.Request, error) {
-	return client.listSharesSegmentCreateRequest(ctx, options)
-}
-
-// ListSharesSegmentHandleResponse handles the ListSharesSegment response.
-func (client *ServiceClient) ListSharesSegmentHandleResponse(resp *http.Response) (ServiceClientListSharesSegmentResponse, error) {
-	return client.listSharesSegmentHandleResponse(resp)
 }

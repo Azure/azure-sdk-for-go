@@ -11,39 +11,39 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AvsStorageContainers_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/AvsStorageContainers_Delete_MaximumSet_Gen.json
 func ExampleAvsStorageContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAvsStorageContainersClient().BeginDelete(ctx, "rgpurestorage", "storagepool-01", "container-01", nil)
+	poller, err := clientFactory.NewAvsStorageContainersClient().BeginDelete(ctx, "rgpurestorage", "storagePoolName", "storageContainerName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AvsStorageContainers_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/AvsStorageContainers_Get_MaximumSet_Gen.json
 func ExampleAvsStorageContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAvsStorageContainersClient().Get(ctx, "rgpurestorage", "storagepool-01", "container-01", nil)
+	res, err := clientFactory.NewAvsStorageContainersClient().Get(ctx, "rgpurestorage", "storagePoolName", "storageContainerName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -51,41 +51,42 @@ func ExampleAvsStorageContainersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.AvsStorageContainersClientGetResponse{
-	// 	AvsStorageContainer: armpurestorageblock.AvsStorageContainer{
+	// 	AvsStorageContainer: &armpurestorageblock.AvsStorageContainer{
 	// 		Properties: &armpurestorageblock.AvsStorageContainerProperties{
 	// 			Space: &armpurestorageblock.Space{
-	// 				TotalUsed: to.Ptr[int64](1073741824),
-	// 				Unique: to.Ptr[int64](268435456),
-	// 				Snapshots: to.Ptr[int64](53687091236870910),
-	// 				Shared: to.Ptr[int64](268435456),
+	// 				TotalUsed: to.Ptr[int64](28),
+	// 				Unique: to.Ptr[int64](4),
+	// 				Snapshots: to.Ptr[int64](5),
+	// 				Shared: to.Ptr[int64](9),
 	// 			},
-	// 			ResourceName: to.Ptr("container-01"),
-	// 			ProvisionedLimit: to.Ptr[int64](10737418240),
-	// 			Datastore: to.Ptr("AVS-Datastore-01"),
+	// 			ResourceName: to.Ptr("name"),
+	// 			ProvisionedLimit: to.Ptr[int64](24),
+	// 			Datastore: to.Ptr("name"),
 	// 			Mounted: to.Ptr(true),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/avsStorageContainers/container-01"),
-	// 		Type: to.Ptr("PureStorage.Block/storagePools/avsStorageContainers"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+	// 		Name: to.Ptr("acezain"),
+	// 		Type: to.Ptr("rhdmvrbnpxcydalkvtfsb"),
 	// 		SystemData: &armpurestorageblock.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedBy: to.Ptr("ruoitchmuomrbscg"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/AvsStorageContainers_ListByStoragePool_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/AvsStorageContainers_ListByStoragePool_MaximumSet_Gen.json
 func ExampleAvsStorageContainersClient_NewListByStoragePoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -106,29 +107,30 @@ func ExampleAvsStorageContainersClient_NewListByStoragePoolPager() {
 		// 			{
 		// 				Properties: &armpurestorageblock.AvsStorageContainerProperties{
 		// 					Space: &armpurestorageblock.Space{
-		// 						TotalUsed: to.Ptr[int64](1073741824),
-		// 						Unique: to.Ptr[int64](268435456),
-		// 						Snapshots: to.Ptr[int64](53687091236870910),
-		// 						Shared: to.Ptr[int64](268435456),
+		// 						TotalUsed: to.Ptr[int64](28),
+		// 						Unique: to.Ptr[int64](4),
+		// 						Snapshots: to.Ptr[int64](5),
+		// 						Shared: to.Ptr[int64](9),
 		// 					},
-		// 					ResourceName: to.Ptr("container-01"),
-		// 					ProvisionedLimit: to.Ptr[int64](10737418240),
-		// 					Datastore: to.Ptr("container-01"),
+		// 					ResourceName: to.Ptr("name"),
+		// 					ProvisionedLimit: to.Ptr[int64](24),
+		// 					Datastore: to.Ptr("name"),
 		// 					Mounted: to.Ptr(true),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Type: to.Ptr("PureStorage.Block/storagePools/avsStorageContainers"),
+		// 				Name: to.Ptr("acezain"),
+		// 				Type: to.Ptr("rhdmvrbnpxcydalkvtfsb"),
 		// 				SystemData: &armpurestorageblock.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
+		// 					CreatedBy: to.Ptr("ruoitchmuomrbscg"),
 		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
 		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123"),
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}

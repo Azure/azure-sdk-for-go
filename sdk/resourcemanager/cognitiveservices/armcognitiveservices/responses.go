@@ -66,12 +66,6 @@ type AccountsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// AccountsClientEvaluateDeploymentPoliciesResponse contains the response from method AccountsClient.EvaluateDeploymentPolicies.
-type AccountsClientEvaluateDeploymentPoliciesResponse struct {
-	// Response body for the evaluateDeploymentPolicies action.
-	EvaluateDeploymentPoliciesResponse
-}
-
 // AccountsClientGetResponse contains the response from method AccountsClient.Get.
 type AccountsClientGetResponse struct {
 	// Cognitive Services account is an Azure resource representing the provisioned account, it's type, location and SKU.
@@ -291,53 +285,6 @@ type ComputeOperationsClientGetResponse struct {
 	ComputeOperationStatus
 }
 
-// ComputesClientCreateOrUpdateResponse contains the response from method ComputesClient.BeginCreateOrUpdate.
-type ComputesClientCreateOrUpdateResponse struct {
-	// Cognitive Services compute resource. Supports polymorphic compute types
-	// (Cluster, ContainerInstance) via the computeType discriminator in properties.
-	Compute
-}
-
-// ComputesClientDeleteResponse contains the response from method ComputesClient.BeginDelete.
-type ComputesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ComputesClientGetResponse contains the response from method ComputesClient.Get.
-type ComputesClientGetResponse struct {
-	// Cognitive Services compute resource. Supports polymorphic compute types
-	// (Cluster, ContainerInstance) via the computeType discriminator in properties.
-	Compute
-}
-
-// ComputesClientListResponse contains the response from method ComputesClient.NewListPager.
-type ComputesClientListResponse struct {
-	// The list of cognitive services computes operation response.
-	ComputeListResult
-}
-
-// ComputesClientRestartResponse contains the response from method ComputesClient.BeginRestart.
-type ComputesClientRestartResponse struct {
-	// placeholder for future response values
-}
-
-// ComputesClientStartResponse contains the response from method ComputesClient.BeginStart.
-type ComputesClientStartResponse struct {
-	// placeholder for future response values
-}
-
-// ComputesClientStopResponse contains the response from method ComputesClient.BeginStop.
-type ComputesClientStopResponse struct {
-	// placeholder for future response values
-}
-
-// ComputesClientUpdateResponse contains the response from method ComputesClient.BeginUpdate.
-type ComputesClientUpdateResponse struct {
-	// Cognitive Services compute resource. Supports polymorphic compute types
-	// (Cluster, ContainerInstance) via the computeType discriminator in properties.
-	Compute
-}
-
 // DefenderForAISettingsClientCreateOrUpdateResponse contains the response from method DefenderForAISettingsClient.CreateOrUpdate.
 type DefenderForAISettingsClientCreateOrUpdateResponse struct {
 	// The Defender for AI resource.
@@ -453,47 +400,6 @@ type EncryptionScopesClientListResponse struct {
 type LocationBasedModelCapacitiesClientListResponse struct {
 	// The list of cognitive services accounts operation response.
 	ModelCapacityListResult
-}
-
-// ManagedComputeCapacitiesClientListResponse contains the response from method ManagedComputeCapacitiesClient.NewListPager.
-type ManagedComputeCapacitiesClientListResponse struct {
-	// The list of managed compute capacities response.
-	ManagedComputeCapacityListResult
-}
-
-// ManagedComputeDeploymentsClientCreateOrUpdateResponse contains the response from method ManagedComputeDeploymentsClient.BeginCreateOrUpdate.
-type ManagedComputeDeploymentsClientCreateOrUpdateResponse struct {
-	// Cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
-	ManagedComputeDeployment
-}
-
-// ManagedComputeDeploymentsClientDeleteResponse contains the response from method ManagedComputeDeploymentsClient.BeginDelete.
-type ManagedComputeDeploymentsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ManagedComputeDeploymentsClientGetResponse contains the response from method ManagedComputeDeploymentsClient.Get.
-type ManagedComputeDeploymentsClientGetResponse struct {
-	// Cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
-	ManagedComputeDeployment
-}
-
-// ManagedComputeDeploymentsClientListResponse contains the response from method ManagedComputeDeploymentsClient.NewListPager.
-type ManagedComputeDeploymentsClientListResponse struct {
-	// The list of managed compute deployments.
-	ManagedComputeDeploymentListResult
-}
-
-// ManagedComputeDeploymentsClientUpdateResponse contains the response from method ManagedComputeDeploymentsClient.BeginUpdate.
-type ManagedComputeDeploymentsClientUpdateResponse struct {
-	// Cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
-	ManagedComputeDeployment
-}
-
-// ManagedComputeUsagesOperationGroupClientListResponse contains the response from method ManagedComputeUsagesOperationGroupClient.NewListPager.
-type ManagedComputeUsagesOperationGroupClientListResponse struct {
-	// List of managed compute quota entries.
-	ManagedComputeUsageListResult
 }
 
 // ManagedNetworkProvisionsClientProvisionManagedNetworkResponse contains the response from method ManagedNetworkProvisionsClient.BeginProvisionManagedNetwork.
@@ -821,8 +727,8 @@ type RaiContentFiltersClientListResponse struct {
 
 // RaiExternalSafetyProviderClientCreateOrUpdateResponse contains the response from method RaiExternalSafetyProviderClient.CreateOrUpdate.
 type RaiExternalSafetyProviderClientCreateOrUpdateResponse struct {
-	// Cognitive Services Rai External Safety provider Schema.
-	RaiExternalSafetyProviderSchema
+	// Possible types are RaiExternalSafetyProvider, RaiExternalSafetyProviderSchema
+	Value any
 }
 
 // RaiExternalSafetyProviderClientDeleteResponse contains the response from method RaiExternalSafetyProviderClient.BeginDelete.
@@ -944,51 +850,4 @@ type TestRaiExternalSafetyProviderClientCreateOrUpdateResponse struct {
 type UsagesClientListResponse struct {
 	// The response to a list usage request.
 	UsageListResult
-}
-
-// WorkbenchesClientCreateOrUpdateResponse contains the response from method WorkbenchesClient.BeginCreateOrUpdate.
-type WorkbenchesClientCreateOrUpdateResponse struct {
-	// Workbench resource under a Cognitive Services project.
-	// Provides interactive compute with data access for AI development.
-	Workbench
-}
-
-// WorkbenchesClientDeleteResponse contains the response from method WorkbenchesClient.BeginDelete.
-type WorkbenchesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// WorkbenchesClientGetResponse contains the response from method WorkbenchesClient.Get.
-type WorkbenchesClientGetResponse struct {
-	// Workbench resource under a Cognitive Services project.
-	// Provides interactive compute with data access for AI development.
-	Workbench
-}
-
-// WorkbenchesClientListResponse contains the response from method WorkbenchesClient.NewListPager.
-type WorkbenchesClientListResponse struct {
-	// The list of workbenches operation response.
-	WorkbenchListResult
-}
-
-// WorkbenchesClientRestartResponse contains the response from method WorkbenchesClient.BeginRestart.
-type WorkbenchesClientRestartResponse struct {
-	// placeholder for future response values
-}
-
-// WorkbenchesClientStartResponse contains the response from method WorkbenchesClient.BeginStart.
-type WorkbenchesClientStartResponse struct {
-	// placeholder for future response values
-}
-
-// WorkbenchesClientStopResponse contains the response from method WorkbenchesClient.BeginStop.
-type WorkbenchesClientStopResponse struct {
-	// placeholder for future response values
-}
-
-// WorkbenchesClientUpdateResponse contains the response from method WorkbenchesClient.BeginUpdate.
-type WorkbenchesClientUpdateResponse struct {
-	// Workbench resource under a Cognitive Services project.
-	// Provides interactive compute with data access for AI development.
-	Workbench
 }

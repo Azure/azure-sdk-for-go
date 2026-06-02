@@ -1,7 +1,0 @@
-{
-  "apiVersions": {
-    "Quota": "2020-10-25",
-    "Reservations": "2022-11-01"
-  },
-  "emitterVersion": "0.14.0"
-}

@@ -4,10 +4,6 @@
 
 package armmsi
 
-const (
-	version20250531Preview string = "2025-05-31-preview"
-)
-
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

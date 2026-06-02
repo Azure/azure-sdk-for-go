@@ -19,8 +19,6 @@ import (
 
 // BulkActionsClient contains the methods for the BulkActions group.
 // Don't use this type directly, use NewBulkActionsClient() instead.
-//
-// Generated from API version 2026-02-01-preview
 type BulkActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewBulkActionsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCancel - Cancels LaunchBulkInstancesOperation instances that have not yet launched.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
 //   - name - The name of the LaunchBulkInstancesOperation.
@@ -67,6 +67,8 @@ func (client *BulkActionsClient) BeginCancel(ctx context.Context, resourceGroupN
 
 // Cancel - Cancels LaunchBulkInstancesOperation instances that have not yet launched.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 func (client *BulkActionsClient) cancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkActionsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BulkActionsClient.BeginCancel"
@@ -112,13 +114,15 @@ func (client *BulkActionsClient) cancelCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates LaunchBulkInstancesOperations.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
 //   - name - The name of the LaunchBulkInstancesOperation.
@@ -144,6 +148,8 @@ func (client *BulkActionsClient) BeginCreateOrUpdate(ctx context.Context, resour
 
 // CreateOrUpdate - Creates or updates LaunchBulkInstancesOperations.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 func (client *BulkActionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedLaunchBulkInstancesOperation, options *BulkActionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BulkActionsClient.BeginCreateOrUpdate"
@@ -189,8 +195,8 @@ func (client *BulkActionsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -201,6 +207,8 @@ func (client *BulkActionsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Deletes LaunchBulkInstancesOperations.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
 //   - name - The name of the LaunchBulkInstancesOperation.
@@ -224,6 +232,8 @@ func (client *BulkActionsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Deletes LaunchBulkInstancesOperations.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 func (client *BulkActionsClient) deleteOperation(ctx context.Context, resourceGroupName string, location string, name string, options *BulkActionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BulkActionsClient.BeginDelete"
@@ -269,16 +279,18 @@ func (client *BulkActionsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
+	reqQP.Set("api-version", "2026-02-01-preview")
 	if options != nil && options.DeleteInstances != nil {
 		reqQP.Set("deleteInstances", strconv.FormatBool(*options.DeleteInstances))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets an instance of LaunchBulkInstancesOperations.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
 //   - name - The name of the LaunchBulkInstancesOperation.
@@ -329,8 +341,8 @@ func (client *BulkActionsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -346,6 +358,8 @@ func (client *BulkActionsClient) getHandleResponse(resp *http.Response) (BulkAct
 
 // GetOperationStatus - Get the status of a LaunchBulkInstancesOperation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - location - The location name.
 //   - id - The async operation id.
 //   - options - BulkActionsClientGetOperationStatusOptions contains the optional parameters for the BulkActionsClient.GetOperationStatus
@@ -392,8 +406,8 @@ func (client *BulkActionsClient) getOperationStatusCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -408,6 +422,8 @@ func (client *BulkActionsClient) getOperationStatusHandleResponse(resp *http.Res
 }
 
 // NewListByResourceGroupPager - List LaunchBulkInstancesOperation resources by resource group.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
 //   - options - BulkActionsClientListByResourceGroupOptions contains the optional parameters for the BulkActionsClient.NewListByResourceGroupPager
@@ -455,8 +471,8 @@ func (client *BulkActionsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -471,6 +487,8 @@ func (client *BulkActionsClient) listByResourceGroupHandleResponse(resp *http.Re
 }
 
 // NewListBySubscriptionPager - List LaunchBulkInstancesOperation resources by subscriptionId.
+//
+// Generated from API version 2026-02-01-preview
 //   - location - The location name.
 //   - options - BulkActionsClientListBySubscriptionOptions contains the optional parameters for the BulkActionsClient.NewListBySubscriptionPager
 //     method.
@@ -513,8 +531,8 @@ func (client *BulkActionsClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -529,6 +547,8 @@ func (client *BulkActionsClient) listBySubscriptionHandleResponse(resp *http.Res
 }
 
 // NewListVirtualMachinesPager - List VirtualMachine resources of a LaunchBulkInstancesOperation.
+//
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
 //   - name - The name of the LaunchBulkInstancesOperation
@@ -587,8 +607,8 @@ func (client *BulkActionsClient) listVirtualMachinesCreateRequest(ctx context.Co
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -605,6 +625,8 @@ func (client *BulkActionsClient) listVirtualMachinesHandleResponse(resp *http.Re
 // VirtualMachinesCancelOperations - VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate)
 // request
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - location - The location name.
 //   - requestBody - The request body
 //   - options - BulkActionsClientVirtualMachinesCancelOperationsOptions contains the optional parameters for the BulkActionsClient.VirtualMachinesCancelOperations
@@ -647,8 +669,8 @@ func (client *BulkActionsClient) virtualMachinesCancelOperationsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
@@ -669,6 +691,8 @@ func (client *BulkActionsClient) virtualMachinesCancelOperationsHandleResponse(r
 // VirtualMachinesExecuteCreate - VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines,
 // this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - location - The location name.
 //   - requestBody - The request body
 //   - options - BulkActionsClientVirtualMachinesExecuteCreateOptions contains the optional parameters for the BulkActionsClient.VirtualMachinesExecuteCreate
@@ -711,8 +735,8 @@ func (client *BulkActionsClient) virtualMachinesExecuteCreateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
@@ -733,6 +757,8 @@ func (client *BulkActionsClient) virtualMachinesExecuteCreateHandleResponse(resp
 // VirtualMachinesExecuteDeallocate - VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual
 // machines, this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - location - The location name.
 //   - requestBody - The request body
 //   - options - BulkActionsClientVirtualMachinesExecuteDeallocateOptions contains the optional parameters for the BulkActionsClient.VirtualMachinesExecuteDeallocate
@@ -775,8 +801,8 @@ func (client *BulkActionsClient) virtualMachinesExecuteDeallocateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
@@ -797,6 +823,8 @@ func (client *BulkActionsClient) virtualMachinesExecuteDeallocateHandleResponse(
 // VirtualMachinesExecuteDelete - VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines,
 // this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - location - The location name.
 //   - requestBody - The request body
 //   - options - BulkActionsClientVirtualMachinesExecuteDeleteOptions contains the optional parameters for the BulkActionsClient.VirtualMachinesExecuteDelete
@@ -839,8 +867,8 @@ func (client *BulkActionsClient) virtualMachinesExecuteDeleteCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
@@ -861,6 +889,8 @@ func (client *BulkActionsClient) virtualMachinesExecuteDeleteHandleResponse(resp
 // VirtualMachinesExecuteHibernate - VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines,
 // this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - location - The location name.
 //   - requestBody - The request body
 //   - options - BulkActionsClientVirtualMachinesExecuteHibernateOptions contains the optional parameters for the BulkActionsClient.VirtualMachinesExecuteHibernate
@@ -903,8 +933,8 @@ func (client *BulkActionsClient) virtualMachinesExecuteHibernateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
@@ -925,6 +955,8 @@ func (client *BulkActionsClient) virtualMachinesExecuteHibernateHandleResponse(r
 // VirtualMachinesExecuteStart - VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this
 // operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - location - The location name.
 //   - requestBody - The request body
 //   - options - BulkActionsClientVirtualMachinesExecuteStartOptions contains the optional parameters for the BulkActionsClient.VirtualMachinesExecuteStart
@@ -967,8 +999,8 @@ func (client *BulkActionsClient) virtualMachinesExecuteStartCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
@@ -989,6 +1021,8 @@ func (client *BulkActionsClient) virtualMachinesExecuteStartHandleResponse(resp 
 // VirtualMachinesGetOperationStatus - VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed
 // on virtual machines
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01-preview
 //   - location - The location name.
 //   - requestBody - The request body
 //   - options - BulkActionsClientVirtualMachinesGetOperationStatusOptions contains the optional parameters for the BulkActionsClient.VirtualMachinesGetOperationStatus
@@ -1031,8 +1065,8 @@ func (client *BulkActionsClient) virtualMachinesGetOperationStatusCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {

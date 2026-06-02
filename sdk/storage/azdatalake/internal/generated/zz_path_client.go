@@ -14,7 +14,6 @@ import (
 	"io"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -29,6 +28,8 @@ type PathClient struct {
 
 // AppendData - Append data to the file.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - body - Initial data
 //   - options - PathClientAppendDataOptions contains the optional parameters for the PathClient.AppendData method.
 //   - PathHTTPHeaders - PathHTTPHeaders contains a group of parameters for the PathClient.Create method.
@@ -69,7 +70,7 @@ func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.R
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ContentLength != nil {
 		req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(*options.ContentLength, 10)}
@@ -183,6 +184,8 @@ func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathCli
 // if the destination already exists, use a conditional request with
 // If-None-Match: "*".
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - options - PathClientCreateOptions contains the optional parameters for the PathClient.Create method.
 //   - PathHTTPHeaders - PathHTTPHeaders contains a group of parameters for the PathClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
@@ -228,19 +231,19 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.ACL != nil {
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
@@ -309,13 +312,13 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfModifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-modified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-source-if-modified-since"] = []string{sourceModifiedAccessConditions.SourceIfModifiedSince.Format(time.RFC1123)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{sourceModifiedAccessConditions.SourceIfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.SourceLeaseID != nil {
 		req.Raw().Header["x-ms-source-lease-id"] = []string{*options.SourceLeaseID}
@@ -380,6 +383,8 @@ func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientC
 // Conditional Headers for Blob Service Operations
 // [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - options - PathClientDeleteOptions contains the optional parameters for the PathClient.Delete method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -421,19 +426,19 @@ func (client *PathClient) deleteCreateRequest(ctx context.Context, options *Path
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -481,6 +486,8 @@ func (client *PathClient) deleteHandleResponse(resp *http.Response) (PathClientD
 
 // FlushData - Set the owner, group, permissions, or access control list for a path.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - options - PathClientFlushDataOptions contains the optional parameters for the PathClient.FlushData method.
 //   - PathHTTPHeaders - PathHTTPHeaders contains a group of parameters for the PathClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
@@ -525,7 +532,7 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ContentLength != nil {
 		req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(*options.ContentLength, 10)}
@@ -534,13 +541,13 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if pathHTTPHeaders != nil && pathHTTPHeaders.CacheControl != nil {
 		req.Raw().Header["x-ms-cache-control"] = []string{*pathHTTPHeaders.CacheControl}
@@ -650,6 +657,8 @@ func (client *PathClient) flushDataHandleResponse(resp *http.Response) (PathClie
 // Service Operations
 // [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - options - PathClientGetPropertiesOptions contains the optional parameters for the PathClient.GetProperties method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -688,19 +697,19 @@ func (client *PathClient) getPropertiesCreateRequest(ctx context.Context, option
 	if options != nil && options.Upn != nil {
 		reqQP.Set("upn", strconv.FormatBool(*options.Upn))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -833,6 +842,8 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 // HTTP requests. For more information, see Specifying Conditional Headers for Blob Service
 // Operations [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - xmsLeaseAction - There are five lease actions: "acquire", "break", "change", "renew", and "release". Use "acquire" and
 //     specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
 //     to break an existing lease. When a lease is broken, the lease break period is allowed to elapse, during which time no lease
@@ -874,19 +885,19 @@ func (client *PathClient) leaseCreateRequest(ctx context.Context, xmsLeaseAction
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -945,6 +956,8 @@ func (client *PathClient) leaseHandleResponse(resp *http.Response) (PathClientLe
 // HTTP requests. For more information, see Specifying Conditional Headers for Blob
 // Service Operations [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - options - PathClientReadOptions contains the optional parameters for the PathClient.Read method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -978,20 +991,20 @@ func (client *PathClient) readCreateRequest(ctx context.Context, options *PathCl
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.Range != nil {
 		req.Raw().Header["Range"] = []string{*options.Range}
@@ -1108,6 +1121,8 @@ func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientRea
 
 // SetAccessControl - Set the owner, group, permissions, or access control list for a path.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - options - PathClientSetAccessControlOptions contains the optional parameters for the PathClient.SetAccessControl method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -1141,19 +1156,19 @@ func (client *PathClient) setAccessControlCreateRequest(ctx context.Context, opt
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.ACL != nil {
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
@@ -1211,6 +1226,8 @@ func (client *PathClient) setAccessControlHandleResponse(resp *http.Response) (P
 
 // SetAccessControlRecursive - Set the access control list for a path and sub-paths.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - mode - Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more POSIX access
 //     control rights that pre-exist on files and directories, "remove" removes one or more
 //     POSIX access control rights that were present earlier on files and directories
@@ -1255,7 +1272,7 @@ func (client *PathClient) SetAccessControlRecursiveCreateRequest(ctx context.Con
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ACL != nil {
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
@@ -1297,6 +1314,8 @@ func (client *PathClient) SetAccessControlRecursiveHandleResponse(resp *http.Res
 
 // SetExpiry - Sets the time a blob will expire and be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - expiryOptions - Required. Indicates mode of the expiry time
 //   - options - PathClientSetExpiryOptions contains the optional parameters for the PathClient.SetExpiry method.
 func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions ExpiryOptions, options *PathClientSetExpiryOptions) (PathClientSetExpiryResponse, error) {
@@ -1328,7 +1347,7 @@ func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -1375,6 +1394,8 @@ func (client *PathClient) setExpiryHandleResponse(resp *http.Response) (PathClie
 
 // Undelete - Undelete a path that was previously soft deleted
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - options - PathClientUndeleteOptions contains the optional parameters for the PathClient.Undelete method.
 func (client *PathClient) Undelete(ctx context.Context, options *PathClientUndeleteOptions) (PathClientUndeleteResponse, error) {
 	var err error
@@ -1405,7 +1426,7 @@ func (client *PathClient) undeleteCreateRequest(ctx context.Context, options *Pa
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -1448,6 +1469,8 @@ func (client *PathClient) undeleteHandleResponse(resp *http.Response) (PathClien
 // conditional HTTP requests. For more information, see Specifying Conditional
 // Headers for Blob Service Operations [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-06-06
 //   - action - The action must be "append" to upload data to be appended to a file, "flush" to flush previously uploaded data
 //     to a file, "setProperties" to set the properties of a file or directory,
 //     "setAccessControl" to set the owner, group, permissions, or access control list for a file or directory, or "setAccessControlRecursive"
@@ -1512,7 +1535,7 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ContentLength != nil {
 		req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(*options.ContentLength, 10)}
@@ -1521,13 +1544,13 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.ACL != nil {
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}

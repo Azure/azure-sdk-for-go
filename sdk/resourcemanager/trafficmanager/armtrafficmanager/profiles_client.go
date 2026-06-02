@@ -18,8 +18,6 @@ import (
 
 // ProfilesClient contains the methods for the Profiles group.
 // Don't use this type directly, use NewProfilesClient() instead.
-//
-// Generated from API version 2024-04-01-preview
 type ProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CheckTrafficManagerNameAvailabilityV2 - Checks the availability of a Traffic Manager Relative DNS name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01-preview
 //   - parameters - The request body
 //   - options - ProfilesClientCheckTrafficManagerNameAvailabilityV2Options contains the optional parameters for the ProfilesClient.CheckTrafficManagerNameAvailabilityV2
 //     method.
@@ -80,8 +80,8 @@ func (client *ProfilesClient) checkTrafficManagerNameAvailabilityV2CreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -101,6 +101,8 @@ func (client *ProfilesClient) checkTrafficManagerNameAvailabilityV2HandleRespons
 
 // CheckTrafficManagerRelativeDNSNameAvailability - Checks the availability of a Traffic Manager Relative DNS name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01-preview
 //   - parameters - The request body
 //   - options - ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions contains the optional parameters for the
 //     ProfilesClient.CheckTrafficManagerRelativeDNSNameAvailability method.
@@ -134,8 +136,8 @@ func (client *ProfilesClient) checkTrafficManagerRelativeDNSNameAvailabilityCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -155,6 +157,8 @@ func (client *ProfilesClient) checkTrafficManagerRelativeDNSNameAvailabilityHand
 
 // CreateOrUpdate - Create or update a Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The name of the Traffic Manager profile.
 //   - parameters - The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
@@ -201,8 +205,8 @@ func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -222,6 +226,8 @@ func (client *ProfilesClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes a Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The name of the Traffic Manager profile.
 //   - options - ProfilesClientDeleteOptions contains the optional parameters for the ProfilesClient.Delete method.
@@ -267,8 +273,8 @@ func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -284,6 +290,8 @@ func (client *ProfilesClient) deleteHandleResponse(resp *http.Response) (Profile
 
 // Get - Gets a Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The name of the Traffic Manager profile.
 //   - options - ProfilesClientGetOptions contains the optional parameters for the ProfilesClient.Get method.
@@ -329,8 +337,8 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -345,6 +353,8 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 }
 
 // NewListByResourceGroupPager - Lists all Traffic Manager profiles within a resource group.
+//
+// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProfilesClientListByResourceGroupOptions contains the optional parameters for the ProfilesClient.NewListByResourceGroupPager
 //     method.
@@ -387,8 +397,8 @@ func (client *ProfilesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -403,6 +413,8 @@ func (client *ProfilesClient) listByResourceGroupHandleResponse(resp *http.Respo
 }
 
 // NewListBySubscriptionPager - Lists all Traffic Manager profiles within a subscription.
+//
+// Generated from API version 2024-04-01-preview
 //   - options - ProfilesClientListBySubscriptionOptions contains the optional parameters for the ProfilesClient.NewListBySubscriptionPager
 //     method.
 func (client *ProfilesClient) NewListBySubscriptionPager(options *ProfilesClientListBySubscriptionOptions) *runtime.Pager[ProfilesClientListBySubscriptionResponse] {
@@ -440,8 +452,8 @@ func (client *ProfilesClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -457,6 +469,8 @@ func (client *ProfilesClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // Update - Update a Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The name of the Traffic Manager profile.
 //   - parameters - The Traffic Manager profile parameters supplied to the Update operation.
@@ -503,8 +517,8 @@ func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

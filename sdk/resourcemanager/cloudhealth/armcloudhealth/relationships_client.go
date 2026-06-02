@@ -11,16 +11,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 // RelationshipsClient contains the methods for the Relationships group.
 // Don't use this type directly, use NewRelationshipsClient() instead.
-//
-// Generated from API version 2025-05-01-preview
 type RelationshipsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewRelationshipsClient(subscriptionID string, credential azcore.TokenCreden
 
 // CreateOrUpdate - Create a Relationship
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - relationshipName - Name of the relationship. Must be unique within a health model. For example, a concatenation of parentEntityName
@@ -97,8 +97,8 @@ func (client *RelationshipsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -118,6 +118,8 @@ func (client *RelationshipsClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // Delete - Delete a Relationship
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - relationshipName - Name of the relationship. Must be unique within a health model. For example, a concatenation of parentEntityName
@@ -168,13 +170,15 @@ func (client *RelationshipsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a Relationship
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - relationshipName - Name of the relationship. Must be unique within a health model. For example, a concatenation of parentEntityName
@@ -226,8 +230,8 @@ func (client *RelationshipsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -242,6 +246,8 @@ func (client *RelationshipsClient) getHandleResponse(resp *http.Response) (Relat
 }
 
 // NewListByHealthModelPager - List Relationship resources by HealthModel
+//
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - options - RelationshipsClientListByHealthModelOptions contains the optional parameters for the RelationshipsClient.NewListByHealthModelPager
@@ -289,11 +295,11 @@ func (client *RelationshipsClient) listByHealthModelCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", "2025-05-01-preview")
 	if options != nil && options.Timestamp != nil {
-		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
+		reqQP.Set("timestamp", options.Timestamp.Format(time.RFC3339Nano))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

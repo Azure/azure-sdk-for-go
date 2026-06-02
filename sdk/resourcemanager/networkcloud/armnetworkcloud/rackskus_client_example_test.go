@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/RackSkus_Get.json
+// Generated from example definition: 2025-09-01/RackSkus_Get.json
 func ExampleRackSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleRackSKUsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.RackSKUsClientGetResponse{
-	// 	RackSKU: armnetworkcloud.RackSKU{
+	// 	RackSKU: &armnetworkcloud.RackSKU{
 	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 		Name: to.Ptr("rackSkuName"),
 	// 		Properties: &armnetworkcloud.RackSKUProperties{
@@ -102,7 +102,6 @@ func ExampleRackSKUsClient_Get() {
 	// 					RackSlot: to.Ptr[int64](5),
 	// 				},
 	// 			},
-	// 			DeploymentType: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 			Description: to.Ptr("Sample SKU for the single rack."),
 	// 			MaxClusterSlots: to.Ptr[int64](0),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.RackSKUProvisioningStateSucceeded),
@@ -130,7 +129,7 @@ func ExampleRackSKUsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/RackSkus_ListBySubscription.json
+// Generated from example definition: 2025-09-01/RackSkus_ListBySubscription.json
 func ExampleRackSKUsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +226,6 @@ func ExampleRackSKUsClient_NewListBySubscriptionPager() {
 		// 							RackSlot: to.Ptr[int64](5),
 		// 						},
 		// 					},
-		// 					DeploymentType: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 		// 					Description: to.Ptr("Sample SKU for the single rack."),
 		// 					MaxClusterSlots: to.Ptr[int64](0),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.RackSKUProvisioningStateSucceeded),

@@ -16,12 +16,8 @@ import (
 	"strings"
 )
 
-const defaultUpdateRunsClientVersion string = "2026-04-30"
-
 // UpdateRunsClient contains the methods for the UpdateRuns group.
 // Don't use this type directly, use NewUpdateRunsClient() instead.
-//
-// Generated from API version 2026-04-30
 type UpdateRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +41,8 @@ func NewUpdateRunsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginDelete - Delete specified Update Run
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -69,6 +67,8 @@ func (client *UpdateRunsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Delete specified Update Run
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-01-preview
 func (client *UpdateRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, updateName string, updateRunName string, options *UpdateRunsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UpdateRunsClient.BeginDelete"
@@ -118,13 +118,15 @@ func (client *UpdateRunsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultUpdateRunsClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get the Update run for a specified update
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -180,8 +182,8 @@ func (client *UpdateRunsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultUpdateRunsClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -196,6 +198,8 @@ func (client *UpdateRunsClient) getHandleResponse(resp *http.Response) (UpdateRu
 }
 
 // NewListPager - List all Update runs for a specified update
+//
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -247,8 +251,8 @@ func (client *UpdateRunsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultUpdateRunsClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,6 +268,8 @@ func (client *UpdateRunsClient) listHandleResponse(resp *http.Response) (UpdateR
 
 // Put - Put Update runs for a specified update
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - updateName - The name of the Update
@@ -320,8 +326,8 @@ func (client *UpdateRunsClient) putCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultUpdateRunsClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateRunsProperties); err != nil {

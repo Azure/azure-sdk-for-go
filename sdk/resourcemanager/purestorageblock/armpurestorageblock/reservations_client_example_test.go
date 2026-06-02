@@ -12,152 +12,152 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/Reservations_Create_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_Create_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReservationsClient().BeginCreate(ctx, "rgpurestorage", "reservation-01", armpurestorageblock.Reservation{
+	poller, err := clientFactory.NewReservationsClient().BeginCreate(ctx, "rgpurestorage", "storagePoolname", armpurestorageblock.Reservation{
 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
 			Marketplace: &armpurestorageblock.MarketplaceDetails{
 				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 				OfferDetails: &armpurestorageblock.OfferDetails{
-					PublisherID: to.Ptr("pure_storage"),
-					OfferID:     to.Ptr("purestorage-block-offer"),
-					PlanID:      to.Ptr("standard-plan"),
-					PlanName:    to.Ptr("Standard Plan"),
-					TermUnit:    to.Ptr("month"),
-					TermID:      to.Ptr("12-month-term"),
+					PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+					OfferID:     to.Ptr("efojrbphbimq"),
+					PlanID:      to.Ptr("caj"),
+					PlanName:    to.Ptr("lvvzchm"),
+					TermUnit:    to.Ptr("ose"),
+					TermID:      to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
 				},
 			},
 			User: &armpurestorageblock.UserDetails{
-				FirstName:    to.Ptr("John"),
-				LastName:     to.Ptr("Doe"),
-				EmailAddress: to.Ptr("john.doe@contoso.com"),
-				Upn:          to.Ptr("john.doe@contoso.com"),
-				PhoneNumber:  to.Ptr("+1-425-555-1234"),
+				FirstName:    to.Ptr("bucysqbbclhwxrzig"),
+				LastName:     to.Ptr("fnsvxlop"),
+				EmailAddress: to.Ptr("abc@example.com"),
+				Upn:          to.Ptr("ekqbqgpdylggddusuiifrnjcwiefay"),
+				PhoneNumber:  to.Ptr("jglihtgsacdxocc"),
 				CompanyDetails: &armpurestorageblock.CompanyDetails{
-					CompanyName: to.Ptr("Contoso Ltd."),
+					CompanyName: to.Ptr("nrndfzmrakk"),
 					Address: &armpurestorageblock.Address{
-						AddressLine1: to.Ptr("1 Microsoft Way"),
-						AddressLine2: to.Ptr("Suite 100"),
-						City:         to.Ptr("Redmond"),
-						State:        to.Ptr("Washington"),
-						Country:      to.Ptr("United States"),
-						PostalCode:   to.Ptr("98052"),
+						AddressLine1: to.Ptr("f"),
+						AddressLine2: to.Ptr("gycfosmknj"),
+						City:         to.Ptr("qxzhxjoatyuajoljfkd"),
+						State:        to.Ptr("dnusygshfvmebpmcjsd"),
+						Country:      to.Ptr("nuexbknolfphlfguyzq"),
+						PostalCode:   to.Ptr("yjzqichkfffbdtcswzolmrl"),
 					},
 				},
 			},
 		},
 		Tags: map[string]*string{
-			"environment": to.Ptr("production"),
+			"key1110": to.Ptr("euhfdmtfpucwurtu"),
 		},
-		Location: to.Ptr("eastus"),
+		Location: to.Ptr("jynnbjysbc"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientCreateResponse{
-	// 	Reservation: armpurestorageblock.Reservation{
+	// 	Reservation: &armpurestorageblock.Reservation{
 	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
-	// 			ReservationInternalID: to.Ptr("res-abc123-xyz789"),
+	// 			ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
 	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
-	// 				SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
+	// 				SubscriptionID: to.Ptr("zrzt"),
 	// 				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 	// 				OfferDetails: &armpurestorageblock.OfferDetails{
-	// 					PublisherID: to.Ptr("pure_storage"),
-	// 					OfferID: to.Ptr("purestorage-block-offer"),
-	// 					PlanID: to.Ptr("standard-plan"),
-	// 					PlanName: to.Ptr("Standard Plan"),
-	// 					TermUnit: to.Ptr("month"),
-	// 					TermID: to.Ptr("12-month-term"),
+	// 					PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+	// 					OfferID: to.Ptr("efojrbphbimq"),
+	// 					PlanID: to.Ptr("caj"),
+	// 					PlanName: to.Ptr("lvvzchm"),
+	// 					TermUnit: to.Ptr("ose"),
+	// 					TermID: to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
 	// 				},
 	// 			},
 	// 			User: &armpurestorageblock.UserDetails{
-	// 				FirstName: to.Ptr("John"),
-	// 				LastName: to.Ptr("Doe"),
-	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
-	// 				Upn: to.Ptr("john.doe@contoso.com"),
-	// 				PhoneNumber: to.Ptr("+1-425-555-1234"),
+	// 				FirstName: to.Ptr("bucysqbbclhwxrzig"),
+	// 				LastName: to.Ptr("fnsvxlop"),
+	// 				EmailAddress: to.Ptr("abc@example.com"),
+	// 				Upn: to.Ptr("ekqbqgpdylggddusuiifrnjcwiefay"),
+	// 				PhoneNumber: to.Ptr("jglihtgsacdxocc"),
 	// 				CompanyDetails: &armpurestorageblock.CompanyDetails{
-	// 					CompanyName: to.Ptr("Contoso Ltd."),
+	// 					CompanyName: to.Ptr("nrndfzmrakk"),
 	// 					Address: &armpurestorageblock.Address{
-	// 						AddressLine1: to.Ptr("1 Microsoft Way"),
-	// 						AddressLine2: to.Ptr("Suite 100"),
-	// 						City: to.Ptr("Redmond"),
-	// 						State: to.Ptr("Washington"),
-	// 						Country: to.Ptr("United States"),
-	// 						PostalCode: to.Ptr("98052"),
+	// 						AddressLine1: to.Ptr("f"),
+	// 						AddressLine2: to.Ptr("gycfosmknj"),
+	// 						City: to.Ptr("qxzhxjoatyuajoljfkd"),
+	// 						State: to.Ptr("dnusygshfvmebpmcjsd"),
+	// 						Country: to.Ptr("nuexbknolfphlfguyzq"),
+	// 						PostalCode: to.Ptr("yjzqichkfffbdtcswzolmrl"),
 	// 					},
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
+	// 			"key1110": to.Ptr("euhfdmtfpucwurtu"),
 	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/reservations/reservation-01"),
-	// 		Name: to.Ptr("reservation-01"),
-	// 		Type: to.Ptr("PureStorage.Block/reservations"),
+	// 		Location: to.Ptr("jynnbjysbc"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+	// 		Name: to.Ptr("dwbwzcf"),
+	// 		Type: to.Ptr("dvtbulwbtrepgowutyqcmvbyojcs"),
 	// 		SystemData: &armpurestorageblock.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedBy: to.Ptr("ruoitchmuomrbscg"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_Delete_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReservationsClient().BeginDelete(ctx, "rgpurestorage", "storagepool-01", nil)
+	poller, err := clientFactory.NewReservationsClient().BeginDelete(ctx, "rgpurestorage", "storagePoolname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_Get_MaximumSet_Gen.json
 func ExampleReservationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReservationsClient().Get(ctx, "rgpurestorage", "storagepool-01", nil)
+	res, err := clientFactory.NewReservationsClient().Get(ctx, "rgpurestorage", "storagePoolname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -165,68 +165,68 @@ func ExampleReservationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientGetResponse{
-	// 	Reservation: armpurestorageblock.Reservation{
+	// 	Reservation: &armpurestorageblock.Reservation{
 	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
-	// 			ReservationInternalID: to.Ptr("res-abc123-xyz789"),
+	// 			ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
 	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
-	// 				SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
+	// 				SubscriptionID: to.Ptr("zrzt"),
 	// 				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 	// 				OfferDetails: &armpurestorageblock.OfferDetails{
-	// 					PublisherID: to.Ptr("pure_storage"),
-	// 					OfferID: to.Ptr("purestorage-block-offer"),
-	// 					PlanID: to.Ptr("standard-plan"),
-	// 					PlanName: to.Ptr("Standard Plan"),
-	// 					TermUnit: to.Ptr("month"),
-	// 					TermID: to.Ptr("12-month-term"),
+	// 					PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+	// 					OfferID: to.Ptr("efojrbphbimq"),
+	// 					PlanID: to.Ptr("caj"),
+	// 					PlanName: to.Ptr("lvvzchm"),
+	// 					TermUnit: to.Ptr("ose"),
+	// 					TermID: to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
 	// 				},
 	// 			},
 	// 			User: &armpurestorageblock.UserDetails{
-	// 				FirstName: to.Ptr("John"),
-	// 				LastName: to.Ptr("Doe"),
-	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
-	// 				Upn: to.Ptr("john.doe@contoso.com"),
-	// 				PhoneNumber: to.Ptr("+1-425-555-1234"),
+	// 				FirstName: to.Ptr("bucysqbbclhwxrzig"),
+	// 				LastName: to.Ptr("fnsvxlop"),
+	// 				EmailAddress: to.Ptr("abc@example.com"),
+	// 				Upn: to.Ptr("ekqbqgpdylggddusuiifrnjcwiefay"),
+	// 				PhoneNumber: to.Ptr("jglihtgsacdxocc"),
 	// 				CompanyDetails: &armpurestorageblock.CompanyDetails{
-	// 					CompanyName: to.Ptr("Contoso Ltd."),
+	// 					CompanyName: to.Ptr("nrndfzmrakk"),
 	// 					Address: &armpurestorageblock.Address{
 	// 						AddressLine1: to.Ptr("f"),
-	// 						AddressLine2: to.Ptr("Suite 100"),
-	// 						City: to.Ptr("Redmond"),
-	// 						State: to.Ptr("Washington"),
-	// 						Country: to.Ptr("United States"),
-	// 						PostalCode: to.Ptr("98052"),
+	// 						AddressLine2: to.Ptr("gycfosmknj"),
+	// 						City: to.Ptr("qxzhxjoatyuajoljfkd"),
+	// 						State: to.Ptr("dnusygshfvmebpmcjsd"),
+	// 						Country: to.Ptr("nuexbknolfphlfguyzq"),
+	// 						PostalCode: to.Ptr("yjzqichkfffbdtcswzolmrl"),
 	// 					},
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
+	// 			"key1110": to.Ptr("euhfdmtfpucwurtu"),
 	// 		},
-	// 		Location: to.Ptr("eastus"),
+	// 		Location: to.Ptr("jynnbjysbc"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("reservation-01"),
-	// 		Type: to.Ptr("PureStorage.Block/reservations"),
+	// 		Name: to.Ptr("dwbwzcf"),
+	// 		Type: to.Ptr("dvtbulwbtrepgowutyqcmvbyojcs"),
 	// 		SystemData: &armpurestorageblock.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedBy: to.Ptr("ruoitchmuomrbscg"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_GetBillingReport_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_GetBillingReport_MaximumSet_Gen.json
 func ExampleReservationsClient_GetBillingReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -238,8 +238,8 @@ func ExampleReservationsClient_GetBillingReport() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientGetBillingReportResponse{
-	// 	ReservationBillingUsageReport: armpurestorageblock.ReservationBillingUsageReport{
-	// 		Timestamp: to.Ptr("2026-01-16T07:25:56.721Z"),
+	// 	ReservationBillingUsageReport: &armpurestorageblock.ReservationBillingUsageReport{
+	// 		Timestamp: to.Ptr("2024-10-04T05:29:25.345Z"),
 	// 		BillingUsageProperties: []*armpurestorageblock.BillingUsageProperty{
 	// 			{
 	// 				PropertyID: to.Ptr("fknpxmzbrocjevhnuxohiwl"),
@@ -257,14 +257,14 @@ func ExampleReservationsClient_GetBillingReport() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_GetBillingStatus_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_GetBillingStatus_MaximumSet_Gen.json
 func ExampleReservationsClient_GetBillingStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -276,8 +276,8 @@ func ExampleReservationsClient_GetBillingStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientGetBillingStatusResponse{
-	// 	ReservationBillingStatus: armpurestorageblock.ReservationBillingStatus{
-	// 		Timestamp: to.Ptr("2026-01-16T07:25:56.721Z"),
+	// 	ReservationBillingStatus: &armpurestorageblock.ReservationBillingStatus{
+	// 		Timestamp: to.Ptr("2024-10-04T05:29:25.345Z"),
 	// 		TotalUsedCapacityReported: to.Ptr[int64](8),
 	// 		LowDrrPoolCount: to.Ptr[int32](5),
 	// 		DrrWeightedAverage: to.Ptr[float64](15),
@@ -295,18 +295,18 @@ func ExampleReservationsClient_GetBillingStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_GetResourceLimits_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_GetResourceLimits_MaximumSet_Gen.json
 func ExampleReservationsClient_GetResourceLimits() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReservationsClient().GetResourceLimits(ctx, "rgpurestorage", "storagepool-01", nil)
+	res, err := clientFactory.NewReservationsClient().GetResourceLimits(ctx, "rgpurestorage", "storagePoolname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -314,7 +314,7 @@ func ExampleReservationsClient_GetResourceLimits() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientGetResourceLimitsResponse{
-	// 	LimitDetails: armpurestorageblock.LimitDetails{
+	// 	LimitDetails: &armpurestorageblock.LimitDetails{
 	// 		StoragePool: &armpurestorageblock.StoragePoolLimits{
 	// 			ProvisionedBandwidthMbPerSec: &armpurestorageblock.RangeLimits{
 	// 				Min: to.Ptr[int64](26),
@@ -358,14 +358,14 @@ func ExampleReservationsClient_GetResourceLimits() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleReservationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -385,70 +385,70 @@ func ExampleReservationsClient_NewListByResourceGroupPager() {
 		// 		Value: []*armpurestorageblock.Reservation{
 		// 			{
 		// 				Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
-		// 					ReservationInternalID: to.Ptr("res-abc123-xyz789"),
+		// 					ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
 		// 					Marketplace: &armpurestorageblock.MarketplaceDetails{
-		// 						SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
+		// 						SubscriptionID: to.Ptr("zrzt"),
 		// 						SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 		// 						OfferDetails: &armpurestorageblock.OfferDetails{
-		// 							PublisherID: to.Ptr("pure_storage"),
-		// 							OfferID: to.Ptr("purestorage-block-offer"),
-		// 							PlanID: to.Ptr("standard-plan"),
-		// 							PlanName: to.Ptr("Standard Plan"),
-		// 							TermUnit: to.Ptr("month"),
-		// 							TermID: to.Ptr("12-month-term"),
+		// 							PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+		// 							OfferID: to.Ptr("efojrbphbimq"),
+		// 							PlanID: to.Ptr("caj"),
+		// 							PlanName: to.Ptr("lvvzchm"),
+		// 							TermUnit: to.Ptr("ose"),
+		// 							TermID: to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
 		// 						},
 		// 					},
 		// 					User: &armpurestorageblock.UserDetails{
-		// 						FirstName: to.Ptr("John"),
-		// 						LastName: to.Ptr("Doe"),
-		// 						EmailAddress: to.Ptr("john.doe@contoso.com"),
-		// 						Upn: to.Ptr("john.doe@contoso.com"),
-		// 						PhoneNumber: to.Ptr("+1-425-555-1234"),
+		// 						FirstName: to.Ptr("bucysqbbclhwxrzig"),
+		// 						LastName: to.Ptr("fnsvxlop"),
+		// 						EmailAddress: to.Ptr("abc@example.com"),
+		// 						Upn: to.Ptr("ekqbqgpdylggddusuiifrnjcwiefay"),
+		// 						PhoneNumber: to.Ptr("jglihtgsacdxocc"),
 		// 						CompanyDetails: &armpurestorageblock.CompanyDetails{
-		// 							CompanyName: to.Ptr("Contoso Ltd."),
+		// 							CompanyName: to.Ptr("nrndfzmrakk"),
 		// 							Address: &armpurestorageblock.Address{
 		// 								AddressLine1: to.Ptr("f"),
-		// 								AddressLine2: to.Ptr("Suite 100"),
-		// 								City: to.Ptr("Redmond"),
-		// 								State: to.Ptr("Washington"),
-		// 								Country: to.Ptr("United States"),
-		// 								PostalCode: to.Ptr("98052"),
+		// 								AddressLine2: to.Ptr("gycfosmknj"),
+		// 								City: to.Ptr("qxzhxjoatyuajoljfkd"),
+		// 								State: to.Ptr("dnusygshfvmebpmcjsd"),
+		// 								Country: to.Ptr("nuexbknolfphlfguyzq"),
+		// 								PostalCode: to.Ptr("yjzqichkfffbdtcswzolmrl"),
 		// 							},
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
+		// 					"key1110": to.Ptr("euhfdmtfpucwurtu"),
 		// 				},
-		// 				Location: to.Ptr("eastus"),
+		// 				Location: to.Ptr("jynnbjysbc"),
 		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("reservation-01"),
-		// 				Type: to.Ptr("PureStorage.Block/reservations"),
+		// 				Name: to.Ptr("dwbwzcf"),
+		// 				Type: to.Ptr("dvtbulwbtrepgowutyqcmvbyojcs"),
 		// 				SystemData: &armpurestorageblock.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
+		// 					CreatedBy: to.Ptr("ruoitchmuomrbscg"),
 		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
 		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123"),
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_ListBySubscription_MaximumSet_Gen.json
 func ExampleReservationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -468,74 +468,74 @@ func ExampleReservationsClient_NewListBySubscriptionPager() {
 		// 		Value: []*armpurestorageblock.Reservation{
 		// 			{
 		// 				Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
-		// 					ReservationInternalID: to.Ptr("res-abc123-xyz789"),
+		// 					ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
 		// 					Marketplace: &armpurestorageblock.MarketplaceDetails{
-		// 						SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
+		// 						SubscriptionID: to.Ptr("zrzt"),
 		// 						SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 		// 						OfferDetails: &armpurestorageblock.OfferDetails{
-		// 							PublisherID: to.Ptr("pure_storage"),
-		// 							OfferID: to.Ptr("purestorage-block-offer"),
-		// 							PlanID: to.Ptr("standard-plan"),
-		// 							PlanName: to.Ptr("Standard Plan"),
-		// 							TermUnit: to.Ptr("month"),
-		// 							TermID: to.Ptr("12-month-term"),
+		// 							PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+		// 							OfferID: to.Ptr("efojrbphbimq"),
+		// 							PlanID: to.Ptr("caj"),
+		// 							PlanName: to.Ptr("lvvzchm"),
+		// 							TermUnit: to.Ptr("ose"),
+		// 							TermID: to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
 		// 						},
 		// 					},
 		// 					User: &armpurestorageblock.UserDetails{
-		// 						FirstName: to.Ptr("John"),
-		// 						LastName: to.Ptr("Doe"),
-		// 						EmailAddress: to.Ptr("john.doe@contoso.com"),
-		// 						Upn: to.Ptr("john.doe@contoso.com"),
-		// 						PhoneNumber: to.Ptr("+1-425-555-1234"),
+		// 						FirstName: to.Ptr("bucysqbbclhwxrzig"),
+		// 						LastName: to.Ptr("fnsvxlop"),
+		// 						EmailAddress: to.Ptr("abc@example.com"),
+		// 						Upn: to.Ptr("ekqbqgpdylggddusuiifrnjcwiefay"),
+		// 						PhoneNumber: to.Ptr("jglihtgsacdxocc"),
 		// 						CompanyDetails: &armpurestorageblock.CompanyDetails{
-		// 							CompanyName: to.Ptr("Contoso Ltd."),
+		// 							CompanyName: to.Ptr("nrndfzmrakk"),
 		// 							Address: &armpurestorageblock.Address{
 		// 								AddressLine1: to.Ptr("f"),
-		// 								AddressLine2: to.Ptr("Suite 100"),
-		// 								City: to.Ptr("Redmond"),
-		// 								State: to.Ptr("Washington"),
-		// 								Country: to.Ptr("United States"),
-		// 								PostalCode: to.Ptr("98052"),
+		// 								AddressLine2: to.Ptr("gycfosmknj"),
+		// 								City: to.Ptr("qxzhxjoatyuajoljfkd"),
+		// 								State: to.Ptr("dnusygshfvmebpmcjsd"),
+		// 								Country: to.Ptr("nuexbknolfphlfguyzq"),
+		// 								PostalCode: to.Ptr("yjzqichkfffbdtcswzolmrl"),
 		// 							},
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
+		// 					"key1110": to.Ptr("euhfdmtfpucwurtu"),
 		// 				},
-		// 				Location: to.Ptr("eastus"),
+		// 				Location: to.Ptr("jynnbjysbc"),
 		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("reservation-01"),
-		// 				Type: to.Ptr("PureStorage.Block/reservations"),
+		// 				Name: to.Ptr("dwbwzcf"),
+		// 				Type: to.Ptr("dvtbulwbtrepgowutyqcmvbyojcs"),
 		// 				SystemData: &armpurestorageblock.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
+		// 					CreatedBy: to.Ptr("ruoitchmuomrbscg"),
 		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
 		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123"),
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_Update_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReservationsClient().BeginUpdate(ctx, "rgpurestorage", "storagepool-01", armpurestorageblock.ReservationUpdate{
+	poller, err := clientFactory.NewReservationsClient().BeginUpdate(ctx, "rgpurestorage", "storagePoolname", armpurestorageblock.ReservationUpdate{
 		Tags: map[string]*string{
 			"key8751": to.Ptr("oikntqrti"),
 		},
@@ -543,7 +543,7 @@ func ExampleReservationsClient_BeginUpdate() {
 			User: &armpurestorageblock.UserDetails{
 				FirstName:    to.Ptr("sjzquetrvxcrajxdfwfeuro"),
 				LastName:     to.Ptr("qimvqxnlbclfouwzfk"),
-				EmailAddress: to.Ptr("john.doe@contoso.com"),
+				EmailAddress: to.Ptr("abc@example.com"),
 				Upn:          to.Ptr("pvafwnbigmhuigxfu"),
 				PhoneNumber:  to.Ptr("jfljnoxsfsplwczwgvmlurfnorimvl"),
 				CompanyDetails: &armpurestorageblock.CompanyDetails{
@@ -565,31 +565,31 @@ func ExampleReservationsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurestorageblock.ReservationsClientUpdateResponse{
-	// 	Reservation: armpurestorageblock.Reservation{
+	// 	Reservation: &armpurestorageblock.Reservation{
 	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
-	// 			ReservationInternalID: to.Ptr("res-abc123-xyz789"),
+	// 			ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
 	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
-	// 				SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
+	// 				SubscriptionID: to.Ptr("zrzt"),
 	// 				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 	// 				OfferDetails: &armpurestorageblock.OfferDetails{
-	// 					PublisherID: to.Ptr("pure_storage"),
-	// 					OfferID: to.Ptr("purestorage-block-offer"),
-	// 					PlanID: to.Ptr("standard-plan"),
-	// 					PlanName: to.Ptr("Standard Plan"),
-	// 					TermUnit: to.Ptr("month"),
-	// 					TermID: to.Ptr("12-month-term"),
+	// 					PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+	// 					OfferID: to.Ptr("efojrbphbimq"),
+	// 					PlanID: to.Ptr("caj"),
+	// 					PlanName: to.Ptr("lvvzchm"),
+	// 					TermUnit: to.Ptr("ose"),
+	// 					TermID: to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
 	// 				},
 	// 			},
 	// 			User: &armpurestorageblock.UserDetails{
 	// 				FirstName: to.Ptr("sjzquetrvxcrajxdfwfeuro"),
 	// 				LastName: to.Ptr("qimvqxnlbclfouwzfk"),
-	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
+	// 				EmailAddress: to.Ptr("abc@example.com"),
 	// 				Upn: to.Ptr("pvafwnbigmhuigxfu"),
 	// 				PhoneNumber: to.Ptr("jfljnoxsfsplwczwgvmlurfnorimvl"),
 	// 				CompanyDetails: &armpurestorageblock.CompanyDetails{
@@ -607,19 +607,19 @@ func ExampleReservationsClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
+	// 			"key1110": to.Ptr("euhfdmtfpucwurtu"),
 	// 		},
-	// 		Location: to.Ptr("eastus"),
+	// 		Location: to.Ptr("jynnbjysbc"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("reservation-01"),
-	// 		Type: to.Ptr("PureStorage.Block/reservations"),
+	// 		Name: to.Ptr("dwbwzcf"),
+	// 		Type: to.Ptr("dvtbulwbtrepgowutyqcmvbyojcs"),
 	// 		SystemData: &armpurestorageblock.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedBy: to.Ptr("ruoitchmuomrbscg"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 	// 		},
 	// 	},
 	// }

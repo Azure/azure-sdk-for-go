@@ -1,33 +1,5 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-05-20)
-### Breaking Changes
-
-- Type of `TableProperties.ProvisioningState` has been changed from `*ProvisioningStateEnum` to `*TableProvisioningState`
-- `ProvisioningStateEnumInProgress` from enum `ProvisioningStateEnum` has been removed
-- Struct `DataSourceFilter` has been removed
-
-### Features Added
-
-- New value `ProvisioningStateEnumCanceled`, `ProvisioningStateEnumFailed` added to enum type `ProvisioningStateEnum`
-- New enum type `TableProvisioningState` with values `TableProvisioningStateDeleting`, `TableProvisioningStateInProgress`, `TableProvisioningStateSucceeded`, `TableProvisioningStateUpdating`
-- New field `SystemData` in struct `Cluster`
-- New field `SystemData` in struct `DataExport`
-- New field `NextLink` in struct `DataExportListResult`
-- New field `SystemData` in struct `DataSource`
-- New field `SystemData` in struct `LinkedService`
-- New field `NextLink` in struct `LinkedServiceListResult`
-- New field `NextLink` in struct `LinkedStorageAccountsListResult`
-- New field `SystemData` in struct `LinkedStorageAccountsResource`
-- New field `SystemData` in struct `SavedSearch`
-- New field `SystemData` in struct `StorageInsight`
-- New field `NextLink` in struct `TablesListResult`
-- New field `NextLink` in struct `WorkspaceListManagementGroupsResult`
-- New field `NextLink` in struct `WorkspaceListResult`
-- New field `NextLink` in struct `WorkspaceListUsagesResult`
-- New field `SystemData` in struct `WorkspacePatch`
-
-
 ## 2.0.2 (2026-01-05)
 ### Other Changes
 

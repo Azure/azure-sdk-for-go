@@ -16,12 +16,8 @@ import (
 	"strings"
 )
 
-const defaultAvsVMVolumesClientVersion string = "2026-01-01-preview"
-
 // AvsVMVolumesClient contains the methods for the AvsVMVolumes group.
 // Don't use this type directly, use NewAvsVMVolumesClient() instead.
-//
-// Generated from API version 2026-01-01-preview
 type AvsVMVolumesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +41,8 @@ func NewAvsVMVolumesClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginDelete - Delete a volume in an AVS VM
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - avsVMID - ID of the AVS VM
@@ -70,6 +68,8 @@ func (client *AvsVMVolumesClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Delete a volume in an AVS VM
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-01
 func (client *AvsVMVolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, avsVMID string, volumeID string, options *AvsVMVolumesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvsVMVolumesClient.BeginDelete"
@@ -119,13 +119,15 @@ func (client *AvsVMVolumesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAvsVMVolumesClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a volume in an AVS VM
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - avsVMID - ID of the AVS VM
@@ -181,8 +183,8 @@ func (client *AvsVMVolumesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAvsVMVolumesClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -197,6 +199,8 @@ func (client *AvsVMVolumesClient) getHandleResponse(resp *http.Response) (AvsVMV
 }
 
 // NewListByAvsVMPager - List volumes in an AVS VM
+//
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - avsVMID - ID of the AVS VM
@@ -249,8 +253,8 @@ func (client *AvsVMVolumesClient) listByAvsVMCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAvsVMVolumesClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -266,6 +270,8 @@ func (client *AvsVMVolumesClient) listByAvsVMHandleResponse(resp *http.Response)
 
 // BeginUpdate - Update a volume in an AVS VM
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - avsVMID - ID of the AVS VM
@@ -292,6 +298,8 @@ func (client *AvsVMVolumesClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Update a volume in an AVS VM
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-01
 func (client *AvsVMVolumesClient) update(ctx context.Context, resourceGroupName string, storagePoolName string, avsVMID string, volumeID string, properties AvsVMVolumeUpdate, options *AvsVMVolumesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvsVMVolumesClient.BeginUpdate"
@@ -341,8 +349,8 @@ func (client *AvsVMVolumesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAvsVMVolumesClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

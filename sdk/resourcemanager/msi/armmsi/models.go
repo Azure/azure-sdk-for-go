@@ -6,22 +6,6 @@ package armmsi
 
 import "time"
 
-// AssignmentRestrictions - Configuration to restrict identity assignment to specific resource providers or resource types.
-type AssignmentRestrictions struct {
-	// List of resource providers or resource providers with resource types that this identity can be assigned to (case-insensitive).
-	// Examples: 'Microsoft.Compute', 'Microsoft.Storage/Accounts', 'Microsoft.Network/VirtualNetworks'.
-	Providers []*string
-}
-
-// ClaimsMatchingExpression - Object for defining the allowed identifiers of external identities. Introduced in 2025-01-31-preview.
-type ClaimsMatchingExpression struct {
-	// REQUIRED; Specifies the version of the flexible fic language used in the expression.
-	LanguageVersion *int32
-
-	// REQUIRED; Wildcard-based expression for matching incoming subject claims.
-	Value *string
-}
-
 // FederatedIdentityCredential - Describes a federated identity credential.
 type FederatedIdentityCredential struct {
 	// The properties associated with the federated identity credential.
@@ -50,11 +34,7 @@ type FederatedIdentityCredentialProperties struct {
 	// REQUIRED; The URL of the issuer to be trusted.
 	Issuer *string
 
-	// Object for defining the allowed identifiers of external identities. Either 'subject' or 'claimsMatchingExpression' must
-	// be defined, but not both. Introduced in 2025-01-31-preview.
-	ClaimsMatchingExpression *ClaimsMatchingExpression
-
-	// The identifier of the external identity.
+	// REQUIRED; The identifier of the external identity.
 	Subject *string
 }
 
@@ -245,9 +225,6 @@ type UserAssignedIdentitiesListResult struct {
 //
 // The properties associated with the user assigned identity.
 type UserAssignedIdentityProperties struct {
-	// Restrictions on which resource providers this identity can be assigned to.
-	AssignmentRestrictions *AssignmentRestrictions
-
 	// Enum to configure regional restrictions on identity assignment, as necessary.
 	IsolationScope *IsolationScope
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2026-05-26)
+## 1.1.0 (2026-04-22)
 ### Features Added
 
 - New function `*ClientFactory.NewVMFamiliesClient() *VMFamiliesClient`
@@ -8,11 +8,9 @@
 - New function `NewVMFamiliesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VMFamiliesClient, error)`
 - New function `*VMFamiliesClient.Get(ctx context.Context, location string, vmFamilyName string, options *VMFamiliesClientGetOptions) (VMFamiliesClientGetResponse, error)`
 - New function `*VMFamiliesClient.NewListBySubscriptionLocationResourcePager(location string, options *VMFamiliesClientListBySubscriptionLocationResourceOptions) *runtime.Pager[VMFamiliesClientListBySubscriptionLocationResourceResponse]`
-- New struct `FeatureEnableRequest`
 - New struct `VMFamily`
 - New struct `VMFamilyListResult`
 - New struct `VMFamilyProperties`
-- New field `Body` in struct `FeaturesClientBeginEnableOptions`
 
 
 ## 1.0.0 (2026-04-06)

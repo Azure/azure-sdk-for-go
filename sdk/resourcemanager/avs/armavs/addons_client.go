@@ -18,8 +18,6 @@ import (
 
 // AddonsClient contains the methods for the Addons group.
 // Don't use this type directly, use NewAddonsClient() instead.
-//
-// Generated from API version 2025-09-01
 type AddonsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewAddonsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Create a Addon
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - addonName - Name of the addon.
@@ -69,6 +69,8 @@ func (client *AddonsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 
 // CreateOrUpdate - Create a Addon
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *AddonsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AddonsClient.BeginCreateOrUpdate"
@@ -114,8 +116,8 @@ func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, addon); err != nil {
@@ -126,6 +128,8 @@ func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // BeginDelete - Delete a Addon
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - addonName - Name of the addon.
@@ -149,6 +153,8 @@ func (client *AddonsClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Delete a Addon
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *AddonsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AddonsClient.BeginDelete"
@@ -194,13 +200,15 @@ func (client *AddonsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a Addon
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - addonName - Name of the addon.
@@ -251,8 +259,8 @@ func (client *AddonsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -267,6 +275,8 @@ func (client *AddonsClient) getHandleResponse(resp *http.Response) (AddonsClient
 }
 
 // NewListPager - List Addon resources by PrivateCloud
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - AddonsClientListOptions contains the optional parameters for the AddonsClient.NewListPager method.
@@ -313,8 +323,8 @@ func (client *AddonsClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Create.json
+// Generated from example definition: 2025-09-01/Volumes_Create.json
 func ExampleVolumesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 		Location: to.Ptr("location"),
 		Properties: &armnetworkcloud.VolumeProperties{
 			SizeMiB:            to.Ptr[int64](1048576),
-			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 		},
 		Tags: map[string]*string{
 			"key1": to.Ptr("myvalue1"),
@@ -43,13 +43,13 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.VolumesClientCreateOrUpdateResponse{
-	// 	Volume: armnetworkcloud.Volume{
+	// 	Volume: &armnetworkcloud.Volume{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -59,7 +59,6 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// 		Name: to.Ptr("volumeName"),
 	// 		Properties: &armnetworkcloud.VolumeProperties{
 	// 			AllocatedSizeMiB: to.Ptr[int64](1048576),
-	// 			AssignedStorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
 	// 			AttachedTo: []*string{
 	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
 	// 			},
@@ -68,7 +67,7 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
 	// 			SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
 	// 			SizeMiB: to.Ptr[int64](1048576),
-	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
@@ -87,7 +86,7 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Delete.json
+// Generated from example definition: 2025-09-01/Volumes_Delete.json
 func ExampleVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,11 +103,11 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Get.json
+// Generated from example definition: 2025-09-01/Volumes_Get.json
 func ExampleVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +126,7 @@ func ExampleVolumesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.VolumesClientGetResponse{
-	// 	Volume: armnetworkcloud.Volume{
+	// 	Volume: &armnetworkcloud.Volume{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -137,7 +136,6 @@ func ExampleVolumesClient_Get() {
 	// 		Name: to.Ptr("volumeName"),
 	// 		Properties: &armnetworkcloud.VolumeProperties{
 	// 			AllocatedSizeMiB: to.Ptr[int64](1048576),
-	// 			AssignedStorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
 	// 			AttachedTo: []*string{
 	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
 	// 			},
@@ -146,7 +144,7 @@ func ExampleVolumesClient_Get() {
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
 	// 			SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
 	// 			SizeMiB: to.Ptr[int64](1048576),
-	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
@@ -165,7 +163,7 @@ func ExampleVolumesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_ListByResourceGroup.json
+// Generated from example definition: 2025-09-01/Volumes_ListByResourceGroup.json
 func ExampleVolumesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +199,6 @@ func ExampleVolumesClient_NewListByResourceGroupPager() {
 		// 				Name: to.Ptr("volumeName"),
 		// 				Properties: &armnetworkcloud.VolumeProperties{
 		// 					AllocatedSizeMiB: to.Ptr[int64](1048576),
-		// 					AssignedStorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
 		// 					AttachedTo: []*string{
 		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
 		// 					},
@@ -210,7 +207,7 @@ func ExampleVolumesClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
 		// 					SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
 		// 					SizeMiB: to.Ptr[int64](1048576),
-		// 					StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+		// 					StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
@@ -232,7 +229,7 @@ func ExampleVolumesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_ListBySubscription.json
+// Generated from example definition: 2025-09-01/Volumes_ListBySubscription.json
 func ExampleVolumesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +265,6 @@ func ExampleVolumesClient_NewListBySubscriptionPager() {
 		// 				Name: to.Ptr("volumeName"),
 		// 				Properties: &armnetworkcloud.VolumeProperties{
 		// 					AllocatedSizeMiB: to.Ptr[int64](1048576),
-		// 					AssignedStorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
 		// 					AttachedTo: []*string{
 		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
 		// 					},
@@ -277,7 +273,7 @@ func ExampleVolumesClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
 		// 					SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
 		// 					SizeMiB: to.Ptr[int64](1048576),
-		// 					StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+		// 					StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
@@ -299,7 +295,7 @@ func ExampleVolumesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Patch.json
+// Generated from example definition: 2025-09-01/Volumes_Patch.json
 func ExampleVolumesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +319,7 @@ func ExampleVolumesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.VolumesClientUpdateResponse{
-	// 	Volume: armnetworkcloud.Volume{
+	// 	Volume: &armnetworkcloud.Volume{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -333,7 +329,6 @@ func ExampleVolumesClient_Update() {
 	// 		Name: to.Ptr("volumeName"),
 	// 		Properties: &armnetworkcloud.VolumeProperties{
 	// 			AllocatedSizeMiB: to.Ptr[int64](1048576),
-	// 			AssignedStorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
 	// 			AttachedTo: []*string{
 	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
 	// 			},
@@ -342,7 +337,7 @@ func ExampleVolumesClient_Update() {
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
 	// 			SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
 	// 			SizeMiB: to.Ptr[int64](1048576),
-	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),

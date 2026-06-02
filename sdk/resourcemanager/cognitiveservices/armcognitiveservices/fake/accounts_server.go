@@ -16,7 +16,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // AccountsServer is a fake server for instances of the armcognitiveservices.AccountsClient type.
@@ -28,10 +27,6 @@ type AccountsServer struct {
 	// BeginDelete is the fake for method AccountsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, options *armcognitiveservices.AccountsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.AccountsClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// EvaluateDeploymentPolicies is the fake for method AccountsClient.EvaluateDeploymentPolicies
-	// HTTP status codes to indicate success: http.StatusOK
-	EvaluateDeploymentPolicies func(ctx context.Context, resourceGroupName string, accountName string, body armcognitiveservices.EvaluateDeploymentPoliciesRequest, options *armcognitiveservices.AccountsClientEvaluateDeploymentPoliciesOptions) (resp azfake.Responder[armcognitiveservices.AccountsClientEvaluateDeploymentPoliciesResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AccountsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -109,7 +104,9 @@ func (a *AccountsServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -122,8 +119,6 @@ func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = a.dispatchBeginCreate(req)
 			case "AccountsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
-			case "AccountsClient.EvaluateDeploymentPolicies":
-				res.resp, res.err = a.dispatchEvaluateDeploymentPolicies(req)
 			case "AccountsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AccountsClient.NewListPager":
@@ -147,7 +142,10 @@ func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -195,7 +193,7 @@ func (a *AccountsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
 		a.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -239,7 +237,7 @@ func (a *AccountsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -247,43 +245,6 @@ func (a *AccountsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		a.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (a *AccountsServerTransport) dispatchEvaluateDeploymentPolicies(req *http.Request) (*http.Response, error) {
-	if a.srv.EvaluateDeploymentPolicies == nil {
-		return nil, &nonRetriableError{errors.New("fake for method EvaluateDeploymentPolicies not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/evaluateDeploymentPolicies`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.EvaluateDeploymentPoliciesRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.EvaluateDeploymentPolicies(req.Context(), resourceGroupNameParam, accountNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EvaluateDeploymentPoliciesResponse, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -310,7 +271,7 @@ func (a *AccountsServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Account, req)
@@ -343,7 +304,7 @@ func (a *AccountsServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -380,7 +341,7 @@ func (a *AccountsServerTransport) dispatchNewListByResourceGroupPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -413,7 +374,7 @@ func (a *AccountsServerTransport) dispatchListKeys(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).APIKeys, req)
@@ -454,7 +415,7 @@ func (a *AccountsServerTransport) dispatchNewListModelsPager(req *http.Request) 
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListModelsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -487,7 +448,7 @@ func (a *AccountsServerTransport) dispatchListSKUs(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccountSKUListResult, req)
@@ -516,7 +477,11 @@ func (a *AccountsServerTransport) dispatchListUsages(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	filterParam := getOptional(qp.Get("$filter"))
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
 	var options *armcognitiveservices.AccountsClientListUsagesOptions
 	if filterParam != nil {
 		options = &armcognitiveservices.AccountsClientListUsagesOptions{
@@ -528,7 +493,7 @@ func (a *AccountsServerTransport) dispatchListUsages(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).UsageListResult, req)
@@ -565,7 +530,7 @@ func (a *AccountsServerTransport) dispatchRegenerateKey(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).APIKeys, req)
@@ -612,7 +577,7 @@ func (a *AccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		a.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

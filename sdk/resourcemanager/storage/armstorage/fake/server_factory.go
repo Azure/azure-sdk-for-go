@@ -27,12 +27,6 @@ type ServerFactory struct {
 	// BlobServicesServer contains the fakes for client BlobServicesClient
 	BlobServicesServer BlobServicesServer
 
-	// ConnectorsServer contains the fakes for client ConnectorsClient
-	ConnectorsServer ConnectorsServer
-
-	// DataSharesServer contains the fakes for client DataSharesClient
-	DataSharesServer DataSharesServer
-
 	// DeletedAccountsServer contains the fakes for client DeletedAccountsClient
 	DeletedAccountsServer DeletedAccountsServer
 
@@ -112,8 +106,6 @@ type ServerFactoryTransport struct {
 	trBlobContainersServer                         *BlobContainersServerTransport
 	trBlobInventoryPoliciesServer                  *BlobInventoryPoliciesServerTransport
 	trBlobServicesServer                           *BlobServicesServerTransport
-	trConnectorsServer                             *ConnectorsServerTransport
-	trDataSharesServer                             *DataSharesServerTransport
 	trDeletedAccountsServer                        *DeletedAccountsServerTransport
 	trEncryptionScopesServer                       *EncryptionScopesServerTransport
 	trFileServicesServer                           *FileServicesServerTransport
@@ -165,12 +157,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "BlobServicesClient":
 		initServer(&s.trMu, &s.trBlobServicesServer, func() *BlobServicesServerTransport { return NewBlobServicesServerTransport(&s.srv.BlobServicesServer) })
 		resp, err = s.trBlobServicesServer.Do(req)
-	case "ConnectorsClient":
-		initServer(&s.trMu, &s.trConnectorsServer, func() *ConnectorsServerTransport { return NewConnectorsServerTransport(&s.srv.ConnectorsServer) })
-		resp, err = s.trConnectorsServer.Do(req)
-	case "DataSharesClient":
-		initServer(&s.trMu, &s.trDataSharesServer, func() *DataSharesServerTransport { return NewDataSharesServerTransport(&s.srv.DataSharesServer) })
-		resp, err = s.trDataSharesServer.Do(req)
 	case "DeletedAccountsClient":
 		initServer(&s.trMu, &s.trDeletedAccountsServer, func() *DeletedAccountsServerTransport {
 			return NewDeletedAccountsServerTransport(&s.srv.DeletedAccountsServer)

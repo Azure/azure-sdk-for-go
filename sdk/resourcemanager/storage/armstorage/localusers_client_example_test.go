@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/LocalUserCreate.json
+// Generated from example definition: 2025-06-01/LocalUserCreate.json
 func ExampleLocalUsersClient_CreateOrUpdate_createLocalUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleLocalUsersClient_CreateOrUpdate_createLocalUser() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.LocalUsersClientCreateOrUpdateResponse{
-	// 	LocalUser: armstorage.LocalUser{
+	// 	LocalUser: &armstorage.LocalUser{
 	// 		Name: to.Ptr("user1"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/localUsers"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6977/providers/Microsoft.Storage/storageAccounts/sto2527/loalUsers/user1"),
@@ -89,7 +89,7 @@ func ExampleLocalUsersClient_CreateOrUpdate_createLocalUser() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUserCreateNFSv3Enabled.json
+// Generated from example definition: 2025-06-01/LocalUserCreateNFSv3Enabled.json
 func ExampleLocalUsersClient_CreateOrUpdate_createNfSv3EnabledLocalUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleLocalUsersClient_CreateOrUpdate_createNfSv3EnabledLocalUser() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.LocalUsersClientCreateOrUpdateResponse{
-	// 	LocalUser: armstorage.LocalUser{
+	// 	LocalUser: &armstorage.LocalUser{
 	// 		Name: to.Ptr("user1"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/localUsers"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6977/providers/Microsoft.Storage/storageAccounts/sto2527/loalUsers/user1"),
@@ -156,7 +156,7 @@ func ExampleLocalUsersClient_CreateOrUpdate_createNfSv3EnabledLocalUser() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUserUpdate.json
+// Generated from example definition: 2025-06-01/LocalUserUpdate.json
 func ExampleLocalUsersClient_CreateOrUpdate_updateLocalUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleLocalUsersClient_CreateOrUpdate_updateLocalUser() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.LocalUsersClientCreateOrUpdateResponse{
-	// 	LocalUser: armstorage.LocalUser{
+	// 	LocalUser: &armstorage.LocalUser{
 	// 		Name: to.Ptr("user1"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/localUsers"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6977/providers/Microsoft.Storage/storageAccounts/sto2527/loalUsers/user1"),
@@ -214,7 +214,7 @@ func ExampleLocalUsersClient_CreateOrUpdate_updateLocalUser() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUserDelete.json
+// Generated from example definition: 2025-06-01/LocalUserDelete.json
 func ExampleLocalUsersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +236,7 @@ func ExampleLocalUsersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUserGet.json
+// Generated from example definition: 2025-06-01/LocalUserGet.json
 func ExampleLocalUsersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleLocalUsersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.LocalUsersClientGetResponse{
-	// 	LocalUser: armstorage.LocalUser{
+	// 	LocalUser: &armstorage.LocalUser{
 	// 		Name: to.Ptr("user1"),
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/localUsers"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6977/providers/Microsoft.Storage/storageAccounts/sto2527/loalUsers/user1"),
@@ -291,7 +291,7 @@ func ExampleLocalUsersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUsersList.json
+// Generated from example definition: 2025-06-01/LocalUsersList.json
 func ExampleLocalUsersClient_NewListPager_listLocalUsers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleLocalUsersClient_NewListPager_listLocalUsers() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/LocalUsersListNFSv3Enabled.json
+// Generated from example definition: 2025-06-01/LocalUsersListNFSv3Enabled.json
 func ExampleLocalUsersClient_NewListPager_listNfSv3EnabledLocalUsers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -462,7 +462,7 @@ func ExampleLocalUsersClient_NewListPager_listNfSv3EnabledLocalUsers() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/LocalUserListKeys.json
+// Generated from example definition: 2025-06-01/LocalUserListKeys.json
 func ExampleLocalUsersClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,7 +481,7 @@ func ExampleLocalUsersClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.LocalUsersClientListKeysResponse{
-	// 	LocalUserKeys: armstorage.LocalUserKeys{
+	// 	LocalUserKeys: &armstorage.LocalUserKeys{
 	// 		SharedKey: to.Ptr("<REDACTED>"),
 	// 		SSHAuthorizedKeys: []*armstorage.SSHPublicKey{
 	// 			{
@@ -493,7 +493,7 @@ func ExampleLocalUsersClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUserRegeneratePassword.json
+// Generated from example definition: 2025-06-01/LocalUserRegeneratePassword.json
 func ExampleLocalUsersClient_RegeneratePassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,7 +512,7 @@ func ExampleLocalUsersClient_RegeneratePassword() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.LocalUsersClientRegeneratePasswordResponse{
-	// 	LocalUserRegeneratePasswordResult: armstorage.LocalUserRegeneratePasswordResult{
+	// 	LocalUserRegeneratePasswordResult: &armstorage.LocalUserRegeneratePasswordResult{
 	// 		SSHPassword: to.Ptr("<REDACTED>"),
 	// 	},
 	// }

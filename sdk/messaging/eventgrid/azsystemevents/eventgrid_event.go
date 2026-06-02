@@ -10,8 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 )
 
 // EventGridEvent - Properties of an event published to an Event Grid topic using the EventGrid Schema.
@@ -46,7 +44,7 @@ func (e EventGridEvent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "data", e.Data)
 	populate(objectMap, "dataVersion", e.DataVersion)
-	populateTime[datetime.RFC3339](objectMap, "eventTime", e.EventTime)
+	populateDateTimeRFC3339(objectMap, "eventTime", e.EventTime)
 	populate(objectMap, "eventType", e.EventType)
 	populate(objectMap, "id", e.ID)
 	populate(objectMap, "metadataVersion", e.MetadataVersion)
@@ -71,7 +69,7 @@ func (e *EventGridEvent) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "DataVersion", &e.DataVersion)
 			delete(rawMsg, key)
 		case "eventTime":
-			err = unpopulateTime[datetime.RFC3339](val, "EventTime", &e.EventTime)
+			err = unpopulateDateTimeRFC3339(val, "EventTime", &e.EventTime)
 			delete(rawMsg, key)
 		case "eventType":
 			err = unpopulate(val, "EventType", &e.EventType)

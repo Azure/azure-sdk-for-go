@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutDefenderForAISetting.json
+// Generated from example definition: 2026-01-15-preview/PutDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.DefenderForAISettingsClientCreateOrUpdateResponse{
-	// 	DefenderForAISetting: armcognitiveservices.DefenderForAISetting{
+	// 	DefenderForAISetting: &armcognitiveservices.DefenderForAISetting{
 	// 		Name: to.Ptr("Default"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/defenderForAISettings"),
 	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
@@ -55,7 +55,7 @@ func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetDefenderForAISetting.json
+// Generated from example definition: 2026-01-15-preview/GetDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleDefenderForAISettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.DefenderForAISettingsClientGetResponse{
-	// 	DefenderForAISetting: armcognitiveservices.DefenderForAISetting{
+	// 	DefenderForAISetting: &armcognitiveservices.DefenderForAISetting{
 	// 		Name: to.Ptr("Default"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/defenderForAISettings"),
 	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
@@ -94,7 +94,7 @@ func ExampleDefenderForAISettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListDefenderForAISetting.json
+// Generated from example definition: 2026-01-15-preview/ListDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleDefenderForAISettingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/UpdateDefenderForAISetting.json
+// Generated from example definition: 2026-01-15-preview/UpdateDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleDefenderForAISettingsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.DefenderForAISettingsClientUpdateResponse{
-	// 	DefenderForAISetting: armcognitiveservices.DefenderForAISetting{
+	// 	DefenderForAISetting: &armcognitiveservices.DefenderForAISetting{
 	// 		Name: to.Ptr("Default"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/defenderForAISettings"),
 	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),

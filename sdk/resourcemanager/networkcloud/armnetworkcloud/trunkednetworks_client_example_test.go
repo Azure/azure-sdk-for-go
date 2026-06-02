@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_Create.json
+// Generated from example definition: 2025-09-01/TrunkedNetworks_Create.json
 func ExampleTrunkedNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,13 +50,13 @@ func ExampleTrunkedNetworksClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.TrunkedNetworksClientCreateOrUpdateResponse{
-	// 	TrunkedNetwork: armnetworkcloud.TrunkedNetwork{
+	// 	TrunkedNetwork: &armnetworkcloud.TrunkedNetwork{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -99,7 +99,7 @@ func ExampleTrunkedNetworksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_Delete.json
+// Generated from example definition: 2025-09-01/TrunkedNetworks_Delete.json
 func ExampleTrunkedNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,11 +116,11 @@ func ExampleTrunkedNetworksClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_Get.json
+// Generated from example definition: 2025-09-01/TrunkedNetworks_Get.json
 func ExampleTrunkedNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleTrunkedNetworksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.TrunkedNetworksClientGetResponse{
-	// 	TrunkedNetwork: armnetworkcloud.TrunkedNetwork{
+	// 	TrunkedNetwork: &armnetworkcloud.TrunkedNetwork{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -182,7 +182,7 @@ func ExampleTrunkedNetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_ListByResourceGroup.json
+// Generated from example definition: 2025-09-01/TrunkedNetworks_ListByResourceGroup.json
 func ExampleTrunkedNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleTrunkedNetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_ListBySubscription.json
+// Generated from example definition: 2025-09-01/TrunkedNetworks_ListBySubscription.json
 func ExampleTrunkedNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +326,7 @@ func ExampleTrunkedNetworksClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/TrunkedNetworks_Patch.json
+// Generated from example definition: 2025-09-01/TrunkedNetworks_Patch.json
 func ExampleTrunkedNetworksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,7 +350,7 @@ func ExampleTrunkedNetworksClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.TrunkedNetworksClientUpdateResponse{
-	// 	TrunkedNetwork: armnetworkcloud.TrunkedNetwork{
+	// 	TrunkedNetwork: &armnetworkcloud.TrunkedNetwork{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),

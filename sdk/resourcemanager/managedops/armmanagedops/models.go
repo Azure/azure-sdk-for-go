@@ -18,7 +18,7 @@ type AzureMonitorInformation struct {
 	DcrID *string
 
 	// REQUIRED; Indicates whether the service is enabled.
-	EnablementStatus *EnablementState
+	EnablementStatus *ChangeTrackingInformationEnablementStatus
 }
 
 // ChangeTrackingConfiguration - Configuration for the Change Tracking and Inventory service.
@@ -33,19 +33,19 @@ type ChangeTrackingInformation struct {
 	DcrID *string
 
 	// REQUIRED; Indicates whether the service is enabled.
-	EnablementStatus *EnablementState
+	EnablementStatus *ChangeTrackingInformationEnablementStatus
 }
 
 // DefenderCspmInformation - Defender Cloud Security Posture Management (CSPM) service information.
 type DefenderCspmInformation struct {
 	// REQUIRED; Indicates whether the service is enabled.
-	EnablementStatus *EnablementState
+	EnablementStatus *ChangeTrackingInformationEnablementStatus
 }
 
 // DefenderForServersInformation - Defender for Servers service information.
 type DefenderForServersInformation struct {
 	// REQUIRED; Indicates whether the service is enabled.
-	EnablementStatus *EnablementState
+	EnablementStatus *ChangeTrackingInformationEnablementStatus
 }
 
 // DesiredConfiguration - Desired configuration input by the user.
@@ -60,25 +60,25 @@ type DesiredConfiguration struct {
 	UserAssignedManagedIdentityID *string
 
 	// Desired enablement state of the Defender Cloud Security Posture Management (CSPM) service.
-	DefenderCspm *DesiredEnablementState
+	DefenderCspm *DesiredConfigurationDefenderForServers
 
 	// Desired enablement state of the Defender For Servers service.
-	DefenderForServers *DesiredEnablementState
+	DefenderForServers *DesiredConfigurationDefenderForServers
 }
 
 // DesiredConfigurationUpdate - Updatable parameters in the Desired configuration input.
 type DesiredConfigurationUpdate struct {
 	// Desired enablement state of the Defender Cloud Security Posture Management (CSPM) service.
-	DefenderCspm *DesiredEnablementState
+	DefenderCspm *DesiredConfigurationDefenderForServers
 
 	// Desired enablement state of the Defender For Servers service.
-	DefenderForServers *DesiredEnablementState
+	DefenderForServers *DesiredConfigurationDefenderForServers
 }
 
 // GuestConfigurationInformation - Azure Policy and Machine Configuration service information.
 type GuestConfigurationInformation struct {
 	// REQUIRED; Indicates whether the service is enabled.
-	EnablementStatus *EnablementState
+	EnablementStatus *ChangeTrackingInformationEnablementStatus
 }
 
 // ManagedOp - The Managed Operations resource.
@@ -249,5 +249,5 @@ type SystemData struct {
 // UpdateManagerInformation - Azure Update Manager service information.
 type UpdateManagerInformation struct {
 	// REQUIRED; Indicates whether the service is enabled.
-	EnablementStatus *EnablementState
+	EnablementStatus *ChangeTrackingInformationEnablementStatus
 }

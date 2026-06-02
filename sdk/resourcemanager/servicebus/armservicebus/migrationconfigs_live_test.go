@@ -5,17 +5,15 @@ package armservicebus_test
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -127,25 +125,11 @@ func (testsuite *MigrationconfigsTestSuite) TestMigrationConfigs() {
 
 	// From step MigrationConfigs_Revert
 	fmt.Println("Call operation: MigrationConfigs_Revert")
-	// CreateAndStartMigration triggers a replication that may still be running, causing
-	// MigrationConfigOperationInProgressTooManyRequests (429). Retry until the
-	// replication operation completes.
-	for i := 0; i < 30; i++ {
-		_, err = migrationConfigsClient.Revert(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
-		if err == nil {
-			break
-		}
-		var respErr *azcore.ResponseError
-		if !errors.As(err, &respErr) || respErr.ErrorCode != "MigrationConfigOperationInProgressTooManyRequests" {
-			break
-		}
-		recording.Sleep(30 * time.Second)
-	}
+	_, err = migrationConfigsClient.Revert(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
 	testsuite.Require().NoError(err)
 
-	// Note: MigrationConfigs_CompleteMigration is intentionally omitted here.
-	// Revert and CompleteMigration are mutually exclusive terminal operations on a
-	// migration config: Revert breaks the pairing with the premium namespace, after
-	// which CompleteMigration fails with "Migration cannot be completed before pairing
-	// with a premium namespace".
+	// From step MigrationConfigs_CompleteMigration
+	fmt.Println("Call operation: MigrationConfigs_CompleteMigration")
+	_, err = migrationConfigsClient.CompleteMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
+	testsuite.Require().NoError(err)
 }

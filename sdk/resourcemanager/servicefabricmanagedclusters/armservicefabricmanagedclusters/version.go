@@ -6,5 +6,5 @@ package armservicefabricmanagedclusters
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmanagedclusters/armservicefabricmanagedclusters"
-	moduleVersion = "v1.1.0-beta.1"
+	moduleVersion = "v1.0.0"
 )

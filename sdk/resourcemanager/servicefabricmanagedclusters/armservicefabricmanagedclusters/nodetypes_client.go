@@ -18,8 +18,6 @@ import (
 
 // NodeTypesClient contains the methods for the NodeTypes group.
 // Don't use this type directly, use NewNodeTypesClient() instead.
-//
-// Generated from API version 2026-05-01-preview
 type NodeTypesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewNodeTypesClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Create or update a Service Fabric node type of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -68,6 +68,8 @@ func (client *NodeTypesClient) BeginCreateOrUpdate(ctx context.Context, resource
 
 // CreateOrUpdate - Create or update a Service Fabric node type of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *NodeTypesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeType, options *NodeTypesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginCreateOrUpdate"
@@ -113,8 +115,8 @@ func (client *NodeTypesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -126,6 +128,8 @@ func (client *NodeTypesClient) createOrUpdateCreateRequest(ctx context.Context, 
 // BeginDeallocate - Deallocates one or more nodes on the node type. It will disable the fabric nodes, trigger a shutdown
 // on the VMs and release them from the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -152,6 +156,8 @@ func (client *NodeTypesClient) BeginDeallocate(ctx context.Context, resourceGrou
 // Deallocate - Deallocates one or more nodes on the node type. It will disable the fabric nodes, trigger a shutdown on the
 // VMs and release them from the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *NodeTypesClient) deallocate(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, options *NodeTypesClientBeginDeallocateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginDeallocate"
@@ -197,8 +203,8 @@ func (client *NodeTypesClient) deallocateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -208,6 +214,8 @@ func (client *NodeTypesClient) deallocateCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Delete a Service Fabric node type of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -231,6 +239,8 @@ func (client *NodeTypesClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Delete a Service Fabric node type of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *NodeTypesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, options *NodeTypesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginDelete"
@@ -276,14 +286,16 @@ func (client *NodeTypesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginDeleteNode - Deletes one or more nodes on the node type. It will disable the fabric nodes, trigger a delete on the
 // VMs and removes the state from the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -310,6 +322,8 @@ func (client *NodeTypesClient) BeginDeleteNode(ctx context.Context, resourceGrou
 // DeleteNode - Deletes one or more nodes on the node type. It will disable the fabric nodes, trigger a delete on the VMs
 // and removes the state from the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *NodeTypesClient) deleteNode(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, options *NodeTypesClientBeginDeleteNodeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginDeleteNode"
@@ -355,8 +369,8 @@ func (client *NodeTypesClient) deleteNodeCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -366,6 +380,8 @@ func (client *NodeTypesClient) deleteNodeCreateRequest(ctx context.Context, reso
 
 // Get - Get a Service Fabric node type of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -416,8 +432,8 @@ func (client *NodeTypesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -431,80 +447,9 @@ func (client *NodeTypesClient) getHandleResponse(resp *http.Response) (NodeTypes
 	return result, nil
 }
 
-// GetFaultSimulation - Gets a fault simulation by the simulationId.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - nodeTypeName - The name of the node type.
-//   - parameters - parameter with fault simulation id.
-//   - options - NodeTypesClientGetFaultSimulationOptions contains the optional parameters for the NodeTypesClient.GetFaultSimulation
-//     method.
-func (client *NodeTypesClient) GetFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationIDContent, options *NodeTypesClientGetFaultSimulationOptions) (NodeTypesClientGetFaultSimulationResponse, error) {
-	var err error
-	const operationName = "NodeTypesClient.GetFaultSimulation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, nodeTypeName, parameters, options)
-	if err != nil {
-		return NodeTypesClientGetFaultSimulationResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return NodeTypesClientGetFaultSimulationResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NodeTypesClientGetFaultSimulationResponse{}, err
-	}
-	resp, err := client.getFaultSimulationHandleResponse(httpResp)
-	return resp, err
-}
-
-// getFaultSimulationCreateRequest creates the GetFaultSimulation request.
-func (client *NodeTypesClient) getFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationIDContent, _ *NodeTypesClientGetFaultSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/getFaultSimulation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if nodeTypeName == "" {
-		return nil, errors.New("parameter nodeTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nodeTypeName}", url.PathEscape(nodeTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// getFaultSimulationHandleResponse handles the GetFaultSimulation response.
-func (client *NodeTypesClient) getFaultSimulationHandleResponse(resp *http.Response) (NodeTypesClientGetFaultSimulationResponse, error) {
-	result := NodeTypesClientGetFaultSimulationResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FaultSimulation); err != nil {
-		return NodeTypesClientGetFaultSimulationResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByManagedClustersPager - Gets all Node types of the specified managed cluster.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - options - NodeTypesClientListByManagedClustersOptions contains the optional parameters for the NodeTypesClient.NewListByManagedClustersPager
@@ -552,8 +497,8 @@ func (client *NodeTypesClient) listByManagedClustersCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -567,77 +512,11 @@ func (client *NodeTypesClient) listByManagedClustersHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListFaultSimulationPager - Gets the list of recent fault simulations for the node type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - nodeTypeName - The name of the node type.
-//   - options - NodeTypesClientListFaultSimulationOptions contains the optional parameters for the NodeTypesClient.NewListFaultSimulationPager
-//     method.
-func (client *NodeTypesClient) NewListFaultSimulationPager(resourceGroupName string, clusterName string, nodeTypeName string, options *NodeTypesClientListFaultSimulationOptions) *runtime.Pager[NodeTypesClientListFaultSimulationResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NodeTypesClientListFaultSimulationResponse]{
-		More: func(page NodeTypesClientListFaultSimulationResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *NodeTypesClientListFaultSimulationResponse) (NodeTypesClientListFaultSimulationResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NodeTypesClient.NewListFaultSimulationPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, nodeTypeName, options)
-			}, nil)
-			if err != nil {
-				return NodeTypesClientListFaultSimulationResponse{}, err
-			}
-			return client.listFaultSimulationHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listFaultSimulationCreateRequest creates the ListFaultSimulation request.
-func (client *NodeTypesClient) listFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, _ *NodeTypesClientListFaultSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/listFaultSimulation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if nodeTypeName == "" {
-		return nil, errors.New("parameter nodeTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nodeTypeName}", url.PathEscape(nodeTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listFaultSimulationHandleResponse handles the ListFaultSimulation response.
-func (client *NodeTypesClient) listFaultSimulationHandleResponse(resp *http.Response) (NodeTypesClientListFaultSimulationResponse, error) {
-	result := NodeTypesClientListFaultSimulationResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FaultSimulationListResult); err != nil {
-		return NodeTypesClientListFaultSimulationResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginRedeploy - Redeploys one or more nodes on the node type. It will disable the fabric nodes, trigger a shut down on
 // the VMs, move them to a new node, and power them back on.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -663,6 +542,8 @@ func (client *NodeTypesClient) BeginRedeploy(ctx context.Context, resourceGroupN
 // Redeploy - Redeploys one or more nodes on the node type. It will disable the fabric nodes, trigger a shut down on the VMs,
 // move them to a new node, and power them back on.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *NodeTypesClient) redeploy(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, options *NodeTypesClientBeginRedeployOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginRedeploy"
@@ -708,8 +589,8 @@ func (client *NodeTypesClient) redeployCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -720,6 +601,8 @@ func (client *NodeTypesClient) redeployCreateRequest(ctx context.Context, resour
 // BeginReimage - Reimages one or more nodes on the node type. It will disable the fabric nodes, trigger a reimage on the
 // VMs and activate the nodes back again.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -745,6 +628,8 @@ func (client *NodeTypesClient) BeginReimage(ctx context.Context, resourceGroupNa
 // Reimage - Reimages one or more nodes on the node type. It will disable the fabric nodes, trigger a reimage on the VMs and
 // activate the nodes back again.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *NodeTypesClient) reimage(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, options *NodeTypesClientBeginReimageOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginReimage"
@@ -790,8 +675,8 @@ func (client *NodeTypesClient) reimageCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -802,6 +687,8 @@ func (client *NodeTypesClient) reimageCreateRequest(ctx context.Context, resourc
 // BeginRestart - Restarts one or more nodes on the node type. It will disable the fabric nodes, trigger a restart on the
 // VMs and activate the nodes back again.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -827,6 +714,8 @@ func (client *NodeTypesClient) BeginRestart(ctx context.Context, resourceGroupNa
 // Restart - Restarts one or more nodes on the node type. It will disable the fabric nodes, trigger a restart on the VMs and
 // activate the nodes back again.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *NodeTypesClient) restart(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, options *NodeTypesClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginRestart"
@@ -872,8 +761,8 @@ func (client *NodeTypesClient) restartCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -884,6 +773,8 @@ func (client *NodeTypesClient) restartCreateRequest(ctx context.Context, resourc
 // BeginStart - Starts one or more nodes on the node type. It will trigger an allocation of the fabric node if needed and
 // activate them.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -909,6 +800,8 @@ func (client *NodeTypesClient) BeginStart(ctx context.Context, resourceGroupName
 // Start - Starts one or more nodes on the node type. It will trigger an allocation of the fabric node if needed and activate
 // them.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *NodeTypesClient) start(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, options *NodeTypesClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginStart"
@@ -954,170 +847,8 @@ func (client *NodeTypesClient) startCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginStartFaultSimulation - Starts a fault simulation on the node type.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - nodeTypeName - The name of the node type.
-//   - parameters - parameters describing the fault simulation.
-//   - options - NodeTypesClientBeginStartFaultSimulationOptions contains the optional parameters for the NodeTypesClient.BeginStartFaultSimulation
-//     method.
-func (client *NodeTypesClient) BeginStartFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationContentWrapper, options *NodeTypesClientBeginStartFaultSimulationOptions) (*runtime.Poller[NodeTypesClientStartFaultSimulationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.startFaultSimulation(ctx, resourceGroupName, clusterName, nodeTypeName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NodeTypesClientStartFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NodeTypesClientStartFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StartFaultSimulation - Starts a fault simulation on the node type.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NodeTypesClient) startFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationContentWrapper, options *NodeTypesClientBeginStartFaultSimulationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NodeTypesClient.BeginStartFaultSimulation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, nodeTypeName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// startFaultSimulationCreateRequest creates the StartFaultSimulation request.
-func (client *NodeTypesClient) startFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationContentWrapper, _ *NodeTypesClientBeginStartFaultSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/startFaultSimulation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if nodeTypeName == "" {
-		return nil, errors.New("parameter nodeTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nodeTypeName}", url.PathEscape(nodeTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginStopFaultSimulation - Stops a fault simulation on the node type.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - nodeTypeName - The name of the node type.
-//   - parameters - parameter with fault simulation id.
-//   - options - NodeTypesClientBeginStopFaultSimulationOptions contains the optional parameters for the NodeTypesClient.BeginStopFaultSimulation
-//     method.
-func (client *NodeTypesClient) BeginStopFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationIDContent, options *NodeTypesClientBeginStopFaultSimulationOptions) (*runtime.Poller[NodeTypesClientStopFaultSimulationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stopFaultSimulation(ctx, resourceGroupName, clusterName, nodeTypeName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NodeTypesClientStopFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NodeTypesClientStopFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StopFaultSimulation - Stops a fault simulation on the node type.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NodeTypesClient) stopFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationIDContent, options *NodeTypesClientBeginStopFaultSimulationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NodeTypesClient.BeginStopFaultSimulation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, nodeTypeName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// stopFaultSimulationCreateRequest creates the StopFaultSimulation request.
-func (client *NodeTypesClient) stopFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters FaultSimulationIDContent, _ *NodeTypesClientBeginStopFaultSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/stopFaultSimulation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if nodeTypeName == "" {
-		return nil, errors.New("parameter nodeTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nodeTypeName}", url.PathEscape(nodeTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -1127,6 +858,8 @@ func (client *NodeTypesClient) stopFaultSimulationCreateRequest(ctx context.Cont
 
 // BeginUpdate - Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -1151,6 +884,8 @@ func (client *NodeTypesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 
 // Update - Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-01
 func (client *NodeTypesClient) update(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeUpdateParameters, options *NodeTypesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginUpdate"
@@ -1196,8 +931,8 @@ func (client *NodeTypesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

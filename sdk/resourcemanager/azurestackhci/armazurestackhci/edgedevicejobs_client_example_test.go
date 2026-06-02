@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-30/EdgeDeviceJobs_CreateOrUpdate_CollectLog.json
+// Generated from example definition: 2026-04-01-preview/EdgeDeviceJobs_CreateOrUpdate_CollectLog.json
 func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdateCollectLog() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,13 +37,13 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeDeviceJobsClientCreateOrUpdateResponse{
-	// 	EdgeDeviceJobClassification: &armazurestackhci.HciEdgeDeviceJob{
+	// 	HciEdgeDeviceJob: &armazurestackhci.HciEdgeDeviceJob{
 	// 		Name: to.Ptr("collectLog"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/edgeDevices/jobs"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/providers/Microsoft.AzureStackHCI/edgeDevices/default/jobs/collectLog"),
@@ -65,7 +65,7 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2026-04-30/EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.json
+// Generated from example definition: 2026-04-01-preview/EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.json
 func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdateRemoteSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,13 +90,13 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeDeviceJobsClientCreateOrUpdateResponse{
-	// 	EdgeDeviceJobClassification: &armazurestackhci.HciEdgeDeviceJob{
+	// 	HciEdgeDeviceJob: &armazurestackhci.HciEdgeDeviceJob{
 	// 		Name: to.Ptr("collectLog"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/edgeDevices/jobs"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/providers/Microsoft.AzureStackHCI/edgeDevices/default/jobs/remoteSupport"),
@@ -119,7 +119,7 @@ func ExampleEdgeDeviceJobsClient_BeginCreateOrUpdate_edgeDeviceJobsCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2026-04-30/EdgeDeviceJobs_Delete.json
+// Generated from example definition: 2026-04-01-preview/EdgeDeviceJobs_Delete.json
 func ExampleEdgeDeviceJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,11 +136,11 @@ func ExampleEdgeDeviceJobsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-30/EdgeDeviceJobs_Get_RemoteSupport.json
+// Generated from example definition: 2026-04-01-preview/EdgeDeviceJobs_Get_RemoteSupport.json
 func ExampleEdgeDeviceJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleEdgeDeviceJobsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeDeviceJobsClientGetResponse{
-	// 	EdgeDeviceJobClassification: &armazurestackhci.HciEdgeDeviceJob{
+	// 	HciEdgeDeviceJob: &armazurestackhci.HciEdgeDeviceJob{
 	// 		Name: to.Ptr("collectLog"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/edgeDevices/jobs"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/providers/Microsoft.AzureStackHCI/edgeDevices/default/jobs/RemoteSupport"),
@@ -182,7 +182,7 @@ func ExampleEdgeDeviceJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/EdgeDeviceJobs_ListByEdgeDevice.json
+// Generated from example definition: 2026-04-01-preview/EdgeDeviceJobs_ListByEdgeDevice.json
 func ExampleEdgeDeviceJobsClient_NewListByEdgeDevicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

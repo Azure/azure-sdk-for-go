@@ -1,13 +1,5 @@
 # Release History
 
-## 0.5.0 (2026-05-20)
-### Breaking Changes
-
-- Struct `ErrorResponse` has been removed
-- Struct `ErrorResponseBody` has been removed
-- Struct `Resource` has been removed
-
-
 ## 0.4.0 (2023-11-24)
 ### Features Added
 

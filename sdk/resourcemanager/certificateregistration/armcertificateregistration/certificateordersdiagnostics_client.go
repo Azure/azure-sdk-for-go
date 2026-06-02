@@ -11,16 +11,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 // CertificateOrdersDiagnosticsClient contains the methods for the CertificateOrdersDiagnostics group.
 // Don't use this type directly, use NewCertificateOrdersDiagnosticsClient() instead.
-//
-// Generated from API version 2024-11-01
 type CertificateOrdersDiagnosticsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -47,6 +45,8 @@ func NewCertificateOrdersDiagnosticsClient(subscriptionID string, credential azc
 //
 // Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - certificateOrderName - Name of the certificate order..
 //   - detectorName - The detector name which needs to be run.
@@ -98,17 +98,17 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101)
+	reqQP.Set("api-version", "2024-11-01")
 	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", datetime.RFC3339(*options.EndTime).String())
+		reqQP.Set("endTime", options.EndTime.Format(time.RFC3339Nano))
 	}
 	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", datetime.RFC3339(*options.StartTime).String())
+		reqQP.Set("startTime", options.StartTime.Format(time.RFC3339Nano))
 	}
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -126,6 +126,8 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 // for this RP.
 //
 // Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
+//
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - certificateOrderName - Name of the certificate order..
 //   - options - CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions contains the optional
@@ -173,8 +175,8 @@ func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrder
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

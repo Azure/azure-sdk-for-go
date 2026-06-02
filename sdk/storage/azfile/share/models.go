@@ -4,10 +4,9 @@
 package share
 
 import (
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"time"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -60,27 +59,25 @@ type CreateOptions struct {
 	ShareProvisionedIops *int64
 }
 
-func (o *CreateOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientCreateOptions {
-	opts := &generated.ShareClientCreateOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
 	if o == nil {
-		return opts
+		return nil
 	}
 
-	opts.AccessTier = o.AccessTier
-	opts.EnabledProtocols = o.EnabledProtocols
-	opts.Metadata = o.Metadata
-	opts.Quota = o.Quota
-	opts.RootSquash = o.RootSquash
-	opts.EnableSnapshotVirtualDirectoryAccess = o.EnableSnapshotVirtualDirectoryAccess
-	opts.EnableSMBDirectoryLease = o.EnableSMBDirectoryLease
-	opts.PaidBurstingEnabled = o.PaidBurstingEnabled
-	opts.PaidBurstingMaxBandwidthMibps = o.PaidBurstingMaxBandwidthMibps
-	opts.PaidBurstingMaxIops = o.PaidBurstingMaxIops
-	opts.ShareProvisionedBandwidthMibps = o.ShareProvisionedBandwidthMibps
-	opts.ShareProvisionedIops = o.ShareProvisionedIops
-	return opts
+	return &generated.ShareClientCreateOptions{
+		AccessTier:                           o.AccessTier,
+		EnabledProtocols:                     o.EnabledProtocols,
+		Metadata:                             o.Metadata,
+		Quota:                                o.Quota,
+		RootSquash:                           o.RootSquash,
+		EnableSnapshotVirtualDirectoryAccess: o.EnableSnapshotVirtualDirectoryAccess,
+		EnableSMBDirectoryLease:              o.EnableSMBDirectoryLease,
+		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
+		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
+		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,
+		ShareProvisionedBandwidthMibps:       o.ShareProvisionedBandwidthMibps,
+		ShareProvisionedIops:                 o.ShareProvisionedIops,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -95,20 +92,15 @@ type DeleteOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *DeleteOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientDeleteOptions {
-	opts := &generated.ShareClientDeleteOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *DeleteOptions) format() (*generated.ShareClientDeleteOptions, *LeaseAccessConditions) {
 	if o == nil {
-		return opts
+		return nil, nil
 	}
 
-	opts.DeleteSnapshots = o.DeleteSnapshots
-	opts.Sharesnapshot = o.ShareSnapshot
-	if o.LeaseAccessConditions != nil {
-		opts.LeaseID = o.LeaseAccessConditions.LeaseID
-	}
-	return opts
+	return &generated.ShareClientDeleteOptions{
+		DeleteSnapshots: o.DeleteSnapshots,
+		Sharesnapshot:   o.ShareSnapshot,
+	}, o.LeaseAccessConditions
 }
 
 // LeaseAccessConditions contains optional parameters to access leased entity.
@@ -131,19 +123,14 @@ type GetPropertiesOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *GetPropertiesOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientGetPropertiesOptions {
-	opts := &generated.ShareClientGetPropertiesOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *GetPropertiesOptions) format() (*generated.ShareClientGetPropertiesOptions, *LeaseAccessConditions) {
 	if o == nil {
-		return opts
+		return nil, nil
 	}
 
-	opts.Sharesnapshot = o.ShareSnapshot
-	if o.LeaseAccessConditions != nil {
-		opts.LeaseID = o.LeaseAccessConditions.LeaseID
-	}
-	return opts
+	return &generated.ShareClientGetPropertiesOptions{
+		Sharesnapshot: o.ShareSnapshot,
+	}, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -180,28 +167,23 @@ type SetPropertiesOptions struct {
 	ShareProvisionedIops *int64
 }
 
-func (o *SetPropertiesOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientSetPropertiesOptions {
-	opts := &generated.ShareClientSetPropertiesOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOptions, *LeaseAccessConditions) {
 	if o == nil {
-		return opts
+		return nil, nil
 	}
 
-	opts.AccessTier = o.AccessTier
-	opts.Quota = o.Quota
-	opts.RootSquash = o.RootSquash
-	opts.EnableSnapshotVirtualDirectoryAccess = o.EnableSnapshotVirtualDirectoryAccess
-	opts.EnableSMBDirectoryLease = o.EnableSMBDirectoryLease
-	opts.PaidBurstingEnabled = o.PaidBurstingEnabled
-	opts.PaidBurstingMaxBandwidthMibps = o.PaidBurstingMaxBandwidthMibps
-	opts.PaidBurstingMaxIops = o.PaidBurstingMaxIops
-	opts.ShareProvisionedIops = o.ShareProvisionedIops
-	opts.ShareProvisionedBandwidthMibps = o.ShareProvisionedBandwidthMibps
-	if o.LeaseAccessConditions != nil {
-		opts.LeaseID = o.LeaseAccessConditions.LeaseID
-	}
-	return opts
+	return &generated.ShareClientSetPropertiesOptions{
+		AccessTier:                           o.AccessTier,
+		Quota:                                o.Quota,
+		RootSquash:                           o.RootSquash,
+		EnableSnapshotVirtualDirectoryAccess: o.EnableSnapshotVirtualDirectoryAccess,
+		EnableSMBDirectoryLease:              o.EnableSMBDirectoryLease,
+		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
+		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
+		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,
+		ShareProvisionedIops:                 o.ShareProvisionedIops,
+		ShareProvisionedBandwidthMibps:       o.ShareProvisionedBandwidthMibps,
+	}, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -212,16 +194,14 @@ type CreateSnapshotOptions struct {
 	Metadata map[string]*string
 }
 
-func (o *CreateSnapshotOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientCreateSnapshotOptions {
-	opts := &generated.ShareClientCreateSnapshotOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *CreateSnapshotOptions) format() *generated.ShareClientCreateSnapshotOptions {
 	if o == nil {
-		return opts
+		return nil
 	}
 
-	opts.Metadata = o.Metadata
-	return opts
+	return &generated.ShareClientCreateSnapshotOptions{
+		Metadata: o.Metadata,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -232,18 +212,12 @@ type GetAccessPolicyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *GetAccessPolicyOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientGetAccessPolicyOptions {
-	opts := &generated.ShareClientGetAccessPolicyOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *GetAccessPolicyOptions) format() (*generated.ShareClientGetAccessPolicyOptions, *LeaseAccessConditions) {
 	if o == nil {
-		return opts
+		return nil, nil
 	}
 
-	if o.LeaseAccessConditions != nil {
-		opts.LeaseID = o.LeaseAccessConditions.LeaseID
-	}
-	return opts
+	return nil, o.LeaseAccessConditions
 }
 
 // SignedIdentifier - Signed identifier.
@@ -266,18 +240,23 @@ type SetAccessPolicyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *SetAccessPolicyOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientSetAccessPolicyOptions {
-	opts := &generated.ShareClientSetAccessPolicyOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *SetAccessPolicyOptions) format() (*generated.ShareClientSetAccessPolicyOptions, *LeaseAccessConditions, error) {
 	if o == nil {
-		return opts
+		return nil, nil, nil
 	}
 
-	if o.LeaseAccessConditions != nil {
-		opts.LeaseID = o.LeaseAccessConditions.LeaseID
+	if o.ShareACL != nil {
+		for _, si := range o.ShareACL {
+			err := formatTime(si)
+			if err != nil {
+				return nil, nil, err
+			}
+		}
 	}
-	return opts
+
+	return &generated.ShareClientSetAccessPolicyOptions{
+		ShareACL: o.ShareACL,
+	}, o.LeaseAccessConditions, nil
 }
 
 func formatTime(si *SignedIdentifier) error {
@@ -310,10 +289,10 @@ type CreatePermissionOptions struct {
 	// placeholder for future options
 }
 
-func (o *CreatePermissionOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientCreatePermissionOptions {
-	return &generated.ShareClientCreatePermissionOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *CreatePermissionOptions) format(sharePermission string) (Permission, *generated.ShareClientCreatePermissionOptions) {
+	return Permission{
+		Permission: &sharePermission,
+	}, nil
 }
 
 // Permission - A permission (a security descriptor) at the share level.
@@ -326,16 +305,13 @@ type GetPermissionOptions struct {
 	FilePermissionFormat *PermissionFormat
 }
 
-func (o *GetPermissionOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientGetPermissionOptions {
-	opts := &generated.ShareClientGetPermissionOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *GetPermissionOptions) format() *generated.ShareClientGetPermissionOptions {
 	if o == nil {
-		return opts
+		return &generated.ShareClientGetPermissionOptions{}
 	}
-
-	opts.FilePermissionFormat = o.FilePermissionFormat
-	return opts
+	return &generated.ShareClientGetPermissionOptions{
+		FilePermissionFormat: o.FilePermissionFormat,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -348,19 +324,14 @@ type SetMetadataOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *SetMetadataOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientSetMetadataOptions {
-	opts := &generated.ShareClientSetMetadataOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *SetMetadataOptions) format() (*generated.ShareClientSetMetadataOptions, *LeaseAccessConditions) {
 	if o == nil {
-		return opts
+		return nil, nil
 	}
 
-	opts.Metadata = o.Metadata
-	if o.LeaseAccessConditions != nil {
-		opts.LeaseID = o.LeaseAccessConditions.LeaseID
-	}
-	return opts
+	return &generated.ShareClientSetMetadataOptions{
+		Metadata: o.Metadata,
+	}, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -371,18 +342,12 @@ type GetStatisticsOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *GetStatisticsOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientGetStatisticsOptions {
-	opts := &generated.ShareClientGetStatisticsOptions{
-		FileRequestIntent: fileRequestIntent,
-	}
+func (o *GetStatisticsOptions) format() (*generated.ShareClientGetStatisticsOptions, *LeaseAccessConditions) {
 	if o == nil {
-		return opts
+		return nil, nil
 	}
 
-	if o.LeaseAccessConditions != nil {
-		opts.LeaseID = o.LeaseAccessConditions.LeaseID
-	}
-	return opts
+	return nil, o.LeaseAccessConditions
 }
 
 // Stats - Stats for the share.

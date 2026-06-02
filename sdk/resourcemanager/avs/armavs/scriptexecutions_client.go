@@ -18,8 +18,6 @@ import (
 
 // ScriptExecutionsClient contains the methods for the ScriptExecutions group.
 // Don't use this type directly, use NewScriptExecutionsClient() instead.
-//
-// Generated from API version 2025-09-01
 type ScriptExecutionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewScriptExecutionsClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Create a ScriptExecution
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - scriptExecutionName - Name of the script cmdlet.
@@ -69,6 +69,8 @@ func (client *ScriptExecutionsClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Create a ScriptExecution
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *ScriptExecutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScriptExecutionsClient.BeginCreateOrUpdate"
@@ -114,8 +116,8 @@ func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, scriptExecution); err != nil {
@@ -126,6 +128,8 @@ func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Delete a ScriptExecution
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - scriptExecutionName - Name of the script cmdlet.
@@ -150,6 +154,8 @@ func (client *ScriptExecutionsClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Delete a ScriptExecution
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 func (client *ScriptExecutionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScriptExecutionsClient.BeginDelete"
@@ -195,13 +201,15 @@ func (client *ScriptExecutionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a ScriptExecution
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - scriptExecutionName - Name of the script cmdlet.
@@ -252,8 +260,8 @@ func (client *ScriptExecutionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -269,6 +277,8 @@ func (client *ScriptExecutionsClient) getHandleResponse(resp *http.Response) (Sc
 
 // GetExecutionLogs - Return the logs for a script execution resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - scriptExecutionName - Name of the script cmdlet.
@@ -320,8 +330,8 @@ func (client *ScriptExecutionsClient) getExecutionLogsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ScriptOutputStreamType != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -343,6 +353,8 @@ func (client *ScriptExecutionsClient) getExecutionLogsHandleResponse(resp *http.
 }
 
 // NewListPager - List ScriptExecution resources by PrivateCloud
+//
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - ScriptExecutionsClientListOptions contains the optional parameters for the ScriptExecutionsClient.NewListPager
@@ -390,8 +402,8 @@ func (client *ScriptExecutionsClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

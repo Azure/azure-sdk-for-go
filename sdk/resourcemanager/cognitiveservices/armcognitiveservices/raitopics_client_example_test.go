@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutRaiTopic.json
+// Generated from example definition: 2026-01-15-preview/PutRaiTopic.json
 func ExampleRaiTopicsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleRaiTopicsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiTopicsClientCreateOrUpdateResponse{
-	// 	RaiTopic: armcognitiveservices.RaiTopic{
+	// 	RaiTopic: &armcognitiveservices.RaiTopic{
 	// 		Name: to.Ptr("raiTopicName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiTopics/raiTopicName"),
 	// 		Properties: &armcognitiveservices.RaiTopicProperties{
@@ -53,7 +53,7 @@ func ExampleRaiTopicsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteRaiTopic.json
+// Generated from example definition: 2026-01-15-preview/DeleteRaiTopic.json
 func ExampleRaiTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,11 +70,11 @@ func ExampleRaiTopicsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/GetRaiTopic.json
+// Generated from example definition: 2026-01-15-preview/GetRaiTopic.json
 func ExampleRaiTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleRaiTopicsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiTopicsClientGetResponse{
-	// 	RaiTopic: armcognitiveservices.RaiTopic{
+	// 	RaiTopic: &armcognitiveservices.RaiTopic{
 	// 		Name: to.Ptr("raiTopicName"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/raiTopics/raiTopicName"),
 	// 		Properties: &armcognitiveservices.RaiTopicProperties{
@@ -109,7 +109,7 @@ func ExampleRaiTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListRaiTopics.json
+// Generated from example definition: 2026-01-15-preview/ListRaiTopics.json
 func ExampleRaiTopicsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

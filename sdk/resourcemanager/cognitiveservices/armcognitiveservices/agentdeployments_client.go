@@ -19,8 +19,6 @@ import (
 
 // AgentDeploymentsClient contains the methods for the AgentDeployments group.
 // Don't use this type directly, use NewAgentDeploymentsClient() instead.
-//
-// Generated from API version 2026-03-15-preview
 type AgentDeploymentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,6 +44,8 @@ func NewAgentDeploymentsClient(subscriptionID string, credential azcore.TokenCre
 //
 // Creates or updates an Agent Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -75,6 +75,8 @@ func (client *AgentDeploymentsClient) BeginCreateOrUpdate(ctx context.Context, r
 //
 // Creates or updates an Agent Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 func (client *AgentDeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, body AgentDeployment, options *AgentDeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentDeploymentsClient.BeginCreateOrUpdate"
@@ -128,8 +130,8 @@ func (client *AgentDeploymentsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -142,6 +144,8 @@ func (client *AgentDeploymentsClient) createOrUpdateCreateRequest(ctx context.Co
 //
 // Delete Agent Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -170,6 +174,8 @@ func (client *AgentDeploymentsClient) BeginDelete(ctx context.Context, resourceG
 //
 // Delete Agent Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 func (client *AgentDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, options *AgentDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentDeploymentsClient.BeginDelete"
@@ -223,8 +229,8 @@ func (client *AgentDeploymentsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -232,6 +238,8 @@ func (client *AgentDeploymentsClient) deleteCreateRequest(ctx context.Context, r
 //
 // Gets an Agent Deployment by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -292,8 +300,8 @@ func (client *AgentDeploymentsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -310,6 +318,8 @@ func (client *AgentDeploymentsClient) getHandleResponse(resp *http.Response) (Ag
 // NewListPager - Lists Agent Deployments in the application.
 //
 // Lists Agent Deployments in the application.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -370,7 +380,7 @@ func (client *AgentDeploymentsClient) listCreateRequest(ctx context.Context, res
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", "2026-01-15-preview")
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
 	}
@@ -385,7 +395,7 @@ func (client *AgentDeploymentsClient) listCreateRequest(ctx context.Context, res
 	if options != nil && options.OrderByAsc != nil {
 		reqQP.Set("orderByAsc", strconv.FormatBool(*options.OrderByAsc))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -403,6 +413,8 @@ func (client *AgentDeploymentsClient) listHandleResponse(resp *http.Response) (A
 //
 // Starts an Agent Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -462,8 +474,8 @@ func (client *AgentDeploymentsClient) startCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -471,6 +483,8 @@ func (client *AgentDeploymentsClient) startCreateRequest(ctx context.Context, re
 //
 // Stops an Agent Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -530,7 +544,7 @@ func (client *AgentDeploymentsClient) stopCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

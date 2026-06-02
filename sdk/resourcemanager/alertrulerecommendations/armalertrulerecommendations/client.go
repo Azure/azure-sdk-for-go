@@ -18,8 +18,6 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
-//
-// Generated from API version 2023-08-01-preview
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 }
 
 // NewListByResourcePager - Retrieve alert rule recommendations for a resource.
+//
+// Generated from API version 2023-08-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - ClientListByResourceOptions contains the optional parameters for the Client.NewListByResourcePager method.
 func (client *Client) NewListByResourcePager(resourceURI string, options *ClientListByResourceOptions) *runtime.Pager[ClientListByResourceResponse] {
@@ -79,8 +79,8 @@ func (client *Client) listByResourceCreateRequest(ctx context.Context, resourceU
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -95,6 +95,8 @@ func (client *Client) listByResourceHandleResponse(resp *http.Response) (ClientL
 }
 
 // NewListByTargetTypePager - Retrieve alert rule recommendations for a target type.
+//
+// Generated from API version 2023-08-01-preview
 //   - targetType - The recommendations target type.
 //   - options - ClientListByTargetTypeOptions contains the optional parameters for the Client.NewListByTargetTypePager method.
 func (client *Client) NewListByTargetTypePager(targetType string, options *ClientListByTargetTypeOptions) *runtime.Pager[ClientListByTargetTypeResponse] {
@@ -132,9 +134,9 @@ func (client *Client) listByTargetTypeCreateRequest(ctx context.Context, targetT
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230801Preview)
+	reqQP.Set("api-version", "2023-08-01-preview")
 	reqQP.Set("targetType", targetType)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

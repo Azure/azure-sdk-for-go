@@ -1,29 +1,5 @@
 # Release History
 
-## 1.4.0-beta.1 (2026-05-25)
-### Features Added
-
-- New enum type `ClientConnectionCountRuleDiscriminator` with values `ClientConnectionCountRuleDiscriminatorThrottleByJwtCustomClaimRule`, `ClientConnectionCountRuleDiscriminatorThrottleByJwtSignatureRule`, `ClientConnectionCountRuleDiscriminatorThrottleByUserIDRule`
-- New enum type `ClientTrafficControlRuleDiscriminator` with values `ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule`, `ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule`, `ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule`
-- New function `*ClientConnectionCountRule.GetClientConnectionCountRule() *ClientConnectionCountRule`
-- New function `*ClientTrafficControlRule.GetClientTrafficControlRule() *ClientTrafficControlRule`
-- New function `*ThrottleByJwtCustomClaimRule.GetClientConnectionCountRule() *ClientConnectionCountRule`
-- New function `*ThrottleByJwtSignatureRule.GetClientConnectionCountRule() *ClientConnectionCountRule`
-- New function `*ThrottleByUserIDRule.GetClientConnectionCountRule() *ClientConnectionCountRule`
-- New function `*TrafficThrottleByJwtCustomClaimRule.GetClientTrafficControlRule() *ClientTrafficControlRule`
-- New function `*TrafficThrottleByJwtSignatureRule.GetClientTrafficControlRule() *ClientTrafficControlRule`
-- New function `*TrafficThrottleByUserIDRule.GetClientTrafficControlRule() *ClientTrafficControlRule`
-- New struct `ApplicationFirewallSettings`
-- New struct `ThrottleByJwtCustomClaimRule`
-- New struct `ThrottleByJwtSignatureRule`
-- New struct `ThrottleByUserIDRule`
-- New struct `TrafficThrottleByJwtCustomClaimRule`
-- New struct `TrafficThrottleByJwtSignatureRule`
-- New struct `TrafficThrottleByUserIDRule`
-- New field `ApplicationFirewall` in struct `Properties`
-- New field `Fqdns` in struct `SharedPrivateLinkResourceProperties`
-
-
 ## 1.3.0 (2024-09-25)
 ### Features Added
 

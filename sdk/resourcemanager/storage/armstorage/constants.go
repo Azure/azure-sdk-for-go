@@ -13,7 +13,6 @@ const (
 	AccessTierCool    AccessTier = "Cool"
 	AccessTierHot     AccessTier = "Hot"
 	AccessTierPremium AccessTier = "Premium"
-	AccessTierSmart   AccessTier = "Smart"
 )
 
 // PossibleAccessTierValues returns the possible values for the AccessTier const type.
@@ -23,7 +22,6 @@ func PossibleAccessTierValues() []AccessTier {
 		AccessTierCool,
 		AccessTierHot,
 		AccessTierPremium,
-		AccessTierSmart,
 	}
 }
 
@@ -88,7 +86,6 @@ type AllowedCopyScope string
 
 const (
 	AllowedCopyScopeAAD         AllowedCopyScope = "AAD"
-	AllowedCopyScopeAll         AllowedCopyScope = "All"
 	AllowedCopyScopePrivateLink AllowedCopyScope = "PrivateLink"
 )
 
@@ -96,7 +93,6 @@ const (
 func PossibleAllowedCopyScopeValues() []AllowedCopyScope {
 	return []AllowedCopyScope{
 		AllowedCopyScopeAAD,
-		AllowedCopyScopeAll,
 		AllowedCopyScopePrivateLink,
 	}
 }
@@ -811,7 +807,7 @@ func PossibleMigrationStatusValues() []MigrationStatus {
 }
 
 // MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS
-// 1.0 for this property. Minimum TLS version 1.3 version is not supported.
+// 1.0 for this property.
 type MinimumTLSVersion string
 
 const (
@@ -842,36 +838,6 @@ const (
 func PossibleNameValues() []Name {
 	return []Name{
 		NameAccessTimeTracking,
-	}
-}
-
-// NativeDataSharingProvisioningState - Provisioning state of the resource at the time the operation was called.
-type NativeDataSharingProvisioningState string
-
-const (
-	// NativeDataSharingProvisioningStateAccepted - The request has been accepted for processing.
-	NativeDataSharingProvisioningStateAccepted NativeDataSharingProvisioningState = "Accepted"
-	// NativeDataSharingProvisioningStateCanceled - The request has been canceled.
-	NativeDataSharingProvisioningStateCanceled NativeDataSharingProvisioningState = "Canceled"
-	// NativeDataSharingProvisioningStateCreating - The resource is being created.
-	NativeDataSharingProvisioningStateCreating NativeDataSharingProvisioningState = "Creating"
-	// NativeDataSharingProvisioningStateDeleting - The resource is being deleted.
-	NativeDataSharingProvisioningStateDeleting NativeDataSharingProvisioningState = "Deleting"
-	// NativeDataSharingProvisioningStateFailed - The resource creation or deletion has failed.
-	NativeDataSharingProvisioningStateFailed NativeDataSharingProvisioningState = "Failed"
-	// NativeDataSharingProvisioningStateSucceeded - The resource has been successfully created.
-	NativeDataSharingProvisioningStateSucceeded NativeDataSharingProvisioningState = "Succeeded"
-)
-
-// PossibleNativeDataSharingProvisioningStateValues returns the possible values for the NativeDataSharingProvisioningState const type.
-func PossibleNativeDataSharingProvisioningStateValues() []NativeDataSharingProvisioningState {
-	return []NativeDataSharingProvisioningState{
-		NativeDataSharingProvisioningStateAccepted,
-		NativeDataSharingProvisioningStateCanceled,
-		NativeDataSharingProvisioningStateCreating,
-		NativeDataSharingProvisioningStateDeleting,
-		NativeDataSharingProvisioningStateFailed,
-		NativeDataSharingProvisioningStateSucceeded,
 	}
 }
 
@@ -1449,102 +1415,6 @@ func PossibleStorageAccountExpandValues() []StorageAccountExpand {
 	}
 }
 
-// StorageConnectorAuthType - The auth type supported for bucket connection in storage connector.
-type StorageConnectorAuthType string
-
-const (
-	// StorageConnectorAuthTypeManagedIdentity - Managed Identity auth type
-	StorageConnectorAuthTypeManagedIdentity StorageConnectorAuthType = "ManagedIdentity"
-)
-
-// PossibleStorageConnectorAuthTypeValues returns the possible values for the StorageConnectorAuthType const type.
-func PossibleStorageConnectorAuthTypeValues() []StorageConnectorAuthType {
-	return []StorageConnectorAuthType{
-		StorageConnectorAuthTypeManagedIdentity,
-	}
-}
-
-// StorageConnectorConnectionType - The connection type for bucket connection in storage connector.
-type StorageConnectorConnectionType string
-
-const (
-	// StorageConnectorConnectionTypeDataShare - DataShare connection type
-	StorageConnectorConnectionTypeDataShare StorageConnectorConnectionType = "DataShare"
-)
-
-// PossibleStorageConnectorConnectionTypeValues returns the possible values for the StorageConnectorConnectionType const type.
-func PossibleStorageConnectorConnectionTypeValues() []StorageConnectorConnectionType {
-	return []StorageConnectorConnectionType{
-		StorageConnectorConnectionTypeDataShare,
-	}
-}
-
-// StorageConnectorDataSourceType - The type of the backing data source for storage connector
-type StorageConnectorDataSourceType string
-
-const (
-	// StorageConnectorDataSourceTypeAzureDataShare - Azure DataShare data source type.
-	StorageConnectorDataSourceTypeAzureDataShare StorageConnectorDataSourceType = "Azure_DataShare"
-)
-
-// PossibleStorageConnectorDataSourceTypeValues returns the possible values for the StorageConnectorDataSourceType const type.
-func PossibleStorageConnectorDataSourceTypeValues() []StorageConnectorDataSourceType {
-	return []StorageConnectorDataSourceType{
-		StorageConnectorDataSourceTypeAzureDataShare,
-	}
-}
-
-// StorageConnectorSourceType - The type of the backing data source for storage connector
-type StorageConnectorSourceType string
-
-const (
-	// StorageConnectorSourceTypeDataShare - Source type - DataShare
-	StorageConnectorSourceTypeDataShare StorageConnectorSourceType = "DataShare"
-)
-
-// PossibleStorageConnectorSourceTypeValues returns the possible values for the StorageConnectorSourceType const type.
-func PossibleStorageConnectorSourceTypeValues() []StorageConnectorSourceType {
-	return []StorageConnectorSourceType{
-		StorageConnectorSourceTypeDataShare,
-	}
-}
-
-// StorageConnectorState - The state of the storage connector
-type StorageConnectorState string
-
-const (
-	// StorageConnectorStateActive - Whether the connector is active
-	StorageConnectorStateActive StorageConnectorState = "Active"
-	// StorageConnectorStateInactive - Whether the connector is inactive
-	StorageConnectorStateInactive StorageConnectorState = "Inactive"
-)
-
-// PossibleStorageConnectorStateValues returns the possible values for the StorageConnectorState const type.
-func PossibleStorageConnectorStateValues() []StorageConnectorState {
-	return []StorageConnectorState{
-		StorageConnectorStateActive,
-		StorageConnectorStateInactive,
-	}
-}
-
-// StorageDataShareAccessPolicyPermission - The permissions supported in access policies for storage data share
-type StorageDataShareAccessPolicyPermission string
-
-const (
-	// StorageDataShareAccessPolicyPermissionNone - No permission
-	StorageDataShareAccessPolicyPermissionNone StorageDataShareAccessPolicyPermission = "None"
-	// StorageDataShareAccessPolicyPermissionRead - Read permission
-	StorageDataShareAccessPolicyPermissionRead StorageDataShareAccessPolicyPermission = "Read"
-)
-
-// PossibleStorageDataShareAccessPolicyPermissionValues returns the possible values for the StorageDataShareAccessPolicyPermission const type.
-func PossibleStorageDataShareAccessPolicyPermissionValues() []StorageDataShareAccessPolicyPermission {
-	return []StorageDataShareAccessPolicyPermission{
-		StorageDataShareAccessPolicyPermissionNone,
-		StorageDataShareAccessPolicyPermissionRead,
-	}
-}
-
 // StorageTaskAssignmentProvisioningState - Gets the status of the storage account at the time the operation was called.
 type StorageTaskAssignmentProvisioningState string
 
@@ -1577,8 +1447,6 @@ func PossibleStorageTaskAssignmentProvisioningStateValues() []StorageTaskAssignm
 type TriggerType string
 
 const (
-	// TriggerTypeMockRun - Run the task as a mock for testing
-	TriggerTypeMockRun    TriggerType = "MockRun"
 	TriggerTypeOnSchedule TriggerType = "OnSchedule"
 	TriggerTypeRunOnce    TriggerType = "RunOnce"
 )
@@ -1586,7 +1454,6 @@ const (
 // PossibleTriggerTypeValues returns the possible values for the TriggerType const type.
 func PossibleTriggerTypeValues() []TriggerType {
 	return []TriggerType{
-		TriggerTypeMockRun,
 		TriggerTypeOnSchedule,
 		TriggerTypeRunOnce,
 	}

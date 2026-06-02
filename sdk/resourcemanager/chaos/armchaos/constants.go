@@ -4,10 +4,6 @@
 
 package armchaos
 
-const (
-	version20260501Preview string = "2026-05-01-preview"
-)
-
 // ActionDependencyType - Enum for action dependency type.
 type ActionDependencyType string
 

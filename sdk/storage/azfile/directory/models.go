@@ -50,47 +50,50 @@ type CreateOptions struct {
 	FilePropertySemantics *PropertySemantics
 }
 
-func (o *CreateOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.DirectoryClientCreateOptions {
-	opts := &generated.DirectoryClientCreateOptions{
-		FileRequestIntent: fileRequestIntent,
-		AllowTrailingDot:  allowTrailingDot,
-	}
+func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 	if o == nil {
-		return opts
+		return nil
 	}
 
-	opts.Metadata = o.Metadata
+	var createOptions *generated.DirectoryClientCreateOptions
 
 	if o.FileNFSProperties != nil {
 		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.FileNFSProperties, true)
 
-		opts.FileCreationTime = fileCreationTime
-		opts.FileLastWriteTime = fileLastWriteTime
-		opts.FileMode = o.FileNFSProperties.FileMode
-		opts.Group = o.FileNFSProperties.Group
-		opts.Owner = o.FileNFSProperties.Owner
+		createOptions = &generated.DirectoryClientCreateOptions{
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FileMode:          o.FileNFSProperties.FileMode,
+			Group:             o.FileNFSProperties.Group,
+			Owner:             o.FileNFSProperties.Owner,
+			Metadata:          o.Metadata,
+		}
+
 	} else {
 		fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
 		permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
 
-		opts.FileAttributes = fileAttributes
-		opts.FileChangeTime = fileChangeTime
-		opts.FileCreationTime = fileCreationTime
-		opts.FileLastWriteTime = fileLastWriteTime
-		opts.FilePermission = permission
-		opts.FilePermissionKey = permissionKey
+		createOptions = &generated.DirectoryClientCreateOptions{
+			FileAttributes:    fileAttributes,
+			FileChangeTime:    fileChangeTime,
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FilePermission:    permission,
+			FilePermissionKey: permissionKey,
+			Metadata:          o.Metadata,
+		}
 
 		if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
-			opts.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+			createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
 		} else if o.FilePermissionFormat != nil {
-			opts.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
+			createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
 		}
 		if o.FilePropertySemantics != nil {
-			opts.FilePropertySemantics = o.FilePropertySemantics
+			createOptions.FilePropertySemantics = o.FilePropertySemantics
 		}
 	}
 
-	return opts
+	return createOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -100,11 +103,8 @@ type DeleteOptions struct {
 	// placeholder for future options
 }
 
-func (o *DeleteOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.DirectoryClientDeleteOptions {
-	return &generated.DirectoryClientDeleteOptions{
-		FileRequestIntent: fileRequestIntent,
-		AllowTrailingDot:  allowTrailingDot,
-	}
+func (o *DeleteOptions) format() *generated.DirectoryClientDeleteOptions {
+	return nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -131,41 +131,36 @@ type RenameOptions struct {
 	DestinationLeaseAccessConditions *DestinationLeaseAccessConditions
 }
 
-func (o *RenameOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool, allowSourceTrailingDot *bool) *generated.DirectoryClientRenameOptions {
-	opts := &generated.DirectoryClientRenameOptions{
-		FileRequestIntent:      fileRequestIntent,
-		AllowTrailingDot:       allowTrailingDot,
-		AllowSourceTrailingDot: allowSourceTrailingDot,
-	}
+func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *generated.DestinationLeaseAccessConditions, *generated.CopyFileSMBInfo) {
 	if o == nil {
-		return opts
+		return nil, nil, nil
 	}
 
 	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
 	permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
 
-	opts.FilePermission = permission
-	opts.FilePermissionKey = permissionKey
-	opts.IgnoreReadOnly = o.IgnoreReadOnly
-	opts.Metadata = o.Metadata
-	opts.ReplaceIfExists = o.ReplaceIfExists
+	renameOpts := &generated.DirectoryClientRenameOptions{
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+		IgnoreReadOnly:    o.IgnoreReadOnly,
+		Metadata:          o.Metadata,
+		ReplaceIfExists:   o.ReplaceIfExists,
+	}
 
 	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
-		opts.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+		renameOpts.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
 	} else if o.FilePermissionFormat != nil {
-		opts.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
+		renameOpts.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
 	}
 
-	opts.FileAttributes = fileAttributes
-	opts.FileChangeTime = fileChangeTime
-	opts.FileCreationTime = fileCreationTime
-	opts.FileLastWriteTime = fileLastWriteTime
-
-	if o.DestinationLeaseAccessConditions != nil {
-		opts.DestinationLeaseID = o.DestinationLeaseAccessConditions.DestinationLeaseID
+	smbInfo := &generated.CopyFileSMBInfo{
+		FileAttributes:    fileAttributes,
+		FileChangeTime:    fileChangeTime,
+		FileCreationTime:  fileCreationTime,
+		FileLastWriteTime: fileLastWriteTime,
 	}
 
-	return opts
+	return renameOpts, o.DestinationLeaseAccessConditions, smbInfo
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -176,18 +171,14 @@ type GetPropertiesOptions struct {
 	ShareSnapshot *string
 }
 
-func (o *GetPropertiesOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.DirectoryClientGetPropertiesOptions {
-	opts := &generated.DirectoryClientGetPropertiesOptions{
-		FileRequestIntent: fileRequestIntent,
-		AllowTrailingDot:  allowTrailingDot,
-	}
+func (o *GetPropertiesOptions) format() *generated.DirectoryClientGetPropertiesOptions {
 	if o == nil {
-		return opts
+		return nil
 	}
 
-	opts.Sharesnapshot = o.ShareSnapshot
-
-	return opts
+	return &generated.DirectoryClientGetPropertiesOptions{
+		Sharesnapshot: o.ShareSnapshot,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -204,42 +195,45 @@ type SetPropertiesOptions struct {
 	FilePermissionFormat *FilePermissionFormat
 }
 
-func (o *SetPropertiesOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.DirectoryClientSetPropertiesOptions {
-	opts := &generated.DirectoryClientSetPropertiesOptions{
-		FileRequestIntent: fileRequestIntent,
-		AllowTrailingDot:  allowTrailingDot,
-	}
+func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesOptions {
 	if o == nil {
-		return opts
+		return nil
 	}
+
+	var setPropertiesOptions *generated.DirectoryClientSetPropertiesOptions
 
 	if o.FileNFSProperties != nil {
 		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.FileNFSProperties, true)
 
-		opts.FileCreationTime = fileCreationTime
-		opts.FileLastWriteTime = fileLastWriteTime
-		opts.FileMode = o.FileNFSProperties.FileMode
-		opts.Owner = o.FileNFSProperties.Owner
-		opts.Group = o.FileNFSProperties.Group
+		setPropertiesOptions = &generated.DirectoryClientSetPropertiesOptions{
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FileMode:          o.FileNFSProperties.FileMode,
+			Owner:             o.FileNFSProperties.Owner,
+			Group:             o.FileNFSProperties.Group,
+		}
+
 	} else {
 		fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
 		permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
 
-		opts.FileAttributes = fileAttributes
-		opts.FileChangeTime = fileChangeTime
-		opts.FileCreationTime = fileCreationTime
-		opts.FileLastWriteTime = fileLastWriteTime
-		opts.FilePermission = permission
-		opts.FilePermissionKey = permissionKey
+		setPropertiesOptions = &generated.DirectoryClientSetPropertiesOptions{
+			FileAttributes:    fileAttributes,
+			FileChangeTime:    fileChangeTime,
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FilePermission:    permission,
+			FilePermissionKey: permissionKey,
+		}
 
 		if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
-			opts.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+			setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
 		} else if o.FilePermissionFormat != nil {
-			opts.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
+			setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
 		}
 	}
 
-	return opts
+	return setPropertiesOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -250,17 +244,14 @@ type SetMetadataOptions struct {
 	Metadata map[string]*string
 }
 
-func (o *SetMetadataOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.DirectoryClientSetMetadataOptions {
-	opts := &generated.DirectoryClientSetMetadataOptions{
-		FileRequestIntent: fileRequestIntent,
-		AllowTrailingDot:  allowTrailingDot,
-	}
+func (o *SetMetadataOptions) format() *generated.DirectoryClientSetMetadataOptions {
 	if o == nil {
-		return opts
+		return nil
 	}
 
-	opts.Metadata = o.Metadata
-	return opts
+	return &generated.DirectoryClientSetMetadataOptions{
+		Metadata: o.Metadata,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -343,21 +334,17 @@ type ListHandlesOptions struct {
 	ShareSnapshot *string
 }
 
-func (o *ListHandlesOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.DirectoryClientListHandlesOptions {
-	opts := &generated.DirectoryClientListHandlesOptions{
-		FileRequestIntent: fileRequestIntent,
-		AllowTrailingDot:  allowTrailingDot,
-	}
+func (o *ListHandlesOptions) format() *generated.DirectoryClientListHandlesOptions {
 	if o == nil {
-		return opts
+		return nil
 	}
 
-	opts.Marker = o.Marker
-	opts.Maxresults = o.MaxResults
-	opts.Recursive = o.Recursive
-	opts.Sharesnapshot = o.ShareSnapshot
-
-	return opts
+	return &generated.DirectoryClientListHandlesOptions{
+		Marker:        o.Marker,
+		Maxresults:    o.MaxResults,
+		Recursive:     o.Recursive,
+		Sharesnapshot: o.ShareSnapshot,
+	}
 }
 
 // Handle - A listed Azure Storage handle item.
@@ -378,18 +365,14 @@ type ForceCloseHandlesOptions struct {
 	ShareSnapshot *string
 }
 
-func (o *ForceCloseHandlesOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.DirectoryClientForceCloseHandlesOptions {
-	opts := &generated.DirectoryClientForceCloseHandlesOptions{
-		FileRequestIntent: fileRequestIntent,
-		AllowTrailingDot:  allowTrailingDot,
-	}
+func (o *ForceCloseHandlesOptions) format() *generated.DirectoryClientForceCloseHandlesOptions {
 	if o == nil {
-		return opts
+		return nil
 	}
 
-	opts.Marker = o.Marker
-	opts.Recursive = o.Recursive
-	opts.Sharesnapshot = o.ShareSnapshot
-
-	return opts
+	return &generated.DirectoryClientForceCloseHandlesOptions{
+		Marker:        o.Marker,
+		Recursive:     o.Recursive,
+		Sharesnapshot: o.ShareSnapshot,
+	}
 }

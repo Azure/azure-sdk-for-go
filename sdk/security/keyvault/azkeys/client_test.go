@@ -432,9 +432,6 @@ func TestSecureWrapUnwrapKeyRequests(t *testing.T) {
 }
 
 func TestSecureWrapUnwrapKey(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("recording missing for secure wrap/unwrap playback")
-	}
 	client := startTest(t, true)
 
 	keyName := createRandomName(t, "testsecurewrap")

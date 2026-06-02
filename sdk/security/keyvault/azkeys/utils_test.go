@@ -145,10 +145,6 @@ func startTest(t *testing.T, mhsmTest bool) *azkeys.Client {
 	}
 	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
-	err = recording.SetDefaultMatcher(t, &recording.SetDefaultMatcherOptions{
-		IgnoredQueryParameters: []string{"api-version"},
-	})
-	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)
 		require.NoError(t, err)

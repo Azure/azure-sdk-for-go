@@ -109,15 +109,15 @@ type JSONWebKeyWrapAlgorithm string
 const (
 	// JSONWebKeyWrapAlgorithmA128KW - 128-bit AES key wrap.
 	JSONWebKeyWrapAlgorithmA128KW JSONWebKeyWrapAlgorithm = "A128KW"
-	// JSONWebKeyWrapAlgorithmA128KWPAD - 128-bit AES key wrap with padding.
+	// JSONWebKeyWrapAlgorithmA128KWPAD - 192-bit AES key wrap with padding.
 	JSONWebKeyWrapAlgorithmA128KWPAD JSONWebKeyWrapAlgorithm = "A128KWPAD"
 	// JSONWebKeyWrapAlgorithmA192KW - 192-bit AES key wrap.
 	JSONWebKeyWrapAlgorithmA192KW JSONWebKeyWrapAlgorithm = "A192KW"
-	// JSONWebKeyWrapAlgorithmA192KWPAD - 192-bit AES key wrap with padding.
+	// JSONWebKeyWrapAlgorithmA192KWPAD - 256-bit AES key wrap with padding.
 	JSONWebKeyWrapAlgorithmA192KWPAD JSONWebKeyWrapAlgorithm = "A192KWPAD"
 	// JSONWebKeyWrapAlgorithmA256KW - 256-bit AES key wrap.
 	JSONWebKeyWrapAlgorithmA256KW JSONWebKeyWrapAlgorithm = "A256KW"
-	// JSONWebKeyWrapAlgorithmA256KWPAD - 256-bit AES key wrap with padding.
+	// JSONWebKeyWrapAlgorithmA256KWPAD - 128-bit AES key wrap with padding.
 	JSONWebKeyWrapAlgorithmA256KWPAD JSONWebKeyWrapAlgorithm = "A256KWPAD"
 	// JSONWebKeyWrapAlgorithmCKMAESKEYWRAP - CKM AES key wrap.
 	JSONWebKeyWrapAlgorithmCKMAESKEYWRAP JSONWebKeyWrapAlgorithm = "CKM_AES_KEY_WRAP"

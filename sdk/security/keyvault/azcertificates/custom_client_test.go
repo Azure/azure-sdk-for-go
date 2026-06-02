@@ -91,11 +91,13 @@ func TestCreateCertificateRequestIncludesPlatformManaged(t *testing.T) {
 
 	req, err := client.createCertificateCreateRequest(context.Background(), "cert-name", parameters, nil)
 	require.NoError(t, err)
+	defer func() {
+		require.NoError(t, req.Raw().Body.Close())
+	}()
 	require.Equal(t, version20260301Preview, req.Raw().URL.Query().Get("api-version"))
 
 	body, err := io.ReadAll(req.Raw().Body)
 	require.NoError(t, err)
-	require.NoError(t, req.Raw().Body.Close())
 	require.JSONEq(t, `{
 		"policy": {
 			"issuer": {"name": "Self"},
@@ -124,11 +126,13 @@ func TestUpdateCertificatePolicyRequestIncludesPlatformManaged(t *testing.T) {
 
 	req, err := client.updateCertificatePolicyCreateRequest(context.Background(), "cert-name", policy, nil)
 	require.NoError(t, err)
+	defer func() {
+		require.NoError(t, req.Raw().Body.Close())
+	}()
 	require.Equal(t, version20260301Preview, req.Raw().URL.Query().Get("api-version"))
 
 	body, err := io.ReadAll(req.Raw().Body)
 	require.NoError(t, err)
-	require.NoError(t, req.Raw().Body.Close())
 	require.JSONEq(t, `{
 		"issuer": {"name": "Self"},
 		"platformManaged": {

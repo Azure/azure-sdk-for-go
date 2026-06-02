@@ -781,6 +781,7 @@ func TestPlatformManaged(t *testing.T) {
 	require.NotNil(t, policyResp.PlatformManaged)
 	require.NotNil(t, policyResp.PlatformManaged.CertificateUsage)
 	require.Equal(t, "PublicTLSServerAuth", *policyResp.PlatformManaged.CertificateUsage)
+	require.NotNil(t, policyResp.PlatformManaged.Metadata)
 
 	sansRaw, ok := policyResp.PlatformManaged.Metadata["sans"].(map[string]any)
 	require.True(t, ok, "expected metadata.sans to round-trip as object, got %T", policyResp.PlatformManaged.Metadata["sans"])

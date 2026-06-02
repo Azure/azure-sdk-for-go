@@ -18,6 +18,8 @@ import (
 
 // PoliciesClient contains the methods for the Policies group.
 // Don't use this type directly, use NewPoliciesClient() instead.
+//
+// Generated from API version 2026-03-01-preview
 type PoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginActivateBringYourOwnRoot - Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed
 // certificate. This is a long-running operation that returns no content upon completion.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - policyName - The name of the Policy proxy resource.
@@ -70,8 +70,6 @@ func (client *PoliciesClient) BeginActivateBringYourOwnRoot(ctx context.Context,
 // ActivateBringYourOwnRoot - Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate.
 // This is a long-running operation that returns no content upon completion.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *PoliciesClient) activateBringYourOwnRoot(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, body ActivateBringYourOwnRootRequest, options *PoliciesClientBeginActivateBringYourOwnRootOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginActivateBringYourOwnRoot"
@@ -117,8 +115,8 @@ func (client *PoliciesClient) activateBringYourOwnRootCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
@@ -128,8 +126,6 @@ func (client *PoliciesClient) activateBringYourOwnRootCreateRequest(ctx context.
 
 // BeginCreateOrUpdate - Create a Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - policyName - The name of the Policy proxy resource.
@@ -155,8 +151,6 @@ func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Create a Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, resource Policy, options *PoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginCreateOrUpdate"
@@ -202,8 +196,8 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -214,8 +208,6 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Delete a Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - policyName - The name of the Policy proxy resource.
@@ -239,8 +231,6 @@ func (client *PoliciesClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Delete a Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginDelete"
@@ -286,15 +276,13 @@ func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - policyName - The name of the Policy proxy resource.
@@ -345,8 +333,8 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -361,8 +349,6 @@ func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesCl
 }
 
 // NewListByResourceGroupPager - List Policy resources by Credential
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - options - PoliciesClientListByResourceGroupOptions contains the optional parameters for the PoliciesClient.NewListByResourceGroupPager
@@ -410,8 +396,8 @@ func (client *PoliciesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -427,8 +413,6 @@ func (client *PoliciesClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // BeginRevokeIssuer - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - policyName - The name of the Policy proxy resource.
@@ -453,8 +437,6 @@ func (client *PoliciesClient) BeginRevokeIssuer(ctx context.Context, resourceGro
 
 // RevokeIssuer - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *PoliciesClient) revokeIssuer(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginRevokeIssuerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginRevokeIssuer"
@@ -500,15 +482,13 @@ func (client *PoliciesClient) revokeIssuerCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdate - Update a Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - policyName - The name of the Policy proxy resource.
@@ -533,8 +513,6 @@ func (client *PoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName
 
 // Update - Update a Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *PoliciesClient) update(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, properties PolicyUpdate, options *PoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginUpdate"
@@ -580,8 +558,8 @@ func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

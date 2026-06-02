@@ -376,7 +376,7 @@ func (client *PathClient) Delete(ctx context.Context, options *PathClientDeleteO
 	if err != nil {
 		return PathClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return PathClientDeleteResponse{}, err
 	}

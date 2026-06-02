@@ -8,15 +8,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 	"time"
+
+	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
 )
 
 // ReportsServer is a fake server for instances of the armfrontdoor.ReportsClient type.
@@ -55,7 +55,9 @@ func (r *ReportsServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (r *ReportsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -73,7 +75,10 @@ func (r *ReportsServerTransport) dispatchToMethodFake(req *http.Request, method 
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -107,8 +112,26 @@ func (r *ReportsServerTransport) dispatchGetLatencyScorecards(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	endDateTimeUTCParam := getOptional(qp.Get("endDateTimeUTC"))
-	countryParam := getOptional(qp.Get("country"))
+	endDateTimeUTCUnescaped, err := url.QueryUnescape(qp.Get("endDateTimeUTC"))
+	if err != nil {
+		return nil, err
+	}
+	endDateTimeUTCParam := getOptional(endDateTimeUTCUnescaped)
+	countryUnescaped, err := url.QueryUnescape(qp.Get("country"))
+	if err != nil {
+		return nil, err
+	}
+	countryParam := getOptional(countryUnescaped)
+	aggregationIntervalParam, err := parseWithCast(qp.Get("aggregationInterval"), func(v string) (armfrontdoor.LatencyScorecardAggregationInterval, error) {
+		p, unescapeErr := url.QueryUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armfrontdoor.LatencyScorecardAggregationInterval(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
 	var options *armfrontdoor.ReportsClientGetLatencyScorecardsOptions
 	if endDateTimeUTCParam != nil || countryParam != nil {
 		options = &armfrontdoor.ReportsClientGetLatencyScorecardsOptions{
@@ -116,12 +139,12 @@ func (r *ReportsServerTransport) dispatchGetLatencyScorecards(req *http.Request)
 			Country:        countryParam,
 		}
 	}
-	respr, errRespr := r.srv.GetLatencyScorecards(req.Context(), resourceGroupNameParam, profileNameParam, experimentNameParam, armfrontdoor.LatencyScorecardAggregationInterval(qp.Get("aggregationInterval")), options)
+	respr, errRespr := r.srv.GetLatencyScorecards(req.Context(), resourceGroupNameParam, profileNameParam, experimentNameParam, aggregationIntervalParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LatencyScorecard, req)
@@ -154,16 +177,52 @@ func (r *ReportsServerTransport) dispatchGetTimeseries(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	startDateTimeUTCParam, err := time.Parse(time.RFC3339Nano, qp.Get("startDateTimeUTC"))
+	startDateTimeUTCUnescaped, err := url.QueryUnescape(qp.Get("startDateTimeUTC"))
 	if err != nil {
 		return nil, err
 	}
-	endDateTimeUTCParam, err := time.Parse(time.RFC3339Nano, qp.Get("endDateTimeUTC"))
+	startDateTimeUTCParam, err := time.Parse(time.RFC3339Nano, startDateTimeUTCUnescaped)
 	if err != nil {
 		return nil, err
 	}
-	endpointParam := getOptional(qp.Get("endpoint"))
-	countryParam := getOptional(qp.Get("country"))
+	endDateTimeUTCUnescaped, err := url.QueryUnescape(qp.Get("endDateTimeUTC"))
+	if err != nil {
+		return nil, err
+	}
+	endDateTimeUTCParam, err := time.Parse(time.RFC3339Nano, endDateTimeUTCUnescaped)
+	if err != nil {
+		return nil, err
+	}
+	aggregationIntervalParam, err := parseWithCast(qp.Get("aggregationInterval"), func(v string) (armfrontdoor.TimeseriesAggregationInterval, error) {
+		p, unescapeErr := url.QueryUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armfrontdoor.TimeseriesAggregationInterval(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	timeseriesTypeParam, err := parseWithCast(qp.Get("timeseriesType"), func(v string) (armfrontdoor.TimeseriesType, error) {
+		p, unescapeErr := url.QueryUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armfrontdoor.TimeseriesType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	endpointUnescaped, err := url.QueryUnescape(qp.Get("endpoint"))
+	if err != nil {
+		return nil, err
+	}
+	endpointParam := getOptional(endpointUnescaped)
+	countryUnescaped, err := url.QueryUnescape(qp.Get("country"))
+	if err != nil {
+		return nil, err
+	}
+	countryParam := getOptional(countryUnescaped)
 	var options *armfrontdoor.ReportsClientGetTimeseriesOptions
 	if endpointParam != nil || countryParam != nil {
 		options = &armfrontdoor.ReportsClientGetTimeseriesOptions{
@@ -171,12 +230,12 @@ func (r *ReportsServerTransport) dispatchGetTimeseries(req *http.Request) (*http
 			Country:  countryParam,
 		}
 	}
-	respr, errRespr := r.srv.GetTimeseries(req.Context(), resourceGroupNameParam, profileNameParam, experimentNameParam, startDateTimeUTCParam, endDateTimeUTCParam, armfrontdoor.TimeseriesAggregationInterval(qp.Get("aggregationInterval")), armfrontdoor.TimeseriesType(qp.Get("timeseriesType")), options)
+	respr, errRespr := r.srv.GetTimeseries(req.Context(), resourceGroupNameParam, profileNameParam, experimentNameParam, startDateTimeUTCParam, endDateTimeUTCParam, aggregationIntervalParam, timeseriesTypeParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Timeseries, req)

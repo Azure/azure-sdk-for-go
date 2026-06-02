@@ -7,19 +7,18 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ExperimentsClient contains the methods for the Experiments group.
 // Don't use this type directly, use NewExperimentsClient() instead.
-//
-// Generated from API version 2025-10-01
 type ExperimentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +44,8 @@ func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredenti
 //
 // Creates or updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -72,6 +73,8 @@ func (client *ExperimentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 //
 // Creates or updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 func (client *ExperimentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, options *ExperimentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExperimentsClient.BeginCreateOrUpdate"
@@ -117,8 +120,8 @@ func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -131,6 +134,8 @@ func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context
 //
 // Deletes an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -156,6 +161,8 @@ func (client *ExperimentsClient) BeginDelete(ctx context.Context, resourceGroupN
 //
 // Deletes an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 func (client *ExperimentsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExperimentsClient.BeginDelete"
@@ -201,8 +208,8 @@ func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -210,6 +217,8 @@ func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resour
 //
 // Gets an Experiment by ExperimentName
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -260,8 +269,8 @@ func (client *ExperimentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -277,7 +286,9 @@ func (client *ExperimentsClient) getHandleResponse(resp *http.Response) (Experim
 
 // NewListByProfilePager - Gets a list of Experiments
 //
-// Gets a list of Experiments
+// # Gets a list of Experiments
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - options - ExperimentsClientListByProfileOptions contains the optional parameters for the ExperimentsClient.NewListByProfilePager
@@ -325,8 +336,8 @@ func (client *ExperimentsClient) listByProfileCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -344,6 +355,8 @@ func (client *ExperimentsClient) listByProfileHandleResponse(resp *http.Response
 //
 // Updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -370,6 +383,8 @@ func (client *ExperimentsClient) BeginUpdate(ctx context.Context, resourceGroupN
 //
 // Updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 func (client *ExperimentsClient) update(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExperimentsClient.BeginUpdate"
@@ -415,8 +430,8 @@ func (client *ExperimentsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight/v2"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleVirtualMachinesClient_GetAsyncOperationStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.VirtualMachinesClientGetAsyncOperationStatusResponse{
-	// 	AsyncOperationResult: armhdinsight.AsyncOperationResult{
+	// 	AsyncOperationResult: &armhdinsight.AsyncOperationResult{
 	// 		Status: to.Ptr(armhdinsight.AsyncOperationStateInProgress),
 	// 	},
 	// }
@@ -56,7 +56,7 @@ func ExampleVirtualMachinesClient_ListHosts() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.VirtualMachinesClientListHostsResponse{
-	// 	HostInfoArray: []*armhdinsight.HostInfo{
+	// 	undefined: &[]*armhdinsight.HostInfo{
 	// 		{
 	// 			Name: to.Ptr("gateway1"),
 	// 		},
@@ -108,7 +108,7 @@ func ExampleVirtualMachinesClient_BeginRestartHosts() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

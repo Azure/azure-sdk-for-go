@@ -4,10 +4,6 @@
 
 package armfrontdoor
 
-const (
-	version20251001 string = "2025-10-01"
-)
-
 // ActionType - Defines the action to take on rule match.
 type ActionType string
 

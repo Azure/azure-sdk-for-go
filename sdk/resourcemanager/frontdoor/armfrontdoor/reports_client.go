@@ -7,21 +7,19 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ReportsClient contains the methods for the Reports group.
 // Don't use this type directly, use NewReportsClient() instead.
-//
-// Generated from API version 2025-10-01
 type ReportsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -47,6 +45,8 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 //
 // Gets a Latency Scorecard for a given Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -100,14 +100,14 @@ func (client *ReportsClient) getLatencyScorecardsCreateRequest(ctx context.Conte
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("aggregationInterval", string(aggregationInterval))
-	reqQP.Set("api-version", version20251001)
+	reqQP.Set("api-version", "2025-10-01")
 	if options != nil && options.Country != nil {
 		reqQP.Set("country", *options.Country)
 	}
 	if options != nil && options.EndDateTimeUTC != nil {
 		reqQP.Set("endDateTimeUTC", *options.EndDateTimeUTC)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -125,6 +125,8 @@ func (client *ReportsClient) getLatencyScorecardsHandleResponse(resp *http.Respo
 //
 // Gets a Timeseries for a given Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -180,17 +182,17 @@ func (client *ReportsClient) getTimeseriesCreateRequest(ctx context.Context, res
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("aggregationInterval", string(aggregationInterval))
-	reqQP.Set("api-version", version20251001)
+	reqQP.Set("api-version", "2025-10-01")
 	if options != nil && options.Country != nil {
 		reqQP.Set("country", *options.Country)
 	}
-	reqQP.Set("endDateTimeUTC", datetime.RFC3339(endDateTimeUTC).String())
+	reqQP.Set("endDateTimeUTC", endDateTimeUTC.Format(time.RFC3339Nano))
 	if options != nil && options.Endpoint != nil {
 		reqQP.Set("endpoint", *options.Endpoint)
 	}
-	reqQP.Set("startDateTimeUTC", datetime.RFC3339(startDateTimeUTC).String())
+	reqQP.Set("startDateTimeUTC", startDateTimeUTC.Format(time.RFC3339Nano))
 	reqQP.Set("timeseriesType", string(timeseriesType))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

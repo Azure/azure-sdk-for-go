@@ -7,19 +7,18 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // NetworkExperimentProfilesClient contains the methods for the NetworkExperimentProfiles group.
 // Don't use this type directly, use NewNetworkExperimentProfilesClient() instead.
-//
-// Generated from API version 2025-10-01
 type NetworkExperimentProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +44,8 @@ func NewNetworkExperimentProfilesClient(subscriptionID string, credential azcore
 //
 // Creates an NetworkExperiment Profile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkExperimentProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkExperimentProfilesClient.BeginCreateOrUpdate
 //     method.
@@ -69,6 +70,8 @@ func (client *NetworkExperimentProfilesClient) BeginCreateOrUpdate(ctx context.C
 //
 // Creates an NetworkExperiment Profile
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 func (client *NetworkExperimentProfilesClient) createOrUpdate(ctx context.Context, profileName string, resourceGroupName string, parameters Profile, options *NetworkExperimentProfilesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkExperimentProfilesClient.BeginCreateOrUpdate"
@@ -110,8 +113,8 @@ func (client *NetworkExperimentProfilesClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -124,6 +127,8 @@ func (client *NetworkExperimentProfilesClient) createOrUpdateCreateRequest(ctx c
 //
 // Deletes an NetworkExperiment Profile by ProfileName
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - options - NetworkExperimentProfilesClientBeginDeleteOptions contains the optional parameters for the NetworkExperimentProfilesClient.BeginDelete
@@ -149,6 +154,8 @@ func (client *NetworkExperimentProfilesClient) BeginDelete(ctx context.Context, 
 //
 // Deletes an NetworkExperiment Profile by ProfileName
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 func (client *NetworkExperimentProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, options *NetworkExperimentProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkExperimentProfilesClient.BeginDelete"
@@ -190,8 +197,8 @@ func (client *NetworkExperimentProfilesClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -199,6 +206,8 @@ func (client *NetworkExperimentProfilesClient) deleteCreateRequest(ctx context.C
 //
 // Gets an NetworkExperiment Profile by ProfileName
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - options - NetworkExperimentProfilesClientGetOptions contains the optional parameters for the NetworkExperimentProfilesClient.Get
@@ -245,8 +254,8 @@ func (client *NetworkExperimentProfilesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -262,7 +271,9 @@ func (client *NetworkExperimentProfilesClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - Gets a list of Network Experiment Profiles under a subscription
 //
-// Gets a list of Network Experiment Profiles under a subscription
+// # Gets a list of Network Experiment Profiles under a subscription
+//
+// Generated from API version 2025-10-01
 //   - options - NetworkExperimentProfilesClientListOptions contains the optional parameters for the NetworkExperimentProfilesClient.NewListPager
 //     method.
 func (client *NetworkExperimentProfilesClient) NewListPager(options *NetworkExperimentProfilesClientListOptions) *runtime.Pager[NetworkExperimentProfilesClientListResponse] {
@@ -300,8 +311,8 @@ func (client *NetworkExperimentProfilesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -317,7 +328,9 @@ func (client *NetworkExperimentProfilesClient) listHandleResponse(resp *http.Res
 
 // NewListByResourceGroupPager - Gets a list of Network Experiment Profiles within a resource group under a subscription
 //
-// Gets a list of Network Experiment Profiles within a resource group under a subscription
+// # Gets a list of Network Experiment Profiles within a resource group under a subscription
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkExperimentProfilesClientListByResourceGroupOptions contains the optional parameters for the NetworkExperimentProfilesClient.NewListByResourceGroupPager
 //     method.
@@ -360,8 +373,8 @@ func (client *NetworkExperimentProfilesClient) listByResourceGroupCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -379,6 +392,8 @@ func (client *NetworkExperimentProfilesClient) listByResourceGroupHandleResponse
 //
 // Updates an NetworkExperimentProfiles
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - parameters - The Profile Update Model
@@ -405,6 +420,8 @@ func (client *NetworkExperimentProfilesClient) BeginUpdate(ctx context.Context, 
 //
 // Updates an NetworkExperimentProfiles
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 func (client *NetworkExperimentProfilesClient) update(ctx context.Context, resourceGroupName string, profileName string, parameters ProfileUpdateModel, options *NetworkExperimentProfilesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkExperimentProfilesClient.BeginUpdate"
@@ -446,8 +463,8 @@ func (client *NetworkExperimentProfilesClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

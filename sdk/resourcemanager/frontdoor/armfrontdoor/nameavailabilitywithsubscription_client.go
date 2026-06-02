@@ -7,19 +7,18 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // NameAvailabilityWithSubscriptionClient contains the methods for the NameAvailabilityWithSubscription group.
 // Don't use this type directly, use NewNameAvailabilityWithSubscriptionClient() instead.
-//
-// Generated from API version 2025-10-01
 type NameAvailabilityWithSubscriptionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +42,8 @@ func NewNameAvailabilityWithSubscriptionClient(subscriptionID string, credential
 
 // Check - Check the availability of a Front Door subdomain.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - checkFrontDoorNameAvailabilityInput - The request body
 //   - options - NameAvailabilityWithSubscriptionClientCheckOptions contains the optional parameters for the NameAvailabilityWithSubscriptionClient.Check
 //     method.
@@ -80,8 +81,8 @@ func (client *NameAvailabilityWithSubscriptionClient) checkCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkFrontDoorNameAvailabilityInput); err != nil {

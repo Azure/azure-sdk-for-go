@@ -18,8 +18,6 @@ import (
 
 // ScriptActionsClient contains the methods for the ScriptActions group.
 // Don't use this type directly, use NewScriptActionsClient() instead.
-//
-// Generated from API version 2025-01-15-preview
 type ScriptActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewScriptActionsClient(subscriptionID string, credential azcore.TokenCreden
 
 // Delete - Deletes a specified persisted script action of the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - scriptName - The name of the script.
@@ -92,13 +92,15 @@ func (client *ScriptActionsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // GetExecutionAsyncOperationStatus - Gets the async operation status of execution operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - operationID - The long running operation id.
@@ -150,8 +152,8 @@ func (client *ScriptActionsClient) getExecutionAsyncOperationStatusCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -167,6 +169,8 @@ func (client *ScriptActionsClient) getExecutionAsyncOperationStatusHandleRespons
 
 // GetExecutionDetail - Gets the script execution detail for the given script execution ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - scriptExecutionID - The script execution Id
@@ -218,8 +222,8 @@ func (client *ScriptActionsClient) getExecutionDetailCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -234,6 +238,8 @@ func (client *ScriptActionsClient) getExecutionDetailHandleResponse(resp *http.R
 }
 
 // NewListByClusterPager - Lists all the persisted script actions for the specified cluster.
+//
+// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ScriptActionsClientListByClusterOptions contains the optional parameters for the ScriptActionsClient.NewListByClusterPager
@@ -281,8 +287,8 @@ func (client *ScriptActionsClient) listByClusterCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

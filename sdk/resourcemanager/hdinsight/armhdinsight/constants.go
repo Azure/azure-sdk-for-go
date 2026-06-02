@@ -4,10 +4,6 @@
 
 package armhdinsight
 
-const (
-	version20250115Preview string = "2025-01-15-preview"
-)
-
 // AsyncOperationState - The async operation state.
 type AsyncOperationState string
 

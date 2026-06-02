@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight/v2"
 	"log"
 )
 
@@ -32,7 +32,7 @@ func ExampleExtensionsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -58,7 +58,7 @@ func ExampleExtensionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -84,7 +84,7 @@ func ExampleExtensionsClient_BeginDisableAzureMonitor() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -110,7 +110,7 @@ func ExampleExtensionsClient_BeginDisableAzureMonitorAgent() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -136,7 +136,7 @@ func ExampleExtensionsClient_BeginDisableMonitoring() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -165,7 +165,7 @@ func ExampleExtensionsClient_BeginEnableAzureMonitor() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -194,7 +194,7 @@ func ExampleExtensionsClient_BeginEnableAzureMonitorAgent() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -223,7 +223,7 @@ func ExampleExtensionsClient_BeginEnableMonitoring() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -251,7 +251,7 @@ func ExampleExtensionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ExtensionsClientGetResponse{
-	// 	ClusterMonitoringResponse: armhdinsight.ClusterMonitoringResponse{
+	// 	ClusterMonitoringResponse: &armhdinsight.ClusterMonitoringResponse{
 	// 		ClusterMonitoringEnabled: to.Ptr(true),
 	// 		WorkspaceID: to.Ptr("id"),
 	// 	},
@@ -277,7 +277,7 @@ func ExampleExtensionsClient_GetAzureAsyncOperationStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ExtensionsClientGetAzureAsyncOperationStatusResponse{
-	// 	AsyncOperationResult: armhdinsight.AsyncOperationResult{
+	// 	AsyncOperationResult: &armhdinsight.AsyncOperationResult{
 	// 		Status: to.Ptr(armhdinsight.AsyncOperationStateInProgress),
 	// 	},
 	// }
@@ -302,7 +302,7 @@ func ExampleExtensionsClient_GetAzureMonitorAgentStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ExtensionsClientGetAzureMonitorAgentStatusResponse{
-	// 	AzureMonitorResponse: armhdinsight.AzureMonitorResponse{
+	// 	AzureMonitorResponse: &armhdinsight.AzureMonitorResponse{
 	// 		ClusterMonitoringEnabled: to.Ptr(true),
 	// 		WorkspaceID: to.Ptr("id"),
 	// 	},
@@ -328,7 +328,7 @@ func ExampleExtensionsClient_GetAzureMonitorStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ExtensionsClientGetAzureMonitorStatusResponse{
-	// 	AzureMonitorResponse: armhdinsight.AzureMonitorResponse{
+	// 	AzureMonitorResponse: &armhdinsight.AzureMonitorResponse{
 	// 		ClusterMonitoringEnabled: to.Ptr(true),
 	// 		WorkspaceID: to.Ptr("id"),
 	// 	},
@@ -354,7 +354,7 @@ func ExampleExtensionsClient_GetMonitoringStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ExtensionsClientGetMonitoringStatusResponse{
-	// 	ClusterMonitoringResponse: armhdinsight.ClusterMonitoringResponse{
+	// 	ClusterMonitoringResponse: &armhdinsight.ClusterMonitoringResponse{
 	// 		ClusterMonitoringEnabled: to.Ptr(true),
 	// 		WorkspaceID: to.Ptr("id"),
 	// 	},

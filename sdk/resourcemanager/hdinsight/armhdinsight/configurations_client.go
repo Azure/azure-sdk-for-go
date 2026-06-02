@@ -18,8 +18,6 @@ import (
 
 // ConfigurationsClient contains the methods for the Configurations group.
 // Don't use this type directly, use NewConfigurationsClient() instead.
-//
-// Generated from API version 2025-01-15-preview
 type ConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 // Get - The configuration object for the specified cluster. This API is not recommended and might be removed in the future.
 // Please consider using List configurations API instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
@@ -94,8 +94,8 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -111,6 +111,8 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 
 // List - Gets all configuration information for an HDI cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.List method.
@@ -156,8 +158,8 @@ func (client *ConfigurationsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -174,6 +176,8 @@ func (client *ConfigurationsClient) listHandleResponse(resp *http.Response) (Con
 // BeginUpdate - Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings
 // in cluster endpoint instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
@@ -200,6 +204,8 @@ func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGro
 // Update - Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings
 // in cluster endpoint instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 func (client *ConfigurationsClient) update(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string, options *ConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationsClient.BeginUpdate"
@@ -245,8 +251,8 @@ func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

@@ -7,19 +7,18 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // PreconfiguredEndpointsClient contains the methods for the PreconfiguredEndpoints group.
 // Don't use this type directly, use NewPreconfiguredEndpointsClient() instead.
-//
-// Generated from API version 2025-10-01
 type PreconfiguredEndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,7 +42,9 @@ func NewPreconfiguredEndpointsClient(subscriptionID string, credential azcore.To
 
 // NewListPager - Gets a list of Preconfigured Endpoints
 //
-// Gets a list of Preconfigured Endpoints
+// # Gets a list of Preconfigured Endpoints
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - options - PreconfiguredEndpointsClientListOptions contains the optional parameters for the PreconfiguredEndpointsClient.NewListPager
@@ -91,8 +92,8 @@ func (client *PreconfiguredEndpointsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

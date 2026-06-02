@@ -7,19 +7,18 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // FrontendEndpointsClient contains the methods for the FrontendEndpoints group.
 // Don't use this type directly, use NewFrontendEndpointsClient() instead.
-//
-// Generated from API version 2025-10-01
 type FrontendEndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +42,8 @@ func NewFrontendEndpointsClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginDisableHTTPS - Disables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -67,6 +68,8 @@ func (client *FrontendEndpointsClient) BeginDisableHTTPS(ctx context.Context, re
 
 // DisableHTTPS - Disables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 func (client *FrontendEndpointsClient) disableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, options *FrontendEndpointsClientBeginDisableHTTPSOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FrontendEndpointsClient.BeginDisableHTTPS"
@@ -112,13 +115,15 @@ func (client *FrontendEndpointsClient) disableHTTPSCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginEnableHTTPS - Enables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -144,6 +149,8 @@ func (client *FrontendEndpointsClient) BeginEnableHTTPS(ctx context.Context, res
 
 // EnableHTTPS - Enables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 func (client *FrontendEndpointsClient) enableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration, options *FrontendEndpointsClientBeginEnableHTTPSOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FrontendEndpointsClient.BeginEnableHTTPS"
@@ -189,8 +196,8 @@ func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customHTTPSConfiguration); err != nil {
 		return nil, err
@@ -200,6 +207,8 @@ func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Cont
 
 // Get - Gets a Frontend endpoint with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -250,8 +259,8 @@ func (client *FrontendEndpointsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -266,6 +275,8 @@ func (client *FrontendEndpointsClient) getHandleResponse(resp *http.Response) (F
 }
 
 // NewListByFrontDoorPager - Lists all of the frontend endpoints within a Front Door.
+//
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - options - FrontendEndpointsClientListByFrontDoorOptions contains the optional parameters for the FrontendEndpointsClient.NewListByFrontDoorPager
@@ -313,8 +324,8 @@ func (client *FrontendEndpointsClient) listByFrontDoorCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

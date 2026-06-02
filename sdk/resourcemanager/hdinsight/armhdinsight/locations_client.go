@@ -18,8 +18,6 @@ import (
 
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
-//
-// Generated from API version 2025-01-15-preview
 type LocationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CheckNameAvailability - Check the cluster name is available or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - location - The location name.
 //   - parameters - The request body
 //   - options - LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
@@ -85,8 +85,8 @@ func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -106,6 +106,8 @@ func (client *LocationsClient) checkNameAvailabilityHandleResponse(resp *http.Re
 
 // GetAzureAsyncOperationStatus - Get the async operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - location - The name of the Azure region.
 //   - operationID - The long running operation id.
 //   - options - LocationsClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the LocationsClient.GetAzureAsyncOperationStatus
@@ -152,8 +154,8 @@ func (client *LocationsClient) getAzureAsyncOperationStatusCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -169,6 +171,8 @@ func (client *LocationsClient) getAzureAsyncOperationStatusHandleResponse(resp *
 
 // GetCapabilities - Gets the capabilities for the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - location - The location name.
 //   - options - LocationsClientGetCapabilitiesOptions contains the optional parameters for the LocationsClient.GetCapabilities
 //     method.
@@ -210,8 +214,8 @@ func (client *LocationsClient) getCapabilitiesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -227,6 +231,8 @@ func (client *LocationsClient) getCapabilitiesHandleResponse(resp *http.Response
 
 // ListBillingSpecs - Lists the billingSpecs for the specified subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - location - The location name.
 //   - options - LocationsClientListBillingSpecsOptions contains the optional parameters for the LocationsClient.ListBillingSpecs
 //     method.
@@ -268,8 +274,8 @@ func (client *LocationsClient) listBillingSpecsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -285,6 +291,8 @@ func (client *LocationsClient) listBillingSpecsHandleResponse(resp *http.Respons
 
 // ListUsages - Lists the usages for the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - location - The location name.
 //   - options - LocationsClientListUsagesOptions contains the optional parameters for the LocationsClient.ListUsages method.
 func (client *LocationsClient) ListUsages(ctx context.Context, location string, options *LocationsClientListUsagesOptions) (LocationsClientListUsagesResponse, error) {
@@ -325,8 +333,8 @@ func (client *LocationsClient) listUsagesCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -342,6 +350,8 @@ func (client *LocationsClient) listUsagesHandleResponse(resp *http.Response) (Lo
 
 // ValidateClusterCreateRequest - Validate the cluster create request spec is valid or not.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-15-preview
 //   - location - The location name.
 //   - parameters - The request body
 //   - options - LocationsClientValidateClusterCreateRequestOptions contains the optional parameters for the LocationsClient.ValidateClusterCreateRequest
@@ -384,8 +394,8 @@ func (client *LocationsClient) validateClusterCreateRequestCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-15-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -7,7 +7,7 @@ package armhdinsight_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight/v2"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: armhdinsight.PrivateLinkResource{
+	// 	PrivateLinkResource: &armhdinsight.PrivateLinkResource{
 	// 		Name: to.Ptr("gateway"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HDInsight/clusters/cluster1/privateLinkResources/gateway"),
@@ -66,7 +66,7 @@ func ExamplePrivateLinkResourcesClient_ListByCluster() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.PrivateLinkResourcesClientListByClusterResponse{
-	// 	PrivateLinkResourceListResult: armhdinsight.PrivateLinkResourceListResult{
+	// 	PrivateLinkResourceListResult: &armhdinsight.PrivateLinkResourceListResult{
 	// 		Value: []*armhdinsight.PrivateLinkResource{
 	// 			{
 	// 				Name: to.Ptr("gateway"),

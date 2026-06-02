@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor
 
 go 1.25.0
 

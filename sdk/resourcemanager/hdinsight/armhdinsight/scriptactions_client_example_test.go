@@ -7,7 +7,7 @@ package armhdinsight_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
 	"log"
 )
 
@@ -52,7 +52,7 @@ func ExampleScriptActionsClient_GetExecutionAsyncOperationStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ScriptActionsClientGetExecutionAsyncOperationStatusResponse{
-	// 	AsyncOperationResult: &armhdinsight.AsyncOperationResult{
+	// 	AsyncOperationResult: armhdinsight.AsyncOperationResult{
 	// 		Status: to.Ptr(armhdinsight.AsyncOperationStateInProgress),
 	// 	},
 	// }
@@ -77,7 +77,7 @@ func ExampleScriptActionsClient_GetExecutionDetail() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ScriptActionsClientGetExecutionDetailResponse{
-	// 	RuntimeScriptActionDetail: &armhdinsight.RuntimeScriptActionDetail{
+	// 	RuntimeScriptActionDetail: armhdinsight.RuntimeScriptActionDetail{
 	// 		Name: to.Ptr("Test"),
 	// 		ApplicationName: to.Ptr("app1"),
 	// 		DebugInformation: to.Ptr(""),

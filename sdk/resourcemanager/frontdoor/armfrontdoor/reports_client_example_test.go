@@ -6,11 +6,10 @@ package armfrontdoor_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 	"log"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
 )
 
 // Generated from example definition: 2025-10-01/NetworkExperimentGetLatencyScorecard.json
@@ -32,7 +31,7 @@ func ExampleReportsClient_GetLatencyScorecards() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armfrontdoor.ReportsClientGetLatencyScorecardsResponse{
-	// 	LatencyScorecard: &armfrontdoor.LatencyScorecard{
+	// 	LatencyScorecard: armfrontdoor.LatencyScorecard{
 	// 		Name: to.Ptr("DailyLatencyScorecard"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/MyResourceGroup/providers/Microsoft.Network/NetworkExperimentProfiles/MyProfile/Experiments/MyExperiment/LatencyScorecard"),
 	// 		Properties: &armfrontdoor.LatencyScorecardProperties{
@@ -66,7 +65,7 @@ func ExampleReportsClient_GetTimeseries() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armfrontdoor.ReportsClientGetTimeseriesResponse{
-	// 	Timeseries: &armfrontdoor.Timeseries{
+	// 	Timeseries: armfrontdoor.Timeseries{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/MyResourceGroup/providers/Microsoft.Network/NetworkExperimentProfiles/MyProfile/Experiments/MyExperiment/Timeseries"),
 	// 		Properties: &armfrontdoor.TimeseriesProperties{
 	// 			AggregationInterval: to.Ptr(armfrontdoor.AggregationIntervalHourly),

@@ -30,7 +30,7 @@ func ExampleCloudHsmClusterBackupStatusClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.CloudHsmClusterBackupStatusClientGetResponse{
-	// 	BackupResult: &armhardwaresecuritymodules.BackupResult{
+	// 	BackupResult: armhardwaresecuritymodules.BackupResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupResultProperties{
 	// 			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
 	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),

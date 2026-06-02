@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
 	"log"
 )
 
@@ -65,13 +65,13 @@ func ExampleApplicationsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ApplicationsClientCreateResponse{
-	// 	Application: &armhdinsight.Application{
+	// 	Application: armhdinsight.Application{
 	// 		Name: to.Ptr("hue"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters/applications"),
 	// 		Etag: to.Ptr("etag"),
@@ -139,7 +139,7 @@ func ExampleApplicationsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -167,7 +167,7 @@ func ExampleApplicationsClient_Get_getApplicationOnHdInsightClusterSuccessfullyC
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ApplicationsClientGetResponse{
-	// 	Application: &armhdinsight.Application{
+	// 	Application: armhdinsight.Application{
 	// 		Name: to.Ptr("app"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters/applications"),
 	// 		Etag: to.Ptr("CF938302-6B4D-44A0-A6D2-C0D67E847AEC"),
@@ -244,7 +244,7 @@ func ExampleApplicationsClient_Get_getApplicationOnHdInsightClusterCreationInPro
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ApplicationsClientGetResponse{
-	// 	Application: &armhdinsight.Application{
+	// 	Application: armhdinsight.Application{
 	// 		Name: to.Ptr("app"),
 	// 		Type: to.Ptr("Microsoft.HDInsight/clusters/applications"),
 	// 		Etag: to.Ptr("2C128F8E-BB26-4637-99E4-18EBC39FD51F"),
@@ -316,7 +316,7 @@ func ExampleApplicationsClient_GetAzureAsyncOperationStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ApplicationsClientGetAzureAsyncOperationStatusResponse{
-	// 	AsyncOperationResult: &armhdinsight.AsyncOperationResult{
+	// 	AsyncOperationResult: armhdinsight.AsyncOperationResult{
 	// 		Status: to.Ptr(armhdinsight.AsyncOperationStateInProgress),
 	// 	},
 	// }

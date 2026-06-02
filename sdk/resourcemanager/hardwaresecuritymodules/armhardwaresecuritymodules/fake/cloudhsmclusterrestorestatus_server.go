@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // CloudHsmClusterRestoreStatusServer is a fake server for instances of the armhardwaresecuritymodules.CloudHsmClusterRestoreStatusClient type.
@@ -49,9 +50,7 @@ func (c *CloudHsmClusterRestoreStatusServerTransport) Do(req *http.Request) (*ht
 }
 
 func (c *CloudHsmClusterRestoreStatusServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -67,10 +66,7 @@ func (c *CloudHsmClusterRestoreStatusServerTransport) dispatchToMethodFake(req *
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -108,7 +104,7 @@ func (c *CloudHsmClusterRestoreStatusServerTransport) dispatchGet(req *http.Requ
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RestoreResult, req)
@@ -118,7 +114,7 @@ func (c *CloudHsmClusterRestoreStatusServerTransport) dispatchGet(req *http.Requ
 	if val := server.GetResponse(respr).Location; val != nil {
 		resp.Header.Set("Location", *val)
 	}
-	if val := server.GetResponse(respr).XMSRequestID; val != nil {
+	if val := server.GetResponse(respr).RequestID; val != nil {
 		resp.Header.Set("x-ms-request-id", *val)
 	}
 	return resp, nil

@@ -1,0 +1,29 @@
+{
+  "succeed_to_regenerate": [
+    "armextensions",
+    "armextensiontypes",
+    "armfabric",
+    "armfileshares",
+    "armfluxconfigurations",
+    "armfrontdoor",
+    "armhardwaresecuritymodules",
+    "armhdinsight",
+    "armhealthbot",
+    "armhealthdataaiservices",
+    "armhorizondb",
+    "armhybridconnectivity",
+    "armhybridkubernetes",
+    "armimpactreporting",
+    "armiotfirmwaredefense",
+    "armiotoperations",
+    "armkeyvault",
+    "armlambdatesthyperexecute",
+    "armmaintenance"
+  ],
+  "fail_to_regenerate": [],
+  "not_found_api_version": [
+    "armextensiontypes"
+  ],
+  "time_to_regenerate": "2026-06-02 03:00:20.176159",
+  "typespec_go_commit_hash": "da78ca209385748ab09d33f704922df3f25eb2f3"
+}

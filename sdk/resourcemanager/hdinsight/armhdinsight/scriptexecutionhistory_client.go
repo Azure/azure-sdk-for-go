@@ -18,6 +18,8 @@ import (
 
 // ScriptExecutionHistoryClient contains the methods for the ScriptExecutionHistory group.
 // Don't use this type directly, use NewScriptExecutionHistoryClient() instead.
+//
+// Generated from API version 2025-01-15-preview
 type ScriptExecutionHistoryClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewScriptExecutionHistoryClient(subscriptionID string, credential azcore.To
 }
 
 // NewListByClusterPager - Lists all scripts' execution history for the specified cluster.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ScriptExecutionHistoryClientListByClusterOptions contains the optional parameters for the ScriptExecutionHistoryClient.NewListByClusterPager
@@ -89,8 +89,8 @@ func (client *ScriptExecutionHistoryClient) listByClusterCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -106,8 +106,6 @@ func (client *ScriptExecutionHistoryClient) listByClusterHandleResponse(resp *ht
 
 // Promote - Promotes the specified ad-hoc script execution to a persisted script.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - scriptExecutionID - The script execution Id
@@ -158,7 +156,7 @@ func (client *ScriptExecutionHistoryClient) promoteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

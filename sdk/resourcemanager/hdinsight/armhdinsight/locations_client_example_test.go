@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
 	"log"
 )
 
@@ -34,7 +34,7 @@ func ExampleLocationsClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.LocationsClientCheckNameAvailabilityResponse{
-	// 	NameAvailabilityCheckResult: &armhdinsight.NameAvailabilityCheckResult{
+	// 	NameAvailabilityCheckResult: armhdinsight.NameAvailabilityCheckResult{
 	// 		Message: to.Ptr("Cluster name 'test123' is unavailable"),
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr("AlreadyExists"),
@@ -61,7 +61,7 @@ func ExampleLocationsClient_GetAzureAsyncOperationStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.LocationsClientGetAzureAsyncOperationStatusResponse{
-	// 	AsyncOperationResult: &armhdinsight.AsyncOperationResult{
+	// 	AsyncOperationResult: armhdinsight.AsyncOperationResult{
 	// 		Status: to.Ptr(armhdinsight.AsyncOperationStateSucceeded),
 	// 	},
 	// }
@@ -86,7 +86,7 @@ func ExampleLocationsClient_GetCapabilities() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.LocationsClientGetCapabilitiesResponse{
-	// 	CapabilitiesResult: &armhdinsight.CapabilitiesResult{
+	// 	CapabilitiesResult: armhdinsight.CapabilitiesResult{
 	// 		Features: []*string{
 	// 			to.Ptr("ALLOW_GATEWAY_AUTH_BYPASS"),
 	// 			to.Ptr("AUX_IAAS_FUNCTIONALITIES"),
@@ -481,7 +481,7 @@ func ExampleLocationsClient_ListBillingSpecs() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.LocationsClientListBillingSpecsResponse{
-	// 	BillingResponseListResult: &armhdinsight.BillingResponseListResult{
+	// 	BillingResponseListResult: armhdinsight.BillingResponseListResult{
 	// 		BillingResources: []*armhdinsight.BillingResources{
 	// 			{
 	// 				BillingMeters: []*armhdinsight.BillingMeters{
@@ -551,7 +551,7 @@ func ExampleLocationsClient_ListUsages() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.LocationsClientListUsagesResponse{
-	// 	UsagesListResult: &armhdinsight.UsagesListResult{
+	// 	UsagesListResult: armhdinsight.UsagesListResult{
 	// 		Value: []*armhdinsight.Usage{
 	// 			{
 	// 				Name: &armhdinsight.LocalizedName{
@@ -672,7 +672,7 @@ func ExampleLocationsClient_ValidateClusterCreateRequest() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.LocationsClientValidateClusterCreateRequestResponse{
-	// 	ClusterCreateValidationResult: &armhdinsight.ClusterCreateValidationResult{
+	// 	ClusterCreateValidationResult: armhdinsight.ClusterCreateValidationResult{
 	// 		EstimatedCreationDuration: to.Ptr("PT20M"),
 	// 		ValidationErrors: []*armhdinsight.ValidationErrorInfo{
 	// 		},

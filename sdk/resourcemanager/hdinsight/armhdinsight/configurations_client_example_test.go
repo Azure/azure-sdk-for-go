@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ConfigurationsClientGetResponse{
-	// 	undefined: &map[string]*string{
+	// 	Value: map[string]*string{
 	// 		"fs.azure.account.key.test.blob.core.windows.net": to.Ptr("accountKey"),
 	// 		"fs.defaultFS": to.Ptr("wasb://test.blob.core.windows.net"),
 	// 	},
@@ -57,7 +57,7 @@ func ExampleConfigurationsClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhdinsight.ConfigurationsClientListResponse{
-	// 	ClusterConfigurations: &armhdinsight.ClusterConfigurations{
+	// 	ClusterConfigurations: armhdinsight.ClusterConfigurations{
 	// 		Configurations: map[string]map[string]*string{
 	// 			"core-site": map[string]*string{
 	// 				"fs.azure.account.key.test.blob.core.windows.net": to.Ptr("accountKey"),
@@ -92,7 +92,7 @@ func ExampleConfigurationsClient_BeginUpdate_disableHttpConnectivity() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -122,7 +122,7 @@ func ExampleConfigurationsClient_BeginUpdate_enableHttpConnectivity() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

@@ -6,11 +6,10 @@ package armfrontdoor_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
+	"log"
 )
 
 // Generated from example definition: 2025-10-01/CheckFrontdoorNameAvailability.json
@@ -35,7 +34,7 @@ func ExampleNameAvailabilityClient_Check() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armfrontdoor.NameAvailabilityClientCheckResponse{
-	// 	CheckNameAvailabilityOutput: &armfrontdoor.CheckNameAvailabilityOutput{
+	// 	CheckNameAvailabilityOutput: armfrontdoor.CheckNameAvailabilityOutput{
 	// 		Message: to.Ptr("Name not available"),
 	// 		NameAvailability: to.Ptr(armfrontdoor.AvailabilityUnavailable),
 	// 		Reason: to.Ptr("Name is already in use"),

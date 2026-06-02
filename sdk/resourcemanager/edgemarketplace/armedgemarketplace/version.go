@@ -6,5 +6,5 @@ package armedgemarketplace
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgemarketplace/armedgemarketplace"
-	moduleVersion = "v0.1.1"
+	moduleVersion = "v0.1.2"
 )

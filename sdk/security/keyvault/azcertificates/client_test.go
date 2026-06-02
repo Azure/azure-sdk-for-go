@@ -761,7 +761,7 @@ func TestPlatformManaged(t *testing.T) {
 	client := startTest(t)
 
 	certName := getName(t, "platformmanaged")
-	dnsName := "onecertdomain.contoso.com"
+	dnsName := "sanitized.example.invalid"
 	policy := azcertificates.CertificatePolicy{
 		PlatformManaged: azcertificates.NewPlatformManaged("PublicTLSServerAuth", map[string]any{
 			"sans": map[string]any{

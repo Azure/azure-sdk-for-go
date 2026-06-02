@@ -945,7 +945,7 @@ type ACSMessageDeliveryStatusUpdatedEventData struct {
 	MessageID *string
 
 	// Optional. The BSUID of the recipient.
-	ToBsuid *string
+	ToBSUID *string
 }
 
 // ACSMessageInteractiveButtonReplyContent - Message Interactive button reply content for a user to business message
@@ -1039,7 +1039,7 @@ type ACSMessageReceivedEventData struct {
 	Error *Error
 
 	// Optional. The BSUID of the sender.
-	FromBsuid *string
+	FromBSUID *string
 
 	// Optional. The received message interactive content
 	InteractiveContent *ACSMessageInteractiveContent

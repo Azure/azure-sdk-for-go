@@ -27,7 +27,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const apiVersion = "2025-03-01-preview"
+const apiVersion = "2025-01-01-preview"
 
 type endpoint struct {
 	URL    string

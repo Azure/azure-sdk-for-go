@@ -1,5 +1,10 @@
 # Release History
 
+## 0.1.1 (2026-06-02)
+### Other Changes
+
+- Retract version `v0.1.0`.
+
 ## 0.1.0 (2026-01-14)
 ### Other Changes
 

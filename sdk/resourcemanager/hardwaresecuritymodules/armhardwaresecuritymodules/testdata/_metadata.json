@@ -1,6 +1,4 @@
 {
-  "apiVersions": {
-    "Microsoft.HardwareSecurityModules": "2025-03-31"
-  },
-  "emitterVersion": "0.14.1"
+  "apiVersion": "2025-03-31",
+  "emitterVersion": "0.9.1"
 }

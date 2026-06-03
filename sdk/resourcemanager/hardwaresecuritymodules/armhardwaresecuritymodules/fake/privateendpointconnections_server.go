@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // PrivateEndpointConnectionsServer is a fake server for instances of the armhardwaresecuritymodules.PrivateEndpointConnectionsClient type.
@@ -54,7 +53,9 @@ func (p *PrivateEndpointConnectionsServerTransport) Do(req *http.Request) (*http
 }
 
 func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,7 +71,10 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *ht
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -112,7 +116,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListByCloudHsmClu
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListByCloudHsmClusterPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

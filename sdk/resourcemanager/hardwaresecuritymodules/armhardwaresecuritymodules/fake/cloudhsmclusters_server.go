@@ -17,7 +17,6 @@ import (
 	"net/url"
 	"reflect"
 	"regexp"
-	"slices"
 )
 
 // CloudHsmClustersServer is a fake server for instances of the armhardwaresecuritymodules.CloudHsmClustersClient type.
@@ -108,7 +107,9 @@ func (c *CloudHsmClustersServerTransport) Do(req *http.Request) (*http.Response,
 }
 
 func (c *CloudHsmClustersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -142,7 +143,10 @@ func (c *CloudHsmClustersServerTransport) dispatchToMethodFake(req *http.Request
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -196,7 +200,7 @@ func (c *CloudHsmClustersServerTransport) dispatchBeginBackup(req *http.Request)
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginBackup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -244,7 +248,7 @@ func (c *CloudHsmClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		c.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -288,7 +292,7 @@ func (c *CloudHsmClustersServerTransport) dispatchBeginDelete(req *http.Request)
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -322,7 +326,7 @@ func (c *CloudHsmClustersServerTransport) dispatchGet(req *http.Request) (*http.
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CloudHsmCluster, req)
@@ -349,7 +353,11 @@ func (c *CloudHsmClustersServerTransport) dispatchNewListByResourceGroupPager(re
 		if err != nil {
 			return nil, err
 		}
-		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		skiptokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skiptokenParam := getOptional(skiptokenUnescaped)
 		var options *armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupOptions
 		if skiptokenParam != nil {
 			options = &armhardwaresecuritymodules.CloudHsmClustersClientListByResourceGroupOptions{
@@ -367,7 +375,7 @@ func (c *CloudHsmClustersServerTransport) dispatchNewListByResourceGroupPager(re
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -390,7 +398,11 @@ func (c *CloudHsmClustersServerTransport) dispatchNewListBySubscriptionPager(req
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		skiptokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skiptokenParam := getOptional(skiptokenUnescaped)
 		var options *armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionOptions
 		if skiptokenParam != nil {
 			options = &armhardwaresecuritymodules.CloudHsmClustersClientListBySubscriptionOptions{
@@ -408,7 +420,7 @@ func (c *CloudHsmClustersServerTransport) dispatchNewListBySubscriptionPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -455,7 +467,7 @@ func (c *CloudHsmClustersServerTransport) dispatchBeginRestore(req *http.Request
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginRestore.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -503,7 +515,7 @@ func (c *CloudHsmClustersServerTransport) dispatchBeginUpdate(req *http.Request)
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -557,7 +569,7 @@ func (c *CloudHsmClustersServerTransport) dispatchBeginValidateBackupProperties(
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginValidateBackupProperties.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -611,7 +623,7 @@ func (c *CloudHsmClustersServerTransport) dispatchBeginValidateRestoreProperties
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginValidateRestoreProperties.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

@@ -13,7 +13,7 @@ type CloudHsmClusterBackupStatusClientGetResponse struct {
 	Location *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	RequestID *string
+	XMSRequestID *string
 }
 
 // CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse contains the response from method CloudHsmClusterPrivateEndpointConnectionsClient.Create.
@@ -48,13 +48,16 @@ type CloudHsmClusterRestoreStatusClientGetResponse struct {
 	Location *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	RequestID *string
+	XMSRequestID *string
 }
 
 // CloudHsmClustersClientBackupResponse contains the response from method CloudHsmClustersClient.BeginBackup.
 type CloudHsmClustersClientBackupResponse struct {
 	// Backup operation Result
 	BackupResult
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	XMSRequestID *string
 }
 
 // CloudHsmClustersClientCreateOrUpdateResponse contains the response from method CloudHsmClustersClient.BeginCreateOrUpdate.
@@ -90,6 +93,9 @@ type CloudHsmClustersClientListBySubscriptionResponse struct {
 type CloudHsmClustersClientRestoreResponse struct {
 	// Restore operation properties
 	RestoreResult
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	XMSRequestID *string
 }
 
 // CloudHsmClustersClientUpdateResponse contains the response from method CloudHsmClustersClient.BeginUpdate.
@@ -102,12 +108,18 @@ type CloudHsmClustersClientUpdateResponse struct {
 type CloudHsmClustersClientValidateBackupPropertiesResponse struct {
 	// Backup operation Result
 	BackupResult
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	XMSRequestID *string
 }
 
 // CloudHsmClustersClientValidateRestorePropertiesResponse contains the response from method CloudHsmClustersClient.BeginValidateRestoreProperties.
 type CloudHsmClustersClientValidateRestorePropertiesResponse struct {
 	// Restore operation properties
 	RestoreResult
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	XMSRequestID *string
 }
 
 // DedicatedHsmClientCreateOrUpdateResponse contains the response from method DedicatedHsmClient.BeginCreateOrUpdate.

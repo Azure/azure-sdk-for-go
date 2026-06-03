@@ -79,7 +79,7 @@
 # ServiceOwners:                                                   @Azure/azure-sdk-write-keyvault
 
 # PRLabel: %Monitor
-/sdk/monitor/                                                      @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-sdk-write-monitor-query-logs @gracewilcox @jhendrixMSFT
+/sdk/monitor/                                                      @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-sdk-write-monitor-query-logs @jhendrixMSFT
 
 # PRLabel: %Monitor
 /sdk/monitor/ingestion/azlogs/                                     @Azure/azure-sdk-write-monitor-data-plane
@@ -87,9 +87,9 @@
 # PRLabel: %Monitor
 /sdk/monitor/query/azmetrics/                                      @Azure/azure-sdk-write-monitor-query-metrics
 
-# AzureSdkOwners:                                                  @gracewilcox
+# AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Monitor
-# ServiceOwners:                                                   @Azure/azure-sdk-write-monitor-data-plane @gracewilcox @jhendrixMSFT
+# ServiceOwners:                                                   @Azure/azure-sdk-write-monitor-data-plane @jhendrixMSFT
 
 # ServiceLabel: %Monitor
 # ServiceOwners:                                                   @AzmonActionG @AzmonAlerts @AzMonEssential @AzmonLogA @dadunl @SameergMS
@@ -655,7 +655,7 @@
 ###########
 /eng/                              @benbp @weshaggard
 /eng/common/                       @Azure/azure-sdk-eng
-/eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @gracewilcox
+/eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter
 /.config/1espt/                    @benbp @weshaggard
 /.github/workflows/                @Azure/azure-sdk-eng
 /.github/CODEOWNERS                @rickwinter @sandeep-sen @Azure/azure-sdk-eng
@@ -669,8 +669,8 @@
 /eng/swagger_to_sdk_config.json @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # Add owners for typespec emitter config
-/eng/emitter-package-lock.json  @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @gracewilcox
-/eng/emitter-package.json       @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @gracewilcox
+/eng/emitter-package-lock.json  @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter
+/eng/emitter-package.json       @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter
 
 
 # Add owners for notifications for specific pipelines

@@ -18,8 +18,6 @@ import (
 
 // LookingGlassClient contains the methods for the LookingGlass group.
 // Don't use this type directly, use NewLookingGlassClient() instead.
-//
-// Generated from API version 2025-05-01
 type LookingGlassClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewLookingGlassClient(subscriptionID string, credential azcore.TokenCredent
 
 // Invoke - Run looking glass functionality
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - command - The command to be executed: ping, traceroute, bgpRoute.
 //   - sourceType - The type of the source: Edge site or Azure Region.
 //   - sourceLocation - The location of the source.
@@ -82,12 +82,12 @@ func (client *LookingGlassClient) invokeCreateRequest(ctx context.Context, comma
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	reqQP.Set("command", string(command))
 	reqQP.Set("destinationIP", destinationIP)
 	reqQP.Set("sourceLocation", sourceLocation)
 	reqQP.Set("sourceType", string(sourceType))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace/v2
 
 go 1.25.0
 

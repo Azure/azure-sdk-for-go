@@ -19,8 +19,6 @@ import (
 
 // RpUnbilledPrefixesClient contains the methods for the RpUnbilledPrefixes group.
 // Don't use this type directly, use NewRpUnbilledPrefixesClient() instead.
-//
-// Generated from API version 2025-05-01
 type RpUnbilledPrefixesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewRpUnbilledPrefixesClient(subscriptionID string, credential azcore.TokenC
 }
 
 // NewListPager - Lists all of the RP unbilled prefixes for the specified peering
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - options - RpUnbilledPrefixesClientListOptions contains the optional parameters for the RpUnbilledPrefixesClient.NewListPager
@@ -90,11 +90,11 @@ func (client *RpUnbilledPrefixesClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.Consolidate != nil {
 		reqQP.Set("consolidate", strconv.FormatBool(*options.Consolidate))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

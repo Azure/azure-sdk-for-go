@@ -4,10 +4,6 @@
 
 package armmanagementgroups
 
-const (
-	version20230401 string = "2023-04-01"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

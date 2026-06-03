@@ -18,8 +18,6 @@ import (
 
 // CachesClient contains the methods for the Caches group.
 // Don't use this type directly, use NewCachesClient() instead.
-//
-// Generated from API version 2026-01-01
 type CachesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewCachesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Create or update the specified Cache within the Capacity Pool
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -69,6 +69,8 @@ func (client *CachesClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 
 // CreateOrUpdate - Create or update the specified Cache within the Capacity Pool
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 func (client *CachesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, body Cache, options *CachesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CachesClient.BeginCreateOrUpdate"
@@ -118,8 +120,8 @@ func (client *CachesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -130,6 +132,8 @@ func (client *CachesClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // BeginDelete - Delete the specified cache
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -154,6 +158,8 @@ func (client *CachesClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Delete the specified cache
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 func (client *CachesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, options *CachesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CachesClient.BeginDelete"
@@ -203,13 +209,15 @@ func (client *CachesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get the details of the specified Cache
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -265,8 +273,8 @@ func (client *CachesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -281,6 +289,8 @@ func (client *CachesClient) getHandleResponse(resp *http.Response) (CachesClient
 }
 
 // NewListPager - List all Caches within the Capacity Pool
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -332,8 +342,8 @@ func (client *CachesClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -350,6 +360,8 @@ func (client *CachesClient) listHandleResponse(resp *http.Response) (CachesClien
 // ListPeeringPassphrases - This operation will list the cluster peering command, cluster peering passphrase and the vserver
 // peering command
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -406,8 +418,8 @@ func (client *CachesClient) listPeeringPassphrasesCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -423,6 +435,8 @@ func (client *CachesClient) listPeeringPassphrasesHandleResponse(resp *http.Resp
 
 // BeginPoolChange - Moves Cache to another Capacity Pool
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -448,6 +462,8 @@ func (client *CachesClient) BeginPoolChange(ctx context.Context, resourceGroupNa
 
 // PoolChange - Moves Cache to another Capacity Pool
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 func (client *CachesClient) poolChange(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, body PoolChangeRequest, options *CachesClientBeginPoolChangeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CachesClient.BeginPoolChange"
@@ -497,8 +513,8 @@ func (client *CachesClient) poolChangeCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -509,6 +525,8 @@ func (client *CachesClient) poolChangeCreateRequest(ctx context.Context, resourc
 
 // BeginResetSmbPassword - Resets the SMB password for the cache
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -534,6 +552,8 @@ func (client *CachesClient) BeginResetSmbPassword(ctx context.Context, resourceG
 
 // ResetSmbPassword - Resets the SMB password for the cache
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 func (client *CachesClient) resetSmbPassword(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, options *CachesClientBeginResetSmbPasswordOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CachesClient.BeginResetSmbPassword"
@@ -583,14 +603,16 @@ func (client *CachesClient) resetSmbPasswordCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - Patch the specified Cache
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -616,6 +638,8 @@ func (client *CachesClient) BeginUpdate(ctx context.Context, resourceGroupName s
 
 // Update - Patch the specified Cache
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 func (client *CachesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, cacheName string, body CacheUpdate, options *CachesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CachesClient.BeginUpdate"
@@ -665,8 +689,8 @@ func (client *CachesClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

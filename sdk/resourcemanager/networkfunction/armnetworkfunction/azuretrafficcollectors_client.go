@@ -7,19 +7,18 @@ package armnetworkfunction
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // AzureTrafficCollectorsClient contains the methods for the AzureTrafficCollectors group.
 // Don't use this type directly, use NewAzureTrafficCollectorsClient() instead.
-//
-// Generated from API version 2022-11-01
 type AzureTrafficCollectorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +42,8 @@ func NewAzureTrafficCollectorsClient(subscriptionID string, credential azcore.To
 
 // BeginCreateOrUpdate - Creates or updates a Azure Traffic Collector resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureTrafficCollectorName - Azure Traffic Collector name
 //   - parameters - The parameters to provide for the created Azure Traffic Collector.
@@ -67,6 +68,8 @@ func (client *AzureTrafficCollectorsClient) BeginCreateOrUpdate(ctx context.Cont
 
 // CreateOrUpdate - Creates or updates a Azure Traffic Collector resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-11-01
 func (client *AzureTrafficCollectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, parameters AzureTrafficCollector, options *AzureTrafficCollectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureTrafficCollectorsClient.BeginCreateOrUpdate"
@@ -108,8 +111,8 @@ func (client *AzureTrafficCollectorsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20221101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -120,6 +123,8 @@ func (client *AzureTrafficCollectorsClient) createOrUpdateCreateRequest(ctx cont
 
 // BeginDelete - Deletes a specified Azure Traffic Collector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureTrafficCollectorName - Azure Traffic Collector name
 //   - options - AzureTrafficCollectorsClientBeginDeleteOptions contains the optional parameters for the AzureTrafficCollectorsClient.BeginDelete
@@ -143,6 +148,8 @@ func (client *AzureTrafficCollectorsClient) BeginDelete(ctx context.Context, res
 
 // Delete - Deletes a specified Azure Traffic Collector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-11-01
 func (client *AzureTrafficCollectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, options *AzureTrafficCollectorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureTrafficCollectorsClient.BeginDelete"
@@ -184,13 +191,15 @@ func (client *AzureTrafficCollectorsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20221101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the specified Azure Traffic Collector in a specified resource group
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureTrafficCollectorName - Azure Traffic Collector name
 //   - options - AzureTrafficCollectorsClientGetOptions contains the optional parameters for the AzureTrafficCollectorsClient.Get
@@ -237,8 +246,8 @@ func (client *AzureTrafficCollectorsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20221101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -254,6 +263,8 @@ func (client *AzureTrafficCollectorsClient) getHandleResponse(resp *http.Respons
 
 // UpdateTags - Updates the specified Azure Traffic Collector tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureTrafficCollectorName - Azure Traffic Collector name
 //   - parameters - Parameters supplied to update Azure Traffic Collector tags.
@@ -301,8 +312,8 @@ func (client *AzureTrafficCollectorsClient) updateTagsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20221101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

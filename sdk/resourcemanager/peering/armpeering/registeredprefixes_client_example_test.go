@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
 	"log"
 )
 
@@ -35,7 +35,7 @@ func ExampleRegisteredPrefixesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.RegisteredPrefixesClientCreateOrUpdateResponse{
-	// 	RegisteredPrefix: armpeering.RegisteredPrefix{
+	// 	RegisteredPrefix: &armpeering.RegisteredPrefix{
 	// 		Name: to.Ptr("registeredPrefixName"),
 	// 		Type: to.Ptr("Microsoft.Peering/registeredPrefixes"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName/registeredPrefixes/registeredPrefixName"),
@@ -90,7 +90,7 @@ func ExampleRegisteredPrefixesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.RegisteredPrefixesClientGetResponse{
-	// 	RegisteredPrefix: armpeering.RegisteredPrefix{
+	// 	RegisteredPrefix: &armpeering.RegisteredPrefix{
 	// 		Name: to.Ptr("registeredPrefixName"),
 	// 		Type: to.Ptr("Microsoft.Peering/registeredPrefixes"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName/registeredPrefixes/registeredPrefixName"),
@@ -186,7 +186,7 @@ func ExampleRegisteredPrefixesClient_Validate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.RegisteredPrefixesClientValidateResponse{
-	// 	RegisteredPrefix: armpeering.RegisteredPrefix{
+	// 	RegisteredPrefix: &armpeering.RegisteredPrefix{
 	// 		Name: to.Ptr("registeredPrefixName"),
 	// 		Type: to.Ptr("Microsoft.Peering/registeredPrefixes"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName/registeredPrefixes/registeredPrefixName"),

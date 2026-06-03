@@ -18,8 +18,6 @@ import (
 
 // ResourceQuotaLimitsClient contains the methods for the ResourceQuotaLimits group.
 // Don't use this type directly, use NewResourceQuotaLimitsClient() instead.
-//
-// Generated from API version 2026-01-01
 type ResourceQuotaLimitsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.Token
 
 // Get - Get the default and current quota limit
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - location - The name of the Azure region.
 //   - quotaLimitName - The name of the Quota Limit
 //   - options - ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
@@ -88,8 +88,8 @@ func (client *ResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,6 +104,8 @@ func (client *ResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Get the default and current limits for quotas
+//
+// Generated from API version 2026-01-01
 //   - location - The name of the Azure region.
 //   - options - ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.NewListPager
 //     method.
@@ -146,8 +148,8 @@ func (client *ResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

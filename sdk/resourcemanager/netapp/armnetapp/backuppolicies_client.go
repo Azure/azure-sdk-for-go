@@ -18,8 +18,6 @@ import (
 
 // BackupPoliciesClient contains the methods for the BackupPolicies group.
 // Don't use this type directly, use NewBackupPoliciesClient() instead.
-//
-// Generated from API version 2026-01-01
 type BackupPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewBackupPoliciesClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreate - Create a backup policy for Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupPolicyName - Backup policy Name which uniquely identify backup policy.
@@ -69,6 +69,8 @@ func (client *BackupPoliciesClient) BeginCreate(ctx context.Context, resourceGro
 
 // Create - Create a backup policy for Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 func (client *BackupPoliciesClient) create(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body BackupPolicy, options *BackupPoliciesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupPoliciesClient.BeginCreate"
@@ -114,8 +116,8 @@ func (client *BackupPoliciesClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -126,6 +128,8 @@ func (client *BackupPoliciesClient) createCreateRequest(ctx context.Context, res
 
 // BeginDelete - Delete backup policy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupPolicyName - Backup policy Name which uniquely identify backup policy.
@@ -150,6 +154,8 @@ func (client *BackupPoliciesClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Delete backup policy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 func (client *BackupPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, options *BackupPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupPoliciesClient.BeginDelete"
@@ -195,13 +201,15 @@ func (client *BackupPoliciesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a particular backup Policy
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupPolicyName - Backup policy Name which uniquely identify backup policy.
@@ -252,8 +260,8 @@ func (client *BackupPoliciesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -268,6 +276,8 @@ func (client *BackupPoliciesClient) getHandleResponse(resp *http.Response) (Back
 }
 
 // NewListPager - List backup policies for Netapp Account
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - options - BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.NewListPager method.
@@ -314,8 +324,8 @@ func (client *BackupPoliciesClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -331,6 +341,8 @@ func (client *BackupPoliciesClient) listHandleResponse(resp *http.Response) (Bac
 
 // BeginUpdate - Patch a backup policy for Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupPolicyName - Backup policy Name which uniquely identify backup policy.
@@ -356,6 +368,8 @@ func (client *BackupPoliciesClient) BeginUpdate(ctx context.Context, resourceGro
 
 // Update - Patch a backup policy for Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01
 func (client *BackupPoliciesClient) update(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body BackupPolicyPatch, options *BackupPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupPoliciesClient.BeginUpdate"
@@ -401,8 +415,8 @@ func (client *BackupPoliciesClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

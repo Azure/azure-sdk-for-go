@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
@@ -40,7 +40,7 @@ func ExampleAccountsClient_BeginChangeKeyVault() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
@@ -64,13 +64,13 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientCreateOrUpdateResponse{
-	// 	Account: armnetapp.Account{
+	// 	Account: &armnetapp.Account{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
@@ -117,13 +117,13 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientCreateOrUpdateResponse{
-	// 	Account: armnetapp.Account{
+	// 	Account: &armnetapp.Account{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
@@ -166,7 +166,7 @@ func ExampleAccountsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
@@ -189,7 +189,7 @@ func ExampleAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientGetResponse{
-	// 	Account: armnetapp.Account{
+	// 	Account: &armnetapp.Account{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
@@ -233,13 +233,13 @@ func ExampleAccountsClient_BeginGetChangeKeyVaultInformation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientGetChangeKeyVaultInformationResponse{
-	// 	GetKeyVaultStatusResponse: armnetapp.GetKeyVaultStatusResponse{
+	// 	GetKeyVaultStatusResponse: &armnetapp.GetKeyVaultStatusResponse{
 	// 		Properties: &armnetapp.GetKeyVaultStatusResponseProperties{
 	// 			KeyName: to.Ptr("rsakey"),
 	// 			KeyVaultPrivateEndpoints: []*armnetapp.KeyVaultPrivateEndpoint{
@@ -352,7 +352,7 @@ func ExampleAccountsClient_BeginRenewCredentials() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -382,7 +382,7 @@ func ExampleAccountsClient_BeginTransitionToCmk() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
@@ -407,13 +407,13 @@ func ExampleAccountsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientUpdateResponse{
-	// 	Account: armnetapp.Account{
+	// 	Account: &armnetapp.Account{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),

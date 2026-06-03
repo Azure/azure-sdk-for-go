@@ -11,10 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
 	"net/http"
+	"net/url"
 	"regexp"
-	"slices"
 )
 
 // LocationsServer is a fake server for instances of the armpeering.LocationsClient type.
@@ -53,7 +53,9 @@ func (l *LocationsServerTransport) Do(req *http.Request) (*http.Response, error)
 }
 
 func (l *LocationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -69,7 +71,10 @@ func (l *LocationsServerTransport) dispatchToMethodFake(req *http.Request, metho
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -93,14 +98,28 @@ func (l *LocationsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		directPeeringTypeParam := getOptional(armpeering.PeeringLocationsDirectPeeringType(qp.Get("directPeeringType")))
+		kindParam, err := parseWithCast(qp.Get("kind"), func(v string) (armpeering.PeeringLocationsKind, error) {
+			p, unescapeErr := url.QueryUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armpeering.PeeringLocationsKind(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		directPeeringTypeUnescaped, err := url.QueryUnescape(qp.Get("directPeeringType"))
+		if err != nil {
+			return nil, err
+		}
+		directPeeringTypeParam := getOptional(armpeering.PeeringLocationsDirectPeeringType(directPeeringTypeUnescaped))
 		var options *armpeering.LocationsClientListOptions
 		if directPeeringTypeParam != nil {
 			options = &armpeering.LocationsClientListOptions{
 				DirectPeeringType: directPeeringTypeParam,
 			}
 		}
-		resp := l.srv.NewListPager(armpeering.PeeringLocationsKind(qp.Get("kind")), options)
+		resp := l.srv.NewListPager(kindParam, options)
 		newListPager = &resp
 		l.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpeering.LocationsClientListResponse, createLink func() string) {
@@ -111,7 +130,7 @@ func (l *LocationsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		l.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

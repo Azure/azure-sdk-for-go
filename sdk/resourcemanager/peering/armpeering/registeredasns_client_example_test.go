@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
 	"log"
 )
 
@@ -35,7 +35,7 @@ func ExampleRegisteredAsnsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.RegisteredAsnsClientCreateOrUpdateResponse{
-	// 	RegisteredAsn: armpeering.RegisteredAsn{
+	// 	RegisteredAsn: &armpeering.RegisteredAsn{
 	// 		Name: to.Ptr("registeredAsnName"),
 	// 		Type: to.Ptr("Microsoft.Peering/registeredAsns"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName/registeredAsns/registeredAsnName"),
@@ -89,7 +89,7 @@ func ExampleRegisteredAsnsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.RegisteredAsnsClientGetResponse{
-	// 	RegisteredAsn: armpeering.RegisteredAsn{
+	// 	RegisteredAsn: &armpeering.RegisteredAsn{
 	// 		Name: to.Ptr("registeredAsnName0"),
 	// 		Type: to.Ptr("Microsoft.Peering/registeredAsns"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName/registeredAsns/registeredAsnName0"),

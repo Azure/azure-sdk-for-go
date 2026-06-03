@@ -4,10 +4,6 @@
 
 package armnetworkfunction
 
-const (
-	version20221101 string = "2022-11-01"
-)
-
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

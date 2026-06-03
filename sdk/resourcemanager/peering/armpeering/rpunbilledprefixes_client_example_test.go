@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
 	"log"
 )
 

@@ -18,8 +18,6 @@ import (
 
 // ManagementGroupSubscriptionsClient contains the methods for the ManagementGroupSubscriptions group.
 // Don't use this type directly, use NewManagementGroupSubscriptionsClient() instead.
-//
-// Generated from API version 2023-04-01
 type ManagementGroupSubscriptionsClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewManagementGroupSubscriptionsClient(credential azcore.TokenCredential, op
 
 // Create - Associates existing subscription with the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-04-01
 //   - groupID - The management group ID.
 //   - subscriptionID - The subscription ID.
 //   - options - ManagementGroupSubscriptionsClientCreateOptions contains the optional parameters for the ManagementGroupSubscriptionsClient.Create
@@ -82,8 +82,8 @@ func (client *ManagementGroupSubscriptionsClient) createCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.CacheControl != nil {
 		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
@@ -102,6 +102,8 @@ func (client *ManagementGroupSubscriptionsClient) createHandleResponse(resp *htt
 
 // Delete - De-associates subscription from the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-04-01
 //   - groupID - The management group ID.
 //   - subscriptionID - The subscription ID.
 //   - options - ManagementGroupSubscriptionsClientDeleteOptions contains the optional parameters for the ManagementGroupSubscriptionsClient.Delete
@@ -143,8 +145,8 @@ func (client *ManagementGroupSubscriptionsClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.CacheControl != nil {
 		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
 	}
@@ -153,6 +155,8 @@ func (client *ManagementGroupSubscriptionsClient) deleteCreateRequest(ctx contex
 
 // GetSubscription - Retrieves details about given subscription which is associated with the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-04-01
 //   - groupID - The management group ID.
 //   - subscriptionID - The subscription ID.
 //   - options - ManagementGroupSubscriptionsClientGetSubscriptionOptions contains the optional parameters for the ManagementGroupSubscriptionsClient.GetSubscription
@@ -195,8 +199,8 @@ func (client *ManagementGroupSubscriptionsClient) getSubscriptionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.CacheControl != nil {
 		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
@@ -215,6 +219,8 @@ func (client *ManagementGroupSubscriptionsClient) getSubscriptionHandleResponse(
 
 // NewGetSubscriptionsUnderManagementGroupPager - Retrieves details about all subscriptions which are associated with the
 // management group.
+//
+// Generated from API version 2023-04-01
 //   - groupID - Management Group ID.
 //   - options - ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions contains the optional parameters
 //     for the ManagementGroupSubscriptionsClient.NewGetSubscriptionsUnderManagementGroupPager method.
@@ -256,8 +262,8 @@ func (client *ManagementGroupSubscriptionsClient) getSubscriptionsUnderManagemen
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
-	reqQP.Set("api-version", version20230401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2023-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

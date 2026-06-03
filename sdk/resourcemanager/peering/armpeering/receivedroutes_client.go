@@ -18,8 +18,6 @@ import (
 
 // ReceivedRoutesClient contains the methods for the ReceivedRoutes group.
 // Don't use this type directly, use NewReceivedRoutesClient() instead.
-//
-// Generated from API version 2025-05-01
 type ReceivedRoutesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewReceivedRoutesClient(subscriptionID string, credential azcore.TokenCrede
 
 // NewListByPeeringPager - Lists the prefixes received over the specified peering under the given subscription and resource
 // group.
+//
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - options - ReceivedRoutesClientListByPeeringOptions contains the optional parameters for the ReceivedRoutesClient.NewListByPeeringPager
@@ -93,7 +93,7 @@ func (client *ReceivedRoutesClient) listByPeeringCreateRequest(ctx context.Conte
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.AsPath != nil {
 		reqQP.Set("asPath", *options.AsPath)
 	}
@@ -106,7 +106,7 @@ func (client *ReceivedRoutesClient) listByPeeringCreateRequest(ctx context.Conte
 	if options != nil && options.RpkiValidationState != nil {
 		reqQP.Set("rpkiValidationState", *options.RpkiValidationState)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

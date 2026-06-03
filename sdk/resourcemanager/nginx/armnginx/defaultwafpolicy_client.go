@@ -18,8 +18,6 @@ import (
 
 // DefaultWafPolicyClient contains the methods for the DefaultWafPolicy group.
 // Don't use this type directly, use NewDefaultWafPolicyClient() instead.
-//
-// Generated from API version 2025-11-01
 type DefaultWafPolicyClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewDefaultWafPolicyClient(subscriptionID string, credential azcore.TokenCre
 
 // List - Get the Nginx Waf Policy of given Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - options - DefaultWafPolicyClientListOptions contains the optional parameters for the DefaultWafPolicyClient.List method.
@@ -88,8 +88,8 @@ func (client *DefaultWafPolicyClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

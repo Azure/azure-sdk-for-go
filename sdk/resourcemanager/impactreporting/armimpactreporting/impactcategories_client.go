@@ -18,6 +18,8 @@ import (
 
 // ImpactCategoriesClient contains the methods for the ImpactCategories group.
 // Don't use this type directly, use NewImpactCategoriesClient() instead.
+//
+// Generated from API version 2024-05-01-preview
 type ImpactCategoriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewImpactCategoriesClient(subscriptionID string, credential azcore.TokenCre
 
 // Get - Get a ImpactCategory
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-05-01-preview
 //   - impactCategoryName - Name of the impact category
 //   - options - ImpactCategoriesClientGetOptions contains the optional parameters for the ImpactCategoriesClient.Get method.
 func (client *ImpactCategoriesClient) Get(ctx context.Context, impactCategoryName string, options *ImpactCategoriesClientGetOptions) (ImpactCategoriesClientGetResponse, error) {
@@ -83,8 +83,8 @@ func (client *ImpactCategoriesClient) getCreateRequest(ctx context.Context, impa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,8 +99,6 @@ func (client *ImpactCategoriesClient) getHandleResponse(resp *http.Response) (Im
 }
 
 // NewListBySubscriptionPager - List ImpactCategory resources by subscription
-//
-// Generated from API version 2024-05-01-preview
 //   - resourceType - Filter by resource type
 //   - options - ImpactCategoriesClientListBySubscriptionOptions contains the optional parameters for the ImpactCategoriesClient.NewListBySubscriptionPager
 //     method.
@@ -139,12 +137,12 @@ func (client *ImpactCategoriesClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
+	reqQP.Set("api-version", version20240501Preview)
 	if options != nil && options.CategoryName != nil {
 		reqQP.Set("categoryName", *options.CategoryName)
 	}
 	reqQP.Set("resourceType", resourceType)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

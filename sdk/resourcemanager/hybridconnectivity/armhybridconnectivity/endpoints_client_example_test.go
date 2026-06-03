@@ -36,7 +36,7 @@ func ExampleEndpointsClient_CreateOrUpdate_hybridConnectivityEndpointsPutCustom(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.EndpointsClientCreateOrUpdateResponse{
-	// 	EndpointResource: &armhybridconnectivity.EndpointResource{
+	// 	EndpointResource: armhybridconnectivity.EndpointResource{
 	// 		Name: to.Ptr("custom"),
 	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/custom"),
@@ -72,7 +72,7 @@ func ExampleEndpointsClient_CreateOrUpdate_hybridConnectivityEndpointsPutDefault
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.EndpointsClientCreateOrUpdateResponse{
-	// 	EndpointResource: &armhybridconnectivity.EndpointResource{
+	// 	EndpointResource: armhybridconnectivity.EndpointResource{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default"),
@@ -125,7 +125,7 @@ func ExampleEndpointsClient_Get_hybridConnectivityEndpointsGetCustom() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.EndpointsClientGetResponse{
-	// 	EndpointResource: &armhybridconnectivity.EndpointResource{
+	// 	EndpointResource: armhybridconnectivity.EndpointResource{
 	// 		Name: to.Ptr("custom"),
 	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/custom"),
@@ -156,7 +156,7 @@ func ExampleEndpointsClient_Get_hybridConnectivityEndpointsGetDefault() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.EndpointsClientGetResponse{
-	// 	EndpointResource: &armhybridconnectivity.EndpointResource{
+	// 	EndpointResource: armhybridconnectivity.EndpointResource{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default"),
@@ -238,7 +238,7 @@ func ExampleEndpointsClient_ListCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.EndpointsClientListCredentialsResponse{
-	// 	EndpointAccessResource: &armhybridconnectivity.EndpointAccessResource{
+	// 	EndpointAccessResource: armhybridconnectivity.EndpointAccessResource{
 	// 		Relay: &armhybridconnectivity.RelayNamespaceAccessProperties{
 	// 			AccessKey: to.Ptr("SharedAccessSignature sr=http%3A%2F%2Fazgnrelay-eastus-l1.servicebus.windows.net%2Fmicrosoft.kubernetes%2Fconnectedclusters%2Fa0e1fd7d1d974ddf6b11a952d67679c9f12c006eee16861857a8268da4eb1498%2F1619989456957411072%2F&sig=WxDwPF6AmmODaMHNnBGDSm773UG%2B%2Be"),
 	// 			ExpiresOn: to.Ptr[int64](1620000256),
@@ -271,7 +271,7 @@ func ExampleEndpointsClient_ListIngressGatewayCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.EndpointsClientListIngressGatewayCredentialsResponse{
-	// 	IngressGatewayResource: &armhybridconnectivity.IngressGatewayResource{
+	// 	IngressGatewayResource: armhybridconnectivity.IngressGatewayResource{
 	// 		Ingress: &armhybridconnectivity.IngressProfileProperties{
 	// 			AADProfile: &armhybridconnectivity.AADProfileProperties{
 	// 				ServerID: to.Ptr("6256c85f-0aad-4d50-b960-e6e9b21efe35"),
@@ -314,7 +314,7 @@ func ExampleEndpointsClient_ListManagedProxyDetails() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.EndpointsClientListManagedProxyDetailsResponse{
-	// 	ManagedProxyResource: &armhybridconnectivity.ManagedProxyResource{
+	// 	ManagedProxyResource: armhybridconnectivity.ManagedProxyResource{
 	// 		ExpiresOn: to.Ptr[int64](1620000256),
 	// 		Proxy: to.Ptr("uid.r.proxy.arc.com"),
 	// 	},
@@ -344,7 +344,7 @@ func ExampleEndpointsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.EndpointsClientUpdateResponse{
-	// 	EndpointResource: &armhybridconnectivity.EndpointResource{
+	// 	EndpointResource: armhybridconnectivity.EndpointResource{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default"),

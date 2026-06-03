@@ -18,6 +18,8 @@ import (
 
 // PublicCloudConnectorsClient contains the methods for the PublicCloudConnectors group.
 // Don't use this type directly, use NewPublicCloudConnectorsClient() instead.
+//
+// Generated from API version 2024-12-01
 type PublicCloudConnectorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPublicCloudConnectorsClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreateOrUpdate - Create a PublicCloudConnector
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - publicCloudConnector - Represent public cloud connectors resource.
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *PublicCloudConnectorsClient) BeginCreateOrUpdate(ctx context.Conte
 
 // CreateOrUpdate - Create a PublicCloudConnector
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 func (client *PublicCloudConnectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, publicCloudConnector string, resource PublicCloudConnector, options *PublicCloudConnectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PublicCloudConnectorsClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *PublicCloudConnectorsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *PublicCloudConnectorsClient) createOrUpdateCreateRequest(ctx conte
 
 // Delete - Delete a PublicCloudConnector
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - publicCloudConnector - Represent public cloud connectors resource.
 //   - options - PublicCloudConnectorsClientDeleteOptions contains the optional parameters for the PublicCloudConnectorsClient.Delete
@@ -169,15 +165,13 @@ func (client *PublicCloudConnectorsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a PublicCloudConnector
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - publicCloudConnector - Represent public cloud connectors resource.
 //   - options - PublicCloudConnectorsClientGetOptions contains the optional parameters for the PublicCloudConnectorsClient.Get
@@ -224,8 +218,8 @@ func (client *PublicCloudConnectorsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -240,8 +234,6 @@ func (client *PublicCloudConnectorsClient) getHandleResponse(resp *http.Response
 }
 
 // NewListByResourceGroupPager - List PublicCloudConnector resources by resource group
-//
-// Generated from API version 2024-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PublicCloudConnectorsClientListByResourceGroupOptions contains the optional parameters for the PublicCloudConnectorsClient.NewListByResourceGroupPager
 //     method.
@@ -284,8 +276,8 @@ func (client *PublicCloudConnectorsClient) listByResourceGroupCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -300,8 +292,6 @@ func (client *PublicCloudConnectorsClient) listByResourceGroupHandleResponse(res
 }
 
 // NewListBySubscriptionPager - List PublicCloudConnector resources by subscription ID
-//
-// Generated from API version 2024-12-01
 //   - options - PublicCloudConnectorsClientListBySubscriptionOptions contains the optional parameters for the PublicCloudConnectorsClient.NewListBySubscriptionPager
 //     method.
 func (client *PublicCloudConnectorsClient) NewListBySubscriptionPager(options *PublicCloudConnectorsClientListBySubscriptionOptions) *runtime.Pager[PublicCloudConnectorsClientListBySubscriptionResponse] {
@@ -339,8 +329,8 @@ func (client *PublicCloudConnectorsClient) listBySubscriptionCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -356,8 +346,6 @@ func (client *PublicCloudConnectorsClient) listBySubscriptionHandleResponse(resp
 
 // BeginTestPermissions - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - publicCloudConnector - Represent public cloud connectors resource.
 //   - options - PublicCloudConnectorsClientBeginTestPermissionsOptions contains the optional parameters for the PublicCloudConnectorsClient.BeginTestPermissions
@@ -381,8 +369,6 @@ func (client *PublicCloudConnectorsClient) BeginTestPermissions(ctx context.Cont
 
 // TestPermissions - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 func (client *PublicCloudConnectorsClient) testPermissions(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *PublicCloudConnectorsClientBeginTestPermissionsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PublicCloudConnectorsClient.BeginTestPermissions"
@@ -424,16 +410,14 @@ func (client *PublicCloudConnectorsClient) testPermissionsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Update - Update a PublicCloudConnector
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - publicCloudConnector - Represent public cloud connectors resource.
 //   - properties - The resource properties to be updated.
@@ -481,8 +465,8 @@ func (client *PublicCloudConnectorsClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

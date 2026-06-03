@@ -33,13 +33,13 @@ func ExampleConnectorsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.ConnectorsClientCreateOrUpdateResponse{
-	// 	Connector: &armimpactreporting.Connector{
+	// 	Connector: armimpactreporting.Connector{
 	// 		Properties: &armimpactreporting.ConnectorProperties{
 	// 			ProvisioningState: to.Ptr(armimpactreporting.ProvisioningStateSucceeded),
 	// 			ConnectorID: to.Ptr("430a444e-6a84-4a6f-8c50-124843ca7cd4"),
@@ -103,7 +103,7 @@ func ExampleConnectorsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.ConnectorsClientGetResponse{
-	// 	Connector: &armimpactreporting.Connector{
+	// 	Connector: armimpactreporting.Connector{
 	// 		Properties: &armimpactreporting.ConnectorProperties{
 	// 			ProvisioningState: to.Ptr(armimpactreporting.ProvisioningStateSucceeded),
 	// 			ConnectorID: to.Ptr("430a444e-6a84-4a6f-8c50-124843ca7cd4"),
@@ -201,7 +201,7 @@ func ExampleConnectorsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.ConnectorsClientUpdateResponse{
-	// 	Connector: &armimpactreporting.Connector{
+	// 	Connector: armimpactreporting.Connector{
 	// 		Properties: &armimpactreporting.ConnectorProperties{
 	// 			ProvisioningState: to.Ptr(armimpactreporting.ProvisioningStateSucceeded),
 	// 			ConnectorID: to.Ptr("430a444e-6a84-4a6f-8c50-124843ca7cd4"),

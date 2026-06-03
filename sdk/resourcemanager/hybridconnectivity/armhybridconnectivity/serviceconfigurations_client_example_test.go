@@ -36,7 +36,7 @@ func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutS
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.ServiceConfigurationsClientCreateOrupdateResponse{
-	// 	ServiceConfigurationResource: &armhybridconnectivity.ServiceConfigurationResource{
+	// 	ServiceConfigurationResource: armhybridconnectivity.ServiceConfigurationResource{
 	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints/serviceConfigurations"),
 	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH"),
 	// 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
@@ -72,7 +72,7 @@ func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutW
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.ServiceConfigurationsClientCreateOrupdateResponse{
-	// 	ServiceConfigurationResource: &armhybridconnectivity.ServiceConfigurationResource{
+	// 	ServiceConfigurationResource: armhybridconnectivity.ServiceConfigurationResource{
 	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints/serviceConfigurations"),
 	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC"),
 	// 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
@@ -125,7 +125,7 @@ func ExampleServiceConfigurationsClient_Get_hybridConnectivityEndpointsServiceco
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.ServiceConfigurationsClientGetResponse{
-	// 	ServiceConfigurationResource: &armhybridconnectivity.ServiceConfigurationResource{
+	// 	ServiceConfigurationResource: armhybridconnectivity.ServiceConfigurationResource{
 	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints/serviceConfigurations"),
 	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH"),
 	// 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
@@ -155,7 +155,7 @@ func ExampleServiceConfigurationsClient_Get_hybridConnectivityEndpointsServiceco
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.ServiceConfigurationsClientGetResponse{
-	// 	ServiceConfigurationResource: &armhybridconnectivity.ServiceConfigurationResource{
+	// 	ServiceConfigurationResource: armhybridconnectivity.ServiceConfigurationResource{
 	// 		Type: to.Ptr("Microsoft.HybridConnectivity/endpoints/serviceConfigurations"),
 	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC"),
 	// 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
@@ -236,7 +236,7 @@ func ExampleServiceConfigurationsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.ServiceConfigurationsClientUpdateResponse{
-	// 	ServiceConfigurationResource: &armhybridconnectivity.ServiceConfigurationResource{
+	// 	ServiceConfigurationResource: armhybridconnectivity.ServiceConfigurationResource{
 	// 		ID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default/serviceConfigurations/SSH"),
 	// 		Properties: &armhybridconnectivity.ServiceConfigurationProperties{
 	// 			Port: to.Ptr[int64](22),

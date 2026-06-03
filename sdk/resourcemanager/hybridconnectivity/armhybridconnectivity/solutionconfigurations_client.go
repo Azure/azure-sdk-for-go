@@ -18,6 +18,8 @@ import (
 
 // SolutionConfigurationsClient contains the methods for the SolutionConfigurations group.
 // Don't use this type directly, use NewSolutionConfigurationsClient() instead.
+//
+// Generated from API version 2024-12-01
 type SolutionConfigurationsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewSolutionConfigurationsClient(credential azcore.TokenCredential, options 
 
 // CreateOrUpdate - Create a SolutionConfiguration
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - solutionConfiguration - Represent Solution Configuration Resource.
 //   - resource - Resource create parameters.
@@ -83,8 +83,8 @@ func (client *SolutionConfigurationsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -104,8 +104,6 @@ func (client *SolutionConfigurationsClient) createOrUpdateHandleResponse(resp *h
 
 // Delete - Delete a SolutionConfiguration
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - solutionConfiguration - Represent Solution Configuration Resource.
 //   - options - SolutionConfigurationsClientDeleteOptions contains the optional parameters for the SolutionConfigurationsClient.Delete
@@ -147,15 +145,13 @@ func (client *SolutionConfigurationsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a SolutionConfiguration
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - solutionConfiguration - Represent Solution Configuration Resource.
 //   - options - SolutionConfigurationsClientGetOptions contains the optional parameters for the SolutionConfigurationsClient.Get
@@ -198,8 +194,8 @@ func (client *SolutionConfigurationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -214,8 +210,6 @@ func (client *SolutionConfigurationsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListPager - List SolutionConfiguration resources by parent
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - SolutionConfigurationsClientListOptions contains the optional parameters for the SolutionConfigurationsClient.NewListPager
 //     method.
@@ -254,8 +248,8 @@ func (client *SolutionConfigurationsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -271,8 +265,6 @@ func (client *SolutionConfigurationsClient) listHandleResponse(resp *http.Respon
 
 // BeginSyncNow - Trigger immediate sync with source cloud
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - solutionConfiguration - Represent Solution Configuration Resource.
 //   - options - SolutionConfigurationsClientBeginSyncNowOptions contains the optional parameters for the SolutionConfigurationsClient.BeginSyncNow
@@ -296,8 +288,6 @@ func (client *SolutionConfigurationsClient) BeginSyncNow(ctx context.Context, re
 
 // SyncNow - Trigger immediate sync with source cloud
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 func (client *SolutionConfigurationsClient) syncNow(ctx context.Context, resourceURI string, solutionConfiguration string, options *SolutionConfigurationsClientBeginSyncNowOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SolutionConfigurationsClient.BeginSyncNow"
@@ -335,16 +325,14 @@ func (client *SolutionConfigurationsClient) syncNowCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Update - Update a SolutionConfiguration
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - solutionConfiguration - Represent Solution Configuration Resource.
 //   - properties - The resource properties to be updated.
@@ -388,8 +376,8 @@ func (client *SolutionConfigurationsClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

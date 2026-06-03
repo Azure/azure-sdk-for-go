@@ -601,7 +601,7 @@ func ExampleRecoveryPlansClient_BeginCreateOrUpdate() {
 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{
-				"/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1": &armresiliencemanagement.UserAssignedIdentity{},
+				"/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1": {},
 			},
 		},
 	}, nil)
@@ -4547,7 +4547,7 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{
-				"key7088": &armresiliencemanagement.UserAssignedIdentity{},
+				"key7088": {},
 			},
 		},
 	}, nil)

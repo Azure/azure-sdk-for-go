@@ -64,7 +64,7 @@ type BackupsAutomaticAndOnDemandClientListByServerResponse struct {
 
 // BackupsLongTermRetentionClientCheckPrerequisitesResponse contains the response from method BackupsLongTermRetentionClient.CheckPrerequisites.
 type BackupsLongTermRetentionClientCheckPrerequisitesResponse struct {
-	// Response for the LTR pre-backup API call
+	// Response for the LTR pre-backup API call.
 	LtrPreBackupResponse
 
 	// A unique ID for the current operation, service generated. All the resource providers must return this value in the response
@@ -176,6 +176,42 @@ type FirewallRulesClientGetResponse struct {
 type FirewallRulesClientListByServerResponse struct {
 	// List of firewall rules.
 	FirewallRuleList
+}
+
+// MaintenanceEventsClientApplyNowResponse contains the response from method MaintenanceEventsClient.BeginApplyNow.
+type MaintenanceEventsClientApplyNowResponse struct {
+	// Response model for maintenance event reschedule and apply-now actions.
+	MaintenanceEventActionResponse
+}
+
+// MaintenanceEventsClientGetResponse contains the response from method MaintenanceEventsClient.Get.
+type MaintenanceEventsClientGetResponse struct {
+	// Maintenance event resource for a PostgreSQL flexible server.
+	MaintenanceEventResource
+}
+
+// MaintenanceEventsClientListResponse contains the response from method MaintenanceEventsClient.NewListPager.
+type MaintenanceEventsClientListResponse struct {
+	// The response of a MaintenanceEventResource list operation.
+	MaintenanceEventResourceListResult
+}
+
+// MaintenanceEventsClientRescheduleResponse contains the response from method MaintenanceEventsClient.BeginReschedule.
+type MaintenanceEventsClientRescheduleResponse struct {
+	// Response model for maintenance event reschedule and apply-now actions.
+	MaintenanceEventActionResponse
+}
+
+// MajorVersionUpgradePrecheckClientGetResponse contains the response from method MajorVersionUpgradePrecheckClient.Get.
+type MajorVersionUpgradePrecheckClientGetResponse struct {
+	// Major version upgrade precheck resource for a PostgreSQL flexible server.
+	MajorVersionUpgradePrecheckResource
+}
+
+// MajorVersionUpgradePrecheckClientListResponse contains the response from method MajorVersionUpgradePrecheckClient.NewListPager.
+type MajorVersionUpgradePrecheckClientListResponse struct {
+	// The response of a MajorVersionUpgradePrecheckResource list operation.
+	MajorVersionUpgradePrecheckResourceListResult
 }
 
 // MigrationsClientCancelResponse contains the response from method MigrationsClient.Cancel.
@@ -321,13 +357,19 @@ type ServersClientListBySubscriptionResponse struct {
 
 // ServersClientMigrateNetworkModeResponse contains the response from method ServersClient.BeginMigrateNetworkMode.
 type ServersClientMigrateNetworkModeResponse struct {
-	// The status of a network migration operation.
+	// Status of a network migration operation.
 	MigrateNetworkStatus
 }
 
 // ServersClientRestartResponse contains the response from method ServersClient.BeginRestart.
 type ServersClientRestartResponse struct {
 	// placeholder for future response values
+}
+
+// ServersClientStartMajorVersionUpgradePrecheckResponse contains the response from method ServersClient.BeginStartMajorVersionUpgradePrecheck.
+type ServersClientStartMajorVersionUpgradePrecheckResponse struct {
+	// Response model for starting a major version upgrade precheck.
+	StartMajorVersionUpgradePrecheckResponse
 }
 
 // ServersClientStartResponse contains the response from method ServersClient.BeginStart.

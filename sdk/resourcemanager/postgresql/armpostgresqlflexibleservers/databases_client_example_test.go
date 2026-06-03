@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/DatabasesCreate.json
+// Generated from example definition: 2026-04-01-preview/DatabasesCreate.json
 func ExampleDatabasesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,11 +34,11 @@ func ExampleDatabasesClient_BeginCreate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/DatabasesDelete.json
+// Generated from example definition: 2026-04-01-preview/DatabasesDelete.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,11 +55,11 @@ func ExampleDatabasesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/DatabasesGet.json
+// Generated from example definition: 2026-04-01-preview/DatabasesGet.json
 func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleDatabasesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.DatabasesClientGetResponse{
-	// 	Database: &armpostgresqlflexibleservers.Database{
+	// 	Database: armpostgresqlflexibleservers.Database{
 	// 		Name: to.Ptr("exampledatabase"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/databases"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/databases/exampledatabase"),
@@ -90,7 +90,7 @@ func ExampleDatabasesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/DatabasesListByServer.json
+// Generated from example definition: 2026-04-01-preview/DatabasesListByServer.json
 func ExampleDatabasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

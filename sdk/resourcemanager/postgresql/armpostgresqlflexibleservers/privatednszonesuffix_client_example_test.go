@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/PrivateDnsZoneSuffixGet.json
+// Generated from example definition: 2026-04-01-preview/PrivateDnsZoneSuffixGet.json
 func ExamplePrivateDNSZoneSuffixClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,6 +30,6 @@ func ExamplePrivateDNSZoneSuffixClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.PrivateDNSZoneSuffixClientGetResponse{
-	// 	undefined: to.Ptr("postgres.database.azure.com"),
+	// 	Value: to.Ptr("postgres.database.azure.com"),
 	// }
 }

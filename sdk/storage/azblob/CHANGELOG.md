@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.2 (Unreleased)
+## 1.8.0-beta.2 (2026-06-03)
 
 ### Features Added
 * Added support for Structured Message CRC64 content validation on upload and download operations using `TransferValidationTypeComputeStructuredMessageCRC64`.
@@ -9,12 +9,6 @@
   is received; the interval can be overridden via `ExpectContinueOptions.ThrottleInterval`. Other modes are `ExpectContinueModeOn` (always send) and
   `ExpectContinueModeOff` (never send). Set the environment variable `AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER=true` to disable the feature regardless of
   `ClientOptions`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.7.0 (2026-05-14)
 

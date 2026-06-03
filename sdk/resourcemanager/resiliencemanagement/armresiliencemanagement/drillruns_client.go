@@ -263,7 +263,7 @@ func (client *DrillRunsClient) getHandleResponse(resp *http.Response) (DrillRuns
 //   - serviceGroupName - The name of the service group.
 //   - drillName - The name of the Drill
 //   - options - DrillRunsClientListOptions contains the optional parameters for the DrillRunsClient.NewListPager method.
-func (client *DrillRunsClient) NewListPager(serviceGroupName string, drillName string, options *DrillRunsClientListOptions) (*runtime.Pager[DrillRunsClientListResponse]) {
+func (client *DrillRunsClient) NewListPager(serviceGroupName string, drillName string, options *DrillRunsClientListOptions) *runtime.Pager[DrillRunsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DrillRunsClientListResponse]{
 		More: func(page DrillRunsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -545,4 +545,3 @@ func (client *DrillRunsClient) resumeCreateRequest(ctx context.Context, serviceG
 	req.Raw().Header["operation-id"] = []string{operationID}
 	return req, nil
 }
-

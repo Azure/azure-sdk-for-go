@@ -8,233 +8,233 @@ import "time"
 
 // AddOrUpdateResourcesRequest - Request body of the AddOrUpdateResources API.
 type AddOrUpdateResourcesRequest struct {
-// REQUIRED; Duration of faults.
+	// REQUIRED; Duration of faults.
 	FaultDurationInMin *int32
 
-// Whether to allow inclusion and update despite attention reasons.
+	// Whether to allow inclusion and update despite attention reasons.
 	ForceInclusionAndUpdate *ForceInclusionAndUpdate
 
-// Add, Update, Delete resource lists
+	// Add, Update, Delete resource lists
 	ResourceLists *ResourceLists
 }
 
 // ArmResponseErrorResponse - Azure operation completed successfully.
 type ArmResponseErrorResponse struct {
-// REQUIRED; The body type of the operation request or response.
+	// REQUIRED; The body type of the operation request or response.
 	Body *ErrorResponse
 }
 
 // AssetPropertiesOfDrill - Drill asset properties.
 type AssetPropertiesOfDrill struct {
-// REQUIRED; Region where Drill's internal resources will be created.
+	// REQUIRED; Region where Drill's internal resources will be created.
 	Region *string
 
-// REQUIRED; Subscription where Drill's internal resources will be created.
+	// REQUIRED; Subscription where Drill's internal resources will be created.
 	Subscription *string
 
-// Resource group where Drill's internal resources will be created. If not specified, defaults to 'AzureResilienceManagementDrills'.
-// This value is immutable after drill creation.
+	// Resource group where Drill's internal resources will be created. If not specified, defaults to 'AzureResilienceManagementDrills'.
+	// This value is immutable after drill creation.
 	ResourceGroup *string
 }
 
 // AssociatedIdentity - Definition of associated identity linked with the various resources.
 type AssociatedIdentity struct {
-// REQUIRED; Identity type linked with the resource
+	// REQUIRED; Identity type linked with the resource
 	Type *ManagedServiceIdentityType
 
-// User assigned identity id linked with the resource
+	// User assigned identity id linked with the resource
 	UserAssignedIdentity *string
 }
 
 // AttentionReason - Reason why the Drill is in NeedsAttention state, and not ready to run.
 type AttentionReason struct {
-// Chaos resource for faulting exists or not.
+	// Chaos resource for faulting exists or not.
 	ChaosResource *ExtensionObjectState
 
-// Reason for Chaos Resource Creation failure
+	// Reason for Chaos Resource Creation failure
 	ChaosResourceCreationFailureReasons []*string
 
-// User MSI associated with chaos resource object is deleted.
+	// User MSI associated with chaos resource object is deleted.
 	ChaosResourceUserMsi *ExtensionObjectState
 
-// Errors related to Drill Monitoring resources.
+	// Errors related to Drill Monitoring resources.
 	DrillMonitoringErrors []*ErrorDetails
 
-// Drill object does not have the necessary RBAC to run the chaos resource.
+	// Drill object does not have the necessary RBAC to run the chaos resource.
 	DrillRbacOnChaosResource *RBACState
 
-// Drill MSI does not have the necessary RBAC to read the Drill Monitoring resources.
+	// Drill MSI does not have the necessary RBAC to read the Drill Monitoring resources.
 	DrillRbacOnMonitoringResources *RBACState
 
-// Drill object does not have the necessary RBAC to run the Recovery Plan.
+	// Drill object does not have the necessary RBAC to run the Recovery Plan.
 	DrillRbacOnRecoveryPlan *RBACState
 
-// User MSI associated with Drill object is deleted.
+	// User MSI associated with Drill object is deleted.
 	DrillUserMsi *ExtensionObjectState
 
-// Included resource in Drill.
+	// Included resource in Drill.
 	IncludedResourceInDrill *ExtensionObjectState
 
-// List of required required Azure resource providers that are not registered in the subscription specified for chaos resource.
+	// List of required required Azure resource providers that are not registered in the subscription specified for chaos resource.
 	MissingRequiredResourceProviders []*string
 
-// Monitoring RBAC required by Drill MSI not setup on the target resources.
+	// Monitoring RBAC required by Drill MSI not setup on the target resources.
 	MonitoringRbacOnDrillResources *RBACState
 
-// Permissions needed by the Drill MSI to run the chaos resource.
+	// Permissions needed by the Drill MSI to run the chaos resource.
 	RbacNeededForDrillOnChaosResource []*string
 
-// Permissions needed by the Drill MSI to Upload service group health data for monitoring.
+	// Permissions needed by the Drill MSI to Upload service group health data for monitoring.
 	RbacNeededForDrillOnDrillMonitoringResources []*string
 
-// Permissions needed by the Drill MSI to read health metrics data for resources in service group.
+	// Permissions needed by the Drill MSI to read health metrics data for resources in service group.
 	RbacNeededForDrillOnDrillResources []*string
 
-// Permissions needed by the Drill MSI to run the Recovery Plan.
+	// Permissions needed by the Drill MSI to run the Recovery Plan.
 	RbacNeededForDrillOnRecoveryPlan []*string
 
-// RBAC required by Chaos Resource MSI not setup on the target resources.
+	// RBAC required by Chaos Resource MSI not setup on the target resources.
 	RbacOnTargetResources *RBACState
 
-// Resources associated in Recovery Plan and Drill are out of sync.
+	// Resources associated in Recovery Plan and Drill are out of sync.
 	RecoveryPlanAndDrillResourcesState *RelativeResourceCompositionState
 
-// Associated RO ready or not.
+	// Associated RO ready or not.
 	RoReadiness *RecoveryPlanState
 
-// RBAC required by AutomationAccount for runbook MSI not setup on the target resources.
+	// RBAC required by AutomationAccount for runbook MSI not setup on the target resources.
 	RunbookFaultRbacOnTargets *RBACState
 
-// Resources in Service Group and Drill are out of sync.
+	// Resources in Service Group and Drill are out of sync.
 	ServiceGroupAndDrillResourcesState *RelativeResourceCompositionState
 
-// READ-ONLY; Monitoring Resources created for Drill
+	// READ-ONLY; Monitoring Resources created for Drill
 	DrillMonitoringResources *ExtensionObjectState
 }
 
 // ChaosResourcePropertiesOfDrill - Chaos Resource properties.
 type ChaosResourcePropertiesOfDrill struct {
-// REQUIRED; Identity to be used by the Chaos Resource for invoking faults on resources.
+	// REQUIRED; Identity to be used by the Chaos Resource for invoking faults on resources.
 	ChaosResourceIdentityForFaults *AssociatedIdentity
 
-// REQUIRED; Identity to use for Chaos Resource operations.
+	// REQUIRED; Identity to use for Chaos Resource operations.
 	Identity *AssociatedIdentity
 
-// READ-ONLY; Chaos Resource created for this Drill
+	// READ-ONLY; Chaos Resource created for this Drill
 	ChaosResourceID *string
 
-// READ-ONLY; Duration of faults.
+	// READ-ONLY; Duration of faults.
 	FaultDurationInMin *int32
 }
 
 // CustomFaultDetails - Custom fault details
 type CustomFaultDetails struct {
-// REQUIRED; fault name
+	// REQUIRED; fault name
 	FaultName *string
 
-// REQUIRED; ID of ARM resource used for automation (e.g. Automation runbook URL).
+	// REQUIRED; ID of ARM resource used for automation (e.g. Automation runbook URL).
 	ScriptResourceID *string
 }
 
 // DiskReprotectInputDetails - Disk Reprotect Input Details
 type DiskReprotectInputDetails struct {
-// Disk Resource Id to Reprotect
+	// Disk Resource Id to Reprotect
 	DiskResourceID *string
 
-// The staging StorageAccount Resource Id.
+	// The staging StorageAccount Resource Id.
 	StagingStorageAccountResourceID *string
 }
 
 // Drill resource
 type Drill struct {
-// The managed service identities assigned to this resource.
+	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties DrillPropertiesClassification
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // DrillEndRequest - Request body of the End Action of Drill.
 type DrillEndRequest struct {
-// REQUIRED; Attestation Status
+	// REQUIRED; Attestation Status
 	Attestation *DrillAttestation
 
-// REQUIRED; Notes
+	// REQUIRED; Notes
 	AttestationNotes *string
 }
 
 // DrillListResult - The response of a Drill list operation.
 type DrillListResult struct {
-// REQUIRED; The Drill items on this page
+	// REQUIRED; The Drill items on this page
 	Value []*Drill
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // DrillProperties - Properties of the Resiliency Drill.
 type DrillProperties struct {
-// REQUIRED; The discriminator for the Drill object hierarchy.
+	// REQUIRED; The discriminator for the Drill object hierarchy.
 	DrillType *DrillType
 
-// Chaos Resource properties.
+	// Chaos Resource properties.
 	ChaosResourceProperties *ChaosResourcePropertiesOfDrill
 
-// Properties for internal resources that are created for the Drill.
+	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
 
-// Monitoring properties of the Drill.
+	// Monitoring properties of the Drill.
 	MonitoringProperties *MonitoringPropertiesOfDrill
 
-// RBAC setup mode.
+	// RBAC setup mode.
 	RbacSetupMode *RBACSetupMode
 
-// ROPlan properties.
+	// ROPlan properties.
 	RecoveryPlanProperties *RecoveryPlanPropertiesOfDrill
 
-// READ-ONLY; Attention reason if the ReadinessState is 'NeedsAttention'.
+	// READ-ONLY; Attention reason if the ReadinessState is 'NeedsAttention'.
 	AttentionReason *AttentionReason
 
-// READ-ONLY; Error details associated with the resource.
+	// READ-ONLY; Error details associated with the resource.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; Readiness state of the Drill.
+	// READ-ONLY; Readiness state of the Drill.
 	ExecutionReadinessState *ExecutionReadinessState
 
-// READ-ONLY; Execution state of the Drill. Whether it is currently running or not.
+	// READ-ONLY; Execution state of the Drill. Whether it is currently running or not.
 	ExecutionState *ExecutionState
 
-// READ-ONLY; Last resync and readiness check time.
+	// READ-ONLY; Last resync and readiness check time.
 	LastResyncReadinessCheckTime *time.Time
 
-// READ-ONLY; Last run properties.
+	// READ-ONLY; Last run properties.
 	LastRunProperties *LastRunProperties
 
-// READ-ONLY; Last sync time.
+	// READ-ONLY; Last sync time.
 	LastSyncTime *time.Time
 
-// READ-ONLY; Managed RG v2 properties.
+	// READ-ONLY; Managed RG v2 properties.
 	ManagedOnBehalfOfConfiguration *ManagedOnBehalfOfConfiguration
 
-// READ-ONLY; Status of the last operation.
+	// READ-ONLY; Status of the last operation.
 	ProvisioningState *ProvisioningState
 
-// READ-ONLY; Parent SG resource.
+	// READ-ONLY; Parent SG resource.
 	ServiceGroupID *string
 
-// READ-ONLY; Internal System Metadata, to be used by internal components only.
+	// READ-ONLY; Internal System Metadata, to be used by internal components only.
 	SystemMetadata *SystemMetadata
 }
 
@@ -243,446 +243,446 @@ func (d *DrillProperties) GetDrillProperties() *DrillProperties { return d }
 
 // DrillResource - Drill Resource
 type DrillResource struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *DrillResourceProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // DrillResourceAttentionReason - Reason why the Drill resource is in NeedsAttention state.
 type DrillResourceAttentionReason struct {
-// Chaos Resource MSI does not have the desired RBAC on the resource.
+	// Chaos Resource MSI does not have the desired RBAC on the resource.
 	FaultRbacOnTargetResource *RBACState
 
-// RBAC required by Drill MSI on the target resource for monitoring.
+	// RBAC required by Drill MSI on the target resource for monitoring.
 	MonitoringRbacOnTargets *RBACState
 
-// Drill Resource State (wrt SG and RO).
+	// Drill Resource State (wrt SG and RO).
 	ResourceState []*DrillResourceState
 
-// RBAC required by AutomationAccount for runbook MSI not setup on the target resources.
+	// RBAC required by AutomationAccount for runbook MSI not setup on the target resources.
 	RunbookFaultRbacOnTargets *RBACState
 }
 
 // DrillResourceListResult - The response of a DrillResource list operation.
 type DrillResourceListResult struct {
-// REQUIRED; The DrillResource items on this page
+	// REQUIRED; The DrillResource items on this page
 	Value []*DrillResource
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // DrillResourceProperties - Properties of the Resiliency Drill Resource
 type DrillResourceProperties struct {
-// REQUIRED; ARM Id of the underlying resource.
+	// REQUIRED; ARM Id of the underlying resource.
 	ResourceID *string
 
-// REQUIRED; Type of the Drill resource.
+	// REQUIRED; Type of the Drill resource.
 	ResourceType *string
 
-// Inclusion State of the Drill resource in Drill
+	// Inclusion State of the Drill resource in Drill
 	InclusionState *DrillResourceInclusionState
 
-// READ-ONLY; Active location and zones of the Azure resource.
+	// READ-ONLY; Active location and zones of the Azure resource.
 	ActiveLocations []*string
 
-// READ-ONLY; Active Resource location and physical zones of Azure Resource.
+	// READ-ONLY; Active Resource location and physical zones of Azure Resource.
 	ActivePhysicalZones []*string
 
-// READ-ONLY; Associated Advisor Recommendation link, if HA is not enabled on this resource.
+	// READ-ONLY; Associated Advisor Recommendation link, if HA is not enabled on this resource.
 	AdvisorHaRecommendationID *string
 
-// READ-ONLY; Recommendation Type Id for the recommendation.
+	// READ-ONLY; Recommendation Type Id for the recommendation.
 	AdvisorRecommendationTypeID *string
 
-// READ-ONLY; Attention reason if the Status is 'NeedsAttention'.
+	// READ-ONLY; Attention reason if the Status is 'NeedsAttention'.
 	AttentionReason *DrillResourceAttentionReason
 
-// READ-ONLY; Fault Properties
+	// READ-ONLY; Fault Properties
 	FaultProperties *FaultProperties
 
-// READ-ONLY; Fault State of the Drill resource
+	// READ-ONLY; Fault State of the Drill resource
 	FaultState *DrillResourceFaultState
 
-// READ-ONLY; ForceInclusion status for this resource. Has the customer forceIncluded it?
+	// READ-ONLY; ForceInclusion status for this resource. Has the customer forceIncluded it?
 	ForceInclusionState *ForceInclusionAndUpdate
 
-// READ-ONLY; HA status of the Drill resource
+	// READ-ONLY; HA status of the Drill resource
 	HaStatus *HAStatus
 
-// READ-ONLY; Monitoring RBAC assignment error, if any.
+	// READ-ONLY; Monitoring RBAC assignment error, if any.
 	MonitoringRbacAssignmentError *ErrorDetails
 
-// READ-ONLY; Provisioning state
+	// READ-ONLY; Provisioning state
 	ProvisioningState *ProvisioningState
 
-// READ-ONLY; Last RBAC assignment error, if any.
+	// READ-ONLY; Last RBAC assignment error, if any.
 	RbacAssignmentError *ErrorDetails
 
-// READ-ONLY; Readiness State of the Drill resource
+	// READ-ONLY; Readiness State of the Drill resource
 	ReadinessState *DrillResourceReadinessState
 
-// READ-ONLY; List of recovery locations and zones of the Azure resource.
+	// READ-ONLY; List of recovery locations and zones of the Azure resource.
 	RecoveryLocations []*string
 
-// READ-ONLY; Recovery Resource location and physical zones of HA Azure Resource.
+	// READ-ONLY; Recovery Resource location and physical zones of HA Azure Resource.
 	RecoveryPhysicalZones []*string
 
-// READ-ONLY; Exclusion reason of the Drill resource in Recovery Plan
+	// READ-ONLY; Exclusion reason of the Drill resource in Recovery Plan
 	RecoveryPlanExclusionReason *RecoveryPlanExclusionReason
 
-// READ-ONLY; Inclusion State of the Drill resource in Recovery Plan
+	// READ-ONLY; Inclusion State of the Drill resource in Recovery Plan
 	RecoveryPlanInclusionState *ResourceInclusionState
 
-// READ-ONLY; Protection Solution Type of the Drill resource
+	// READ-ONLY; Protection Solution Type of the Drill resource
 	ResourceProtectionSolutionType *ResourceProtectionSolutionType
 }
 
 // DrillRun resource.
 type DrillRun struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *DrillRunProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // DrillRunAddNotesRequest - Request body for AddNotes API.
 type DrillRunAddNotesRequest struct {
-// The notes string.
+	// The notes string.
 	Notes *string
 
-// READ-ONLY; System generated Object Id of the notes author.
+	// READ-ONLY; System generated Object Id of the notes author.
 	Author *string
 
-// READ-ONLY; System generated current Timestamp.
+	// READ-ONLY; System generated current Timestamp.
 	Timestamp *time.Time
 }
 
 // DrillRunFailoverRequest - Request body for Failover API.
 type DrillRunFailoverRequest struct {
-// REQUIRED; AutoFailover - whether to pause between Fault and Failover for manual input.
+	// REQUIRED; AutoFailover - whether to pause between Fault and Failover for manual input.
 	AutoFailover *AutoFailover
 
-// REQUIRED; The failover properties.
+	// REQUIRED; The failover properties.
 	FailoverProperties *FailoverRequest
 }
 
 // DrillRunListResult - The response of a DrillRun list operation.
 type DrillRunListResult struct {
-// REQUIRED; The DrillRun items on this page
+	// REQUIRED; The DrillRun items on this page
 	Value []*DrillRun
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // DrillRunProperties - Properties of the Resiliency DrillRun.
 type DrillRunProperties struct {
-// CONSTANT; Discriminator for the Job object hierarchy.
-// Field has constant value JobTypeDrillRun, any specified value is ignored.
+	// CONSTANT; Discriminator for the Job object hierarchy.
+	// Field has constant value JobTypeDrillRun, any specified value is ignored.
 	JobType *JobType
 
-// Details of any errors that occurred during the execution of this job.
+	// Details of any errors that occurred during the execution of this job.
 	ErrorDetails *JobErrorInfo
 
-// Additional information about the job.
+	// Additional information about the job.
 	JobExtendedInfo *JobExtendedInfo
 
-// Details of any retries that have been attempted for this job.
+	// Details of any retries that have been attempted for this job.
 	RetryDetails []*JobRetryDetails
 
-// READ-ONLY; Attestation of this Drill Run.
+	// READ-ONLY; Attestation of this Drill Run.
 	Attestation *DrillAttestation
 
-// READ-ONLY; The currently active operationID on this Drill Run. There can be only one active.
+	// READ-ONLY; The currently active operationID on this Drill Run. There can be only one active.
 	CurrentActiveOperationID *string
 
-// READ-ONLY; Parent Drill resource.
+	// READ-ONLY; Parent Drill resource.
 	DrillID *string
 
-// READ-ONLY; Drill mode.
+	// READ-ONLY; Drill mode.
 	DrillMode *DrillMode
 
-// READ-ONLY; The time elapsed during the execution of this job.
+	// READ-ONLY; The time elapsed during the execution of this job.
 	Duration *string
 
-// READ-ONLY; The end time of the job execution.
+	// READ-ONLY; The end time of the job execution.
 	EndTime *time.Time
 
-// READ-ONLY; Execution configurations for the job.
+	// READ-ONLY; Execution configurations for the job.
 	ExecutionConfigurations *ExecutionConfigurations
 
-// READ-ONLY; Notes for this Drill.
+	// READ-ONLY; Notes for this Drill.
 	Notes []*string
 
-// READ-ONLY; The operation that this job is intended to perform.
+	// READ-ONLY; The operation that this job is intended to perform.
 	Operation *string
 
-// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
-// or operate on.
+	// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
+	// or operate on.
 	ResourceID *string
 
-// READ-ONLY; The start time of the job execution.
+	// READ-ONLY; The start time of the job execution.
 	StartTime *time.Time
 
-// READ-ONLY; The current status of the job execution.
+	// READ-ONLY; The current status of the job execution.
 	Status *JobStatus
 
-// READ-ONLY; Matrix of Actions supported on Operations.
+	// READ-ONLY; Matrix of Actions supported on Operations.
 	SupportedVerbsForStage []*SupportedVerbsForStage
 
-// READ-ONLY; Indicates whether the job was triggered by the system or a user.
+	// READ-ONLY; Indicates whether the job was triggered by the system or a user.
 	TriggeredBy *JobTriggeredBy
 
-// READ-ONLY; User Comments.
+	// READ-ONLY; User Comments.
 	UserComments []*JobUserComment
 }
 
 // GetJobProperties implements the JobPropertiesClassification interface for type DrillRunProperties.
 func (d *DrillRunProperties) GetJobProperties() *JobProperties {
 	return &JobProperties{
-		Duration: d.Duration,
-		EndTime: d.EndTime,
-		ErrorDetails: d.ErrorDetails,
+		Duration:                d.Duration,
+		EndTime:                 d.EndTime,
+		ErrorDetails:            d.ErrorDetails,
 		ExecutionConfigurations: d.ExecutionConfigurations,
-		JobExtendedInfo: d.JobExtendedInfo,
-		JobType: d.JobType,
-		Operation: d.Operation,
-		ResourceID: d.ResourceID,
-		RetryDetails: d.RetryDetails,
-		StartTime: d.StartTime,
-		Status: d.Status,
-		TriggeredBy: d.TriggeredBy,
-		UserComments: d.UserComments,
+		JobExtendedInfo:         d.JobExtendedInfo,
+		JobType:                 d.JobType,
+		Operation:               d.Operation,
+		ResourceID:              d.ResourceID,
+		RetryDetails:            d.RetryDetails,
+		StartTime:               d.StartTime,
+		Status:                  d.Status,
+		TriggeredBy:             d.TriggeredBy,
+		UserComments:            d.UserComments,
 	}
 }
 
 // DrillRunResource - Represents a Drill Run job resource in the Azure Resilience Management provider namespace.
 type DrillRunResource struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *DrillRunResourceProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // DrillRunResourceListResult - The response of a DrillRunResource list operation.
 type DrillRunResourceListResult struct {
-// REQUIRED; The DrillRunResource items on this page
+	// REQUIRED; The DrillRunResource items on this page
 	Value []*DrillRunResource
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // DrillRunResourceProperties - Properties of a Drill Run resource.
 type DrillRunResourceProperties struct {
-// CONSTANT; Discriminator for the Job object hierarchy.
-// Field has constant value JobResourceTypeDrillRun, any specified value is ignored.
+	// CONSTANT; Discriminator for the Job object hierarchy.
+	// Field has constant value JobResourceTypeDrillRun, any specified value is ignored.
 	JobResourceType *JobResourceType
 
-// Details of any errors that occurred during the execution of this job.
+	// Details of any errors that occurred during the execution of this job.
 	ErrorDetails *JobErrorInfo
 
-// Additional information about the job.
+	// Additional information about the job.
 	JobExtendedInfo *JobExtendedInfo
 
-// Details of any retries that have been attempted for this job.
+	// Details of any retries that have been attempted for this job.
 	RetryDetails []*JobRetryDetails
 
-// READ-ONLY; The time elapsed during the execution of this job.
+	// READ-ONLY; The time elapsed during the execution of this job.
 	Duration *string
 
-// READ-ONLY; The end time of the job execution.
+	// READ-ONLY; The end time of the job execution.
 	EndTime *time.Time
 
-// READ-ONLY; Id of the Job under which this job-resource exists.
+	// READ-ONLY; Id of the Job under which this job-resource exists.
 	JobID *string
 
-// READ-ONLY; The operation that this job is intended to perform.
+	// READ-ONLY; The operation that this job is intended to perform.
 	Operation *string
 
-// READ-ONLY; The provisioning state of the Drill Run Resource.
+	// READ-ONLY; The provisioning state of the Drill Run Resource.
 	ProvisioningState *ProvisioningState
 
-// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
-// or operate on.
+	// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
+	// or operate on.
 	ResourceID *string
 
-// READ-ONLY; The start time of the job execution.
+	// READ-ONLY; The start time of the job execution.
 	StartTime *time.Time
 
-// READ-ONLY; The current status of the job execution.
+	// READ-ONLY; The current status of the job execution.
 	Status *JobStatus
 
-// READ-ONLY; Id of the job-task to which this job resource is associated.
+	// READ-ONLY; Id of the job-task to which this job resource is associated.
 	TaskID *string
 
-// READ-ONLY; Friendly name of the job-task to which this job resource is associated.
+	// READ-ONLY; Friendly name of the job-task to which this job resource is associated.
 	TaskName *string
 
-// READ-ONLY; User Comments.
+	// READ-ONLY; User Comments.
 	UserComments []*JobUserComment
 }
 
 // GetJobResourceProperties implements the JobResourcePropertiesClassification interface for type DrillRunResourceProperties.
 func (d *DrillRunResourceProperties) GetJobResourceProperties() *JobResourceProperties {
 	return &JobResourceProperties{
-		Duration: d.Duration,
-		EndTime: d.EndTime,
-		ErrorDetails: d.ErrorDetails,
+		Duration:        d.Duration,
+		EndTime:         d.EndTime,
+		ErrorDetails:    d.ErrorDetails,
 		JobExtendedInfo: d.JobExtendedInfo,
-		JobID: d.JobID,
+		JobID:           d.JobID,
 		JobResourceType: d.JobResourceType,
-		Operation: d.Operation,
-		ResourceID: d.ResourceID,
-		RetryDetails: d.RetryDetails,
-		StartTime: d.StartTime,
-		Status: d.Status,
-		TaskID: d.TaskID,
-		TaskName: d.TaskName,
-		UserComments: d.UserComments,
+		Operation:       d.Operation,
+		ResourceID:      d.ResourceID,
+		RetryDetails:    d.RetryDetails,
+		StartTime:       d.StartTime,
+		Status:          d.Status,
+		TaskID:          d.TaskID,
+		TaskName:        d.TaskName,
+		UserComments:    d.UserComments,
 	}
 }
 
 // DrillStartRequest - Request body of the Start Action of Drill.
 type DrillStartRequest struct {
-// REQUIRED; Mode of starting the Drill
+	// REQUIRED; Mode of starting the Drill
 	Mode *DrillMode
 }
 
 // DrillUpdate - The type used for update operations of the Drill.
 type DrillUpdate struct {
-// The managed service identities assigned to this resource.
+	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *DrillUpdateProperties
 }
 
 // DrillUpdateProperties - The updatable properties of the Drill.
 type DrillUpdateProperties struct {
-// Chaos Resource properties.
+	// Chaos Resource properties.
 	ChaosResourceProperties *ChaosResourcePropertiesOfDrill
 
-// Properties for internal resources that are created for the Drill.
+	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
 
-// Monitoring properties of the Drill.
+	// Monitoring properties of the Drill.
 	MonitoringProperties *MonitoringPropertiesOfDrill
 
-// RBAC setup mode.
+	// RBAC setup mode.
 	RbacSetupMode *RBACSetupMode
 
-// Recovery Plan properties.
+	// Recovery Plan properties.
 	RecoveryPlanProperties *RecoveryPlanPropertiesOfDrill
 }
 
 // Enrollment - An enrollment that links a usage plan to a service group.
 type Enrollment struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *EnrollmentProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // EnrollmentListResult - The response of a Enrollment list operation.
 type EnrollmentListResult struct {
-// REQUIRED; The Enrollment items on this page
+	// REQUIRED; The Enrollment items on this page
 	Value []*Enrollment
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // EnrollmentProperties - Definition of enrollment properties.
 type EnrollmentProperties struct {
-// REQUIRED; ARM resource identifier of the service group associated with this usage plan.
+	// REQUIRED; ARM resource identifier of the service group associated with this usage plan.
 	ServiceGroupID *string
 
-// READ-ONLY; Details of any errors encountered during Enrollment create or update.
+	// READ-ONLY; Details of any errors encountered during Enrollment create or update.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; Provisioning state of the enrollment.
+	// READ-ONLY; Provisioning state of the enrollment.
 	ProvisioningState *ProvisioningState
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
-// READ-ONLY; The additional info.
+	// READ-ONLY; The additional info.
 	Info any
 
-// READ-ONLY; The additional info type.
+	// READ-ONLY; The additional info type.
 	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
-// READ-ONLY; The error additional info.
+	// READ-ONLY; The error additional info.
 	AdditionalInfo []*ErrorAdditionalInfo
 
-// READ-ONLY; The error code.
+	// READ-ONLY; The error code.
 	Code *string
 
-// READ-ONLY; The error details.
+	// READ-ONLY; The error details.
 	Details []*ErrorDetail
 
-// READ-ONLY; The error message.
+	// READ-ONLY; The error message.
 	Message *string
 
-// READ-ONLY; The error target.
+	// READ-ONLY; The error target.
 	Target *string
 }
 
 // ErrorDetails - Errors in T&C / RBAC assignment.
 type ErrorDetails struct {
-// REQUIRED; Error code.
+	// REQUIRED; Error code.
 	Code *string
 
-// REQUIRED; Error message.
+	// REQUIRED; Error message.
 	Message *string
 
-// A list of recommendations to resolve the error.
+	// A list of recommendations to resolve the error.
 	Recommendations []*string
 }
 
@@ -690,325 +690,325 @@ type ErrorDetails struct {
 //
 // Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 type ErrorResponse struct {
-// The error object.
+	// The error object.
 	Error *ErrorDetail
 }
 
 // ExecutionConfigurations - Execution configurations for recovery action.
 type ExecutionConfigurations struct {
-// REQUIRED; User consent for performing recovery action.
+	// REQUIRED; User consent for performing recovery action.
 	UserConsent *UserConsent
 }
 
 // FailoverRequest - Failover post action request.
 type FailoverRequest struct {
-// REQUIRED; Type of Failover direction.
+	// REQUIRED; Type of Failover direction.
 	FailoverDirection *FailoverDirectionTypes
 
-// Additional properties for Failover.
+	// Additional properties for Failover.
 	FailoverRequestProperties *FailoverRequestProperties
 }
 
 // FailoverRequestProperties - Additional properties for Failover.
 type FailoverRequestProperties struct {
-// REQUIRED; Source locations from where resources to be failed-over.
+	// REQUIRED; Source locations from where resources to be failed-over.
 	SourceLocations []*string
 
-// Execution configurations for the recovery action.
+	// Execution configurations for the recovery action.
 	ExecutionConfigurations *ExecutionConfigurations
 
-// Selected recovery resource Ids to be processed. If not provided, all qualified resources based on the source location(s)
-// will be processed.
+	// Selected recovery resource Ids to be processed. If not provided, all qualified resources based on the source location(s)
+	// will be processed.
 	SelectedResourceIDs []*string
 }
 
 // FaultDetails - Fault Details
 type FaultDetails struct {
-// REQUIRED; fault name
+	// REQUIRED; fault name
 	FaultName *string
 
-// REQUIRED; fault urn.
+	// REQUIRED; fault urn.
 	FaultUrn *string
 
-// REQUIRED; ARMId of the target resource where fault will be applied. For non-NSG, same as ResourceId. For NSG, its the NSG
-// resource and not the actual resource which is to be simulated for faulting.
+	// REQUIRED; ARMId of the target resource where fault will be applied. For non-NSG, same as ResourceId. For NSG, its the NSG
+	// resource and not the actual resource which is to be simulated for faulting.
 	TargetResourceID *string
 }
 
 // FaultProperties - Fault Properties
 type FaultProperties struct {
-// Custom Fault Details selected by user
+	// Custom Fault Details selected by user
 	CustomFault *CustomFaultDetails
 
-// Override fault provided by the user.
+	// Override fault provided by the user.
 	OverriddenDefaultFault *FaultDetails
 
-// READ-ONLY; Available faults for this resource.
+	// READ-ONLY; Available faults for this resource.
 	AvailableFaults []*FaultDetails
 
-// READ-ONLY; Default fault provided by the system.
+	// READ-ONLY; Default fault provided by the system.
 	DefaultFault *FaultDetails
 }
 
 // GoalAssignment - Goal assignment a AzureResilienceProviderHub resource
 type GoalAssignment struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *GoalAssignmentProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // GoalAssignmentListResult - The response of a GoalAssignment list operation.
 type GoalAssignmentListResult struct {
-// REQUIRED; The GoalAssignment items on this page
+	// REQUIRED; The GoalAssignment items on this page
 	Value []*GoalAssignment
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // GoalAssignmentProperties - Definition of goal assignment property.
 type GoalAssignmentProperties struct {
-// REQUIRED; The type of goal assignment.
+	// REQUIRED; The type of goal assignment.
 	GoalAssignmentType *GoalAssignmentType
 
-// REQUIRED; Arm id of the goal template.
+	// REQUIRED; Arm id of the goal template.
 	GoalTemplateID *string
 
-// List of service level resources.
+	// List of service level resources.
 	ServiceLevelResources []*ServiceLevelResource
 
-// READ-ONLY; Details of any errors encountered during the operation.
+	// READ-ONLY; Details of any errors encountered during the operation.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; Provisioning state
+	// READ-ONLY; Provisioning state
 	ProvisioningState *ProvisioningState
 }
 
 // GoalResource - Goal Resource a AzureResilienceProviderHub resource
 type GoalResource struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *GoalResourceProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // GoalResourceListResult - The response of a GoalResource list operation.
 type GoalResourceListResult struct {
-// REQUIRED; The GoalResource items on this page
+	// REQUIRED; The GoalResource items on this page
 	Value []*GoalResource
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // GoalResourceProperties - Definition of goal assignment property.
 type GoalResourceProperties struct {
-// REQUIRED; Flag which depicts whether the Arm resource is manually attested for high availability recommendation.
+	// REQUIRED; Flag which depicts whether the Arm resource is manually attested for high availability recommendation.
 	HighAvailabilityAttestationStatus *AttestationState
 
-// REQUIRED; Flag which depicts whether the Arm resource is excluded for high availability recommendation.
+	// REQUIRED; Flag which depicts whether the Arm resource is excluded for high availability recommendation.
 	HighAvailabilityGoalParticipation *ExclusionState
 
-// REQUIRED; Arm Id of resource under the SG for which the extension resource is maintained.
+	// REQUIRED; Arm Id of resource under the SG for which the extension resource is maintained.
 	ResourceArmID *string
 
-// Flag which depicts whether the Arm resource is manually attested for disaster recovery recommendation.
+	// Flag which depicts whether the Arm resource is manually attested for disaster recovery recommendation.
 	DisasterRecoveryAttestationStatus *AttestationState
 
-// Flag which depicts whether the Arm resource is excluded for disaster recovery recommendation.
+	// Flag which depicts whether the Arm resource is excluded for disaster recovery recommendation.
 	DisasterRecoveryGoalParticipation *ExclusionState
 
-// List of user confirmations for high availability solutions.
+	// List of user confirmations for high availability solutions.
 	UserConfirmationForHighAvailability []*UserConfirmationForHighAvailabilityItem
 
-// READ-ONLY; Reason for exclusion from disaster recovery goals.
+	// READ-ONLY; Reason for exclusion from disaster recovery goals.
 	ExclusionReasonForDisasterRecoveryGoals *ExclusionReason
 
-// READ-ONLY; Reason for exclusion from high availability goals.
+	// READ-ONLY; Reason for exclusion from high availability goals.
 	ExclusionReasonForHighAvailabilityGoals *ExclusionReason
 
-// READ-ONLY; Provisioning state
+	// READ-ONLY; Provisioning state
 	ProvisioningState *ProvisioningState
 
-// READ-ONLY; List of service groups of which this resource is memberof.
+	// READ-ONLY; List of service groups of which this resource is memberof.
 	ServiceGroupMemberships []*ServiceGroupMembership
 }
 
 // GoalTemplate - Goal template a AzureResilienceProviderHub resource
 type GoalTemplate struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *GoalTemplateProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // GoalTemplateListResult - The response of a GoalTemplate list operation.
 type GoalTemplateListResult struct {
-// REQUIRED; The GoalTemplate items on this page
+	// REQUIRED; The GoalTemplate items on this page
 	Value []*GoalTemplate
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // GoalTemplateProperties - Definition of goal template property.
 type GoalTemplateProperties struct {
-// REQUIRED; Type of Goal Template created by customer
+	// REQUIRED; Type of Goal Template created by customer
 	GoalType *GoalType
 
-// Regional recovery point objective specified by customer. eg, PT15M for 15 minutes
+	// Regional recovery point objective specified by customer. eg, PT15M for 15 minutes
 	RegionalRecoveryPointObjective *string
 
-// Regional recovery time objective specified by customer. eg, PT15M for 15 minutes
+	// Regional recovery time objective specified by customer. eg, PT15M for 15 minutes
 	RegionalRecoveryTimeObjective *string
 
-// Option specified by customer under disaster recovery section of goal template
+	// Option specified by customer under disaster recovery section of goal template
 	RequireDisasterRecovery *RequirementSelected
 
-// Option specified by customer under high availability section of goal template
+	// Option specified by customer under high availability section of goal template
 	RequireHighAvailability *RequirementSelected
 
-// READ-ONLY; Details of any errors encountered during the operation.
+	// READ-ONLY; Details of any errors encountered during the operation.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; Provisioning state
+	// READ-ONLY; Provisioning state
 	ProvisioningState *ProvisioningState
 }
 
 // GoalsData - Definition of goals data in unified resilience item.
 type GoalsData struct {
-// REQUIRED; Arm id of the goal assignment.
+	// REQUIRED; Arm id of the goal assignment.
 	AssignmentID *string
 
-// REQUIRED; Regional RPO status of the service group.
+	// REQUIRED; Regional RPO status of the service group.
 	RegionalRecoveryPointObjectiveStatus *ResilienceHealthStatus
 
-// REQUIRED; Regional RTO status of the service group.
+	// REQUIRED; Regional RTO status of the service group.
 	RegionalRecoveryTimeObjectiveStatus *ResilienceHealthStatus
 
-// REQUIRED; Arm id of the goal template.
+	// REQUIRED; Arm id of the goal template.
 	TemplateID *string
 
-// Computed recovery point estimated for the service group in minutes.
+	// Computed recovery point estimated for the service group in minutes.
 	RegionalRecoveryPointEstimatedInMinutes *IsoDuration
 
-// Regional RPO set in resilience goal in minutes.
+	// Regional RPO set in resilience goal in minutes.
 	RegionalRecoveryPointObjectiveInMinutes *IsoDuration
 
-// Computed RTA for the service group in minutes.
+	// Computed RTA for the service group in minutes.
 	RegionalRecoveryTimeActualInMinutes *IsoDuration
 
-// Regional RTO set in resilience goal in minutes.
+	// Regional RTO set in resilience goal in minutes.
 	RegionalRecoveryTimeObjectiveInMinutes *IsoDuration
 
-// Whether the resource is required for disaster recovery.
+	// Whether the resource is required for disaster recovery.
 	RequireDisasterRecovery *UnifiedResilienceItemRequirementSelected
 
-// Whether the resource is required for high availability.
+	// Whether the resource is required for high availability.
 	RequireHighAvailability *UnifiedResilienceItemRequirementSelected
 }
 
 // IncludeOrUpdateResource - Include or Update resource
 type IncludeOrUpdateResource struct {
-// REQUIRED; Id of the DrillResource to be included (NOT the ARM Id of the underlying resource).
+	// REQUIRED; Id of the DrillResource to be included (NOT the ARM Id of the underlying resource).
 	ID *string
 
-// Fault properties.
+	// Fault properties.
 	FaultProperties *FaultProperties
 }
 
 // JobErrorInfo - Job Error information.
 type JobErrorInfo struct {
-// READ-ONLY; A code representing the error.
+	// READ-ONLY; A code representing the error.
 	ErrorCode *string
 
-// READ-ONLY; A detailed message explaining the error.
+	// READ-ONLY; A detailed message explaining the error.
 	ErrorMessage *string
 
-// READ-ONLY; A list of recommendations to resolve the error.
+	// READ-ONLY; A list of recommendations to resolve the error.
 	Recommendations []*string
 }
 
 // JobExtendedInfo - Additional information for job.
 type JobExtendedInfo struct {
-// READ-ONLY; Non localized error message on job execution.
+	// READ-ONLY; Non localized error message on job execution.
 	DynamicErrorMessage *string
 
-// READ-ONLY; List of tasks associated with this job.
+	// READ-ONLY; List of tasks associated with this job.
 	TasksList []*JobTaskDetail
 }
 
 // JobProperties - Definition of a job, including its type, status, timing, and additional details.
 type JobProperties struct {
-// Details of any errors that occurred during the execution of this job.
+	// Details of any errors that occurred during the execution of this job.
 	ErrorDetails *JobErrorInfo
 
-// Additional information about the job.
+	// Additional information about the job.
 	JobExtendedInfo *JobExtendedInfo
 
-// Details of any retries that have been attempted for this job.
+	// Details of any retries that have been attempted for this job.
 	RetryDetails []*JobRetryDetails
 
-// READ-ONLY; The time elapsed during the execution of this job.
+	// READ-ONLY; The time elapsed during the execution of this job.
 	Duration *string
 
-// READ-ONLY; The end time of the job execution.
+	// READ-ONLY; The end time of the job execution.
 	EndTime *time.Time
 
-// READ-ONLY; Execution configurations for the job.
+	// READ-ONLY; Execution configurations for the job.
 	ExecutionConfigurations *ExecutionConfigurations
 
-// READ-ONLY; The type of job.
+	// READ-ONLY; The type of job.
 	JobType *JobType
 
-// READ-ONLY; The operation that this job is intended to perform.
+	// READ-ONLY; The operation that this job is intended to perform.
 	Operation *string
 
-// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
-// or operate on.
+	// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
+	// or operate on.
 	ResourceID *string
 
-// READ-ONLY; The start time of the job execution.
+	// READ-ONLY; The start time of the job execution.
 	StartTime *time.Time
 
-// READ-ONLY; The current status of the job execution.
+	// READ-ONLY; The current status of the job execution.
 	Status *JobStatus
 
-// READ-ONLY; Indicates whether the job was triggered by the system or a user.
+	// READ-ONLY; Indicates whether the job was triggered by the system or a user.
 	TriggeredBy *JobTriggeredBy
 
-// READ-ONLY; User Comments.
+	// READ-ONLY; User Comments.
 	UserComments []*JobUserComment
 }
 
@@ -1017,47 +1017,47 @@ func (j *JobProperties) GetJobProperties() *JobProperties { return j }
 
 // JobResourceProperties - Definition of job-resource.
 type JobResourceProperties struct {
-// REQUIRED; Discriminator for the JobResource object hierarchy.
+	// REQUIRED; Discriminator for the JobResource object hierarchy.
 	JobResourceType *JobResourceType
 
-// Details of any errors that occurred during the execution of this job.
+	// Details of any errors that occurred during the execution of this job.
 	ErrorDetails *JobErrorInfo
 
-// Additional information about the job.
+	// Additional information about the job.
 	JobExtendedInfo *JobExtendedInfo
 
-// Details of any retries that have been attempted for this job.
+	// Details of any retries that have been attempted for this job.
 	RetryDetails []*JobRetryDetails
 
-// READ-ONLY; The time elapsed during the execution of this job.
+	// READ-ONLY; The time elapsed during the execution of this job.
 	Duration *string
 
-// READ-ONLY; The end time of the job execution.
+	// READ-ONLY; The end time of the job execution.
 	EndTime *time.Time
 
-// READ-ONLY; Id of the Job under which this job-resource exists.
+	// READ-ONLY; Id of the Job under which this job-resource exists.
 	JobID *string
 
-// READ-ONLY; The operation that this job is intended to perform.
+	// READ-ONLY; The operation that this job is intended to perform.
 	Operation *string
 
-// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
-// or operate on.
+	// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
+	// or operate on.
 	ResourceID *string
 
-// READ-ONLY; The start time of the job execution.
+	// READ-ONLY; The start time of the job execution.
 	StartTime *time.Time
 
-// READ-ONLY; The current status of the job execution.
+	// READ-ONLY; The current status of the job execution.
 	Status *JobStatus
 
-// READ-ONLY; Id of the job-task to which this job resource is associated.
+	// READ-ONLY; Id of the job-task to which this job resource is associated.
 	TaskID *string
 
-// READ-ONLY; Friendly name of the job-task to which this job resource is associated.
+	// READ-ONLY; Friendly name of the job-task to which this job resource is associated.
 	TaskName *string
 
-// READ-ONLY; User Comments.
+	// READ-ONLY; User Comments.
 	UserComments []*JobUserComment
 }
 
@@ -1066,144 +1066,144 @@ func (j *JobResourceProperties) GetJobResourceProperties() *JobResourcePropertie
 
 // JobRetryDetails - Job Retry Details.
 type JobRetryDetails struct {
-// REQUIRED; The retry attempt number of the job.
+	// REQUIRED; The retry attempt number of the job.
 	RetryAttempt *int32
 
-// Details of any errors that occurred during the execution of this job.
+	// Details of any errors that occurred during the execution of this job.
 	ErrorDetails *JobErrorInfo
 
-// READ-ONLY; The time elapsed during the execution of this job.
+	// READ-ONLY; The time elapsed during the execution of this job.
 	Duration *string
 
-// READ-ONLY; The end time of the job execution.
+	// READ-ONLY; The end time of the job execution.
 	EndTime *time.Time
 
-// READ-ONLY; The start time of the job execution.
+	// READ-ONLY; The start time of the job execution.
 	StartTime *time.Time
 
-// READ-ONLY; The current status of the job execution.
+	// READ-ONLY; The current status of the job execution.
 	Status *JobStatus
 
-// READ-ONLY; User Comments.
+	// READ-ONLY; User Comments.
 	UserComments []*JobUserComment
 }
 
 // JobTaskDetail - Job task details.
 type JobTaskDetail struct {
-// Details of any errors that occurred during the execution of this job.
+	// Details of any errors that occurred during the execution of this job.
 	ErrorDetails *JobErrorInfo
 
-// READ-ONLY; The time elapsed during the execution of this job.
+	// READ-ONLY; The time elapsed during the execution of this job.
 	Duration *string
 
-// READ-ONLY; The end time of the job execution.
+	// READ-ONLY; The end time of the job execution.
 	EndTime *time.Time
 
-// READ-ONLY; Identifiers of linked jobs to this task.
+	// READ-ONLY; Identifiers of linked jobs to this task.
 	LinkedJobIDs []*string
 
-// READ-ONLY; Retry details of the task.
+	// READ-ONLY; Retry details of the task.
 	RetryDetails []*JobRetryDetails
 
-// READ-ONLY; The start time of the job execution.
+	// READ-ONLY; The start time of the job execution.
 	StartTime *time.Time
 
-// READ-ONLY; The current status of the job execution.
+	// READ-ONLY; The current status of the job execution.
 	Status *JobStatus
 
-// READ-ONLY; List of sub-tasks associated with this job.
+	// READ-ONLY; List of sub-tasks associated with this job.
 	SubTasksList []*JobTaskDetail
 
-// READ-ONLY; Identifier of the task.
+	// READ-ONLY; Identifier of the task.
 	TaskID *string
 
-// READ-ONLY; Friendly name of the task.
+	// READ-ONLY; Friendly name of the task.
 	TaskName *string
 
-// READ-ONLY; User Comments.
+	// READ-ONLY; User Comments.
 	UserComments []*JobUserComment
 }
 
 // JobUserComment - Job User's Comment.
 type JobUserComment struct {
-// READ-ONLY; The time of user comment.
+	// READ-ONLY; The time of user comment.
 	CommentTime *time.Time
 
-// READ-ONLY; The type of the user comment.
+	// READ-ONLY; The type of the user comment.
 	CommentType *CommentType
 
-// READ-ONLY; User Comment
+	// READ-ONLY; User Comment
 	Comments *string
 }
 
 // LastRunProperties - Definition of Last Run properties.
 type LastRunProperties struct {
-// READ-ONLY; Attestation state of the last run of this Drill.
+	// READ-ONLY; Attestation state of the last run of this Drill.
 	LastRunAttestation *DrillAttestation
 
-// READ-ONLY; Timespan of the last run of this Drill.
+	// READ-ONLY; Timespan of the last run of this Drill.
 	LastRunDuration *string
 
-// READ-ONLY; Status of the last run of this Drill.
+	// READ-ONLY; Status of the last run of this Drill.
 	LastRunState *JobStatus
 
-// READ-ONLY; Timestamp of the last run of this Drill.
+	// READ-ONLY; Timestamp of the last run of this Drill.
 	LastRunTime *time.Time
 }
 
 // ManagedOnBehalfOfConfiguration - Configuration of the managed on behalf of resource.
 type ManagedOnBehalfOfConfiguration struct {
-// READ-ONLY; Associated MoboBrokerResources.
+	// READ-ONLY; Associated MoboBrokerResources.
 	MoboBrokerResources []*MoboBrokerResource
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
-// REQUIRED; The type of managed identity assigned to this resource.
+	// REQUIRED; The type of managed identity assigned to this resource.
 	Type *ManagedServiceIdentityType
 
-// The identities assigned to this resource by the user.
+	// The identities assigned to this resource by the user.
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 
-// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-// identity.
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
 	PrincipalID *string
 
-// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string
 }
 
 // MarkAsCompleteRequest - Request body for MarkAsComplete API.
 type MarkAsCompleteRequest struct {
-// REQUIRED; State of the Drill Run.
+	// REQUIRED; State of the Drill Run.
 	DrillRunStage *DrillRunSubtasks
 }
 
 // MoboBrokerResource - MoboBroker resource.
 type MoboBrokerResource struct {
-// READ-ONLY; The fully qualified resource ID of the MoboBroker resource.
-// Example: `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}`
+	// READ-ONLY; The fully qualified resource ID of the MoboBroker resource.
+	// Example: `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}`
 	ID *string
 }
 
 // MonitoringPropertiesOfDrill - Drill monitoring properties.
 type MonitoringPropertiesOfDrill struct {
-// Identity to use for Drill monitoring operations.
+	// Identity to use for Drill monitoring operations.
 	Identity *AssociatedIdentity
 
-// READ-ONLY; Full ARM Id of the Data collection endpoint created by Resiliency service which will route data for service
-// group and its resources.
+	// READ-ONLY; Full ARM Id of the Data collection endpoint created by Resiliency service which will route data for service
+	// group and its resources.
 	DataCollectionEndpointID *string
 
-// READ-ONLY; Full ARM Id of the Log analytics workspace created by Resiliency service where health data is collected.
+	// READ-ONLY; Full ARM Id of the Log analytics workspace created by Resiliency service where health data is collected.
 	LogAnalyticsWorkspaceID *string
 
-// READ-ONLY; Full ARM Id of the Data collection rule created by Resiliency service which will route data for RAW health data
-// for service group resources.
+	// READ-ONLY; Full ARM Id of the Data collection rule created by Resiliency service which will route data for RAW health data
+	// for service group resources.
 	RawMetricsDataCollectionRuleID *string
 
-// READ-ONLY; Full ARM Id of the Data collection rule created by Resiliency service which will route data for Aggregate health
-// data of service group.
+	// READ-ONLY; Full ARM Id of the Data collection rule created by Resiliency service which will route data for Aggregate health
+	// data of service group.
 	ServiceGroupMetricsDataCollectionRuleID *string
 }
 
@@ -1211,176 +1211,176 @@ type MonitoringPropertiesOfDrill struct {
 //
 // Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-// Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
 
-// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType
 
-// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
-// Resource Manager/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
+	// Resource Manager/control-plane operations.
 	IsDataAction *bool
 
-// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
-// "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
-// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-// value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
-// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
-// Machine", "Restart Virtual Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
-// Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
-// Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
-// REQUIRED; The Operation items on this page
+	// REQUIRED; The Operation items on this page
 	Value []*Operation
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // OperationQualificationDetails - Details of qualification for an operation.
 type OperationQualificationDetails struct {
-// REQUIRED; Resource qualification state for the operation.
+	// REQUIRED; Resource qualification state for the operation.
 	QualificationState *QualificationState
 
-// Reasons for resource not qualified for the operation.
+	// Reasons for resource not qualified for the operation.
 	NotQualifiedReasons []*string
 }
 
 // OperationStatusResult - The current status of an async operation.
 type OperationStatusResult struct {
-// REQUIRED; Operation status.
+	// REQUIRED; Operation status.
 	Status *string
 
-// The end time of the operation.
+	// The end time of the operation.
 	EndTime *time.Time
 
-// If present, details of the operation error.
+	// If present, details of the operation error.
 	Error *ErrorDetail
 
-// Fully qualified ID for the async operation.
+	// Fully qualified ID for the async operation.
 	ID *string
 
-// Name of the async operation.
+	// Name of the async operation.
 	Name *string
 
-// The operations list.
+	// The operations list.
 	Operations []*OperationStatusResult
 
-// Percent of the operation that is complete.
+	// Percent of the operation that is complete.
 	PercentComplete *float64
 
-// The start time of the operation.
+	// The start time of the operation.
 	StartTime *time.Time
 
-// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
 	ResourceID *string
 }
 
 // RecommendCapacityRequest - Request body for the recommend capacity action. Provide specific resource IDs to evaluate, or
 // pass an empty array to let the service automatically select non-resilient resources from the goal assignment.
 type RecommendCapacityRequest struct {
-// REQUIRED; Azure resource IDs to evaluate for resiliency. Pass an empty array to automatically discover and evaluate non-resilient
-// resources in the service group. Maximum 50 resources per request.
+	// REQUIRED; Azure resource IDs to evaluate for resiliency. Pass an empty array to automatically discover and evaluate non-resilient
+	// resources in the service group. Maximum 50 resources per request.
 	ResourceIDs []*string
 }
 
 // RecommendationsData - Definition of recommendations data in unified resilience item.
 type RecommendationsData struct {
-// REQUIRED; The high availability section of resilience recommendation.
+	// REQUIRED; The high availability section of resilience recommendation.
 	HighAvailability *RecommendationsHighAvailabilityData
 }
 
 // RecommendationsHighAvailabilityData - Definition of recommendation data related to high availability in unified resilience
 // item.
 type RecommendationsHighAvailabilityData struct {
-// Count of resources that have high availability enabled.
+	// Count of resources that have high availability enabled.
 	EnabledResourceCount *int64
 
-// The date and time when the high availability recommendations were last evaluated.
+	// The date and time when the high availability recommendations were last evaluated.
 	EvaluationDateTime *time.Time
 
-// Count of resources that do not have high availability enabled.
+	// Count of resources that do not have high availability enabled.
 	NotEnabledResourceCount *int64
 
-// Count of resources that have not been evaluated for high availability.
+	// Count of resources that have not been evaluated for high availability.
 	NotEvaluatedResourceCount *int64
 }
 
 // RecoveryActionRequest - Request body for providing user input for a recovery action.
 type RecoveryActionRequest struct {
-// User-provided input for the action.
+	// User-provided input for the action.
 	Description *string
 }
 
 // RecoveryGroup - Represents a recovery orchestration group resource in the Azure Resilience Management provider namespace.
 type RecoveryGroup struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *RecoveryGroupProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // RecoveryGroupActionSettings - Settings for a recovery group action.
 type RecoveryGroupActionSettings struct {
-// READ-ONLY; User description of the action.
+	// READ-ONLY; User description of the action.
 	ActionDescription *string
 
-// READ-ONLY; Name of the action.
+	// READ-ONLY; Name of the action.
 	ActionName *string
 
-// READ-ONLY; Sequence number for the action.
+	// READ-ONLY; Sequence number for the action.
 	ActionSequence *int32
 
-// READ-ONLY; The action task associated with this job resource.
+	// READ-ONLY; The action task associated with this job resource.
 	ActionTask *ActionTask
 
-// READ-ONLY; Type of the recovery group action.
+	// READ-ONLY; Type of the recovery group action.
 	RecoveryGroupActionType *RecoveryGroupActionType
 }
 
 // RecoveryGroupBaseAction - Defines an action for the recovery orchestration group.
 type RecoveryGroupBaseAction struct {
-// REQUIRED; The name of the recovery orchestration group action.
+	// REQUIRED; The name of the recovery orchestration group action.
 	Name *string
 
-// REQUIRED; The maximum amount of time, in minutes, allowed for the action to complete before it times out.
+	// REQUIRED; The maximum amount of time, in minutes, allowed for the action to complete before it times out.
 	TimeoutInMinutes *int32
 
-// REQUIRED; The type of the recovery orchestration group action.
+	// REQUIRED; The type of the recovery orchestration group action.
 	Type *RecoveryGroupActionType
 
-// A description of the recovery orchestration group action, containing the instructions to be performed during this action.
+	// A description of the recovery orchestration group action, containing the instructions to be performed during this action.
 	Description *string
 }
 
@@ -1389,606 +1389,608 @@ func (r *RecoveryGroupBaseAction) GetRecoveryGroupBaseAction() *RecoveryGroupBas
 
 // RecoveryGroupCustomRunbookAction - Defines a custom runbook action for the recovery orchestration group.
 type RecoveryGroupCustomRunbookAction struct {
-// REQUIRED; The name of the recovery orchestration group action.
+	// REQUIRED; The name of the recovery orchestration group action.
 	Name *string
 
-// REQUIRED; The maximum amount of time, in minutes, allowed for the action to complete before it times out.
+	// REQUIRED; The maximum amount of time, in minutes, allowed for the action to complete before it times out.
 	TimeoutInMinutes *int32
 
-// CONSTANT; The type of the recovery orchestration group action.
-// Field has constant value RecoveryGroupActionTypeCustomRunbook, any specified value is ignored.
+	// CONSTANT; The type of the recovery orchestration group action.
+	// Field has constant value RecoveryGroupActionTypeCustomRunbook, any specified value is ignored.
 	Type *RecoveryGroupActionType
 
-// The ARM Resource ID of the resource that includes the actionable script, such as a Runbook in an Automation Account.
+	// The ARM Resource ID of the resource that includes the actionable script, such as a Runbook in an Automation Account.
 	ActionResourceID *string
 
-// The identity associated with actionResourceId for RBAC.
+	// The identity associated with actionResourceId for RBAC.
 	AssociatedIdentity *AssociatedIdentity
 
-// A description of the recovery orchestration group action, containing the instructions to be performed during this action.
+	// A description of the recovery orchestration group action, containing the instructions to be performed during this action.
 	Description *string
 
-// Key-value parameters for the operation.
+	// Key-value parameters for the operation.
 	Parameters map[string]*string
 }
 
 // GetRecoveryGroupBaseAction implements the RecoveryGroupBaseActionClassification interface for type RecoveryGroupCustomRunbookAction.
 func (r *RecoveryGroupCustomRunbookAction) GetRecoveryGroupBaseAction() *RecoveryGroupBaseAction {
 	return &RecoveryGroupBaseAction{
-		Description: r.Description,
-		Name: r.Name,
+		Description:      r.Description,
+		Name:             r.Name,
 		TimeoutInMinutes: r.TimeoutInMinutes,
-		Type: r.Type,
+		Type:             r.Type,
 	}
 }
 
 // RecoveryGroupManualAction - Defines a manual action for the recovery orchestration group.
 type RecoveryGroupManualAction struct {
-// REQUIRED; The name of the recovery orchestration group action.
+	// REQUIRED; The name of the recovery orchestration group action.
 	Name *string
 
-// REQUIRED; The maximum amount of time, in minutes, allowed for the action to complete before it times out.
+	// REQUIRED; The maximum amount of time, in minutes, allowed for the action to complete before it times out.
 	TimeoutInMinutes *int32
 
-// CONSTANT; The type of the recovery orchestration group action.
-// Field has constant value RecoveryGroupActionTypeManualAction, any specified value is ignored.
+	// CONSTANT; The type of the recovery orchestration group action.
+	// Field has constant value RecoveryGroupActionTypeManualAction, any specified value is ignored.
 	Type *RecoveryGroupActionType
 
-// A description of the recovery orchestration group action, containing the instructions to be performed during this action.
+	// A description of the recovery orchestration group action, containing the instructions to be performed during this action.
 	Description *string
 }
 
 // GetRecoveryGroupBaseAction implements the RecoveryGroupBaseActionClassification interface for type RecoveryGroupManualAction.
 func (r *RecoveryGroupManualAction) GetRecoveryGroupBaseAction() *RecoveryGroupBaseAction {
 	return &RecoveryGroupBaseAction{
-		Description: r.Description,
-		Name: r.Name,
+		Description:      r.Description,
+		Name:             r.Name,
 		TimeoutInMinutes: r.TimeoutInMinutes,
-		Type: r.Type,
+		Type:             r.Type,
 	}
 }
 
 // RecoveryGroupProperties - Properties of the recovery orchestration group.
 type RecoveryGroupProperties struct {
-// REQUIRED; A description of the recovery orchestration group.
+	// REQUIRED; A description of the recovery orchestration group.
 	Description *string
 
-// REQUIRED; A unique id for the recovery orchestration group, which is a GUID.
+	// REQUIRED; A unique id for the recovery orchestration group, which is a GUID.
 	GroupUniqueID *string
 
-// REQUIRED; The order ID of the recovery orchestration group.
+	// REQUIRED; The order ID of the recovery orchestration group.
 	OrderID *int32
 
-// Post-actions for the recovery orchestration group.
+	// Post-actions for the recovery orchestration group.
 	PostActions []RecoveryGroupBaseActionClassification
 
-// Pre-actions for the recovery orchestration group.
+	// Pre-actions for the recovery orchestration group.
 	PreActions []RecoveryGroupBaseActionClassification
 }
 
 // RecoveryGroupsSetting - Settings for the recovery orchestration groups.
 type RecoveryGroupsSetting struct {
-// REQUIRED; The default recovery orchestration group setting. Every recovery orchestration plan has a default recovery orchestration
-// group.
+	// REQUIRED; The default recovery orchestration group setting. Every recovery orchestration plan has a default recovery orchestration
+	// group.
 	DefaultGroup *RecoveryGroup
 
-// Additional recovery orchestration group settings.
+	// Additional recovery orchestration group settings.
 	AdditionalGroups []*RecoveryGroup
 }
 
 // RecoveryJob - Represents a recovery job resource in the Azure Resilience Management provider namespace.
 type RecoveryJob struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *RecoveryJobProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // RecoveryJobListResult - The response of a RecoveryJob list operation.
 type RecoveryJobListResult struct {
-// REQUIRED; The RecoveryJob items on this page
+	// REQUIRED; The RecoveryJob items on this page
 	Value []*RecoveryJob
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // RecoveryJobProperties - Definition of recovery job associated with Recovery Orchestration Plan.
 type RecoveryJobProperties struct {
-// CONSTANT; Discriminator for the Job object hierarchy.
-// Field has constant value JobTypeRecoveryPlan, any specified value is ignored.
+	// CONSTANT; Discriminator for the Job object hierarchy.
+	// Field has constant value JobTypeRecoveryPlan, any specified value is ignored.
 	JobType *JobType
 
-// Details of any errors that occurred during the execution of this job.
+	// Details of any errors that occurred during the execution of this job.
 	ErrorDetails *JobErrorInfo
 
-// Additional information about the job.
+	// Additional information about the job.
 	JobExtendedInfo *JobExtendedInfo
 
-// Details of any retries that have been attempted for this job.
+	// Details of any retries that have been attempted for this job.
 	RetryDetails []*JobRetryDetails
 
-// READ-ONLY; The time elapsed during the execution of this job.
+	// READ-ONLY; The time elapsed during the execution of this job.
 	Duration *string
 
-// READ-ONLY; The end time of the job execution.
+	// READ-ONLY; The end time of the job execution.
 	EndTime *time.Time
 
-// READ-ONLY; Execution configurations for the job.
+	// READ-ONLY; Execution configurations for the job.
 	ExecutionConfigurations *ExecutionConfigurations
 
-// READ-ONLY; The operation that this job is intended to perform.
+	// READ-ONLY; The operation that this job is intended to perform.
 	Operation *string
 
-// READ-ONLY; The provisioning state of the recovery job.
+	// READ-ONLY; The provisioning state of the recovery job.
 	ProvisioningState *ProvisioningState
 
-// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
-// or operate on.
+	// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
+	// or operate on.
 	ResourceID *string
 
-// READ-ONLY; The start time of the job execution.
+	// READ-ONLY; The start time of the job execution.
 	StartTime *time.Time
 
-// READ-ONLY; The current status of the job execution.
+	// READ-ONLY; The current status of the job execution.
 	Status *JobStatus
 
-// READ-ONLY; Indicates whether the job was triggered by the system or a user.
+	// READ-ONLY; Indicates whether the job was triggered by the system or a user.
 	TriggeredBy *JobTriggeredBy
 
-// READ-ONLY; User Comments.
+	// READ-ONLY; User Comments.
 	UserComments []*JobUserComment
 }
 
 // GetJobProperties implements the JobPropertiesClassification interface for type RecoveryJobProperties.
 func (r *RecoveryJobProperties) GetJobProperties() *JobProperties {
 	return &JobProperties{
-		Duration: r.Duration,
-		EndTime: r.EndTime,
-		ErrorDetails: r.ErrorDetails,
+		Duration:                r.Duration,
+		EndTime:                 r.EndTime,
+		ErrorDetails:            r.ErrorDetails,
 		ExecutionConfigurations: r.ExecutionConfigurations,
-		JobExtendedInfo: r.JobExtendedInfo,
-		JobType: r.JobType,
-		Operation: r.Operation,
-		ResourceID: r.ResourceID,
-		RetryDetails: r.RetryDetails,
-		StartTime: r.StartTime,
-		Status: r.Status,
-		TriggeredBy: r.TriggeredBy,
-		UserComments: r.UserComments,
+		JobExtendedInfo:         r.JobExtendedInfo,
+		JobType:                 r.JobType,
+		Operation:               r.Operation,
+		ResourceID:              r.ResourceID,
+		RetryDetails:            r.RetryDetails,
+		StartTime:               r.StartTime,
+		Status:                  r.Status,
+		TriggeredBy:             r.TriggeredBy,
+		UserComments:            r.UserComments,
 	}
 }
 
 // RecoveryJobResource - Represents a recovery orchestration job resource in the Azure Resilience Management provider namespace.
 type RecoveryJobResource struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *RecoveryJobResourceProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // RecoveryJobResourceListResult - The response of a RecoveryJobResource list operation.
 type RecoveryJobResourceListResult struct {
-// REQUIRED; The RecoveryJobResource items on this page
+	// REQUIRED; The RecoveryJobResource items on this page
 	Value []*RecoveryJobResource
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // RecoveryJobResourceProperties - Properties of a recovery orchestration job resource associated with a recovery orchestration
 // plan.
 type RecoveryJobResourceProperties struct {
-// CONSTANT; Discriminator for the Job object hierarchy.
-// Field has constant value JobResourceTypeRecoveryPlan, any specified value is ignored.
+	// CONSTANT; Discriminator for the Job object hierarchy.
+	// Field has constant value JobResourceTypeRecoveryPlan, any specified value is ignored.
 	JobResourceType *JobResourceType
 
-// Details of any errors that occurred during the execution of this job.
+	// Details of any errors that occurred during the execution of this job.
 	ErrorDetails *JobErrorInfo
 
-// Additional information about the job.
+	// Additional information about the job.
 	JobExtendedInfo *JobExtendedInfo
 
-// Details of any retries that have been attempted for this job.
+	// Details of any retries that have been attempted for this job.
 	RetryDetails []*JobRetryDetails
 
-// READ-ONLY; The time elapsed during the execution of this job.
+	// READ-ONLY; The time elapsed during the execution of this job.
 	Duration *string
 
-// READ-ONLY; The end time of the job execution.
+	// READ-ONLY; The end time of the job execution.
 	EndTime *time.Time
 
-// READ-ONLY; Id of the Job under which this job-resource exists.
+	// READ-ONLY; Id of the Job under which this job-resource exists.
 	JobID *string
 
-// READ-ONLY; The operation that this job is intended to perform.
+	// READ-ONLY; The operation that this job is intended to perform.
 	Operation *string
 
-// READ-ONLY; A setting that indicates the protection solution selected.
+	// READ-ONLY; A setting that indicates the protection solution selected.
 	ProtectionSolutionType *ResourceProtectionSolutionType
 
-// READ-ONLY; The provisioning state of the recovery job resource.
+	// READ-ONLY; The provisioning state of the recovery job resource.
 	ProvisioningState *ProvisioningState
 
-// READ-ONLY; The recovery action settings.
+	// READ-ONLY; The recovery action settings.
 	RecoveryGroupActionSettings *RecoveryGroupActionSettings
 
-// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
-// or operate on.
+	// READ-ONLY; The resource for which this job was created. This is typically the resource that the job is intended to manage
+	// or operate on.
 	ResourceID *string
 
-// READ-ONLY; The start time of the job execution.
+	// READ-ONLY; The start time of the job execution.
 	StartTime *time.Time
 
-// READ-ONLY; The current status of the job execution.
+	// READ-ONLY; The current status of the job execution.
 	Status *JobStatus
 
-// READ-ONLY; Id of the job-task to which this job resource is associated.
+	// READ-ONLY; Id of the job-task to which this job resource is associated.
 	TaskID *string
 
-// READ-ONLY; Friendly name of the job-task to which this job resource is associated.
+	// READ-ONLY; Friendly name of the job-task to which this job resource is associated.
 	TaskName *string
 
-// READ-ONLY; User Comments.
+	// READ-ONLY; User Comments.
 	UserComments []*JobUserComment
 }
 
 // GetJobResourceProperties implements the JobResourcePropertiesClassification interface for type RecoveryJobResourceProperties.
 func (r *RecoveryJobResourceProperties) GetJobResourceProperties() *JobResourceProperties {
 	return &JobResourceProperties{
-		Duration: r.Duration,
-		EndTime: r.EndTime,
-		ErrorDetails: r.ErrorDetails,
+		Duration:        r.Duration,
+		EndTime:         r.EndTime,
+		ErrorDetails:    r.ErrorDetails,
 		JobExtendedInfo: r.JobExtendedInfo,
-		JobID: r.JobID,
+		JobID:           r.JobID,
 		JobResourceType: r.JobResourceType,
-		Operation: r.Operation,
-		ResourceID: r.ResourceID,
-		RetryDetails: r.RetryDetails,
-		StartTime: r.StartTime,
-		Status: r.Status,
-		TaskID: r.TaskID,
-		TaskName: r.TaskName,
-		UserComments: r.UserComments,
+		Operation:       r.Operation,
+		ResourceID:      r.ResourceID,
+		RetryDetails:    r.RetryDetails,
+		StartTime:       r.StartTime,
+		Status:          r.Status,
+		TaskID:          r.TaskID,
+		TaskName:        r.TaskName,
+		UserComments:    r.UserComments,
 	}
 }
 
 // RecoveryPlan - Represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
 type RecoveryPlan struct {
-// The managed service identities assigned to this resource.
+	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *RecoveryPlanProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // RecoveryPlanActionBaseResponse - Recovery Orchestration Plan post action response.
 type RecoveryPlanActionBaseResponse struct {
-// REQUIRED; JobId of the job triggered for Recovery Orchestration Plan.
+	// REQUIRED; JobId of the job triggered for Recovery Orchestration Plan.
 	JobID *string
 }
 
 // RecoveryPlanFailoverOperationStatus - Details of the recovery orchestration plan failover operation execution.
 type RecoveryPlanFailoverOperationStatus struct {
-// READ-ONLY; Error details for the most recent execution of the recovery orchestration plan.
+	// READ-ONLY; Error details for the most recent execution of the recovery orchestration plan.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; The most recent execution time of the recovery orchestration plan in UTC.
+	// READ-ONLY; The most recent execution time of the recovery orchestration plan in UTC.
 	LastExecutedAt *time.Time
 
-// READ-ONLY; The status of the most recent execution of the recovery orchestration plan.
+	// READ-ONLY; The status of the most recent execution of the recovery orchestration plan.
 	OperationStatus *RecoveryOperationStatus
 
-// READ-ONLY; The actual recovery time of the most recent recovery orchestration plan.
+	// READ-ONLY; The actual recovery time of the most recent recovery orchestration plan.
 	RecoveryTimeActual *string
 }
 
 // RecoveryPlanListResult - The response of a RecoveryPlan list operation.
 type RecoveryPlanListResult struct {
-// REQUIRED; The RecoveryPlan items on this page
+	// REQUIRED; The RecoveryPlan items on this page
 	Value []*RecoveryPlan
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // RecoveryPlanOperationStatus - Details of the recovery orchestration plan operation execution.
 type RecoveryPlanOperationStatus struct {
-// READ-ONLY; Error details for the most recent execution of the recovery orchestration plan.
+	// READ-ONLY; Error details for the most recent execution of the recovery orchestration plan.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; The most recent execution time of the recovery orchestration plan in UTC.
+	// READ-ONLY; The most recent execution time of the recovery orchestration plan in UTC.
 	LastExecutedAt *time.Time
 
-// READ-ONLY; The status of the most recent execution of the recovery orchestration plan.
+	// READ-ONLY; The status of the most recent execution of the recovery orchestration plan.
 	OperationStatus *RecoveryOperationStatus
 }
 
 // RecoveryPlanProperties - Properties of the recovery orchestration plan.
 type RecoveryPlanProperties struct {
-// REQUIRED; A description of the recovery orchestration plan.
+	// REQUIRED; A description of the recovery orchestration plan.
 	PlanDescription *string
 
-// REQUIRED; The type of the recovery orchestration plan, which can be set during creation but cannot be changed afterward.
+	// REQUIRED; The type of the recovery orchestration plan, which can be set during creation but cannot be changed afterward.
 	PlanType *RecoveryPlanType
 
-// REQUIRED; Settings for the recovery orchestration groups associated with the recovery orchestration plan.
+	// REQUIRED; Settings for the recovery orchestration groups associated with the recovery orchestration plan.
 	RecoveryGroupsSetting *RecoveryGroupsSetting
 
-// READ-ONLY; Error details associated with the resource.
+	// READ-ONLY; Error details associated with the resource.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; The status of the most recent failover operation executed.
+	// READ-ONLY; The status of the most recent failover operation executed.
 	LatestFailoverStatus *RecoveryPlanFailoverOperationStatus
 
-// READ-ONLY; The status of the most recent validation performed.
+	// READ-ONLY; The status of the most recent validation performed.
 	LatestValidationStatus *RecoveryPlanOperationStatus
 
-// READ-ONLY; The current state of the recovery orchestration plan.
+	// READ-ONLY; The current state of the recovery orchestration plan.
 	PlanState *RecoveryPlanState
 
-// READ-ONLY; The provisioning state of the recovery orchestration plan.
+	// READ-ONLY; The provisioning state of the recovery orchestration plan.
 	ProvisioningState *ProvisioningState
 }
 
 // RecoveryPlanPropertiesOfDrill - RecoveryPlan properties.
 type RecoveryPlanPropertiesOfDrill struct {
-// REQUIRED; Identity to use for RecoveryPlan operations.
+	// REQUIRED; Identity to use for RecoveryPlan operations.
 	Identity *AssociatedIdentity
 
-// READ-ONLY; Recovery Orchestration plan associated with this Drill.
+	// READ-ONLY; Recovery Orchestration plan associated with this Drill.
 	RecoveryPlanID *string
 
-// READ-ONLY; Excluded resource count in RecoveryPlan.
+	// READ-ONLY; Excluded resource count in RecoveryPlan.
 	RecoveryPlanResourceExcludedCount *int32
 }
 
 // RecoveryResource - RecoveryPlan Resource a AzureResilienceProviderHub resource
 type RecoveryResource struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *RecoveryResourceProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // RecoveryResourceListResult - The response of a RecoveryResource list operation.
 type RecoveryResourceListResult struct {
-// REQUIRED; The RecoveryResource items on this page
+	// REQUIRED; The RecoveryResource items on this page
 	Value []*RecoveryResource
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // RecoveryResourceProperties - Definition of recovery orchestration resource property associated with recovery orchestration
 // plan.
 type RecoveryResourceProperties struct {
-// REQUIRED; A unique id for the recovery resource, which is a GUID.
+	// REQUIRED; A unique id for the recovery resource, which is a GUID.
 	RecoveryResourceUniqueID *string
 
-// Identity details associated to the resource, which will be used for performing any operations on it
+	// Identity details associated to the resource, which will be used for performing any operations on it
 	AssociatedIdentity *AssociatedIdentity
 
-// A state that indicates the resource status with respect to the recovery orchestration plan.
+	// A state that indicates the resource status with respect to the recovery orchestration plan.
 	InclusionState *ResourceInclusionState
 
-// The recovery orchestration group id associated with the recovery resources.
+	// The recovery orchestration group id associated with the recovery resources.
 	RecoveryGroupID *string
 
-// Resource protection solution settings of the protection solutions recovery orchestration resource is protected with.
+	// Resource protection solution settings of the protection solutions recovery orchestration resource is protected with.
 	SelectedProtectionSolutionSetting ResourceBaseProtectionSolutionSettingClassification
 
-// A setting that indicates the protection solution selected.
+	// A setting that indicates the protection solution selected.
 	SelectedProtectionSolutionType *ResourceProtectionSolutionType
 
-// READ-ONLY; Reason for the resource to be in need of attention
+	// READ-ONLY; Reason for the resource to be in need of attention
 	AttentionReasons []*string
 
-// READ-ONLY; Error details associated with the resource.
+	// READ-ONLY; Error details associated with the resource.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; Indicating if resource needs user attention and action, details will be found in attentionReasons
+	// READ-ONLY; Indicating if resource needs user attention and action, details will be found in attentionReasons
 	NeedsAttention *bool
 
-// READ-ONLY; A status that indicates the protection status of a resource with an Azure solution for regional or zonal recovery.
+	// READ-ONLY; A status that indicates the protection status of a resource with an Azure solution for regional or zonal recovery.
 	ProtectionStatus *ResourceProtectionStatus
 
-// READ-ONLY; Provisioning state
+	// READ-ONLY; Provisioning state
 	ProvisioningState *ProvisioningState
 
-// READ-ONLY; Resource ID of the Azure resource associated with the recovery orchestration plan and linked to the recovery
-// resource.
+	// READ-ONLY; Resource ID of the Azure resource associated with the recovery orchestration plan and linked to the recovery
+	// resource.
 	ResourceID *string
 
-// READ-ONLY; Original location of the Azure resource associated with the recovery orchestration plan and linked to the recovery
-// resource.
+	// READ-ONLY; Original location of the Azure resource associated with the recovery orchestration plan and linked to the recovery
+	// resource.
 	ResourceLocation *string
 
-// READ-ONLY; Physical zones of the Azure resource associated with the recovery orchestration plan and linked to the recovery
-// resource.
+	// READ-ONLY; Physical zones of the Azure resource associated with the recovery orchestration plan and linked to the recovery
+	// resource.
 	ResourcePhysicalZones []*string
 
-// READ-ONLY; A list of ResourceProtectionSolutions with which the recovery orchestration resource is protected.
+	// READ-ONLY; A list of ResourceProtectionSolutions with which the recovery orchestration resource is protected.
 	ResourceProtectionSolutions []*ResourceProtectionSolutionSettings
 }
 
 // RecoveryResourceQualification - Details of resource and its qualification for an operation
 type RecoveryResourceQualification struct {
-// REQUIRED; Details of qualification for the operation.
+	// REQUIRED; Details of qualification for the operation.
 	OperationQualificationDetails *OperationQualificationDetails
 
-// REQUIRED; Recovery orchestration resource.
+	// REQUIRED; Recovery orchestration resource.
 	RecoveryResource *RecoveryResource
 }
 
 // RegionalDrillProperties - Definition of Regional Drill properties.
 type RegionalDrillProperties struct {
-// CONSTANT; The discriminator for the Drill object hierarchy.
-// Field has constant value DrillTypeRegional, any specified value is ignored.
+	// CONSTANT; The discriminator for the Drill object hierarchy.
+	// Field has constant value DrillTypeRegional, any specified value is ignored.
 	DrillType *DrillType
 
-// Chaos Resource properties.
+	// Chaos Resource properties.
 	ChaosResourceProperties *ChaosResourcePropertiesOfDrill
 
-// Properties for internal resources that are created for the Drill.
+	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
 
-// Monitoring properties of the Drill.
+	// Monitoring properties of the Drill.
 	MonitoringProperties *MonitoringPropertiesOfDrill
 
-// RBAC setup mode.
+	// RBAC setup mode.
 	RbacSetupMode *RBACSetupMode
 
-// ROPlan properties.
+	// ROPlan properties.
 	RecoveryPlanProperties *RecoveryPlanPropertiesOfDrill
 
-// READ-ONLY; Attention reason if the ReadinessState is 'NeedsAttention'.
+	// READ-ONLY; Attention reason if the ReadinessState is 'NeedsAttention'.
 	AttentionReason *AttentionReason
 
-// READ-ONLY; Error details associated with the resource.
+	// READ-ONLY; Error details associated with the resource.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; Readiness state of the Drill.
+	// READ-ONLY; Readiness state of the Drill.
 	ExecutionReadinessState *ExecutionReadinessState
 
-// READ-ONLY; Execution state of the Drill. Whether it is currently running or not.
+	// READ-ONLY; Execution state of the Drill. Whether it is currently running or not.
 	ExecutionState *ExecutionState
 
-// READ-ONLY; Last resync and readiness check time.
+	// READ-ONLY; Last resync and readiness check time.
 	LastResyncReadinessCheckTime *time.Time
 
-// READ-ONLY; Last run properties.
+	// READ-ONLY; Last run properties.
 	LastRunProperties *LastRunProperties
 
-// READ-ONLY; Last sync time.
+	// READ-ONLY; Last sync time.
 	LastSyncTime *time.Time
 
-// READ-ONLY; Managed RG v2 properties.
+	// READ-ONLY; Managed RG v2 properties.
 	ManagedOnBehalfOfConfiguration *ManagedOnBehalfOfConfiguration
 
-// READ-ONLY; Status of the last operation.
+	// READ-ONLY; Status of the last operation.
 	ProvisioningState *ProvisioningState
 
-// READ-ONLY; Parent SG resource.
+	// READ-ONLY; Parent SG resource.
 	ServiceGroupID *string
 
-// READ-ONLY; Internal System Metadata, to be used by internal components only.
+	// READ-ONLY; Internal System Metadata, to be used by internal components only.
 	SystemMetadata *SystemMetadata
 }
 
 // GetDrillProperties implements the DrillPropertiesClassification interface for type RegionalDrillProperties.
 func (r *RegionalDrillProperties) GetDrillProperties() *DrillProperties {
 	return &DrillProperties{
-		AttentionReason: r.AttentionReason,
-		ChaosResourceProperties: r.ChaosResourceProperties,
-		DrillAssetProperties: r.DrillAssetProperties,
-		DrillType: r.DrillType,
-		ErrorDetails: r.ErrorDetails,
-		ExecutionReadinessState: r.ExecutionReadinessState,
-		ExecutionState: r.ExecutionState,
-		LastResyncReadinessCheckTime: r.LastResyncReadinessCheckTime,
-		LastRunProperties: r.LastRunProperties,
-		LastSyncTime: r.LastSyncTime,
+		AttentionReason:                r.AttentionReason,
+		ChaosResourceProperties:        r.ChaosResourceProperties,
+		DrillAssetProperties:           r.DrillAssetProperties,
+		DrillType:                      r.DrillType,
+		ErrorDetails:                   r.ErrorDetails,
+		ExecutionReadinessState:        r.ExecutionReadinessState,
+		ExecutionState:                 r.ExecutionState,
+		LastResyncReadinessCheckTime:   r.LastResyncReadinessCheckTime,
+		LastRunProperties:              r.LastRunProperties,
+		LastSyncTime:                   r.LastSyncTime,
 		ManagedOnBehalfOfConfiguration: r.ManagedOnBehalfOfConfiguration,
-		MonitoringProperties: r.MonitoringProperties,
-		ProvisioningState: r.ProvisioningState,
-		RbacSetupMode: r.RbacSetupMode,
-		RecoveryPlanProperties: r.RecoveryPlanProperties,
-		ServiceGroupID: r.ServiceGroupID,
-		SystemMetadata: r.SystemMetadata,
+		MonitoringProperties:           r.MonitoringProperties,
+		ProvisioningState:              r.ProvisioningState,
+		RbacSetupMode:                  r.RbacSetupMode,
+		RecoveryPlanProperties:         r.RecoveryPlanProperties,
+		ServiceGroupID:                 r.ServiceGroupID,
+		SystemMetadata:                 r.SystemMetadata,
 	}
 }
 
 // ReprotectRequest - Reprotect post action request.
 type ReprotectRequest struct {
-// Additional properties for Reprotect.
+	// Additional properties for Reprotect.
 	ReprotectRequestProperties *ReprotectRequestProperties
 }
 
 // ReprotectRequestProperties - Additional properties for Reprotect.
 type ReprotectRequestProperties struct {
-// Selected recovery resource Ids to be processed. If not provided, all qualified resources will be processed.
+	// Selected recovery resource Ids to be processed. If not provided, all qualified resources will be processed.
 	SelectedResourceIDs []*string
 }
 
 // ResourceBaseProtectionSolutionSetting - Definition of recovery orchestration resource protection solution setting with
 // recovery orchestration plan.
 type ResourceBaseProtectionSolutionSetting struct {
-// REQUIRED; A setting that indicates the resource protected with which recovery solution.
+	// REQUIRED; A setting that indicates the resource protected with which recovery solution.
 	ProtectionSolutionType *ResourceProtectionSolutionType
 }
 
 // GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
 // type ResourceBaseProtectionSolutionSetting.
-func (r *ResourceBaseProtectionSolutionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting { return r }
+func (r *ResourceBaseProtectionSolutionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return r
+}
 
 // ResourceCustomProtectionAction - Definition of recovery resource custom action setting with Recovery Orchestration Plan.
 type ResourceCustomProtectionAction struct {
-// REQUIRED; The Azure resource ID hosting the custom action automation script.
+	// REQUIRED; The Azure resource ID hosting the custom action automation script.
 	ResourceID *string
 }
 
 // ResourceCustomProtectionSetting - Definition of recovery orchestration resource custom protection setting with recovery
 // orchestration plan.
 type ResourceCustomProtectionSetting struct {
-// CONSTANT; Field has constant value ResourceProtectionSolutionTypeCustomRunbook, any specified value is ignored.
+	// CONSTANT; Field has constant value ResourceProtectionSolutionTypeCustomRunbook, any specified value is ignored.
 	ProtectionSolutionType *ResourceProtectionSolutionType
 
-// The Azure resource ID hosting the failover automation script.
+	// The Azure resource ID hosting the failover automation script.
 	FailoverAction *ResourceCustomProtectionAction
 
-// The Azure resource ID hosting the failover commit automation script.
+	// The Azure resource ID hosting the failover commit automation script.
 	FailoverCommitAction *ResourceCustomProtectionAction
 
-// The Azure resource ID hosting the reprotect automation script.
+	// The Azure resource ID hosting the reprotect automation script.
 	ReprotectAction *ResourceCustomProtectionAction
 
-// The Azure resource ID hosting the test failover automation script.
+	// The Azure resource ID hosting the test failover automation script.
 	TestFailoverAction *ResourceCustomProtectionAction
 
-// The Azure resource ID hosting the test failover cleanup automation script.
+	// The Azure resource ID hosting the test failover cleanup automation script.
 	TestFailoverCleanupAction *ResourceCustomProtectionAction
 }
 
@@ -2002,21 +2004,21 @@ func (r *ResourceCustomProtectionSetting) GetResourceBaseProtectionSolutionSetti
 
 // ResourceLists - Add, Update, Delete resource lists
 type ResourceLists struct {
-// Excluded resource
+	// Excluded resource
 	ExcludeResources []*string
 
-// Include resource
+	// Include resource
 	IncludeResources []*IncludeOrUpdateResource
 
-// Update resource
+	// Update resource
 	UpdateResources []*IncludeOrUpdateResource
 }
 
 // ResourceNativeProtectionSolutionSetting - Definition of recovery orchestration resource native protection solution setting
 // with recovery orchestration plan.
 type ResourceNativeProtectionSolutionSetting struct {
-// CONSTANT; A setting that indicates the resource protected with which recovery solution.
-// Field has constant value ResourceProtectionSolutionTypeAzureNative, any specified value is ignored.
+	// CONSTANT; A setting that indicates the resource protected with which recovery solution.
+	// Field has constant value ResourceProtectionSolutionTypeAzureNative, any specified value is ignored.
 	ProtectionSolutionType *ResourceProtectionSolutionType
 }
 
@@ -2030,62 +2032,62 @@ func (r *ResourceNativeProtectionSolutionSetting) GetResourceBaseProtectionSolut
 
 // ResourceProtectionSolutionSettings - Definition of recovery resource resource protection solution settings.
 type ResourceProtectionSolutionSettings struct {
-// READ-ONLY; Is AutoFailover configured for the resource replication.
+	// READ-ONLY; Is AutoFailover configured for the resource replication.
 	IsAutoFailover *bool
 
-// READ-ONLY; Active location of the Azure resource associated with the recovery orchestration plan and linked to the recovery
-// resource.
+	// READ-ONLY; Active location of the Azure resource associated with the recovery orchestration plan and linked to the recovery
+	// resource.
 	ActiveLocation *string
 
-// READ-ONLY; Active locations of the Azure resource associated with the recovery orchestration plan and linked to the recovery
-// resource.
+	// READ-ONLY; Active locations of the Azure resource associated with the recovery orchestration plan and linked to the recovery
+	// resource.
 	ActiveLocations []*string
 
-// READ-ONLY; Active Resource location and physical zones of Azure Resource.
+	// READ-ONLY; Active Resource location and physical zones of Azure Resource.
 	ActivePhysicalZones []*string
 
-// READ-ONLY; Failover state of the recovery orchestration resource.
+	// READ-ONLY; Failover state of the recovery orchestration resource.
 	FailoverState *FailoverState
 
-// READ-ONLY; Primary resource which is getting replicated.
+	// READ-ONLY; Primary resource which is getting replicated.
 	PrimaryResource *string
 
-// READ-ONLY; A setting that indicates the resource protected with which recovery solution.
+	// READ-ONLY; A setting that indicates the resource protected with which recovery solution.
 	ProtectionSolutionType *ResourceProtectionSolutionType
 
-// READ-ONLY; A status that indicates the protection status of a resource with an Azure solution for regional or zonal recovery.
+	// READ-ONLY; A status that indicates the protection status of a resource with an Azure solution for regional or zonal recovery.
 	ProtectionStatus *ResourceProtectionStatus
 
-// READ-ONLY; List of recovery locations of the Azure resource associated with the recovery orchestration plan and linked
-// to the recovery resource.
+	// READ-ONLY; List of recovery locations of the Azure resource associated with the recovery orchestration plan and linked
+	// to the recovery resource.
 	RecoveryLocations []*string
 
-// READ-ONLY; List of Replica resources to which replication is happening.
+	// READ-ONLY; List of Replica resources to which replication is happening.
 	ReplicaResources []*string
 
-// READ-ONLY; Specifies the role of the resource in the replication process.
+	// READ-ONLY; Specifies the role of the resource in the replication process.
 	ReplicationRole *ResourceReplicationRole
 
-// READ-ONLY; Resource ID of the Azure resource associated with the recovery orchestration plan and linked to the recovery
-// resource.
+	// READ-ONLY; Resource ID of the Azure resource associated with the recovery orchestration plan and linked to the recovery
+	// resource.
 	ResourceID *string
 
-// READ-ONLY; TestFailover state of the recovery orchestration resource.
+	// READ-ONLY; TestFailover state of the recovery orchestration resource.
 	TestFailoverState *TestFailoverState
 }
 
 // ResourceSiteRecoveryProtectionSetting - Definition of recovery orchestration resource protection with azure site recovery.
 type ResourceSiteRecoveryProtectionSetting struct {
-// CONSTANT; Field has constant value ResourceProtectionSolutionTypeAzureSiteRecovery, any specified value is ignored.
+	// CONSTANT; Field has constant value ResourceProtectionSolutionTypeAzureSiteRecovery, any specified value is ignored.
 	ProtectionSolutionType *ResourceProtectionSolutionType
 
-// Reprotect params for azure site recovery solution.
+	// Reprotect params for azure site recovery solution.
 	ReprotectParams *ResourceSiteRecoveryReprotectParams
 
-// Test failover params for azure site recovery solution.
+	// Test failover params for azure site recovery solution.
 	TestFailoverCleanupParams *ResourceSiteRecoveryTestFailoverCleanupParams
 
-// Test failover params for azure site recovery solution.
+	// Test failover params for azure site recovery solution.
 	TestFailoverParams *ResourceSiteRecoveryTestFailoverParams
 }
 
@@ -2099,323 +2101,322 @@ func (r *ResourceSiteRecoveryProtectionSetting) GetResourceBaseProtectionSolutio
 
 // ResourceSiteRecoveryReprotectParams - Definition of recovery resource reprotect params for site recovery solution.
 type ResourceSiteRecoveryReprotectParams struct {
-// Disk Reprotect Input Details
+	// Disk Reprotect Input Details
 	DiskReprotectInputDetails []*DiskReprotectInputDetails
 }
 
 // ResourceSiteRecoveryTestFailoverCleanupParams - Definition of recovery resource reprotect params for site recovery solution.
 type ResourceSiteRecoveryTestFailoverCleanupParams struct {
-// Comments for testfailover cleanup
+	// Comments for testfailover cleanup
 	Comments *string
 }
 
 // ResourceSiteRecoveryTestFailoverParams - Definition of recovery resource failover params for site recovery solution.
 type ResourceSiteRecoveryTestFailoverParams struct {
-// The Azure network resource is which will be used for test failover virtual machine.
+	// The Azure network resource is which will be used for test failover virtual machine.
 	NetworkResourceID *string
 }
 
 // ServiceGroupMembership - Model for service group membership.
 type ServiceGroupMembership struct {
-// REQUIRED; Membership type of the service group to resource.
+	// REQUIRED; Membership type of the service group to resource.
 	MembershipType *MembershipType
 
-// REQUIRED; Arm Id of the service group.
+	// REQUIRED; Arm Id of the service group.
 	ServiceGroupID *string
 }
 
 // ServiceLevelResource - The Service level resource model
 type ServiceLevelResource struct {
-// REQUIRED; The arm id of the service level indicator resource
+	// REQUIRED; The arm id of the service level indicator resource
 	ServiceLevelIndicatorResourceID *string
 
-// REQUIRED; The arm id of the service level object resource
+	// REQUIRED; The arm id of the service level object resource
 	ServiceLevelObjectiveResourceID *string
 }
 
 // SupportedVerbsForStage - Model for supported verbs for stage.
 type SupportedVerbsForStage struct {
-// REQUIRED; Name of stage.
+	// REQUIRED; Name of stage.
 	DrillRunStage *DrillRunSubtasks
 
-// REQUIRED; Supported Verbs for stage.
+	// REQUIRED; Supported Verbs for stage.
 	SupportedVerbs []*DrillRunOperationVerbs
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
-// The timestamp of resource creation (UTC).
+	// The timestamp of resource creation (UTC).
 	CreatedAt *time.Time
 
-// The identity that created the resource.
+	// The identity that created the resource.
 	CreatedBy *string
 
-// The type of identity that created the resource.
+	// The type of identity that created the resource.
 	CreatedByType *CreatedByType
 
-// The timestamp of resource last modification (UTC)
+	// The timestamp of resource last modification (UTC)
 	LastModifiedAt *time.Time
 
-// The identity that last modified the resource.
+	// The identity that last modified the resource.
 	LastModifiedBy *string
 
-// The type of identity that last modified the resource.
+	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
 }
 
 // SystemMetadata - Internal System Metadata, to be used by internal components only.
 type SystemMetadata struct {
-// REQUIRED; Indicates if the Initial system configuration of the Drill is complete or not.
+	// REQUIRED; Indicates if the Initial system configuration of the Drill is complete or not.
 	InitialConfig *InitialConfig
 
-// READ-ONLY; An indication whether a intrested resource type is present in drill resource.
+	// READ-ONLY; An indication whether a intrested resource type is present in drill resource.
 	ResourceTypeCategories []*ResourceTypeCategories
 }
 
 // TestFailoverCleanupRequest - TestFailoverCleanup post action request.
 type TestFailoverCleanupRequest struct {
-// Comments for test failover cleanup.
+	// Comments for test failover cleanup.
 	Comments *string
 }
 
 // UnifiedResilienceItem - A unified resilience item represents a computed and aggregated resilience information of Azure
 // Applications.
 type UnifiedResilienceItem struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *UnifiedResilienceItemProperties
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // UnifiedResilienceItemListResult - The response of a UnifiedResilienceItem list operation.
 type UnifiedResilienceItemListResult struct {
-// REQUIRED; The UnifiedResilienceItem items on this page
+	// REQUIRED; The UnifiedResilienceItem items on this page
 	Value []*UnifiedResilienceItem
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // UnifiedResilienceItemProperties - Definition of unified resilience item property.
 type UnifiedResilienceItemProperties struct {
-// REQUIRED; Computed and copied data of resilience goals.
+	// REQUIRED; Computed and copied data of resilience goals.
 	Goals *GoalsData
 
-// REQUIRED; Last modified time of the unified resilience item.
+	// REQUIRED; Last modified time of the unified resilience item.
 	LastModifiedTime *time.Time
 
-// REQUIRED; Computed and copied data of Azure recommendations.
+	// REQUIRED; Computed and copied data of Azure recommendations.
 	Recommendations *RecommendationsData
 
-// READ-ONLY; Provisioning state
+	// READ-ONLY; Provisioning state
 	ProvisioningState *ProvisioningState
 }
 
 // UpdateGoalResourceRequest - Request model for update goal resource.
 type UpdateGoalResourceRequest struct {
-// REQUIRED; List of update goal resource.
+	// REQUIRED; List of update goal resource.
 	Resources []*GoalResource
 }
 
 // UpdateRecoveryResourcesRequest - RecoveryResources post action request to update in batch.
 type UpdateRecoveryResourcesRequest struct {
-// A list of recovery orchestration resources that need to be removed from the recovery orchestration plan.
+	// A list of recovery orchestration resources that need to be removed from the recovery orchestration plan.
 	ResourcesToRemove []*string
 
-// A list of recovery orchestration resources whose properties need to be updated.
+	// A list of recovery orchestration resources whose properties need to be updated.
 	ResourcesToUpdate []*RecoveryResource
 }
 
 // UpdateRecoveryResourcesResponse - RecoveryResources post action request to update in batch.
 type UpdateRecoveryResourcesResponse struct {
-// A list of error details associated with resources for which the update has failed.
+	// A list of error details associated with resources for which the update has failed.
 	FailedResources []*RecoveryResource
 }
 
 // UsagePlan - A usage plan resource for Resiliency feature billing.
 type UsagePlan struct {
-// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *UsagePlanProperties
 
-// Resource tags.
+	// Resource tags.
 	Tags map[string]*string
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // UsagePlanListResult - The response of a UsagePlan list operation.
 type UsagePlanListResult struct {
-// REQUIRED; The UsagePlan items on this page
+	// REQUIRED; The UsagePlan items on this page
 	Value []*UsagePlan
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // UsagePlanProperties - Definition of usage plan properties.
 type UsagePlanProperties struct {
-// The type of the usage plan.
+	// The type of the usage plan.
 	PlanType *UsagePlanType
 
-// READ-ONLY; Details of any errors encountered during Usage Plan create or update.
+	// READ-ONLY; Details of any errors encountered during Usage Plan create or update.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; Provisioning state of the usage plan.
+	// READ-ONLY; Provisioning state of the usage plan.
 	ProvisioningState *ProvisioningState
 }
 
 // UsagePlanTagsUpdate - The type used for updating tags in UsagePlan resources.
 type UsagePlanTagsUpdate struct {
-// Resource tags.
+	// Resource tags.
 	Tags map[string]*string
 }
 
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
-// READ-ONLY; The client ID of the assigned identity.
+	// READ-ONLY; The client ID of the assigned identity.
 	ClientID *string
 
-// READ-ONLY; The principal ID of the assigned identity.
+	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
 }
 
 // UserConfirmationForHighAvailabilityItem - Represents a user confirmation for a high availability solution.
 type UserConfirmationForHighAvailabilityItem struct {
-// REQUIRED; The confirmation status of the high availability solution.
+	// REQUIRED; The confirmation status of the high availability solution.
 	ConfirmationStatus *ConfirmationStatus
 
-// REQUIRED; The solution display name of the high availability solution.
+	// REQUIRED; The solution display name of the high availability solution.
 	SolutionDisplayName *SolutionDisplayName
 
-// The reason for requesting user confirmation for the high availability solution.
+	// The reason for requesting user confirmation for the high availability solution.
 	ReasonForRequestingConfirmation *ReasonForRequestingConfirmation
 }
 
 // ValidateForExecutionProperties - Additional properties for Failover.
 type ValidateForExecutionProperties struct {
-// REQUIRED; Physiscal Source locations from where resources to be failed-over or faulted.
+	// REQUIRED; Physiscal Source locations from where resources to be failed-over or faulted.
 	SourceLocations []*string
 }
 
 // ValidateForExecutionRequest - Request body of the Validate For Execute Action of Drill.
 type ValidateForExecutionRequest struct {
-// Additional properties for Validate for execute.
+	// Additional properties for Validate for execute.
 	ValidateForExecutionProperties *ValidateForExecutionProperties
 }
 
 // ValidateForOperationRequest - ValidateForOperation post action request to check if operation can be performed.
 type ValidateForOperationRequest struct {
-// REQUIRED; Operation Name to validate.
+	// REQUIRED; Operation Name to validate.
 	OperationName *RecoveryOperationNames
 }
 
 // ValidateForRecoveryOperationBaseResponse - ValidateForRecoveryOperation post action response.
 type ValidateForRecoveryOperationBaseResponse struct {
-// REQUIRED; Qualification details of resources for the operation.
+	// REQUIRED; Qualification details of resources for the operation.
 	RecoveryResourceQualifications []*RecoveryResourceQualification
 }
 
 // ZonalDrillProperties - Definition of Zonal Drill properties.
 type ZonalDrillProperties struct {
-// CONSTANT; The discriminator for the Drill object hierarchy.
-// Field has constant value DrillTypeZonal, any specified value is ignored.
+	// CONSTANT; The discriminator for the Drill object hierarchy.
+	// Field has constant value DrillTypeZonal, any specified value is ignored.
 	DrillType *DrillType
 
-// Chaos Resource properties.
+	// Chaos Resource properties.
 	ChaosResourceProperties *ChaosResourcePropertiesOfDrill
 
-// Properties for internal resources that are created for the Drill.
+	// Properties for internal resources that are created for the Drill.
 	DrillAssetProperties *AssetPropertiesOfDrill
 
-// Monitoring properties of the Drill.
+	// Monitoring properties of the Drill.
 	MonitoringProperties *MonitoringPropertiesOfDrill
 
-// RBAC setup mode.
+	// RBAC setup mode.
 	RbacSetupMode *RBACSetupMode
 
-// ROPlan properties.
+	// ROPlan properties.
 	RecoveryPlanProperties *RecoveryPlanPropertiesOfDrill
 
-// READ-ONLY; Attention reason if the ReadinessState is 'NeedsAttention'.
+	// READ-ONLY; Attention reason if the ReadinessState is 'NeedsAttention'.
 	AttentionReason *AttentionReason
 
-// READ-ONLY; Error details associated with the resource.
+	// READ-ONLY; Error details associated with the resource.
 	ErrorDetails *ErrorDetail
 
-// READ-ONLY; Readiness state of the Drill.
+	// READ-ONLY; Readiness state of the Drill.
 	ExecutionReadinessState *ExecutionReadinessState
 
-// READ-ONLY; Execution state of the Drill. Whether it is currently running or not.
+	// READ-ONLY; Execution state of the Drill. Whether it is currently running or not.
 	ExecutionState *ExecutionState
 
-// READ-ONLY; Last resync and readiness check time.
+	// READ-ONLY; Last resync and readiness check time.
 	LastResyncReadinessCheckTime *time.Time
 
-// READ-ONLY; Last run properties.
+	// READ-ONLY; Last run properties.
 	LastRunProperties *LastRunProperties
 
-// READ-ONLY; Last sync time.
+	// READ-ONLY; Last sync time.
 	LastSyncTime *time.Time
 
-// READ-ONLY; Managed RG v2 properties.
+	// READ-ONLY; Managed RG v2 properties.
 	ManagedOnBehalfOfConfiguration *ManagedOnBehalfOfConfiguration
 
-// READ-ONLY; Status of the last operation.
+	// READ-ONLY; Status of the last operation.
 	ProvisioningState *ProvisioningState
 
-// READ-ONLY; Parent SG resource.
+	// READ-ONLY; Parent SG resource.
 	ServiceGroupID *string
 
-// READ-ONLY; Internal System Metadata, to be used by internal components only.
+	// READ-ONLY; Internal System Metadata, to be used by internal components only.
 	SystemMetadata *SystemMetadata
 
-// READ-ONLY; An indication whether a VM is included in this Zonal Drill. If not, RO is not needed.
+	// READ-ONLY; An indication whether a VM is included in this Zonal Drill. If not, RO is not needed.
 	VMsPresent *VMPresent
 }
 
 // GetDrillProperties implements the DrillPropertiesClassification interface for type ZonalDrillProperties.
 func (z *ZonalDrillProperties) GetDrillProperties() *DrillProperties {
 	return &DrillProperties{
-		AttentionReason: z.AttentionReason,
-		ChaosResourceProperties: z.ChaosResourceProperties,
-		DrillAssetProperties: z.DrillAssetProperties,
-		DrillType: z.DrillType,
-		ErrorDetails: z.ErrorDetails,
-		ExecutionReadinessState: z.ExecutionReadinessState,
-		ExecutionState: z.ExecutionState,
-		LastResyncReadinessCheckTime: z.LastResyncReadinessCheckTime,
-		LastRunProperties: z.LastRunProperties,
-		LastSyncTime: z.LastSyncTime,
+		AttentionReason:                z.AttentionReason,
+		ChaosResourceProperties:        z.ChaosResourceProperties,
+		DrillAssetProperties:           z.DrillAssetProperties,
+		DrillType:                      z.DrillType,
+		ErrorDetails:                   z.ErrorDetails,
+		ExecutionReadinessState:        z.ExecutionReadinessState,
+		ExecutionState:                 z.ExecutionState,
+		LastResyncReadinessCheckTime:   z.LastResyncReadinessCheckTime,
+		LastRunProperties:              z.LastRunProperties,
+		LastSyncTime:                   z.LastSyncTime,
 		ManagedOnBehalfOfConfiguration: z.ManagedOnBehalfOfConfiguration,
-		MonitoringProperties: z.MonitoringProperties,
-		ProvisioningState: z.ProvisioningState,
-		RbacSetupMode: z.RbacSetupMode,
-		RecoveryPlanProperties: z.RecoveryPlanProperties,
-		ServiceGroupID: z.ServiceGroupID,
-		SystemMetadata: z.SystemMetadata,
+		MonitoringProperties:           z.MonitoringProperties,
+		ProvisioningState:              z.ProvisioningState,
+		RbacSetupMode:                  z.RbacSetupMode,
+		RecoveryPlanProperties:         z.RecoveryPlanProperties,
+		ServiceGroupID:                 z.ServiceGroupID,
+		SystemMetadata:                 z.SystemMetadata,
 	}
 }
-

@@ -20,7 +20,7 @@ import (
 )
 
 // RecoveryPlanActionsServer is a fake server for instances of the armresiliencemanagement.RecoveryPlanActionsClient type.
-type RecoveryPlanActionsServer struct{
+type RecoveryPlanActionsServer struct {
 	// BeginCheckReadiness is the fake for method RecoveryPlanActionsClient.BeginCheckReadiness
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginCheckReadiness func(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *armresiliencemanagement.RecoveryPlanActionsClientBeginCheckReadinessOptions) (resp azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientCheckReadinessResponse], errResp azfake.ErrorResponder)
@@ -76,7 +76,6 @@ type RecoveryPlanActionsServer struct{
 	// BeginValidateForTestFailoverCleanup is the fake for method RecoveryPlanActionsClient.BeginValidateForTestFailoverCleanup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginValidateForTestFailoverCleanup func(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, options *armresiliencemanagement.RecoveryPlanActionsClientBeginValidateForTestFailoverCleanupOptions) (resp azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForTestFailoverCleanupResponse], errResp azfake.ErrorResponder)
-
 }
 
 // NewRecoveryPlanActionsServerTransport creates a new instance of RecoveryPlanActionsServerTransport with the provided implementation.
@@ -84,20 +83,20 @@ type RecoveryPlanActionsServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRecoveryPlanActionsServerTransport(srv *RecoveryPlanActionsServer) *RecoveryPlanActionsServerTransport {
 	return &RecoveryPlanActionsServerTransport{
-		srv: srv,
-		beginCheckReadiness: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientCheckReadinessResponse]](),
-		beginFailover: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFailoverResponse]](),
-		beginFailoverCommit: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFailoverCommitResponse]](),
-		beginFinalize: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFinalizeResponse]](),
-		beginReprotect: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientReprotectResponse]](),
-		beginTestFailover: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientTestFailoverResponse]](),
-		beginTestFailoverCleanup: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientTestFailoverCleanupResponse]](),
-		beginUpdateResources: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientUpdateResourcesResponse]](),
-		beginValidateForFailover: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForFailoverResponse]](),
-		beginValidateForFailoverCommit: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForFailoverCommitResponse]](),
-		beginValidateForOperation: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForOperationResponse]](),
-		beginValidateForReprotect: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForReprotectResponse]](),
-		beginValidateForTestFailover: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForTestFailoverResponse]](),
+		srv:                                 srv,
+		beginCheckReadiness:                 newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientCheckReadinessResponse]](),
+		beginFailover:                       newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFailoverResponse]](),
+		beginFailoverCommit:                 newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFailoverCommitResponse]](),
+		beginFinalize:                       newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFinalizeResponse]](),
+		beginReprotect:                      newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientReprotectResponse]](),
+		beginTestFailover:                   newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientTestFailoverResponse]](),
+		beginTestFailoverCleanup:            newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientTestFailoverCleanupResponse]](),
+		beginUpdateResources:                newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientUpdateResourcesResponse]](),
+		beginValidateForFailover:            newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForFailoverResponse]](),
+		beginValidateForFailoverCommit:      newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForFailoverCommitResponse]](),
+		beginValidateForOperation:           newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForOperationResponse]](),
+		beginValidateForReprotect:           newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForReprotectResponse]](),
+		beginValidateForTestFailover:        newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForTestFailoverResponse]](),
 		beginValidateForTestFailoverCleanup: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForTestFailoverCleanupResponse]](),
 	}
 }
@@ -105,20 +104,20 @@ func NewRecoveryPlanActionsServerTransport(srv *RecoveryPlanActionsServer) *Reco
 // RecoveryPlanActionsServerTransport connects instances of armresiliencemanagement.RecoveryPlanActionsClient to instances of RecoveryPlanActionsServer.
 // Don't use this type directly, use NewRecoveryPlanActionsServerTransport instead.
 type RecoveryPlanActionsServerTransport struct {
-	srv *RecoveryPlanActionsServer
-	beginCheckReadiness *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientCheckReadinessResponse]]
-	beginFailover *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFailoverResponse]]
-	beginFailoverCommit *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFailoverCommitResponse]]
-	beginFinalize *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFinalizeResponse]]
-	beginReprotect *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientReprotectResponse]]
-	beginTestFailover *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientTestFailoverResponse]]
-	beginTestFailoverCleanup *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientTestFailoverCleanupResponse]]
-	beginUpdateResources *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientUpdateResourcesResponse]]
-	beginValidateForFailover *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForFailoverResponse]]
-	beginValidateForFailoverCommit *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForFailoverCommitResponse]]
-	beginValidateForOperation *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForOperationResponse]]
-	beginValidateForReprotect *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForReprotectResponse]]
-	beginValidateForTestFailover *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForTestFailoverResponse]]
+	srv                                 *RecoveryPlanActionsServer
+	beginCheckReadiness                 *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientCheckReadinessResponse]]
+	beginFailover                       *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFailoverResponse]]
+	beginFailoverCommit                 *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFailoverCommitResponse]]
+	beginFinalize                       *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientFinalizeResponse]]
+	beginReprotect                      *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientReprotectResponse]]
+	beginTestFailover                   *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientTestFailoverResponse]]
+	beginTestFailoverCleanup            *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientTestFailoverCleanupResponse]]
+	beginUpdateResources                *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientUpdateResourcesResponse]]
+	beginValidateForFailover            *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForFailoverResponse]]
+	beginValidateForFailoverCommit      *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForFailoverCommitResponse]]
+	beginValidateForOperation           *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForOperationResponse]]
+	beginValidateForReprotect           *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForReprotectResponse]]
+	beginValidateForTestFailover        *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForTestFailoverResponse]]
 	beginValidateForTestFailoverCleanup *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryPlanActionsClientValidateForTestFailoverCleanupResponse]]
 }
 
@@ -138,8 +137,8 @@ func (r *RecoveryPlanActionsServerTransport) dispatchToMethodFake(req *http.Requ
 	go func() {
 		var intercepted bool
 		var res result
-		 if recoveryPlanActionsServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = recoveryPlanActionsServerTransportInterceptor.Do(req)
+		if recoveryPlanActionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = recoveryPlanActionsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -171,7 +170,7 @@ func (r *RecoveryPlanActionsServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = r.dispatchBeginValidateForTestFailover(req)
 			case "RecoveryPlanActionsClient.BeginValidateForTestFailoverCleanup":
 				res.resp, res.err = r.dispatchBeginValidateForTestFailoverCleanup(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -193,24 +192,24 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginCheckReadiness(req *ht
 	}
 	beginCheckReadiness := r.beginCheckReadiness.get(req)
 	if beginCheckReadiness == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkReadiness`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginCheckReadiness(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkReadiness`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCheckReadiness(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginCheckReadiness = &respr
 		r.beginCheckReadiness.add(req, beginCheckReadiness)
 	}
@@ -237,28 +236,28 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginFailover(req *http.Req
 	}
 	beginFailover := r.beginFailover.get(req)
 	if beginFailover == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failover`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.FailoverRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginFailover(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failover`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.FailoverRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginFailover(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginFailover = &respr
 		r.beginFailover.add(req, beginFailover)
 	}
@@ -285,24 +284,24 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginFailoverCommit(req *ht
 	}
 	beginFailoverCommit := r.beginFailoverCommit.get(req)
 	if beginFailoverCommit == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverCommit`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginFailoverCommit(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverCommit`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginFailoverCommit(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginFailoverCommit = &respr
 		r.beginFailoverCommit.add(req, beginFailoverCommit)
 	}
@@ -329,24 +328,24 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginFinalize(req *http.Req
 	}
 	beginFinalize := r.beginFinalize.get(req)
 	if beginFinalize == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/finalize`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginFinalize(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/finalize`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginFinalize(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginFinalize = &respr
 		r.beginFinalize.add(req, beginFinalize)
 	}
@@ -373,34 +372,34 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginReprotect(req *http.Re
 	}
 	beginReprotect := r.beginReprotect.get(req)
 	if beginReprotect == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reprotect`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ReprotectRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	var options *armresiliencemanagement.RecoveryPlanActionsClientBeginReprotectOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armresiliencemanagement.RecoveryPlanActionsClientBeginReprotectOptions{
-			Body: &body,
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reprotect`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-	}
-	respr, errRespr := r.srv.BeginReprotect(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ReprotectRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armresiliencemanagement.RecoveryPlanActionsClientBeginReprotectOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armresiliencemanagement.RecoveryPlanActionsClientBeginReprotectOptions{
+				Body: &body,
+			}
+		}
+		respr, errRespr := r.srv.BeginReprotect(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginReprotect = &respr
 		r.beginReprotect.add(req, beginReprotect)
 	}
@@ -427,28 +426,28 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginTestFailover(req *http
 	}
 	beginTestFailover := r.beginTestFailover.get(req)
 	if beginTestFailover == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testFailover`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.FailoverRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginTestFailover(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testFailover`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.FailoverRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginTestFailover(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginTestFailover = &respr
 		r.beginTestFailover.add(req, beginTestFailover)
 	}
@@ -475,28 +474,28 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginTestFailoverCleanup(re
 	}
 	beginTestFailoverCleanup := r.beginTestFailoverCleanup.get(req)
 	if beginTestFailoverCleanup == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testFailoverCleanup`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.TestFailoverCleanupRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginTestFailoverCleanup(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testFailoverCleanup`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.TestFailoverCleanupRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginTestFailoverCleanup(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginTestFailoverCleanup = &respr
 		r.beginTestFailoverCleanup.add(req, beginTestFailoverCleanup)
 	}
@@ -523,28 +522,28 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginUpdateResources(req *h
 	}
 	beginUpdateResources := r.beginUpdateResources.get(req)
 	if beginUpdateResources == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateResources`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.UpdateRecoveryResourcesRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginUpdateResources(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateResources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.UpdateRecoveryResourcesRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdateResources(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginUpdateResources = &respr
 		r.beginUpdateResources.add(req, beginUpdateResources)
 	}
@@ -571,28 +570,28 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginValidateForFailover(re
 	}
 	beginValidateForFailover := r.beginValidateForFailover.get(req)
 	if beginValidateForFailover == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForFailover`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.FailoverRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginValidateForFailover(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForFailover`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.FailoverRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginValidateForFailover(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginValidateForFailover = &respr
 		r.beginValidateForFailover.add(req, beginValidateForFailover)
 	}
@@ -619,24 +618,24 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginValidateForFailoverCom
 	}
 	beginValidateForFailoverCommit := r.beginValidateForFailoverCommit.get(req)
 	if beginValidateForFailoverCommit == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForFailoverCommit`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginValidateForFailoverCommit(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForFailoverCommit`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginValidateForFailoverCommit(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginValidateForFailoverCommit = &respr
 		r.beginValidateForFailoverCommit.add(req, beginValidateForFailoverCommit)
 	}
@@ -663,28 +662,28 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginValidateForOperation(r
 	}
 	beginValidateForOperation := r.beginValidateForOperation.get(req)
 	if beginValidateForOperation == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForOperation`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ValidateForOperationRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginValidateForOperation(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForOperation`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ValidateForOperationRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginValidateForOperation(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginValidateForOperation = &respr
 		r.beginValidateForOperation.add(req, beginValidateForOperation)
 	}
@@ -711,34 +710,34 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginValidateForReprotect(r
 	}
 	beginValidateForReprotect := r.beginValidateForReprotect.get(req)
 	if beginValidateForReprotect == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForReprotect`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ReprotectRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	var options *armresiliencemanagement.RecoveryPlanActionsClientBeginValidateForReprotectOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armresiliencemanagement.RecoveryPlanActionsClientBeginValidateForReprotectOptions{
-			Body: &body,
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForReprotect`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-	}
-	respr, errRespr := r.srv.BeginValidateForReprotect(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ReprotectRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armresiliencemanagement.RecoveryPlanActionsClientBeginValidateForReprotectOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armresiliencemanagement.RecoveryPlanActionsClientBeginValidateForReprotectOptions{
+				Body: &body,
+			}
+		}
+		respr, errRespr := r.srv.BeginValidateForReprotect(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginValidateForReprotect = &respr
 		r.beginValidateForReprotect.add(req, beginValidateForReprotect)
 	}
@@ -765,28 +764,28 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginValidateForTestFailove
 	}
 	beginValidateForTestFailover := r.beginValidateForTestFailover.get(req)
 	if beginValidateForTestFailover == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForTestFailover`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.FailoverRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginValidateForTestFailover(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForTestFailover`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.FailoverRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginValidateForTestFailover(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginValidateForTestFailover = &respr
 		r.beginValidateForTestFailover.add(req, beginValidateForTestFailover)
 	}
@@ -813,24 +812,24 @@ func (r *RecoveryPlanActionsServerTransport) dispatchBeginValidateForTestFailove
 	}
 	beginValidateForTestFailoverCleanup := r.beginValidateForTestFailoverCleanup.get(req)
 	if beginValidateForTestFailoverCleanup == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForTestFailoverCleanup`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginValidateForTestFailoverCleanup(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForTestFailoverCleanup`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginValidateForTestFailoverCleanup(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginValidateForTestFailoverCleanup = &respr
 		r.beginValidateForTestFailoverCleanup.add(req, beginValidateForTestFailoverCleanup)
 	}

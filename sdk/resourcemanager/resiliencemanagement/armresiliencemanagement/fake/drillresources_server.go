@@ -21,7 +21,7 @@ import (
 )
 
 // DrillResourcesServer is a fake server for instances of the armresiliencemanagement.DrillResourcesClient type.
-type DrillResourcesServer struct{
+type DrillResourcesServer struct {
 	// Get is the fake for method DrillResourcesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, serviceGroupName string, drillName string, drillResourceName string, options *armresiliencemanagement.DrillResourcesClientGetOptions) (resp azfake.Responder[armresiliencemanagement.DrillResourcesClientGetResponse], errResp azfake.ErrorResponder)
@@ -29,7 +29,6 @@ type DrillResourcesServer struct{
 	// NewListPager is the fake for method DrillResourcesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(serviceGroupName string, drillName string, options *armresiliencemanagement.DrillResourcesClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.DrillResourcesClientListResponse])
-
 }
 
 // NewDrillResourcesServerTransport creates a new instance of DrillResourcesServerTransport with the provided implementation.
@@ -37,7 +36,7 @@ type DrillResourcesServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDrillResourcesServerTransport(srv *DrillResourcesServer) *DrillResourcesServerTransport {
 	return &DrillResourcesServerTransport{
-		srv: srv,
+		srv:          srv,
 		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.DrillResourcesClientListResponse]](),
 	}
 }
@@ -45,7 +44,7 @@ func NewDrillResourcesServerTransport(srv *DrillResourcesServer) *DrillResources
 // DrillResourcesServerTransport connects instances of armresiliencemanagement.DrillResourcesClient to instances of DrillResourcesServer.
 // Don't use this type directly, use NewDrillResourcesServerTransport instead.
 type DrillResourcesServerTransport struct {
-	srv *DrillResourcesServer
+	srv          *DrillResourcesServer
 	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.DrillResourcesClientListResponse]]
 }
 
@@ -65,8 +64,8 @@ func (d *DrillResourcesServerTransport) dispatchToMethodFake(req *http.Request, 
 	go func() {
 		var intercepted bool
 		var res result
-		 if drillResourcesServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = drillResourcesServerTransportInterceptor.Do(req)
+		if drillResourcesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = drillResourcesServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -74,7 +73,7 @@ func (d *DrillResourcesServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = d.dispatchGet(req)
 			case "DrillResourcesClient.NewListPager":
 				res.resp, res.err = d.dispatchNewListPager(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -133,40 +132,40 @@ func (d *DrillResourcesServerTransport) dispatchNewListPager(req *http.Request) 
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillResources`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	skipTokenParam := getOptional(qp.Get("$skipToken"))
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillResources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		return int32(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	var options *armresiliencemanagement.DrillResourcesClientListOptions
-	if skipTokenParam != nil || topParam != nil {
-		options = &armresiliencemanagement.DrillResourcesClientListOptions{
-			SkipToken: skipTokenParam,
-			Top: topParam,
+		qp := req.URL.Query()
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
 		}
-	}
-resp := d.srv.NewListPager(serviceGroupNameParam, drillNameParam, options)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armresiliencemanagement.DrillResourcesClientListOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armresiliencemanagement.DrillResourcesClientListOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := d.srv.NewListPager(serviceGroupNameParam, drillNameParam, options)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.DrillResourcesClientListResponse, createLink func() string) {

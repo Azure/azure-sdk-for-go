@@ -20,7 +20,7 @@ import (
 )
 
 // RecoveryResourcesServer is a fake server for instances of the armresiliencemanagement.RecoveryResourcesClient type.
-type RecoveryResourcesServer struct{
+type RecoveryResourcesServer struct {
 	// Get is the fake for method RecoveryResourcesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, serviceGroupName string, recoveryPlanName string, recoveryResourceName string, options *armresiliencemanagement.RecoveryResourcesClientGetOptions) (resp azfake.Responder[armresiliencemanagement.RecoveryResourcesClientGetResponse], errResp azfake.ErrorResponder)
@@ -28,7 +28,6 @@ type RecoveryResourcesServer struct{
 	// NewListPager is the fake for method RecoveryResourcesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(serviceGroupName string, recoveryPlanName string, options *armresiliencemanagement.RecoveryResourcesClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.RecoveryResourcesClientListResponse])
-
 }
 
 // NewRecoveryResourcesServerTransport creates a new instance of RecoveryResourcesServerTransport with the provided implementation.
@@ -36,7 +35,7 @@ type RecoveryResourcesServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRecoveryResourcesServerTransport(srv *RecoveryResourcesServer) *RecoveryResourcesServerTransport {
 	return &RecoveryResourcesServerTransport{
-		srv: srv,
+		srv:          srv,
 		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.RecoveryResourcesClientListResponse]](),
 	}
 }
@@ -44,7 +43,7 @@ func NewRecoveryResourcesServerTransport(srv *RecoveryResourcesServer) *Recovery
 // RecoveryResourcesServerTransport connects instances of armresiliencemanagement.RecoveryResourcesClient to instances of RecoveryResourcesServer.
 // Don't use this type directly, use NewRecoveryResourcesServerTransport instead.
 type RecoveryResourcesServerTransport struct {
-	srv *RecoveryResourcesServer
+	srv          *RecoveryResourcesServer
 	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.RecoveryResourcesClientListResponse]]
 }
 
@@ -64,8 +63,8 @@ func (r *RecoveryResourcesServerTransport) dispatchToMethodFake(req *http.Reques
 	go func() {
 		var intercepted bool
 		var res result
-		 if recoveryResourcesServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = recoveryResourcesServerTransportInterceptor.Do(req)
+		if recoveryResourcesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = recoveryResourcesServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -73,7 +72,7 @@ func (r *RecoveryResourcesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = r.dispatchGet(req)
 			case "RecoveryResourcesClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -132,21 +131,21 @@ func (r *RecoveryResourcesServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryResources`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-resp := r.srv.NewListPager(serviceGroupNameParam, recoveryPlanNameParam, nil)
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryResources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListPager(serviceGroupNameParam, recoveryPlanNameParam, nil)
 		newListPager = &resp
 		r.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.RecoveryResourcesClientListResponse, createLink func() string) {

@@ -21,7 +21,7 @@ import (
 //
 // Generated from API version 2026-04-01-preview
 type EnrollmentsClient struct {
-	internal *arm.Client
+	internal       *arm.Client
 	subscriptionID string
 }
 
@@ -36,7 +36,7 @@ func NewEnrollmentsClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &EnrollmentsClient{
 		subscriptionID: subscriptionID,
-		internal: cl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -269,7 +269,7 @@ func (client *EnrollmentsClient) getHandleResponse(resp *http.Response) (Enrollm
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - usagePlanName - The name of the usage plan.
 //   - options - EnrollmentsClientListOptions contains the optional parameters for the EnrollmentsClient.NewListPager method.
-func (client *EnrollmentsClient) NewListPager(resourceGroupName string, usagePlanName string, options *EnrollmentsClientListOptions) (*runtime.Pager[EnrollmentsClientListResponse]) {
+func (client *EnrollmentsClient) NewListPager(resourceGroupName string, usagePlanName string, options *EnrollmentsClientListOptions) *runtime.Pager[EnrollmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EnrollmentsClientListResponse]{
 		More: func(page EnrollmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -326,4 +326,3 @@ func (client *EnrollmentsClient) listHandleResponse(resp *http.Response) (Enroll
 	}
 	return result, nil
 }
-

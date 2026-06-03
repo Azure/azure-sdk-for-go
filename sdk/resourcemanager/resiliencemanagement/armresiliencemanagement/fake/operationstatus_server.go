@@ -19,11 +19,10 @@ import (
 )
 
 // OperationStatusServer is a fake server for instances of the armresiliencemanagement.OperationStatusClient type.
-type OperationStatusServer struct{
+type OperationStatusServer struct {
 	// Get is the fake for method OperationStatusClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, location string, operationID string, options *armresiliencemanagement.OperationStatusClientGetOptions) (resp azfake.Responder[armresiliencemanagement.OperationStatusClientGetResponse], errResp azfake.ErrorResponder)
-
 }
 
 // NewOperationStatusServerTransport creates a new instance of OperationStatusServerTransport with the provided implementation.
@@ -55,14 +54,14 @@ func (o *OperationStatusServerTransport) dispatchToMethodFake(req *http.Request,
 	go func() {
 		var intercepted bool
 		var res result
-		 if operationStatusServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = operationStatusServerTransportInterceptor.Do(req)
+		if operationStatusServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = operationStatusServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
 			case "OperationStatusClient.Get":
 				res.resp, res.err = o.dispatchGet(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 

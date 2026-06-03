@@ -240,7 +240,7 @@ func (client *GoalTemplatesClient) getHandleResponse(resp *http.Response) (GoalT
 // NewListPager - List GoalTemplate resources by tenant
 //   - serviceGroupName - The name of the service group.
 //   - options - GoalTemplatesClientListOptions contains the optional parameters for the GoalTemplatesClient.NewListPager method.
-func (client *GoalTemplatesClient) NewListPager(serviceGroupName string, options *GoalTemplatesClientListOptions) (*runtime.Pager[GoalTemplatesClientListResponse]) {
+func (client *GoalTemplatesClient) NewListPager(serviceGroupName string, options *GoalTemplatesClientListOptions) *runtime.Pager[GoalTemplatesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GoalTemplatesClientListResponse]{
 		More: func(page GoalTemplatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -368,4 +368,3 @@ func (client *GoalTemplatesClient) updateCreateRequest(ctx context.Context, serv
 	}
 	return req, nil
 }
-

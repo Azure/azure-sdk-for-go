@@ -20,7 +20,7 @@ import (
 )
 
 // RecoveryJobsServer is a fake server for instances of the armresiliencemanagement.RecoveryJobsClient type.
-type RecoveryJobsServer struct{
+type RecoveryJobsServer struct {
 	// BeginCancel is the fake for method RecoveryJobsClient.BeginCancel
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCancel func(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, body armresiliencemanagement.RecoveryActionRequest, options *armresiliencemanagement.RecoveryJobsClientBeginCancelOptions) (resp azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientCancelResponse], errResp azfake.ErrorResponder)
@@ -40,7 +40,6 @@ type RecoveryJobsServer struct{
 	// BeginRetry is the fake for method RecoveryJobsClient.BeginRetry
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRetry func(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, options *armresiliencemanagement.RecoveryJobsClientBeginRetryOptions) (resp azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientRetryResponse], errResp azfake.ErrorResponder)
-
 }
 
 // NewRecoveryJobsServerTransport creates a new instance of RecoveryJobsServerTransport with the provided implementation.
@@ -48,22 +47,22 @@ type RecoveryJobsServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRecoveryJobsServerTransport(srv *RecoveryJobsServer) *RecoveryJobsServerTransport {
 	return &RecoveryJobsServerTransport{
-		srv: srv,
-		beginCancel: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientCancelResponse]](),
+		srv:          srv,
+		beginCancel:  newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientCancelResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.RecoveryJobsClientListResponse]](),
-		beginResume: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientResumeResponse]](),
-		beginRetry: newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientRetryResponse]](),
+		beginResume:  newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientResumeResponse]](),
+		beginRetry:   newTracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientRetryResponse]](),
 	}
 }
 
 // RecoveryJobsServerTransport connects instances of armresiliencemanagement.RecoveryJobsClient to instances of RecoveryJobsServer.
 // Don't use this type directly, use NewRecoveryJobsServerTransport instead.
 type RecoveryJobsServerTransport struct {
-	srv *RecoveryJobsServer
-	beginCancel *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientCancelResponse]]
+	srv          *RecoveryJobsServer
+	beginCancel  *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientCancelResponse]]
 	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.RecoveryJobsClientListResponse]]
-	beginResume *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientResumeResponse]]
-	beginRetry *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientRetryResponse]]
+	beginResume  *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientResumeResponse]]
+	beginRetry   *tracker[azfake.PollerResponder[armresiliencemanagement.RecoveryJobsClientRetryResponse]]
 }
 
 // Do implements the policy.Transporter interface for RecoveryJobsServerTransport.
@@ -82,8 +81,8 @@ func (r *RecoveryJobsServerTransport) dispatchToMethodFake(req *http.Request, me
 	go func() {
 		var intercepted bool
 		var res result
-		 if recoveryJobsServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = recoveryJobsServerTransportInterceptor.Do(req)
+		if recoveryJobsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = recoveryJobsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -97,7 +96,7 @@ func (r *RecoveryJobsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = r.dispatchBeginResume(req)
 			case "RecoveryJobsClient.BeginRetry":
 				res.resp, res.err = r.dispatchBeginRetry(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -119,32 +118,32 @@ func (r *RecoveryJobsServerTransport) dispatchBeginCancel(req *http.Request) (*h
 	}
 	beginCancel := r.beginCancel.get(req)
 	if beginCancel == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs/(?P<recoveryJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.RecoveryActionRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryJobName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginCancel(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, recoveryJobNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs/(?P<recoveryJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.RecoveryActionRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryJobName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCancel(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, recoveryJobNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginCancel = &respr
 		r.beginCancel.add(req, beginCancel)
 	}
@@ -208,21 +207,21 @@ func (r *RecoveryJobsServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-resp := r.srv.NewListPager(serviceGroupNameParam, recoveryPlanNameParam, nil)
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListPager(serviceGroupNameParam, recoveryPlanNameParam, nil)
 		newListPager = &resp
 		r.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.RecoveryJobsClientListResponse, createLink func() string) {
@@ -249,32 +248,32 @@ func (r *RecoveryJobsServerTransport) dispatchBeginResume(req *http.Request) (*h
 	}
 	beginResume := r.beginResume.get(req)
 	if beginResume == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs/(?P<recoveryJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resume`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.RecoveryActionRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryJobName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginResume(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, recoveryJobNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs/(?P<recoveryJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resume`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.RecoveryActionRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryJobName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginResume(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, recoveryJobNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginResume = &respr
 		r.beginResume.add(req, beginResume)
 	}
@@ -301,28 +300,28 @@ func (r *RecoveryJobsServerTransport) dispatchBeginRetry(req *http.Request) (*ht
 	}
 	beginRetry := r.beginRetry.get(req)
 	if beginRetry == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs/(?P<recoveryJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retry`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryJobName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.BeginRetry(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, recoveryJobNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs/(?P<recoveryJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retry`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryJobName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginRetry(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), recoveryPlanNameParam, recoveryJobNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginRetry = &respr
 		r.beginRetry.add(req, beginRetry)
 	}

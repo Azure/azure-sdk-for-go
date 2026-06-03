@@ -6,25 +6,25 @@ package armresiliencemanagement
 
 // DrillResourcesClientGetResponse contains the response from method DrillResourcesClient.Get.
 type DrillResourcesClientGetResponse struct {
-// Drill Resource
+	// Drill Resource
 	DrillResource
 }
 
 // DrillResourcesClientListResponse contains the response from method DrillResourcesClient.NewListPager.
 type DrillResourcesClientListResponse struct {
-// The response of a DrillResource list operation.
+	// The response of a DrillResource list operation.
 	DrillResourceListResult
 }
 
 // DrillRunResourcesClientGetResponse contains the response from method DrillRunResourcesClient.Get.
 type DrillRunResourcesClientGetResponse struct {
-// Represents a Drill Run job resource in the Azure Resilience Management provider namespace.
+	// Represents a Drill Run job resource in the Azure Resilience Management provider namespace.
 	DrillRunResource
 }
 
 // DrillRunResourcesClientListResponse contains the response from method DrillRunResourcesClient.NewListPager.
 type DrillRunResourcesClientListResponse struct {
-// The response of a DrillRunResource list operation.
+	// The response of a DrillRunResource list operation.
 	DrillRunResourceListResult
 }
 
@@ -40,13 +40,13 @@ type DrillRunsClientFailOverResponse struct {
 
 // DrillRunsClientGetResponse contains the response from method DrillRunsClient.Get.
 type DrillRunsClientGetResponse struct {
-// DrillRun resource.
+	// DrillRun resource.
 	DrillRun
 }
 
 // DrillRunsClientListResponse contains the response from method DrillRunsClient.NewListPager.
 type DrillRunsClientListResponse struct {
-// The response of a DrillRun list operation.
+	// The response of a DrillRun list operation.
 	DrillRunListResult
 }
 
@@ -72,7 +72,7 @@ type DrillsClientAddOrUpdateResourcesResponse struct {
 
 // DrillsClientCreateResponse contains the response from method DrillsClient.BeginCreate.
 type DrillsClientCreateResponse struct {
-// Drill resource
+	// Drill resource
 	Drill
 }
 
@@ -88,13 +88,13 @@ type DrillsClientEndResponse struct {
 
 // DrillsClientGetResponse contains the response from method DrillsClient.Get.
 type DrillsClientGetResponse struct {
-// Drill resource
+	// Drill resource
 	Drill
 }
 
 // DrillsClientListResponse contains the response from method DrillsClient.NewListPager.
 type DrillsClientListResponse struct {
-// The response of a Drill list operation.
+	// The response of a Drill list operation.
 	DrillListResult
 }
 
@@ -120,7 +120,7 @@ type DrillsClientValidateForExecutionResponse struct {
 
 // EnrollmentsClientCreateOrUpdateResponse contains the response from method EnrollmentsClient.BeginCreateOrUpdate.
 type EnrollmentsClientCreateOrUpdateResponse struct {
-// An enrollment that links a usage plan to a service group.
+	// An enrollment that links a usage plan to a service group.
 	Enrollment
 }
 
@@ -131,13 +131,13 @@ type EnrollmentsClientDeleteResponse struct {
 
 // EnrollmentsClientGetResponse contains the response from method EnrollmentsClient.Get.
 type EnrollmentsClientGetResponse struct {
-// An enrollment that links a usage plan to a service group.
+	// An enrollment that links a usage plan to a service group.
 	Enrollment
 }
 
 // EnrollmentsClientListResponse contains the response from method EnrollmentsClient.NewListPager.
 type EnrollmentsClientListResponse struct {
-// The response of a Enrollment list operation.
+	// The response of a Enrollment list operation.
 	EnrollmentListResult
 }
 
@@ -153,13 +153,13 @@ type GoalAssignmentsClientDeleteResponse struct {
 
 // GoalAssignmentsClientGetResponse contains the response from method GoalAssignmentsClient.Get.
 type GoalAssignmentsClientGetResponse struct {
-// Goal assignment a AzureResilienceProviderHub resource
+	// Goal assignment a AzureResilienceProviderHub resource
 	GoalAssignment
 }
 
 // GoalAssignmentsClientListResponse contains the response from method GoalAssignmentsClient.NewListPager.
 type GoalAssignmentsClientListResponse struct {
-// The response of a GoalAssignment list operation.
+	// The response of a GoalAssignment list operation.
 	GoalAssignmentListResult
 }
 
@@ -185,19 +185,19 @@ type GoalAssignmentsClientUpdateResponse struct {
 
 // GoalResourcesClientGetResponse contains the response from method GoalResourcesClient.Get.
 type GoalResourcesClientGetResponse struct {
-// Goal Resource a AzureResilienceProviderHub resource
+	// Goal Resource a AzureResilienceProviderHub resource
 	GoalResource
 }
 
 // GoalResourcesClientListResponse contains the response from method GoalResourcesClient.NewListPager.
 type GoalResourcesClientListResponse struct {
-// The response of a GoalResource list operation.
+	// The response of a GoalResource list operation.
 	GoalResourceListResult
 }
 
 // GoalTemplatesClientCreateOrUpdateResponse contains the response from method GoalTemplatesClient.BeginCreateOrUpdate.
 type GoalTemplatesClientCreateOrUpdateResponse struct {
-// Goal template a AzureResilienceProviderHub resource
+	// Goal template a AzureResilienceProviderHub resource
 	GoalTemplate
 }
 
@@ -208,13 +208,13 @@ type GoalTemplatesClientDeleteResponse struct {
 
 // GoalTemplatesClientGetResponse contains the response from method GoalTemplatesClient.Get.
 type GoalTemplatesClientGetResponse struct {
-// Goal template a AzureResilienceProviderHub resource
+	// Goal template a AzureResilienceProviderHub resource
 	GoalTemplate
 }
 
 // GoalTemplatesClientListResponse contains the response from method GoalTemplatesClient.NewListPager.
 type GoalTemplatesClientListResponse struct {
-// The response of a GoalTemplate list operation.
+	// The response of a GoalTemplate list operation.
 	GoalTemplateListResult
 }
 
@@ -225,55 +225,55 @@ type GoalTemplatesClientUpdateResponse struct {
 
 // OperationStatusClientGetResponse contains the response from method OperationStatusClient.Get.
 type OperationStatusClientGetResponse struct {
-// The current status of an async operation.
+	// The current status of an async operation.
 	OperationStatusResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
 }
 
 // RecoveryJobResourcesClientGetResponse contains the response from method RecoveryJobResourcesClient.Get.
 type RecoveryJobResourcesClientGetResponse struct {
-// Represents a recovery orchestration job resource in the Azure Resilience Management provider namespace.
+	// Represents a recovery orchestration job resource in the Azure Resilience Management provider namespace.
 	RecoveryJobResource
 }
 
 // RecoveryJobResourcesClientListResponse contains the response from method RecoveryJobResourcesClient.NewListPager.
 type RecoveryJobResourcesClientListResponse struct {
-// The response of a RecoveryJobResource list operation.
+	// The response of a RecoveryJobResource list operation.
 	RecoveryJobResourceListResult
 }
 
 // RecoveryJobsClientCancelResponse contains the response from method RecoveryJobsClient.BeginCancel.
 type RecoveryJobsClientCancelResponse struct {
-// Azure operation completed successfully.
+	// Azure operation completed successfully.
 	ArmResponseErrorResponse
 }
 
 // RecoveryJobsClientGetResponse contains the response from method RecoveryJobsClient.Get.
 type RecoveryJobsClientGetResponse struct {
-// Represents a recovery job resource in the Azure Resilience Management provider namespace.
+	// Represents a recovery job resource in the Azure Resilience Management provider namespace.
 	RecoveryJob
 }
 
 // RecoveryJobsClientListResponse contains the response from method RecoveryJobsClient.NewListPager.
 type RecoveryJobsClientListResponse struct {
-// The response of a RecoveryJob list operation.
+	// The response of a RecoveryJob list operation.
 	RecoveryJobListResult
 }
 
 // RecoveryJobsClientResumeResponse contains the response from method RecoveryJobsClient.BeginResume.
 type RecoveryJobsClientResumeResponse struct {
-// Azure operation completed successfully.
+	// Azure operation completed successfully.
 	ArmResponseErrorResponse
 }
 
 // RecoveryJobsClientRetryResponse contains the response from method RecoveryJobsClient.BeginRetry.
 type RecoveryJobsClientRetryResponse struct {
-// Azure operation completed successfully.
+	// Azure operation completed successfully.
 	ArmResponseErrorResponse
 }
 
@@ -284,85 +284,85 @@ type RecoveryPlanActionsClientCheckReadinessResponse struct {
 
 // RecoveryPlanActionsClientFailoverCommitResponse contains the response from method RecoveryPlanActionsClient.BeginFailoverCommit.
 type RecoveryPlanActionsClientFailoverCommitResponse struct {
-// Recovery Orchestration Plan post action response.
+	// Recovery Orchestration Plan post action response.
 	RecoveryPlanActionBaseResponse
 }
 
 // RecoveryPlanActionsClientFailoverResponse contains the response from method RecoveryPlanActionsClient.BeginFailover.
 type RecoveryPlanActionsClientFailoverResponse struct {
-// Recovery Orchestration Plan post action response.
+	// Recovery Orchestration Plan post action response.
 	RecoveryPlanActionBaseResponse
 }
 
 // RecoveryPlanActionsClientFinalizeResponse contains the response from method RecoveryPlanActionsClient.BeginFinalize.
 type RecoveryPlanActionsClientFinalizeResponse struct {
-// Azure operation completed successfully.
+	// Azure operation completed successfully.
 	ArmResponseErrorResponse
 }
 
 // RecoveryPlanActionsClientReprotectResponse contains the response from method RecoveryPlanActionsClient.BeginReprotect.
 type RecoveryPlanActionsClientReprotectResponse struct {
-// Recovery Orchestration Plan post action response.
+	// Recovery Orchestration Plan post action response.
 	RecoveryPlanActionBaseResponse
 }
 
 // RecoveryPlanActionsClientTestFailoverCleanupResponse contains the response from method RecoveryPlanActionsClient.BeginTestFailoverCleanup.
 type RecoveryPlanActionsClientTestFailoverCleanupResponse struct {
-// Recovery Orchestration Plan post action response.
+	// Recovery Orchestration Plan post action response.
 	RecoveryPlanActionBaseResponse
 }
 
 // RecoveryPlanActionsClientTestFailoverResponse contains the response from method RecoveryPlanActionsClient.BeginTestFailover.
 type RecoveryPlanActionsClientTestFailoverResponse struct {
-// Recovery Orchestration Plan post action response.
+	// Recovery Orchestration Plan post action response.
 	RecoveryPlanActionBaseResponse
 }
 
 // RecoveryPlanActionsClientUpdateResourcesResponse contains the response from method RecoveryPlanActionsClient.BeginUpdateResources.
 type RecoveryPlanActionsClientUpdateResourcesResponse struct {
-// RecoveryResources post action request to update in batch.
+	// RecoveryResources post action request to update in batch.
 	UpdateRecoveryResourcesResponse
 }
 
 // RecoveryPlanActionsClientValidateForFailoverCommitResponse contains the response from method RecoveryPlanActionsClient.BeginValidateForFailoverCommit.
 type RecoveryPlanActionsClientValidateForFailoverCommitResponse struct {
-// ValidateForRecoveryOperation post action response.
+	// ValidateForRecoveryOperation post action response.
 	ValidateForRecoveryOperationBaseResponse
 }
 
 // RecoveryPlanActionsClientValidateForFailoverResponse contains the response from method RecoveryPlanActionsClient.BeginValidateForFailover.
 type RecoveryPlanActionsClientValidateForFailoverResponse struct {
-// ValidateForRecoveryOperation post action response.
+	// ValidateForRecoveryOperation post action response.
 	ValidateForRecoveryOperationBaseResponse
 }
 
 // RecoveryPlanActionsClientValidateForOperationResponse contains the response from method RecoveryPlanActionsClient.BeginValidateForOperation.
 type RecoveryPlanActionsClientValidateForOperationResponse struct {
-// Azure operation completed successfully.
+	// Azure operation completed successfully.
 	ArmResponseErrorResponse
 }
 
 // RecoveryPlanActionsClientValidateForReprotectResponse contains the response from method RecoveryPlanActionsClient.BeginValidateForReprotect.
 type RecoveryPlanActionsClientValidateForReprotectResponse struct {
-// ValidateForRecoveryOperation post action response.
+	// ValidateForRecoveryOperation post action response.
 	ValidateForRecoveryOperationBaseResponse
 }
 
 // RecoveryPlanActionsClientValidateForTestFailoverCleanupResponse contains the response from method RecoveryPlanActionsClient.BeginValidateForTestFailoverCleanup.
 type RecoveryPlanActionsClientValidateForTestFailoverCleanupResponse struct {
-// ValidateForRecoveryOperation post action response.
+	// ValidateForRecoveryOperation post action response.
 	ValidateForRecoveryOperationBaseResponse
 }
 
 // RecoveryPlanActionsClientValidateForTestFailoverResponse contains the response from method RecoveryPlanActionsClient.BeginValidateForTestFailover.
 type RecoveryPlanActionsClientValidateForTestFailoverResponse struct {
-// ValidateForRecoveryOperation post action response.
+	// ValidateForRecoveryOperation post action response.
 	ValidateForRecoveryOperationBaseResponse
 }
 
 // RecoveryPlansClientCreateOrUpdateResponse contains the response from method RecoveryPlansClient.BeginCreateOrUpdate.
 type RecoveryPlansClientCreateOrUpdateResponse struct {
-// Represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
+	// Represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
 	RecoveryPlan
 }
 
@@ -373,49 +373,49 @@ type RecoveryPlansClientDeleteResponse struct {
 
 // RecoveryPlansClientGetResponse contains the response from method RecoveryPlansClient.Get.
 type RecoveryPlansClientGetResponse struct {
-// Represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
+	// Represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
 	RecoveryPlan
 }
 
 // RecoveryPlansClientListResponse contains the response from method RecoveryPlansClient.NewListPager.
 type RecoveryPlansClientListResponse struct {
-// The response of a RecoveryPlan list operation.
+	// The response of a RecoveryPlan list operation.
 	RecoveryPlanListResult
 }
 
 // RecoveryPlansClientUpdateResponse contains the response from method RecoveryPlansClient.BeginUpdate.
 type RecoveryPlansClientUpdateResponse struct {
-// Represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
+	// Represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
 	RecoveryPlan
 }
 
 // RecoveryResourcesClientGetResponse contains the response from method RecoveryResourcesClient.Get.
 type RecoveryResourcesClientGetResponse struct {
-// RecoveryPlan Resource a AzureResilienceProviderHub resource
+	// RecoveryPlan Resource a AzureResilienceProviderHub resource
 	RecoveryResource
 }
 
 // RecoveryResourcesClientListResponse contains the response from method RecoveryResourcesClient.NewListPager.
 type RecoveryResourcesClientListResponse struct {
-// The response of a RecoveryResource list operation.
+	// The response of a RecoveryResource list operation.
 	RecoveryResourceListResult
 }
 
 // UnifiedResilienceItemsClientGetResponse contains the response from method UnifiedResilienceItemsClient.Get.
 type UnifiedResilienceItemsClientGetResponse struct {
-// A unified resilience item represents a computed and aggregated resilience information of Azure Applications.
+	// A unified resilience item represents a computed and aggregated resilience information of Azure Applications.
 	UnifiedResilienceItem
 }
 
 // UnifiedResilienceItemsClientListResponse contains the response from method UnifiedResilienceItemsClient.NewListPager.
 type UnifiedResilienceItemsClientListResponse struct {
-// The response of a UnifiedResilienceItem list operation.
+	// The response of a UnifiedResilienceItem list operation.
 	UnifiedResilienceItemListResult
 }
 
 // UsagePlansClientCreateOrUpdateResponse contains the response from method UsagePlansClient.BeginCreateOrUpdate.
 type UsagePlansClientCreateOrUpdateResponse struct {
-// A usage plan resource for Resiliency feature billing.
+	// A usage plan resource for Resiliency feature billing.
 	UsagePlan
 }
 
@@ -426,25 +426,24 @@ type UsagePlansClientDeleteResponse struct {
 
 // UsagePlansClientGetResponse contains the response from method UsagePlansClient.Get.
 type UsagePlansClientGetResponse struct {
-// A usage plan resource for Resiliency feature billing.
+	// A usage plan resource for Resiliency feature billing.
 	UsagePlan
 }
 
 // UsagePlansClientListByResourceGroupResponse contains the response from method UsagePlansClient.NewListByResourceGroupPager.
 type UsagePlansClientListByResourceGroupResponse struct {
-// The response of a UsagePlan list operation.
+	// The response of a UsagePlan list operation.
 	UsagePlanListResult
 }
 
 // UsagePlansClientListBySubscriptionResponse contains the response from method UsagePlansClient.NewListBySubscriptionPager.
 type UsagePlansClientListBySubscriptionResponse struct {
-// The response of a UsagePlan list operation.
+	// The response of a UsagePlan list operation.
 	UsagePlanListResult
 }
 
 // UsagePlansClientUpdateResponse contains the response from method UsagePlansClient.BeginUpdate.
 type UsagePlansClientUpdateResponse struct {
-// A usage plan resource for Resiliency feature billing.
+	// A usage plan resource for Resiliency feature billing.
 	UsagePlan
 }
-

@@ -106,7 +106,7 @@ func (client *RecoveryResourcesClient) getHandleResponse(resp *http.Response) (R
 //   - recoveryPlanName - The name of the recovery orchestration plan.
 //   - options - RecoveryResourcesClientListOptions contains the optional parameters for the RecoveryResourcesClient.NewListPager
 //     method.
-func (client *RecoveryResourcesClient) NewListPager(serviceGroupName string, recoveryPlanName string, options *RecoveryResourcesClientListOptions) (*runtime.Pager[RecoveryResourcesClientListResponse]) {
+func (client *RecoveryResourcesClient) NewListPager(serviceGroupName string, recoveryPlanName string, options *RecoveryResourcesClientListOptions) *runtime.Pager[RecoveryResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecoveryResourcesClientListResponse]{
 		More: func(page RecoveryResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -159,4 +159,3 @@ func (client *RecoveryResourcesClient) listHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
-

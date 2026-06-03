@@ -5,7 +5,6 @@
 package armresiliencemanagement
 
 const (
-	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resiliencemanagement/armresiliencemanagement"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resiliencemanagement/armresiliencemanagement"
 	moduleVersion = "v0.1.0"
 )
-

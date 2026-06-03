@@ -21,7 +21,7 @@ import (
 )
 
 // GoalTemplatesServer is a fake server for instances of the armresiliencemanagement.GoalTemplatesClient type.
-type GoalTemplatesServer struct{
+type GoalTemplatesServer struct {
 	// BeginCreateOrUpdate is the fake for method GoalTemplatesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, serviceGroupName string, goalTemplateName string, resource armresiliencemanagement.GoalTemplate, options *armresiliencemanagement.GoalTemplatesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -41,7 +41,6 @@ type GoalTemplatesServer struct{
 	// BeginUpdate is the fake for method GoalTemplatesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginUpdate func(ctx context.Context, serviceGroupName string, goalTemplateName string, properties armresiliencemanagement.GoalTemplate, options *armresiliencemanagement.GoalTemplatesClientBeginUpdateOptions) (resp azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientUpdateResponse], errResp azfake.ErrorResponder)
-
 }
 
 // NewGoalTemplatesServerTransport creates a new instance of GoalTemplatesServerTransport with the provided implementation.
@@ -49,22 +48,22 @@ type GoalTemplatesServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGoalTemplatesServerTransport(srv *GoalTemplatesServer) *GoalTemplatesServerTransport {
 	return &GoalTemplatesServerTransport{
-		srv: srv,
+		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientCreateOrUpdateResponse]](),
-		beginDelete: newTracker[azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.GoalTemplatesClientListResponse]](),
-		beginUpdate: newTracker[azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armresiliencemanagement.GoalTemplatesClientListResponse]](),
+		beginUpdate:         newTracker[azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientUpdateResponse]](),
 	}
 }
 
 // GoalTemplatesServerTransport connects instances of armresiliencemanagement.GoalTemplatesClient to instances of GoalTemplatesServer.
 // Don't use this type directly, use NewGoalTemplatesServerTransport instead.
 type GoalTemplatesServerTransport struct {
-	srv *GoalTemplatesServer
+	srv                 *GoalTemplatesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientCreateOrUpdateResponse]]
-	beginDelete *tracker[azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.GoalTemplatesClientListResponse]]
-	beginUpdate *tracker[azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armresiliencemanagement.GoalTemplatesClientListResponse]]
+	beginUpdate         *tracker[azfake.PollerResponder[armresiliencemanagement.GoalTemplatesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GoalTemplatesServerTransport.
@@ -83,8 +82,8 @@ func (g *GoalTemplatesServerTransport) dispatchToMethodFake(req *http.Request, m
 	go func() {
 		var intercepted bool
 		var res result
-		 if goalTemplatesServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = goalTemplatesServerTransportInterceptor.Do(req)
+		if goalTemplatesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = goalTemplatesServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -98,7 +97,7 @@ func (g *GoalTemplatesServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = g.dispatchNewListPager(req)
 			case "GoalTemplatesClient.BeginUpdate":
 				res.resp, res.err = g.dispatchBeginUpdate(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -120,28 +119,28 @@ func (g *GoalTemplatesServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 	}
 	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalTemplates/(?P<goalTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.GoalTemplate](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	goalTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalTemplateName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.BeginCreateOrUpdate(req.Context(), serviceGroupNameParam, goalTemplateNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalTemplates/(?P<goalTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.GoalTemplate](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goalTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginCreateOrUpdate(req.Context(), serviceGroupNameParam, goalTemplateNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginCreateOrUpdate = &respr
 		g.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -168,24 +167,24 @@ func (g *GoalTemplatesServerTransport) dispatchBeginDelete(req *http.Request) (*
 	}
 	beginDelete := g.beginDelete.get(req)
 	if beginDelete == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalTemplates/(?P<goalTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	goalTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalTemplateName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.BeginDelete(req.Context(), serviceGroupNameParam, goalTemplateNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalTemplates/(?P<goalTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goalTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginDelete(req.Context(), serviceGroupNameParam, goalTemplateNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginDelete = &respr
 		g.beginDelete.add(req, beginDelete)
 	}
@@ -245,36 +244,36 @@ func (g *GoalTemplatesServerTransport) dispatchNewListPager(req *http.Request) (
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalTemplates`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	skipTokenParam := getOptional(qp.Get("$skipToken"))
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalTemplates`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		return int32(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	var options *armresiliencemanagement.GoalTemplatesClientListOptions
-	if skipTokenParam != nil || topParam != nil {
-		options = &armresiliencemanagement.GoalTemplatesClientListOptions{
-			SkipToken: skipTokenParam,
-			Top: topParam,
+		qp := req.URL.Query()
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
 		}
-	}
-resp := g.srv.NewListPager(serviceGroupNameParam, options)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armresiliencemanagement.GoalTemplatesClientListOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armresiliencemanagement.GoalTemplatesClientListOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := g.srv.NewListPager(serviceGroupNameParam, options)
 		newListPager = &resp
 		g.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.GoalTemplatesClientListResponse, createLink func() string) {
@@ -301,28 +300,28 @@ func (g *GoalTemplatesServerTransport) dispatchBeginUpdate(req *http.Request) (*
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalTemplates/(?P<goalTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.GoalTemplate](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	goalTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalTemplateName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.BeginUpdate(req.Context(), serviceGroupNameParam, goalTemplateNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalTemplates/(?P<goalTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.GoalTemplate](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goalTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginUpdate(req.Context(), serviceGroupNameParam, goalTemplateNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginUpdate = &respr
 		g.beginUpdate.add(req, beginUpdate)
 	}

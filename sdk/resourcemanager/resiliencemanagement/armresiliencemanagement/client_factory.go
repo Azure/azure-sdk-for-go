@@ -13,7 +13,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	internal *arm.Client
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -28,35 +28,35 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	return &ClientFactory{
 		subscriptionID: subscriptionID,
-		internal: internal,
+		internal:       internal,
 	}, nil
 }
 
 // NewDrillResourcesClient creates a new instance of DrillResourcesClient.
 func (c *ClientFactory) NewDrillResourcesClient() *DrillResourcesClient {
 	return &DrillResourcesClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewDrillRunResourcesClient creates a new instance of DrillRunResourcesClient.
 func (c *ClientFactory) NewDrillRunResourcesClient() *DrillRunResourcesClient {
 	return &DrillRunResourcesClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewDrillRunsClient creates a new instance of DrillRunsClient.
 func (c *ClientFactory) NewDrillRunsClient() *DrillRunsClient {
 	return &DrillRunsClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewDrillsClient creates a new instance of DrillsClient.
 func (c *ClientFactory) NewDrillsClient() *DrillsClient {
 	return &DrillsClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
@@ -64,84 +64,84 @@ func (c *ClientFactory) NewDrillsClient() *DrillsClient {
 func (c *ClientFactory) NewEnrollmentsClient() *EnrollmentsClient {
 	return &EnrollmentsClient{
 		subscriptionID: c.subscriptionID,
-	internal: c.internal,
+		internal:       c.internal,
 	}
 }
 
 // NewGoalAssignmentsClient creates a new instance of GoalAssignmentsClient.
 func (c *ClientFactory) NewGoalAssignmentsClient() *GoalAssignmentsClient {
 	return &GoalAssignmentsClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewGoalResourcesClient creates a new instance of GoalResourcesClient.
 func (c *ClientFactory) NewGoalResourcesClient() *GoalResourcesClient {
 	return &GoalResourcesClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewGoalTemplatesClient creates a new instance of GoalTemplatesClient.
 func (c *ClientFactory) NewGoalTemplatesClient() *GoalTemplatesClient {
 	return &GoalTemplatesClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewOperationStatusClient creates a new instance of OperationStatusClient.
 func (c *ClientFactory) NewOperationStatusClient() *OperationStatusClient {
 	return &OperationStatusClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewRecoveryJobResourcesClient creates a new instance of RecoveryJobResourcesClient.
 func (c *ClientFactory) NewRecoveryJobResourcesClient() *RecoveryJobResourcesClient {
 	return &RecoveryJobResourcesClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewRecoveryJobsClient creates a new instance of RecoveryJobsClient.
 func (c *ClientFactory) NewRecoveryJobsClient() *RecoveryJobsClient {
 	return &RecoveryJobsClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewRecoveryPlanActionsClient creates a new instance of RecoveryPlanActionsClient.
 func (c *ClientFactory) NewRecoveryPlanActionsClient() *RecoveryPlanActionsClient {
 	return &RecoveryPlanActionsClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewRecoveryPlansClient creates a new instance of RecoveryPlansClient.
 func (c *ClientFactory) NewRecoveryPlansClient() *RecoveryPlansClient {
 	return &RecoveryPlansClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewRecoveryResourcesClient creates a new instance of RecoveryResourcesClient.
 func (c *ClientFactory) NewRecoveryResourcesClient() *RecoveryResourcesClient {
 	return &RecoveryResourcesClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
 // NewUnifiedResilienceItemsClient creates a new instance of UnifiedResilienceItemsClient.
 func (c *ClientFactory) NewUnifiedResilienceItemsClient() *UnifiedResilienceItemsClient {
 	return &UnifiedResilienceItemsClient{
-	internal: c.internal,
+		internal: c.internal,
 	}
 }
 
@@ -149,7 +149,6 @@ func (c *ClientFactory) NewUnifiedResilienceItemsClient() *UnifiedResilienceItem
 func (c *ClientFactory) NewUsagePlansClient() *UsagePlansClient {
 	return &UsagePlansClient{
 		subscriptionID: c.subscriptionID,
-	internal: c.internal,
+		internal:       c.internal,
 	}
 }
-

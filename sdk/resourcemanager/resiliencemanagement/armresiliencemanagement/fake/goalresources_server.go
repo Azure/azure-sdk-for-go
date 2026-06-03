@@ -21,7 +21,7 @@ import (
 )
 
 // GoalResourcesServer is a fake server for instances of the armresiliencemanagement.GoalResourcesClient type.
-type GoalResourcesServer struct{
+type GoalResourcesServer struct {
 	// Get is the fake for method GoalResourcesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, serviceGroupName string, goalAssignmentName string, goalResourceName string, options *armresiliencemanagement.GoalResourcesClientGetOptions) (resp azfake.Responder[armresiliencemanagement.GoalResourcesClientGetResponse], errResp azfake.ErrorResponder)
@@ -29,7 +29,6 @@ type GoalResourcesServer struct{
 	// NewListPager is the fake for method GoalResourcesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(serviceGroupName string, goalAssignmentName string, options *armresiliencemanagement.GoalResourcesClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.GoalResourcesClientListResponse])
-
 }
 
 // NewGoalResourcesServerTransport creates a new instance of GoalResourcesServerTransport with the provided implementation.
@@ -37,7 +36,7 @@ type GoalResourcesServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGoalResourcesServerTransport(srv *GoalResourcesServer) *GoalResourcesServerTransport {
 	return &GoalResourcesServerTransport{
-		srv: srv,
+		srv:          srv,
 		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.GoalResourcesClientListResponse]](),
 	}
 }
@@ -45,7 +44,7 @@ func NewGoalResourcesServerTransport(srv *GoalResourcesServer) *GoalResourcesSer
 // GoalResourcesServerTransport connects instances of armresiliencemanagement.GoalResourcesClient to instances of GoalResourcesServer.
 // Don't use this type directly, use NewGoalResourcesServerTransport instead.
 type GoalResourcesServerTransport struct {
-	srv *GoalResourcesServer
+	srv          *GoalResourcesServer
 	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.GoalResourcesClientListResponse]]
 }
 
@@ -65,8 +64,8 @@ func (g *GoalResourcesServerTransport) dispatchToMethodFake(req *http.Request, m
 	go func() {
 		var intercepted bool
 		var res result
-		 if goalResourcesServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = goalResourcesServerTransportInterceptor.Do(req)
+		if goalResourcesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = goalResourcesServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -74,7 +73,7 @@ func (g *GoalResourcesServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = g.dispatchGet(req)
 			case "GoalResourcesClient.NewListPager":
 				res.resp, res.err = g.dispatchNewListPager(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -133,40 +132,40 @@ func (g *GoalResourcesServerTransport) dispatchNewListPager(req *http.Request) (
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/goalResources`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	skipTokenParam := getOptional(qp.Get("$skipToken"))
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/goalResources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		return int32(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
-	if err != nil {
-		return nil, err
-	}
-	var options *armresiliencemanagement.GoalResourcesClientListOptions
-	if skipTokenParam != nil || topParam != nil {
-		options = &armresiliencemanagement.GoalResourcesClientListOptions{
-			SkipToken: skipTokenParam,
-			Top: topParam,
+		qp := req.URL.Query()
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
 		}
-	}
-resp := g.srv.NewListPager(serviceGroupNameParam, goalAssignmentNameParam, options)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armresiliencemanagement.GoalResourcesClientListOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armresiliencemanagement.GoalResourcesClientListOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := g.srv.NewListPager(serviceGroupNameParam, goalAssignmentNameParam, options)
 		newListPager = &resp
 		g.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.GoalResourcesClientListResponse, createLink func() string) {

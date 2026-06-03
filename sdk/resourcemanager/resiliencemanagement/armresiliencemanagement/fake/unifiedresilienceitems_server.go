@@ -21,7 +21,7 @@ import (
 )
 
 // UnifiedResilienceItemsServer is a fake server for instances of the armresiliencemanagement.UnifiedResilienceItemsClient type.
-type UnifiedResilienceItemsServer struct{
+type UnifiedResilienceItemsServer struct {
 	// Get is the fake for method UnifiedResilienceItemsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, serviceGroupName string, unifiedResilienceItemName string, options *armresiliencemanagement.UnifiedResilienceItemsClientGetOptions) (resp azfake.Responder[armresiliencemanagement.UnifiedResilienceItemsClientGetResponse], errResp azfake.ErrorResponder)
@@ -29,7 +29,6 @@ type UnifiedResilienceItemsServer struct{
 	// NewListPager is the fake for method UnifiedResilienceItemsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(serviceGroupName string, options *armresiliencemanagement.UnifiedResilienceItemsClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.UnifiedResilienceItemsClientListResponse])
-
 }
 
 // NewUnifiedResilienceItemsServerTransport creates a new instance of UnifiedResilienceItemsServerTransport with the provided implementation.
@@ -37,7 +36,7 @@ type UnifiedResilienceItemsServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewUnifiedResilienceItemsServerTransport(srv *UnifiedResilienceItemsServer) *UnifiedResilienceItemsServerTransport {
 	return &UnifiedResilienceItemsServerTransport{
-		srv: srv,
+		srv:          srv,
 		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.UnifiedResilienceItemsClientListResponse]](),
 	}
 }
@@ -45,7 +44,7 @@ func NewUnifiedResilienceItemsServerTransport(srv *UnifiedResilienceItemsServer)
 // UnifiedResilienceItemsServerTransport connects instances of armresiliencemanagement.UnifiedResilienceItemsClient to instances of UnifiedResilienceItemsServer.
 // Don't use this type directly, use NewUnifiedResilienceItemsServerTransport instead.
 type UnifiedResilienceItemsServerTransport struct {
-	srv *UnifiedResilienceItemsServer
+	srv          *UnifiedResilienceItemsServer
 	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.UnifiedResilienceItemsClientListResponse]]
 }
 
@@ -65,8 +64,8 @@ func (u *UnifiedResilienceItemsServerTransport) dispatchToMethodFake(req *http.R
 	go func() {
 		var intercepted bool
 		var res result
-		 if unifiedResilienceItemsServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = unifiedResilienceItemsServerTransportInterceptor.Do(req)
+		if unifiedResilienceItemsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = unifiedResilienceItemsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -74,7 +73,7 @@ func (u *UnifiedResilienceItemsServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = u.dispatchGet(req)
 			case "UnifiedResilienceItemsClient.NewListPager":
 				res.resp, res.err = u.dispatchNewListPager(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -129,36 +128,36 @@ func (u *UnifiedResilienceItemsServerTransport) dispatchNewListPager(req *http.R
 	}
 	newListPager := u.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/unifiedResilienceItems`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	skipTokenParam := getOptional(qp.Get("$skipToken"))
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/unifiedResilienceItems`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		return int32(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	var options *armresiliencemanagement.UnifiedResilienceItemsClientListOptions
-	if skipTokenParam != nil || topParam != nil {
-		options = &armresiliencemanagement.UnifiedResilienceItemsClientListOptions{
-			SkipToken: skipTokenParam,
-			Top: topParam,
+		qp := req.URL.Query()
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
 		}
-	}
-resp := u.srv.NewListPager(serviceGroupNameParam, options)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armresiliencemanagement.UnifiedResilienceItemsClientListOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armresiliencemanagement.UnifiedResilienceItemsClientListOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := u.srv.NewListPager(serviceGroupNameParam, options)
 		newListPager = &resp
 		u.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.UnifiedResilienceItemsClientListResponse, createLink func() string) {

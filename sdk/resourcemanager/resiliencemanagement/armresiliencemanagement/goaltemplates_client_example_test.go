@@ -19,17 +19,17 @@ func ExampleGoalTemplatesClient_BeginCreateOrUpdate_goalTemplatesCreateOrUpdateM
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGoalTemplatesClient().BeginCreateOrUpdate(ctx, "zumt", "gt1", armresiliencemanagement.GoalTemplate{
 		Properties: &armresiliencemanagement.GoalTemplateProperties{
-			RequireHighAvailability: to.Ptr(armresiliencemanagement.RequirementSelectedRequired),
-			RequireDisasterRecovery: to.Ptr(armresiliencemanagement.RequirementSelectedNotRequired),
+			RequireHighAvailability:        to.Ptr(armresiliencemanagement.RequirementSelectedRequired),
+			RequireDisasterRecovery:        to.Ptr(armresiliencemanagement.RequirementSelectedNotRequired),
 			RegionalRecoveryPointObjective: to.Ptr("PT15M"),
-			RegionalRecoveryTimeObjective: to.Ptr("PT30M"),
-			GoalType: to.Ptr(armresiliencemanagement.GoalTypeResiliency),
+			RegionalRecoveryTimeObjective:  to.Ptr("PT30M"),
+			GoalType:                       to.Ptr(armresiliencemanagement.GoalTypeResiliency),
 		},
 	}, nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleGoalTemplatesClient_BeginCreateOrUpdate_goalTemplatesCreateOrUpdateM
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -121,7 +121,7 @@ func ExampleGoalTemplatesClient_BeginDelete_goalTemplatesDeleteMaximumSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -142,7 +142,7 @@ func ExampleGoalTemplatesClient_BeginDelete_goalTemplatesDeleteMinimumSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -163,7 +163,7 @@ func ExampleGoalTemplatesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -206,13 +206,13 @@ func ExampleGoalTemplatesClient_NewListPager_goalTemplatesListMaximumSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewGoalTemplatesClient().NewListPager("vmmacokmkuxzy", &armresiliencemanagement.GoalTemplatesClientListOptions{
-	SkipToken: to.Ptr("xntbyoswztnmvitj"),
-	Top: to.Ptr[int32](69)})
+		SkipToken: to.Ptr("xntbyoswztnmvitj"),
+		Top:       to.Ptr[int32](69)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -261,7 +261,7 @@ func ExampleGoalTemplatesClient_NewListPager_goalTemplatesListMinimumSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -309,17 +309,17 @@ func ExampleGoalTemplatesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGoalTemplatesClient().BeginUpdate(ctx, "ipvrpvfcsfwltkmalhklsyg", "gt1", armresiliencemanagement.GoalTemplate{
 		Properties: &armresiliencemanagement.GoalTemplateProperties{
-			RequireHighAvailability: to.Ptr(armresiliencemanagement.RequirementSelectedRequired),
-			RequireDisasterRecovery: to.Ptr(armresiliencemanagement.RequirementSelectedNotRequired),
+			RequireHighAvailability:        to.Ptr(armresiliencemanagement.RequirementSelectedRequired),
+			RequireDisasterRecovery:        to.Ptr(armresiliencemanagement.RequirementSelectedNotRequired),
 			RegionalRecoveryPointObjective: to.Ptr("PT15M"),
-			RegionalRecoveryTimeObjective: to.Ptr("PT30M"),
-			GoalType: to.Ptr(armresiliencemanagement.GoalTypeResiliency),
+			RegionalRecoveryTimeObjective:  to.Ptr("PT30M"),
+			GoalType:                       to.Ptr(armresiliencemanagement.GoalTypeResiliency),
 		},
 	}, nil)
 	if err != nil {
@@ -335,4 +335,3 @@ func ExampleGoalTemplatesClient_BeginUpdate() {
 	// res = armresiliencemanagement.GoalTemplatesClientUpdateResponse{
 	// }
 }
-

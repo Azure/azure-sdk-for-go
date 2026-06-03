@@ -184,7 +184,7 @@ func (client *RecoveryJobsClient) getHandleResponse(resp *http.Response) (Recove
 //   - serviceGroupName - The name of the service group.
 //   - recoveryPlanName - The name of the recovery orchestration plan.
 //   - options - RecoveryJobsClientListOptions contains the optional parameters for the RecoveryJobsClient.NewListPager method.
-func (client *RecoveryJobsClient) NewListPager(serviceGroupName string, recoveryPlanName string, options *RecoveryJobsClientListOptions) (*runtime.Pager[RecoveryJobsClientListResponse]) {
+func (client *RecoveryJobsClient) NewListPager(serviceGroupName string, recoveryPlanName string, options *RecoveryJobsClientListOptions) *runtime.Pager[RecoveryJobsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecoveryJobsClientListResponse]{
 		More: func(page RecoveryJobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -389,4 +389,3 @@ func (client *RecoveryJobsClient) retryCreateRequest(ctx context.Context, servic
 	req.Raw().Header["operation-id"] = []string{operationID}
 	return req, nil
 }
-

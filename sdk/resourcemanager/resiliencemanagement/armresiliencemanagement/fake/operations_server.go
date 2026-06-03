@@ -17,11 +17,10 @@ import (
 )
 
 // OperationsServer is a fake server for instances of the armresiliencemanagement.OperationsClient type.
-type OperationsServer struct{
+type OperationsServer struct {
 	// NewListPager is the fake for method OperationsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armresiliencemanagement.OperationsClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.OperationsClientListResponse])
-
 }
 
 // NewOperationsServerTransport creates a new instance of OperationsServerTransport with the provided implementation.
@@ -29,7 +28,7 @@ type OperationsServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewOperationsServerTransport(srv *OperationsServer) *OperationsServerTransport {
 	return &OperationsServerTransport{
-		srv: srv,
+		srv:          srv,
 		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.OperationsClientListResponse]](),
 	}
 }
@@ -37,7 +36,7 @@ func NewOperationsServerTransport(srv *OperationsServer) *OperationsServerTransp
 // OperationsServerTransport connects instances of armresiliencemanagement.OperationsClient to instances of OperationsServer.
 // Don't use this type directly, use NewOperationsServerTransport instead.
 type OperationsServerTransport struct {
-	srv *OperationsServer
+	srv          *OperationsServer
 	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.OperationsClientListResponse]]
 }
 
@@ -57,14 +56,14 @@ func (o *OperationsServerTransport) dispatchToMethodFake(req *http.Request, meth
 	go func() {
 		var intercepted bool
 		var res result
-		 if operationsServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = operationsServerTransportInterceptor.Do(req)
+		if operationsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = operationsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
 			case "OperationsClient.NewListPager":
 				res.resp, res.err = o.dispatchNewListPager(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -86,7 +85,7 @@ func (o *OperationsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	}
 	newListPager := o.newListPager.get(req)
 	if newListPager == nil {
-resp := o.srv.NewListPager(nil)
+		resp := o.srv.NewListPager(nil)
 		newListPager = &resp
 		o.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.OperationsClientListResponse, createLink func() string) {

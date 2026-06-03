@@ -19,7 +19,7 @@ func ExampleRecoveryPlanActionsClient_BeginCheckReadiness() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -45,7 +45,7 @@ func ExampleRecoveryPlanActionsClient_BeginFailover() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -87,7 +87,7 @@ func ExampleRecoveryPlanActionsClient_BeginFailoverCommit() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -116,7 +116,7 @@ func ExampleRecoveryPlanActionsClient_BeginFinalize() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -137,12 +137,12 @@ func ExampleRecoveryPlanActionsClient_BeginReprotect() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginReprotect(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", &armresiliencemanagement.RecoveryPlanActionsClientBeginReprotectOptions{
-	Body: &armresiliencemanagement.ReprotectRequest{
+		Body: &armresiliencemanagement.ReprotectRequest{
 			ReprotectRequestProperties: &armresiliencemanagement.ReprotectRequestProperties{
 				SelectedResourceIDs: []*string{
 					to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryResources/12345678-9012-3456-7890-123456789012"),
@@ -173,7 +173,7 @@ func ExampleRecoveryPlanActionsClient_BeginTestFailover() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -215,7 +215,7 @@ func ExampleRecoveryPlanActionsClient_BeginTestFailoverCleanup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -246,7 +246,7 @@ func ExampleRecoveryPlanActionsClient_BeginUpdateResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -254,19 +254,18 @@ func ExampleRecoveryPlanActionsClient_BeginUpdateResources() {
 		ResourcesToUpdate: []*armresiliencemanagement.RecoveryResource{
 			{
 				Properties: &armresiliencemanagement.RecoveryResourceProperties{
-					RecoveryResourceUniqueID: to.Ptr("e2a7b8d1-4c3f-4e2b-9a1c-7f6e2d8b5c4a"),
-					ProtectionStatus: to.Ptr(armresiliencemanagement.ResourceProtectionStatusUnknown),
+					RecoveryResourceUniqueID:       to.Ptr("e2a7b8d1-4c3f-4e2b-9a1c-7f6e2d8b5c4a"),
+					ProtectionStatus:               to.Ptr(armresiliencemanagement.ResourceProtectionStatusUnknown),
 					SelectedProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNative),
 					SelectedProtectionSolutionSetting: &armresiliencemanagement.ResourceNativeProtectionSolutionSetting{
 						ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNative),
 					},
 					RecoveryGroupID: to.Ptr("11111111-1111-1111-1111-123456789012"),
 					AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-						Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+						Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 						UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 					},
-					ErrorDetails: &armresiliencemanagement.ErrorDetail{
-					},
+					ErrorDetails:   &armresiliencemanagement.ErrorDetail{},
 					InclusionState: to.Ptr(armresiliencemanagement.ResourceInclusionStateIncluded),
 				},
 			},
@@ -376,7 +375,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForFailover() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -497,7 +496,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForFailoverCommit() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -611,7 +610,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForOperation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -634,12 +633,12 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForReprotect() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewRecoveryPlanActionsClient().BeginValidateForReprotect(ctx, "nrhlfd", "<operationID>", "samplePlanName", &armresiliencemanagement.RecoveryPlanActionsClientBeginValidateForReprotectOptions{
-	Body: &armresiliencemanagement.ReprotectRequest{
+		Body: &armresiliencemanagement.ReprotectRequest{
 			ReprotectRequestProperties: &armresiliencemanagement.ReprotectRequestProperties{
 				SelectedResourceIDs: []*string{
 					to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryResources/12345678-9012-3456-7890-123456789012"),
@@ -755,7 +754,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailover() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -876,7 +875,7 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailoverCleanup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -982,4 +981,3 @@ func ExampleRecoveryPlanActionsClient_BeginValidateForTestFailoverCleanup() {
 	// 	},
 	// }
 }
-

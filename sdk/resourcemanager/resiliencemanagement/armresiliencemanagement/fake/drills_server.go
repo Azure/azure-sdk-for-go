@@ -21,7 +21,7 @@ import (
 )
 
 // DrillsServer is a fake server for instances of the armresiliencemanagement.DrillsClient type.
-type DrillsServer struct{
+type DrillsServer struct {
 	// BeginAddOrUpdateResources is the fake for method DrillsClient.BeginAddOrUpdateResources
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginAddOrUpdateResources func(ctx context.Context, serviceGroupName string, operationID string, drillName string, body armresiliencemanagement.AddOrUpdateResourcesRequest, options *armresiliencemanagement.DrillsClientBeginAddOrUpdateResourcesOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillsClientAddOrUpdateResourcesResponse], errResp azfake.ErrorResponder)
@@ -61,7 +61,6 @@ type DrillsServer struct{
 	// BeginValidateForExecution is the fake for method DrillsClient.BeginValidateForExecution
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginValidateForExecution func(ctx context.Context, serviceGroupName string, operationID string, drillName string, body armresiliencemanagement.ValidateForExecutionRequest, options *armresiliencemanagement.DrillsClientBeginValidateForExecutionOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillsClientValidateForExecutionResponse], errResp azfake.ErrorResponder)
-
 }
 
 // NewDrillsServerTransport creates a new instance of DrillsServerTransport with the provided implementation.
@@ -69,15 +68,15 @@ type DrillsServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDrillsServerTransport(srv *DrillsServer) *DrillsServerTransport {
 	return &DrillsServerTransport{
-		srv: srv,
+		srv:                       srv,
 		beginAddOrUpdateResources: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientAddOrUpdateResourcesResponse]](),
-		beginCreate: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientCreateResponse]](),
-		beginDelete: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientDeleteResponse]](),
-		beginEnd: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientEndResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.DrillsClientListResponse]](),
+		beginCreate:               newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientCreateResponse]](),
+		beginDelete:               newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientDeleteResponse]](),
+		beginEnd:                  newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientEndResponse]](),
+		newListPager:              newTracker[azfake.PagerResponder[armresiliencemanagement.DrillsClientListResponse]](),
 		beginResyncReadinessCheck: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientResyncReadinessCheckResponse]](),
-		beginStart: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientStartResponse]](),
-		beginUpdate: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientUpdateResponse]](),
+		beginStart:                newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientStartResponse]](),
+		beginUpdate:               newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientUpdateResponse]](),
 		beginValidateForExecution: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientValidateForExecutionResponse]](),
 	}
 }
@@ -85,15 +84,15 @@ func NewDrillsServerTransport(srv *DrillsServer) *DrillsServerTransport {
 // DrillsServerTransport connects instances of armresiliencemanagement.DrillsClient to instances of DrillsServer.
 // Don't use this type directly, use NewDrillsServerTransport instead.
 type DrillsServerTransport struct {
-	srv *DrillsServer
+	srv                       *DrillsServer
 	beginAddOrUpdateResources *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientAddOrUpdateResourcesResponse]]
-	beginCreate *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientCreateResponse]]
-	beginDelete *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientDeleteResponse]]
-	beginEnd *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientEndResponse]]
-	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.DrillsClientListResponse]]
+	beginCreate               *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientCreateResponse]]
+	beginDelete               *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientDeleteResponse]]
+	beginEnd                  *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientEndResponse]]
+	newListPager              *tracker[azfake.PagerResponder[armresiliencemanagement.DrillsClientListResponse]]
 	beginResyncReadinessCheck *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientResyncReadinessCheckResponse]]
-	beginStart *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientStartResponse]]
-	beginUpdate *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientUpdateResponse]]
+	beginStart                *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientStartResponse]]
+	beginUpdate               *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientUpdateResponse]]
 	beginValidateForExecution *tracker[azfake.PollerResponder[armresiliencemanagement.DrillsClientValidateForExecutionResponse]]
 }
 
@@ -113,8 +112,8 @@ func (d *DrillsServerTransport) dispatchToMethodFake(req *http.Request, method s
 	go func() {
 		var intercepted bool
 		var res result
-		 if drillsServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = drillsServerTransportInterceptor.Do(req)
+		if drillsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = drillsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -138,7 +137,7 @@ func (d *DrillsServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DrillsClient.BeginValidateForExecution":
 				res.resp, res.err = d.dispatchBeginValidateForExecution(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -160,28 +159,28 @@ func (d *DrillsServerTransport) dispatchBeginAddOrUpdateResources(req *http.Requ
 	}
 	beginAddOrUpdateResources := d.beginAddOrUpdateResources.get(req)
 	if beginAddOrUpdateResources == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addOrUpdateResources`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.AddOrUpdateResourcesRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.BeginAddOrUpdateResources(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addOrUpdateResources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.AddOrUpdateResourcesRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginAddOrUpdateResources(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginAddOrUpdateResources = &respr
 		d.beginAddOrUpdateResources.add(req, beginAddOrUpdateResources)
 	}
@@ -208,28 +207,28 @@ func (d *DrillsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Re
 	}
 	beginCreate := d.beginCreate.get(req)
 	if beginCreate == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.Drill](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.BeginCreate(req.Context(), serviceGroupNameParam, drillNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.Drill](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginCreate(req.Context(), serviceGroupNameParam, drillNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginCreate = &respr
 		d.beginCreate.add(req, beginCreate)
 	}
@@ -256,24 +255,24 @@ func (d *DrillsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	}
 	beginDelete := d.beginDelete.get(req)
 	if beginDelete == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.BeginDelete(req.Context(), serviceGroupNameParam, drillNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginDelete(req.Context(), serviceGroupNameParam, drillNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginDelete = &respr
 		d.beginDelete.add(req, beginDelete)
 	}
@@ -300,28 +299,28 @@ func (d *DrillsServerTransport) dispatchBeginEnd(req *http.Request) (*http.Respo
 	}
 	beginEnd := d.beginEnd.get(req)
 	if beginEnd == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/end`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.DrillEndRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.BeginEnd(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/end`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.DrillEndRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginEnd(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginEnd = &respr
 		d.beginEnd.add(req, beginEnd)
 	}
@@ -381,36 +380,36 @@ func (d *DrillsServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	skipTokenParam := getOptional(qp.Get("$skipToken"))
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		return int32(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	var options *armresiliencemanagement.DrillsClientListOptions
-	if skipTokenParam != nil || topParam != nil {
-		options = &armresiliencemanagement.DrillsClientListOptions{
-			SkipToken: skipTokenParam,
-			Top: topParam,
+		qp := req.URL.Query()
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
 		}
-	}
-resp := d.srv.NewListPager(serviceGroupNameParam, options)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armresiliencemanagement.DrillsClientListOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armresiliencemanagement.DrillsClientListOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := d.srv.NewListPager(serviceGroupNameParam, options)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.DrillsClientListResponse, createLink func() string) {
@@ -437,24 +436,24 @@ func (d *DrillsServerTransport) dispatchBeginResyncReadinessCheck(req *http.Requ
 	}
 	beginResyncReadinessCheck := d.beginResyncReadinessCheck.get(req)
 	if beginResyncReadinessCheck == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resyncReadinessCheck`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.BeginResyncReadinessCheck(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resyncReadinessCheck`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginResyncReadinessCheck(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginResyncReadinessCheck = &respr
 		d.beginResyncReadinessCheck.add(req, beginResyncReadinessCheck)
 	}
@@ -481,28 +480,28 @@ func (d *DrillsServerTransport) dispatchBeginStart(req *http.Request) (*http.Res
 	}
 	beginStart := d.beginStart.get(req)
 	if beginStart == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.DrillStartRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.BeginStart(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.DrillStartRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginStart(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginStart = &respr
 		d.beginStart.add(req, beginStart)
 	}
@@ -529,28 +528,28 @@ func (d *DrillsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 	}
 	beginUpdate := d.beginUpdate.get(req)
 	if beginUpdate == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.DrillUpdate](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.BeginUpdate(req.Context(), serviceGroupNameParam, drillNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.DrillUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), serviceGroupNameParam, drillNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginUpdate = &respr
 		d.beginUpdate.add(req, beginUpdate)
 	}
@@ -577,28 +576,28 @@ func (d *DrillsServerTransport) dispatchBeginValidateForExecution(req *http.Requ
 	}
 	beginValidateForExecution := d.beginValidateForExecution.get(req)
 	if beginValidateForExecution == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForExecution`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ValidateForExecutionRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.BeginValidateForExecution(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateForExecution`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ValidateForExecutionRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginValidateForExecution(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginValidateForExecution = &respr
 		d.beginValidateForExecution.add(req, beginValidateForExecution)
 	}

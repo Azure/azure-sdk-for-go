@@ -20,7 +20,7 @@ import (
 )
 
 // EnrollmentsServer is a fake server for instances of the armresiliencemanagement.EnrollmentsClient type.
-type EnrollmentsServer struct{
+type EnrollmentsServer struct {
 	// BeginCreateOrUpdate is the fake for method EnrollmentsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, usagePlanName string, enrollmentName string, resource armresiliencemanagement.Enrollment, options *armresiliencemanagement.EnrollmentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armresiliencemanagement.EnrollmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -36,7 +36,6 @@ type EnrollmentsServer struct{
 	// NewListPager is the fake for method EnrollmentsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, usagePlanName string, options *armresiliencemanagement.EnrollmentsClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.EnrollmentsClientListResponse])
-
 }
 
 // NewEnrollmentsServerTransport creates a new instance of EnrollmentsServerTransport with the provided implementation.
@@ -44,20 +43,20 @@ type EnrollmentsServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEnrollmentsServerTransport(srv *EnrollmentsServer) *EnrollmentsServerTransport {
 	return &EnrollmentsServerTransport{
-		srv: srv,
+		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armresiliencemanagement.EnrollmentsClientCreateOrUpdateResponse]](),
-		beginDelete: newTracker[azfake.PollerResponder[armresiliencemanagement.EnrollmentsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.EnrollmentsClientListResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armresiliencemanagement.EnrollmentsClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armresiliencemanagement.EnrollmentsClientListResponse]](),
 	}
 }
 
 // EnrollmentsServerTransport connects instances of armresiliencemanagement.EnrollmentsClient to instances of EnrollmentsServer.
 // Don't use this type directly, use NewEnrollmentsServerTransport instead.
 type EnrollmentsServerTransport struct {
-	srv *EnrollmentsServer
+	srv                 *EnrollmentsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armresiliencemanagement.EnrollmentsClientCreateOrUpdateResponse]]
-	beginDelete *tracker[azfake.PollerResponder[armresiliencemanagement.EnrollmentsClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.EnrollmentsClientListResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armresiliencemanagement.EnrollmentsClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armresiliencemanagement.EnrollmentsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for EnrollmentsServerTransport.
@@ -76,8 +75,8 @@ func (e *EnrollmentsServerTransport) dispatchToMethodFake(req *http.Request, met
 	go func() {
 		var intercepted bool
 		var res result
-		 if enrollmentsServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = enrollmentsServerTransportInterceptor.Do(req)
+		if enrollmentsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = enrollmentsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -89,7 +88,7 @@ func (e *EnrollmentsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = e.dispatchGet(req)
 			case "EnrollmentsClient.NewListPager":
 				res.resp, res.err = e.dispatchNewListPager(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -111,32 +110,32 @@ func (e *EnrollmentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollments/(?P<enrollmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.Enrollment](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
-	if err != nil {
-		return nil, err
-	}
-	enrollmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, usagePlanNameParam, enrollmentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollments/(?P<enrollmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.Enrollment](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
+		if err != nil {
+			return nil, err
+		}
+		enrollmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, usagePlanNameParam, enrollmentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginCreateOrUpdate = &respr
 		e.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -163,28 +162,28 @@ func (e *EnrollmentsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollments/(?P<enrollmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
-	if err != nil {
-		return nil, err
-	}
-	enrollmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.BeginDelete(req.Context(), resourceGroupNameParam, usagePlanNameParam, enrollmentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollments/(?P<enrollmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
+		if err != nil {
+			return nil, err
+		}
+		enrollmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginDelete(req.Context(), resourceGroupNameParam, usagePlanNameParam, enrollmentNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginDelete = &respr
 		e.beginDelete.add(req, beginDelete)
 	}
@@ -248,21 +247,21 @@ func (e *EnrollmentsServerTransport) dispatchNewListPager(req *http.Request) (*h
 	}
 	newListPager := e.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollments`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
-	if err != nil {
-		return nil, err
-	}
-resp := e.srv.NewListPager(resourceGroupNameParam, usagePlanNameParam, nil)
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListPager(resourceGroupNameParam, usagePlanNameParam, nil)
 		newListPager = &resp
 		e.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.EnrollmentsClientListResponse, createLink func() string) {

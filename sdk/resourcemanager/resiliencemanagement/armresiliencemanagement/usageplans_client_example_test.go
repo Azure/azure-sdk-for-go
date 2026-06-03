@@ -19,7 +19,7 @@ func ExampleUsagePlansClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"12345678-1234-1234-1234-123456789012", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -74,7 +74,7 @@ func ExampleUsagePlansClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"12345678-1234-1234-1234-123456789012", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -95,7 +95,7 @@ func ExampleUsagePlansClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"12345678-1234-1234-1234-123456789012", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -138,7 +138,7 @@ func ExampleUsagePlansClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"12345678-1234-1234-1234-123456789012", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -191,7 +191,7 @@ func ExampleUsagePlansClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"12345678-1234-1234-1234-123456789012", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -244,14 +244,14 @@ func ExampleUsagePlansClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"12345678-1234-1234-1234-123456789012", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewUsagePlansClient().BeginUpdate(ctx, "MyResourceGroup", "myUsagePlan", armresiliencemanagement.UsagePlanTagsUpdate{
 		Tags: map[string]*string{
 			"environment": to.Ptr("staging"),
-			"costCenter": to.Ptr("12345"),
+			"costCenter":  to.Ptr("12345"),
 		},
 	}, nil)
 	if err != nil {
@@ -289,4 +289,3 @@ func ExampleUsagePlansClient_BeginUpdate() {
 	// 	},
 	// }
 }
-

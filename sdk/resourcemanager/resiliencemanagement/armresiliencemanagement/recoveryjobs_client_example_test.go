@@ -19,7 +19,7 @@ func ExampleRecoveryJobsClient_BeginCancel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -42,7 +42,7 @@ func ExampleRecoveryJobsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -187,7 +187,7 @@ func ExampleRecoveryJobsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -342,7 +342,7 @@ func ExampleRecoveryJobsClient_BeginResume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -365,7 +365,7 @@ func ExampleRecoveryJobsClient_BeginRetry() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -378,4 +378,3 @@ func ExampleRecoveryJobsClient_BeginRetry() {
 		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
-

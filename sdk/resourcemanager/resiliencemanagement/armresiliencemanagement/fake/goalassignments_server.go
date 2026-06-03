@@ -21,7 +21,7 @@ import (
 )
 
 // GoalAssignmentsServer is a fake server for instances of the armresiliencemanagement.GoalAssignmentsClient type.
-type GoalAssignmentsServer struct{
+type GoalAssignmentsServer struct {
 	// BeginCreateOrUpdate is the fake for method GoalAssignmentsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusNoContent
 	BeginCreateOrUpdate func(ctx context.Context, serviceGroupName string, goalAssignmentName string, resource armresiliencemanagement.GoalAssignment, options *armresiliencemanagement.GoalAssignmentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -53,7 +53,6 @@ type GoalAssignmentsServer struct{
 	// BeginUpdateGoalResources is the fake for method GoalAssignmentsClient.BeginUpdateGoalResources
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginUpdateGoalResources func(ctx context.Context, serviceGroupName string, goalAssignmentName string, body armresiliencemanagement.UpdateGoalResourceRequest, options *armresiliencemanagement.GoalAssignmentsClientBeginUpdateGoalResourcesOptions) (resp azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientUpdateGoalResourcesResponse], errResp azfake.ErrorResponder)
-
 }
 
 // NewGoalAssignmentsServerTransport creates a new instance of GoalAssignmentsServerTransport with the provided implementation.
@@ -61,28 +60,28 @@ type GoalAssignmentsServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGoalAssignmentsServerTransport(srv *GoalAssignmentsServer) *GoalAssignmentsServerTransport {
 	return &GoalAssignmentsServerTransport{
-		srv: srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientCreateOrUpdateResponse]](),
-		beginDelete: newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.GoalAssignmentsClientListResponse]](),
-		beginRecommendCapacity: newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientRecommendCapacityResponse]](),
+		srv:                       srv,
+		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientCreateOrUpdateResponse]](),
+		beginDelete:               newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientDeleteResponse]](),
+		newListPager:              newTracker[azfake.PagerResponder[armresiliencemanagement.GoalAssignmentsClientListResponse]](),
+		beginRecommendCapacity:    newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientRecommendCapacityResponse]](),
 		beginRefreshGoalResources: newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientRefreshGoalResourcesResponse]](),
-		beginUpdate: newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientUpdateResponse]](),
-		beginUpdateGoalResources: newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientUpdateGoalResourcesResponse]](),
+		beginUpdate:               newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientUpdateResponse]](),
+		beginUpdateGoalResources:  newTracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientUpdateGoalResourcesResponse]](),
 	}
 }
 
 // GoalAssignmentsServerTransport connects instances of armresiliencemanagement.GoalAssignmentsClient to instances of GoalAssignmentsServer.
 // Don't use this type directly, use NewGoalAssignmentsServerTransport instead.
 type GoalAssignmentsServerTransport struct {
-	srv *GoalAssignmentsServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientCreateOrUpdateResponse]]
-	beginDelete *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.GoalAssignmentsClientListResponse]]
-	beginRecommendCapacity *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientRecommendCapacityResponse]]
+	srv                       *GoalAssignmentsServer
+	beginCreateOrUpdate       *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientCreateOrUpdateResponse]]
+	beginDelete               *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientDeleteResponse]]
+	newListPager              *tracker[azfake.PagerResponder[armresiliencemanagement.GoalAssignmentsClientListResponse]]
+	beginRecommendCapacity    *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientRecommendCapacityResponse]]
 	beginRefreshGoalResources *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientRefreshGoalResourcesResponse]]
-	beginUpdate *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientUpdateResponse]]
-	beginUpdateGoalResources *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientUpdateGoalResourcesResponse]]
+	beginUpdate               *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientUpdateResponse]]
+	beginUpdateGoalResources  *tracker[azfake.PollerResponder[armresiliencemanagement.GoalAssignmentsClientUpdateGoalResourcesResponse]]
 }
 
 // Do implements the policy.Transporter interface for GoalAssignmentsServerTransport.
@@ -101,8 +100,8 @@ func (g *GoalAssignmentsServerTransport) dispatchToMethodFake(req *http.Request,
 	go func() {
 		var intercepted bool
 		var res result
-		 if goalAssignmentsServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = goalAssignmentsServerTransportInterceptor.Do(req)
+		if goalAssignmentsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = goalAssignmentsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -122,7 +121,7 @@ func (g *GoalAssignmentsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = g.dispatchBeginUpdate(req)
 			case "GoalAssignmentsClient.BeginUpdateGoalResources":
 				res.resp, res.err = g.dispatchBeginUpdateGoalResources(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -144,28 +143,28 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	}
 	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.GoalAssignment](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.BeginCreateOrUpdate(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.GoalAssignment](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginCreateOrUpdate(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginCreateOrUpdate = &respr
 		g.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -192,24 +191,24 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := g.beginDelete.get(req)
 	if beginDelete == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.BeginDelete(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginDelete(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginDelete = &respr
 		g.beginDelete.add(req, beginDelete)
 	}
@@ -269,36 +268,36 @@ func (g *GoalAssignmentsServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	skipTokenParam := getOptional(qp.Get("$skipToken"))
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		return int32(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	var options *armresiliencemanagement.GoalAssignmentsClientListOptions
-	if skipTokenParam != nil || topParam != nil {
-		options = &armresiliencemanagement.GoalAssignmentsClientListOptions{
-			SkipToken: skipTokenParam,
-			Top: topParam,
+		qp := req.URL.Query()
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
 		}
-	}
-resp := g.srv.NewListPager(serviceGroupNameParam, options)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armresiliencemanagement.GoalAssignmentsClientListOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armresiliencemanagement.GoalAssignmentsClientListOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := g.srv.NewListPager(serviceGroupNameParam, options)
 		newListPager = &resp
 		g.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.GoalAssignmentsClientListResponse, createLink func() string) {
@@ -325,28 +324,28 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginRecommendCapacity(req *htt
 	}
 	beginRecommendCapacity := g.beginRecommendCapacity.get(req)
 	if beginRecommendCapacity == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendCapacity`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.RecommendCapacityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.BeginRecommendCapacity(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendCapacity`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.RecommendCapacityRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginRecommendCapacity(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginRecommendCapacity = &respr
 		g.beginRecommendCapacity.add(req, beginRecommendCapacity)
 	}
@@ -373,24 +372,24 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginRefreshGoalResources(req *
 	}
 	beginRefreshGoalResources := g.beginRefreshGoalResources.get(req)
 	if beginRefreshGoalResources == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshGoalResources`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.BeginRefreshGoalResources(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshGoalResources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginRefreshGoalResources(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginRefreshGoalResources = &respr
 		g.beginRefreshGoalResources.add(req, beginRefreshGoalResources)
 	}
@@ -417,28 +416,28 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginUpdate(req *http.Request) 
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.GoalAssignment](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.BeginUpdate(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.GoalAssignment](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginUpdate(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginUpdate = &respr
 		g.beginUpdate.add(req, beginUpdate)
 	}
@@ -465,28 +464,28 @@ func (g *GoalAssignmentsServerTransport) dispatchBeginUpdateGoalResources(req *h
 	}
 	beginUpdateGoalResources := g.beginUpdateGoalResources.get(req)
 	if beginUpdateGoalResources == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateGoalResources`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.UpdateGoalResourceRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.BeginUpdateGoalResources(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateGoalResources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.UpdateGoalResourceRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		goalAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("goalAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginUpdateGoalResources(req.Context(), serviceGroupNameParam, goalAssignmentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginUpdateGoalResources = &respr
 		g.beginUpdateGoalResources.add(req, beginUpdateGoalResources)
 	}

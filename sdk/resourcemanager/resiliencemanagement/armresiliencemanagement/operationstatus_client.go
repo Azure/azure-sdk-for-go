@@ -95,4 +95,3 @@ func (client *OperationStatusClient) getHandleResponse(resp *http.Response) (Ope
 	}
 	return result, nil
 }
-

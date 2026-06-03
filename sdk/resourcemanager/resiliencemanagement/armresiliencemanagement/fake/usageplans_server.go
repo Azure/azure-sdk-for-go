@@ -20,7 +20,7 @@ import (
 )
 
 // UsagePlansServer is a fake server for instances of the armresiliencemanagement.UsagePlansClient type.
-type UsagePlansServer struct{
+type UsagePlansServer struct {
 	// BeginCreateOrUpdate is the fake for method UsagePlansClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, usagePlanName string, resource armresiliencemanagement.UsagePlan, options *armresiliencemanagement.UsagePlansClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armresiliencemanagement.UsagePlansClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -44,7 +44,6 @@ type UsagePlansServer struct{
 	// BeginUpdate is the fake for method UsagePlansClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, usagePlanName string, properties armresiliencemanagement.UsagePlanTagsUpdate, options *armresiliencemanagement.UsagePlansClientBeginUpdateOptions) (resp azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse], errResp azfake.ErrorResponder)
-
 }
 
 // NewUsagePlansServerTransport creates a new instance of UsagePlansServerTransport with the provided implementation.
@@ -52,24 +51,24 @@ type UsagePlansServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewUsagePlansServerTransport(srv *UsagePlansServer) *UsagePlansServerTransport {
 	return &UsagePlansServerTransport{
-		srv: srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientCreateOrUpdateResponse]](),
-		beginDelete: newTracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientDeleteResponse]](),
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListBySubscriptionResponse]](),
-		beginUpdate: newTracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListBySubscriptionResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse]](),
 	}
 }
 
 // UsagePlansServerTransport connects instances of armresiliencemanagement.UsagePlansClient to instances of UsagePlansServer.
 // Don't use this type directly, use NewUsagePlansServerTransport instead.
 type UsagePlansServerTransport struct {
-	srv *UsagePlansServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientCreateOrUpdateResponse]]
-	beginDelete *tracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientDeleteResponse]]
+	srv                         *UsagePlansServer
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListByResourceGroupResponse]]
-	newListBySubscriptionPager *tracker[azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListBySubscriptionResponse]]
-	beginUpdate *tracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armresiliencemanagement.UsagePlansClientListBySubscriptionResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armresiliencemanagement.UsagePlansClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for UsagePlansServerTransport.
@@ -88,8 +87,8 @@ func (u *UsagePlansServerTransport) dispatchToMethodFake(req *http.Request, meth
 	go func() {
 		var intercepted bool
 		var res result
-		 if usagePlansServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = usagePlansServerTransportInterceptor.Do(req)
+		if usagePlansServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = usagePlansServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -105,7 +104,7 @@ func (u *UsagePlansServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = u.dispatchNewListBySubscriptionPager(req)
 			case "UsagePlansClient.BeginUpdate":
 				res.resp, res.err = u.dispatchBeginUpdate(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -127,28 +126,28 @@ func (u *UsagePlansServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 	}
 	beginCreateOrUpdate := u.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.UsagePlan](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := u.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, usagePlanNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.UsagePlan](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := u.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, usagePlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginCreateOrUpdate = &respr
 		u.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -175,24 +174,24 @@ func (u *UsagePlansServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	}
 	beginDelete := u.beginDelete.get(req)
 	if beginDelete == nil {
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := u.srv.BeginDelete(req.Context(), resourceGroupNameParam, usagePlanNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := u.srv.BeginDelete(req.Context(), resourceGroupNameParam, usagePlanNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginDelete = &respr
 		u.beginDelete.add(req, beginDelete)
 	}
@@ -252,17 +251,17 @@ func (u *UsagePlansServerTransport) dispatchNewListByResourceGroupPager(req *htt
 	}
 	newListByResourceGroupPager := u.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-resp := u.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := u.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		u.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armresiliencemanagement.UsagePlansClientListByResourceGroupResponse, createLink func() string) {
@@ -289,13 +288,13 @@ func (u *UsagePlansServerTransport) dispatchNewListBySubscriptionPager(req *http
 	}
 	newListBySubscriptionPager := u.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-resp := u.srv.NewListBySubscriptionPager(nil)
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := u.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		u.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armresiliencemanagement.UsagePlansClientListBySubscriptionResponse, createLink func() string) {
@@ -322,28 +321,28 @@ func (u *UsagePlansServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 	}
 	beginUpdate := u.beginUpdate.get(req)
 	if beginUpdate == nil {
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.UsagePlanTagsUpdate](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := u.srv.BeginUpdate(req.Context(), resourceGroupNameParam, usagePlanNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/usagePlans/(?P<usagePlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.UsagePlanTagsUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		usagePlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("usagePlanName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := u.srv.BeginUpdate(req.Context(), resourceGroupNameParam, usagePlanNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginUpdate = &respr
 		u.beginUpdate.add(req, beginUpdate)
 	}

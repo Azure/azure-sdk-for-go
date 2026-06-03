@@ -19,7 +19,7 @@ func ExampleDrillRunsClient_BeginAddNotes() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -47,7 +47,7 @@ func ExampleDrillRunsClient_BeginFailOver() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -83,7 +83,7 @@ func ExampleDrillRunsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -261,7 +261,7 @@ func ExampleDrillRunsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -426,7 +426,7 @@ func ExampleDrillRunsClient_BeginMarkAsComplete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -454,7 +454,7 @@ func ExampleDrillRunsClient_BeginReprotect() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -480,7 +480,7 @@ func ExampleDrillRunsClient_BeginResume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -498,4 +498,3 @@ func ExampleDrillRunsClient_BeginResume() {
 	// res = armresiliencemanagement.DrillRunsClientResumeResponse{
 	// }
 }
-

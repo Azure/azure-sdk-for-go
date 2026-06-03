@@ -386,7 +386,7 @@ func (client *DrillsClient) getHandleResponse(resp *http.Response) (DrillsClient
 // NewListPager - List Drill resources by tenant
 //   - serviceGroupName - The name of the service group.
 //   - options - DrillsClientListOptions contains the optional parameters for the DrillsClient.NewListPager method.
-func (client *DrillsClient) NewListPager(serviceGroupName string, options *DrillsClientListOptions) (*runtime.Pager[DrillsClientListResponse]) {
+func (client *DrillsClient) NewListPager(serviceGroupName string, options *DrillsClientListOptions) *runtime.Pager[DrillsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DrillsClientListResponse]{
 		More: func(page DrillsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -731,4 +731,3 @@ func (client *DrillsClient) validateForExecutionCreateRequest(ctx context.Contex
 	}
 	return req, nil
 }
-

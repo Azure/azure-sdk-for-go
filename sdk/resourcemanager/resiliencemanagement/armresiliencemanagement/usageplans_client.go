@@ -21,7 +21,7 @@ import (
 //
 // Generated from API version 2026-04-01-preview
 type UsagePlansClient struct {
-	internal *arm.Client
+	internal       *arm.Client
 	subscriptionID string
 }
 
@@ -36,7 +36,7 @@ func NewUsagePlansClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &UsagePlansClient{
 		subscriptionID: subscriptionID,
-		internal: cl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -254,7 +254,7 @@ func (client *UsagePlansClient) getHandleResponse(resp *http.Response) (UsagePla
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - UsagePlansClientListByResourceGroupOptions contains the optional parameters for the UsagePlansClient.NewListByResourceGroupPager
 //     method.
-func (client *UsagePlansClient) NewListByResourceGroupPager(resourceGroupName string, options *UsagePlansClientListByResourceGroupOptions) (*runtime.Pager[UsagePlansClientListByResourceGroupResponse]) {
+func (client *UsagePlansClient) NewListByResourceGroupPager(resourceGroupName string, options *UsagePlansClientListByResourceGroupOptions) *runtime.Pager[UsagePlansClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UsagePlansClientListByResourceGroupResponse]{
 		More: func(page UsagePlansClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -311,7 +311,7 @@ func (client *UsagePlansClient) listByResourceGroupHandleResponse(resp *http.Res
 // NewListBySubscriptionPager - List UsagePlan resources by subscription ID
 //   - options - UsagePlansClientListBySubscriptionOptions contains the optional parameters for the UsagePlansClient.NewListBySubscriptionPager
 //     method.
-func (client *UsagePlansClient) NewListBySubscriptionPager(options *UsagePlansClientListBySubscriptionOptions) (*runtime.Pager[UsagePlansClientListBySubscriptionResponse]) {
+func (client *UsagePlansClient) NewListBySubscriptionPager(options *UsagePlansClientListBySubscriptionOptions) *runtime.Pager[UsagePlansClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UsagePlansClientListBySubscriptionResponse]{
 		More: func(page UsagePlansClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -436,4 +436,3 @@ func (client *UsagePlansClient) updateCreateRequest(ctx context.Context, resourc
 	}
 	return req, nil
 }
-

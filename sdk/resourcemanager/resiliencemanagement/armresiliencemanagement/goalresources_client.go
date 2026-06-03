@@ -106,7 +106,7 @@ func (client *GoalResourcesClient) getHandleResponse(resp *http.Response) (GoalR
 //   - serviceGroupName - The name of the service group.
 //   - goalAssignmentName - The name of the GoalAssignment
 //   - options - GoalResourcesClientListOptions contains the optional parameters for the GoalResourcesClient.NewListPager method.
-func (client *GoalResourcesClient) NewListPager(serviceGroupName string, goalAssignmentName string, options *GoalResourcesClientListOptions) (*runtime.Pager[GoalResourcesClientListResponse]) {
+func (client *GoalResourcesClient) NewListPager(serviceGroupName string, goalAssignmentName string, options *GoalResourcesClientListOptions) *runtime.Pager[GoalResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GoalResourcesClientListResponse]{
 		More: func(page GoalResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -165,4 +165,3 @@ func (client *GoalResourcesClient) listHandleResponse(resp *http.Response) (Goal
 	}
 	return result, nil
 }
-

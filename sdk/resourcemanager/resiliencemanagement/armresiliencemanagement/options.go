@@ -11,10 +11,10 @@ type DrillResourcesClientGetOptions struct {
 
 // DrillResourcesClientListOptions contains the optional parameters for the DrillResourcesClient.NewListPager method.
 type DrillResourcesClientListOptions struct {
-// Skip over when retrieving results.
+	// Skip over when retrieving results.
 	SkipToken *string
 
-// Number of elements to return when retrieving results.
+	// Number of elements to return when retrieving results.
 	Top *int32
 }
 
@@ -30,32 +30,32 @@ type DrillRunResourcesClientListOptions struct {
 
 // DrillRunsClientBeginAddNotesOptions contains the optional parameters for the DrillRunsClient.BeginAddNotes method.
 type DrillRunsClientBeginAddNotesOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillRunsClientBeginFailOverOptions contains the optional parameters for the DrillRunsClient.BeginFailOver method.
 type DrillRunsClientBeginFailOverOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillRunsClientBeginMarkAsCompleteOptions contains the optional parameters for the DrillRunsClient.BeginMarkAsComplete
 // method.
 type DrillRunsClientBeginMarkAsCompleteOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillRunsClientBeginReprotectOptions contains the optional parameters for the DrillRunsClient.BeginReprotect method.
 type DrillRunsClientBeginReprotectOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillRunsClientBeginResumeOptions contains the optional parameters for the DrillRunsClient.BeginResume method.
 type DrillRunsClientBeginResumeOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -72,51 +72,51 @@ type DrillRunsClientListOptions struct {
 // DrillsClientBeginAddOrUpdateResourcesOptions contains the optional parameters for the DrillsClient.BeginAddOrUpdateResources
 // method.
 type DrillsClientBeginAddOrUpdateResourcesOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillsClientBeginCreateOptions contains the optional parameters for the DrillsClient.BeginCreate method.
 type DrillsClientBeginCreateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillsClientBeginDeleteOptions contains the optional parameters for the DrillsClient.BeginDelete method.
 type DrillsClientBeginDeleteOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillsClientBeginEndOptions contains the optional parameters for the DrillsClient.BeginEnd method.
 type DrillsClientBeginEndOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillsClientBeginResyncReadinessCheckOptions contains the optional parameters for the DrillsClient.BeginResyncReadinessCheck
 // method.
 type DrillsClientBeginResyncReadinessCheckOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillsClientBeginStartOptions contains the optional parameters for the DrillsClient.BeginStart method.
 type DrillsClientBeginStartOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillsClientBeginUpdateOptions contains the optional parameters for the DrillsClient.BeginUpdate method.
 type DrillsClientBeginUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DrillsClientBeginValidateForExecutionOptions contains the optional parameters for the DrillsClient.BeginValidateForExecution
 // method.
 type DrillsClientBeginValidateForExecutionOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -127,23 +127,23 @@ type DrillsClientGetOptions struct {
 
 // DrillsClientListOptions contains the optional parameters for the DrillsClient.NewListPager method.
 type DrillsClientListOptions struct {
-// Skip over when retrieving results.
+	// Skip over when retrieving results.
 	SkipToken *string
 
-// Number of elements to return when retrieving results.
+	// Number of elements to return when retrieving results.
 	Top *int32
 }
 
 // EnrollmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the EnrollmentsClient.BeginCreateOrUpdate
 // method.
 type EnrollmentsClientBeginCreateOrUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EnrollmentsClientBeginDeleteOptions contains the optional parameters for the EnrollmentsClient.BeginDelete method.
 type EnrollmentsClientBeginDeleteOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -160,40 +160,40 @@ type EnrollmentsClientListOptions struct {
 // GoalAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the GoalAssignmentsClient.BeginCreateOrUpdate
 // method.
 type GoalAssignmentsClientBeginCreateOrUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GoalAssignmentsClientBeginDeleteOptions contains the optional parameters for the GoalAssignmentsClient.BeginDelete method.
 type GoalAssignmentsClientBeginDeleteOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GoalAssignmentsClientBeginRecommendCapacityOptions contains the optional parameters for the GoalAssignmentsClient.BeginRecommendCapacity
 // method.
 type GoalAssignmentsClientBeginRecommendCapacityOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GoalAssignmentsClientBeginRefreshGoalResourcesOptions contains the optional parameters for the GoalAssignmentsClient.BeginRefreshGoalResources
 // method.
 type GoalAssignmentsClientBeginRefreshGoalResourcesOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GoalAssignmentsClientBeginUpdateGoalResourcesOptions contains the optional parameters for the GoalAssignmentsClient.BeginUpdateGoalResources
 // method.
 type GoalAssignmentsClientBeginUpdateGoalResourcesOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GoalAssignmentsClientBeginUpdateOptions contains the optional parameters for the GoalAssignmentsClient.BeginUpdate method.
 type GoalAssignmentsClientBeginUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -204,10 +204,10 @@ type GoalAssignmentsClientGetOptions struct {
 
 // GoalAssignmentsClientListOptions contains the optional parameters for the GoalAssignmentsClient.NewListPager method.
 type GoalAssignmentsClientListOptions struct {
-// Skip over when retrieving results.
+	// Skip over when retrieving results.
 	SkipToken *string
 
-// Number of elements to return when retrieving results.
+	// Number of elements to return when retrieving results.
 	Top *int32
 }
 
@@ -218,29 +218,29 @@ type GoalResourcesClientGetOptions struct {
 
 // GoalResourcesClientListOptions contains the optional parameters for the GoalResourcesClient.NewListPager method.
 type GoalResourcesClientListOptions struct {
-// Skip over when retrieving results.
+	// Skip over when retrieving results.
 	SkipToken *string
 
-// Number of elements to return when retrieving results.
+	// Number of elements to return when retrieving results.
 	Top *int32
 }
 
 // GoalTemplatesClientBeginCreateOrUpdateOptions contains the optional parameters for the GoalTemplatesClient.BeginCreateOrUpdate
 // method.
 type GoalTemplatesClientBeginCreateOrUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GoalTemplatesClientBeginDeleteOptions contains the optional parameters for the GoalTemplatesClient.BeginDelete method.
 type GoalTemplatesClientBeginDeleteOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // GoalTemplatesClientBeginUpdateOptions contains the optional parameters for the GoalTemplatesClient.BeginUpdate method.
 type GoalTemplatesClientBeginUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -251,10 +251,10 @@ type GoalTemplatesClientGetOptions struct {
 
 // GoalTemplatesClientListOptions contains the optional parameters for the GoalTemplatesClient.NewListPager method.
 type GoalTemplatesClientListOptions struct {
-// Skip over when retrieving results.
+	// Skip over when retrieving results.
 	SkipToken *string
 
-// Number of elements to return when retrieving results.
+	// Number of elements to return when retrieving results.
 	Top *int32
 }
 
@@ -281,19 +281,19 @@ type RecoveryJobResourcesClientListOptions struct {
 
 // RecoveryJobsClientBeginCancelOptions contains the optional parameters for the RecoveryJobsClient.BeginCancel method.
 type RecoveryJobsClientBeginCancelOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryJobsClientBeginResumeOptions contains the optional parameters for the RecoveryJobsClient.BeginResume method.
 type RecoveryJobsClientBeginResumeOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryJobsClientBeginRetryOptions contains the optional parameters for the RecoveryJobsClient.BeginRetry method.
 type RecoveryJobsClientBeginRetryOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -310,123 +310,123 @@ type RecoveryJobsClientListOptions struct {
 // RecoveryPlanActionsClientBeginCheckReadinessOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginCheckReadiness
 // method.
 type RecoveryPlanActionsClientBeginCheckReadinessOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginFailoverCommitOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginFailoverCommit
 // method.
 type RecoveryPlanActionsClientBeginFailoverCommitOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginFailoverOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginFailover
 // method.
 type RecoveryPlanActionsClientBeginFailoverOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginFinalizeOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginFinalize
 // method.
 type RecoveryPlanActionsClientBeginFinalizeOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginReprotectOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginReprotect
 // method.
 type RecoveryPlanActionsClientBeginReprotectOptions struct {
-// The content of the action request
+	// The content of the action request
 	Body *ReprotectRequest
 
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginTestFailoverCleanupOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginTestFailoverCleanup
 // method.
 type RecoveryPlanActionsClientBeginTestFailoverCleanupOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginTestFailoverOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginTestFailover
 // method.
 type RecoveryPlanActionsClientBeginTestFailoverOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginUpdateResourcesOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginUpdateResources
 // method.
 type RecoveryPlanActionsClientBeginUpdateResourcesOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginValidateForFailoverCommitOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginValidateForFailoverCommit
 // method.
 type RecoveryPlanActionsClientBeginValidateForFailoverCommitOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginValidateForFailoverOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginValidateForFailover
 // method.
 type RecoveryPlanActionsClientBeginValidateForFailoverOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginValidateForOperationOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginValidateForOperation
 // method.
 type RecoveryPlanActionsClientBeginValidateForOperationOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginValidateForReprotectOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginValidateForReprotect
 // method.
 type RecoveryPlanActionsClientBeginValidateForReprotectOptions struct {
-// The content of the action request
+	// The content of the action request
 	Body *ReprotectRequest
 
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginValidateForTestFailoverCleanupOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginValidateForTestFailoverCleanup
 // method.
 type RecoveryPlanActionsClientBeginValidateForTestFailoverCleanupOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlanActionsClientBeginValidateForTestFailoverOptions contains the optional parameters for the RecoveryPlanActionsClient.BeginValidateForTestFailover
 // method.
 type RecoveryPlanActionsClientBeginValidateForTestFailoverOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlansClientBeginCreateOrUpdateOptions contains the optional parameters for the RecoveryPlansClient.BeginCreateOrUpdate
 // method.
 type RecoveryPlansClientBeginCreateOrUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlansClientBeginDeleteOptions contains the optional parameters for the RecoveryPlansClient.BeginDelete method.
 type RecoveryPlansClientBeginDeleteOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RecoveryPlansClientBeginUpdateOptions contains the optional parameters for the RecoveryPlansClient.BeginUpdate method.
 type RecoveryPlansClientBeginUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -437,10 +437,10 @@ type RecoveryPlansClientGetOptions struct {
 
 // RecoveryPlansClientListOptions contains the optional parameters for the RecoveryPlansClient.NewListPager method.
 type RecoveryPlansClientListOptions struct {
-// Skip over when retrieving results.
+	// Skip over when retrieving results.
 	SkipToken *string
 
-// Number of elements to return when retrieving results.
+	// Number of elements to return when retrieving results.
 	Top *int32
 }
 
@@ -462,29 +462,29 @@ type UnifiedResilienceItemsClientGetOptions struct {
 // UnifiedResilienceItemsClientListOptions contains the optional parameters for the UnifiedResilienceItemsClient.NewListPager
 // method.
 type UnifiedResilienceItemsClientListOptions struct {
-// Skip over when retrieving results.
+	// Skip over when retrieving results.
 	SkipToken *string
 
-// Number of elements to return when retrieving results.
+	// Number of elements to return when retrieving results.
 	Top *int32
 }
 
 // UsagePlansClientBeginCreateOrUpdateOptions contains the optional parameters for the UsagePlansClient.BeginCreateOrUpdate
 // method.
 type UsagePlansClientBeginCreateOrUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // UsagePlansClientBeginDeleteOptions contains the optional parameters for the UsagePlansClient.BeginDelete method.
 type UsagePlansClientBeginDeleteOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // UsagePlansClientBeginUpdateOptions contains the optional parameters for the UsagePlansClient.BeginUpdate method.
 type UsagePlansClientBeginUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -504,4 +504,3 @@ type UsagePlansClientListByResourceGroupOptions struct {
 type UsagePlansClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
-

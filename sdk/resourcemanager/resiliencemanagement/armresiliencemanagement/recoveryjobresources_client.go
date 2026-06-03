@@ -113,7 +113,7 @@ func (client *RecoveryJobResourcesClient) getHandleResponse(resp *http.Response)
 //   - recoveryJobName - The unique name (GUID) of the recovery job.
 //   - options - RecoveryJobResourcesClientListOptions contains the optional parameters for the RecoveryJobResourcesClient.NewListPager
 //     method.
-func (client *RecoveryJobResourcesClient) NewListPager(serviceGroupName string, recoveryPlanName string, recoveryJobName string, options *RecoveryJobResourcesClientListOptions) (*runtime.Pager[RecoveryJobResourcesClientListResponse]) {
+func (client *RecoveryJobResourcesClient) NewListPager(serviceGroupName string, recoveryPlanName string, recoveryJobName string, options *RecoveryJobResourcesClientListOptions) *runtime.Pager[RecoveryJobResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecoveryJobResourcesClientListResponse]{
 		More: func(page RecoveryJobResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -170,4 +170,3 @@ func (client *RecoveryJobResourcesClient) listHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
-

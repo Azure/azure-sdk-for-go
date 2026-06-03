@@ -19,7 +19,7 @@ func ExampleDrillsClient_BeginAddOrUpdateResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -30,17 +30,17 @@ func ExampleDrillsClient_BeginAddOrUpdateResources() {
 				{
 					FaultProperties: &armresiliencemanagement.FaultProperties{
 						CustomFault: &armresiliencemanagement.CustomFaultDetails{
-							FaultName: to.Ptr("umofuzwgczqwyzcoakmrdrkjknykdonhypxibwrweggltsmjayvnlzroxdfalwkfsqvuqtfwhhzcnemndbgxdiciqs"),
+							FaultName:        to.Ptr("umofuzwgczqwyzcoakmrdrkjknykdonhypxibwrweggltsmjayvnlzroxdfalwkfsqvuqtfwhhzcnemndbgxdiciqs"),
 							ScriptResourceID: to.Ptr("/subscriptions/191973cd-9c54-41e0-ac19-25dd9a92d5a8/resourceGroups/abhinkRG/providers/Microsoft.Automation/automationAccounts/abhinkAcc/runbooks/viveksi"),
 						},
 						DefaultFault: &armresiliencemanagement.FaultDetails{
-							FaultUrn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
-							FaultName: to.Ptr("shutdown"),
+							FaultUrn:         to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
+							FaultName:        to.Ptr("shutdown"),
 							TargetResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/vm1"),
 						},
 						OverriddenDefaultFault: &armresiliencemanagement.FaultDetails{
-							FaultUrn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
-							FaultName: to.Ptr("shutdown"),
+							FaultUrn:         to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
+							FaultName:        to.Ptr("shutdown"),
 							TargetResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/vm1"),
 						},
 					},
@@ -54,17 +54,17 @@ func ExampleDrillsClient_BeginAddOrUpdateResources() {
 				{
 					FaultProperties: &armresiliencemanagement.FaultProperties{
 						CustomFault: &armresiliencemanagement.CustomFaultDetails{
-							FaultName: to.Ptr("umofuzwgczqwyzcoakmrdrkjknykdonhypxibwrweggltsmjayvnlzroxdfalwkfsqvuqtfwhhzcnemndbgxdiciqs"),
+							FaultName:        to.Ptr("umofuzwgczqwyzcoakmrdrkjknykdonhypxibwrweggltsmjayvnlzroxdfalwkfsqvuqtfwhhzcnemndbgxdiciqs"),
 							ScriptResourceID: to.Ptr("/subscriptions/191973cd-9c54-41e0-ac19-25dd9a92d5a8/resourceGroups/abhinkRG/providers/Microsoft.Automation/automationAccounts/abhinkAcc/runbooks/viveksi"),
 						},
 						DefaultFault: &armresiliencemanagement.FaultDetails{
-							FaultUrn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
-							FaultName: to.Ptr("shutdown"),
+							FaultUrn:         to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
+							FaultName:        to.Ptr("shutdown"),
 							TargetResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/vm1"),
 						},
 						OverriddenDefaultFault: &armresiliencemanagement.FaultDetails{
-							FaultUrn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
-							FaultName: to.Ptr("shutdown"),
+							FaultUrn:         to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
+							FaultName:        to.Ptr("shutdown"),
 							TargetResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/vm1"),
 						},
 					},
@@ -90,33 +90,33 @@ func ExampleDrillsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDrillsClient().BeginCreate(ctx, "sampleServiceGroupName", "drill1", armresiliencemanagement.Drill{
 		Properties: &armresiliencemanagement.DrillProperties{
 			ExecutionState: to.Ptr(armresiliencemanagement.ExecutionStateNotRunning),
-			RbacSetupMode: to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
+			RbacSetupMode:  to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
 			AttentionReason: &armresiliencemanagement.AttentionReason{
-				RoReadiness: to.Ptr(armresiliencemanagement.RecoveryPlanStateUnderEdit),
-				DrillUserMsi: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+				RoReadiness:             to.Ptr(armresiliencemanagement.RecoveryPlanStateUnderEdit),
+				DrillUserMsi:            to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
 				DrillRbacOnRecoveryPlan: to.Ptr(armresiliencemanagement.RBACStateSet),
 				RbacNeededForDrillOnRecoveryPlan: []*string{
 					to.Ptr("ayfyepziwdyxuwuexlamaadey"),
 				},
 				RecoveryPlanAndDrillResourcesState: to.Ptr(armresiliencemanagement.RelativeResourceCompositionStateInSync),
 				ServiceGroupAndDrillResourcesState: to.Ptr(armresiliencemanagement.RelativeResourceCompositionStateInSync),
-				RunbookFaultRbacOnTargets: to.Ptr(armresiliencemanagement.RBACStateSet),
-				IncludedResourceInDrill: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
-				DrillRbacOnMonitoringResources: to.Ptr(armresiliencemanagement.RBACStateSet),
+				RunbookFaultRbacOnTargets:          to.Ptr(armresiliencemanagement.RBACStateSet),
+				IncludedResourceInDrill:            to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+				DrillRbacOnMonitoringResources:     to.Ptr(armresiliencemanagement.RBACStateSet),
 				DrillMonitoringErrors: []*armresiliencemanagement.ErrorDetails{
 					{
-						Code: to.Ptr("14123903"),
+						Code:    to.Ptr("14123903"),
 						Message: to.Ptr("Unable to assign Monitoring RBAC on target resource."),
 					},
 				},
-				DrillMonitoringResources: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+				DrillMonitoringResources:       to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
 				MonitoringRbacOnDrillResources: to.Ptr(armresiliencemanagement.RBACStateSet),
 				RbacNeededForDrillOnDrillMonitoringResources: []*string{
 					to.Ptr("lyffvljvuhwvxcuzyzlyo"),
@@ -132,8 +132,8 @@ func ExampleDrillsClient_BeginCreate() {
 				RbacNeededForDrillOnChaosResource: []*string{
 					to.Ptr("zabszxqjflfjgifyrtttvdpipw"),
 				},
-				ChaosResource: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
-				ChaosResourceUserMsi: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+				ChaosResource:         to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+				ChaosResourceUserMsi:  to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
 				RbacOnTargetResources: to.Ptr(armresiliencemanagement.RBACStateSet),
 				ChaosResourceCreationFailureReasons: []*string{
 					to.Ptr("cjqkzeqcktfqcpmdwoloqb"),
@@ -144,44 +144,42 @@ func ExampleDrillsClient_BeginCreate() {
 			},
 			DrillType: to.Ptr(armresiliencemanagement.DrillType("DrillProperties")),
 			LastRunProperties: &armresiliencemanagement.LastRunProperties{
-				LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
+				LastRunState:       to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
 			},
-			ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
-			ManagedOnBehalfOfConfiguration: &armresiliencemanagement.ManagedOnBehalfOfConfiguration{
-			},
+			ExecutionReadinessState:        to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
+			ManagedOnBehalfOfConfiguration: &armresiliencemanagement.ManagedOnBehalfOfConfiguration{},
 			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
 				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 				},
 			},
 			MonitoringProperties: &armresiliencemanagement.MonitoringPropertiesOfDrill{
 				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 				},
 			},
 			DrillAssetProperties: &armresiliencemanagement.AssetPropertiesOfDrill{
-				Subscription: to.Ptr("4e88bed3-114f-443d-9975-28f64122ec5e"),
-				Region: to.Ptr("eastus"),
+				Subscription:  to.Ptr("4e88bed3-114f-443d-9975-28f64122ec5e"),
+				Region:        to.Ptr("eastus"),
 				ResourceGroup: to.Ptr("customDrillResourceGroup"),
 			},
 			ChaosResourceProperties: &armresiliencemanagement.ChaosResourcePropertiesOfDrill{
 				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 				},
 				ChaosResourceIdentityForFaults: &armresiliencemanagement.AssociatedIdentity{
-					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 				},
 			},
 		},
 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
-			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
-			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{
-			},
+			Type:                   to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
+			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{},
 		},
 	}, nil)
 	if err != nil {
@@ -330,7 +328,7 @@ func ExampleDrillsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -351,12 +349,12 @@ func ExampleDrillsClient_BeginEnd() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDrillsClient().BeginEnd(ctx, "sampleServiceGroupName", "qmn", "drill1", armresiliencemanagement.DrillEndRequest{
-		Attestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
+		Attestation:      to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
 		AttestationNotes: to.Ptr("ycnqvrgduotohgycsapckhixwqwgp"),
 	}, nil)
 	if err != nil {
@@ -380,7 +378,7 @@ func ExampleDrillsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -527,13 +525,13 @@ func ExampleDrillsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewDrillsClient().NewListPager("sampleServiceGroupName", &armresiliencemanagement.DrillsClientListOptions{
-	SkipToken: to.Ptr("xntbyoswztnmvitj"),
-	Top: to.Ptr[int32](69)})
+		SkipToken: to.Ptr("xntbyoswztnmvitj"),
+		Top:       to.Ptr[int32](69)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -686,7 +684,7 @@ func ExampleDrillsClient_BeginResyncReadinessCheck() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -707,7 +705,7 @@ func ExampleDrillsClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -735,7 +733,7 @@ func ExampleDrillsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -744,35 +742,34 @@ func ExampleDrillsClient_BeginUpdate() {
 			RbacSetupMode: to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
 			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
 				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 				},
 			},
 			MonitoringProperties: &armresiliencemanagement.MonitoringPropertiesOfDrill{
 				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 				},
 			},
 			ChaosResourceProperties: &armresiliencemanagement.ChaosResourcePropertiesOfDrill{
 				Identity: &armresiliencemanagement.AssociatedIdentity{
-					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 				},
 				ChaosResourceIdentityForFaults: &armresiliencemanagement.AssociatedIdentity{
-					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 				},
 			},
 			DrillAssetProperties: &armresiliencemanagement.AssetPropertiesOfDrill{
 				Subscription: to.Ptr("pxlmwjuhcif"),
-				Region: to.Ptr("zuvwzxnbqyzdkthrewruw"),
+				Region:       to.Ptr("zuvwzxnbqyzdkthrewruw"),
 			},
 		},
 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
-			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
-			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{
-			},
+			Type:                   to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
+			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{},
 		},
 	}, nil)
 	if err != nil {
@@ -796,7 +793,7 @@ func ExampleDrillsClient_BeginValidateForExecution() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -820,4 +817,3 @@ func ExampleDrillsClient_BeginValidateForExecution() {
 	// res = armresiliencemanagement.DrillsClientValidateForExecutionResponse{
 	// }
 }
-

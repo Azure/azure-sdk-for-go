@@ -20,7 +20,7 @@ import (
 )
 
 // RecoveryJobResourcesServer is a fake server for instances of the armresiliencemanagement.RecoveryJobResourcesClient type.
-type RecoveryJobResourcesServer struct{
+type RecoveryJobResourcesServer struct {
 	// Get is the fake for method RecoveryJobResourcesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, serviceGroupName string, recoveryPlanName string, recoveryJobName string, recoveryJobResourceName string, options *armresiliencemanagement.RecoveryJobResourcesClientGetOptions) (resp azfake.Responder[armresiliencemanagement.RecoveryJobResourcesClientGetResponse], errResp azfake.ErrorResponder)
@@ -28,7 +28,6 @@ type RecoveryJobResourcesServer struct{
 	// NewListPager is the fake for method RecoveryJobResourcesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(serviceGroupName string, recoveryPlanName string, recoveryJobName string, options *armresiliencemanagement.RecoveryJobResourcesClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.RecoveryJobResourcesClientListResponse])
-
 }
 
 // NewRecoveryJobResourcesServerTransport creates a new instance of RecoveryJobResourcesServerTransport with the provided implementation.
@@ -36,7 +35,7 @@ type RecoveryJobResourcesServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRecoveryJobResourcesServerTransport(srv *RecoveryJobResourcesServer) *RecoveryJobResourcesServerTransport {
 	return &RecoveryJobResourcesServerTransport{
-		srv: srv,
+		srv:          srv,
 		newListPager: newTracker[azfake.PagerResponder[armresiliencemanagement.RecoveryJobResourcesClientListResponse]](),
 	}
 }
@@ -44,7 +43,7 @@ func NewRecoveryJobResourcesServerTransport(srv *RecoveryJobResourcesServer) *Re
 // RecoveryJobResourcesServerTransport connects instances of armresiliencemanagement.RecoveryJobResourcesClient to instances of RecoveryJobResourcesServer.
 // Don't use this type directly, use NewRecoveryJobResourcesServerTransport instead.
 type RecoveryJobResourcesServerTransport struct {
-	srv *RecoveryJobResourcesServer
+	srv          *RecoveryJobResourcesServer
 	newListPager *tracker[azfake.PagerResponder[armresiliencemanagement.RecoveryJobResourcesClientListResponse]]
 }
 
@@ -64,8 +63,8 @@ func (r *RecoveryJobResourcesServerTransport) dispatchToMethodFake(req *http.Req
 	go func() {
 		var intercepted bool
 		var res result
-		 if recoveryJobResourcesServerTransportInterceptor != nil {
-			 res.resp, res.err, intercepted = recoveryJobResourcesServerTransportInterceptor.Do(req)
+		if recoveryJobResourcesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = recoveryJobResourcesServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -73,7 +72,7 @@ func (r *RecoveryJobResourcesServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = r.dispatchGet(req)
 			case "RecoveryJobResourcesClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
-				default:
+			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
@@ -136,25 +135,25 @@ func (r *RecoveryJobResourcesServerTransport) dispatchNewListPager(req *http.Req
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs/(?P<recoveryJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobResources`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryJobName")])
-	if err != nil {
-		return nil, err
-	}
-resp := r.srv.NewListPager(serviceGroupNameParam, recoveryPlanNameParam, recoveryJobNameParam, nil)
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/recoveryPlans/(?P<recoveryPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobs/(?P<recoveryJobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryJobResources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPlanName")])
+		if err != nil {
+			return nil, err
+		}
+		recoveryJobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryJobName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListPager(serviceGroupNameParam, recoveryPlanNameParam, recoveryJobNameParam, nil)
 		newListPager = &resp
 		r.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresiliencemanagement.RecoveryJobResourcesClientListResponse, createLink func() string) {

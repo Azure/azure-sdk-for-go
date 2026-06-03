@@ -19,13 +19,13 @@ func ExampleGoalAssignmentsClient_BeginCreateOrUpdate_goalAssignmentsCreateOrUpd
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGoalAssignmentsClient().BeginCreateOrUpdate(ctx, "sg1", "ga1", armresiliencemanagement.GoalAssignment{
 		Properties: &armresiliencemanagement.GoalAssignmentProperties{
-			GoalTemplateID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1"),
+			GoalTemplateID:     to.Ptr("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1"),
 			GoalAssignmentType: to.Ptr(armresiliencemanagement.GoalAssignmentTypeResiliency),
 			ServiceLevelResources: []*armresiliencemanagement.ServiceLevelResource{
 				{
@@ -56,13 +56,13 @@ func ExampleGoalAssignmentsClient_BeginCreateOrUpdate_goalAssignmentsCreateOrUpd
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGoalAssignmentsClient().BeginCreateOrUpdate(ctx, "sg1", "ga1", armresiliencemanagement.GoalAssignment{
 		Properties: &armresiliencemanagement.GoalAssignmentProperties{
-			GoalTemplateID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1"),
+			GoalTemplateID:     to.Ptr("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1"),
 			GoalAssignmentType: to.Ptr(armresiliencemanagement.GoalAssignmentTypeResiliency),
 		},
 	}, nil)
@@ -87,7 +87,7 @@ func ExampleGoalAssignmentsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -108,7 +108,7 @@ func ExampleGoalAssignmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -154,13 +154,13 @@ func ExampleGoalAssignmentsClient_NewListPager_goalAssignmentsListMaximumSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewGoalAssignmentsClient().NewListPager("zldmpkvqzifygkqau", &armresiliencemanagement.GoalAssignmentsClientListOptions{
-	SkipToken: to.Ptr("xntbyoswztnmvitj"),
-	Top: to.Ptr[int32](69)})
+		SkipToken: to.Ptr("xntbyoswztnmvitj"),
+		Top:       to.Ptr[int32](69)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -212,7 +212,7 @@ func ExampleGoalAssignmentsClient_NewListPager_goalAssignmentsListMinimumSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -261,7 +261,7 @@ func ExampleGoalAssignmentsClient_BeginRecommendCapacity() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -292,7 +292,7 @@ func ExampleGoalAssignmentsClient_BeginRefreshGoalResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -318,13 +318,13 @@ func ExampleGoalAssignmentsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewGoalAssignmentsClient().BeginUpdate(ctx, "sg1", "ga1", armresiliencemanagement.GoalAssignment{
 		Properties: &armresiliencemanagement.GoalAssignmentProperties{
-			GoalTemplateID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1"),
+			GoalTemplateID:     to.Ptr("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1"),
 			GoalAssignmentType: to.Ptr(armresiliencemanagement.GoalAssignmentTypeResiliency),
 			ServiceLevelResources: []*armresiliencemanagement.ServiceLevelResource{
 				{
@@ -355,7 +355,7 @@ func ExampleGoalAssignmentsClient_BeginUpdateGoalResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -363,7 +363,7 @@ func ExampleGoalAssignmentsClient_BeginUpdateGoalResources() {
 		Resources: []*armresiliencemanagement.GoalResource{
 			{
 				Properties: &armresiliencemanagement.GoalResourceProperties{
-					ResourceArmID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine"),
+					ResourceArmID:                     to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine"),
 					HighAvailabilityGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
 					HighAvailabilityAttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
 					DisasterRecoveryGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
@@ -372,7 +372,7 @@ func ExampleGoalAssignmentsClient_BeginUpdateGoalResources() {
 			},
 			{
 				Properties: &armresiliencemanagement.GoalResourceProperties{
-					ResourceArmID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine1"),
+					ResourceArmID:                     to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine1"),
 					HighAvailabilityGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
 					HighAvailabilityAttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
 					DisasterRecoveryGoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
@@ -394,4 +394,3 @@ func ExampleGoalAssignmentsClient_BeginUpdateGoalResources() {
 	// res = armresiliencemanagement.GoalAssignmentsClientUpdateGoalResourcesResponse{
 	// }
 }
-

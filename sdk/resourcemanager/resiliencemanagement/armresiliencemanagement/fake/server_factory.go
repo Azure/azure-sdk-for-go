@@ -65,7 +65,6 @@ type ServerFactory struct {
 
 	// UsagePlansServer contains the fakes for client UsagePlansClient
 	UsagePlansServer UsagePlansServer
-
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -80,25 +79,25 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armresiliencemanagement.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv *ServerFactory
-	trMu sync.Mutex
-	trDrillResourcesServer *DrillResourcesServerTransport
-	trDrillRunResourcesServer *DrillRunResourcesServerTransport
-	trDrillRunsServer *DrillRunsServerTransport
-	trDrillsServer *DrillsServerTransport
-	trEnrollmentsServer *EnrollmentsServerTransport
-	trGoalAssignmentsServer *GoalAssignmentsServerTransport
-	trGoalResourcesServer *GoalResourcesServerTransport
-	trGoalTemplatesServer *GoalTemplatesServerTransport
-	trOperationStatusServer *OperationStatusServerTransport
-	trOperationsServer *OperationsServerTransport
-	trRecoveryJobResourcesServer *RecoveryJobResourcesServerTransport
-	trRecoveryJobsServer *RecoveryJobsServerTransport
-	trRecoveryPlanActionsServer *RecoveryPlanActionsServerTransport
-	trRecoveryPlansServer *RecoveryPlansServerTransport
-	trRecoveryResourcesServer *RecoveryResourcesServerTransport
+	srv                            *ServerFactory
+	trMu                           sync.Mutex
+	trDrillResourcesServer         *DrillResourcesServerTransport
+	trDrillRunResourcesServer      *DrillRunResourcesServerTransport
+	trDrillRunsServer              *DrillRunsServerTransport
+	trDrillsServer                 *DrillsServerTransport
+	trEnrollmentsServer            *EnrollmentsServerTransport
+	trGoalAssignmentsServer        *GoalAssignmentsServerTransport
+	trGoalResourcesServer          *GoalResourcesServerTransport
+	trGoalTemplatesServer          *GoalTemplatesServerTransport
+	trOperationStatusServer        *OperationStatusServerTransport
+	trOperationsServer             *OperationsServerTransport
+	trRecoveryJobResourcesServer   *RecoveryJobResourcesServerTransport
+	trRecoveryJobsServer           *RecoveryJobsServerTransport
+	trRecoveryPlanActionsServer    *RecoveryPlanActionsServerTransport
+	trRecoveryPlansServer          *RecoveryPlansServerTransport
+	trRecoveryResourcesServer      *RecoveryResourcesServerTransport
 	trUnifiedResilienceItemsServer *UnifiedResilienceItemsServerTransport
-	trUsagePlansServer *UsagePlansServerTransport
+	trUsagePlansServer             *UsagePlansServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -115,10 +114,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "DrillResourcesClient":
-		initServer(&s.trMu, &s.trDrillResourcesServer, func() *DrillResourcesServerTransport { return NewDrillResourcesServerTransport(&s.srv.DrillResourcesServer) })
+		initServer(&s.trMu, &s.trDrillResourcesServer, func() *DrillResourcesServerTransport {
+			return NewDrillResourcesServerTransport(&s.srv.DrillResourcesServer)
+		})
 		resp, err = s.trDrillResourcesServer.Do(req)
 	case "DrillRunResourcesClient":
-		initServer(&s.trMu, &s.trDrillRunResourcesServer, func() *DrillRunResourcesServerTransport { return NewDrillRunResourcesServerTransport(&s.srv.DrillRunResourcesServer) })
+		initServer(&s.trMu, &s.trDrillRunResourcesServer, func() *DrillRunResourcesServerTransport {
+			return NewDrillRunResourcesServerTransport(&s.srv.DrillRunResourcesServer)
+		})
 		resp, err = s.trDrillRunResourcesServer.Do(req)
 	case "DrillRunsClient":
 		initServer(&s.trMu, &s.trDrillRunsServer, func() *DrillRunsServerTransport { return NewDrillRunsServerTransport(&s.srv.DrillRunsServer) })
@@ -130,37 +133,55 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 		initServer(&s.trMu, &s.trEnrollmentsServer, func() *EnrollmentsServerTransport { return NewEnrollmentsServerTransport(&s.srv.EnrollmentsServer) })
 		resp, err = s.trEnrollmentsServer.Do(req)
 	case "GoalAssignmentsClient":
-		initServer(&s.trMu, &s.trGoalAssignmentsServer, func() *GoalAssignmentsServerTransport { return NewGoalAssignmentsServerTransport(&s.srv.GoalAssignmentsServer) })
+		initServer(&s.trMu, &s.trGoalAssignmentsServer, func() *GoalAssignmentsServerTransport {
+			return NewGoalAssignmentsServerTransport(&s.srv.GoalAssignmentsServer)
+		})
 		resp, err = s.trGoalAssignmentsServer.Do(req)
 	case "GoalResourcesClient":
-		initServer(&s.trMu, &s.trGoalResourcesServer, func() *GoalResourcesServerTransport { return NewGoalResourcesServerTransport(&s.srv.GoalResourcesServer) })
+		initServer(&s.trMu, &s.trGoalResourcesServer, func() *GoalResourcesServerTransport {
+			return NewGoalResourcesServerTransport(&s.srv.GoalResourcesServer)
+		})
 		resp, err = s.trGoalResourcesServer.Do(req)
 	case "GoalTemplatesClient":
-		initServer(&s.trMu, &s.trGoalTemplatesServer, func() *GoalTemplatesServerTransport { return NewGoalTemplatesServerTransport(&s.srv.GoalTemplatesServer) })
+		initServer(&s.trMu, &s.trGoalTemplatesServer, func() *GoalTemplatesServerTransport {
+			return NewGoalTemplatesServerTransport(&s.srv.GoalTemplatesServer)
+		})
 		resp, err = s.trGoalTemplatesServer.Do(req)
 	case "OperationStatusClient":
-		initServer(&s.trMu, &s.trOperationStatusServer, func() *OperationStatusServerTransport { return NewOperationStatusServerTransport(&s.srv.OperationStatusServer) })
+		initServer(&s.trMu, &s.trOperationStatusServer, func() *OperationStatusServerTransport {
+			return NewOperationStatusServerTransport(&s.srv.OperationStatusServer)
+		})
 		resp, err = s.trOperationStatusServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "RecoveryJobResourcesClient":
-		initServer(&s.trMu, &s.trRecoveryJobResourcesServer, func() *RecoveryJobResourcesServerTransport { return NewRecoveryJobResourcesServerTransport(&s.srv.RecoveryJobResourcesServer) })
+		initServer(&s.trMu, &s.trRecoveryJobResourcesServer, func() *RecoveryJobResourcesServerTransport {
+			return NewRecoveryJobResourcesServerTransport(&s.srv.RecoveryJobResourcesServer)
+		})
 		resp, err = s.trRecoveryJobResourcesServer.Do(req)
 	case "RecoveryJobsClient":
 		initServer(&s.trMu, &s.trRecoveryJobsServer, func() *RecoveryJobsServerTransport { return NewRecoveryJobsServerTransport(&s.srv.RecoveryJobsServer) })
 		resp, err = s.trRecoveryJobsServer.Do(req)
 	case "RecoveryPlanActionsClient":
-		initServer(&s.trMu, &s.trRecoveryPlanActionsServer, func() *RecoveryPlanActionsServerTransport { return NewRecoveryPlanActionsServerTransport(&s.srv.RecoveryPlanActionsServer) })
+		initServer(&s.trMu, &s.trRecoveryPlanActionsServer, func() *RecoveryPlanActionsServerTransport {
+			return NewRecoveryPlanActionsServerTransport(&s.srv.RecoveryPlanActionsServer)
+		})
 		resp, err = s.trRecoveryPlanActionsServer.Do(req)
 	case "RecoveryPlansClient":
-		initServer(&s.trMu, &s.trRecoveryPlansServer, func() *RecoveryPlansServerTransport { return NewRecoveryPlansServerTransport(&s.srv.RecoveryPlansServer) })
+		initServer(&s.trMu, &s.trRecoveryPlansServer, func() *RecoveryPlansServerTransport {
+			return NewRecoveryPlansServerTransport(&s.srv.RecoveryPlansServer)
+		})
 		resp, err = s.trRecoveryPlansServer.Do(req)
 	case "RecoveryResourcesClient":
-		initServer(&s.trMu, &s.trRecoveryResourcesServer, func() *RecoveryResourcesServerTransport { return NewRecoveryResourcesServerTransport(&s.srv.RecoveryResourcesServer) })
+		initServer(&s.trMu, &s.trRecoveryResourcesServer, func() *RecoveryResourcesServerTransport {
+			return NewRecoveryResourcesServerTransport(&s.srv.RecoveryResourcesServer)
+		})
 		resp, err = s.trRecoveryResourcesServer.Do(req)
 	case "UnifiedResilienceItemsClient":
-		initServer(&s.trMu, &s.trUnifiedResilienceItemsServer, func() *UnifiedResilienceItemsServerTransport { return NewUnifiedResilienceItemsServerTransport(&s.srv.UnifiedResilienceItemsServer) })
+		initServer(&s.trMu, &s.trUnifiedResilienceItemsServer, func() *UnifiedResilienceItemsServerTransport {
+			return NewUnifiedResilienceItemsServerTransport(&s.srv.UnifiedResilienceItemsServer)
+		})
 		resp, err = s.trUnifiedResilienceItemsServer.Do(req)
 	case "UsagePlansClient":
 		initServer(&s.trMu, &s.trUsagePlansServer, func() *UsagePlansServerTransport { return NewUsagePlansServerTransport(&s.srv.UsagePlansServer) })
@@ -175,4 +196,3 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	return resp, nil
 }
-

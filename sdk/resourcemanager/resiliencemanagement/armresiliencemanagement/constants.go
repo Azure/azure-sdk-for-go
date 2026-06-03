@@ -12,11 +12,11 @@ const (
 type ActionTask string
 
 const (
-// ActionTaskNone - No action task.
+	// ActionTaskNone - No action task.
 	ActionTaskNone ActionTask = "None"
-// ActionTaskPostActionTask - Post-action task.
+	// ActionTaskPostActionTask - Post-action task.
 	ActionTaskPostActionTask ActionTask = "PostActionTask"
-// ActionTaskPreActionTask - Pre-action task.
+	// ActionTaskPreActionTask - Pre-action task.
 	ActionTaskPreActionTask ActionTask = "PreActionTask"
 )
 
@@ -33,7 +33,7 @@ func PossibleActionTaskValues() []ActionTask {
 type ActionType string
 
 const (
-// ActionTypeInternal - Actions are for internal-only APIs.
+	// ActionTypeInternal - Actions are for internal-only APIs.
 	ActionTypeInternal ActionType = "Internal"
 )
 
@@ -48,9 +48,9 @@ func PossibleActionTypeValues() []ActionType {
 type AttestationState string
 
 const (
-// AttestationStateManuallyAttested - Resource is manually attested.
+	// AttestationStateManuallyAttested - Resource is manually attested.
 	AttestationStateManuallyAttested AttestationState = "ManuallyAttested"
-// AttestationStateNotAttested - Resource is not manually attested.
+	// AttestationStateNotAttested - Resource is not manually attested.
 	AttestationStateNotAttested AttestationState = "NotAttested"
 )
 
@@ -66,9 +66,9 @@ func PossibleAttestationStateValues() []AttestationState {
 type AutoFailover string
 
 const (
-// AutoFailoverDisable - Disable AutoFailover.
+	// AutoFailoverDisable - Disable AutoFailover.
 	AutoFailoverDisable AutoFailover = "Disable"
-// AutoFailoverEnable - Enable AutoFailover.
+	// AutoFailoverEnable - Enable AutoFailover.
 	AutoFailoverEnable AutoFailover = "Enable"
 )
 
@@ -84,9 +84,9 @@ func PossibleAutoFailoverValues() []AutoFailover {
 type CommentType string
 
 const (
-// CommentTypeDescription - A general description comment.
+	// CommentTypeDescription - A general description comment.
 	CommentTypeDescription CommentType = "Description"
-// CommentTypeResumeReason - A comment indicating the reason for resuming a job.
+	// CommentTypeResumeReason - A comment indicating the reason for resuming a job.
 	CommentTypeResumeReason CommentType = "ResumeReason"
 )
 
@@ -102,13 +102,13 @@ func PossibleCommentTypeValues() []CommentType {
 type ConfirmationStatus string
 
 const (
-// ConfirmationStatusApprovalNotNeeded - The high availability solution does not require user approval.
+	// ConfirmationStatusApprovalNotNeeded - The high availability solution does not require user approval.
 	ConfirmationStatusApprovalNotNeeded ConfirmationStatus = "ApprovalNotNeeded"
-// ConfirmationStatusApprovalPending - The high availability solution is pending approval from the user.
+	// ConfirmationStatusApprovalPending - The high availability solution is pending approval from the user.
 	ConfirmationStatusApprovalPending ConfirmationStatus = "ApprovalPending"
-// ConfirmationStatusApprovedByUser - The high availability solution has been approved by the user.
+	// ConfirmationStatusApprovedByUser - The high availability solution has been approved by the user.
 	ConfirmationStatusApprovedByUser ConfirmationStatus = "ApprovedByUser"
-// ConfirmationStatusRejectedByUser - The high availability solution has been rejected by the user.
+	// ConfirmationStatusRejectedByUser - The high availability solution has been rejected by the user.
 	ConfirmationStatusRejectedByUser ConfirmationStatus = "RejectedByUser"
 )
 
@@ -126,13 +126,13 @@ func PossibleConfirmationStatusValues() []ConfirmationStatus {
 type CreatedByType string
 
 const (
-// CreatedByTypeApplication - The entity was created by an application.
+	// CreatedByTypeApplication - The entity was created by an application.
 	CreatedByTypeApplication CreatedByType = "Application"
-// CreatedByTypeKey - The entity was created by a key.
+	// CreatedByTypeKey - The entity was created by a key.
 	CreatedByTypeKey CreatedByType = "Key"
-// CreatedByTypeManagedIdentity - The entity was created by a managed identity.
+	// CreatedByTypeManagedIdentity - The entity was created by a managed identity.
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-// CreatedByTypeUser - The entity was created by a user.
+	// CreatedByTypeUser - The entity was created by a user.
 	CreatedByTypeUser CreatedByType = "User"
 )
 
@@ -150,9 +150,9 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DrillAttestation string
 
 const (
-// DrillAttestationAttestedFailed - Drill Attestation failure.
+	// DrillAttestationAttestedFailed - Drill Attestation failure.
 	DrillAttestationAttestedFailed DrillAttestation = "Failed"
-// DrillAttestationAttestedSuccess - Drill Attestation success.
+	// DrillAttestationAttestedSuccess - Drill Attestation success.
 	DrillAttestationAttestedSuccess DrillAttestation = "Success"
 )
 
@@ -168,7 +168,7 @@ func PossibleDrillAttestationValues() []DrillAttestation {
 type DrillMode string
 
 const (
-// DrillModeFailover - Failover mode.
+	// DrillModeFailover - Failover mode.
 	DrillModeFailover DrillMode = "Failover"
 )
 
@@ -183,11 +183,11 @@ func PossibleDrillModeValues() []DrillMode {
 type DrillResourceFaultState string
 
 const (
-// DrillResourceFaultStateCustomScript - Custom script based fault associated with resource.
+	// DrillResourceFaultStateCustomScript - Custom script based fault associated with resource.
 	DrillResourceFaultStateCustomScript DrillResourceFaultState = "CustomScript"
-// DrillResourceFaultStateNotDefined - No fault configured for this resource.
+	// DrillResourceFaultStateNotDefined - No fault configured for this resource.
 	DrillResourceFaultStateNotDefined DrillResourceFaultState = "NotDefined"
-// DrillResourceFaultStateSystemNative - Native fault available.
+	// DrillResourceFaultStateSystemNative - Native fault available.
 	DrillResourceFaultStateSystemNative DrillResourceFaultState = "SystemNative"
 )
 
@@ -204,9 +204,9 @@ func PossibleDrillResourceFaultStateValues() []DrillResourceFaultState {
 type DrillResourceInclusionState string
 
 const (
-// DrillResourceInclusionStateExcluded - Resource excluded from Drill.
+	// DrillResourceInclusionStateExcluded - Resource excluded from Drill.
 	DrillResourceInclusionStateExcluded DrillResourceInclusionState = "Excluded"
-// DrillResourceInclusionStateIncluded - Resource included in Drill.
+	// DrillResourceInclusionStateIncluded - Resource included in Drill.
 	DrillResourceInclusionStateIncluded DrillResourceInclusionState = "Included"
 )
 
@@ -222,9 +222,9 @@ func PossibleDrillResourceInclusionStateValues() []DrillResourceInclusionState {
 type DrillResourceReadinessState string
 
 const (
-// DrillResourceReadinessStateNeedsAttention - Resource needs attention.
+	// DrillResourceReadinessStateNeedsAttention - Resource needs attention.
 	DrillResourceReadinessStateNeedsAttention DrillResourceReadinessState = "NeedsAttention"
-// DrillResourceReadinessStateReady - Resource ready.
+	// DrillResourceReadinessStateReady - Resource ready.
 	DrillResourceReadinessStateReady DrillResourceReadinessState = "Ready"
 )
 
@@ -240,15 +240,15 @@ func PossibleDrillResourceReadinessStateValues() []DrillResourceReadinessState {
 type DrillResourceState string
 
 const (
-// DrillResourceStateInDrillNotInRecoveryPlan - Resource is in Drill but not part of the RecoveryPlan
+	// DrillResourceStateInDrillNotInRecoveryPlan - Resource is in Drill but not part of the RecoveryPlan
 	DrillResourceStateInDrillNotInRecoveryPlan DrillResourceState = "InDrillNotInRecoveryPlan"
-// DrillResourceStateInDrillNotInServiceGroup - Resource is in Drill but not part of the SG
+	// DrillResourceStateInDrillNotInServiceGroup - Resource is in Drill but not part of the SG
 	DrillResourceStateInDrillNotInServiceGroup DrillResourceState = "InDrillNotInServiceGroup"
-// DrillResourceStateInRecoveryPlanNotInDrill - Resource is in RecoveryPlan but not part of the Drill
+	// DrillResourceStateInRecoveryPlanNotInDrill - Resource is in RecoveryPlan but not part of the Drill
 	DrillResourceStateInRecoveryPlanNotInDrill DrillResourceState = "InRecoveryPlanNotInDrill"
-// DrillResourceStateInServiceGroupNotInDrill - Resource is in SG but not part of the Drill
+	// DrillResourceStateInServiceGroupNotInDrill - Resource is in SG but not part of the Drill
 	DrillResourceStateInServiceGroupNotInDrill DrillResourceState = "InServiceGroupNotInDrill"
-// DrillResourceStateResourceStateIncompatibleWithFault - Resource is not in a state where it can be faulted.
+	// DrillResourceStateResourceStateIncompatibleWithFault - Resource is not in a state where it can be faulted.
 	DrillResourceStateResourceStateIncompatibleWithFault DrillResourceState = "ResourceStateIncompatibleWithFault"
 )
 
@@ -267,13 +267,13 @@ func PossibleDrillResourceStateValues() []DrillResourceState {
 type DrillRunOperationVerbs string
 
 const (
-// DrillRunOperationVerbsCancel - Cancel Action.
+	// DrillRunOperationVerbsCancel - Cancel Action.
 	DrillRunOperationVerbsCancel DrillRunOperationVerbs = "Cancel"
-// DrillRunOperationVerbsMarkAsComplete - MarkAsComplete Action.
+	// DrillRunOperationVerbsMarkAsComplete - MarkAsComplete Action.
 	DrillRunOperationVerbsMarkAsComplete DrillRunOperationVerbs = "MarkAsComplete"
-// DrillRunOperationVerbsRetry - Retry Action.
+	// DrillRunOperationVerbsRetry - Retry Action.
 	DrillRunOperationVerbsRetry DrillRunOperationVerbs = "Retry"
-// DrillRunOperationVerbsStart - Start Action.
+	// DrillRunOperationVerbsStart - Start Action.
 	DrillRunOperationVerbsStart DrillRunOperationVerbs = "Start"
 )
 
@@ -291,15 +291,15 @@ func PossibleDrillRunOperationVerbsValues() []DrillRunOperationVerbs {
 type DrillRunSubtasks string
 
 const (
-// DrillRunSubtasksFailover - Failover Subtasks.
+	// DrillRunSubtasksFailover - Failover Subtasks.
 	DrillRunSubtasksFailover DrillRunSubtasks = "Failover"
-// DrillRunSubtasksFailoverReverse - FailoverReverse Subtasks.
+	// DrillRunSubtasksFailoverReverse - FailoverReverse Subtasks.
 	DrillRunSubtasksFailoverReverse DrillRunSubtasks = "FailoverReverse"
-// DrillRunSubtasksFaultInjection - FaultInjection Subtasks.
+	// DrillRunSubtasksFaultInjection - FaultInjection Subtasks.
 	DrillRunSubtasksFaultInjection DrillRunSubtasks = "FaultInjection"
-// DrillRunSubtasksReprotect - Reprotect Subtasks.
+	// DrillRunSubtasksReprotect - Reprotect Subtasks.
 	DrillRunSubtasksReprotect DrillRunSubtasks = "Reprotect"
-// DrillRunSubtasksReprotectReverse - ReprotectReverse Subtasks.
+	// DrillRunSubtasksReprotectReverse - ReprotectReverse Subtasks.
 	DrillRunSubtasksReprotectReverse DrillRunSubtasks = "ReprotectReverse"
 )
 
@@ -318,9 +318,9 @@ func PossibleDrillRunSubtasksValues() []DrillRunSubtasks {
 type DrillType string
 
 const (
-// DrillTypeRegional - Regional Drill.
+	// DrillTypeRegional - Regional Drill.
 	DrillTypeRegional DrillType = "Regional"
-// DrillTypeZonal - Zonal Drill.
+	// DrillTypeZonal - Zonal Drill.
 	DrillTypeZonal DrillType = "Zonal"
 )
 
@@ -336,11 +336,11 @@ func PossibleDrillTypeValues() []DrillType {
 type ExclusionReason string
 
 const (
-// ExclusionReasonFailedOverResource - The resource failed over and is excluded.
+	// ExclusionReasonFailedOverResource - The resource failed over and is excluded.
 	ExclusionReasonFailedOverResource ExclusionReason = "FailedOverResource"
-// ExclusionReasonUnsupportedResource - The resource is unsupported and excluded.
+	// ExclusionReasonUnsupportedResource - The resource is unsupported and excluded.
 	ExclusionReasonUnsupportedResource ExclusionReason = "UnsupportedResource"
-// ExclusionReasonUserSelectedExclusion - The resource was excluded by user selection.
+	// ExclusionReasonUserSelectedExclusion - The resource was excluded by user selection.
 	ExclusionReasonUserSelectedExclusion ExclusionReason = "UserSelectedExclusion"
 )
 
@@ -357,9 +357,9 @@ func PossibleExclusionReasonValues() []ExclusionReason {
 type ExclusionState string
 
 const (
-// ExclusionStateExcluded - Resource is not included in the goals.
+	// ExclusionStateExcluded - Resource is not included in the goals.
 	ExclusionStateExcluded ExclusionState = "Excluded"
-// ExclusionStateIncluded - Resource is excluded from the goals.
+	// ExclusionStateIncluded - Resource is excluded from the goals.
 	ExclusionStateIncluded ExclusionState = "Included"
 )
 
@@ -375,9 +375,9 @@ func PossibleExclusionStateValues() []ExclusionState {
 type ExecutionReadinessState string
 
 const (
-// ExecutionReadinessStateNeedsAttention - Drill is not ready to run. Details captured in AttentionReason field.
+	// ExecutionReadinessStateNeedsAttention - Drill is not ready to run. Details captured in AttentionReason field.
 	ExecutionReadinessStateNeedsAttention ExecutionReadinessState = "NeedsAttention"
-// ExecutionReadinessStateReady - Drill is ready to run.
+	// ExecutionReadinessStateReady - Drill is ready to run.
 	ExecutionReadinessStateReady ExecutionReadinessState = "Ready"
 )
 
@@ -393,11 +393,11 @@ func PossibleExecutionReadinessStateValues() []ExecutionReadinessState {
 type ExecutionState string
 
 const (
-// ExecutionStateNotRunning - Drill is not running currently.
+	// ExecutionStateNotRunning - Drill is not running currently.
 	ExecutionStateNotRunning ExecutionState = "NotRunning"
-// ExecutionStatePaused - Drill is paused, waiting for manual resume.
+	// ExecutionStatePaused - Drill is paused, waiting for manual resume.
 	ExecutionStatePaused ExecutionState = "Paused"
-// ExecutionStateRunning - Drill is running currently.
+	// ExecutionStateRunning - Drill is running currently.
 	ExecutionStateRunning ExecutionState = "Running"
 )
 
@@ -414,9 +414,9 @@ func PossibleExecutionStateValues() []ExecutionState {
 type ExtensionObjectState string
 
 const (
-// ExtensionObjectStateExists - Extension object exists.
+	// ExtensionObjectStateExists - Extension object exists.
 	ExtensionObjectStateExists ExtensionObjectState = "Exists"
-// ExtensionObjectStateNotExists - Extension object not exists.
+	// ExtensionObjectStateNotExists - Extension object not exists.
 	ExtensionObjectStateNotExists ExtensionObjectState = "NotExists"
 )
 
@@ -432,7 +432,7 @@ func PossibleExtensionObjectStateValues() []ExtensionObjectState {
 type FailoverDirectionTypes string
 
 const (
-// FailoverDirectionTypesFromSpecificLocations - Failover resources from specific locations.
+	// FailoverDirectionTypesFromSpecificLocations - Failover resources from specific locations.
 	FailoverDirectionTypesFromSpecificLocations FailoverDirectionTypes = "FromSpecificLocations"
 )
 
@@ -447,13 +447,13 @@ func PossibleFailoverDirectionTypesValues() []FailoverDirectionTypes {
 type FailoverState string
 
 const (
-// FailoverStateFailedOver - The resource is in failed-over state.
+	// FailoverStateFailedOver - The resource is in failed-over state.
 	FailoverStateFailedOver FailoverState = "FailedOver"
-// FailoverStateFailedOverCommitPending - The resource is in failover commit pending state.
+	// FailoverStateFailedOverCommitPending - The resource is in failover commit pending state.
 	FailoverStateFailedOverCommitPending FailoverState = "FailedOverCommitPending"
-// FailoverStateFailedOverReprotectPending - The resource is in reprotect pending state.
+	// FailoverStateFailedOverReprotectPending - The resource is in reprotect pending state.
 	FailoverStateFailedOverReprotectPending FailoverState = "FailedOverReprotectPending"
-// FailoverStateNone - The resource is Not in failedOver state.
+	// FailoverStateNone - The resource is Not in failedOver state.
 	FailoverStateNone FailoverState = "None"
 )
 
@@ -471,9 +471,9 @@ func PossibleFailoverStateValues() []FailoverState {
 type ForceInclusionAndUpdate string
 
 const (
-// ForceInclusionAndUpdateDisable - Disable ForceInclusionAndUpdate.
+	// ForceInclusionAndUpdateDisable - Disable ForceInclusionAndUpdate.
 	ForceInclusionAndUpdateDisable ForceInclusionAndUpdate = "Disable"
-// ForceInclusionAndUpdateEnable - Enable ForceInclusionAndUpdate.
+	// ForceInclusionAndUpdateEnable - Enable ForceInclusionAndUpdate.
 	ForceInclusionAndUpdateEnable ForceInclusionAndUpdate = "Enable"
 )
 
@@ -489,7 +489,7 @@ func PossibleForceInclusionAndUpdateValues() []ForceInclusionAndUpdate {
 type GoalAssignmentType string
 
 const (
-// GoalAssignmentTypeResiliency - Resiliency goal assignment type.
+	// GoalAssignmentTypeResiliency - Resiliency goal assignment type.
 	GoalAssignmentTypeResiliency GoalAssignmentType = "Resiliency"
 )
 
@@ -504,7 +504,7 @@ func PossibleGoalAssignmentTypeValues() []GoalAssignmentType {
 type GoalType string
 
 const (
-// GoalTypeResiliency - Resiliency goal type.
+	// GoalTypeResiliency - Resiliency goal type.
 	GoalTypeResiliency GoalType = "Resiliency"
 )
 
@@ -519,9 +519,9 @@ func PossibleGoalTypeValues() []GoalType {
 type HAStatus string
 
 const (
-// HAStatusEnabled - HA enabled.
+	// HAStatusEnabled - HA enabled.
 	HAStatusEnabled HAStatus = "Enabled"
-// HAStatusNotEnabled - HA not enabled.
+	// HAStatusNotEnabled - HA not enabled.
 	HAStatusNotEnabled HAStatus = "NotEnabled"
 )
 
@@ -537,9 +537,9 @@ func PossibleHAStatusValues() []HAStatus {
 type InitialConfig string
 
 const (
-// InitialConfigComplete - Initial config complete.
+	// InitialConfigComplete - Initial config complete.
 	InitialConfigComplete InitialConfig = "Complete"
-// InitialConfigPending - Initial config pending.
+	// InitialConfigPending - Initial config pending.
 	InitialConfigPending InitialConfig = "Pending"
 )
 
@@ -555,13 +555,13 @@ func PossibleInitialConfigValues() []InitialConfig {
 type IsoDuration string
 
 const (
-// IsoDurationPT15M - 15 minutes.
+	// IsoDurationPT15M - 15 minutes.
 	IsoDurationPT15M IsoDuration = "PT15M"
-// IsoDurationPT1H - 1 hour.
+	// IsoDurationPT1H - 1 hour.
 	IsoDurationPT1H IsoDuration = "PT1H"
-// IsoDurationPT24H - 24 hours.
+	// IsoDurationPT24H - 24 hours.
 	IsoDurationPT24H IsoDuration = "PT24H"
-// IsoDurationPT4H - 4 hours.
+	// IsoDurationPT4H - 4 hours.
 	IsoDurationPT4H IsoDuration = "PT4H"
 )
 
@@ -579,11 +579,11 @@ func PossibleIsoDurationValues() []IsoDuration {
 type JobResourceType string
 
 const (
-// JobResourceTypeDrillRun - Drill Run job resource.
+	// JobResourceTypeDrillRun - Drill Run job resource.
 	JobResourceTypeDrillRun JobResourceType = "DrillRun"
-// JobResourceTypeInvalid - Abstract job resource - invalid.
+	// JobResourceTypeInvalid - Abstract job resource - invalid.
 	JobResourceTypeInvalid JobResourceType = "Invalid"
-// JobResourceTypeRecoveryPlan - Recovery Orchestration Plan created job resource.
+	// JobResourceTypeRecoveryPlan - Recovery Orchestration Plan created job resource.
 	JobResourceTypeRecoveryPlan JobResourceType = "RecoveryPlan"
 )
 
@@ -600,27 +600,27 @@ func PossibleJobResourceTypeValues() []JobResourceType {
 type JobStatus string
 
 const (
-// JobStatusCancelled - The job has been cancelled.
+	// JobStatusCancelled - The job has been cancelled.
 	JobStatusCancelled JobStatus = "Cancelled"
-// JobStatusCancelling - The job is in the process of being cancelled.
+	// JobStatusCancelling - The job is in the process of being cancelled.
 	JobStatusCancelling JobStatus = "Cancelling"
-// JobStatusCompleted - The job has been completed successfully.
+	// JobStatusCompleted - The job has been completed successfully.
 	JobStatusCompleted JobStatus = "Completed"
-// JobStatusCompletedWithWarnings - The job has been completed with warnings.
+	// JobStatusCompletedWithWarnings - The job has been completed with warnings.
 	JobStatusCompletedWithWarnings JobStatus = "CompletedWithWarnings"
-// JobStatusFailed - The job has failed.
+	// JobStatusFailed - The job has failed.
 	JobStatusFailed JobStatus = "Failed"
-// JobStatusInProgress - The job is currently in progress.
+	// JobStatusInProgress - The job is currently in progress.
 	JobStatusInProgress JobStatus = "InProgress"
-// JobStatusNotApplicable - The job status is not applicable.
+	// JobStatusNotApplicable - The job status is not applicable.
 	JobStatusNotApplicable JobStatus = "NotApplicable"
-// JobStatusNotStarted - The job has not started yet.
+	// JobStatusNotStarted - The job has not started yet.
 	JobStatusNotStarted JobStatus = "NotStarted"
-// JobStatusPaused - The job is currently paused.
+	// JobStatusPaused - The job is currently paused.
 	JobStatusPaused JobStatus = "Paused"
-// JobStatusPending - The job is pending execution, awaiting the completion of dependent stages.
+	// JobStatusPending - The job is pending execution, awaiting the completion of dependent stages.
 	JobStatusPending JobStatus = "Pending"
-// JobStatusSkipped - The job skipped for the resource (resource not qualified or not applicable).
+	// JobStatusSkipped - The job skipped for the resource (resource not qualified or not applicable).
 	JobStatusSkipped JobStatus = "Skipped"
 )
 
@@ -645,9 +645,9 @@ func PossibleJobStatusValues() []JobStatus {
 type JobTriggeredBy string
 
 const (
-// JobTriggeredBySystem - Triggered by the system.
+	// JobTriggeredBySystem - Triggered by the system.
 	JobTriggeredBySystem JobTriggeredBy = "System"
-// JobTriggeredByUser - Triggered by the user.
+	// JobTriggeredByUser - Triggered by the user.
 	JobTriggeredByUser JobTriggeredBy = "User"
 )
 
@@ -663,11 +663,11 @@ func PossibleJobTriggeredByValues() []JobTriggeredBy {
 type JobType string
 
 const (
-// JobTypeDrillRun - Drill Oober job which represents a given instance of Drill.
+	// JobTypeDrillRun - Drill Oober job which represents a given instance of Drill.
 	JobTypeDrillRun JobType = "DrillRun"
-// JobTypeInvalid - Abstract job - invalid.
+	// JobTypeInvalid - Abstract job - invalid.
 	JobTypeInvalid JobType = "Invalid"
-// JobTypeRecoveryPlan - Recovery Orchestration Plan created job.
+	// JobTypeRecoveryPlan - Recovery Orchestration Plan created job.
 	JobTypeRecoveryPlan JobType = "RecoveryPlan"
 )
 
@@ -684,13 +684,13 @@ func PossibleJobTypeValues() []JobType {
 type ManagedServiceIdentityType string
 
 const (
-// ManagedServiceIdentityTypeNone - No managed identity.
+	// ManagedServiceIdentityTypeNone - No managed identity.
 	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
-// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
 	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
-// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
 	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
-// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
 	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
@@ -708,11 +708,11 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 type MembershipType string
 
 const (
-// MembershipTypeDirect - Resource is direct member of service group.
+	// MembershipTypeDirect - Resource is direct member of service group.
 	MembershipTypeDirect MembershipType = "Direct"
-// MembershipTypeThroughResourceGroup - Resource is member of service group through resource group.
+	// MembershipTypeThroughResourceGroup - Resource is member of service group through resource group.
 	MembershipTypeThroughResourceGroup MembershipType = "ThroughResourceGroup"
-// MembershipTypeThroughSubscription - Resource is member of service group through subscription.
+	// MembershipTypeThroughSubscription - Resource is member of service group through subscription.
 	MembershipTypeThroughSubscription MembershipType = "ThroughSubscription"
 )
 
@@ -730,11 +730,11 @@ func PossibleMembershipTypeValues() []MembershipType {
 type Origin string
 
 const (
-// OriginSystem - Indicates the operation is initiated by a system.
+	// OriginSystem - Indicates the operation is initiated by a system.
 	OriginSystem Origin = "system"
-// OriginUser - Indicates the operation is initiated by a user.
+	// OriginUser - Indicates the operation is initiated by a user.
 	OriginUser Origin = "user"
-// OriginUserSystem - Indicates the operation is initiated by a user or system.
+	// OriginUserSystem - Indicates the operation is initiated by a user or system.
 	OriginUserSystem Origin = "user,system"
 )
 
@@ -751,19 +751,19 @@ func PossibleOriginValues() []Origin {
 type ProvisioningState string
 
 const (
-// ProvisioningStateAccepted - Change accepted for processing
+	// ProvisioningStateAccepted - Change accepted for processing
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
-// ProvisioningStateCanceled - Resource creation was canceled.
+	// ProvisioningStateCanceled - Resource creation was canceled.
 	ProvisioningStateCanceled ProvisioningState = "Canceled"
-// ProvisioningStateDeleting - Deletion in progress
+	// ProvisioningStateDeleting - Deletion in progress
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
-// ProvisioningStateFailed - Resource creation failed.
+	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
-// ProvisioningStateProvisioning - Initial provisioning in progress
+	// ProvisioningStateProvisioning - Initial provisioning in progress
 	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
-// ProvisioningStateSucceeded - Resource has been created.
+	// ProvisioningStateSucceeded - Resource has been created.
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-// ProvisioningStateUpdating - Update in progress
+	// ProvisioningStateUpdating - Update in progress
 	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
@@ -784,13 +784,13 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type QualificationState string
 
 const (
-// QualificationStateExcluded - A state that indicates the resource is excluded from the recovery plan itself.
+	// QualificationStateExcluded - A state that indicates the resource is excluded from the recovery plan itself.
 	QualificationStateExcluded QualificationState = "Excluded"
-// QualificationStateNotQualified - A state that indicates the resource is not qualified for the operation.
+	// QualificationStateNotQualified - A state that indicates the resource is not qualified for the operation.
 	QualificationStateNotQualified QualificationState = "NotQualified"
-// QualificationStateQualified - A state that indicates the resource is qualified for the operation.
+	// QualificationStateQualified - A state that indicates the resource is qualified for the operation.
 	QualificationStateQualified QualificationState = "Qualified"
-// QualificationStateUnknown - A state that indicates the qualification state is unknown.
+	// QualificationStateUnknown - A state that indicates the qualification state is unknown.
 	QualificationStateUnknown QualificationState = "Unknown"
 )
 
@@ -808,11 +808,11 @@ func PossibleQualificationStateValues() []QualificationState {
 type RBACSetupMode string
 
 const (
-// RBACSetupModeAutomatedBuiltinRoles - Automated-BuiltinRoles mode.
+	// RBACSetupModeAutomatedBuiltinRoles - Automated-BuiltinRoles mode.
 	RBACSetupModeAutomatedBuiltinRoles RBACSetupMode = "AutomatedBuiltinRoles"
-// RBACSetupModeAutomatedCustomRole - Automated-CustomRole mode.
+	// RBACSetupModeAutomatedCustomRole - Automated-CustomRole mode.
 	RBACSetupModeAutomatedCustomRole RBACSetupMode = "AutomatedCustomRole"
-// RBACSetupModeManual - Manual mode.
+	// RBACSetupModeManual - Manual mode.
 	RBACSetupModeManual RBACSetupMode = "Manual"
 )
 
@@ -829,9 +829,9 @@ func PossibleRBACSetupModeValues() []RBACSetupMode {
 type RBACState string
 
 const (
-// RBACStateNotSet - RBAC not set.
+	// RBACStateNotSet - RBAC not set.
 	RBACStateNotSet RBACState = "NotSet"
-// RBACStateSet - RBAC set.
+	// RBACStateSet - RBAC set.
 	RBACStateSet RBACState = "Set"
 )
 
@@ -847,9 +847,9 @@ func PossibleRBACStateValues() []RBACState {
 type ReasonForRequestingConfirmation string
 
 const (
-// ReasonForRequestingConfirmationVMInMultiZoneScaleSetStatelessOnly - VM in multi-zone scale set stateless only.
+	// ReasonForRequestingConfirmationVMInMultiZoneScaleSetStatelessOnly - VM in multi-zone scale set stateless only.
 	ReasonForRequestingConfirmationVMInMultiZoneScaleSetStatelessOnly ReasonForRequestingConfirmation = "VmInMultiZoneScaleSetStatelessOnly"
-// ReasonForRequestingConfirmationZonePinnedZrsDataDisksConditional - Zone pinned ZRS data disks conditional.
+	// ReasonForRequestingConfirmationZonePinnedZrsDataDisksConditional - Zone pinned ZRS data disks conditional.
 	ReasonForRequestingConfirmationZonePinnedZrsDataDisksConditional ReasonForRequestingConfirmation = "ZonePinnedZrsDataDisksConditional"
 )
 
@@ -865,9 +865,9 @@ func PossibleReasonForRequestingConfirmationValues() []ReasonForRequestingConfir
 type RecoveryGroupActionType string
 
 const (
-// RecoveryGroupActionTypeCustomRunbook - A custom runbook action type for the recovery orchestration group.
+	// RecoveryGroupActionTypeCustomRunbook - A custom runbook action type for the recovery orchestration group.
 	RecoveryGroupActionTypeCustomRunbook RecoveryGroupActionType = "CustomRunbook"
-// RecoveryGroupActionTypeManualAction - A manual action type for the recovery orchestration group.
+	// RecoveryGroupActionTypeManualAction - A manual action type for the recovery orchestration group.
 	RecoveryGroupActionTypeManualAction RecoveryGroupActionType = "ManualAction"
 )
 
@@ -884,17 +884,17 @@ func PossibleRecoveryGroupActionTypeValues() []RecoveryGroupActionType {
 type RecoveryOperationNames string
 
 const (
-// RecoveryOperationNamesFailover - Initiates a failover process to recover eligible resources to the target location.
+	// RecoveryOperationNamesFailover - Initiates a failover process to recover eligible resources to the target location.
 	RecoveryOperationNamesFailover RecoveryOperationNames = "Failover"
-// RecoveryOperationNamesFailoverCommit - Commits the failover for resources that require an explicit commit after recovery.
+	// RecoveryOperationNamesFailoverCommit - Commits the failover for resources that require an explicit commit after recovery.
 	RecoveryOperationNamesFailoverCommit RecoveryOperationNames = "FailoverCommit"
-// RecoveryOperationNamesReprotect - Performs re-protection or configuration changes for resources that have failed over,
-// as required.
+	// RecoveryOperationNamesReprotect - Performs re-protection or configuration changes for resources that have failed over,
+	// as required.
 	RecoveryOperationNamesReprotect RecoveryOperationNames = "Reprotect"
-// RecoveryOperationNamesTestFailover - Initiates a test failover process for qualified resources and those that support test
-// failover.
+	// RecoveryOperationNamesTestFailover - Initiates a test failover process for qualified resources and those that support test
+	// failover.
 	RecoveryOperationNamesTestFailover RecoveryOperationNames = "TestFailover"
-// RecoveryOperationNamesTestFailoverCleanup - Cleans up resources and configurations created during a test failover, as required.
+	// RecoveryOperationNamesTestFailoverCleanup - Cleans up resources and configurations created during a test failover, as required.
 	RecoveryOperationNamesTestFailoverCleanup RecoveryOperationNames = "TestFailoverCleanup"
 )
 
@@ -913,21 +913,21 @@ func PossibleRecoveryOperationNamesValues() []RecoveryOperationNames {
 type RecoveryOperationStatus string
 
 const (
-// RecoveryOperationStatusCanceled - Operation has been canceled by the user.
+	// RecoveryOperationStatusCanceled - Operation has been canceled by the user.
 	RecoveryOperationStatusCanceled RecoveryOperationStatus = "Canceled"
-// RecoveryOperationStatusCompletedWithWarning - Operation has completed but ran into some warning state.
+	// RecoveryOperationStatusCompletedWithWarning - Operation has completed but ran into some warning state.
 	RecoveryOperationStatusCompletedWithWarning RecoveryOperationStatus = "CompletedWithWarning"
-// RecoveryOperationStatusFailed - Operation has completed but ran into some error state.
+	// RecoveryOperationStatusFailed - Operation has completed but ran into some error state.
 	RecoveryOperationStatusFailed RecoveryOperationStatus = "Failed"
-// RecoveryOperationStatusInProgress - Operation is in progress.
+	// RecoveryOperationStatusInProgress - Operation is in progress.
 	RecoveryOperationStatusInProgress RecoveryOperationStatus = "InProgress"
-// RecoveryOperationStatusNotStarted - Operation has not started or ran.
+	// RecoveryOperationStatusNotStarted - Operation has not started or ran.
 	RecoveryOperationStatusNotStarted RecoveryOperationStatus = "NotStarted"
-// RecoveryOperationStatusSucceeded - Operation has completed successfully.
+	// RecoveryOperationStatusSucceeded - Operation has completed successfully.
 	RecoveryOperationStatusSucceeded RecoveryOperationStatus = "Succeeded"
-// RecoveryOperationStatusValidationFailed - Operation has completed but ran into some validation error state.
+	// RecoveryOperationStatusValidationFailed - Operation has completed but ran into some validation error state.
 	RecoveryOperationStatusValidationFailed RecoveryOperationStatus = "ValidationFailed"
-// RecoveryOperationStatusValidationInProgress - Operation is in the process of being validated.
+	// RecoveryOperationStatusValidationInProgress - Operation is in the process of being validated.
 	RecoveryOperationStatusValidationInProgress RecoveryOperationStatus = "ValidationInProgress"
 )
 
@@ -949,9 +949,9 @@ func PossibleRecoveryOperationStatusValues() []RecoveryOperationStatus {
 type RecoveryPlanExclusionReason string
 
 const (
-// RecoveryPlanExclusionReasonExcludedFromRecoveryPlan - Excluded From RecoveryPlan by user.
+	// RecoveryPlanExclusionReasonExcludedFromRecoveryPlan - Excluded From RecoveryPlan by user.
 	RecoveryPlanExclusionReasonExcludedFromRecoveryPlan RecoveryPlanExclusionReason = "ExcludedFromRecoveryPlan"
-// RecoveryPlanExclusionReasonProtectionStatus - Protection not configured.
+	// RecoveryPlanExclusionReasonProtectionStatus - Protection not configured.
 	RecoveryPlanExclusionReasonProtectionStatus RecoveryPlanExclusionReason = "ProtectionStatus"
 )
 
@@ -967,11 +967,11 @@ func PossibleRecoveryPlanExclusionReasonValues() []RecoveryPlanExclusionReason {
 type RecoveryPlanState string
 
 const (
-// RecoveryPlanStateReady - The recovery orchestration plan is ready.
+	// RecoveryPlanStateReady - The recovery orchestration plan is ready.
 	RecoveryPlanStateReady RecoveryPlanState = "Ready"
-// RecoveryPlanStateUnderEdit - The recovery orchestration plan is currently being edited.
+	// RecoveryPlanStateUnderEdit - The recovery orchestration plan is currently being edited.
 	RecoveryPlanStateUnderEdit RecoveryPlanState = "UnderEdit"
-// RecoveryPlanStateWarning - The recovery orchestration plan is in a warning state.
+	// RecoveryPlanStateWarning - The recovery orchestration plan is in a warning state.
 	RecoveryPlanStateWarning RecoveryPlanState = "Warning"
 )
 
@@ -988,9 +988,9 @@ func PossibleRecoveryPlanStateValues() []RecoveryPlanState {
 type RecoveryPlanType string
 
 const (
-// RecoveryPlanTypeRegional - A recovery orchestration plan for regional resiliency.
+	// RecoveryPlanTypeRegional - A recovery orchestration plan for regional resiliency.
 	RecoveryPlanTypeRegional RecoveryPlanType = "Regional"
-// RecoveryPlanTypeZonal - A recovery orchestration plan for zonal resiliency.
+	// RecoveryPlanTypeZonal - A recovery orchestration plan for zonal resiliency.
 	RecoveryPlanTypeZonal RecoveryPlanType = "Zonal"
 )
 
@@ -1006,9 +1006,9 @@ func PossibleRecoveryPlanTypeValues() []RecoveryPlanType {
 type RelativeResourceCompositionState string
 
 const (
-// RelativeResourceCompositionStateInSync - Resources in sync.
+	// RelativeResourceCompositionStateInSync - Resources in sync.
 	RelativeResourceCompositionStateInSync RelativeResourceCompositionState = "InSync"
-// RelativeResourceCompositionStateOutOfSync - Resources out of sync.
+	// RelativeResourceCompositionStateOutOfSync - Resources out of sync.
 	RelativeResourceCompositionStateOutOfSync RelativeResourceCompositionState = "OutOfSync"
 )
 
@@ -1024,9 +1024,9 @@ func PossibleRelativeResourceCompositionStateValues() []RelativeResourceComposit
 type RequirementSelected string
 
 const (
-// RequirementSelectedNotRequired - The resource is not required for the specified goal.
+	// RequirementSelectedNotRequired - The resource is not required for the specified goal.
 	RequirementSelectedNotRequired RequirementSelected = "NotRequired"
-// RequirementSelectedRequired - The resource is required for the specified goal.
+	// RequirementSelectedRequired - The resource is required for the specified goal.
 	RequirementSelectedRequired RequirementSelected = "Required"
 )
 
@@ -1042,11 +1042,11 @@ func PossibleRequirementSelectedValues() []RequirementSelected {
 type ResilienceHealthStatus string
 
 const (
-// ResilienceHealthStatusHealthy - Resource is Healthy.
+	// ResilienceHealthStatusHealthy - Resource is Healthy.
 	ResilienceHealthStatusHealthy ResilienceHealthStatus = "Healthy"
-// ResilienceHealthStatusNotEvaluated - Resource is not evaluated.
+	// ResilienceHealthStatusNotEvaluated - Resource is not evaluated.
 	ResilienceHealthStatusNotEvaluated ResilienceHealthStatus = "NotEvaluated"
-// ResilienceHealthStatusUnhealthy - Resource is Unhealthy.
+	// ResilienceHealthStatusUnhealthy - Resource is Unhealthy.
 	ResilienceHealthStatusUnhealthy ResilienceHealthStatus = "Unhealthy"
 )
 
@@ -1063,9 +1063,9 @@ func PossibleResilienceHealthStatusValues() []ResilienceHealthStatus {
 type ResourceInclusionState string
 
 const (
-// ResourceInclusionStateExcluded - A state that indicates the resource is excluded.
+	// ResourceInclusionStateExcluded - A state that indicates the resource is excluded.
 	ResourceInclusionStateExcluded ResourceInclusionState = "Excluded"
-// ResourceInclusionStateIncluded - A state that indicates the resource is included.
+	// ResourceInclusionStateIncluded - A state that indicates the resource is included.
 	ResourceInclusionStateIncluded ResourceInclusionState = "Included"
 )
 
@@ -1081,18 +1081,18 @@ func PossibleResourceInclusionStateValues() []ResourceInclusionState {
 type ResourceProtectionSolutionType string
 
 const (
-// ResourceProtectionSolutionTypeAzureNative - Resource is protected with the Azure native solution provided by the native
-// Azure service.
+	// ResourceProtectionSolutionTypeAzureNative - Resource is protected with the Azure native solution provided by the native
+	// Azure service.
 	ResourceProtectionSolutionTypeAzureNative ResourceProtectionSolutionType = "AzureNative"
-// ResourceProtectionSolutionTypeAzureSiteRecovery - Resource protected with the Azure solution provided by the native Azure
-// Site Service for Azure VMs.
+	// ResourceProtectionSolutionTypeAzureSiteRecovery - Resource protected with the Azure solution provided by the native Azure
+	// Site Service for Azure VMs.
 	ResourceProtectionSolutionTypeAzureSiteRecovery ResourceProtectionSolutionType = "AzureSiteRecovery"
-// ResourceProtectionSolutionTypeCrossZoneVMRecovery - Cross zone recovery enabled Azure VMs.
+	// ResourceProtectionSolutionTypeCrossZoneVMRecovery - Cross zone recovery enabled Azure VMs.
 	ResourceProtectionSolutionTypeCrossZoneVMRecovery ResourceProtectionSolutionType = "CrossZoneVMRecovery"
-// ResourceProtectionSolutionTypeCustomRunbook - Resource is not protected with native solution and using custom runbook automation
-// scripts for recovery verbs.
+	// ResourceProtectionSolutionTypeCustomRunbook - Resource is not protected with native solution and using custom runbook automation
+	// scripts for recovery verbs.
 	ResourceProtectionSolutionTypeCustomRunbook ResourceProtectionSolutionType = "CustomRunbook"
-// ResourceProtectionSolutionTypeNone - Resource is not protected with any protection solution.
+	// ResourceProtectionSolutionTypeNone - Resource is not protected with any protection solution.
 	ResourceProtectionSolutionTypeNone ResourceProtectionSolutionType = "None"
 )
 
@@ -1112,14 +1112,14 @@ func PossibleResourceProtectionSolutionTypeValues() []ResourceProtectionSolution
 type ResourceProtectionStatus string
 
 const (
-// ResourceProtectionStatusHighlyAvailable - A state indicating that the resource is protected by the highly available recovery
-// solution.
+	// ResourceProtectionStatusHighlyAvailable - A state indicating that the resource is protected by the highly available recovery
+	// solution.
 	ResourceProtectionStatusHighlyAvailable ResourceProtectionStatus = "HighlyAvailable"
-// ResourceProtectionStatusNotProtected - A state indicating that the resource is not protected by any recovery solution.
+	// ResourceProtectionStatusNotProtected - A state indicating that the resource is not protected by any recovery solution.
 	ResourceProtectionStatusNotProtected ResourceProtectionStatus = "NotProtected"
-// ResourceProtectionStatusProtected - A state indicating that the resource is protected by the recovery solution.
+	// ResourceProtectionStatusProtected - A state indicating that the resource is protected by the recovery solution.
 	ResourceProtectionStatusProtected ResourceProtectionStatus = "Protected"
-// ResourceProtectionStatusUnknown - The protection status of the resource is unknown.
+	// ResourceProtectionStatusUnknown - The protection status of the resource is unknown.
 	ResourceProtectionStatusUnknown ResourceProtectionStatus = "Unknown"
 )
 
@@ -1137,12 +1137,12 @@ func PossibleResourceProtectionStatusValues() []ResourceProtectionStatus {
 type ResourceReplicationRole string
 
 const (
-// ResourceReplicationRolePrimary - A state indicating that the resource is primary and actively replicating data to other
-// replicas.
+	// ResourceReplicationRolePrimary - A state indicating that the resource is primary and actively replicating data to other
+	// replicas.
 	ResourceReplicationRolePrimary ResourceReplicationRole = "Primary"
-// ResourceReplicationRoleReplica - A state indicating that the resource is a replica, receiving data from the primary.
+	// ResourceReplicationRoleReplica - A state indicating that the resource is a replica, receiving data from the primary.
 	ResourceReplicationRoleReplica ResourceReplicationRole = "Replica"
-// ResourceReplicationRoleUnknown - The role of the resource is unknown.
+	// ResourceReplicationRoleUnknown - The role of the resource is unknown.
 	ResourceReplicationRoleUnknown ResourceReplicationRole = "Unknown"
 )
 
@@ -1159,7 +1159,7 @@ func PossibleResourceReplicationRoleValues() []ResourceReplicationRole {
 type ResourceTypeCategories string
 
 const (
-// ResourceTypeCategoriesAzureSiteRecoveryVMsPresent - Indicates that alteast one Azure Site Recovery VMs are present.
+	// ResourceTypeCategoriesAzureSiteRecoveryVMsPresent - Indicates that alteast one Azure Site Recovery VMs are present.
 	ResourceTypeCategoriesAzureSiteRecoveryVMsPresent ResourceTypeCategories = "AzureSiteRecoveryVMsPresent"
 )
 
@@ -1175,9 +1175,9 @@ func PossibleResourceTypeCategoriesValues() []ResourceTypeCategories {
 type SolutionDisplayName string
 
 const (
-// SolutionDisplayNameVMInMultiZoneVmss - VM in multi-zone VMSS.
+	// SolutionDisplayNameVMInMultiZoneVmss - VM in multi-zone VMSS.
 	SolutionDisplayNameVMInMultiZoneVmss SolutionDisplayName = "VmInMultiZoneVmss"
-// SolutionDisplayNameZonePinnedVMWithZrsDisk - Zone pinned VM with ZRS disk.
+	// SolutionDisplayNameZonePinnedVMWithZrsDisk - Zone pinned VM with ZRS disk.
 	SolutionDisplayNameZonePinnedVMWithZrsDisk SolutionDisplayName = "ZonePinnedVmWithZrsDisk"
 )
 
@@ -1193,9 +1193,9 @@ func PossibleSolutionDisplayNameValues() []SolutionDisplayName {
 type TestFailoverState string
 
 const (
-// TestFailoverStateNone - The resource is Not in TestFailedOver state (No test failover cleanup pending).
+	// TestFailoverStateNone - The resource is Not in TestFailedOver state (No test failover cleanup pending).
 	TestFailoverStateNone TestFailoverState = "None"
-// TestFailoverStateTestFailoverCleanupPending - he resource is in test failover cleanup pending state.
+	// TestFailoverStateTestFailoverCleanupPending - he resource is in test failover cleanup pending state.
 	TestFailoverStateTestFailoverCleanupPending TestFailoverState = "TestFailoverCleanupPending"
 )
 
@@ -1211,11 +1211,11 @@ func PossibleTestFailoverStateValues() []TestFailoverState {
 type UnifiedResilienceItemRequirementSelected string
 
 const (
-// UnifiedResilienceItemRequirementSelectedNotRequired - The resource is not required for the specified goal.
+	// UnifiedResilienceItemRequirementSelectedNotRequired - The resource is not required for the specified goal.
 	UnifiedResilienceItemRequirementSelectedNotRequired UnifiedResilienceItemRequirementSelected = "NotRequired"
-// UnifiedResilienceItemRequirementSelectedNotSelected - The resource is not selected for the specified goal.
+	// UnifiedResilienceItemRequirementSelectedNotSelected - The resource is not selected for the specified goal.
 	UnifiedResilienceItemRequirementSelectedNotSelected UnifiedResilienceItemRequirementSelected = "NotSelected"
-// UnifiedResilienceItemRequirementSelectedRequired - The resource is required for the specified goal.
+	// UnifiedResilienceItemRequirementSelectedRequired - The resource is required for the specified goal.
 	UnifiedResilienceItemRequirementSelectedRequired UnifiedResilienceItemRequirementSelected = "Required"
 )
 
@@ -1232,9 +1232,9 @@ func PossibleUnifiedResilienceItemRequirementSelectedValues() []UnifiedResilienc
 type UsagePlanType string
 
 const (
-// UsagePlanTypeBasic - Basic usage plan with restricted functionality without any charges.
+	// UsagePlanTypeBasic - Basic usage plan with restricted functionality without any charges.
 	UsagePlanTypeBasic UsagePlanType = "Basic"
-// UsagePlanTypeStandard - Standard usage plan with comprehensive functionality and usage based charges.
+	// UsagePlanTypeStandard - Standard usage plan with comprehensive functionality and usage based charges.
 	UsagePlanTypeStandard UsagePlanType = "Standard"
 )
 
@@ -1250,9 +1250,9 @@ func PossibleUsagePlanTypeValues() []UsagePlanType {
 type UserConsent string
 
 const (
-// UserConsentAllowed - Action is allowed with user consent.
+	// UserConsentAllowed - Action is allowed with user consent.
 	UserConsentAllowed UserConsent = "Allowed"
-// UserConsentUnspecified - User consent is not specified for the operation.
+	// UserConsentUnspecified - User consent is not specified for the operation.
 	UserConsentUnspecified UserConsent = "Unspecified"
 )
 
@@ -1268,9 +1268,9 @@ func PossibleUserConsentValues() []UserConsent {
 type VMPresent string
 
 const (
-// VMPresentAbsent - No VM present.
+	// VMPresentAbsent - No VM present.
 	VMPresentAbsent VMPresent = "Absent"
-// VMPresentPresent - Atleast one VM Present.
+	// VMPresentPresent - Atleast one VM Present.
 	VMPresentPresent VMPresent = "Present"
 )
 
@@ -1281,4 +1281,3 @@ func PossibleVMPresentValues() []VMPresent {
 		VMPresentPresent,
 	}
 }
-

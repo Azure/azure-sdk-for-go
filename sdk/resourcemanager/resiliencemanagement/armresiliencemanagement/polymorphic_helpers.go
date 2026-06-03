@@ -95,4 +95,3 @@ func unmarshalResourceBaseProtectionSolutionSettingClassification(rawMsg json.Ra
 	}
 	return b, nil
 }
-

@@ -240,7 +240,7 @@ func (client *RecoveryPlansClient) getHandleResponse(resp *http.Response) (Recov
 // NewListPager - List RecoveryPlan resources by tenant
 //   - serviceGroupName - The name of the service group.
 //   - options - RecoveryPlansClientListOptions contains the optional parameters for the RecoveryPlansClient.NewListPager method.
-func (client *RecoveryPlansClient) NewListPager(serviceGroupName string, options *RecoveryPlansClientListOptions) (*runtime.Pager[RecoveryPlansClientListResponse]) {
+func (client *RecoveryPlansClient) NewListPager(serviceGroupName string, options *RecoveryPlansClientListOptions) *runtime.Pager[RecoveryPlansClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecoveryPlansClientListResponse]{
 		More: func(page RecoveryPlansClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -368,4 +368,3 @@ func (client *RecoveryPlansClient) updateCreateRequest(ctx context.Context, serv
 	}
 	return req, nil
 }
-

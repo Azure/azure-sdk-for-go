@@ -19,7 +19,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetCompleteExample() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -79,7 +79,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMaximumSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -142,7 +142,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMinimumSet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -183,13 +183,13 @@ func ExampleGoalResourcesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewGoalResourcesClient().NewListPager("sg1", "ga1", &armresiliencemanagement.GoalResourcesClientListOptions{
-	SkipToken: to.Ptr("xntbyoswztnmvitj"),
-	Top: to.Ptr[int32](69)})
+		SkipToken: to.Ptr("xntbyoswztnmvitj"),
+		Top:       to.Ptr[int32](69)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -250,4 +250,3 @@ func ExampleGoalResourcesClient_NewListPager() {
 		// }
 	}
 }
-

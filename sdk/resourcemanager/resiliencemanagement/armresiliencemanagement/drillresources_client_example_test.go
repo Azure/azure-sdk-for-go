@@ -19,7 +19,7 @@ func ExampleDrillResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -120,13 +120,13 @@ func ExampleDrillResourcesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewDrillResourcesClient().NewListPager("sampleServiceGroupName", "drill1", &armresiliencemanagement.DrillResourcesClientListOptions{
-	SkipToken: to.Ptr("xntbyoswztnmvitj"),
-	Top: to.Ptr[int32](69)})
+		SkipToken: to.Ptr("xntbyoswztnmvitj"),
+		Top:       to.Ptr[int32](69)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -304,4 +304,3 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// }
 	}
 }
-

@@ -19,152 +19,152 @@ func ExampleRecoveryPlansClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewRecoveryPlansClient().BeginCreateOrUpdate(ctx, "sampleServiceGroupName", "samplePlanName", armresiliencemanagement.RecoveryPlan{
 		Properties: &armresiliencemanagement.RecoveryPlanProperties{
-			PlanType: to.Ptr(armresiliencemanagement.RecoveryPlanTypeRegional),
-			PlanState: to.Ptr(armresiliencemanagement.RecoveryPlanStateUnderEdit),
+			PlanType:        to.Ptr(armresiliencemanagement.RecoveryPlanTypeRegional),
+			PlanState:       to.Ptr(armresiliencemanagement.RecoveryPlanStateUnderEdit),
 			PlanDescription: to.Ptr("Sample Plan"),
 			RecoveryGroupsSetting: &armresiliencemanagement.RecoveryGroupsSetting{
 				DefaultGroup: &armresiliencemanagement.RecoveryGroup{
 					Properties: &armresiliencemanagement.RecoveryGroupProperties{
 						GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-						OrderID: to.Ptr[int32](0),
-						Description: to.Ptr("sample recoverygroup"),
+						OrderID:       to.Ptr[int32](0),
+						Description:   to.Ptr("sample recoverygroup"),
 						PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Description: to.Ptr("sample group action instructions"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Description:      to.Ptr("sample group action instructions"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
 						},
 						PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
@@ -175,138 +175,138 @@ func ExampleRecoveryPlansClient_BeginCreateOrUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -316,138 +316,138 @@ func ExampleRecoveryPlansClient_BeginCreateOrUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -457,138 +457,138 @@ func ExampleRecoveryPlansClient_BeginCreateOrUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -601,8 +601,7 @@ func ExampleRecoveryPlansClient_BeginCreateOrUpdate() {
 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{
-				"/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1": &armresiliencemanagement.UserAssignedIdentity{
-				},
+				"/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1": &armresiliencemanagement.UserAssignedIdentity{},
 			},
 		},
 	}, nil)
@@ -1307,7 +1306,7 @@ func ExampleRecoveryPlansClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -1328,7 +1327,7 @@ func ExampleRecoveryPlansClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -2030,13 +2029,13 @@ func ExampleRecoveryPlansClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewRecoveryPlansClient().NewListPager("sampleServiceGroupName", &armresiliencemanagement.RecoveryPlansClientListOptions{
-	SkipToken: to.Ptr("jfpmvvhtt"),
-	Top: to.Ptr[int32](44)})
+		SkipToken: to.Ptr("jfpmvvhtt"),
+		Top:       to.Ptr[int32](44)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2744,7 +2743,7 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory(	"<subscriptionID>", cred, nil)
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -2755,44 +2754,44 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 				DefaultGroup: &armresiliencemanagement.RecoveryGroup{
 					Properties: &armresiliencemanagement.RecoveryGroupProperties{
 						GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-						OrderID: to.Ptr[int32](3),
-						Description: to.Ptr("sample-recoverygroup"),
+						OrderID:       to.Ptr[int32](3),
+						Description:   to.Ptr("sample-recoverygroup"),
 						PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 							},
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
 						},
 						PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 							},
 							&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-								Name: to.Ptr("sample-group-action"),
-								Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+								Name:             to.Ptr("sample-group-action"),
+								Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 								TimeoutInMinutes: to.Ptr[int32](29),
 								ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 								Parameters: map[string]*string{
 									"key7795": to.Ptr("uvapupcbbdgow"),
 								},
 								AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-									Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+									Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 									UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 								},
 							},
@@ -2803,47 +2802,47 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -2853,138 +2852,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -2994,138 +2993,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -3135,138 +3134,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -3276,138 +3275,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -3417,138 +3416,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -3558,138 +3557,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -3699,138 +3698,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -3840,138 +3839,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -3981,138 +3980,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -4122,138 +4121,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -4263,138 +4262,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -4404,138 +4403,138 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 					{
 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
 							GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
-							OrderID: to.Ptr[int32](1),
-							Description: to.Ptr("sample recoverygroup"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("sample recoverygroup"),
 							PreActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 							},
 							PostActions: []armresiliencemanagement.RecoveryGroupBaseActionClassification{
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
 								&armresiliencemanagement.RecoveryGroupCustomRunbookAction{
-									Name: to.Ptr("sample-group-action"),
-									Type: to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
+									Name:             to.Ptr("sample-group-action"),
+									Type:             to.Ptr(armresiliencemanagement.RecoveryGroupActionTypeCustomRunbook),
 									TimeoutInMinutes: to.Ptr[int32](29),
 									ActionResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.Automation/automationAccounts/sampleAccount/runbooks/sameplRunbooks1"),
 									Parameters: map[string]*string{
 										"key7795": to.Ptr("uvapupcbbdgow"),
 									},
 									AssociatedIdentity: &armresiliencemanagement.AssociatedIdentity{
-										Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+										Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 										UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
 									},
 								},
@@ -4548,8 +4547,7 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{
-				"key7088": &armresiliencemanagement.UserAssignedIdentity{
-				},
+				"key7088": &armresiliencemanagement.UserAssignedIdentity{},
 			},
 		},
 	}, nil)
@@ -5245,4 +5243,3 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 	// 	},
 	// }
 }
-

@@ -48,4 +48,3 @@ type ResourceBaseProtectionSolutionSettingClassification interface {
 	// GetResourceBaseProtectionSolutionSetting returns the ResourceBaseProtectionSolutionSetting content of the underlying type.
 	GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting
 }
-

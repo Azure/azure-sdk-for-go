@@ -241,7 +241,7 @@ func (client *GoalAssignmentsClient) getHandleResponse(resp *http.Response) (Goa
 //   - serviceGroupName - The name of the service group.
 //   - options - GoalAssignmentsClientListOptions contains the optional parameters for the GoalAssignmentsClient.NewListPager
 //     method.
-func (client *GoalAssignmentsClient) NewListPager(serviceGroupName string, options *GoalAssignmentsClientListOptions) (*runtime.Pager[GoalAssignmentsClientListResponse]) {
+func (client *GoalAssignmentsClient) NewListPager(serviceGroupName string, options *GoalAssignmentsClientListOptions) *runtime.Pager[GoalAssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GoalAssignmentsClientListResponse]{
 		More: func(page GoalAssignmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -587,4 +587,3 @@ func (client *GoalAssignmentsClient) updateGoalResourcesCreateRequest(ctx contex
 	}
 	return req, nil
 }
-

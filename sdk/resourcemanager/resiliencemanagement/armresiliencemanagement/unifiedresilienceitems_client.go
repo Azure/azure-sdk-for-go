@@ -102,7 +102,7 @@ func (client *UnifiedResilienceItemsClient) getHandleResponse(resp *http.Respons
 //   - serviceGroupName - The name of the service group.
 //   - options - UnifiedResilienceItemsClientListOptions contains the optional parameters for the UnifiedResilienceItemsClient.NewListPager
 //     method.
-func (client *UnifiedResilienceItemsClient) NewListPager(serviceGroupName string, options *UnifiedResilienceItemsClientListOptions) (*runtime.Pager[UnifiedResilienceItemsClientListResponse]) {
+func (client *UnifiedResilienceItemsClient) NewListPager(serviceGroupName string, options *UnifiedResilienceItemsClientListOptions) *runtime.Pager[UnifiedResilienceItemsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UnifiedResilienceItemsClientListResponse]{
 		More: func(page UnifiedResilienceItemsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -157,4 +157,3 @@ func (client *UnifiedResilienceItemsClient) listHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
-

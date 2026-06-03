@@ -57,8 +57,8 @@ const (
 	if !ok {
 		t.Fatalf("expected const EventUpload, got %#v", c.Consts)
 	}
-	if got.Type != "EventUpload" {
-		t.Errorf("expected type EventUpload, got %q", got.Type)
+	if got.Type != "*ast.SelectorExpr" {
+		t.Errorf("expected sentinel type *ast.SelectorExpr, got %q", got.Type)
 	}
 	if got.Value != "exported.EventUpload" {
 		t.Errorf("expected value exported.EventUpload, got %q", got.Value)

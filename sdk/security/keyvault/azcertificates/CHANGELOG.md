@@ -1,16 +1,12 @@
 # Release History
 
-## 1.5.1-beta.1 (Unreleased)
+## 1.5.1-beta.1 (2026-06-04)
 
 ### Features Added
-
-- Added an experimental `PlatformManaged` property on `CertificatePolicy` for Azure Key Vault internal usage. Any calls using this property will fail and it is not recommended to be used at this point.
-
-### Breaking Changes
-
-### Bugs Fixed
+* Added an experimental PlatformManaged property on CertificatePolicy for Azure Key Vault internal usage. Any calls using this property will fail and it is not recommended to be used at this point. [#26922](https://github.com/Azure/azure-sdk-for-go/pull/26922)
 
 ### Other Changes
+* Upgraded to API service version `2026-03-01-preview`
 
 ## 1.5.0 (2026-05-26)
 

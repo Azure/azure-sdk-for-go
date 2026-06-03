@@ -6,10 +6,9 @@ package armnetworkfunction_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction"
+	"log"
 )
 
 // Generated from example definition: 2022-11-01/AzureTrafficCollectorsBySubscriptionList.json

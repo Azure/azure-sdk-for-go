@@ -6,11 +6,10 @@ package armmaps_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
+	"log"
 )
 
 // Generated from example definition: 2025-10-01-preview/CreateAccountEncryption.json
@@ -55,7 +54,7 @@ func ExampleAccountsClient_CreateOrUpdate_createAccountWithEncryption() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientCreateOrUpdateResponse{
-	// 	Account: &armmaps.Account{
+	// 	Account: armmaps.Account{
 	// 		Name: to.Ptr("myMapsAccount"),
 	// 		Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 		ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
@@ -150,7 +149,7 @@ func ExampleAccountsClient_CreateOrUpdate_createGen2Account() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientCreateOrUpdateResponse{
-	// 	Account: &armmaps.Account{
+	// 	Account: armmaps.Account{
 	// 		Name: to.Ptr("myMapsAccount"),
 	// 		Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 		ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
@@ -242,7 +241,7 @@ func ExampleAccountsClient_CreateOrUpdate_createAccountWithManagedIdentities() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientCreateOrUpdateResponse{
-	// 	Account: &armmaps.Account{
+	// 	Account: armmaps.Account{
 	// 		Name: to.Ptr("myMapsAccount"),
 	// 		Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 		ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
@@ -334,7 +333,7 @@ func ExampleAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientGetResponse{
-	// 	Account: &armmaps.Account{
+	// 	Account: armmaps.Account{
 	// 		Name: to.Ptr("myMapsAccount"),
 	// 		Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 		ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
@@ -525,7 +524,7 @@ func ExampleAccountsClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientListKeysResponse{
-	// 	AccountKeys: &armmaps.AccountKeys{
+	// 	AccountKeys: armmaps.AccountKeys{
 	// 		PrimaryKey: to.Ptr("<primaryKey>"),
 	// 		PrimaryKeyLastUpdated: to.Ptr("2021-07-02T01:01:01.1075056Z"),
 	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
@@ -562,7 +561,7 @@ func ExampleAccountsClient_ListSas() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientListSasResponse{
-	// 	AccountSasToken: &armmaps.AccountSasToken{
+	// 	AccountSasToken: armmaps.AccountSasToken{
 	// 		AccountSasToken: to.Ptr("accountSasToken"),
 	// 	},
 	// }
@@ -589,7 +588,7 @@ func ExampleAccountsClient_RegenerateKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientRegenerateKeysResponse{
-	// 	AccountKeys: &armmaps.AccountKeys{
+	// 	AccountKeys: armmaps.AccountKeys{
 	// 		PrimaryKey: to.Ptr("<primaryKey>"),
 	// 		PrimaryKeyLastUpdated: to.Ptr("2021-07-02T01:01:01.1075056Z"),
 	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
@@ -621,7 +620,7 @@ func ExampleAccountsClient_Update_updateAccountTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientUpdateResponse{
-	// 	Account: &armmaps.Account{
+	// 	Account: armmaps.Account{
 	// 		Name: to.Ptr("myMapsAccount"),
 	// 		Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 		ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
@@ -687,7 +686,7 @@ func ExampleAccountsClient_Update_updateAccountEncryption() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientUpdateResponse{
-	// 	Account: &armmaps.Account{
+	// 	Account: armmaps.Account{
 	// 		Name: to.Ptr("myMapsAccount"),
 	// 		Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 		ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
@@ -756,7 +755,7 @@ func ExampleAccountsClient_Update_updateToGen2Account() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientUpdateResponse{
-	// 	Account: &armmaps.Account{
+	// 	Account: armmaps.Account{
 	// 		Name: to.Ptr("myMapsAccount"),
 	// 		Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 		ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
@@ -823,7 +822,7 @@ func ExampleAccountsClient_Update_updateAccountManagedIdentities() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaps.AccountsClientUpdateResponse{
-	// 	Account: &armmaps.Account{
+	// 	Account: armmaps.Account{
 	// 		Name: to.Ptr("myMapsAccount"),
 	// 		Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 		ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),

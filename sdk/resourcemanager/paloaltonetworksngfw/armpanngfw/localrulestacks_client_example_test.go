@@ -29,7 +29,7 @@ func ExampleLocalRulestacksClient_BeginCommit_localRulestacksCommitMaximumSetGen
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -50,7 +50,7 @@ func ExampleLocalRulestacksClient_BeginCommit_localRulestacksCommitMinimumSetGen
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -107,13 +107,13 @@ func ExampleLocalRulestacksClient_BeginCreateOrUpdate_localRulestacksCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientCreateOrUpdateResponse{
-	// 	LocalRulestackResource: &armpanngfw.LocalRulestackResource{
+	// 	LocalRulestackResource: armpanngfw.LocalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("localRulestacks"),
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/localrulestacks/armid1"),
@@ -186,13 +186,13 @@ func ExampleLocalRulestacksClient_BeginCreateOrUpdate_localRulestacksCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientCreateOrUpdateResponse{
-	// 	LocalRulestackResource: &armpanngfw.LocalRulestackResource{
+	// 	LocalRulestackResource: armpanngfw.LocalRulestackResource{
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/praval"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.RulestackProperties{
@@ -218,7 +218,7 @@ func ExampleLocalRulestacksClient_BeginDelete_localRulestacksDeleteMaximumSetGen
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -244,7 +244,7 @@ func ExampleLocalRulestacksClient_BeginDelete_localRulestacksDeleteMinimumSetGen
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -272,7 +272,7 @@ func ExampleLocalRulestacksClient_Get_localRulestacksGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientGetResponse{
-	// 	LocalRulestackResource: &armpanngfw.LocalRulestackResource{
+	// 	LocalRulestackResource: armpanngfw.LocalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("localRulestacks"),
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/localrulestacks/armid1"),
@@ -344,7 +344,7 @@ func ExampleLocalRulestacksClient_Get_localRulestacksGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientGetResponse{
-	// 	LocalRulestackResource: &armpanngfw.LocalRulestackResource{
+	// 	LocalRulestackResource: armpanngfw.LocalRulestackResource{
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/praval"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.RulestackProperties{
@@ -372,7 +372,7 @@ func ExampleLocalRulestacksClient_GetChangeLog_localRulestacksGetChangeLogMaximu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientGetChangeLogResponse{
-	// 	Changelog: &armpanngfw.Changelog{
+	// 	Changelog: armpanngfw.Changelog{
 	// 		Changes: []*string{
 	// 			to.Ptr("aaaa"),
 	// 		},
@@ -401,7 +401,7 @@ func ExampleLocalRulestacksClient_GetChangeLog_localRulestacksGetChangeLogMinimu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientGetChangeLogResponse{
-	// 	Changelog: &armpanngfw.Changelog{
+	// 	Changelog: armpanngfw.Changelog{
 	// 		Changes: []*string{
 	// 			to.Ptr("aaaa"),
 	// 		},
@@ -429,7 +429,7 @@ func ExampleLocalRulestacksClient_GetSupportInfo_localRulestacksGetSupportInfoMa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientGetSupportInfoResponse{
-	// 	SupportInfo: &armpanngfw.SupportInfo{
+	// 	SupportInfo: armpanngfw.SupportInfo{
 	// 		AccountID: to.Ptr("3cg5b439-294d-4c25-b0b2-ef649e0g6d38"),
 	// 		AccountRegistered: to.Ptr(armpanngfw.BooleanEnumTRUE),
 	// 		FreeTrial: to.Ptr(armpanngfw.BooleanEnumTRUE),
@@ -465,7 +465,7 @@ func ExampleLocalRulestacksClient_GetSupportInfo_localRulestacksGetSupportInfoMi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientGetSupportInfoResponse{
-	// 	SupportInfo: &armpanngfw.SupportInfo{
+	// 	SupportInfo: armpanngfw.SupportInfo{
 	// 	},
 	// }
 }
@@ -491,7 +491,7 @@ func ExampleLocalRulestacksClient_ListAdvancedSecurityObjects_localRulestacksLis
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsResponse{
-	// 	AdvSecurityObjectListResponse: &armpanngfw.AdvSecurityObjectListResponse{
+	// 	AdvSecurityObjectListResponse: armpanngfw.AdvSecurityObjectListResponse{
 	// 		NextLink: to.Ptr("a5324fa34"),
 	// 		Value: &armpanngfw.AdvSecurityObjectModel{
 	// 			Type: to.Ptr("localRulestacks"),
@@ -525,7 +525,7 @@ func ExampleLocalRulestacksClient_ListAdvancedSecurityObjects_localRulestacksLis
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsResponse{
-	// 	AdvSecurityObjectListResponse: &armpanngfw.AdvSecurityObjectListResponse{
+	// 	AdvSecurityObjectListResponse: armpanngfw.AdvSecurityObjectListResponse{
 	// 		Value: &armpanngfw.AdvSecurityObjectModel{
 	// 			Entry: []*armpanngfw.NameDescriptionObject{
 	// 				{
@@ -935,7 +935,7 @@ func ExampleLocalRulestacksClient_ListFirewalls_localRulestacksListFirewallsMaxi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientListFirewallsResponse{
-	// 	ListFirewallsResponse: &armpanngfw.ListFirewallsResponse{
+	// 	ListFirewallsResponse: armpanngfw.ListFirewallsResponse{
 	// 		NextLink: to.Ptr("a5324fa34"),
 	// 		Value: []*string{
 	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -963,7 +963,7 @@ func ExampleLocalRulestacksClient_ListFirewalls_localRulestacksListFirewallsMini
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientListFirewallsResponse{
-	// 	ListFirewallsResponse: &armpanngfw.ListFirewallsResponse{
+	// 	ListFirewallsResponse: armpanngfw.ListFirewallsResponse{
 	// 		Value: []*string{
 	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 		},
@@ -1065,7 +1065,7 @@ func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecuri
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientListSecurityServicesResponse{
-	// 	SecurityServicesResponse: &armpanngfw.SecurityServicesResponse{
+	// 	SecurityServicesResponse: armpanngfw.SecurityServicesResponse{
 	// 		NextLink: to.Ptr("a5324fa34"),
 	// 		Value: &armpanngfw.SecurityServicesTypeList{
 	// 			Type: to.Ptr("localRulestacks"),
@@ -1099,7 +1099,7 @@ func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecuri
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientListSecurityServicesResponse{
-	// 	SecurityServicesResponse: &armpanngfw.SecurityServicesResponse{
+	// 	SecurityServicesResponse: armpanngfw.SecurityServicesResponse{
 	// 		Value: &armpanngfw.SecurityServicesTypeList{
 	// 			Entry: []*armpanngfw.NameDescriptionObject{
 	// 				{
@@ -1198,7 +1198,7 @@ func ExampleLocalRulestacksClient_Update_localRulestacksUpdateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientUpdateResponse{
-	// 	LocalRulestackResource: &armpanngfw.LocalRulestackResource{
+	// 	LocalRulestackResource: armpanngfw.LocalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("localRulestacks"),
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/localrulestacks/armid1"),
@@ -1270,7 +1270,7 @@ func ExampleLocalRulestacksClient_Update_localRulestacksUpdateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulestacksClientUpdateResponse{
-	// 	LocalRulestackResource: &armpanngfw.LocalRulestackResource{
+	// 	LocalRulestackResource: armpanngfw.LocalRulestackResource{
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.RulestackProperties{
 	// 		},

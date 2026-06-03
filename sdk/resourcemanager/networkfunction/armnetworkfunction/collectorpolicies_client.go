@@ -7,18 +7,19 @@ package armnetworkfunction
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // CollectorPoliciesClient contains the methods for the CollectorPolicies group.
 // Don't use this type directly, use NewCollectorPoliciesClient() instead.
+//
+// Generated from API version 2022-11-01
 type CollectorPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +43,6 @@ func NewCollectorPoliciesClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrUpdate - Creates or updates a Collector Policy resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureTrafficCollectorName - Azure Traffic Collector name
 //   - collectorPolicyName - Collector Policy Name
@@ -69,8 +68,6 @@ func (client *CollectorPoliciesClient) BeginCreateOrUpdate(ctx context.Context, 
 
 // CreateOrUpdate - Creates or updates a Collector Policy resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-11-01
 func (client *CollectorPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, parameters CollectorPolicy, options *CollectorPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CollectorPoliciesClient.BeginCreateOrUpdate"
@@ -116,8 +113,8 @@ func (client *CollectorPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20221101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,8 +125,6 @@ func (client *CollectorPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 
 // BeginDelete - Deletes a specified Collector Policy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureTrafficCollectorName - Azure Traffic Collector name
 //   - collectorPolicyName - Collector Policy Name
@@ -154,8 +149,6 @@ func (client *CollectorPoliciesClient) BeginDelete(ctx context.Context, resource
 
 // Delete - Deletes a specified Collector Policy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-11-01
 func (client *CollectorPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, options *CollectorPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CollectorPoliciesClient.BeginDelete"
@@ -201,15 +194,13 @@ func (client *CollectorPoliciesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20221101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the collector policy in a specified Traffic Collector
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureTrafficCollectorName - Azure Traffic Collector name
 //   - collectorPolicyName - Collector Policy Name
@@ -260,8 +251,8 @@ func (client *CollectorPoliciesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20221101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +267,6 @@ func (client *CollectorPoliciesClient) getHandleResponse(resp *http.Response) (C
 }
 
 // NewListPager - Return list of Collector policies in a Azure Traffic Collector
-//
-// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureTrafficCollectorName - Azure Traffic Collector name
 //   - options - CollectorPoliciesClientListOptions contains the optional parameters for the CollectorPoliciesClient.NewListPager
@@ -325,8 +314,8 @@ func (client *CollectorPoliciesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20221101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -342,8 +331,6 @@ func (client *CollectorPoliciesClient) listHandleResponse(resp *http.Response) (
 
 // UpdateTags - Updates the specified Collector Policy tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureTrafficCollectorName - Azure Traffic Collector name
 //   - collectorPolicyName - Collector Policy Name
@@ -396,8 +383,8 @@ func (client *CollectorPoliciesClient) updateTagsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20221101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

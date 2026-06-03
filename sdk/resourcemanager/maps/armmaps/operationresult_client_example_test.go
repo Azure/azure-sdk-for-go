@@ -6,10 +6,9 @@ package armmaps_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
+	"log"
 )
 
 // Generated from example definition: 2025-10-01-preview/GetOperationResult.json
@@ -29,7 +28,7 @@ func ExampleOperationResultClient_BeginGet() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

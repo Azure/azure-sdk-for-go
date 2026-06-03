@@ -7,7 +7,7 @@ package armnetapp_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleResourceUsagesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceUsagesClientGetResponse{
-	// 	UsageResult: &armnetapp.UsageResult{
+	// 	UsageResult: armnetapp.UsageResult{
 	// 		Name: &armnetapp.UsageName{
 	// 			LocalizedValue: to.Ptr("Total TiBs per subscription"),
 	// 			Value: to.Ptr("totalTibsPerSubscription"),

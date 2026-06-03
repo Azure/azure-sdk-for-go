@@ -18,6 +18,8 @@ import (
 
 // RansomwareReportsClient contains the methods for the RansomwareReports group.
 // Don't use this type directly, use NewRansomwareReportsClient() instead.
+//
+// Generated from API version 2026-01-01
 type RansomwareReportsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +46,6 @@ func NewRansomwareReportsClient(subscriptionID string, credential azcore.TokenCr
 // ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one of these
 // ARP snapshots or another snapshot of your volume to restore data",
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -76,8 +76,6 @@ func (client *RansomwareReportsClient) BeginClearSuspects(ctx context.Context, r
 // ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one of these
 // ARP snapshots or another snapshot of your volume to restore data",
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *RansomwareReportsClient) clearSuspects(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, ransomwareReportName string, body RansomwareSuspectsClearRequest, options *RansomwareReportsClientBeginClearSuspectsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RansomwareReportsClient.BeginClearSuspects"
@@ -131,8 +129,8 @@ func (client *RansomwareReportsClient) clearSuspectsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
@@ -146,8 +144,6 @@ func (client *RansomwareReportsClient) clearSuspectsCreateRequest(ctx context.Co
 // ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one of these
 // ARP snapshots or another snapshot of your volume to restore data.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -208,8 +204,8 @@ func (client *RansomwareReportsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -229,8 +225,6 @@ func (client *RansomwareReportsClient) getHandleResponse(resp *http.Response) (R
 // activity with data encryption, and unusual file extensions.
 // ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one of these
 // ARP snapshots or another snapshot of your volume to restore data"
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -288,8 +282,8 @@ func (client *RansomwareReportsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

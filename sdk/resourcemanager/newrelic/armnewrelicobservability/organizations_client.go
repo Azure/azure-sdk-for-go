@@ -18,6 +18,8 @@ import (
 
 // OrganizationsClient contains the methods for the Organizations group.
 // Don't use this type directly, use NewOrganizationsClient() instead.
+//
+// Generated from API version 2025-05-01-preview
 type OrganizationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewOrganizationsClient(subscriptionID string, credential azcore.TokenCreden
 
 // NewListPager - Lists all the New Relic organizations linked to your email address, helping you understand the existing
 // organizations that have been created
-//
-// Generated from API version 2025-05-01-preview
 //   - userEmail - User Email.
 //   - location - Location for NewRelic.
 //   - options - OrganizationsClientListOptions contains the optional parameters for the OrganizationsClient.NewListPager method.
@@ -81,10 +81,10 @@ func (client *OrganizationsClient) listCreateRequest(ctx context.Context, userEm
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
+	reqQP.Set("api-version", version20250501Preview)
 	reqQP.Set("location", location)
 	reqQP.Set("userEmail", userEmail)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

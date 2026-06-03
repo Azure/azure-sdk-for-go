@@ -6,11 +6,10 @@ package armmarketplace_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace"
+	"log"
 )
 
 // Generated from example definition: 2025-01-01/GetPrivateStoreCollectionOfferContextsView.json
@@ -40,7 +39,7 @@ func ExamplePrivateStoreCollectionOfferClient_ContextsView() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionOfferClientContextsViewResponse{
-	// 	Offer: &armmarketplace.Offer{
+	// 	Offer: armmarketplace.Offer{
 	// 		Name: to.Ptr("mktp3pp.kuku-buku"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections/offers"),
 	// 		ID: to.Ptr("/providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/56a1a02d-8cf8-45df-bf37-d5f7120fcb3d/offers/mktp3pp.kuku-buku"),
@@ -116,7 +115,7 @@ func ExamplePrivateStoreCollectionOfferClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionOfferClientCreateOrUpdateResponse{
-	// 	Offer: &armmarketplace.Offer{
+	// 	Offer: armmarketplace.Offer{
 	// 		Name: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections/offers"),
 	// 		ID: to.Ptr("/providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/56a1a02d-8cf8-45df-bf37-d5f7120fcb3d/offers/marketplacetestthirdparty.md-test-third-party-2"),
@@ -178,7 +177,7 @@ func ExamplePrivateStoreCollectionOfferClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionOfferClientGetResponse{
-	// 	Offer: &armmarketplace.Offer{
+	// 	Offer: armmarketplace.Offer{
 	// 		Name: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections/offers"),
 	// 		ID: to.Ptr("/providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/56a1a02d-8cf8-45df-bf37-d5f7120fcb3d/offers/marketplacetestthirdparty.md-test-third-party-2"),
@@ -455,7 +454,7 @@ func ExamplePrivateStoreCollectionOfferClient_UpsertOfferWithMultiContext() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse{
-	// 	Offer: &armmarketplace.Offer{
+	// 	Offer: armmarketplace.Offer{
 	// 		Name: to.Ptr("contoso.logger"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections/offers"),
 	// 		ID: to.Ptr("/providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/56a1a02d-8cf8-45df-bf37-d5f7120fcb3d/offers/contoso.logger"),

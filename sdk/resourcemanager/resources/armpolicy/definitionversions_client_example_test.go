@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/createOrUpdatePolicyDefinitionVersion.json
+// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicyDefinitionVersion.json
 func ExampleDefinitionVersionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleDefinitionVersionsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientCreateOrUpdateResponse{
-	// 	DefinitionVersion: &armpolicy.DefinitionVersion{
+	// 	DefinitionVersion: armpolicy.DefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
@@ -113,7 +113,7 @@ func ExampleDefinitionVersionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/createOrUpdatePolicyDefinitionVersionAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicyDefinitionVersionAtManagementGroup.json
 func ExampleDefinitionVersionsClient_CreateOrUpdateAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,10 +169,10 @@ func ExampleDefinitionVersionsClient_CreateOrUpdateAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse{
-	// 	DefinitionVersion: &armpolicy.DefinitionVersion{
+	// 	DefinitionVersion: armpolicy.DefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
 	// 		Properties: &armpolicy.DefinitionVersionProperties{
 	// 			Description: to.Ptr("Force resource names to begin with 'prefix' and end with 'suffix'"),
 	// 			DisplayName: to.Ptr("Naming Convention"),
@@ -214,7 +214,7 @@ func ExampleDefinitionVersionsClient_CreateOrUpdateAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/deletePolicyDefinitionVersion.json
+// Generated from example definition: 2026-01-01-preview/deletePolicyDefinitionVersion.json
 func ExampleDefinitionVersionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +236,7 @@ func ExampleDefinitionVersionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/deletePolicyDefinitionVersionAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/deletePolicyDefinitionVersionAtManagementGroup.json
 func ExampleDefinitionVersionsClient_DeleteAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExampleDefinitionVersionsClient_DeleteAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/getPolicyDefinitionVersion.json
+// Generated from example definition: 2026-01-01-preview/getPolicyDefinitionVersion.json
 func ExampleDefinitionVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,7 +277,7 @@ func ExampleDefinitionVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientGetResponse{
-	// 	DefinitionVersion: &armpolicy.DefinitionVersion{
+	// 	DefinitionVersion: armpolicy.DefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
@@ -322,7 +322,7 @@ func ExampleDefinitionVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/getPolicyDefinitionVersionAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/getPolicyDefinitionVersionAtManagementGroup.json
 func ExampleDefinitionVersionsClient_GetAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,10 +341,10 @@ func ExampleDefinitionVersionsClient_GetAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientGetAtManagementGroupResponse{
-	// 	DefinitionVersion: &armpolicy.DefinitionVersion{
+	// 	DefinitionVersion: armpolicy.DefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
 	// 		Properties: &armpolicy.DefinitionVersionProperties{
 	// 			Description: to.Ptr("Force resource names to begin with 'prefix' and end with 'suffix'"),
 	// 			DisplayName: to.Ptr("Naming Convention"),
@@ -386,7 +386,7 @@ func ExampleDefinitionVersionsClient_GetAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/getBuiltinPolicyDefinitionVersion.json
+// Generated from example definition: 2026-01-01-preview/getBuiltinPolicyDefinitionVersion.json
 func ExampleDefinitionVersionsClient_GetBuiltIn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,7 +405,7 @@ func ExampleDefinitionVersionsClient_GetBuiltIn() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientGetBuiltInResponse{
-	// 	DefinitionVersion: &armpolicy.DefinitionVersion{
+	// 	DefinitionVersion: armpolicy.DefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1/versions/1.2.1"),
@@ -449,7 +449,7 @@ func ExampleDefinitionVersionsClient_GetBuiltIn() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/listPolicyDefinitionVersions.json
+// Generated from example definition: 2026-01-01-preview/listPolicyDefinitionVersions.json
 func ExampleDefinitionVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -564,7 +564,7 @@ func ExampleDefinitionVersionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/listAllPolicyDefinitionVersions.json
+// Generated from example definition: 2026-01-01-preview/listAllPolicyDefinitionVersions.json
 func ExampleDefinitionVersionsClient_ListAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -583,7 +583,7 @@ func ExampleDefinitionVersionsClient_ListAll() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientListAllResponse{
-	// 	DefinitionVersionListResult: &armpolicy.DefinitionVersionListResult{
+	// 	DefinitionVersionListResult: armpolicy.DefinitionVersionListResult{
 	// 		Value: []*armpolicy.DefinitionVersion{
 	// 			{
 	// 				Name: to.Ptr("1.2.1"),
@@ -674,7 +674,7 @@ func ExampleDefinitionVersionsClient_ListAll() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/listAllPolicyDefinitionVersionsByManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/listAllPolicyDefinitionVersionsByManagementGroup.json
 func ExampleDefinitionVersionsClient_ListAllAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -693,12 +693,12 @@ func ExampleDefinitionVersionsClient_ListAllAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientListAllAtManagementGroupResponse{
-	// 	DefinitionVersionListResult: &armpolicy.DefinitionVersionListResult{
+	// 	DefinitionVersionListResult: armpolicy.DefinitionVersionListResult{
 	// 		Value: []*armpolicy.DefinitionVersion{
 	// 			{
 	// 				Name: to.Ptr("1.2.1"),
 	// 				Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
-	// 				ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
+	// 				ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
 	// 				Properties: &armpolicy.DefinitionVersionProperties{
 	// 					Description: to.Ptr("Force resource names to begin with 'prefix' and end with 'suffix'"),
 	// 					DisplayName: to.Ptr("Naming Convention"),
@@ -740,7 +740,7 @@ func ExampleDefinitionVersionsClient_ListAllAtManagementGroup() {
 	// 			{
 	// 				Name: to.Ptr("1.0.0"),
 	// 				Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
-	// 				ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.0.0"),
+	// 				ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.0.0"),
 	// 				Properties: &armpolicy.DefinitionVersionProperties{
 	// 					Description: to.Ptr("Force resource names to begin with 'prefix' and end with 'suffix'"),
 	// 					DisplayName: to.Ptr("Naming Convention"),
@@ -784,7 +784,7 @@ func ExampleDefinitionVersionsClient_ListAllAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/listAllBuiltInPolicyDefinitionVersions.json
+// Generated from example definition: 2026-01-01-preview/listAllBuiltInPolicyDefinitionVersions.json
 func ExampleDefinitionVersionsClient_ListAllBuiltins() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -803,7 +803,7 @@ func ExampleDefinitionVersionsClient_ListAllBuiltins() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.DefinitionVersionsClientListAllBuiltinsResponse{
-	// 	DefinitionVersionListResult: &armpolicy.DefinitionVersionListResult{
+	// 	DefinitionVersionListResult: armpolicy.DefinitionVersionListResult{
 	// 		Value: []*armpolicy.DefinitionVersion{
 	// 			{
 	// 				Name: to.Ptr("1.2.1"),
@@ -901,7 +901,7 @@ func ExampleDefinitionVersionsClient_ListAllBuiltins() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/listBuiltInPolicyDefinitionVersions.json
+// Generated from example definition: 2026-01-01-preview/listBuiltInPolicyDefinitionVersions.json
 func ExampleDefinitionVersionsClient_NewListBuiltInPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1023,7 +1023,7 @@ func ExampleDefinitionVersionsClient_NewListBuiltInPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/listPolicyDefinitionVersionsByManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/listPolicyDefinitionVersionsByManagementGroup.json
 func ExampleDefinitionVersionsClient_NewListByManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1051,7 +1051,7 @@ func ExampleDefinitionVersionsClient_NewListByManagementGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("1.2.1"),
 		// 				Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
-		// 				ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
+		// 				ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.2.1"),
 		// 				Properties: &armpolicy.DefinitionVersionProperties{
 		// 					Description: to.Ptr("Force resource names to begin with 'prefix' and end with 'suffix'"),
 		// 					DisplayName: to.Ptr("Naming Convention"),
@@ -1093,7 +1093,7 @@ func ExampleDefinitionVersionsClient_NewListByManagementGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("1.0.0"),
 		// 				Type: to.Ptr("Microsoft.Authorization/policyDefinitions/versions"),
-		// 				ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.0.0"),
+		// 				ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming/versions/1.0.0"),
 		// 				Properties: &armpolicy.DefinitionVersionProperties{
 		// 					Description: to.Ptr("Force resource names to begin with 'prefix' and end with 'suffix'"),
 		// 					DisplayName: to.Ptr("Naming Convention"),

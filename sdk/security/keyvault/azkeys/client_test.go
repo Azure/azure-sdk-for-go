@@ -228,8 +228,8 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 		{challenge: authScope, resource: "https://myvault.azure.net/.default", disableVerify: true},
 	} {
 		t.Run("", func(t *testing.T) {
-			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer close()
+			srv, closeServer := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer closeServer()
 			srv.AppendResponse(mock.WithStatusCode(401), mock.WithHeader("WWW-Authenticate", fmt.Sprintf(test.challenge, test.resource)))
 			srv.AppendResponse(mock.WithStatusCode(200), mock.WithBody([]byte(`{"value":[]}`)))
 			options := &azkeys.ClientOptions{
@@ -629,7 +629,7 @@ func TestRotateKey(t *testing.T) {
 			defer cleanUpKey(t, client, createResp.Key.KID)
 
 			timeAfterCreate := to.Ptr("P30D")
-			policy := azkeys.KeyRotationPolicy{
+			rotationPolicy := azkeys.KeyRotationPolicy{
 				Attributes: &azkeys.KeyRotationPolicyAttributes{
 					ExpiryTime: to.Ptr("P90D"),
 				},
@@ -643,9 +643,9 @@ func TestRotateKey(t *testing.T) {
 						},
 					},
 				}}
-			updateResp, err := client.UpdateKeyRotationPolicy(context.Background(), key, policy, nil)
+			updateResp, err := client.UpdateKeyRotationPolicy(context.Background(), key, rotationPolicy, nil)
 			require.NoError(t, err)
-			require.Equal(t, policy.Attributes.ExpiryTime, updateResp.Attributes.ExpiryTime)
+			require.Equal(t, rotationPolicy.Attributes.ExpiryTime, updateResp.Attributes.ExpiryTime)
 			require.NotEmpty(t, updateResp.LifetimeActions)
 
 			getResp, err := client.GetKeyRotationPolicy(context.Background(), key, nil)
@@ -743,6 +743,140 @@ func TestWrapUnwrap(t *testing.T) {
 	}
 }
 
+// TestSecureWrapUnwrap exercises the SecureWrapKey/SecureUnwrapKey operations against the live
+// service using record/replay. These operations require a trusted execution environment (TEE) and
+// Microsoft Azure Attestation (MAA), so the test follows the same attestation-token pattern as
+// TestReleaseKey. It runs against Managed HSM, which is where secure wrap/unwrap is supported.
+func TestSecureWrapUnwrap(t *testing.T) {
+	client := startTest(t, true)
+
+	keyName := createRandomName(t, "securewrap")
+
+	// retry creating the key because Key Vault sometimes can't reach the fake
+	// attestation service we use in CI for several minutes after deployment
+	var createResp azkeys.CreateKeyResponse
+	var err error
+	for i := 0; i < 5; i++ {
+		// Don't set KeyOps: secureWrapKey/secureUnwrapKey aren't part of the public KeyOperation
+		// enum, and setting KeyOps would turn it into a whitelist that excludes them. Letting the
+		// service apply default key_ops permits the secure variants on an exportable HSM key with
+		// a release policy (same approach as TestReleaseKey).
+		params := azkeys.CreateKeyParameters{
+			Kty: to.Ptr(azkeys.KeyTypeRSAHSM),
+			KeyAttributes: &azkeys.KeyAttributes{
+				Exportable: to.Ptr(true),
+			},
+			ReleasePolicy: &azkeys.KeyReleasePolicy{
+				EncodedPolicy: getMarshalledReleasePolicy(attestationURL),
+				Immutable:     to.Ptr(true),
+			},
+		}
+		createResp, err = client.CreateKey(context.Background(), keyName, params, nil)
+		if err == nil {
+			break
+		}
+		if i < 4 {
+			recording.Sleep(30 * time.Second)
+		}
+	}
+	require.NoError(t, err)
+	require.NotNil(t, createResp.Key.KID)
+	defer cleanUpKey(t, client, createResp.Key.KID)
+
+	// fetch an attestation token from the attestation service, mirroring TestReleaseKey
+	attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
+	require.NoError(t, err)
+	resp, err := attestationClient.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
+	var tR struct {
+		Token *string `json:"token"`
+	}
+	err = json.NewDecoder(resp.Body).Decode(&tR)
+	require.NoError(t, err)
+
+	// SecureWrapKey creates a new AES key inside the TEE and wraps it with the named key
+	wrapParams := azkeys.SecureKeyWrapOperationParameters{
+		Algorithm: to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
+	}
+	testSerde(t, &wrapParams)
+	wrapResp, err := client.SecureWrapKey(context.Background(), keyName, createResp.Key.KID.Version(), wrapParams, nil)
+	if err != nil && strings.Contains(err.Error(), "Target environment attestation statement cannot be verified.") {
+		t.Skip("test encountered a transient service fault; see https://github.com/Azure/azure-sdk-for-net/issues/27957")
+	}
+	require.NoError(t, err)
+	require.NotEmpty(t, wrapResp.Value)
+	require.NotNil(t, wrapResp.Algorithm)
+	testSerde(t, &wrapResp.SecureKeyOperationResult)
+
+	// SecureUnwrapKey reverses the operation, requiring the attestation token for the TEE
+	unwrapParams := azkeys.SecureKeyUnWrapOperationParameters{
+		Algorithm:              wrapParams.Algorithm,
+		TargetAttestationToken: tR.Token,
+		Value:                  wrapResp.Value,
+	}
+	testSerde(t, &unwrapParams)
+	unwrapResp, err := client.SecureUnwrapKey(context.Background(), keyName, createResp.Key.KID.Version(), unwrapParams, nil)
+	if err != nil && strings.Contains(err.Error(), "Target environment attestation statement cannot be verified.") {
+		t.Skip("test encountered a transient service fault; see https://github.com/Azure/azure-sdk-for-net/issues/27957")
+	}
+	require.NoError(t, err)
+	require.NotEmpty(t, unwrapResp.Value)
+	testSerde(t, &unwrapResp.SecureKeyOperationResult)
+}
+
+func TestSecureKeyModelsSerde(t *testing.T) {
+	wrapParams := azkeys.SecureKeyWrapOperationParameters{
+		Algorithm: to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
+	}
+	testSerde(t, &wrapParams)
+
+	unwrapParams := azkeys.SecureKeyUnWrapOperationParameters{
+		Algorithm:              to.Ptr(azkeys.JSONWebKeyWrapAlgorithmA256KW),
+		TargetAttestationToken: to.Ptr("attestation-token"),
+		Value:                  []byte("wrapped-key-material"),
+	}
+	testSerde(t, &unwrapParams)
+
+	result := azkeys.SecureKeyOperationResult{
+		Algorithm: to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
+		Kid:       to.Ptr("https://fake.vault.azure.net/keys/name/version"),
+		Value:     []byte("operation-result"),
+	}
+	testSerde(t, &result)
+
+	externalKey := azkeys.ExternalKey{ID: to.Ptr("external-key-id")}
+	testSerde(t, &externalKey)
+
+	// KeyAttributes gained ExternalKey and KeySize fields in 2026-01-01-preview
+	attributes := azkeys.KeyAttributes{
+		Enabled:     to.Ptr(true),
+		ExternalKey: &externalKey,
+		KeySize:     to.Ptr(int32(256)),
+	}
+	testSerde(t, &attributes)
+}
+
+func TestJSONWebKeyWrapAlgorithm(t *testing.T) {
+	require.Equal(t, []azkeys.JSONWebKeyWrapAlgorithm{
+		azkeys.JSONWebKeyWrapAlgorithmA128KW,
+		azkeys.JSONWebKeyWrapAlgorithmA128KWPAD,
+		azkeys.JSONWebKeyWrapAlgorithmA192KW,
+		azkeys.JSONWebKeyWrapAlgorithmA192KWPAD,
+		azkeys.JSONWebKeyWrapAlgorithmA256KW,
+		azkeys.JSONWebKeyWrapAlgorithmA256KWPAD,
+		azkeys.JSONWebKeyWrapAlgorithmCKMAESKEYWRAP,
+		azkeys.JSONWebKeyWrapAlgorithmCKMAESKEYWRAPPAD,
+		azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256,
+	}, azkeys.PossibleJSONWebKeyWrapAlgorithmValues())
+}
+
 func TestAPIVersion(t *testing.T) {
 	apiVersion := "7.3"
 	var requireVersion = func(req *http.Request) bool {
@@ -750,8 +884,8 @@ func TestAPIVersion(t *testing.T) {
 		require.Equal(t, version, apiVersion)
 		return true
 	}
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
+	srv, closeServer := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer closeServer()
 	srv.AppendResponse(
 		mock.WithStatusCode(200),
 		mock.WithPredicate(requireVersion),

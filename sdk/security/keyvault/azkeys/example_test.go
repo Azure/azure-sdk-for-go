@@ -150,3 +150,46 @@ func ExampleClient_NewListKeyPropertiesPager() {
 		}
 	}
 }
+
+// SecureWrapKey creates a new 256-bit AES key inside a trusted execution environment (TEE) and wraps
+// it with the named key encryption key, returning the wrapped key material. Securely wrapping and
+// unwrapping keys requires Microsoft Azure Attestation (MAA) to attest the TEE and is supported by
+// Managed HSM. See [Azure Key Vault documentation] for more information.
+//
+// [Azure Key Vault documentation]: https://learn.microsoft.com/azure/key-vault/keys/about-keys
+func ExampleClient_SecureWrapKey() {
+	params := azkeys.SecureKeyWrapOperationParameters{
+		Algorithm: to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
+	}
+	// passing an empty string for the version parameter uses the latest version of the key
+	resp, err := client.SecureWrapKey(context.TODO(), "key-name", "", params, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+	// resp.Value contains the wrapped key material, which SecureUnwrapKey can later reverse
+	fmt.Printf("Wrapped a key with %s", *resp.Kid)
+}
+
+// SecureUnwrapKey reverses [Client.SecureWrapKey], decrypting previously wrapped key material inside a
+// trusted execution environment (TEE). It requires an attestation token from Microsoft Azure
+// Attestation (MAA) so the service can verify the TEE before unwrapping.
+func ExampleClient_SecureUnwrapKey() {
+	// targetAttestationToken is an attestation assertion obtained from your Microsoft Azure
+	// Attestation (MAA) instance for the target TEE.
+	var targetAttestationToken string
+	// wrappedKey is the key material returned by a prior SecureWrapKey call.
+	var wrappedKey []byte
+
+	params := azkeys.SecureKeyUnWrapOperationParameters{
+		Algorithm:              to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
+		TargetAttestationToken: to.Ptr(targetAttestationToken),
+		Value:                  wrappedKey,
+	}
+	// passing an empty string for the version parameter uses the latest version of the key
+	resp, err := client.SecureUnwrapKey(context.TODO(), "key-name", "", params, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+	// resp.Value contains the unwrapped key material
+	fmt.Printf("Unwrapped a key with %s", *resp.Kid)
+}

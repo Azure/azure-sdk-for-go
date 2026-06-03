@@ -14,6 +14,7 @@
 
 ### Other Changes
 * Upgraded to API service version `2026-01-01-preview`
+* Upgraded dependencies
 
 ## 1.5.0 (2026-05-25)
 

@@ -29,13 +29,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity_performAdd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientAddStorageCapacityResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
 	// 			ComputeCount: to.Ptr[int32](100),
 	// 			StorageCount: to.Ptr[int32](10),
@@ -150,13 +150,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity_performAdd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientAddStorageCapacityResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Zones: []*string{
@@ -183,13 +183,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginAddStorageCapacity_cloudExada
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientAddStorageCapacityResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
 	// 		Location: to.Ptr("eastus"),
@@ -286,13 +286,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginConfigureExascale_cloudExadat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientConfigureExascaleResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
 	// 			ComputeCount: to.Ptr[int32](100),
 	// 			StorageCount: to.Ptr[int32](10),
@@ -413,13 +413,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginConfigureExascale_cloudExadat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientConfigureExascaleResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		Location: to.Ptr("eastus"),
 	// 		Zones: []*string{
 	// 			to.Ptr("1"),
@@ -494,13 +494,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginCreateOrUpdate_createExadataI
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientCreateOrUpdateResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
 	// 			ComputeCount: to.Ptr[int32](100),
 	// 			StorageCount: to.Ptr[int32](10),
@@ -620,13 +620,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginCreateOrUpdate_createExadataI
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientCreateOrUpdateResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Zones: []*string{
@@ -667,13 +667,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginCreateOrUpdate_cloudExadataIn
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientCreateOrUpdateResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
 	// 		Location: to.Ptr("eastus"),
@@ -768,7 +768,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginDelete_deleteExadataInfrastru
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -789,7 +789,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginDelete_deleteExadataInfrastru
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -810,7 +810,7 @@ func ExampleCloudExadataInfrastructuresClient_BeginDelete_cloudExadataInfrastruc
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -833,7 +833,7 @@ func ExampleCloudExadataInfrastructuresClient_Get_getExadataInfrastructureGenera
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientGetResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
 	// 			ComputeCount: to.Ptr[int32](100),
 	// 			StorageCount: to.Ptr[int32](10),
@@ -950,7 +950,7 @@ func ExampleCloudExadataInfrastructuresClient_Get_getExadataInfrastructureGenera
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientGetResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Zones: []*string{
@@ -979,7 +979,7 @@ func ExampleCloudExadataInfrastructuresClient_Get_cloudExadataInfrastructuresGet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientGetResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
 	// 		Location: to.Ptr("eastus"),
@@ -1657,13 +1657,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginUpdate_patchExadataInfrastruc
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		Properties: &armoracledatabase.CloudExadataInfrastructureProperties{
 	// 			ComputeCount: to.Ptr[int32](100),
 	// 			StorageCount: to.Ptr[int32](10),
@@ -1778,13 +1778,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginUpdate_patchExadataInfrastruc
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Zones: []*string{
@@ -1811,13 +1811,13 @@ func ExampleCloudExadataInfrastructuresClient_BeginUpdate_cloudExadataInfrastruc
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse{
-	// 	CloudExadataInfrastructure: &armoracledatabase.CloudExadataInfrastructure{
+	// 	CloudExadataInfrastructure: armoracledatabase.CloudExadataInfrastructure{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudExadataInfrastructures"),
 	// 		Location: to.Ptr("eastus"),

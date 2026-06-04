@@ -38,13 +38,13 @@ func ExampleCertificateObjectGlobalRulestackClient_BeginCreateOrUpdate_certifica
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.CertificateObjectGlobalRulestackClientCreateOrUpdateResponse{
-	// 	CertificateObjectGlobalRulestackResource: &armpanngfw.CertificateObjectGlobalRulestackResource{
+	// 	CertificateObjectGlobalRulestackResource: armpanngfw.CertificateObjectGlobalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("certificates"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/certificates/armid1"),
@@ -89,13 +89,13 @@ func ExampleCertificateObjectGlobalRulestackClient_BeginCreateOrUpdate_certifica
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.CertificateObjectGlobalRulestackClientCreateOrUpdateResponse{
-	// 	CertificateObjectGlobalRulestackResource: &armpanngfw.CertificateObjectGlobalRulestackResource{
+	// 	CertificateObjectGlobalRulestackResource: armpanngfw.CertificateObjectGlobalRulestackResource{
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/praval/certificates/armid1"),
 	// 		Properties: &armpanngfw.CertificateObject{
 	// 			CertificateSelfSigned: to.Ptr(armpanngfw.BooleanEnumTRUE),
@@ -121,7 +121,7 @@ func ExampleCertificateObjectGlobalRulestackClient_BeginDelete_certificateObject
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -147,7 +147,7 @@ func ExampleCertificateObjectGlobalRulestackClient_BeginDelete_certificateObject
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -175,7 +175,7 @@ func ExampleCertificateObjectGlobalRulestackClient_Get_certificateObjectGlobalRu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.CertificateObjectGlobalRulestackClientGetResponse{
-	// 	CertificateObjectGlobalRulestackResource: &armpanngfw.CertificateObjectGlobalRulestackResource{
+	// 	CertificateObjectGlobalRulestackResource: armpanngfw.CertificateObjectGlobalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("certificates"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/certificates/armid1"),
@@ -218,7 +218,7 @@ func ExampleCertificateObjectGlobalRulestackClient_Get_certificateObjectGlobalRu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.CertificateObjectGlobalRulestackClientGetResponse{
-	// 	CertificateObjectGlobalRulestackResource: &armpanngfw.CertificateObjectGlobalRulestackResource{
+	// 	CertificateObjectGlobalRulestackResource: armpanngfw.CertificateObjectGlobalRulestackResource{
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/praval/certificates/armid1"),
 	// 		Properties: &armpanngfw.CertificateObject{
 	// 			CertificateSelfSigned: to.Ptr(armpanngfw.BooleanEnumTRUE),

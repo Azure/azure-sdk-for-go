@@ -19,6 +19,8 @@ import (
 
 // AccessBridgesClient contains the methods for the AccessBridges group.
 // Don't use this type directly, use NewAccessBridgesClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type AccessBridgesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewAccessBridgesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreateOrUpdate - Create a new access bridge or update the properties of the existing access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessBridgeName - The name of the access bridge.
 //   - accessBridge - The access bridge configuration.
@@ -68,8 +68,6 @@ func (client *AccessBridgesClient) BeginCreateOrUpdate(ctx context.Context, reso
 
 // CreateOrUpdate - Create a new access bridge or update the properties of the existing access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *AccessBridgesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridge AccessBridge, options *AccessBridgesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessBridgesClient.BeginCreateOrUpdate"
@@ -111,8 +109,8 @@ func (client *AccessBridgesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, accessBridge); err != nil {
@@ -123,8 +121,6 @@ func (client *AccessBridgesClient) createOrUpdateCreateRequest(ctx context.Conte
 
 // BeginDelete - Delete the specified access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessBridgeName - The name of the access bridge.
 //   - options - AccessBridgesClientBeginDeleteOptions contains the optional parameters for the AccessBridgesClient.BeginDelete
@@ -148,8 +144,6 @@ func (client *AccessBridgesClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Delete the specified access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *AccessBridgesClient) deleteOperation(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, options *AccessBridgesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessBridgesClient.BeginDelete"
@@ -191,8 +185,8 @@ func (client *AccessBridgesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -204,8 +198,6 @@ func (client *AccessBridgesClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - Get the properties of the provided access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessBridgeName - The name of the access bridge.
 //   - options - AccessBridgesClientGetOptions contains the optional parameters for the AccessBridgesClient.Get method.
@@ -251,8 +243,8 @@ func (client *AccessBridgesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -267,8 +259,6 @@ func (client *AccessBridgesClient) getHandleResponse(resp *http.Response) (Acces
 }
 
 // NewListByResourceGroupPager - Get a list of access bridges in the provided resource group.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AccessBridgesClientListByResourceGroupOptions contains the optional parameters for the AccessBridgesClient.NewListByResourceGroupPager
 //     method.
@@ -317,8 +307,8 @@ func (client *AccessBridgesClient) listByResourceGroupCreateRequest(ctx context.
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -333,8 +323,6 @@ func (client *AccessBridgesClient) listByResourceGroupHandleResponse(resp *http.
 }
 
 // NewListBySubscriptionPager - Get a list of access bridges in the provided subscription.
-//
-// Generated from API version 2026-05-01-preview
 //   - options - AccessBridgesClientListBySubscriptionOptions contains the optional parameters for the AccessBridgesClient.NewListBySubscriptionPager
 //     method.
 func (client *AccessBridgesClient) NewListBySubscriptionPager(options *AccessBridgesClientListBySubscriptionOptions) *runtime.Pager[AccessBridgesClientListBySubscriptionResponse] {
@@ -378,8 +366,8 @@ func (client *AccessBridgesClient) listBySubscriptionCreateRequest(ctx context.C
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -396,8 +384,6 @@ func (client *AccessBridgesClient) listBySubscriptionHandleResponse(resp *http.R
 // BeginUpdate - Update properties of the provided access bridge, or update tags associated with the access bridge. Properties
 // and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessBridgeName - The name of the access bridge.
 //   - accessBridgeUpdateParameters - The request body.
@@ -423,8 +409,6 @@ func (client *AccessBridgesClient) BeginUpdate(ctx context.Context, resourceGrou
 // Update - Update properties of the provided access bridge, or update tags associated with the access bridge. Properties
 // and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *AccessBridgesClient) update(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessBridgesClient.BeginUpdate"
@@ -466,8 +450,8 @@ func (client *AccessBridgesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

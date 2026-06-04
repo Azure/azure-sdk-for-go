@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.DocumentDB": "2026-02-01-preview"
   },
-  "emitterVersion": "0.11.0"
+  "emitterVersion": "0.14.1"
 }

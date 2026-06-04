@@ -84,13 +84,13 @@ func ExampleMonitorsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientCreateOrUpdateResponse{
-	// 	NewRelicMonitorResource: &armnewrelicobservability.NewRelicMonitorResource{
+	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
 	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 		Type: to.Ptr("hdj"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
@@ -179,7 +179,7 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -205,7 +205,7 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -233,7 +233,7 @@ func ExampleMonitorsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientGetResponse{
-	// 	NewRelicMonitorResource: &armnewrelicobservability.NewRelicMonitorResource{
+	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
 	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 		Type: to.Ptr("hdj"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
@@ -324,7 +324,7 @@ func ExampleMonitorsClient_GetMetricRules_monitorsGetMetricRulesMaximumSetGen() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientGetMetricRulesResponse{
-	// 	MetricRules: &armnewrelicobservability.MetricRules{
+	// 	MetricRules: armnewrelicobservability.MetricRules{
 	// 		FilteringTags: []*armnewrelicobservability.FilteringTag{
 	// 			{
 	// 				Name: to.Ptr("qnvixg"),
@@ -359,7 +359,7 @@ func ExampleMonitorsClient_GetMetricRules_monitorsGetMetricRulesMinimumSetGen() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientGetMetricRulesResponse{
-	// 	MetricRules: &armnewrelicobservability.MetricRules{
+	// 	MetricRules: armnewrelicobservability.MetricRules{
 	// 		FilteringTags: []*armnewrelicobservability.FilteringTag{
 	// 		},
 	// 		SendMetrics: to.Ptr(armnewrelicobservability.SendMetricsStatusDisabled),
@@ -391,7 +391,7 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMaximumSetGen(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientGetMetricStatusResponse{
-	// 	MetricsStatusResponse: &armnewrelicobservability.MetricsStatusResponse{
+	// 	MetricsStatusResponse: armnewrelicobservability.MetricsStatusResponse{
 	// 		AzureResourceIDs: []*string{
 	// 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"),
 	// 		},
@@ -423,7 +423,7 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMinimumSetGen(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientGetMetricStatusResponse{
-	// 	MetricsStatusResponse: &armnewrelicobservability.MetricsStatusResponse{
+	// 	MetricsStatusResponse: armnewrelicobservability.MetricsStatusResponse{
 	// 		AzureResourceIDs: []*string{
 	// 		},
 	// 	},
@@ -449,7 +449,7 @@ func ExampleMonitorsClient_LatestLinkedSaaS_monitorsLatestLinkedSaaSMaximumSetGe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientLatestLinkedSaaSResponse{
-	// 	LatestLinkedSaaSResponse: &armnewrelicobservability.LatestLinkedSaaSResponse{
+	// 	LatestLinkedSaaSResponse: armnewrelicobservability.LatestLinkedSaaSResponse{
 	// 		IsHiddenSaaS: to.Ptr(false),
 	// 		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/Microsoft.SaaS/resources/abcd"),
 	// 	},
@@ -475,7 +475,7 @@ func ExampleMonitorsClient_LatestLinkedSaaS_monitorsLatestLinkedSaaSMinimumSetGe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientLatestLinkedSaaSResponse{
-	// 	LatestLinkedSaaSResponse: &armnewrelicobservability.LatestLinkedSaaSResponse{
+	// 	LatestLinkedSaaSResponse: armnewrelicobservability.LatestLinkedSaaSResponse{
 	// 		IsHiddenSaaS: to.Ptr(false),
 	// 		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/Microsoft.SaaS/resources/abcd"),
 	// 	},
@@ -501,13 +501,13 @@ func ExampleMonitorsClient_BeginLinkSaaS() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientLinkSaaSResponse{
-	// 	NewRelicMonitorResource: &armnewrelicobservability.NewRelicMonitorResource{
+	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
 	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 		Type: to.Ptr("hdj"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
@@ -1071,13 +1071,13 @@ func ExampleMonitorsClient_BeginResubscribe() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientResubscribeResponse{
-	// 	NewRelicMonitorResource: &armnewrelicobservability.NewRelicMonitorResource{
+	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
 	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 		Type: to.Ptr("hdj"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
@@ -1178,7 +1178,7 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientSwitchBillingResponse{
-	// 	NewRelicMonitorResource: &armnewrelicobservability.NewRelicMonitorResource{
+	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
 	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 		Type: to.Ptr("hdj"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
@@ -1269,7 +1269,7 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientSwitchBillingResponse{
-	// 	NewRelicMonitorResource: &armnewrelicobservability.NewRelicMonitorResource{
+	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
 	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 		Type: to.Ptr("hdj"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
@@ -1400,13 +1400,13 @@ func ExampleMonitorsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientUpdateResponse{
-	// 	NewRelicMonitorResource: &armnewrelicobservability.NewRelicMonitorResource{
+	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
 	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 		Type: to.Ptr("hdj"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
@@ -1495,7 +1495,7 @@ func ExampleMonitorsClient_VMHostPayload_monitorsVMHostPayloadMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientVMHostPayloadResponse{
-	// 	VMExtensionPayload: &armnewrelicobservability.VMExtensionPayload{
+	// 	VMExtensionPayload: armnewrelicobservability.VMExtensionPayload{
 	// 		IngestionKey: to.Ptr("ltqewhfexphvqgttoevaywrl"),
 	// 	},
 	// }
@@ -1520,7 +1520,7 @@ func ExampleMonitorsClient_VMHostPayload_monitorsVMHostPayloadMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientVMHostPayloadResponse{
-	// 	VMExtensionPayload: &armnewrelicobservability.VMExtensionPayload{
+	// 	VMExtensionPayload: armnewrelicobservability.VMExtensionPayload{
 	// 		IngestionKey: to.Ptr("ltqewhfexphvqgttoevaywrl"),
 	// 	},
 	// }

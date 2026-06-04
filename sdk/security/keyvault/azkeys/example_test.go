@@ -56,6 +56,28 @@ func ExampleClient_CreateKey_ec() {
 	fmt.Println(*resp.Key.KID)
 }
 
+// CreateKey can register a reference to key material that lives in an external HSM or KMS by
+// setting [KeyAttributes.ExternalKey]. Key Vault stores only the reference; cryptographic
+// operations are delegated to the external system. External keys are mutually exclusive with
+// [CreateKeyParameters.Kty], so leave Kty unset when supplying an ExternalKey.
+func ExampleClient_CreateKey_externalKey() {
+	params := azkeys.CreateKeyParameters{
+		KeyAttributes: &azkeys.KeyAttributes{
+			// ID identifies the key material in the external HSM/KMS. Allowed characters are
+			// [a-zA-Z0-9-] and the maximum length is 64.
+			ExternalKey: &azkeys.ExternalKey{
+				ID: to.Ptr("external-key-id"),
+			},
+		},
+	}
+	// if a key with the same name already exists, a new version of that key is created
+	resp, err := client.CreateKey(context.TODO(), "key-name", params, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+	fmt.Println(*resp.Key.KID)
+}
+
 func ExampleClient_DeleteKey() {
 	// DeleteKey returns when Key Vault has begun deleting the key. That can take several
 	// seconds to complete, so it may be necessary to wait before performing other operations

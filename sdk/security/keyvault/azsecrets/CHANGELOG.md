@@ -1,8 +1,15 @@
 # Release History
 
-## 1.5.1-beta.1 (2026-06-04)
-### Other Changes
+## 1.5.1-beta.1 (Unreleased)
+### Features Added
 
+* Added support for API version `2026-03-01-preview` (now the default).
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
 
 ## 1.5.0 (2026-05-26)
 

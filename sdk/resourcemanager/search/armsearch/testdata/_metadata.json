@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.Search": "2026-03-01-preview"
   },
-  "emitterVersion": "0.10.4"
+  "emitterVersion": "0.14.1"
 }

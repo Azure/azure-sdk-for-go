@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.StorageSync": "2022-09-01"
   },
-  "emitterVersion": "0.14.0"
+  "emitterVersion": "0.14.1"
 }

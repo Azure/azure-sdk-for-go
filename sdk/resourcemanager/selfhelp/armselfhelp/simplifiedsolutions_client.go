@@ -18,6 +18,8 @@ import (
 
 // SimplifiedSolutionsClient contains the methods for the SimplifiedSolutions group.
 // Don't use this type directly, use NewSimplifiedSolutionsClient() instead.
+//
+// Generated from API version 2024-03-01-preview
 type SimplifiedSolutionsClient struct {
 	internal *arm.Client
 }
@@ -41,8 +43,6 @@ func NewSimplifiedSolutionsClient(credential azcore.TokenCredential, options *ar
 // to the same powerful solutions rendered in Solutions API. With Simplified Solutions, users don't have to worry about stitching
 // together the article using replacement maps and can use the content in the API response to directly render as HTML content.<br/>
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-03-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - simplifiedSolutionsResourceName - Simplified Solutions Resource Name.
 //   - simplifiedSolutionsRequestBody - The required request body for simplified Solutions resource creation.
@@ -70,8 +70,6 @@ func (client *SimplifiedSolutionsClient) BeginCreate(ctx context.Context, scope 
 // same powerful solutions rendered in Solutions API. With Simplified Solutions, users don't have to worry about stitching
 // together the article using replacement maps and can use the content in the API response to directly render as HTML content.<br/>
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-03-01-preview
 func (client *SimplifiedSolutionsClient) create(ctx context.Context, scope string, simplifiedSolutionsResourceName string, simplifiedSolutionsRequestBody SimplifiedSolutionsResource, options *SimplifiedSolutionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SimplifiedSolutionsClient.BeginCreate"
@@ -109,8 +107,8 @@ func (client *SimplifiedSolutionsClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, simplifiedSolutionsRequestBody); err != nil {
@@ -121,8 +119,6 @@ func (client *SimplifiedSolutionsClient) createCreateRequest(ctx context.Context
 
 // Get - Get the simplified Solutions using the applicable solutionResourceName while creating the simplified Solutions.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-03-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - simplifiedSolutionsResourceName - Simplified Solutions Resource Name.
 //   - options - SimplifiedSolutionsClientGetOptions contains the optional parameters for the SimplifiedSolutionsClient.Get method.
@@ -164,8 +160,8 @@ func (client *SimplifiedSolutionsClient) getCreateRequest(ctx context.Context, s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

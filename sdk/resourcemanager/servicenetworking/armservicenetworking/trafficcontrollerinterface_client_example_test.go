@@ -34,13 +34,13 @@ func ExampleTrafficControllerInterfaceClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicenetworking.TrafficControllerInterfaceClientCreateOrUpdateResponse{
-	// 	TrafficController: &armservicenetworking.TrafficController{
+	// 	TrafficController: armservicenetworking.TrafficController{
 	// 		Name: to.Ptr("tc1"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers"),
@@ -95,7 +95,7 @@ func ExampleTrafficControllerInterfaceClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -118,7 +118,7 @@ func ExampleTrafficControllerInterfaceClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicenetworking.TrafficControllerInterfaceClientGetResponse{
-	// 	TrafficController: &armservicenetworking.TrafficController{
+	// 	TrafficController: armservicenetworking.TrafficController{
 	// 		Name: to.Ptr("tc1"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers"),
@@ -301,7 +301,7 @@ func ExampleTrafficControllerInterfaceClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicenetworking.TrafficControllerInterfaceClientUpdateResponse{
-	// 	TrafficController: &armservicenetworking.TrafficController{
+	// 	TrafficController: armservicenetworking.TrafficController{
 	// 		Name: to.Ptr("tc1"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers"),

@@ -15,15 +15,11 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"strings"
-	"sync"
+	"slices"
 )
 
 // ManagementServer is a fake server for instances of the armservicegroups.ManagementClient type.
 type ManagementServer struct {
-	// Server contains the fakes for client Client
-	Server Server
-
 	// BeginCreateOrUpdateServiceGroup is the fake for method ManagementClient.BeginCreateOrUpdateServiceGroup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdateServiceGroup func(ctx context.Context, serviceGroupName string, createServiceGroupRequest armservicegroups.ServiceGroup, options *armservicegroups.ManagementClientBeginCreateOrUpdateServiceGroupOptions) (resp azfake.PollerResponder[armservicegroups.ManagementClientCreateOrUpdateServiceGroupResponse], errResp azfake.ErrorResponder)
@@ -53,8 +49,6 @@ func NewManagementServerTransport(srv *ManagementServer) *ManagementServerTransp
 // Don't use this type directly, use NewManagementServerTransport instead.
 type ManagementServerTransport struct {
 	srv                             *ManagementServer
-	trMu                            sync.Mutex
-	trServer                        *ServerTransport
 	beginCreateOrUpdateServiceGroup *tracker[azfake.PollerResponder[armservicegroups.ManagementClientCreateOrUpdateServiceGroupResponse]]
 	beginDeleteServiceGroup         *tracker[azfake.PollerResponder[armservicegroups.ManagementClientDeleteServiceGroupResponse]]
 	beginUpdateServiceGroup         *tracker[azfake.PollerResponder[armservicegroups.ManagementClientUpdateServiceGroupResponse]]
@@ -68,33 +62,11 @@ func (m *ManagementServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	if client := method[:strings.Index(method, ".")]; client != "ManagementClient" {
-		return m.dispatchToClientFake(req, client)
-	}
 	return m.dispatchToMethodFake(req, method)
 }
 
-func (m *ManagementServerTransport) dispatchToClientFake(req *http.Request, client string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
-
-	switch client {
-	case "Client":
-		initServer(&m.trMu, &m.trServer, func() *ServerTransport {
-			return NewServerTransport(&m.srv.Server)
-		})
-		resp, err = m.trServer.Do(req)
-	default:
-		err = fmt.Errorf("unhandled client %s", client)
-	}
-
-	return resp, err
-}
-
 func (m *ManagementServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -114,10 +86,7 @@ func (m *ManagementServerTransport) dispatchToMethodFake(req *http.Request, meth
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -161,7 +130,7 @@ func (m *ManagementServerTransport) dispatchBeginCreateOrUpdateServiceGroup(req 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		m.beginCreateOrUpdateServiceGroup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -201,7 +170,7 @@ func (m *ManagementServerTransport) dispatchBeginDeleteServiceGroup(req *http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		m.beginDeleteServiceGroup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -245,7 +214,7 @@ func (m *ManagementServerTransport) dispatchBeginUpdateServiceGroup(req *http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		m.beginUpdateServiceGroup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

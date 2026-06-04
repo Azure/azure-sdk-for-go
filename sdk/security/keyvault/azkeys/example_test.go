@@ -154,10 +154,33 @@ func ExampleClient_NewListKeyPropertiesPager() {
 // SecureWrapKey creates a new 256-bit AES key inside a trusted execution environment (TEE) and wraps
 // it with the named key encryption key, returning the wrapped key material. Securely wrapping and
 // unwrapping keys requires Microsoft Azure Attestation (MAA) to attest the TEE and is supported by
-// Managed HSM. See [Azure Key Vault documentation] for more information.
+// Managed HSM.
+//
+// The wrapping key must be created specifically for secure wrap/unwrap: it must grant the
+// "secureWrapKey" and "secureUnwrapKey" key operations, must have a release policy, and must
+// NOT be exportable.
+// See [Azure Key Vault documentation] for more information.
 //
 // [Azure Key Vault documentation]: https://learn.microsoft.com/azure/key-vault/keys/about-keys
 func ExampleClient_SecureWrapKey() {
+	// Create an RSA-HSM wrapping key configured for secure wrap/unwrap. encodedReleasePolicy is the
+	// JSON-encoded key release policy bytes (see Azure Key Vault docs for the schema).
+	var encodedReleasePolicy []byte
+	createParams := azkeys.CreateKeyParameters{
+		Kty: to.Ptr(azkeys.KeyTypeRSAHSM),
+		KeyOps: to.SliceOfPtrs(
+			azkeys.KeyOperationSecureWrapKey,
+			azkeys.KeyOperationSecureUnwrapKey,
+		),
+		ReleasePolicy: &azkeys.KeyReleasePolicy{
+			EncodedPolicy: encodedReleasePolicy,
+			Immutable:     to.Ptr(true),
+		},
+	}
+	if _, err := client.CreateKey(context.TODO(), "key-name", createParams, nil); err != nil {
+		// TODO: handle error
+	}
+
 	params := azkeys.SecureKeyWrapOperationParameters{
 		Algorithm: to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
 	}
@@ -172,7 +195,9 @@ func ExampleClient_SecureWrapKey() {
 
 // SecureUnwrapKey reverses [Client.SecureWrapKey], decrypting previously wrapped key material inside a
 // trusted execution environment (TEE). It requires an attestation token from Microsoft Azure
-// Attestation (MAA) so the service can verify the TEE before unwrapping.
+// Attestation (MAA) so the service can verify the TEE before unwrapping. The wrapping key must have
+// been created with the "secureWrapKey"/"secureUnwrapKey" ops and a release policy (see
+// [ExampleClient_SecureWrapKey] for the required CreateKey shape).
 func ExampleClient_SecureUnwrapKey() {
 	// targetAttestationToken is an attestation assertion obtained from your Microsoft Azure
 	// Attestation (MAA) instance for the target TEE.

@@ -757,15 +757,16 @@ func TestSecureWrapUnwrap(t *testing.T) {
 	var createResp azkeys.CreateKeyResponse
 	var err error
 	for i := 0; i < 5; i++ {
-		// Don't set KeyOps: secureWrapKey/secureUnwrapKey aren't part of the public KeyOperation
-		// enum, and setting KeyOps would turn it into a whitelist that excludes them. Letting the
-		// service apply default key_ops permits the secure variants on an exportable HSM key with
-		// a release policy (same approach as TestReleaseKey).
+		// The service enforces a specific shape for keys used with the secure variants:
+		//   - the secure ops must be granted explicitly (the MHSM default key_ops doesn't include them)
+		//   - the key cannot be Exportable
+		//   - the key MUST have a release policy
 		params := azkeys.CreateKeyParameters{
 			Kty: to.Ptr(azkeys.KeyTypeRSAHSM),
-			KeyAttributes: &azkeys.KeyAttributes{
-				Exportable: to.Ptr(true),
-			},
+			KeyOps: to.SliceOfPtrs(
+				azkeys.KeyOperationSecureWrapKey,
+				azkeys.KeyOperationSecureUnwrapKey,
+			),
 			ReleasePolicy: &azkeys.KeyReleasePolicy{
 				EncodedPolicy: getMarshalledReleasePolicy(attestationURL),
 				Immutable:     to.Ptr(true),
